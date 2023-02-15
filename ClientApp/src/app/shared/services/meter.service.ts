@@ -1,0 +1,123 @@
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { CONFIG } from "app/core/helpers";
+import { catchError, Observable, of, tap, throwError } from "rxjs";
+import { IAmrMeter, AmrMeterUpdate, IUtility } from "../../core/models";
+
+@Injectable({ providedIn: 'root' })
+export class MeterService {
+
+  constructor(private http: HttpClient) { }
+
+  getMetersForUser(userId: number): Observable<IAmrMeter[]> {
+    const url = `${CONFIG.apiURL}${CONFIG.metersForUser}${userId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchErrors(err)),
+        tap(m => {
+          //console.log(`getMetersForUser observable returned ${m}`);
+        }),
+      );
+  }
+
+  getMetersForUserChart(userId: number, chartId: number): Observable<IAmrMeter[]> {
+    const url = `${CONFIG.apiURL}${CONFIG.metersForUserChart}${userId}/${chartId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchErrors(err)),
+        tap(m => {
+          //console.log(`getMetersForUser observable returned ${m}`);
+        }),
+      );
+  }
+
+  getMeter(meterId: number): Observable<IAmrMeter> {
+    if (meterId === 0) {
+      return of(this.initializeAmrMeter());
+    }
+    const url = `${CONFIG.apiURL}${CONFIG.getMeter}${meterId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchErrors(err)),
+        tap(m => {
+          //console.log(`Http response from getMeter: ${JSON.stringify(m)}`)
+        })
+      );
+  }
+
+  updateMeter(updMeter: AmrMeterUpdate): Observable<IAmrMeter> {
+    if (updMeter.Meter.Id === 0) {
+      //create a new meter
+      url = `${CONFIG.apiURL}${CONFIG.addMeter}`;
+      return this.http.post<any>(url, updMeter, { withCredentials: true })
+        .pipe(
+          catchError(err => this.catchErrors(err)),
+          tap(m => {
+            //console.log(`Http response from updateMeter: ${JSON.stringify(m)}`)
+          })
+        );
+    } else {
+      var url = `${CONFIG.apiURL}${CONFIG.updateMeter}`;
+      return this.http.put<any>(url, updMeter, { withCredentials: true })
+        .pipe(
+          catchError(err => this.catchErrors(err)),
+          tap(m => {
+            //console.log(`Http response from updateMeter: ${JSON.stringify(m)}`)
+          })
+        );
+    }
+  }
+
+  getUtilties(): Observable<IUtility[]> {
+    const url = `${CONFIG.apiURL}${CONFIG.getUtilities}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchErrors(err)),
+        tap(m => {
+          //console.log(`Http response from getUtilties: ${JSON.stringify(m)}`)
+        })
+      );
+  }
+
+  initializeAmrMeter(): IAmrMeter {
+    // Return an initialized object
+    return {
+      Id: 0,
+      MeterNo: '',
+      Description: '',
+      UserId: 0,
+      BuildingId: 0,
+      BuildingName: '',
+      UmfaId: 0,
+      MakeModelId: 0,
+      Make: '',
+      Model: '',
+      Phase: 1,
+      CbSize: 0,
+      CtSizePrim: 5,
+      CtSizeSec: 5,
+      ProgFact: 1,
+      Digits: 7,
+      Active: true,
+      CommsId: '',
+      MeterSerial: '',
+      UtilityId: 0,
+      Utility: '',
+    };
+  }
+
+  //catches errors
+  private catchErrors(error: { error: { message: any; }; message: any; }): Observable<Response> {
+    if (error && error.error && error.error.message) { //clientside error
+      console.log(`Client side error: ${error.error.message}`);
+    } else if (error && error.error) { //server side error with custom msg
+      console.log(`Server side error: ${error.error}`);
+    } else if (error && error.message) { //server side error
+      console.log(`Server side error: ${error.message}`);
+    } else {
+      console.log(`Error occurred: ${JSON.stringify(error)}`);
+    }
+    return throwError(error);
+  }
+
+}

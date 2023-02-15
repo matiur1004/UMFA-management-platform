@@ -1,0 +1,23 @@
+<div *ngIf="ShowPage; else hiddenDiv" style="overflow: visible !important; background-color: #f8f9fa;">
+  <div *ngIf="!loading; else spinIt" style="overflow: visible !important; background-color: #f8f9fa;">
+    <div style="height: 79vh; width: 80vw; overflow: visible !important; background-color: #f8f9fa;" class="mx-auto">
+      <ng-container *ngIf="reportUrl">
+        <dx-report-viewer [reportUrl]="reportUrl" height="800px">
+          <dxrv-request-options [invokeAction]="invokeAction" [host]="hostUrl"></dxrv-request-options>
+        </dx-report-viewer>
+      </ng-container>
+      
+    </div>
+  </div>
+</div>
+
+<ng-template #spinIt>
+  <div style="display: flex; align-items: center; justify-content: center; width: 90vw; height: 79vh; background-color: white;">
+    <span class="spinner-border spinner-border-ml mr-1"
+          style="align-self: center; margin: 20px; color: blue; height: 40px; width:40px;"></span>
+  </div>
+</ng-template>
+
+<ng-template #hiddenDiv>
+  <div style="overflow: visible !important; height: 79vh; background-color: #fafafa;"></div>
+</ng-template>

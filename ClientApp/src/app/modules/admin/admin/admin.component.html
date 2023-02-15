@@ -1,0 +1,20 @@
+<div class="flex flex-col flex-auto min-w-0 gap-y-4">
+  <div class="flex border-t -mt-px pt-4 sm:pt-6">
+    <div class="w-full mx-auto">
+      <mat-tab-group
+        class="sm:px-2"
+        [animationDuration]="'0'"
+        (selectedTabChange)="onChange($event)"
+        [selectedIndex]="selectedTab"
+        >
+        <mat-tab label="AMR Users">
+
+        </mat-tab>
+        <mat-tab label="AMR Meters"></mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+  <div class="flex px-8 py-2">
+    <router-outlet></router-outlet>
+  </div>
+</div>

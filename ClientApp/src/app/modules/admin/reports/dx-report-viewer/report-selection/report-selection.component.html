@@ -1,0 +1,36 @@
+<!-- <div>
+
+  <form novalidate #frmReportSelect="ngForm">
+    <section class="row" style="margin: 2px 0 0 0;">
+      <div class="col" style="vertical-align: middle; margin: auto;">
+        <div *ngIf="reportList$ | async as reports">
+          <dx-select-box [items]="reports" displayExpr="Name" valueExpr="Id" class="form-control" label="Select Report to View"
+                         [itemTemplate]="custReportTemplate" required placeholder="Select Report" labelMode="static"
+                         [(ngModel)]="selectedReportId" name="report" #reportVar="ngModel" (onValueChanged)="selectionChanged($event,frmReportSelect )"
+                         [ngClass]="{'is-invalid': (reportVar.touched && (reportVar.invalid || reportVar.value == 0)) }">
+          </dx-select-box>
+          <span class="invalid-feedback">
+            <span *ngIf="reportVar.errors?.required">
+              Report selection is required.
+            </span>
+          </span>
+        </div>
+      </div>
+    </section>
+  </form>
+
+</div> -->
+<form novalidate [formGroup]="form">
+  <mat-label class="form-label"> Select Report to View </mat-label>
+  <ng-select
+      [items]="reportList"
+      bindLabel="Name"
+      bindValue="Id"
+      [placeholder]="'Select report'"
+      [formControlName]="'selectedReportId'"
+      [searchable]="false"
+      [clearable]="false"
+      (change)="selectionChanged($event)"
+      >
+  </ng-select>
+</form>

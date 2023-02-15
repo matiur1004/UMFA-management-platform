@@ -1,0 +1,60 @@
+<div *ngIf="showReport; else hiddenDiv" style="overflow: visible !important; background-color: #f8f9fa;">
+  <div *ngIf="!loading; else spinIt" style="overflow: visible !important; background-color: #f8f9fa;">
+    <div *ngIf="ChartId == 1 && demandDataSource" style="width: 80vw; overflow: visible !important; background-color: #f8f9fa;">
+      <dx-chart [dataSource]="demandDataSource.Detail" [customizePoint]="customizePoint" (onPointClick)="pointClick($event)">
+        <dxo-title [text]="chartTitleDemand" [subtitle]="chartSubTitleDemand"></dxo-title>
+        <dxo-size [height]="500"></dxo-size>
+        <dxi-series argumentField="ReadingDateString" valueField="Demand" type="bar" color="green" name="Demand(kVA)">
+          <dxo-hover-style color="#0af5ed"></dxo-hover-style>
+        </dxi-series>
+        <dxi-series argumentField="ReadingDateString" valueField="ActEnergy" type="spline" color="blue" name="Energy(kWh)">
+          <dxo-hover-style color="#0af5ed"></dxo-hover-style>
+        </dxi-series>
+        <dxo-argument-axis argumentType="string">
+          <dxo-label displayMode="rotate" [rotationAngle]="-60"></dxo-label>
+        </dxo-argument-axis>
+        <dxo-tooltip [enabled]="false" [zIndex]="5000"
+                     [customizeTooltip]="customizeTooltip">
+        </dxo-tooltip>
+        <dxo-export [enabled]="true"></dxo-export>
+        <dxo-scroll-bar [visible]="true"></dxo-scroll-bar>
+        <dxo-zoom-and-pan argumentAxis="both"></dxo-zoom-and-pan>
+        <dxo-loading-indicator [enabled]="true"></dxo-loading-indicator>
+        <dxo-legend verticalAlignment="bottom" horizontalAlignment="center" zIndex="6000">
+        </dxo-legend>
+      </dx-chart>
+    </div>
+    <div *ngIf="ChartId == 2 && waterDataSource" style="height: 79vh; width: 80vw; overflow: visible !important; background-color: #f8f9fa;">
+      <dx-chart [dataSource]="waterDataSource.Detail" [customizePoint]="customizePoint" (onPointClick)="pointClick($event)">
+        <dxo-title [text]="chartTitleWater" [subtitle]="chartSubTitleWater"></dxo-title>
+        <dxo-size [height]="500"></dxo-size>
+        <dxi-series argumentField="ReadingDateString" valueField="ActFlow" type="bar" color="blue" name="Usage(kL)">
+          <dxo-hover-style color="#0af5ed"></dxo-hover-style>
+        </dxi-series>
+        <dxo-argument-axis argumentType="string">
+          <dxo-label displayMode="rotate" [rotationAngle]="-60"></dxo-label>
+        </dxo-argument-axis>
+        <dxo-tooltip [enabled]="false" [zIndex]="5000"
+                     [customizeTooltip]="customizeTooltip">
+        </dxo-tooltip>
+        <dxo-export [enabled]="true"></dxo-export>
+        <dxo-scroll-bar [visible]="true"></dxo-scroll-bar>
+        <dxo-zoom-and-pan argumentAxis="both"></dxo-zoom-and-pan>
+        <dxo-loading-indicator [enabled]="true"></dxo-loading-indicator>
+        <dxo-legend verticalAlignment="bottom" horizontalAlignment="center" zIndex="6000">
+        </dxo-legend>
+      </dx-chart>
+    </div>
+  </div>
+</div>
+
+<ng-template #spinIt>
+  <div style="display: flex; align-items: center; justify-content: center; width: 90vw; height: 79vh; background-color: white;">
+    <span class="spinner-border spinner-border-ml mr-1"
+          style="align-self: center; margin: 20px; color: blue; height: 40px; width:40px;"></span>
+  </div>
+</ng-template>
+
+<ng-template #hiddenDiv>
+  <div style="overflow: visible !important; height: 79vh; background-color: white;"></div>
+</ng-template>
