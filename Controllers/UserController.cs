@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Cors;
 
 namespace ClientPortal.Controllers
 {
-   // [Authorize]
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class UserController : ControllerBase
