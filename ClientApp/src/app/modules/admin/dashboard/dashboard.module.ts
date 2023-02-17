@@ -14,6 +14,7 @@ import { SharedModule } from 'app/shared/shared.module';
 import { DashboardComponent } from './dashboard.component';
 import { dashboardRoutes } from './dashboard.routing';
 import { DxDataGridModule } from 'devextreme-angular';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 @NgModule({
     declarations: [
@@ -31,6 +32,7 @@ import { DxDataGridModule } from 'devextreme-angular';
         MatTableModule,
         MatTooltipModule,
         MatTableModule,
+        NgApexchartsModule,
         DxDataGridModule,
         MatTabsModule,
         SharedModule

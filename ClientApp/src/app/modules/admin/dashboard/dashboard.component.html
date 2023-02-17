@@ -19,40 +19,144 @@
                 <mat-tab label="Home">
                     <ng-template matTabContent>
                         <div *ngIf="stats$ | async as stats; else loading">
-                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8 w-full">
-                                <div class="sm:col-span-1 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100" (click)="onDetail(tabType.Buildings)">
-                                    <div class="flex items-start justify-between">
-                                        <div class="flex flex-col">
-                                            <div class="text-lg font-medium tracking-tight leading-6 truncate">Buildings</div>
-                                            <div class="text-3xl font-semibold tracking-tight leading-tight">
-                                                {{stats.Buildings}}
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-9 xl:grid-cols-9 gap-10 w-full">
+                                <div class="bg-gradient-to-r from-blue-500 to-blue-800 sm:col-span-2 flex flex-col flex-auto p-6 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100" (click)="onDetail(tabType.Buildings)">
+                                    <div class="flex items-start justify-between text-white">
+                                        <div class="flex flex-col w-full gap-y-1">
+                                            <div class="flex w-full justify-between">
+                                                <div class="flex flex-col">
+                                                    <div class="text-2xl font-medium tracking-normal leading-8 truncate">Buildings</div>
+                                                    <div class="text-3xl font-semibold tracking-normal ">
+                                                        {{stats.BuildingStats.NumberOfBuildings}}
+                                                    </div>
+                                                </div>
+                                                <mat-icon class="icon-size-10" [svgIcon]="'feather:buildings'"></mat-icon>
                                             </div>
-                                        </div>          
-                                        <img class="card-img-top" src="/assets/images/gif/1918-city-hall-outline.gif" alt="Card image cap">
+                                            <div class="flex flex-col w-full gap-y-1">
+                                                <div class="flex w-full justify-between leading-4">
+                                                    <span class="text-md">GLA</span>
+                                                    <span class="text-lg font-semibold">{{stats.BuildingStats.TotalGLA}}</span>
+                                                </div>
+                                                <div class="flex w-full justify-between leading-4">
+                                                    <span class="text-md">Meters</span>
+                                                    <span class="text-lg font-semibold">{{stats.BuildingStats.TotalNumberOfMeters}}</span>
+                                                </div>
+                                            </div>
+                                        </div>                                        
                                     </div>
                                 </div>
-                                <div class="sm:col-span-1 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100" (click)="onDetail(tabType.Shops)">
-                                    <div class="flex items-start justify-between">
-                                        <div class="flex flex-col">
-                                            <div class="text-lg font-medium tracking-tight leading-6 truncate">Shops</div>
-                                            <div class="text-3xl font-semibold tracking-tight leading-tight">
-                                                {{stats.Shops}}
+                                <div class="bg-gradient-to-r from-amber-400 to-amber-500 sm:col-span-2 flex flex-col flex-auto p-6 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100" (click)="onDetail(tabType.Shops)">
+                                    <div class="flex items-start justify-between text-white">
+                                        <div class="flex flex-col w-full gap-y-1">
+                                            <div class="flex w-full justify-between">
+                                                <div class="flex flex-col">
+                                                    <div class="text-2xl font-medium tracking-normal leading-8 truncate">Shops</div>
+                                                    <div class="text-3xl font-semibold tracking-normal ">
+                                                        {{stats.ShopStats.NumberOfShops}}
+                                                    </div>
+                                                </div>
+                                                <mat-icon class="icon-size-10" [svgIcon]="'feather:clients'"></mat-icon>
                                             </div>
-                                        </div>          
-                                        <img class="card-img-top" src="/assets/images/gif/1459-old-shop-outline.gif" alt="Card image cap">
+                                            <div class="flex flex-col w-full gap-y-1">
+                                                <div class="flex w-full justify-between leading-4">
+                                                    <span class="text-md">Occupied</span>
+                                                    <span class="text-lg font-semibold">{{stats.ShopStats.OccupiedPercentage}}</span>
+                                                </div>
+                                                <div class="flex w-full justify-between leading-4">
+                                                    <span class="text-md">Area</span>
+                                                    <span class="text-lg font-semibold">{{stats.ShopStats.TotalArea}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="sm:col-span-1 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100" (click)="onDetail(tabType.Tenants)">
-                                    <div class="flex items-start justify-between">
-                                        <div class="flex flex-col">
-                                            <div class="text-lg font-medium tracking-tight leading-6 truncate">Tenants</div>
-                                            <div class="text-3xl font-semibold tracking-tight leading-tight">
-                                                {{stats.Tenants}}
+                                <div class="bg-gradient-to-r from-emerald-400 to-emerald-500 sm:col-span-2 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100" (click)="onDetail(tabType.Tenants)">
+                                    <div class="flex items-start justify-between text-white">
+                                        <div class="flex flex-col w-full gap-y-1">
+                                            <div class="flex w-full justify-between">
+                                                <div class="flex flex-col">
+                                                    <div class="text-2xl font-medium tracking-normal leading-8 truncate">Tenants</div>
+                                                    <div class="text-3xl font-semibold tracking-normal ">
+                                                        {{stats.TenantStats.NumberOfTenants}}
+                                                    </div>
+                                                </div>
+                                                <mat-icon class="icon-size-10 text-white" [svgIcon]="'feather:users'"></mat-icon>
                                             </div>
-                                        </div>          
-                                        <img class="card-img-top" src="/assets/images/gif/970-video-conference-outline.gif" alt="Card image cap">
+                                            <div class="flex flex-col w-full gap-y-1">
+                                                <div class="flex w-full justify-between leading-4">
+                                                    <span class="text-md">Occupied</span>
+                                                    <span class="text-lg font-semibold">{{stats.TenantStats.OccupiedPercentage}}</span>
+                                                </div>
+                                                <div class="flex w-full justify-between leading-4">
+                                                    <span class="text-md">Recovered</span>
+                                                    <span class="text-lg font-semibold">{{stats.TenantStats.RecoverablePercentage}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="bg-gradient-to-r from-violet-400 to-violet-600 sm:col-span-3 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100" (click)="onDetail(tabType.Tenants)">
+                                    <div class="flex items-start justify-between text-white">
+                                        <div class="flex flex-col w-full gap-y-1">
+                                            <div class="flex w-full justify-between">
+                                                <div class="flex flex-col">
+                                                    <div class="text-2xl font-medium tracking-normal leading-8 truncate">Smart Services</div>
+                                                    <div class="text-3xl font-semibold tracking-normal ">
+                                                        {{stats.SmartStats.TotalSmart}}
+                                                    </div>
+                                                </div>
+                                                <mat-icon class="icon-size-10 text-white" [svgIcon]="'feather:users'"></mat-icon>
+                                            </div>
+                                            <div class="flex flex-col w-full gap-y-1">
+                                                <div class="flex w-full gap-x-4">
+                                                    <div class="flex justify-between w-1/2 leading-4">
+                                                        <span class="text-md">Solar</span>
+                                                        <span class="text-lg font-semibold">{{stats.SmartStats.SolarCount}}</span>
+                                                    </div>
+                                                    <div class="flex justify-between w-1/2 leading-4">
+                                                        <span class="text-md">Generator</span>
+                                                        <span class="text-lg font-semibold">{{stats.SmartStats.GeneratorCount}}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="flex w-full gap-x-4">
+                                                    <div class="flex justify-between w-1/2 leading-4">
+                                                        <span class="text-md">Electricity</span>
+                                                        <span class="text-lg font-semibold">{{stats.SmartStats.ConsumerElectricityCount}}</span>
+                                                    </div>
+                                                    <div class="flex justify-between w-1/2 leading-4">
+                                                        <span class="text-md">Water</span>
+                                                        <span class="text-lg font-semibold">{{stats.SmartStats.ConsumerWaterCount}}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="flex w-full gap-x-4">
+                                                    <div class="flex justify-between w-1/2 leading-4">
+                                                        <span class="text-md">Bulk</span>
+                                                        <span class="text-lg font-semibold">{{stats.SmartStats.BulkCount}}</span>
+                                                    </div>
+                                                    <div class="flex justify-between w-1/2 leading-4">
+                                                        <span class="text-md">Council Check</span>
+                                                        <span class="text-lg font-semibold">{{stats.SmartStats.CouncilChkCount}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="chart" class="flex w-full bg-card rounded-2xl mt-2">
+                                <apx-chart
+                                    class="w-full"
+                                    [series]="chartOptions.series"
+                                    [chart]="chartOptions.chart"
+                                    [dataLabels]="chartOptions.dataLabels"
+                                    [plotOptions]="chartOptions.plotOptions"
+                                    [yaxis]="chartOptions.yaxis"
+                                    [legend]="chartOptions.legend"
+                                    [fill]="chartOptions.fill"
+                                    [stroke]="chartOptions.stroke"
+                                    [tooltip]="chartOptions.tooltip"
+                                    [xaxis]="chartOptions.xaxis"
+                                ></apx-chart>
                             </div>
                         </div>
                         <ng-template #loading></ng-template>
@@ -69,7 +173,7 @@
                                 <div class="flex gap-x-4">
                                     <div class="bg-card p-2">
                                         <dx-data-grid
-                                            [dataSource]="buildings"
+                                            [dataSource]="tabItem.dataSource"
                                             [showBorders]="true"
                                             class="grid-container"
                                         >
@@ -96,7 +200,7 @@
                                     </div>
                                     <div class="bg-card p-2">
                                         <dx-data-grid
-                                            [dataSource]="buildings"
+                                            [dataSource]="tabItem.dataSource"
                                             [showBorders]="true"
                                             class="grid-container"
                                         >

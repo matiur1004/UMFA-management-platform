@@ -4373,6 +4373,38 @@
             <polygon class="fil2" points="34.67,46.2 34.67,39.34 27.74,39.34 27.74,34.62 34.67,34.62 34.67,27.76 39.28,27.76 39.28,34.62 46.22,34.62 46.22,39.34 39.28,39.34 39.28,46.2 "/>
             </g>
             </g>
-            </svg>
+        </svg>
+        <svg data-name="Layer 1" id="buildings" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <style>.cls-1 {
+                fill: #fffff;
+                }</style>
+            </defs>
+            <title>left menu</title>
+            <rect class="cls-1" height="1.5" width="1.5" x="3" y="5"/>
+            <rect class="cls-1" height="1.5" width="1.5" x="3" y="9"/>
+            <rect class="cls-1" height="1.5" width="1.5" x="3" y="13"/>
+            <polygon class="cls-1"
+                    points="12 4 12 0 0 0 0 20 1.5 20 1.5 1.5 10.5 1.5 10.5 4 6 4 6 20 7.5 20 7.5 5.5 18.5 5.5 18.5 20 20 20 20 4 12 4"/>
+            <rect class="cls-1" height="1.5" width="1.5" x="10" y="9"/>
+            <rect class="cls-1" height="1.5" width="1.5" x="10" y="13"/>
+            <rect class="cls-1" height="1.5" width="1.5" x="10" y="17"/>
+            <rect class="cls-1" height="1.5" width="1.5" x="14.5" y="9"/>
+            <rect class="cls-1" height="1.5" width="1.5" x="14.5" y="13"/>
+            <rect class="cls-1" height="1.5" width="1.5" x="14.5" y="17"/>
+        </svg>
+        <svg data-name="Layer 1" id="clients" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <style>.cls-1 {
+                fill: #ffffff;
+                }</style>
+            </defs>
+            <title>left menu</title>
+            <path class="cls-1"
+                    d="M15,5A5,5,0,1,0,5,5H0V20H20V5ZM10,1.5A3.5,3.5,0,0,1,13.5,5h-7A3.5,3.5,0,0,1,10,1.5Zm7.57,5-2.5,5H4.93l-2.5-5ZM1.5,18.5V8L4,13H16l2.5-5V18.5Z"/>
+            <rect class="cls-1" height="1.5" width="2" x="4" y="14"/>
+            <rect class="cls-1" height="1.5" width="2" x="14" y="14"/>
+        </svg>
+
     </defs>
 </svg>

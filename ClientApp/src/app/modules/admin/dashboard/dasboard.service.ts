@@ -33,8 +33,8 @@ export class DashboardService {
       return this._data.asObservable();
   }
   
-  getStats() {
-    const url = `${CONFIG.apiURL}${CONFIG.getHomeStats}`;
+  getStats(userId) {
+    const url = `${CONFIG.apiURL}${CONFIG.dashboardStats}/${userId}`;
     return this.http.get<any>(url, { withCredentials: true })
       .pipe(
         catchError(err => this.catchAuthErrors(err)),

@@ -2080,7 +2080,9 @@ export const feather = [
     'zoom-out',
     'gear',
     'addUser',
-    'addMeter'
+    'addMeter',
+    'buildings',
+    'clients'
 ];
 // heroicons v1.0.1 - 230 icons
 export const heroicons = [
