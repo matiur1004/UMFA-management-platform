@@ -1,6 +1,5 @@
 using DevExpress.AspNetCore.Reporting;
 using DevExpress.AspNetCore;
-using DevExpress.DashboardWeb;
 using DevExpress.XtraReports.Services;
 using Microsoft.Extensions.FileProviders;
 using System.Reflection;
@@ -11,7 +10,6 @@ using Serilog;
 using System.Text.Json.Serialization;
 using ClientPortal.Data.Repositories;
 using Microsoft.OpenApi.Models;
-using DevExpress.DashboardAspNetCore;
 using DevExpress.Security.Resources;
 using Microsoft.Extensions.Options;
 
@@ -54,10 +52,6 @@ IConfiguration? configuration = builder.Configuration;
         });
         configurator.UseAsyncEngine();
     });
-    services.AddScoped<DashboardConfigurator>((IServiceProvider serviceProvider) =>
-    {
-        return DashboardUtils.CreateDashboardConfigurator(configuration, fileProvider);
-    });
 
     services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
@@ -86,6 +80,7 @@ IConfiguration? configuration = builder.Configuration;
     services.AddScoped<IReportRepository, ReportRepository>();
     services.AddScoped<BuildingRecoveryReportService>();
     services.AddTransient<IScadaCalls, ScadaCalls>();
+    services.AddScoped<DashboardService, DashboardService>();
 
         //Data components
     services.AddScoped<IPortalStatsRepository, PortalStatsRepository>();
@@ -117,9 +112,6 @@ var app = builder.Build();
     DevExpress.XtraReports.Configuration.Settings.Default.UserDesignerOptions.DataBindingMode = DevExpress.XtraReports.UI.DataBindingMode.ExpressionsAdvanced;
 
     app.UseDevExpressControls();
-
-    // Maps the dashboard route.
-    EndpointRouteBuilderExtension.MapDashboardRoute(app, "/dashboard", "PortalDashboard");
 
     //add custom jwt auth middleware
     app.UseMiddleware<JwtMiddleWare>();

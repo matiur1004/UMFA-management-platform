@@ -1,5 +1,4 @@
-﻿using DevExpress.DashboardAspNetCore;
-using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Cors;
 using ClientPortal.Controllers.Authorization;
 using ClientPortal.Services;
 
@@ -10,10 +9,10 @@ namespace ClientPortal.Controllers
     [Route("[controller]")]
     public class HomeController: ControllerBase
     {
-        private readonly ILogger<DashboardController> _logger;
+        private readonly ILogger<HomeController> _logger;
         private readonly IHomeService _dashboardService;
 
-        public HomeController(ILogger<DashboardController> logger, IHomeService dashboardService)
+        public HomeController(ILogger<HomeController> logger, IHomeService dashboardService)
         {
             _logger = logger;
             _dashboardService = dashboardService;
