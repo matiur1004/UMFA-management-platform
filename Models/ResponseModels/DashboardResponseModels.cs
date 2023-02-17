@@ -1,0 +1,54 @@
+using ClientPortal.Migrations;
+
+namespace ClientPortal.Models
+{
+    public class DashboardMainResponse
+    {
+        public string Response { get; set; }
+        public DashboardBuildingStat BuildingStats { get; set; }
+        public DashboardShopStat ShopStats { get; set; }
+        public DashboardTenantStat TenantStats { get; set; }
+        public DashboardSmartStat SmartStats { get; set; }
+        public List<DashboardGraphStat> GraphStats { get; set; }
+    }
+
+    public class DashboardBuildingStat
+    {
+        public int NumberOfBuildings { get; set; }
+        public decimal TotalGLA { get; set; }
+        public int TotalNumberOfMeters { get; set; }
+    }
+
+    public class DashboardShopStat
+    {
+        public int NumberOfShops { get; set; }
+        public decimal OccupiedPercentage { get; set; }
+        public decimal TotalArea { get; set; }
+    }
+
+    public class DashboardTenantStat
+    {
+        public int NumberOfTenants { get; set; }
+        public decimal OccupiedPercentage { get; set; }
+        public decimal RecoverablePercentage { get; set; }
+    }
+
+    public class DashboardSmartStat
+    {
+        public int TotalSmart { get; set; }
+        public int SolarCount { get; set; }
+        public int GeneratorCount { get; set; }
+        public int ConsumerElectricityCount { get; set; }
+        public int ConsumerWaterCount { get; set; }
+        public int BulkCount { get; set; }
+        public int CouncilChkCount { get; set; }
+    }
+
+    public class DashboardGraphStat
+    {
+        public string PeriodName { get; set; }
+        public decimal TotalSales { get; set; }
+        public decimal TotalElectricityUsage { get; set; }
+        public decimal TotalWaterUsage { get; set; }
+    }
+}
