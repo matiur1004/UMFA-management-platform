@@ -10,3 +10,9 @@
 .grid-container {
     max-height: 500px;
 }
+::ng-deep .mat-tab-group .mat-tab-body.mat-tab-body-active {
+    overflow: visible;
+    .mat-tab-body-content {
+        overflow: visible;
+    }
+}

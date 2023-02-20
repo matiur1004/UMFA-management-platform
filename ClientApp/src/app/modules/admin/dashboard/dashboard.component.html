@@ -20,7 +20,7 @@
                     <ng-template matTabContent>
                         <div *ngIf="stats$ | async as stats; else loading">
                             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-9 xl:grid-cols-9 gap-10 w-full">
-                                <div class="bg-gradient-to-r from-blue-500 to-blue-800 sm:col-span-2 flex flex-col flex-auto p-6 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100" (click)="onDetail(tabType.Buildings)">
+                                <div class="bg-gradient-to-r from-blue-500 to-blue-800 col-span-1 lg:col-span-2 flex flex-col flex-auto p-6 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100" (click)="onDetail(tabType.Buildings)">
                                     <div class="flex items-start justify-between text-white">
                                         <div class="flex flex-col w-full gap-y-1">
                                             <div class="flex w-full justify-between">
@@ -35,24 +35,24 @@
                                             <div class="flex flex-col w-full gap-y-1">
                                                 <div class="flex w-full justify-between leading-4">
                                                     <span class="text-md">GLA</span>
-                                                    <span class="text-lg font-semibold">{{stats.BuildingStats.TotalGLA}}</span>
+                                                    <span class="text-lg font-semibold">{{stats.BuildingStats.TotalGLA | number : '1.0-2'}}</span>
                                                 </div>
                                                 <div class="flex w-full justify-between leading-4">
                                                     <span class="text-md">Meters</span>
-                                                    <span class="text-lg font-semibold">{{stats.BuildingStats.TotalNumberOfMeters}}</span>
+                                                    <span class="text-lg font-semibold">{{stats.BuildingStats.TotalNumberOfMeters | number : '1.0-2'}}</span>
                                                 </div>
                                             </div>
                                         </div>                                        
                                     </div>
                                 </div>
-                                <div class="bg-gradient-to-r from-amber-400 to-amber-500 sm:col-span-2 flex flex-col flex-auto p-6 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100" (click)="onDetail(tabType.Shops)">
+                                <div class="bg-gradient-to-r from-amber-400 to-amber-500 col-span-1 lg:col-span-2 flex flex-col flex-auto p-6 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100" (click)="onDetail(tabType.Shops)">
                                     <div class="flex items-start justify-between text-white">
                                         <div class="flex flex-col w-full gap-y-1">
                                             <div class="flex w-full justify-between">
                                                 <div class="flex flex-col">
                                                     <div class="text-2xl font-medium tracking-normal leading-8 truncate">Shops</div>
                                                     <div class="text-3xl font-semibold tracking-normal ">
-                                                        {{stats.ShopStats.NumberOfShops}}
+                                                        {{stats.ShopStats.NumberOfShops | number : '1.0-2'}}
                                                     </div>
                                                 </div>
                                                 <mat-icon class="icon-size-10" [svgIcon]="'feather:clients'"></mat-icon>
@@ -60,24 +60,24 @@
                                             <div class="flex flex-col w-full gap-y-1">
                                                 <div class="flex w-full justify-between leading-4">
                                                     <span class="text-md">Occupied</span>
-                                                    <span class="text-lg font-semibold">{{stats.ShopStats.OccupiedPercentage}}</span>
+                                                    <span class="text-lg font-semibold">{{stats.ShopStats.OccupiedPercentage | percent : '1.0-2'}}</span>
                                                 </div>
                                                 <div class="flex w-full justify-between leading-4">
                                                     <span class="text-md">Area</span>
-                                                    <span class="text-lg font-semibold">{{stats.ShopStats.TotalArea}}</span>
+                                                    <span class="text-lg font-semibold">{{stats.ShopStats.TotalArea | number : '1.0-2'}}</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="bg-gradient-to-r from-emerald-400 to-emerald-500 sm:col-span-2 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100" (click)="onDetail(tabType.Tenants)">
+                                <div class="bg-gradient-to-r from-emerald-400 to-emerald-500 col-span-1 lg:col-span-2 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100" (click)="onDetail(tabType.Tenants)">
                                     <div class="flex items-start justify-between text-white">
                                         <div class="flex flex-col w-full gap-y-1">
                                             <div class="flex w-full justify-between">
                                                 <div class="flex flex-col">
                                                     <div class="text-2xl font-medium tracking-normal leading-8 truncate">Tenants</div>
                                                     <div class="text-3xl font-semibold tracking-normal ">
-                                                        {{stats.TenantStats.NumberOfTenants}}
+                                                        {{stats.TenantStats.NumberOfTenants | number : '1.0-2'}}
                                                     </div>
                                                 </div>
                                                 <mat-icon class="icon-size-10 text-white" [svgIcon]="'feather:users'"></mat-icon>
@@ -85,11 +85,11 @@
                                             <div class="flex flex-col w-full gap-y-1">
                                                 <div class="flex w-full justify-between leading-4">
                                                     <span class="text-md">Occupied</span>
-                                                    <span class="text-lg font-semibold">{{stats.TenantStats.OccupiedPercentage}}</span>
+                                                    <span class="text-lg font-semibold">{{stats.TenantStats.OccupiedPercentage | percent : '1.0-2'}}</span>
                                                 </div>
                                                 <div class="flex w-full justify-between leading-4">
                                                     <span class="text-md">Recovered</span>
-                                                    <span class="text-lg font-semibold">{{stats.TenantStats.RecoverablePercentage}}</span>
+                                                    <span class="text-lg font-semibold">{{stats.TenantStats.RecoverablePercentage | percent : '1.0-2'}}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -102,7 +102,7 @@
                                                 <div class="flex flex-col">
                                                     <div class="text-2xl font-medium tracking-normal leading-8 truncate">Smart Services</div>
                                                     <div class="text-3xl font-semibold tracking-normal ">
-                                                        {{stats.SmartStats.TotalSmart}}
+                                                        {{stats.SmartStats.TotalSmart | number : '1.0-2'}}
                                                     </div>
                                                 </div>
                                                 <mat-icon class="icon-size-10 text-white" [svgIcon]="'feather:users'"></mat-icon>
@@ -143,20 +143,112 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="chart" class="flex w-full bg-card rounded-2xl mt-2">
-                                <apx-chart
-                                    class="w-full"
-                                    [series]="chartOptions.series"
-                                    [chart]="chartOptions.chart"
-                                    [dataLabels]="chartOptions.dataLabels"
-                                    [plotOptions]="chartOptions.plotOptions"
-                                    [yaxis]="chartOptions.yaxis"
-                                    [legend]="chartOptions.legend"
-                                    [fill]="chartOptions.fill"
-                                    [stroke]="chartOptions.stroke"
-                                    [tooltip]="chartOptions.tooltip"
-                                    [xaxis]="chartOptions.xaxis"
-                                ></apx-chart>
+                            <div class="grid grid-cols-1 lg:grid-cols-3 mt-3 gap-x-8 gap-y-2">
+                                <div class="col-span-1">
+                                    <div class="sm:col-span-2 flex flex-col flex-auto  bg-card shadow rounded-2xl overflow-visible">
+                                        <div class="flex flex-col px-6 pt-6 gap-y-2">
+                                            <div class="flex items-start justify-between">
+                                                <div class="text-lg font-semibold tracking-tight leading-6 truncate">Electricity Usage - Last 6 Periods</div>
+                                            </div>
+                                            <div class="flex flex-col">
+                                                <div class="text-3xl font-semibold tracking-tight leading-tight">
+                                                    {{totalElectricityUsage | number : '1.0-2'}} <span class="text-xl">kwh</span>
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <mat-icon
+                                                        class="mr-1 icon-size-5"
+                                                        [ngClass]="{'text-green-500': varianceElectricity > 100, 'text-red-500': varianceElectricity < 100}"
+                                                        [svgIcon]="varianceElectricity > 100 ? 'heroicons_solid:trending-up' : 'heroicons_solid:trending-down'"></mat-icon>
+                                                    <div class="font-medium text-sm text-secondary leading-none whitespace-nowrap">
+                                                        Variance for last period: <span class="text-emerald-500">{{varianceElectricity | number : '1.0-2'}} %</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                            
+                                        <div class="flex flex-col flex-auto w-full">
+                                            <apx-chart
+                                                class="flex-auto w-full h-24"
+                                                [chart]="chartElectricityUsage.chart"
+                                                [colors]="chartElectricityUsage.colors"
+                                                [series]="chartElectricityUsage.series"
+                                                [stroke]="chartElectricityUsage.stroke"
+                                                [tooltip]="chartElectricityUsage.tooltip"
+                                                [xaxis]="chartElectricityUsage.xaxis"
+                                                [yaxis]="chartElectricityUsage.yaxis"></apx-chart>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-span-1">
+                                    <div class="sm:col-span-2 flex flex-col flex-auto  bg-card shadow rounded-2xl overflow-visible">
+                                        <div class="flex flex-col px-6 pt-6 gap-y-2">
+                                            <div class="flex items-start justify-between">
+                                                <div class="text-lg font-semibold tracking-tight leading-6 truncate">Water Usage - Last 6 Periods</div>
+                                            </div>
+                                            <div class="flex flex-col">
+                                                <div class="text-3xl font-semibold tracking-tight leading-tight">
+                                                    {{totalWaterUsage | number : '1.0-2'}} <span class="text-xl">KL</span>
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <mat-icon
+                                                        class="mr-1 icon-size-5"
+                                                        [ngClass]="{'text-green-500': varianceWater > 100, 'text-red-500': varianceWater < 100}"
+                                                        [svgIcon]="varianceWater > 100 ? 'heroicons_solid:trending-up' : 'heroicons_solid:trending-down'"></mat-icon>
+                                                    <div class="font-medium text-sm text-secondary leading-none whitespace-nowrap">
+                                                        Variance for last period: <span class="text-blue-500">{{varianceWater | number : '1.0-2'}} %</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                            
+                                        <div class="flex flex-col flex-auto w-full">
+                                            <apx-chart
+                                                class="flex-auto w-full h-24"
+                                                [chart]="chartWaterUsage.chart"
+                                                [colors]="chartWaterUsage.colors"
+                                                [series]="chartWaterUsage.series"
+                                                [stroke]="chartWaterUsage.stroke"
+                                                [tooltip]="chartWaterUsage.tooltip"
+                                                [xaxis]="chartWaterUsage.xaxis"
+                                                [yaxis]="chartWaterUsage.yaxis"></apx-chart>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-span-1">
+                                    <div class="sm:col-span-2 flex flex-col flex-auto  bg-card shadow rounded-2xl overflow-visible">
+                                        <div class="flex flex-col px-6 pt-6 gap-y-2">
+                                            <div class="flex items-start justify-between">
+                                                <div class="text-lg font-semibold tracking-tight leading-6 truncate">Sales - Last 6 Periods</div>
+                                            </div>
+                                            <div class="flex flex-col">
+                                                <div class="text-3xl font-semibold tracking-tight leading-tight">
+                                                    R {{totalSales | number : '1.0-2'}}
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <mat-icon
+                                                        class="mr-1 icon-size-5"
+                                                        [ngClass]="{'text-green-500': varianceSales > 100, 'text-red-500': varianceSales < 100}"
+                                                        [svgIcon]="varianceSales > 100 ? 'heroicons_solid:trending-up' : 'heroicons_solid:trending-down'"></mat-icon>
+                                                    <div class="font-medium text-sm text-secondary leading-none whitespace-nowrap">
+                                                        Variance for last period: <span class="text-pink-500">{{varianceSales | number : '1.0-2'}} %</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                            
+                                        <div class="flex flex-col flex-auto w-full">
+                                            <apx-chart
+                                                class="flex-auto w-full h-24"
+                                                [chart]="chartSales.chart"
+                                                [colors]="chartSales.colors"
+                                                [series]="chartSales.series"
+                                                [stroke]="chartSales.stroke"
+                                                [tooltip]="chartSales.tooltip"
+                                                [xaxis]="chartSales.xaxis"
+                                                [yaxis]="chartSales.yaxis"></apx-chart>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <ng-template #loading></ng-template>

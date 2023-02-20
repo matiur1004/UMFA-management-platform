@@ -31,6 +31,7 @@ export type ChartOptions = {
     tooltip: ApexTooltip;
     stroke: ApexStroke;
     legend: ApexLegend;
+    colors: any;
 };
 
 @Component({
@@ -48,22 +49,33 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
         //  this.subTimer = this.incrementTimer.subscribe();
         }),
         map(s => {
-            this.chartOptions.xaxis.categories = s.GraphStats.map(graph => graph.PeriodName);
+
+            this.chartElectricityUsage.xaxis.categories = s.GraphStats.map(graph => graph.PeriodName);
+            this.chartWaterUsage.xaxis.categories = s.GraphStats.map(graph => graph.PeriodName);
+            this.chartSales.xaxis.categories = s.GraphStats.map(graph => graph.PeriodName);
+
             let electricityUsage = {name: 'Electricity Usage', data: []};
             let waterUsage = {name: 'Water Usage', data: []};
             let sales = {name: 'Sales', data: []};
+
             s.GraphStats.forEach(graph => {
                 electricityUsage.data.push(graph['TotalElectricityUsage']);
                 waterUsage.data.push(graph['TotalWaterUsage']);
                 sales.data.push(graph['TotalSales']);
             })
 
-            this.chartOptions.series.push(electricityUsage);
-            this.chartOptions.series.push(waterUsage);
-            this.chartOptions.series.push(sales);
+            this.chartElectricityUsage.series = [electricityUsage];
+            this.chartWaterUsage.series = [waterUsage];
+            this.chartSales.series = [sales];
             
-          console.log("stats: " + JSON.stringify(s))
-          return s;
+            this.totalElectricityUsage = electricityUsage.data.reduce((prev, cur) => prev + cur, 0);
+            this.totalWaterUsage = waterUsage.data.reduce((prev, cur) => prev + cur, 0);
+            this.totalSales = sales.data.reduce((prev, cur) => prev + cur, 0);
+
+            this.varianceElectricity = electricityUsage.data[electricityUsage.data.length - 1] / ( this.totalElectricityUsage / electricityUsage.data.length ) * 100; 
+            this.varianceWater = waterUsage.data[waterUsage.data.length - 1] / ( this.totalWaterUsage / waterUsage.data.length ) * 100; 
+            this.varianceSales = sales.data[sales.data.length - 1] / ( this.totalSales / sales.data.length ) * 100;
+            return s;
         }),
         catchError(err => {
           this.errorMessageSubject.next(err);
@@ -73,7 +85,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
     private errorMessageSubject = new Subject<string>();
     errorMessage$ = this.errorMessageSubject.asObservable();
 
-    chartVisitors: ApexOptions;
     data: any;
     tabsList: IHomeTab[] = [];
     tabType = EHomeTabType;
@@ -82,6 +93,18 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
     errMessage: string;
 
     dataSource: any = {};
+    chartElectricityUsage: Partial<ChartOptions>;
+    chartWaterUsage: Partial<ChartOptions>;
+    chartSales: Partial<ChartOptions>;
+    
+    totalElectricityUsage: number;
+    totalWaterUsage: number;
+    totalSales: number;
+      
+    varianceElectricity: number;
+    varianceWater: number;
+    varianceSales: number;
+
     readonly allowedPageSizes = [10, 15, 20, 'All'];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     
@@ -94,48 +117,102 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
         private _usrService: AuthService,
         private _cdr: ChangeDetectorRef
     ) {
-        this.chartOptions = {
+        this.chartElectricityUsage = {
             series: [
             ],
             chart: {
-              type: "bar",
-              height: 350
-            },
-            plotOptions: {
-              bar: {
-                horizontal: false,
-                columnWidth: "55%",
-                //endingShape: "rounded"
+              animations: {
+                enabled: false
+              },
+              fontFamily: 'inherit',
+              foreColor : 'inherit',
+              height    : '100%',
+              type      : 'area',
+              sparkline : {
+                  enabled: true
               }
             },
-            dataLabels: {
-              enabled: false
-            },
-            stroke: {
-              show: true,
-              width: 2,
-              colors: ["transparent"]
-            },
-            xaxis: {
-              categories: [
-              ]
-            },
-            yaxis: {
-              title: {
-                text: ""
-              }
-            },
-            fill: {
-              opacity: 1
+            stroke : {
+              curve: 'smooth'
             },
             tooltip: {
-              y: {
-                formatter: function(val) {
-                  return "" + val;
+                theme: 'dark'
+            },
+            xaxis  : {
+                type      : 'category',
+                categories: []
+            },
+            yaxis  : {
+                labels: {
+                    formatter: (val): string => `${val.toLocaleString()} kwh`
                 }
-              }
+            },
+            colors : ['#34d399'],
+        };
+        this.chartWaterUsage = {
+          series: [
+          ],
+          chart: {
+            animations: {
+              enabled: false
+            },
+            fontFamily: 'inherit',
+            foreColor : 'inherit',
+            height    : '100%',
+            type      : 'area',
+            sparkline : {
+                enabled: true
             }
-          };
+          },
+          stroke : {
+            curve: 'smooth'
+          },
+          tooltip: {
+              theme: 'dark'
+          },
+          xaxis  : {
+              type      : 'category',
+              categories: []
+          },
+          yaxis  : {
+              labels: {
+                  formatter: (val): string => `${val.toLocaleString()} kL`
+              }
+          },
+          colors : ['#3b82f6'],
+      };
+      this.chartSales = {
+        series: [
+        ],
+        chart: {
+          animations: {
+            enabled: false
+          },
+          fontFamily: 'inherit',
+          foreColor : 'inherit',
+          height    : '100%',
+          type      : 'area',
+          sparkline : {
+              enabled: true
+          }
+        },
+        stroke : {
+          curve: 'smooth'
+        },
+        tooltip: {
+            theme: 'dark'
+        },
+        xaxis  : {
+            type      : 'category',
+            categories: []
+        },
+        yaxis  : {
+            labels: {
+                formatter: (val): string => `R ${val.toLocaleString()}`
+            }
+        },
+        colors : ['#DC3939'],
+    };
     }
 
     ngOnInit(): void {
