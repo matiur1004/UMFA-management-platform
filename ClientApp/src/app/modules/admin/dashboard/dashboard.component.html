@@ -306,6 +306,7 @@
                                             [dataSource]="tabItem.dataSource"
                                             [showBorders]="true"
                                             class="grid-container"
+                                            (onRowPrepared)="onRowPrepared($event)"
                                         >
                                             <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
                                             <dxo-paging [pageSize]="10"> </dxo-paging>
@@ -323,39 +324,10 @@
                                                 [width]="200"
                                                 placeholder="Search..."
                                             ></dxo-search-panel>
-                                            <dxi-column dataField="BuildingId" [width]="100"></dxi-column>
-                                            <dxi-column dataField="Name"></dxi-column>
-                                            <dxi-column dataField="Partner"></dxi-column>
+                                            <dxi-column dataField="PartnerName" caption="Partner" ></dxi-column>
+                                            <dxi-column dataField="BuildingName" caption="Building"></dxi-column>
                                         </dx-data-grid>
-                                    </div>
-                                    <div class="bg-card p-2">
-                                        <dx-data-grid
-                                            [dataSource]="tabItem.dataSource"
-                                            [showBorders]="true"
-                                            class="grid-container"
-                                        >
-                                            <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
-                                            <dxo-paging [pageSize]="10"> </dxo-paging>
-                                            <dxo-pager
-                                                [visible]="true"
-                                                [allowedPageSizes]="allowedPageSizes"
-                                                [displayMode]="'compact'"
-                                                [showPageSizeSelector]="true"
-                                                [showInfo]="true"
-                                                [showNavigationButtons]="true"
-                                            >
-                                            </dxo-pager>
-                                            <dxo-search-panel
-                                                [visible]="true"
-                                                [width]="200"
-                                                placeholder="Search..."
-                                            ></dxo-search-panel>
-                                            <dxi-column dataField="BuildingId" [width]="100"></dxi-column>
-                                            <dxi-column dataField="Name"></dxi-column>
-                                            <dxi-column dataField="Partner"></dxi-column>
-                                        </dx-data-grid>
-                                    </div>
-                                    
+                                    </div>                                    
                                 </div>
                             </ng-container>
                         </ng-template>

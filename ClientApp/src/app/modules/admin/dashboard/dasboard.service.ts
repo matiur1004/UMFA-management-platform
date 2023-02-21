@@ -42,7 +42,6 @@ export class DashboardService {
         //  console.log(`Http response from getStats: ${JSON.stringify(s)}`)
         // ),
         map(stats => {
-          console.log('stats', stats);
           this.statsSubject.next(stats);
           return stats;
         })

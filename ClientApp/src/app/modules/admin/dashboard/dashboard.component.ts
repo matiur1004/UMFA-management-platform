@@ -226,7 +226,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             };
             if(type == EHomeTabType.Buildings) {
                 this._bldService.getBuildingList(this._usrService.userValue.Id).subscribe(res => {
-                    console.log('result', res);
                     newTab.dataSource = [...res];
                     this.tabsList.push({...newTab});
                     this.selectedTab = this.tabsList.length;
@@ -243,6 +242,13 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
     removeTab(index: number) {
         this.tabsList.splice(index, 1);
         this.selectedTab = 0;
+    }
+
+    onRowPrepared(event) {
+        if (event.rowType === "data" && event.data.IsSmart == true) {
+            event.rowElement.style.backgroundColor = "#16a34a";
+            event.rowElement.style.color = "white";
+        }
     }
 
     ngAfterViewInit() {
