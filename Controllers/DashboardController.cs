@@ -32,5 +32,20 @@ namespace ClientPortal.Controllers
                 return BadRequest($"Error while retrieving stats from service: {ex.Message}");
             }
         }
+
+        [HttpGet("getBuildingList/{umfauserid}")]
+        public IActionResult GetBuildingList(int umfaUserId)
+        {
+            try
+            {
+                var response = _dbService.GetBuildingList(umfaUserId);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while retrieving stats from service: {ex.Message}");
+                return BadRequest($"Error while retrieving stats from service: {ex.Message}");
+            }
+        }
     }
 }

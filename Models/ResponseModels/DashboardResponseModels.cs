@@ -51,4 +51,14 @@ namespace ClientPortal.Models
         public decimal TotalElectricityUsage { get; set; }
         public decimal TotalWaterUsage { get; set; }
     }
+
+    public class DashboardBuilding
+    {
+        public int UmfaBuildingId { get; set; }
+        public string BuildingName { get; set; }
+        public int PartnerId { get; set; }
+        public string PartnerName { get; set; }
+        public bool IsSmart { get; set; }
+    }
+
 }
