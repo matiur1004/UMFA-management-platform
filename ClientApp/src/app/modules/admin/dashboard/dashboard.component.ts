@@ -147,7 +147,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                     formatter: (val): string => `${val.toLocaleString()} kwh`
                 }
             },
-            colors : ['#34d399'],
+            colors : ['#DC3939'],
         };
         this.chartWaterUsage = {
           series: [
@@ -211,7 +211,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                 formatter: (val): string => `R ${val.toLocaleString()}`
             }
         },
-        colors : ['#DC3939'],
+        colors : ['#34d399'],
     };
     }
 
@@ -225,8 +225,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                 title: CHomeTabTypeText[type],
             };
             if(type == EHomeTabType.Buildings) {
-                this._bldService.getBuildingsForUser(this._usrService.userValue.Id).subscribe(res => {
-                    console.log('rererere', res);
+                this._bldService.getBuildingList(this._usrService.userValue.Id).subscribe(res => {
+                    console.log('result', res);
                     newTab.dataSource = [...res];
                     this.tabsList.push({...newTab});
                     this.selectedTab = this.tabsList.length;
