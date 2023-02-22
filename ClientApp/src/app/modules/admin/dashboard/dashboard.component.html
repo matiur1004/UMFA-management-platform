@@ -299,7 +299,8 @@
                         <ng-template matTabContent>
                             <ng-container *ngIf="tabItem.dataSource">
                                 <div class="flex gap-x-4">
-                                    <div class="bg-card p-2">
+                                    <div class="bg-card p-2 flex flex-col gap-y-2">
+                                        <span class="text-xl font-semibold pt-2">Non-Smart buildings</span>
                                         <dx-data-grid
                                             [dataSource]="tabItem.dataSource[0]"
                                             [showBorders]="true"
@@ -326,7 +327,8 @@
                                             <dxi-column dataField="BuildingName" caption="Building"></dxi-column>
                                         </dx-data-grid>
                                     </div>  
-                                    <div class="bg-card p-2">
+                                    <div class="bg-card p-2 flex flex-col gap-y-2">
+                                        <span class="text-xl font-semibold pt-2">Smart buildings</span>
                                         <dx-data-grid
                                             [dataSource]="tabItem.dataSource[1]"
                                             [showBorders]="true"
