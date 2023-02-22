@@ -126,3 +126,31 @@ body {
       top: 0.5rem;
     }
 }
+.electricity-icon {
+    background-image: url('/assets/images/icons/electricity.svg');
+}
+.electricity-icon::before {
+    background: linear-gradient(90deg,#f56a92 0,#cf1a4d);
+}
+.electricity-icon::before {
+    border-radius: 50%;
+    content: "";
+    opacity: .15;
+}
+.water-icon {
+    background-image: url('/assets/images/icons/water.svg');
+}
+.water-icon::before {
+    background: linear-gradient(90deg,#6792e2 0,#405192);
+}
+.water-icon::before {
+    border-radius: 50%;
+    content: "";
+    opacity: .15;
+}
+.electricity-lbl {
+    color: #cf1a4d;
+}
+.water-lbl {
+    color: #405192;
+}

@@ -16,3 +16,17 @@
         overflow: visible;
     }
 }
+.service-icon, .service-icon::before {
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    position: relative;
+}
+.service-icon {
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: 15px;
+}
+.electricity-icon::before, .water-icon::before {
+    opacity: 0.25;
+}

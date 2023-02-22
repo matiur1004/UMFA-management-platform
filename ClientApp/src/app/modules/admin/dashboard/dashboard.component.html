@@ -250,38 +250,36 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="grid grid-cols-1 lg:grid-cols-2 mt-3">
-                                <div class="col-span-1">
+                            <div class="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-6 mt-3">
+                                <div class="col-span-1 lg:col-span-2 xl:col-span-3">
                                     <div class="bg-gradient-to-r from-gray-400 to-gray-600 sm:col-span-2 flex flex-col flex-auto shadow rounded-2xl overflow-visible text-white">
                                         <div class="flex flex-col p-6 gap-y-2">
                                             <div class="flex items-start justify-between">
-                                                <div class="text-xl font-medium tracking-tight leading-6 truncate">CO<span class="leading-3 text-sm">2</span> Emissions based on above statistics</div>
+                                                <div class="text-xl font-medium tracking-tight leading-6 truncate">CO<span class="leading-3 text-sm">2</span> Emissions and requirements for off-set based on above statistics</div>
                                             </div>
                                             <div class="flex justify-between gap-x-2">
-                                                <div class="flex flex-col">
-                                                    <div class="grid grid-cols-2 gap-1">
-                                                        <div class="col-span-1"></div>
-                                                        <div class="col-span-1">CO<span class="leading-3 text-sm">2</span> Tonnes</div>
-                                                        <div class="col-span-1">Electricity</div>
-                                                        <div class="col-span-1">{{totalElectricityUsage * 0.97 / 1000 | number : '1.0-2'}}</div>
-                                                        <div class="col-span-1">Water</div>
-                                                        <div class="col-span-1">{{totalWaterUsage * 0.298 / 1000 | number : '1.0-2'}}</div>
+                                                <div class="flex flex-col w-full">
+                                                    <div class="grid grid-cols-11 gap-1 text-lg">
+                                                        <div class="col-span-3"></div>
+                                                        <div class="col-span-2">CO<span class="leading-3 text-sm">2</span> Tonnes</div>
+                                                        <div class="col-span-2">Trees</div>
+                                                        <div class="col-span-2">Area-Hectare</div>
+                                                        <div class="col-span-2">Rugby Fields</div>
+
+                                                        <div class="col-span-3 flex gap-x-2 electricity-lbl">
+                                                            <div class="service-icon electricity-icon"></div> Electricity
+                                                        </div>                                                        
+                                                        <div class="col-span-2 text-xl">{{totalElectricityUsage * 0.97 / 1000 | number : '1.0-0'}}</div>
+                                                        <div class="col-span-2 text-xl">{{totalElectricityUsage * 0.97 / 1000 * 1000 / 27 | number : '1.0-0'}}</div>
+                                                        <div class="col-span-2 text-xl">{{totalElectricityUsage * 0.97 / 1000 * 1000 / 27 / 400 | number : '1.0-0'}}</div>
+                                                        <div class="col-span-2 text-xl">{{totalElectricityUsage * 0.97 / 1000 * 1000 / 27 / 400 * 1000 / 12000 | number : '1.0-0'}}</div>
+
+                                                        <div class="col-span-3 flex gap-x-2 water-lbl"><div class="service-icon water-icon"></div>Water</div>
+                                                        <div class="col-span-2 text-xl">{{totalWaterUsage * 0.298 / 1000 | number : '1.0-0'}}</div>
+                                                        <div class="col-span-2 text-xl">{{totalWaterUsage * 0.298 / 1000 * 1000 / 27 | number : '1.0-0'}}</div>
+                                                        <div class="col-span-2 text-xl">{{totalWaterUsage * 0.298 / 1000 * 1000 / 27 / 400 | number : '1.0-0'}}</div>
+                                                        <div class="col-span-2 text-xl">{{totalWaterUsage * 0.298 / 1000 * 1000 / 27 / 400 * 1000 / 12000 | number : '1.0-0'}}</div>
                                                     </div>
-                                                </div>
-                                                <div class="flex border-r w-1"></div>
-                                                <div class="flex flex-col">
-                                                    <div class="grid grid-cols-3 gap-1">
-                                                        <div class="col-span-1">Trees</div>
-                                                        <div class="col-span-1">Area-Hectare</div>
-                                                        <div class="col-span-1">Rugby Fields</div>
-                                                        <div class="col-span-1">{{totalElectricityUsage * 0.97 / 1000 * 1000 / 27 | number : '1.0-2'}}</div>
-                                                        <div class="col-span-1">{{totalElectricityUsage * 0.97 / 1000 * 1000 / 27 / 400 | number : '1.0-2'}}</div>
-                                                        <div class="col-span-1">{{totalElectricityUsage * 0.97 / 1000 * 1000 / 27 / 400 * 1000 / 12000 | number : '1.0-2'}}</div>
-                                                        <div class="col-span-1">{{totalWaterUsage * 0.298 / 1000 * 1000 / 27 | number : '1.0-2'}}</div>
-                                                        <div class="col-span-1">{{totalWaterUsage * 0.298 / 1000 * 1000 / 27 / 400 | number : '1.0-2'}}</div>
-                                                        <div class="col-span-1">{{totalWaterUsage * 0.298 / 1000 * 1000 / 27 / 400 * 1000 / 12000 | number : '1.0-2'}}</div>
-                                                    </div>
-                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -303,7 +301,7 @@
                                 <div class="flex gap-x-4">
                                     <div class="bg-card p-2">
                                         <dx-data-grid
-                                            [dataSource]="tabItem.dataSource"
+                                            [dataSource]="tabItem.dataSource[0]"
                                             [showBorders]="true"
                                             class="grid-container"
                                             (onRowPrepared)="onRowPrepared($event)"
@@ -324,10 +322,37 @@
                                                 [width]="200"
                                                 placeholder="Search..."
                                             ></dxo-search-panel>
-                                            <dxi-column dataField="PartnerName" caption="Partner" ></dxi-column>
+                                            <dxi-column dataField="PartnerName" caption="Branch" ></dxi-column>
                                             <dxi-column dataField="BuildingName" caption="Building"></dxi-column>
                                         </dx-data-grid>
-                                    </div>                                    
+                                    </div>  
+                                    <div class="bg-card p-2">
+                                        <dx-data-grid
+                                            [dataSource]="tabItem.dataSource[1]"
+                                            [showBorders]="true"
+                                            class="grid-container"
+                                            (onRowPrepared)="onRowPrepared($event)"
+                                        >
+                                            <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+                                            <dxo-paging [pageSize]="10"> </dxo-paging>
+                                            <dxo-pager
+                                                [visible]="true"
+                                                [allowedPageSizes]="allowedPageSizes"
+                                                [displayMode]="'compact'"
+                                                [showPageSizeSelector]="true"
+                                                [showInfo]="true"
+                                                [showNavigationButtons]="true"
+                                            >
+                                            </dxo-pager>
+                                            <dxo-search-panel
+                                                [visible]="true"
+                                                [width]="200"
+                                                placeholder="Search..."
+                                            ></dxo-search-panel>
+                                            <dxi-column dataField="PartnerName" caption="Branch" ></dxi-column>
+                                            <dxi-column dataField="BuildingName" caption="Building"></dxi-column>
+                                        </dx-data-grid>
+                                    </div>                                  
                                 </div>
                             </ng-container>
                         </ng-template>

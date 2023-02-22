@@ -225,8 +225,14 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                 title: CHomeTabTypeText[type],
             };
             if(type == EHomeTabType.Buildings) {
+                newTab.dataSource = [];
                 this._bldService.getBuildingList(this._usrService.userValue.Id).subscribe(res => {
-                    newTab.dataSource = [...res];
+                    let source1 = res.filter(item => item.IsSmart == false);
+                    let source2 = res.filter(item => item.IsSmart == true);
+
+                    newTab.dataSource.push(source1);
+                    newTab.dataSource.push(source2);
+                    
                     this.tabsList.push({...newTab});
                     this.selectedTab = this.tabsList.length;
                     this._cdr.markForCheck();
