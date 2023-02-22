@@ -114,7 +114,6 @@ export class LayoutComponent implements OnInit, OnDestroy
     }
 
     ngAfterViewInit() {
-        console.log(this._authService.userValue)
         //if(this._authService.userValue) this._userService.getUser(this._authService.userValue.Id);
     }
 

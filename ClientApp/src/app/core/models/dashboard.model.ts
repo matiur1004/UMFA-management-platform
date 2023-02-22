@@ -43,6 +43,7 @@ export interface IHomePageStats {
   export interface IHomeTab {
     id: number;
     title: string;
+    type?: string;
     apiEndpoint?: string;
-    dataSource?: any[]
+    dataSource?: any[] | any;
   }

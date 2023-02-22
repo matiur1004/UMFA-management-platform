@@ -15,12 +15,16 @@ import { DashboardComponent } from './dashboard.component';
 import { dashboardRoutes } from './dashboard.routing';
 import { DxDataGridModule } from 'devextreme-angular';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { BuildingDetailComponent } from './building-detail/building-detail.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
     declarations: [
-        DashboardComponent
+        DashboardComponent,
+        BuildingDetailComponent
     ],
     imports     : [
+        CommonModule,
         RouterModule.forChild(dashboardRoutes),
         MatButtonModule,
         MatButtonToggleModule,

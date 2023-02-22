@@ -48,6 +48,17 @@ export class DashboardService {
       );
   }
 
+  getBuildingStats(buildingId) {
+    const url = `${CONFIG.apiURL}/dashboard/getDBBuildingStats/${buildingId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(bl => {
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        })
+      );
+  }
+
   cancel() {
     this.statsSubject.next(null);
   }

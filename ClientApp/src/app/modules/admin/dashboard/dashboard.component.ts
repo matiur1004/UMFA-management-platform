@@ -212,7 +212,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             }
         },
         colors : ['#34d399'],
-    };
+        };
     }
 
     ngOnInit(): void {
@@ -232,7 +232,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
 
                     newTab.dataSource.push(source1);
                     newTab.dataSource.push(source2);
-                    
+
                     this.tabsList.push({...newTab});
                     this.selectedTab = this.tabsList.length;
                     this._cdr.markForCheck();
@@ -251,10 +251,25 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     onRowPrepared(event) {
-        if (event.rowType === "data" && event.data.IsSmart == true) {
-            event.rowElement.style.backgroundColor = "#16a34a";
-            event.rowElement.style.color = "white";
+        if (event.rowType === "data") {
+            event.rowElement.style.cursor = 'pointer';
         }
+    }
+
+    onRowClick(event) {
+        this._dbService.getBuildingStats(event.data.UmfaBuildingId)
+            .subscribe(res => {
+                let newTab: IHomeTab = {
+                    id: event.data.UmfaBuildingId,
+                    title: event.data.BuildingName,
+                    type: 'BuildingDetail',
+                    dataSource: res
+                };
+                this.tabsList.push({...newTab});
+                this.selectedTab = this.tabsList.length;
+                this._cdr.markForCheck();
+            })
+        //this._dbService.getStats(event.data.UmfaBuildingId)
     }
 
     ngAfterViewInit() {

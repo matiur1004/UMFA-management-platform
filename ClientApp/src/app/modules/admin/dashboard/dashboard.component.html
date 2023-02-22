@@ -294,69 +294,76 @@
                     <mat-tab class="home-tab" label="{{tabItem.title}}">
                         <ng-template mat-tab-label>
                             {{tabItem.title}}
-                            <mat-icon class="icon-size-4 hover:text-red-500" [svgIcon]="'feather:x'" (click)="removeTab(i)"></mat-icon>
+                            <mat-icon class="icon-size-4 hover:text-red-500 ml-2" [svgIcon]="'feather:x'" (click)="removeTab(i)"></mat-icon>
                           </ng-template>
                         <ng-template matTabContent>
-                            <ng-container *ngIf="tabItem.dataSource">
-                                <div class="flex gap-x-4">
-                                    <div class="bg-card p-2 flex flex-col gap-y-2">
-                                        <span class="text-xl font-semibold pt-2">Non-Smart buildings</span>
-                                        <dx-data-grid
-                                            [dataSource]="tabItem.dataSource[0]"
-                                            [showBorders]="true"
-                                            class="grid-container"
-                                            (onRowPrepared)="onRowPrepared($event)"
-                                        >
-                                            <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
-                                            <dxo-paging [pageSize]="10"> </dxo-paging>
-                                            <dxo-pager
-                                                [visible]="true"
-                                                [allowedPageSizes]="allowedPageSizes"
-                                                [displayMode]="'compact'"
-                                                [showPageSizeSelector]="true"
-                                                [showInfo]="true"
-                                                [showNavigationButtons]="true"
-                                            >
-                                            </dxo-pager>
-                                            <dxo-search-panel
-                                                [visible]="true"
-                                                [width]="200"
-                                                placeholder="Search..."
-                                            ></dxo-search-panel>
-                                            <dxi-column dataField="PartnerName" caption="Branch" ></dxi-column>
-                                            <dxi-column dataField="BuildingName" caption="Building"></dxi-column>
-                                        </dx-data-grid>
-                                    </div>  
-                                    <div class="bg-card p-2 flex flex-col gap-y-2">
-                                        <span class="text-xl font-semibold pt-2">Smart buildings</span>
-                                        <dx-data-grid
-                                            [dataSource]="tabItem.dataSource[1]"
-                                            [showBorders]="true"
-                                            class="grid-container"
-                                            (onRowPrepared)="onRowPrepared($event)"
-                                        >
-                                            <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
-                                            <dxo-paging [pageSize]="10"> </dxo-paging>
-                                            <dxo-pager
-                                                [visible]="true"
-                                                [allowedPageSizes]="allowedPageSizes"
-                                                [displayMode]="'compact'"
-                                                [showPageSizeSelector]="true"
-                                                [showInfo]="true"
-                                                [showNavigationButtons]="true"
-                                            >
-                                            </dxo-pager>
-                                            <dxo-search-panel
-                                                [visible]="true"
-                                                [width]="200"
-                                                placeholder="Search..."
-                                            ></dxo-search-panel>
-                                            <dxi-column dataField="PartnerName" caption="Branch" ></dxi-column>
-                                            <dxi-column dataField="BuildingName" caption="Building"></dxi-column>
-                                        </dx-data-grid>
-                                    </div>                                  
-                                </div>
+                            <ng-container *ngIf="tabItem.type == 'BuildingDetail'; else tabTemplate;">
+                                <app-building-detail [title]="tabItem.title" [stats]="tabItem.dataSource"> </app-building-detail>
                             </ng-container>
+                            <ng-template #tabTemplate>
+                                <ng-container *ngIf="tabItem.dataSource">
+                                    <div class="flex gap-x-4">
+                                        <div class="bg-card p-2 flex flex-col gap-y-2">
+                                            <span class="text-xl font-semibold pt-2">Non-Smart buildings</span>
+                                            <dx-data-grid
+                                                [dataSource]="tabItem.dataSource[0]"
+                                                [showBorders]="true"
+                                                class="grid-container"
+                                                (onRowPrepared)="onRowPrepared($event)"
+                                                (onRowClick)="onRowClick($event)"
+                                            >
+                                                <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+                                                <dxo-paging [pageSize]="10"> </dxo-paging>
+                                                <dxo-pager
+                                                    [visible]="true"
+                                                    [allowedPageSizes]="allowedPageSizes"
+                                                    [displayMode]="'compact'"
+                                                    [showPageSizeSelector]="true"
+                                                    [showInfo]="true"
+                                                    [showNavigationButtons]="true"
+                                                >
+                                                </dxo-pager>
+                                                <dxo-search-panel
+                                                    [visible]="true"
+                                                    [width]="200"
+                                                    placeholder="Search..."
+                                                ></dxo-search-panel>
+                                                <dxi-column dataField="PartnerName" caption="Branch" ></dxi-column>
+                                                <dxi-column dataField="BuildingName" caption="Building"></dxi-column>
+                                            </dx-data-grid>
+                                        </div>  
+                                        <div class="bg-card p-2 flex flex-col gap-y-2">
+                                            <span class="text-xl font-semibold pt-2">Smart buildings</span>
+                                            <dx-data-grid
+                                                [dataSource]="tabItem.dataSource[1]"
+                                                [showBorders]="true"
+                                                class="grid-container"
+                                                (onRowPrepared)="onRowPrepared($event)"
+                                            >
+                                                <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+                                                <dxo-paging [pageSize]="10"> </dxo-paging>
+                                                <dxo-pager
+                                                    [visible]="true"
+                                                    [allowedPageSizes]="allowedPageSizes"
+                                                    [displayMode]="'compact'"
+                                                    [showPageSizeSelector]="true"
+                                                    [showInfo]="true"
+                                                    [showNavigationButtons]="true"
+                                                >
+                                                </dxo-pager>
+                                                <dxo-search-panel
+                                                    [visible]="true"
+                                                    [width]="200"
+                                                    placeholder="Search..."
+                                                ></dxo-search-panel>
+                                                <dxi-column dataField="PartnerName" caption="Branch" ></dxi-column>
+                                                <dxi-column dataField="BuildingName" caption="Building"></dxi-column>
+                                            </dx-data-grid>
+                                        </div>                                  
+                                    </div>
+                                </ng-container>
+                            </ng-template>
+                            
                         </ng-template>
                     </mat-tab>
                 </ng-container>
