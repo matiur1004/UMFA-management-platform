@@ -17,6 +17,7 @@ export interface AppConfig
     screens: Screens;
     theme: Theme;
     themes: Themes;
+    timeformat: string;
 }
 
 /**
@@ -67,5 +68,6 @@ export const appConfig: AppConfig = {
             id  : 'theme-amber',
             name: 'Amber'
         }
-    ]
+    ],
+    timeformat: 'MM/DD/Y',
 };

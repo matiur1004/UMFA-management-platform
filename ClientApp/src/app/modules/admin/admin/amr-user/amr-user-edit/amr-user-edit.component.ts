@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, NgForm, UntypedFormBuilder, UntypedFormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CONFIRM_MODAL_CONFIG } from '@core/config/modal.config';
+import { UmfaUtils } from '@core/utils/umfa.utils';
 import { DialogConstants } from 'app/core/helpers';
 import { IAmrUser } from 'app/core/models';
 import { DialogService } from 'app/shared/services/dialog.service';
@@ -59,6 +61,7 @@ export class AmrUserEditComponent implements OnInit {
     private snackBarService: SnackBarService,
     private dialogService: DialogService,
     private _matDialog: MatDialog,
+    private _ufUtils: UmfaUtils
   ) { }
 
   getAmrScadaUser(id: number): void {
@@ -87,16 +90,14 @@ export class AmrUserEditComponent implements OnInit {
       if (this.amrUser.Id === 0) {
         this.pageTitle = 'Add New User';
       } else {
-        var pwd = (await this.usrService.decryptWrapper(aU.ScadaPassword)).toString();
         this.pageTitle = `Edit User: ${this.amrUser.ScadaUserName}`;
-        this.formChangePwd.controls['currPwd'].clearValidators();
-        this.formChangePwd.controls['currPwd'].setValidators([Validators.required, Validators.minLength(3), checkPwd(pwd)])
       }
     }
   }
 
   ngOnInit(): void {
     this.form = this.fb.group({
+      Id: [0],
       ProfileName: [null, [Validators.required, Validators.minLength(3)]],
       ScadaUserName: [null, [Validators.required, Validators.minLength(3)]],
       SgdUrl: [null, [Validators.required, Validators.minLength(3)]],
@@ -109,15 +110,23 @@ export class AmrUserEditComponent implements OnInit {
         const id = +params.get('asuId');
         this.getAmrScadaUser(id);
       });
-    this.buildChangePwdForm();
   }
 
-  openModal(id: string) {
-    //this.modalService.open(id);
-    this._matDialog.open(AmrUserPasswordComponent, {autoFocus: false, data: {}})
+  async openModal(id: string) {
+    var pwd = (await this.usrService.decryptWrapper(this.amrUser.ScadaPassword)).toString();
+    this._matDialog.open(AmrUserPasswordComponent, {autoFocus: false, data: {currentPassword: pwd}})
       .afterClosed()
-      .subscribe((res) => {
-
+      .subscribe(async (res) =>  {
+        if(res) {
+          this.amrUser.ScadaPassword = res['newPwd'];
+          try {
+            this.amrUser = await lastValueFrom(this.usrService.changePwd(this.amrUser));
+            this.getAmrScadaUser(this.amrUser.Id);
+            this.snackBarService.passDataToSnackComponent({ msg: 'Password Changed', style: 'success' });
+          } catch (e: any) {
+            this.errMessage = e.message;
+          }
+        } 
       });
   }
 
@@ -135,90 +144,33 @@ export class AmrUserEditComponent implements OnInit {
     this.modalService.close(id);
     if (!msg && !style) {
       this.snackBarService.passDataToSnackComponent({ msg: 'Operation Cancelled', style: style });
-      //this.snackBarService.openSnackBar('Hello...', 'Close')
     }
     else {
       this.snackBarService.passDataToSnackComponent({ msg: msg, style: style });
-      //this.snackBarService.openSnackBar('Hello...', 'Close')
     }
   }
 
-  async changePwd(id: string) {
-    var pwd = this.formChangePwd.get('pwdGroup.newPwd').value;
-    this.closeModalNoMsg(id);
-    const dialData = DialogConstants.updateDialog;
-    this.dialogService.confirmDialog(dialData).subscribe({
-      next: async resp => {
-        if (resp) {
-          this.amrUser.ScadaPassword = pwd;
-          try {
-            this.amrUser = await lastValueFrom(this.usrService.changePwd(this.amrUser));
-            this.getAmrScadaUser(this.amrUser.Id);
-            this.snackBarService.passDataToSnackComponent({ msg: 'Password Changed', style: 'success' });
-          } catch (e: any) {
-            this.errMessage = e.message;
-          }
-        } else this.snackBarService.passDataToSnackComponent({ msg: 'Operation Cancelled', style: 'cancel' });
-      },
-      error: err => this.errMessage = err
-    });
-  }
-
-  private buildChangePwdForm(): void {
-    this.formChangePwd = this.fb.group({
-      currPwd: ['', [Validators.required, Validators.minLength(3)]],
-      pwdGroup: this.fb.group({
-        newPwd: ['', [Validators.required, Validators.minLength(3)]],
-        confPwd: ['', Validators.required],
-      }, { validator: pwdMatcher }),
-    });
-  }
-
   async saveAmrUser() {
-    // if (amrScadaUserForm.valid) {
-    //   if (amrScadaUserForm.dirty) {
-    //     const asu = { ...this.amrUser, ...amrScadaUserForm.value };
-    //     asu.scadaPassword = (await this.usrService.encryptWrapper(asu.scadaPassword)).toString();
-    //      if (asu.id === 0) {
-    //       const dialDataCreate = DialogConstants.createDialog;
-    //       this.dialogService.confirmDialog(dialDataCreate).subscribe({
-    //         next: resp => {
-    //           if (resp) {
-    //             this.usrService.updateAmrScadaUser(this.opUsrId, asu).subscribe({
-    //               next: () => {
-    //                 this.onSaveComplete(amrScadaUserForm);
-    //                 this.snackBarService.passDataToSnackComponent({ msg: 'New User Created', style: 'success' });
-    //               },
-    //               error: err => this.errMessage = err
-    //             });
-    //           } else this.snackBarService.passDataToSnackComponent({ msg: 'Operation Cancelled', style: 'cancel' });
-    //         },
-    //         error: err => this.errMessage = err
-    //       });
-    //     } else {
-    //       const dialDataUpdate = DialogConstants.updateDialog;
-    //       this.dialogService.confirmDialog(dialDataUpdate).subscribe({
-    //         next: resp => {
-    //           if (resp) {
-    //             this.usrService.updateAmrScadaUser(this.opUsrId, asu).subscribe({
-    //               next: () => {
-    //                 this.onSaveComplete(amrScadaUserForm);
-    //                 this.snackBarService.passDataToSnackComponent({ msg: 'User Saved', style: 'success' });
-    //               },
-    //               error: err => this.errMessage = err
-    //             });
-    //           } else this.snackBarService.passDataToSnackComponent({ msg: 'Operation Cancelled', style: 'cancel' });
-    //         },
-    //         error: err => this.errMessage = err
-    //       });
-    //     }
-    //   } else {
-    //     this.snackBarService.passDataToSnackComponent({ msg: 'No Changes to apply', style: 'cancel' });
-    //     this.onSaveComplete(amrScadaUserForm);
-    //   }
-    // } else {
-    //   this.errMessage = 'Please correct the validation errors.'
-    // }
+    if(this.form.valid) {
+      const asu = {...this.amrUser, ...this.form.value};
+      asu.ScadaPassword = (await this.usrService.encryptWrapper(asu.ScadaPassword)).toString();
+
+      const dialogRef = this._ufUtils.fuseConfirmDialog(
+        CONFIRM_MODAL_CONFIG,
+        '', 
+        `Are you sure you want to save?`);
+      dialogRef.afterClosed().subscribe((result) => {
+        if(result == 'confirmed') {
+          this.usrService.updateAmrScadaUser(this.opUsrId, asu).subscribe({
+            next: () => {
+              this.onSaveComplete();
+            },
+            error: err => this.errMessage = err
+          });
+        } else {
+        }
+      });
+    }
   }
 
   deleteAmrUser() {
@@ -240,8 +192,8 @@ export class AmrUserEditComponent implements OnInit {
     });
   }
 
-  onSaveComplete(frmPassed: NgForm) {
-    frmPassed.reset();
+  onSaveComplete() {
+    this.form.reset();
     this.getAmrScadaUser(this.amrUser.Id);
     this.router.navigate(['/admin']);
   }

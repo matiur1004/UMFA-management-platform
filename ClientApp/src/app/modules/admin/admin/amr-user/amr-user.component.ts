@@ -21,7 +21,7 @@ export class AmrUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.user$ = this.userService.user$;
-    //this.userService.getUser(this.user.Id);
+    this.userService.getUser(this.user.Id).subscribe();
   }
 
   onEdit(e) {

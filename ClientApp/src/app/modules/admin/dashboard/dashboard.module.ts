@@ -14,12 +14,17 @@ import { SharedModule } from 'app/shared/shared.module';
 import { DashboardComponent } from './dashboard.component';
 import { dashboardRoutes } from './dashboard.routing';
 import { DxDataGridModule } from 'devextreme-angular';
+import { NgApexchartsModule } from 'ng-apexcharts';
+import { BuildingDetailComponent } from './building-detail/building-detail.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
     declarations: [
-        DashboardComponent
+        DashboardComponent,
+        BuildingDetailComponent
     ],
     imports     : [
+        CommonModule,
         RouterModule.forChild(dashboardRoutes),
         MatButtonModule,
         MatButtonToggleModule,
@@ -31,6 +36,7 @@ import { DxDataGridModule } from 'devextreme-angular';
         MatTableModule,
         MatTooltipModule,
         MatTableModule,
+        NgApexchartsModule,
         DxDataGridModule,
         MatTabsModule,
         SharedModule

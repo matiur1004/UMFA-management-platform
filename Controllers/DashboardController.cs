@@ -33,6 +33,21 @@ namespace ClientPortal.Controllers
             }
         }
 
+        [HttpGet("getDBBuildingStats/{umfabuildingid}")]
+        public IActionResult GetDBBuildingStats(int umfaBuildingId)
+        {
+            try
+            {
+                var response = _dbService.GetMainDashboard(337);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while retrieving stats from service: {ex.Message}");
+                return BadRequest($"Error while retrieving stats from service: {ex.Message}");
+            }
+        }
+
         [HttpGet("getBuildingList/{umfauserid}")]
         public IActionResult GetBuildingList(int umfaUserId)
         {

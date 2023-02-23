@@ -300,7 +300,7 @@
     <div class="col-span-1">
       <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
         <mat-label class="form-label">Password</mat-label>
-        <input matInput [formControlName]="'ScadaPassword'" [placeholder]="'Password (required)'"/>
+        <input matInput [formControlName]="'ScadaPassword'" [placeholder]="'Password (required)'" [readonly]="amrUser && amrUser.Id > 0"/>
       </mat-form-field>
     </div>
   </div>

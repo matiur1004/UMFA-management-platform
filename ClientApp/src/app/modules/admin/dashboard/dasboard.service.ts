@@ -33,8 +33,8 @@ export class DashboardService {
       return this._data.asObservable();
   }
   
-  getStats() {
-    const url = `${CONFIG.apiURL}${CONFIG.getHomeStats}`;
+  getStats(userId) {
+    const url = `${CONFIG.apiURL}${CONFIG.dashboardStats}/${userId}`;
     return this.http.get<any>(url, { withCredentials: true })
       .pipe(
         catchError(err => this.catchAuthErrors(err)),
@@ -42,9 +42,19 @@ export class DashboardService {
         //  console.log(`Http response from getStats: ${JSON.stringify(s)}`)
         // ),
         map(stats => {
-          console.log('stats', stats);
           this.statsSubject.next(stats);
           return stats;
+        })
+      );
+  }
+
+  getBuildingStats(buildingId) {
+    const url = `${CONFIG.apiURL}/dashboard/getDBBuildingStats/${buildingId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(bl => {
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
         })
       );
   }

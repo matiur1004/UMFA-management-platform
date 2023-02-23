@@ -72,6 +72,7 @@
             <!-- Confirm -->
             <ng-container *ngIf="data.actions.confirm.show">
                 <button
+                    [class]="'text-white'"
                     mat-flat-button
                     [color]="data.actions.confirm.color"
                     [matDialogClose]="'confirmed'">

@@ -1,9 +1,31 @@
 export interface IHomePageStats {
     Partners: number;
     Clients: number;
-    Buildings: number;
-    Tenants: number;
-    Shops: number;
+    BuildingStats: {
+      NumberOfBuildings: number;
+      TotalGLA: number;
+      TotalNumberOfMeters: number;
+    };
+    TenantStats: {
+      NumberOfTenants: number;
+      OccupiedPercentage: number;
+      RecoverablePercentage: number;
+    };
+    ShopStats: {
+      NumberOfShops: number;
+      OccupiedPercentage: number;
+      TotalArea: number;
+    };
+    SmartStats: {
+      BulkCount: number;
+      ConsumerElectricityCount: number;
+      ConsumerWaterCount: number;
+      CouncilChkCount: number;
+      GeneratorCount: number;
+      SolarCount: number;
+      TotalSmart: number;
+    };
+    GraphStats: any[];
     Users: number
   }
   
@@ -21,6 +43,8 @@ export interface IHomePageStats {
   export interface IHomeTab {
     id: number;
     title: string;
+    type?: string;
     apiEndpoint?: string;
-    dataSource?: any[]
+    dataSource?: any[] | any;
+    detail?: any;
   }
