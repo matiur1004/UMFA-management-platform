@@ -8,6 +8,7 @@ export interface ApplicationConfiguration {
   refreshPath: string;
   revokePath: string;
   getHomeStats: string;
+  dashboardStats: string;
   getUser: string;
   // paths for amr scada users
   getAmrScadaUser: string;
@@ -42,6 +43,7 @@ export const CONFIG: ApplicationConfiguration = {
   refreshPath: '/user/refresh-token',
   revokePath: '/user/revoke-token',
   getHomeStats: '/home/get-stats',
+  dashboardStats: '/dashboard/getDBStats',
   getUser: '/user/',
   // paths for amr scada users
   getAmrScadaUser: '/AMRScadaUser/',

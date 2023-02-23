@@ -1,19 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { CONFIRM_MODAL_CONFIG } from '@core/config/modal.config';
+import { UmfaUtils } from 'app/core/utils/umfa.utils';
+import { UserService } from 'app/shared/services';
+import { PasswordCheckValidator } from 'app/shared/validators/password-check.validator';
 import { Subject } from 'rxjs';
-
-function pwdMatcher(c: AbstractControl): { [key: string]: boolean } | null {
-  const newPwd = c.get('newPwd');
-  const confPwd = c.get('confPwd');
-
-  if (newPwd.pristine || confPwd.pristine) return null;
-
-  if (newPwd.value === confPwd.value) return null;
-
-  return { match: true };
-}
-
 @Component({
   selector: 'app-amr-user-password',
   templateUrl: './amr-user-password.component.html',
@@ -24,32 +16,31 @@ export class AmrUserPasswordComponent implements OnInit {
   form: UntypedFormGroup;
   data: any;
   submitted: boolean = false;
-
+  
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
     public matDialogRef: MatDialogRef<AmrUserPasswordComponent>,
-    private _formBuilder: UntypedFormBuilder,
+    private _formBuilder: FormBuilder,
     //private _ztUtils: ZetesUtils,
-    @Inject(MAT_DIALOG_DATA) data
+    @Inject(MAT_DIALOG_DATA) data,
+    private _ufUtils: UmfaUtils
   ) { 
     this.data = data;
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    console.log('old password', this.data.currentPassword);
     // Prepare the card form
     this.form = this._formBuilder.group({
-      currPwd: [null, [Validators.required, Validators.minLength(3)]],
-      pwdGroup: this._formBuilder.group({
-        newPwd: ['', [Validators.required, Validators.minLength(3)]],
-        confPwd: ['', Validators.required],
-      }, { validator: pwdMatcher }),
+      currPwd: [null, [Validators.required, Validators.minLength(3), PasswordCheckValidator(this.data.currentPassword)]],
+      newPwd: ['', [Validators.required, Validators.minLength(3)]],
+      confPwd: ['', Validators.required]
     });
 
     if(this.data.detail) {
       this.form.patchValue(this.data.detail);
     }
-
   }
 
   close() {
@@ -59,17 +50,17 @@ export class AmrUserPasswordComponent implements OnInit {
   submit() {
     this.submitted = true;
     if(this.form.valid) {
-      // const dialogRef = this._ztUtils.fuseConfirmDialog(
-      //   CONFIRM_MODAL_CONFIG,
-      //   '', 
-      //   `Are you sure you need to ${this.data.detail ? 'update' : 'create'}?`);
-      // dialogRef.afterClosed().subscribe((result) => {
-      //   if(result == 'confirmed') {
-      //     this.matDialogRef.close(this.form.value);    
-      //   } else {
-      //     this.matDialogRef.close();
-      //   }
-      // });
+      const dialogRef = this._ufUtils.fuseConfirmDialog(
+        CONFIRM_MODAL_CONFIG,
+        '', 
+        `Are you sure you need to change password?`);
+      dialogRef.afterClosed().subscribe((result) => {
+        if(result == 'confirmed') {
+          this.matDialogRef.close(this.form.value);    
+        } else {
+          this.matDialogRef.close();
+        }
+      });
     }
     
   }

@@ -1,16 +1,66 @@
 ﻿using ClientPortal.Controllers.Authorization;
-using DevExpress.DashboardAspNetCore;
-using DevExpress.DashboardWeb;
+using ClientPortal.Services;
 using Microsoft.AspNetCore.DataProtection;
 
 namespace ClientPortal.Controllers
 {
-    public class PortalDashboardController : DashboardController
+    [Authorize]
+    [ApiController]
+    [Route("[controller]")]
+    public class DashboardController : ControllerBase
     {
-        public PortalDashboardController(DashboardConfigurator configurator, IDataProtectionProvider? dataProtectionProvider = null)
-            : base(configurator, dataProtectionProvider)
+        private readonly ILogger<DashboardController> _logger;
+        readonly DashboardService _dbService;
+
+        public DashboardController(ILogger<DashboardController> logger, DashboardService dbService)
         {
+            _dbService = dbService;
+            _logger = logger;
         }
 
+        [HttpGet("getDBStats/{umfauserid}")]
+        public IActionResult GetDBStats(int umfaUserId)
+        {
+            try
+            {
+                var response = _dbService.GetMainDashboard(umfaUserId);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while retrieving stats from service: {ex.Message}");
+                return BadRequest($"Error while retrieving stats from service: {ex.Message}");
+            }
+        }
+
+        [HttpGet("getDBBuildingStats/{umfabuildingid}")]
+        public IActionResult GetDBBuildingStats(int umfaBuildingId)
+        {
+            try
+            {
+                var response = _dbService.GetMainDashboard(337);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while retrieving stats from service: {ex.Message}");
+                return BadRequest($"Error while retrieving stats from service: {ex.Message}");
+            }
+        }
+
+        [HttpGet("getBuildingList/{umfauserid}")]
+        public IActionResult GetBuildingList(int umfaUserId)
+        {
+            try
+            {
+                var response = _dbService.GetBuildingList(umfaUserId);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while retrieving stats from service: {ex.Message}");
+                return BadRequest($"Error while retrieving stats from service: {ex.Message}");
+            }
+        }
     }
 }

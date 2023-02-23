@@ -4373,6 +4373,60 @@
             <polygon class="fil2" points="34.67,46.2 34.67,39.34 27.74,39.34 27.74,34.62 34.67,34.62 34.67,27.76 39.28,27.76 39.28,34.62 46.22,34.62 46.22,39.34 39.28,39.34 39.28,46.2 "/>
             </g>
             </g>
-            </svg>
+        </svg>
+        <svg data-name="Layer 1" id="buildings" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <style>.cls-1 {
+                fill: #fffff;
+                }</style>
+            </defs>
+            <title>left menu</title>
+            <rect class="cls-1" height="1.5" width="1.5" x="3" y="5"/>
+            <rect class="cls-1" height="1.5" width="1.5" x="3" y="9"/>
+            <rect class="cls-1" height="1.5" width="1.5" x="3" y="13"/>
+            <polygon class="cls-1"
+                    points="12 4 12 0 0 0 0 20 1.5 20 1.5 1.5 10.5 1.5 10.5 4 6 4 6 20 7.5 20 7.5 5.5 18.5 5.5 18.5 20 20 20 20 4 12 4"/>
+            <rect class="cls-1" height="1.5" width="1.5" x="10" y="9"/>
+            <rect class="cls-1" height="1.5" width="1.5" x="10" y="13"/>
+            <rect class="cls-1" height="1.5" width="1.5" x="10" y="17"/>
+            <rect class="cls-1" height="1.5" width="1.5" x="14.5" y="9"/>
+            <rect class="cls-1" height="1.5" width="1.5" x="14.5" y="13"/>
+            <rect class="cls-1" height="1.5" width="1.5" x="14.5" y="17"/>
+        </svg>
+        <svg data-name="Layer 1" id="clients" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <style>.cls-1 {
+                fill: #ffffff;
+                }</style>
+            </defs>
+            <title>left menu</title>
+            <path class="cls-1"
+                    d="M15,5A5,5,0,1,0,5,5H0V20H20V5ZM10,1.5A3.5,3.5,0,0,1,13.5,5h-7A3.5,3.5,0,0,1,10,1.5Zm7.57,5-2.5,5H4.93l-2.5-5ZM1.5,18.5V8L4,13H16l2.5-5V18.5Z"/>
+            <rect class="cls-1" height="1.5" width="2" x="4" y="14"/>
+            <rect class="cls-1" height="1.5" width="2" x="14" y="14"/>
+        </svg>
+        <svg data-name="Layer 1" id="electricity" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink">
+            <defs>
+                <style>.cls-1-1 {
+                fill: url(#linear-gradient);
+                }
+
+                .cls-1-2 {
+                fill: url(#linear-gradient-2);
+                }</style>
+                <linearGradient gradientUnits="userSpaceOnUse" id="linear-gradient" x2="8.5" y1="7.5" y2="7.5">
+                <stop offset="0" stop-color="#ec6b91"/>
+                <stop offset="1" stop-color="#ce1a4d"/>
+                </linearGradient>
+                <linearGradient id="linear-gradient-2" x1="8.17" x2="15" xlink:href="#linear-gradient" y1="8.97" y2="8.97"/>
+            </defs>
+            <title>1</title>
+            <path class="cls-1-1"
+                    d="M6.4,1.13,4.33,4.4,3.24,6.13H6.36L3.3,9.76l.56-1.32.66-1.57H1.67L4.54,1.13H6.4M8,0H4a.25.25,0,0,0-.22.14L0,7.64a.23.23,0,0,0,0,.24A.24.24,0,0,0,.25,8H2.82L0,14.65a.25.25,0,0,0,.1.31l.07,0H.25A.25.25,0,0,0,.4,15l0,0,8-9.5a.25.25,0,0,0,0-.26A.25.25,0,0,0,8.25,5h-3L8.21.39a.27.27,0,0,0,0-.26A.26.26,0,0,0,8,0Z"/>
+            <path class="cls-1-2"
+                    d="M12.92,4.07,11.47,6.36l-1.1,1.73h2.44L11.59,9.53l.54-1.28H9.87L12,4.07h1M14.6,3H11.38a.21.21,0,0,0-.18.11l-3,6a.2.2,0,0,0,0,.2.2.2,0,0,0,.17.09h2.07L8.19,14.72a.2.2,0,0,0,.08.25l.05,0h0a.31.31,0,0,0,.12,0l0,0L15,7.29a.2.2,0,0,0,0-.21A.2.2,0,0,0,14.8,7H12.42l2.35-3.71a.18.18,0,0,0,0-.2A.18.18,0,0,0,14.6,3Z"/>
+        </svg>
+
     </defs>
 </svg>

@@ -3,14 +3,8 @@ export interface IUmfaBuilding {
     Name: string;
     PartnerId: number;
     Partner: string;
+    IsSmart: boolean;
 }
-
-export interface IUmfaBuilding {
-    BuildingId: number;
-    Name: string;
-    PartnerId: number;
-    Partner: string;
-  }
   
   export interface IUmfaPartner {
     Id: number;

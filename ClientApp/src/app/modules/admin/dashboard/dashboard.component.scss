@@ -10,3 +10,26 @@
 .grid-container {
     max-height: 500px;
 }
+::ng-deep .mat-tab-group .mat-tab-body.mat-tab-body-active {
+    overflow: visible;
+    .mat-tab-body-content {
+        overflow: visible;
+    }
+}
+.service-icon, .service-icon::before {
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    position: relative;
+}
+.service-icon {
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: 15px;
+}
+.electricity-icon::before, .water-icon::before {
+    opacity: 0.25;
+}
+.dx-row:hover {
+    background: #e2e2e2;
+}

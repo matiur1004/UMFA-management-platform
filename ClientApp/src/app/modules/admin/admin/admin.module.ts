@@ -24,6 +24,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AmrUserPasswordComponent } from './amr-user/amr-user-password/amr-user-password.component';
+import { PasswordMatchDirective } from 'app/shared/validators/password-match.directive';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { AmrUserPasswordComponent } from './amr-user/amr-user-password/amr-user-
     AMRMeterDetailComponent,
     AmrMeterEditComponent,
     AmrUserPasswordComponent,
+    PasswordMatchDirective
   ],
   imports: [
     FormsModule,

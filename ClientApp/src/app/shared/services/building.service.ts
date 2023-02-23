@@ -22,6 +22,18 @@ export class BuildingService {
       );
   }
 
+  //Get Building List for user
+  getBuildingList(userId: number): Observable<IUmfaBuilding[]> {
+    const url = `dashboard/GetBuildingList/${userId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchErrors(err)),
+        tap(bl => {
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        })
+      );
+  }
+
   //Partners
   getPartnersForUser(userId: number): Observable<IUmfaPartner[]> {
     const url = `${CONFIG.apiURL}${CONFIG.getPartners}${userId}`;
