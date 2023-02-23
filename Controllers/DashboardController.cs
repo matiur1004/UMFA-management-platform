@@ -38,7 +38,7 @@ namespace ClientPortal.Controllers
         {
             try
             {
-                var response = _dbService.GetMainDashboard(337);
+                var response = _dbService.GetBuildingDashboard(umfaBuildingId);
                 return Ok(response);
             }
             catch (Exception ex)

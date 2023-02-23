@@ -33,6 +33,22 @@ namespace ClientPortal.Services
             }
         }
 
+        public DashboardMainResponse GetBuildingDashboard(int buildingId)
+        {
+            _logger.LogInformation("Getting the stats for building dashboard page...");
+            try
+            {
+                var response = _portalStats.GetDashboardBuildingAsync(buildingId).Result;
+                if (response != null && response.Response == "Success") return response;
+                else throw new Exception($"Stats not return correctly: {response?.Response}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while getting the stats: {ex.Message}");
+                return null;
+            }
+        }
+
         public List<DashboardBuilding> GetBuildingList(int umfaUserId)
         {
             _logger.LogInformation("Getting the buildings for buildings dashboard page...");
