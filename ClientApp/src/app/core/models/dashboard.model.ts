@@ -46,4 +46,5 @@ export interface IHomePageStats {
     type?: string;
     apiEndpoint?: string;
     dataSource?: any[] | any;
+    detail?: any;
   }
