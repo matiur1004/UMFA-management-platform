@@ -38,6 +38,7 @@ export class BuildingDetailComponent implements OnInit {
 
   @Input() stats: IHomePageStats;
   @Input() title: string;
+  @Input() isSmart: boolean;
   
   chartElectricityUsage: Partial<ChartOptions>;
   chartWaterUsage: Partial<ChartOptions>;

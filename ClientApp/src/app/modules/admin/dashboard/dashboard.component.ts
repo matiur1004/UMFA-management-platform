@@ -263,17 +263,16 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                     id: event.data.UmfaBuildingId,
                     title: event.data.BuildingName,
                     type: 'BuildingDetail',
-                    dataSource: res
+                    dataSource: res,
+                    detail: event.data
                 };
                 this.tabsList.push({...newTab});
                 this.selectedTab = this.tabsList.length;
                 this._cdr.markForCheck();
             })
-        //this._dbService.getStats(event.data.UmfaBuildingId)
     }
 
     ngAfterViewInit() {
-        //if (!this._dbService.StatsValue) this._dbService.getStats();
     }
 
     /**
