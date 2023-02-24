@@ -61,4 +61,28 @@ namespace ClientPortal.Models
         public bool IsSmart { get; set; }
     }
 
+    public class BuildingDashboard
+    {
+        public string NumberOfBuildings { get; set; }
+        public decimal TotalGLA { get; set; }
+        public int TotalNumberOfMeters { get; set; }
+        public int NumberOfShops { get; set; }
+        public decimal ShopOccPerc { get; set; }
+        public decimal TotalArea { get; set; }
+        public int NumberOfTenants { get; set; }
+        public decimal TenOccPerc { get; set; }
+        public decimal RecoverablePercentage { get; set; }
+        public int TotalSmart { get; set; }
+        public int SolarCount { get; set; }
+        public int GeneratorCount { get; set; }
+        public int ConsumerElectricityCount { get; set; }
+        public int ConsumerWaterCount { get; set; }
+        public int BulkCount { get; set; }
+        public int CouncilChkCount { get; set; }
+        public string PeriodName { get; set; }
+        public decimal TotalSales { get; set; }
+        public decimal TotalElectricityUsage { get; set; }
+        public decimal TotalWaterUsage { get; set; }
+    }
+
 }

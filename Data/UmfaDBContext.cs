@@ -17,6 +17,8 @@ namespace ClientPortal.Data
         public DbSet<UMFAPeriod> UMFAPeriods { get; set; }
         [NotMapped]
         public DbSet<UMFABuildingService> UMFABuildingServices { get; set; }
+        [NotMapped]
+        public DbSet<spCall> CallaProc { get; set; }
 
         public UmfaDBContext() {}
 
@@ -29,5 +31,12 @@ namespace ClientPortal.Data
             var connectionString = _configuration.GetConnectionString("UmfaDb");
             optionsBuilder.UseSqlServer(connectionString);
         }
+    }
+
+    [Serializable]
+    [Keyless]
+    public class spCall
+    {
+
     }
 }
