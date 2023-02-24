@@ -233,7 +233,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                     newTab.dataSource.push(source1);
                     newTab.dataSource.push(source2);
 
-                    this.tabsList.push({...newTab});
+                    this.tabsList.push(newTab);
                     this.selectedTab = this.tabsList.length;
                     this._cdr.markForCheck();
                 });
@@ -247,7 +247,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
 
     removeTab(index: number) {
         this.tabsList.splice(index, 1);
-        this.selectedTab = 0;
+        this.selectedTab = index > 0 ? 1 : 0;
+        this._cdr.markForCheck();
     }
 
     onRowPrepared(event) {
@@ -266,9 +267,9 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                     dataSource: res,
                     detail: event.data
                 };
-                this.tabsList.push({...newTab});
+                this.tabsList.push(newTab);
                 this.selectedTab = this.tabsList.length;
-                this._cdr.markForCheck();
+                this._cdr.detectChanges();                
             })
     }
 
