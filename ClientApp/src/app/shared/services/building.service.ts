@@ -4,6 +4,7 @@ import { CONFIG } from "app/core/helpers";
 import { IUmfaBuilding, IUmfaPartner, IUmfaPeriod } from "app/core/models";
 import { BehaviorSubject, map, shareReplay } from "rxjs";
 import { catchError, Observable, tap, throwError } from "rxjs";
+import { IUmfaMeter } from "app/core/models/umfameter.model";
 
 @Injectable({ providedIn: 'root' })
 export class BuildingService {
@@ -59,7 +60,20 @@ export class BuildingService {
         map(bps => { return bps.Periods })
       );
   }
-  
+
+  //Meters
+  getMetersForBuilding(umfaBuildingId: number): Observable<IUmfaMeter[]> {
+    const url = `${CONFIG.apiURL}${CONFIG.getAllUmfaMetersForBuilding}${umfaBuildingId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchErrors(err)),
+        tap(bps => {
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        }),
+        map(bm => { return bm.UmfaMeters })
+      );
+  }
+
   //catches errors
   private catchErrors(error: { error: { message: any; }; message: any; }): Observable<Response> {
     if (error && error.error && error.error.message) { //clientside error

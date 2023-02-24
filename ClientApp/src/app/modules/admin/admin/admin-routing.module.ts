@@ -9,7 +9,7 @@ import { AmrUserEditComponent } from './amr-user/amr-user-edit/amr-user-edit.com
 import { AMRMeterDetailComponent } from './amr-meter/amr-meter-detail.component';
 import { AmrMeterEditComponent } from './amr-meter/amr-meter-edit/amr-meter-edit.component';
 import { UserDataResolver } from 'app/shared/resolvers/user.resolver';
-
+import { MeterMappingComponent } from './meter-mapping/meter-mapping.component';
 const routes: Routes = [
   {
     path: '', component: AdminComponent, //redirectTo: 'amrUser', pathMatch: 'full'
@@ -37,6 +37,9 @@ const routes: Routes = [
       },
       {
         path: 'amrMeter/edit/:opId/:meterId', component: AmrMeterEditComponent
+      },
+      {
+        path: 'meterMapping', component: MeterMappingComponent
       }
     ]
   }
