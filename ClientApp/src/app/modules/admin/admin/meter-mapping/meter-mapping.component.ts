@@ -7,23 +7,23 @@ import {
     OnInit,
 } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IAmrMeter, IUmfaBuilding, IopUser } from 'app/core/models';
+import { IUmfaBuilding, IopUser } from 'app/core/models';
 import {
     BuildingService,
     MeterService,
     SnackBarService,
     UserService,
-} from 'app/shared/services';
-import { MatSelect } from '@angular/material/select';
-import { MatButton } from '@angular/material/button';
+} from 'app/shared/services'
 import {
     FormControl,
     UntypedFormBuilder,
     UntypedFormGroup,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DialogService } from 'app/shared/services/dialog.service';
 import { IUmfaMeter } from 'app/core/models/umfameter.model';
+import { IAmrUser } from 'app/core/models';
+import { IScadaMeter } from 'app/core/models/scadaMeter.model';
+import { IMappedMeter } from 'app/core/models/mappedmeter.model';
 
 @Component({
     selector: 'app-meter-mapping',
@@ -33,9 +33,9 @@ import { IUmfaMeter } from 'app/core/models/umfameter.model';
 
 export class MeterMappingComponent implements OnInit {
     user: IopUser;
-    umfaMeters$: Observable<IUmfaMeter[]>;
-    scadaMeters$: any = {};
-    mappedMeters$: any = {};
+    umfaMeters: IUmfaMeter[];
+    scadaMeters: IScadaMeter[];
+    mappedMeters: IMappedMeter[];
     selectedBuildingId: 0;
     selectedAmrMeter: any;
     selectedUmfaMeter: any;
@@ -46,8 +46,11 @@ export class MeterMappingComponent implements OnInit {
     selectedTOUControl = new FormControl();
     loading: boolean = true;
     form: UntypedFormGroup;
-    meters$: Observable<IAmrMeter[]>;
+    //meters$: Observable<IAmrMeter[]>;
     errMessage: any;
+    scadaUser: IAmrUser;
+    scadaUserName: any;
+    scadaPassword: any;
     UmfaId: any;
     constructor(
         private route: ActivatedRoute,
@@ -72,30 +75,64 @@ export class MeterMappingComponent implements OnInit {
             error: (err) => (this.errMessage = err),
             complete: () => (this.loading = false),
         });
-        this.meters$ =  this.meterService.getMetersForUser(usr.Id);
+        //this.meters$ =  this.meterService.getMetersForUser(usr.Id);
     }
 
-    getBuildings(): void {
-        const usr = this.usrService.userValue;
-        this.bldService.getBuildingsForUser(usr.UmfaId).subscribe({
-            next: (bldgs) => {
-                this.onBuildingsRetrieved(bldgs);
+    onBuildingsRetrieved(bldgs: any) {
+        this.buildings = bldgs;
+    }
+
+    selectionChanged(e: any) {
+        console.log("Selected BuildingId: " + e.BuildingId);
+        this.selectedBuildingId = e.BuildingId;
+        this.getUmfaMetersForBuilding(this.selectedBuildingId);
+        this.getScadaUserDetails(this.UmfaId);
+        this.getMappedMetersForBuilding(this.UmfaId)
+      }
+
+    getUmfaMetersForBuilding(buildingId): void {
+        this.bldService.getMetersForBuilding(buildingId).subscribe({
+            next: (metrs) => {
+                this.onBuildingsRetrieved(metrs);
             },
             error: (err) => (this.errMessage = err),
             complete: () => (this.loading = false),
         });
     }
 
-    onBuildingsRetrieved(bldgs: any) {
-        this.buildings = bldgs;
-        // this.UmfaId = this.buildings[0].BuildingId;
+    onMetersRetrieved(metrs: any ){
+        this.umfaMeters = metrs;
     }
 
-    selectionChanged(e: any) {
-        console.log("Selected BuildingId: " + e.BuildingId);
-        this.selectedBuildingId = e.BuildingId;
-        this.umfaMeters$ = this.bldService.getMetersForBuilding(e.BuildingId)
-      }
+    getScadaUserDetails(userId){
+        this.usrService.getAmrScadaUser(userId).subscribe({
+            next: au => {
+              this.onAmrScadaUserRetrieved(au)
+            },
+            error: err => this.errMessage = err
+          });
+    }
+
+    async onAmrScadaUserRetrieved(aU: IAmrUser): Promise<void> {
+        this.scadaUser = aU;
+            this.scadaUserName =  this.scadaUser.ScadaUserName;
+            this.scadaPassword = this.scadaUser.ScadaPassword;
+            this.getScadaMetersForUser(this.scadaUserName, this.scadaPassword)
+    }
+
+    getScadaMetersForUser(userName, userPassword){
+        // this.usrService.getAmrScadaUser(userId).subscribe({
+        //     next: au => {
+        //       this.onAmrScadaUserRetrieved(au)
+        //     },
+        //     error: err => this.errMessage = err
+        //   });
+
+    }
+
+    getMappedMetersForBuilding(buildingId){
+
+    }
 
     selectAmrMeter(e) {
         this.selectedAmrMeter = e.value;
