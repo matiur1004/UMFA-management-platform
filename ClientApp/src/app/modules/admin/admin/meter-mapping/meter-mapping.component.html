@@ -42,7 +42,7 @@
                     <mat-label mat-tab-nav-bar><mat-icon>developer_board</mat-icon> AMR Scada Meters </mat-label>
                     <dx-data-grid [dataSource]="scadaMeters$ | async" id="scadaMetersGrid" [showBorders]="true"
                         class="grid-container" [hoverStateEnabled]="true" keyExpr="MeterNo" [selectedRowKeys]="[]"
-                        (onRowClick)="selectAmrMeter($event)">
+                        (onRowClick)="selectScadaMeter($event)">
                         <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
                         <dxo-paging [pageSize]="10"> </dxo-paging>
                         <dxo-pager [visible]="true" [allowedPageSizes]="allowedPageSizes" [displayMode]="'compact'"

@@ -37,8 +37,8 @@ export class MeterMappingComponent implements OnInit {
     scadaMeters$: Observable<IScadaMeter[]>;
     mappedMeters$: Observable<IMappedMeter[]>;
     selectedBuildingId: 0;
-    selectedAmrMeter: any;
     selectedUmfaMeter: any;
+    selectedScadaMeter: any;
     selectedMappedMeter: any;
     buildings: IUmfaBuilding[];
     readonly allowedPageSizes = [10, 15, 20, 50, 'All'];
@@ -83,22 +83,22 @@ export class MeterMappingComponent implements OnInit {
     }
 
     selectionChanged(e: any) {
-        console.log("Selected BuildingId: " + e.BuildingId);
+        console.log("Selected BuildingId: " + e.BuildingId + " - Name: " + e.Name);
         this.selectedBuildingId = e.BuildingId;
         this.getUmfaMetersForBuilding(this.selectedBuildingId);
         this.getScadaUserDetails(this.UmfaId);
-        this.getMappedMetersForBuilding(this.UmfaId)
+        this.getMappedMetersForBuilding(e.BuildingId)
       }
 
     getUmfaMetersForBuilding(buildingId): void {
         this.bldService.getMetersForBuilding(buildingId).subscribe({
             next: (metrs) => {
-                this.onBuildingsRetrieved(metrs);
+                this.onMetersRetrieved(metrs);
             },
             error: (err) => (this.errMessage = err),
             complete: () => (this.loading = false),
         });
-    }
+}
 
     onMetersRetrieved(metrs: any ){
         this.umfaMeters$ = metrs;
@@ -134,9 +134,9 @@ export class MeterMappingComponent implements OnInit {
 
     }
 
-    selectAmrMeter(e) {
-        this.selectedAmrMeter = e.value;
-        console.log("AMR Meter: " + this.selectedAmrMeter);
+    selectScadaMeter(e) {
+        this.selectedScadaMeter = e.value;
+        console.log("Scada Meter: " + this.selectedScadaMeter);
     }
 
     selectUmfaMeter(e) {
