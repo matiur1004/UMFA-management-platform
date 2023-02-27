@@ -77,7 +77,6 @@ IConfiguration? configuration = builder.Configuration;
     services.AddScoped<IBuildingService, BuildingService>();
     services.AddScoped<IAMRScadaUserService, AMRScadaUserService>();
     services.AddScoped<IAMRDataService, AMRDataService>();
-    services.AddScoped<IReportRepository, ReportRepository>();
     services.AddScoped<BuildingRecoveryReportService>();
     services.AddTransient<IScadaCalls, ScadaCalls>();
     services.AddScoped<DashboardService, DashboardService>();
@@ -89,6 +88,7 @@ IConfiguration? configuration = builder.Configuration;
     services.AddScoped<IUMFABuildingRepository, UMFABuildingRepository>();
     services.AddScoped<IAMRScadaUserRepository, AMRScadaUserRepository>();
     services.AddScoped<IAMRDataRepository, AMRDataRepository>();
+    services.AddScoped<IReportRepository, ReportRepository>();
 
 }
 
