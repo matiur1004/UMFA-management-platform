@@ -1,0 +1,159 @@
+<form class="flex flex-col py-6 px-4 w-full" [formGroup]="form">
+    <div class="row grid grid-cols-4 gap-x-4 gap-y-2 w-full">
+        <div class="col-span-1">
+            <div class="bg-card gap-x-4 gap-y-2 p-2">
+                <mat-label mat-tab-nav-bar> Select Building </mat-label>
+                <ng-select [items]="buildings" bindLabel="Name" bindValue="BuildingId" [placeholder]="'Select Building'"
+                    [formControlName]="UmfaId" [searchable]="false" [clearable]="false"
+                    (change)="selectionChanged($event)">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+    &nbsp;
+    <div *ngIf="selectedBuildingId>0">
+        <div class="row grid grid-cols-5 gap-x-4 gap-y-2 w-full">
+            <div class="col-span-2">
+                <div class="bg-card gap-x-4 gap-y-4 p-2">
+                    <mat-label mat-tab-nav-bar><mat-icon>developer_board</mat-icon> UMFA Meters </mat-label>
+                    <dx-data-grid [dataSource]="umfaMeters$ | async" id="umfaMetersGrid" keyExpr="MeterId"
+                        [selectedRowKeys]="[]" [showBorders]="true" class="grid-container" [hoverStateEnabled]="true"
+                        (onRowClick)="selectUmfaMeter($event)">
+                        <dxo-scrolling rowRenderingMode="virtual"></dxo-scrolling>
+                        <dxo-selection mode="single"></dxo-selection>
+                        <dxo-paging [pageSize]="10"> </dxo-paging>
+                        <dxo-pager [visible]="true" [allowedPageSizes]="allowedPageSizes" [displayMode]="'compact'"
+                            [showPageSizeSelector]="true" [showInfo]="true" [showNavigationButtons]="true">
+                        </dxo-pager>
+                        <dxo-search-panel [visible]="true" [width]="200" placeholder="Search..."></dxo-search-panel>
+                        <dxi-column dataField="MeterId" [visible]="false" width="70"></dxi-column>
+                        <dxi-column dataField="Mapped" [width]="70"></dxi-column>
+                        <dxi-column dataField="MeterNo" [width]="120"></dxi-column>
+                        <dxi-column dataField="Description"></dxi-column>
+                        <dxi-column dataField="RegisterType" [width]="50"></dxi-column>
+                        <dxi-column dataField="MeterType" [width]="50"></dxi-column>
+                        <dxi-column dataField="Location" [width]="50"></dxi-column>
+                        <dxi-column dataField="Sequence" [width]="50"></dxi-column>
+                    </dx-data-grid>
+                </div>
+            </div>
+            <div class="col-span-2">
+                <div class="bg-card gap-x-4 gap-y-2 p-2">
+                    <mat-label mat-tab-nav-bar><mat-icon>developer_board</mat-icon> AMR Scada Meters </mat-label>
+                    <dx-data-grid [dataSource]="scadaMeters$ | async" id="scadaMetersGrid" [showBorders]="true"
+                        class="grid-container" [hoverStateEnabled]="true" keyExpr="MeterNo" [selectedRowKeys]="[]"
+                        (onRowClick)="selectScadaMeter($event)">
+                        <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+                        <dxo-paging [pageSize]="10"> </dxo-paging>
+                        <dxo-pager [visible]="true" [allowedPageSizes]="allowedPageSizes" [displayMode]="'compact'"
+                            [showPageSizeSelector]="true" [showInfo]="true" [showNavigationButtons]="true">
+                        </dxo-pager>
+                        <dxo-search-panel [visible]="true" [width]="200" placeholder="Search..."></dxo-search-panel>
+                        <dxi-column dataField="Mapped" [width]="70"></dxi-column>
+                        <dxi-column dataField="MeterNo" [width]="120"></dxi-column>
+                        <dxi-column dataField="Description"></dxi-column>
+                        <dxi-column dataField="Make" [width]="50"></dxi-column>
+                        <dxi-column dataField="Model" [width]="50"></dxi-column>
+                    </dx-data-grid>
+                </div>
+            </div>
+            <div class="col-span-1">
+                <div class="bg-card gap-x-4 gap-y-2 p-2">
+                    <mat-label mat-tab-nav-bar><mat-icon>add_location</mat-icon> Mapping Selection </mat-label>
+                    <mat-label class="form-label">Register Type</mat-label>
+                    <ng-select placeholder="Select Register Type...">
+                        <ng-option>kWh - Total</ng-option>
+                        <ng-option>kWh - Peak</ng-option>
+                        <ng-option>kWh - Standard</ng-option>
+                        <ng-option>kWh - Off-Peak</ng-option>
+                        <ng-option>kVA</ng-option>
+                        <ng-option>kVARh</ng-option>
+                    </ng-select>
+                    <mat-label class="form-label">Time Of Use</mat-label>
+                    <ng-select placeholder="Select Time Of Use...">
+                        <ng-option [value]="'1'">Cape Town MV Restricted</ng-option>
+                        <ng-option [value]="'2'">Eskom Flex Tariffs</ng-option>
+                        <ng-option [value]="'3'">Non - Time Of Use</ng-option>
+                        <ng-option [value]="'4'">City of Johannesburg</ng-option>
+                    </ng-select>
+                    <mat-label class="form-label">Supply Type</mat-label>
+                    <ng-select placeholder="Select Supply Type...">
+                        <ng-option [value]="'1'">AdHoc</ng-option>
+                        <ng-option [value]="'2'">Electricity</ng-option>
+                        <ng-option [value]="'3'">Gas</ng-option>
+                        <ng-option [value]="'4'">Sewerage</ng-option>
+                        <ng-option [value]="'5'">Solar</ng-option>
+                        <ng-option [value]="'6'">Water</ng-option>
+                        <ng-option [value]="'7'">Wind</ng-option>
+                    </ng-select>
+                    <mat-label class="form-label">Location</mat-label>
+                    <ng-select placeholder="Select Location...">
+                        <ng-option [value]="'1'">Air Handling Unit</ng-option>
+                        <ng-option [value]="'2'">Basement</ng-option>
+                        <ng-option [value]="'3'">Borhole</ng-option>
+                        <ng-option [value]="'4'">Busbar</ng-option>
+                        <ng-option [value]="'5'">Chiller</ng-option>
+                        <ng-option [value]="'6'">Council</ng-option>
+                        <ng-option [value]="'7'">Council Check Meter</ng-option>
+                        <ng-option [value]="'8'">Distribution Board</ng-option>
+                        <ng-option [value]="'9'">Escalator</ng-option>
+                        <ng-option [value]="'10'">Fire Hose Reel</ng-option>
+                        <ng-option [value]="'11'">Fire Hydrant</ng-option>
+                        <ng-option [value]="'12'">General</ng-option>
+                        <ng-option [value]="'13'">Generator</ng-option>
+                        <ng-option [value]="'14'">Guard House</ng-option>
+                        <ng-option [value]="'15'">Irrigation</ng-option>
+                        <ng-option [value]="'16'">Lift</ng-option>
+                        <ng-option [value]="'17'">Lights</ng-option>
+                        <ng-option [value]="'18'">Location #1</ng-option>
+                        <ng-option [value]="'19'">Location for Ad Hoc</ng-option>
+                        <ng-option [value]="'20'">Losses</ng-option>
+                        <ng-option [value]="'21'">Management Office</ng-option>
+                        <ng-option [value]="'22'">Meter</ng-option>
+                        <ng-option [value]="'23'">Multiple</ng-option>
+                        <ng-option [value]="'24'">Multiple shops</ng-option>
+                        <ng-option [value]="'25'">Parking</ng-option>
+                        <ng-option [value]="'26'">Public Toilet</ng-option>
+                        <ng-option [value]="'27'">Pylon</ng-option>
+                        <ng-option [value]="'28'">Refuse Area</ng-option>
+                        <ng-option [value]="'29'">Shop</ng-option>
+                        <ng-option [value]="'30'">Signage</ng-option>
+                        <ng-option [value]="'31'">Single</ng-option>
+                        <ng-option [value]="'32'">Tap</ng-option>
+                    </ng-select>
+                    <mat-label class="form-label">Description</mat-label>
+                    <input matInput [formControlName]="'Description'"/>
+                    <div style="align-items: center;">
+                        <button mat-raised-button color="primary" class="dnm-btn dnm-btn-primary">
+                            <mat-icon [svgIcon]="'feather:addMeter'" class="mr-1"></mat-icon>
+                            Add Meter Mapping
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="row grid grid-cols-3 gap-x-4 gap-y-2 w-full">
+            <div class="col-span-3">
+                <div class="bg-card gap-x-4 gap-y-2 p-2">
+                    <mat-label mat-tab-nav-bar> Mapped Meters </mat-label>
+                    <dx-data-grid [dataSource]="mappedMeters$ | async" id="umfaMetersGrid" [showBorders]="true"
+                        class="grid-container" [hoverStateEnabled]="true" displayExpr="MeterNo" valueExpr="Id"
+                        (onRowClick)="selectMappedMeter($event)">
+                        <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+                        <dxo-paging [pageSize]="10"> </dxo-paging>
+                        <dxo-pager [visible]="true" [allowedPageSizes]="allowedPageSizes" [displayMode]="'compact'"
+                            [showPageSizeSelector]="true" [showInfo]="true" [showNavigationButtons]="true">
+                        </dxo-pager>
+                        <dxo-search-panel [visible]="true" [width]="200" placeholder="Search..."></dxo-search-panel>
+                        <dxi-column dataField="Mapped" [width]="70"></dxi-column>
+                        <dxi-column dataField="MeterNo" [width]="120"></dxi-column>
+                        <dxi-column dataField="Description"></dxi-column>
+                        <dxi-column dataField="Make" [width]="50"></dxi-column>
+                        <dxi-column dataField="Model" [width]="50"></dxi-column>
+                    </dx-data-grid>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

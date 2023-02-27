@@ -16,7 +16,10 @@ const PROXY_CONFIG = [
       "/AMRMeter",
       "/AMRData",
       "/dashboard",
-      "/DXXRDV"
+      "/DXXRDV",
+      "/MappedMeters",
+      "/ScadaMeters",
+      "/Swagger"
    ],
     target: target,
     secure: false,
