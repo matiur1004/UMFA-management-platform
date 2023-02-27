@@ -121,6 +121,8 @@
                         <ng-option [value]="'31'">Single</ng-option>
                         <ng-option [value]="'32'">Tap</ng-option>
                     </ng-select>
+                    <mat-label class="form-label">Description</mat-label>
+                    <input matInput [formControlName]="'Description'"/>
                     <div style="align-items: center;">
                         <button mat-raised-button color="primary" class="dnm-btn dnm-btn-primary">
                             <mat-icon [svgIcon]="'feather:addMeter'" class="mr-1"></mat-icon>

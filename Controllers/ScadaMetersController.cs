@@ -6,23 +6,22 @@ using System.Net;
 using System.Xml;
 using System.Xml.Linq;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace ClientPortal.Controllers
 {
     [Route("[controller]")]
     [ApiController]
     public class ScadaMetersController : ControllerBase
     {
+
         // GET: ScadaMeters/GetAsync
-        [HttpGet]
-        public async Task<string> GetAsync(string scadaUserName, string scadaUserPassword)
+        [HttpGet("GetAsync")]
+        public async Task<string> GetAsync([FromBody] GetUserAndPassword UserObj)
         {
             var scadaUrl = "https://umfaholdings-gideon.pnpscada.com:443/reportVarious.jsp?";
             var scadaUserParam = "LOGIN";
-            var scadaUserParamValue = scadaUserName;
+            var scadaUserParamValue = UserObj.scadaUserName;
             var scadaUserPasswordParam = "PWD";
-            var scadaUserPasswordValue = scadaUserPassword;
+            var scadaUserPasswordValue = UserObj.scadaUserPassword;
             var scadaReportParam = "report";
             var scadaReportValue = "Meters+Properties";
             var scadaAllResultsParam = "all";
@@ -52,8 +51,6 @@ namespace ClientPortal.Controllers
             var result = await res.Content.ReadAsStringAsync();
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(result);
-
-            var meters = GetMeters(result);
 
             string jsonText = JsonConvert.SerializeXmlNode(doc);
 
@@ -86,5 +83,9 @@ namespace ClientPortal.Controllers
         public string Name { get; set; }
 
     }
-}
 
+    public class GetUserAndPassword{
+            public string scadaUserName {get;set;}
+            public string scadaUserPassword { get;set;}
+     }
+}
