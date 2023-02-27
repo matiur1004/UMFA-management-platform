@@ -41,9 +41,19 @@ namespace ClientPortal.Services
         }
 
 
-        public bool RemoveMappedMeterAsync(int meterId)
+        public async Task RemoveMappedMeterAsync(int meterId)
         {
-            throw new NotImplementedException();
+            _logger.LogInformation($"Deleting meter {meterId} for Building", meterId);
+            try
+            {
+                var meter = await _context.MappedMeters.FirstOrDefaultAsync(m => m.MappedMeterId == meterId);
+                _context.MappedMeters.Remove(meter);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error while getting meters for Building: {buildingId}: {Message}", meterId, ex.Message);
+                throw new ApplicationException($"Error while deleting meters for Building: {meterId}: {ex.Message}");
+            }
         }
 
 
