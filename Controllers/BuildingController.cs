@@ -39,6 +39,7 @@ namespace ClientPortal.Controllers
                 return BadRequest(new ApplicationException(ex.Message));
             }
         }
+
         [HttpGet("umfameters/{umfabuildingid}")]
         public IActionResult GetUmfaMeters(int umfaBuildingId)
         {
