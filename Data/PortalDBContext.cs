@@ -53,6 +53,8 @@ namespace ClientPortal.Data
         public DbSet<ScadaProfileData> ScadaProfileData { get; set; }
         public DbSet<ScadaReadingData> scadaReadingData { get; set; }
         public DbSet<RegisterType> RegisterTypes { get; set; }
+        public DbSet<MappedMeter> MappedMeters { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //not mapped entites
