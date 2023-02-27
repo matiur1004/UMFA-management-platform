@@ -18,7 +18,7 @@
                     <mat-label mat-tab-nav-bar><mat-icon>developer_board</mat-icon> UMFA Meters </mat-label>
                     <dx-data-grid [dataSource]="umfaMeters$ | async" id="umfaMetersGrid" keyExpr="MeterId"
                         [selectedRowKeys]="[]" [showBorders]="true" class="grid-container" [hoverStateEnabled]="true"
-                        (onSelectionChanged)="selectUmfaMeter($event)">
+                        (onRowClick)="selectUmfaMeter($event)">
                         <dxo-scrolling rowRenderingMode="virtual"></dxo-scrolling>
                         <dxo-selection mode="single"></dxo-selection>
                         <dxo-paging [pageSize]="10"> </dxo-paging>
@@ -42,7 +42,7 @@
                     <mat-label mat-tab-nav-bar><mat-icon>developer_board</mat-icon> AMR Scada Meters </mat-label>
                     <dx-data-grid [dataSource]="scadaMeters$ | async" id="scadaMetersGrid" [showBorders]="true"
                         class="grid-container" [hoverStateEnabled]="true" keyExpr="MeterNo" [selectedRowKeys]="[]"
-                        (onSelectionChanged)="selectAmrMeter($event)">
+                        (onRowClick)="selectAmrMeter($event)">
                         <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
                         <dxo-paging [pageSize]="10"> </dxo-paging>
                         <dxo-pager [visible]="true" [allowedPageSizes]="allowedPageSizes" [displayMode]="'compact'"
@@ -135,9 +135,9 @@
             <div class="col-span-3">
                 <div class="bg-card gap-x-4 gap-y-2 p-2">
                     <mat-label mat-tab-nav-bar> Mapped Meters </mat-label>
-                    <dx-data-grid [dataSource]="scadaMeters$ | async" id="umfaMetersGrid" [showBorders]="true"
+                    <dx-data-grid [dataSource]="mappedMeters$ | async" id="umfaMetersGrid" [showBorders]="true"
                         class="grid-container" [hoverStateEnabled]="true" displayExpr="MeterNo" valueExpr="Id"
-                        (onSelectionChanged)="selectMappedMeter($event)">
+                        (onRowClick)="selectMappedMeter($event)">
                         <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
                         <dxo-paging [pageSize]="10"> </dxo-paging>
                         <dxo-pager [visible]="true" [allowedPageSizes]="allowedPageSizes" [displayMode]="'compact'"

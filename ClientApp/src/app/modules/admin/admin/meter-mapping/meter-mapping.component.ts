@@ -22,7 +22,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { IUmfaMeter } from 'app/core/models/umfameter.model';
 import { IAmrUser } from 'app/core/models';
-import { IScadaMeter } from 'app/core/models/scadaMeter.model';
+import { IScadaMeter } from 'app/core/models/scadameter.model';
 import { IMappedMeter } from 'app/core/models/mappedmeter.model';
 
 @Component({
@@ -33,9 +33,9 @@ import { IMappedMeter } from 'app/core/models/mappedmeter.model';
 
 export class MeterMappingComponent implements OnInit {
     user: IopUser;
-    umfaMeters: IUmfaMeter[];
-    scadaMeters: IScadaMeter[];
-    mappedMeters: IMappedMeter[];
+    umfaMeters$: Observable<IUmfaMeter[]>;
+    scadaMeters$: Observable<IScadaMeter[]>;
+    mappedMeters$: Observable<IMappedMeter[]>;
     selectedBuildingId: 0;
     selectedAmrMeter: any;
     selectedUmfaMeter: any;
@@ -101,7 +101,7 @@ export class MeterMappingComponent implements OnInit {
     }
 
     onMetersRetrieved(metrs: any ){
-        this.umfaMeters = metrs;
+        this.umfaMeters$ = metrs;
     }
 
     getScadaUserDetails(userId){
