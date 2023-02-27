@@ -81,6 +81,7 @@ IConfiguration? configuration = builder.Configuration;
     services.AddScoped<BuildingRecoveryReportService>();
     services.AddTransient<IScadaCalls, ScadaCalls>();
     services.AddScoped<DashboardService, DashboardService>();
+    services.AddScoped<MappedMetersService, MappedMetersService>();
 
         //Data components
     services.AddScoped<IPortalStatsRepository, PortalStatsRepository>();
