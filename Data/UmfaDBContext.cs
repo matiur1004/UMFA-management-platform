@@ -1,4 +1,5 @@
 ﻿using ClientPortal.Data.Entities;
+using ClientPortal.Data.Entities.UMFAEntities;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClientPortal.Data
@@ -19,6 +20,9 @@ namespace ClientPortal.Data
         public DbSet<UMFABuildingService> UMFABuildingServices { get; set; }
         [NotMapped]
         public DbSet<spCall> CallaProc { get; set; }
+
+        [NotMapped]
+        public DbSet<UMFAMeter> UMFAMeters { get; set; }
 
         public UmfaDBContext() {}
 

@@ -12,6 +12,7 @@ namespace ClientPortal.Data.Repositories
         Task<UMFAPeriodResponse> GetPeriodsAsync(int umfaBuildingId);
         Task<Building> AddLocalBuilding(int umfaId, string name, int partnerId, string partner, User user);
         Task<UMFABuildingServiceResponse> GetUMFABuildingServices(int umfaBuildingId);
+        Task<UMFAMeterResponse> GetMetersForBuilding(int umfaBuildingId);
     }
     public class UMFABuildingRepository : IUMFABuildingRepository
     {
@@ -147,6 +148,26 @@ namespace ClientPortal.Data.Repositories
                 return ret;
             }
         }
+
+        public async Task<UMFAMeterResponse> GetMetersForBuilding(int umfaBuildingId)
+        {
+            var ret = new UMFAMeterResponse(umfaBuildingId);
+            try
+            {
+                var result = await _context.UMFAMeters.FromSqlRaw($"exec upPortal_GetMetersForBuilding {umfaBuildingId}").ToListAsync();
+                ret.UmfaMeters = result;
+                ret.UmfaMeters.Sort((b1, b2) => string.Compare(b1.MeterNo, b2.MeterNo));
+                ret.Response = $"Successfully retrieved {result.Count} Meters for Building {umfaBuildingId}";
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while retrieving umfa buildings for user {umfaBuildingId}: {ex.Message}");
+                ret.Response = $"Error while retrieving umfa buildings for user {umfaBuildingId}: {ex.Message}";
+                return ret;
+            }
+        }
+
         public async Task<bool> SaveLocalAsync()
         {
             try
