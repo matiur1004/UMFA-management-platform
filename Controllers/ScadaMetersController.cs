@@ -67,7 +67,7 @@ namespace ClientPortal.Controllers
             XElement element = XElement.Parse(result);
             foreach (var meterLine in element.Elements())
             {
-                _meterItems.Add(new MeterItem(meterLine.Element("Key1").Value, meterLine.Element("Key2").Value));
+                _meterItems.Add(new MeterItem(meterLine.Element("SerialNo").Value, meterLine.Element("Name").Value));
             }
 
             return _meterItems;
@@ -77,13 +77,13 @@ namespace ClientPortal.Controllers
     public class MeterItem
     {
 
-        public MeterItem(string key1, string key2)
+        public MeterItem(string serialNo, string name)
         {
-            Key1 = key1;
-            Key2 = key2;
+            SerialNo = serialNo;
+            Name = name;
         }
-        public string Key1 { get; set; }
-        public string Key2 { get; set; }
+        public string SerialNo { get; set; }
+        public string Name { get; set; }
 
     }
 }
