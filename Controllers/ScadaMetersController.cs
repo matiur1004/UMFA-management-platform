@@ -14,7 +14,7 @@ namespace ClientPortal.Controllers
     {
 
         // GET: ScadaMeters/GetAsync
-        [HttpGet("GetAsync")]
+        [HttpPost("GetAsync")]
         public async Task<string> GetAsync([FromBody] GetUserAndPassword UserObj)
         {
             var scadaUrl = "https://umfaholdings-gideon.pnpscada.com:443/reportVarious.jsp?";

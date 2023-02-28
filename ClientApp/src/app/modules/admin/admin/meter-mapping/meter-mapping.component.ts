@@ -6,7 +6,7 @@ import {
     enableProdMode,
     OnInit,
 } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { IUmfaBuilding, IopUser } from 'app/core/models';
 import {
     BuildingService,
@@ -18,6 +18,7 @@ import {
     FormControl,
     UntypedFormBuilder,
     UntypedFormGroup,
+    Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IUmfaMeter } from 'app/core/models/umfameter.model';
@@ -33,8 +34,8 @@ import { IMappedMeter } from 'app/core/models/mappedmeter.model';
 
 export class MeterMappingComponent implements OnInit {
     user: IopUser;
-    umfaMeters$: Observable<IUmfaMeter[]>;
-    scadaMeters$: Observable<IScadaMeter[]>;
+    umfaMeters: IUmfaMeter[] = [];
+    scadaMeters: IScadaMeter[] = [];
     mappedMeters$: Observable<IMappedMeter[]>;
     selectedBuildingId: 0;
     selectedUmfaMeter: any;
@@ -52,11 +53,10 @@ export class MeterMappingComponent implements OnInit {
     scadaUserName: any;
     scadaPassword: any;
     UmfaId: any;
+
+    private _unsubscribeAll: Subject<any> = new Subject<any>();
+    
     constructor(
-        private route: ActivatedRoute,
-        private router: Router,
-        private meterService: MeterService,
-        private sbService: SnackBarService,
         private bldService: BuildingService,
         private usrService: UserService,
         private _formBuilder: UntypedFormBuilder
@@ -64,29 +64,28 @@ export class MeterMappingComponent implements OnInit {
 
     ngOnInit() {
         this.form = this._formBuilder.group({
-            Id: [0],
-            UmfaId: [null],
+            //Id: [0],
+            UmfaId: [null, Validators.required],
+            UmfaMeterId: [null, Validators.required],
+            ScadaMeterId: [null, Validators.required],
+            RegisterType: [null, Validators.required],
+            TimeOfUse: [null, Validators.required],
+            SupplyType: [null, Validators.required],
+            Location: [null, Validators.required],
+            Description: ['', Validators.required]
         })
-        const usr = this.usrService.userValue;
-        this.bldService.getBuildingsForUser(usr.UmfaId).subscribe({
-            next: (bldgs) => {
-                this.onBuildingsRetrieved(bldgs);
-            },
-            error: (err) => (this.errMessage = err),
-            complete: () => (this.loading = false),
-        });
+        this.bldService.buildings$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((data: IUmfaBuilding[]) => {
+                this.buildings = data;
+            });
         //this.meters$ =  this.meterService.getMetersForUser(usr.Id);
     }
 
-    onBuildingsRetrieved(bldgs: any) {
-        this.buildings = bldgs;
-    }
-
     selectionChanged(e: any) {
-        console.log("Selected BuildingId: " + e.BuildingId + " - Name: " + e.Name);
         this.selectedBuildingId = e.BuildingId;
         this.getUmfaMetersForBuilding(this.selectedBuildingId);
-        this.getScadaUserDetails(this.UmfaId);
+        this.getScadaUserDetails(this.usrService.userValue.UmfaId);
         this.getMappedMetersForBuilding(e.BuildingId)
       }
 
@@ -101,11 +100,11 @@ export class MeterMappingComponent implements OnInit {
 }
 
     onMetersRetrieved(metrs: any ){
-        this.umfaMeters$ = metrs;
+        this.umfaMeters = metrs;
     }
 
     getScadaUserDetails(userId){
-        this.usrService.getAmrScadaUser(userId).subscribe({
+        this.usrService.getAmrScadaUser(1).subscribe({
             next: au => {
               this.onAmrScadaUserRetrieved(au)
             },
@@ -115,33 +114,34 @@ export class MeterMappingComponent implements OnInit {
 
     async onAmrScadaUserRetrieved(aU: IAmrUser): Promise<void> {
         this.scadaUser = aU;
-            this.scadaUserName =  this.scadaUser.ScadaUserName;
-            this.scadaPassword = this.scadaUser.ScadaPassword;
-            this.getScadaMetersForUser(this.scadaUserName, this.scadaPassword)
+        // this.scadaUserName =  this.scadaUser.ScadaUserName;
+        // this.scadaPassword = this.scadaUser.ScadaPassword;
+        this.scadaUserName = 'umfagtw.gtwadmin';
+        this.scadaPassword = 'gtwgtwumfa';
+        this.getScadaMetersForUser(this.scadaUserName, this.scadaPassword)
     }
 
     getScadaMetersForUser(userName, userPassword){
-        // this.usrService.getAmrScadaUser(userId).subscribe({
-        //     next: au => {
-        //       this.onAmrScadaUserRetrieved(au)
-        //     },
-        //     error: err => this.errMessage = err
-        //   });
-
+        this.usrService.getScadaMetersForUser(userName, userPassword).subscribe(res => {
+            this.scadaMeters = res;
+        })
     }
 
     getMappedMetersForBuilding(buildingId){
-
+        this.bldService.getMappedMetersForBuilding(buildingId).subscribe(res => {
+            console.log('mapped meters', res);
+        })
     }
 
     selectScadaMeter(e) {
-        this.selectedScadaMeter = e.value;
-        console.log("Scada Meter: " + this.selectedScadaMeter);
+        console.log(e);
+        this.selectedScadaMeter = e.data;
+        this.form.get('ScadaMeterId').setValue(this.selectedScadaMeter.Serial);
     }
 
-    selectUmfaMeter(e) {
-        this.selectedUmfaMeter = e.selectedRowsData[0];
-        console.log("Umfa Meter: " + this.selectedUmfaMeter);
+    selectUmfaMeter(event) {
+        this.selectedUmfaMeter = event.data;
+        this.form.get('UmfaMeterId').setValue(this.selectedUmfaMeter.MeterId);
     }
 
     selectMappedMeter(e) {
@@ -152,5 +152,10 @@ export class MeterMappingComponent implements OnInit {
     onDelete(e) {
         console.log('Delete', e);
         e.event.preventDefault();
+    }
+
+    ngOnDestroy(): void {
+        this._unsubscribeAll.next(null);
+        this._unsubscribeAll.complete();
     }
 }

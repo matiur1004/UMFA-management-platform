@@ -9,7 +9,13 @@ import { IUmfaMeter } from "app/core/models/umfameter.model";
 @Injectable({ providedIn: 'root' })
 export class BuildingService {
 
+  private _buildings: BehaviorSubject<IUmfaBuilding[]> = new BehaviorSubject([]);
+
   constructor(private http: HttpClient) { }
+
+  get buildings$(): Observable<any> {
+    return this._buildings.asObservable();
+  }
 
   //buildings
   getBuildingsForUser(userId: number): Observable<IUmfaBuilding[]> {
@@ -18,6 +24,7 @@ export class BuildingService {
       .pipe(
         catchError(err => this.catchErrors(err)),
         tap(bl => {
+          this._buildings.next(bl);
           //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
         })
       );
@@ -70,10 +77,22 @@ export class BuildingService {
         tap(bps => {
           //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
         }),
-        map(bm => { return bm.UmfaMeters })
+        map(bm => { return bm })
       );
   }
 
+  getMappedMetersForBuilding(umfaBuildingId: number): Observable<IUmfaMeter[]> {
+    const url = `${CONFIG.apiURL}/MappedMeters/GetAllMappedMetersForBuilding/${umfaBuildingId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchErrors(err)),
+        tap(bps => {
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        }),
+        map(bm => { return bm })
+      );
+  }
+  
   //catches errors
   private catchErrors(error: { error: { message: any; }; message: any; }): Observable<Response> {
     if (error && error.error && error.error.message) { //clientside error

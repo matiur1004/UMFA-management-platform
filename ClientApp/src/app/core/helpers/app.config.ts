@@ -88,7 +88,7 @@ export const CONFIG: ApplicationConfiguration = {
   addMappedMeter: "/MappedMeters/AddMappedMeter/",
   removeMappedMeter: "MappedMeters/RemoveMappedMeter/",
   //path for UmfaMeters
-  getAllUmfaMetersForBuilding: "Building/umfameters/",
+  getAllUmfaMetersForBuilding: "/Building/umfameters/",
   //path for ScadaMeters
-  getScadaMetersForUser: "ScadaMeters/GetAsync"
+  getScadaMetersForUser: "/ScadaMeters/GetAsync"
 };
