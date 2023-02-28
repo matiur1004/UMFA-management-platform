@@ -26,7 +26,7 @@ import { IScadaMeter } from 'app/core/models/scadameter.model';
 import { IMappedMeter } from 'app/core/models/mappedmeter.model';
 import { DxDataGridComponent } from 'devextreme-angular';
 import dxDataGrid from 'devextreme/ui/data_grid';
-import { CONFIRM_MODAL_CONFIG } from '@core/config/modal.config';
+import { ALERT_MODAL_CONFIG, CONFIRM_MODAL_CONFIG } from '@core/config/modal.config';
 import { UmfaUtils } from '@core/utils/umfa.utils';
 
 @Component({
@@ -114,8 +114,8 @@ export class MeterMappingComponent implements OnInit {
         if (event.rowType === "data") {
             let meterId = event.data.MeterId;
             if (this.mappedMeters.find(mm => mm.BuildingServiceId == meterId)) {
-                event.rowElement.style.background = '#212c4f';
-                event.rowElement.style.color = 'white';
+                event.rowElement.style.background = '#e2e2e2'; //#212c4f
+                //event.rowElement.style.color = 'white';
             }
         }
     }
@@ -124,8 +124,8 @@ export class MeterMappingComponent implements OnInit {
         if (event.rowType === "data") {
             let serialNo = event.data.Serial;
             if (this.mappedMeters.find(mm => mm.ScadaSerial == serialNo)) {
-                event.rowElement.style.background = '#212c4f';
-                event.rowElement.style.color = 'white';
+                event.rowElement.style.background = '#e2e2e2';
+                //event.rowElement.style.color = 'white';
             }
         }
     }
@@ -205,13 +205,35 @@ export class MeterMappingComponent implements OnInit {
             'SupplyType': formData['SupplyType'],
             'Location': formData['Location']
         };
-        this.bldService.addMappedMeter(data).subscribe(res => {
-            this.umfaMeterGrid.instance.clearSelection();
-            this.scadaMeterGrid.instance.clearSelection();
-            this.form.reset();
-            this.form.get('UmfaId').setValue(this.selectedBuildingId);
-            this.mappedMeters.push({...res});
-        })
+        if(this.checkExistingInMappedMeters(data)) {
+            const dialogRef = this._ufUtils.fuseConfirmDialog(
+                ALERT_MODAL_CONFIG,
+                '', 
+                `This mapped meter is already existing!`);
+        } else {
+            this.bldService.addMappedMeter(data).subscribe(res => {
+                this.umfaMeterGrid.instance.clearSelection();
+                this.scadaMeterGrid.instance.clearSelection();
+                this.form.reset();
+                this.form.get('UmfaId').setValue(this.selectedBuildingId);
+                this.mappedMeters.push({...res});
+            })
+        }
+    }
+
+    checkExistingInMappedMeters(data) {
+        if(this.mappedMeters.find(meter => 
+            meter.BuildingServiceId == data['BuildingServiceId'] && 
+            meter.ScadaSerial == data['ScadaSerial'] &&
+            meter.RegisterType == data['RegisterType'] &&
+            meter.TOUHeader == data['TOUHeader'] && 
+            meter.SupplyType == data['SupplyType'] &&
+            meter.Location == data['Location']
+            )){
+                return true;
+            }
+
+        return false;
 
     }
 
