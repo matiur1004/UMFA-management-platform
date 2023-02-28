@@ -5,13 +5,12 @@ import {
     PipeTransform,
     enableProdMode,
     OnInit,
+    ViewChild,
 } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { IUmfaBuilding, IopUser } from 'app/core/models';
 import {
     BuildingService,
-    MeterService,
-    SnackBarService,
     UserService,
 } from 'app/shared/services'
 import {
@@ -25,6 +24,10 @@ import { IUmfaMeter } from 'app/core/models/umfameter.model';
 import { IAmrUser } from 'app/core/models';
 import { IScadaMeter } from 'app/core/models/scadameter.model';
 import { IMappedMeter } from 'app/core/models/mappedmeter.model';
+import { DxDataGridComponent } from 'devextreme-angular';
+import dxDataGrid from 'devextreme/ui/data_grid';
+import { CONFIRM_MODAL_CONFIG } from '@core/config/modal.config';
+import { UmfaUtils } from '@core/utils/umfa.utils';
 
 @Component({
     selector: 'app-meter-mapping',
@@ -33,10 +36,13 @@ import { IMappedMeter } from 'app/core/models/mappedmeter.model';
 })
 
 export class MeterMappingComponent implements OnInit {
+    @ViewChild('umfaMeterTable') umfaMeterGrid!: DxDataGridComponent;
+    @ViewChild('scadaMeterTable') scadaMeterGrid!: DxDataGridComponent;
+    
     user: IopUser;
     umfaMeters: IUmfaMeter[] = [];
     scadaMeters: IScadaMeter[] = [];
-    mappedMeters$: Observable<IMappedMeter[]>;
+    mappedMeters: IMappedMeter[] = [];
     selectedBuildingId: 0;
     selectedUmfaMeter: any;
     selectedScadaMeter: any;
@@ -59,8 +65,11 @@ export class MeterMappingComponent implements OnInit {
     constructor(
         private bldService: BuildingService,
         private usrService: UserService,
-        private _formBuilder: UntypedFormBuilder
-    ) {}
+        private _formBuilder: UntypedFormBuilder,
+        private _ufUtils: UmfaUtils
+    ) {
+        this.onRemoveMappedMeter = this.onRemoveMappedMeter.bind(this);
+    }
 
     ngOnInit() {
         this.form = this._formBuilder.group({
@@ -84,8 +93,6 @@ export class MeterMappingComponent implements OnInit {
 
     selectionChanged(e: any) {
         this.selectedBuildingId = e.BuildingId;
-        this.getUmfaMetersForBuilding(this.selectedBuildingId);
-        this.getScadaUserDetails(this.usrService.userValue.UmfaId);
         this.getMappedMetersForBuilding(e.BuildingId)
       }
 
@@ -97,10 +104,30 @@ export class MeterMappingComponent implements OnInit {
             error: (err) => (this.errMessage = err),
             complete: () => (this.loading = false),
         });
-}
+    }
 
     onMetersRetrieved(metrs: any ){
         this.umfaMeters = metrs;
+    }
+
+    onUmfaMeterRowPrepared(event) {
+        if (event.rowType === "data") {
+            let meterId = event.data.MeterId;
+            if (this.mappedMeters.find(mm => mm.BuildingServiceId == meterId)) {
+                event.rowElement.style.background = '#212c4f';
+                event.rowElement.style.color = 'white';
+            }
+        }
+    }
+
+    onScadaMeterRowPrepared(event) {
+        if (event.rowType === "data") {
+            let serialNo = event.data.Serial;
+            if (this.mappedMeters.find(mm => mm.ScadaSerial == serialNo)) {
+                event.rowElement.style.background = '#212c4f';
+                event.rowElement.style.color = 'white';
+            }
+        }
     }
 
     getScadaUserDetails(userId){
@@ -129,12 +156,14 @@ export class MeterMappingComponent implements OnInit {
 
     getMappedMetersForBuilding(buildingId){
         this.bldService.getMappedMetersForBuilding(buildingId).subscribe(res => {
-            console.log('mapped meters', res);
+            this.mappedMeters = res;
+            this.getUmfaMetersForBuilding(this.selectedBuildingId);
+            this.getScadaUserDetails(this.usrService.userValue.UmfaId);
+            //console.log('mapped meters', res);
         })
     }
 
     selectScadaMeter(e) {
-        console.log(e);
         this.selectedScadaMeter = e.data;
         this.form.get('ScadaMeterId').setValue(this.selectedScadaMeter.Serial);
     }
@@ -145,7 +174,7 @@ export class MeterMappingComponent implements OnInit {
     }
 
     selectMappedMeter(e) {
-        this.selectedMappedMeter = e.selectedRowsData[0];
+        this.selectedMappedMeter =e.data;
         console.log("Mapped Meter: " + this.selectedMappedMeter);
     }
 
@@ -154,6 +183,55 @@ export class MeterMappingComponent implements OnInit {
         e.event.preventDefault();
     }
 
+    addMeterMapping() {
+        let formData = this.form.value;
+        let building = this.buildings.find(bld => bld.BuildingId == formData['UmfaId']);
+        let umfaMeter = this.umfaMeters.find(ufM => ufM.MeterId == formData['UmfaMeterId']);
+        let scadaMeter = this.scadaMeters.find(scm => scm.SerialNo == formData['Serial']);
+        let data: any = {};
+        data = {...data, 
+            'BuildingId': formData['UmfaId'],
+            'BuildingName': building.Name,
+            'PartnerId': building.PartnerId,
+            'PartnerName': building.Partner,
+            'BuildingServiceId': umfaMeter.MeterId,
+            'MeterNo': umfaMeter.MeterNo,
+            'UmfaDescription': umfaMeter.Description,
+            'Description': formData['Description'],
+            'ScadaSerial': scadaMeter['Serial'],
+            'ScadaDescription': scadaMeter['Name'],
+            'RegisterType': formData['RegisterType'],
+            'TOUHeader': formData['TimeOfUse'],
+            'SupplyType': formData['SupplyType'],
+            'Location': formData['Location']
+        };
+        this.bldService.addMappedMeter(data).subscribe(res => {
+            this.umfaMeterGrid.instance.clearSelection();
+            this.scadaMeterGrid.instance.clearSelection();
+            this.form.reset();
+            this.form.get('UmfaId').setValue(this.selectedBuildingId);
+            this.mappedMeters.push({...res});
+        })
+
+    }
+
+    onRemoveMappedMeter(e) {
+        e.event.preventDefault();
+        const dialogRef = this._ufUtils.fuseConfirmDialog(
+            CONFIRM_MODAL_CONFIG,
+            '', 
+            `Are you sure you want to remove?`);
+        dialogRef.afterClosed().subscribe((result) => {
+            if(result == 'confirmed') {
+                let index = this.mappedMeters.findIndex(mm => mm.MappedMeterId == e.row.data.MappedMeterId);
+                this.bldService.removeMappedMeter(e.row.data.MappedMeterId)
+                    .subscribe(res => {
+                        this.mappedMeters.splice(index, 1);
+                    })
+            }
+        });
+        
+    }
     ngOnDestroy(): void {
         this._unsubscribeAll.next(null);
         this._unsubscribeAll.complete();

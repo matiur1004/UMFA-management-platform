@@ -5,6 +5,7 @@ import { IUmfaBuilding, IUmfaPartner, IUmfaPeriod } from "app/core/models";
 import { BehaviorSubject, map, shareReplay } from "rxjs";
 import { catchError, Observable, tap, throwError } from "rxjs";
 import { IUmfaMeter } from "app/core/models/umfameter.model";
+import { IMappedMeter } from "@core/models/mappedmeter.model";
 
 @Injectable({ providedIn: 'root' })
 export class BuildingService {
@@ -81,7 +82,7 @@ export class BuildingService {
       );
   }
 
-  getMappedMetersForBuilding(umfaBuildingId: number): Observable<IUmfaMeter[]> {
+  getMappedMetersForBuilding(umfaBuildingId: number): Observable<IMappedMeter[]> {
     const url = `${CONFIG.apiURL}/MappedMeters/GetAllMappedMetersForBuilding/${umfaBuildingId}`;
     return this.http.get<any>(url, { withCredentials: true })
       .pipe(
@@ -93,6 +94,30 @@ export class BuildingService {
       );
   }
   
+  addMappedMeter(data: any): Observable<any> {
+    const url = `${CONFIG.apiURL}/MappedMeters/AddMappedMeter`;
+    return this.http.post<any>(url, data, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchErrors(err)),
+        tap(bps => {
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        }),
+        map(bm => { return bm })
+      );
+  }
+
+  removeMappedMeter(meterId): Observable<any> {
+    const url = `${CONFIG.apiURL}/MappedMeters/RemoveMappedMeter/${meterId}`;
+    return this.http.delete<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchErrors(err)),
+        tap(bps => {
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        }),
+        map(bm => { return bm })
+      );
+  }
+
   //catches errors
   private catchErrors(error: { error: { message: any; }; message: any; }): Observable<Response> {
     if (error && error.error && error.error.message) { //clientside error
