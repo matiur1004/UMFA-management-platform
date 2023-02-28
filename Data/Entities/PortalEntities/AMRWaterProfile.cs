@@ -1,5 +1,7 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClientPortal.Data.Entities
 {
@@ -12,10 +14,14 @@ namespace ClientPortal.Data.Entities
         public string Description { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        [Column(TypeName = "decimal(18, 4)")]
         public decimal MaxFlow { get; set; }
         public DateTime MaxFlowDate { get; set; }
+        [Column(TypeName = "decimal(18, 4)")]
         public decimal NightFlow { get; set; }
+        [Column(TypeName = "decimal(18, 4)")]
         public decimal PeriodUsage { get; set; }
+        [Column(TypeName = "decimal(18, 4)")]
         public decimal DataPercentage { get; set; }
         public List<WaterProfile> Profile { get; set; }
     }
@@ -25,6 +31,7 @@ namespace ClientPortal.Data.Entities
     public class WaterProfile
     {
         public DateTime ReadingDate { get; set; }
+        [Column(TypeName = "decimal(18, 4)")]
         public decimal ActFlow { get; set; }
         public bool Calculated { get; set; }
         public string Color { get; set; }

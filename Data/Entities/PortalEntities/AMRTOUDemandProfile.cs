@@ -1,4 +1,7 @@
-﻿namespace ClientPortal.Data.Entities
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace ClientPortal.Data.Entities
 {
     [Serializable]
     [Keyless]
@@ -9,9 +12,12 @@
         public string Description { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        [Column(TypeName = "decimal(18, 4)")]
         public decimal MaxDemand { get; set; }
         public DateTime MaxDemandDate { get; set; }
+        [Column(TypeName = "decimal(18, 4)")]
         public decimal PeriodUsage { get; set; }
+        [Column(TypeName = "decimal(18, 4)")]
         public decimal DataPercentage { get; set; }
         public List<DemandProfile> Profile { get; set; }
     }
@@ -22,8 +28,11 @@
     {
         public DateTime ReadingDate { get; set; }
         public string ShortName { get; set; }
+        [Column(TypeName = "decimal(18, 4)")]
         public decimal Demand { get; set; }
+        [Column(TypeName = "decimal(18, 4)")]
         public decimal ActEnergy { get; set; }
+        [Column(TypeName = "decimal(18, 4)")]
         public decimal ReActEnergy { get; set; }
         public bool Calculated { get; set; }
         public string Color { get; set; }
