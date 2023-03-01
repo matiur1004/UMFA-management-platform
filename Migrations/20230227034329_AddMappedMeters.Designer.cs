@@ -356,11 +356,11 @@ namespace ClientPortal.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Key1")
+                    b.Property<string>("ScadaSerial")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Key2")
+                    b.Property<string>("ScadaDescription")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
