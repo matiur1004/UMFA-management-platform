@@ -1,5 +1,5 @@
 export interface IScadaMeter {
     ScadaMeterId: number;
-    SerialNo: number;
+    Serial: number;
     Description: string;
 }

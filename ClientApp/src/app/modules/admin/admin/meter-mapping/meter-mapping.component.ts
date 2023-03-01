@@ -205,7 +205,7 @@ export class MeterMappingComponent implements OnInit {
         let formData = this.form.value;
         let building = this.buildings.find(bld => bld.BuildingId == formData['UmfaId']);
         let umfaMeter = this.umfaMeters.find(ufM => ufM.MeterId == formData['UmfaMeterId']);
-        let scadaMeter = this.scadaMeters.find(scm => scm.SerialNo == formData['Serial']);
+        let scadaMeter = this.scadaMeters.find(scm => scm.Serial == formData['ScadaMeterId']);
         let data: any = {};
         data = {
             ...data,
