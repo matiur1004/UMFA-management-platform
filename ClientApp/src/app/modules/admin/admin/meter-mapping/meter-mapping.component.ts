@@ -117,11 +117,8 @@ export class MeterMappingComponent implements OnInit {
     }
 
     onMetersRetrieved(metrs: IUmfaMeter[]) {
-        this.umfaMeters = metrs.map(item => {
-            if (this.mappedMeters.find(mm => mm.BuildingServiceId == item.MeterId)) item.Mapped = true
-            else item.Mapped = false;
-            return item;
-        });
+        this.umfaMeters = metrs;
+        this.updateUmfaMeterMappedField();
     }
 
     onUmfaMeterRowPrepared(event) {
@@ -164,11 +161,8 @@ export class MeterMappingComponent implements OnInit {
 
     getScadaMetersForUser(userName, userPassword) {
         this.usrService.getScadaMetersForUser(userName, userPassword).subscribe(res => {
-            this.scadaMeters = res.map(item => {
-                if (this.mappedMeters.find(mm => mm.ScadaSerial == item.Serial)) item.Mapped = true
-                else item.Mapped = false;
-                return item;
-            });
+            this.scadaMeters = res;
+            this.updateScadaMeterMappedField();
         })
     }
 
@@ -236,6 +230,8 @@ export class MeterMappingComponent implements OnInit {
                 this.form.reset();
                 this.form.get('UmfaId').setValue(this.selectedBuildingId);
                 this.mappedMeters.push({ ...res });
+                this.umfaMeterGrid.instance.refresh();
+                this.scadaMeterGrid.instance.refresh();
             })
         }
     }
@@ -268,11 +264,33 @@ export class MeterMappingComponent implements OnInit {
                 this.bldService.removeMappedMeter(e.row.data.MappedMeterId)
                     .subscribe(res => {
                         this.mappedMeters.splice(index, 1);
+                        // update mapped field
+                        this.updateScadaMeterMappedField();
+                        this.updateUmfaMeterMappedField();
+
+                        this.umfaMeterGrid.instance.refresh();
+                        this.scadaMeterGrid.instance.refresh();
                     })
             }
         });
 
     }
+
+    updateScadaMeterMappedField() {
+        this.scadaMeters = this.scadaMeters.map(item => {
+            if (this.mappedMeters.find(mm => mm.ScadaSerial == item.Serial)) item.Mapped = true
+            else item.Mapped = false;
+            return item;
+        });
+    }
+    updateUmfaMeterMappedField() {
+        this.umfaMeters = this.umfaMeters.map(item => {
+            if (this.mappedMeters.find(mm => mm.BuildingServiceId == item.MeterId)) item.Mapped = true
+            else item.Mapped = false;
+            return item;
+        });
+    }
+
     ngOnDestroy(): void {
         this._unsubscribeAll.next(null);
         this._unsubscribeAll.complete();
