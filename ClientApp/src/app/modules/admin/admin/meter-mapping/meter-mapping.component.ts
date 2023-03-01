@@ -38,7 +38,7 @@ import { UmfaUtils } from '@core/utils/umfa.utils';
 export class MeterMappingComponent implements OnInit {
     @ViewChild('umfaMeterTable') umfaMeterGrid!: DxDataGridComponent;
     @ViewChild('scadaMeterTable') scadaMeterGrid!: DxDataGridComponent;
-    
+
     user: IopUser;
     umfaMeters: IUmfaMeter[] = [];
     scadaMeters: IScadaMeter[] = [];
@@ -63,7 +63,7 @@ export class MeterMappingComponent implements OnInit {
     currentFilter: any;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
-    
+
     constructor(
         private bldService: BuildingService,
         private usrService: UserService,
@@ -104,7 +104,7 @@ export class MeterMappingComponent implements OnInit {
     selectionChanged(e: any) {
         this.selectedBuildingId = e.BuildingId;
         this.getMappedMetersForBuilding(e.BuildingId)
-      }
+    }
 
     getUmfaMetersForBuilding(buildingId): void {
         this.bldService.getMetersForBuilding(buildingId).subscribe({
@@ -116,9 +116,9 @@ export class MeterMappingComponent implements OnInit {
         });
     }
 
-    onMetersRetrieved(metrs: IUmfaMeter[] ){
+    onMetersRetrieved(metrs: IUmfaMeter[]) {
         this.umfaMeters = metrs.map(item => {
-            if(this.mappedMeters.find(mm => mm.BuildingServiceId == item.MeterId)) item.Mapped = true
+            if (this.mappedMeters.find(mm => mm.BuildingServiceId == item.MeterId)) item.Mapped = true
             else item.Mapped = false;
             return item;
         });
@@ -144,13 +144,13 @@ export class MeterMappingComponent implements OnInit {
         }
     }
 
-    getScadaUserDetails(userId){
+    getScadaUserDetails(userId) {
         this.usrService.getAmrScadaUser(1).subscribe({
             next: au => {
-              this.onAmrScadaUserRetrieved(au)
+                this.onAmrScadaUserRetrieved(au)
             },
             error: err => this.errMessage = err
-          });
+        });
     }
 
     async onAmrScadaUserRetrieved(aU: IAmrUser): Promise<void> {
@@ -162,17 +162,17 @@ export class MeterMappingComponent implements OnInit {
         this.getScadaMetersForUser(this.scadaUserName, this.scadaPassword)
     }
 
-    getScadaMetersForUser(userName, userPassword){
+    getScadaMetersForUser(userName, userPassword) {
         this.usrService.getScadaMetersForUser(userName, userPassword).subscribe(res => {
             this.scadaMeters = res.map(item => {
-                if(this.mappedMeters.find(mm => mm.ScadaSerial == item.Serial)) item.Mapped = true
+                if (this.mappedMeters.find(mm => mm.ScadaSerial == item.Serial)) item.Mapped = true
                 else item.Mapped = false;
                 return item;
             });
         })
     }
 
-    getMappedMetersForBuilding(buildingId){
+    getMappedMetersForBuilding(buildingId) {
         this.bldService.getMappedMetersForBuilding(buildingId).subscribe(res => {
             this.mappedMeters = res;
             this.getUmfaMetersForBuilding(this.selectedBuildingId);
@@ -192,7 +192,7 @@ export class MeterMappingComponent implements OnInit {
     }
 
     selectMappedMeter(e) {
-        this.selectedMappedMeter =e.data;
+        this.selectedMappedMeter = e.data;
         console.log("Mapped Meter: " + this.selectedMappedMeter);
     }
 
@@ -207,7 +207,8 @@ export class MeterMappingComponent implements OnInit {
         let umfaMeter = this.umfaMeters.find(ufM => ufM.MeterId == formData['UmfaMeterId']);
         let scadaMeter = this.scadaMeters.find(scm => scm.SerialNo == formData['Serial']);
         let data: any = {};
-        data = {...data, 
+        data = {
+            ...data,
             'BuildingId': formData['UmfaId'],
             'BuildingName': building.Name,
             'PartnerId': building.PartnerId,
@@ -223,33 +224,33 @@ export class MeterMappingComponent implements OnInit {
             'SupplyType': formData['SupplyType'],
             'Location': formData['Location']
         };
-        if(this.checkExistingInMappedMeters(data)) {
+        if (this.checkExistingInMappedMeters(data)) {
             const dialogRef = this._ufUtils.fuseConfirmDialog(
                 ALERT_MODAL_CONFIG,
-                '', 
-                `This Meter is already Mapped!`);
+                '',
+                `This mapped meter is already existing!`);
         } else {
             this.bldService.addMappedMeter(data).subscribe(res => {
                 this.umfaMeterGrid.instance.clearSelection();
                 this.scadaMeterGrid.instance.clearSelection();
                 this.form.reset();
                 this.form.get('UmfaId').setValue(this.selectedBuildingId);
-                this.mappedMeters.push({...res});
+                this.mappedMeters.push({ ...res });
             })
         }
     }
 
     checkExistingInMappedMeters(data) {
-        if(this.mappedMeters.find(meter => 
-            meter.BuildingServiceId == data['BuildingServiceId'] && 
+        if (this.mappedMeters.find(meter =>
+            meter.BuildingServiceId == data['BuildingServiceId'] &&
             meter.ScadaSerial == data['ScadaSerial'] &&
             meter.RegisterType == data['RegisterType'] &&
-            meter.TOUHeader == data['TOUHeader'] && 
+            meter.TOUHeader == data['TOUHeader'] &&
             meter.SupplyType == data['SupplyType'] &&
             meter.Location == data['Location']
-            )){
-                return true;
-            }
+        )) {
+            return true;
+        }
 
         return false;
 
@@ -259,10 +260,10 @@ export class MeterMappingComponent implements OnInit {
         e.event.preventDefault();
         const dialogRef = this._ufUtils.fuseConfirmDialog(
             CONFIRM_MODAL_CONFIG,
-            '', 
+            '',
             `Are you sure you want to remove?`);
         dialogRef.afterClosed().subscribe((result) => {
-            if(result == 'confirmed') {
+            if (result == 'confirmed') {
                 let index = this.mappedMeters.findIndex(mm => mm.MappedMeterId == e.row.data.MappedMeterId);
                 this.bldService.removeMappedMeter(e.row.data.MappedMeterId)
                     .subscribe(res => {
@@ -270,7 +271,7 @@ export class MeterMappingComponent implements OnInit {
                     })
             }
         });
-        
+
     }
     ngOnDestroy(): void {
         this._unsubscribeAll.next(null);
