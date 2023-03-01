@@ -97,7 +97,7 @@
                         <ng-select placeholder="Select Location..." [formControlName]="'Location'">
                             <ng-option [value]="'Air Handling Unit'">Air Handling Unit</ng-option>
                             <ng-option [value]="'Basement'">Basement</ng-option>
-                            <ng-option [value]="'Borhole'">Borhole</ng-option>
+                            <ng-option [value]="'Borehole'">Borehole</ng-option>
                             <ng-option [value]="'Busbar'">Busbar</ng-option>
                             <ng-option [value]="'Chiller'">Chiller</ng-option>
                             <ng-option [value]="'Council'">Council</ng-option>
@@ -134,7 +134,7 @@
                             <mat-label class="form-label">Description</mat-label>
                             <input matInput [formControlName]="'Description'"/>
                         </mat-form-field>
-                    </div>                    
+                    </div>
                     <div style="align-items: center;">
                         <button mat-raised-button color="primary" class="dnm-btn dnm-btn-primary" [disabled]="!form.valid" (click)="addMeterMapping()">
                             <mat-icon [svgIcon]="'feather:addMeter'" class="mr-1"></mat-icon>

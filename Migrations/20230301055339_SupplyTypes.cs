@@ -20,10 +20,11 @@ namespace ClientPortal.Migrations
                 {
                     table.PrimaryKey("PK_SupplyTypes", x => x.SupplyTypeId);
                 });
-            migrationBuilder.Sql("DELETE FROM RegisterTypes", true);
 
-            migrationBuilder.InsertData("RegisterTypes",
-               new[] { "RegisterTypeName" },
+            migrationBuilder.Sql("DELETE FROM SupplyTypes", true);
+
+            migrationBuilder.InsertData("SupplyTypes",
+               new[] { "SupplyTypeName" },
                new object[,]
                {
                     {"AdHoc"},
