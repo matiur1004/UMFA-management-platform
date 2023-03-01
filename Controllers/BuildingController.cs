@@ -49,14 +49,14 @@ namespace ClientPortal.Controllers
                 var response = _buildingService.GetUmfaMetersAsync(umfaBuildingId).Result.UmfaMeters;
                 if (response != null)
                 {
-                    _logger.LogInformation($"Successfully got umfa buildings for user {umfaBuildingId}");
+                    _logger.LogInformation($"Successfully got umfa meters for building {umfaBuildingId}");
                     return Ok(response);
                 }
-                else throw new ApplicationException($"Failed to get umfa buildings for user {umfaBuildingId}");
+                else throw new ApplicationException($"Failed to get umfa meters for building {umfaBuildingId}");
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error while getting buildings for user {umfaBuildingId}: {ex.Message}");
+                _logger.LogError($"Error while getting meters for building {umfaBuildingId}: {ex.Message}");
                 return BadRequest(new ApplicationException(ex.Message));
             }
         }

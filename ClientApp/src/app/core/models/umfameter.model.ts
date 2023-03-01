@@ -6,5 +6,5 @@ export interface IUmfaMeter {
     MeterType: string;
     Location: string;
     Sequence: number;
-    Mapped: string;
+    Mapped: string | boolean;
 }

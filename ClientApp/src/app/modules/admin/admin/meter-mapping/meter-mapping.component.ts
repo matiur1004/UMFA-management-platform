@@ -59,6 +59,8 @@ export class MeterMappingComponent implements OnInit {
     scadaUserName: any;
     scadaPassword: any;
     UmfaId: any;
+    applyFilterTypes: any;
+    currentFilter: any;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     
@@ -69,6 +71,14 @@ export class MeterMappingComponent implements OnInit {
         private _ufUtils: UmfaUtils
     ) {
         this.onRemoveMappedMeter = this.onRemoveMappedMeter.bind(this);
+        this.applyFilterTypes = [{
+            key: 'auto',
+            name: 'Immediately',
+        }, {
+            key: 'onClick',
+            name: 'On Button Click',
+        }];
+        this.currentFilter = this.applyFilterTypes[0].key;
     }
 
     ngOnInit() {
@@ -106,15 +116,19 @@ export class MeterMappingComponent implements OnInit {
         });
     }
 
-    onMetersRetrieved(metrs: any ){
-        this.umfaMeters = metrs;
+    onMetersRetrieved(metrs: IUmfaMeter[] ){
+        this.umfaMeters = metrs.map(item => {
+            if(this.mappedMeters.find(mm => mm.BuildingServiceId == item.MeterId)) item.Mapped = true
+            else item.Mapped = false;
+            return item;
+        });
     }
 
     onUmfaMeterRowPrepared(event) {
         if (event.rowType === "data") {
             let meterId = event.data.MeterId;
             if (this.mappedMeters.find(mm => mm.BuildingServiceId == meterId)) {
-                event.rowElement.style.background = '#e2e2e2'; //#212c4f
+                event.rowElement.style.background = '#4ade80'; //#212c4f
                 //event.rowElement.style.color = 'white';
             }
         }
@@ -124,7 +138,7 @@ export class MeterMappingComponent implements OnInit {
         if (event.rowType === "data") {
             let serialNo = event.data.Serial;
             if (this.mappedMeters.find(mm => mm.ScadaSerial == serialNo)) {
-                event.rowElement.style.background = '#e2e2e2';
+                event.rowElement.style.background = '#4ade80';
                 //event.rowElement.style.color = 'white';
             }
         }
@@ -150,7 +164,11 @@ export class MeterMappingComponent implements OnInit {
 
     getScadaMetersForUser(userName, userPassword){
         this.usrService.getScadaMetersForUser(userName, userPassword).subscribe(res => {
-            this.scadaMeters = res;
+            this.scadaMeters = res.map(item => {
+                if(this.mappedMeters.find(mm => mm.ScadaSerial == item.Serial)) item.Mapped = true
+                else item.Mapped = false;
+                return item;
+            });
         })
     }
 
