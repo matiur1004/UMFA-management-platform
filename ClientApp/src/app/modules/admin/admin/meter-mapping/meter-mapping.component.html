@@ -4,8 +4,8 @@
             <div class="bg-card gap-x-4 gap-y-2 p-2">
                 <mat-label> Select Building </mat-label>
                 <ng-select [items]="buildings" bindLabel="Name" bindValue="BuildingId" [placeholder]="'Select Building'"
-                    [formControlName]="'UmfaId'" [searchable]="true" [clearable]="false"
-                    (change)="selectionChanged($event)">
+                           [formControlName]="'UmfaId'" [searchable]="true" [clearable]="false"
+                           (change)="selectionChanged($event)">
                 </ng-select>
             </div>
         </div>
@@ -19,10 +19,8 @@
                                   [selectedRowKeys]="[]" [showBorders]="true" class="grid-container" [hoverStateEnabled]="true"
                                   (onRowClick)="selectUmfaMeter($event)" (onRowPrepared)="onUmfaMeterRowPrepared($event)" #umfaMeterTable>
                         <dxo-scrolling rowRenderingMode="virtual"></dxo-scrolling>
-                        <dxo-filter-row
-                            [visible]="'true'"
-                            [applyFilter]="currentFilter"
-                        ></dxo-filter-row>
+                        <dxo-filter-row [visible]="'true'"
+                                        [applyFilter]="currentFilter"></dxo-filter-row>
                         <dxo-selection mode="single"></dxo-selection>
                         <dxo-paging [pageSize]="10"> </dxo-paging>
                         <dxo-pager [visible]="true" [allowedPageSizes]="allowedPageSizes" [displayMode]="'compact'"
@@ -31,11 +29,11 @@
                         <dxo-search-panel [visible]="true" [width]="200" placeholder="Search..."></dxo-search-panel>
                         <dxi-column dataField="Mapped" [width]="80"></dxi-column>
                         <dxi-column dataField="Location" [width]="80"></dxi-column>
-                        <dxi-column dataField="Sequence" [width]="80"></dxi-column>                        
+                        <dxi-column dataField="Sequence" [width]="80"></dxi-column>
                         <dxi-column dataField="MeterNo" [width]="120"></dxi-column>
                         <dxi-column dataField="Description"></dxi-column>
-                        
-                        
+
+
                     </dx-data-grid>
                 </div>
             </div>
@@ -46,10 +44,8 @@
                                   class="grid-container" [hoverStateEnabled]="true" keyExpr="Serial" [selectedRowKeys]="[]"
                                   (onRowClick)="selectScadaMeter($event)" (onRowPrepared)="onScadaMeterRowPrepared($event)" #scadaMeterTable>
                         <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
-                        <dxo-filter-row
-                            [visible]="'true'"
-                            [applyFilter]="currentFilter"
-                        ></dxo-filter-row>
+                        <dxo-filter-row [visible]="'true'"
+                                        [applyFilter]="currentFilter"></dxo-filter-row>
                         <dxo-paging [pageSize]="10"> </dxo-paging>
                         <dxo-selection mode="single"></dxo-selection>
                         <dxo-pager [visible]="true" [allowedPageSizes]="allowedPageSizes" [displayMode]="'compact'"
@@ -60,7 +56,7 @@
                         <dxi-column dataField="Serial" [width]="120"></dxi-column>
                         <dxi-column dataField="Name"></dxi-column>
                         <!-- <dxi-column dataField="Make" [width]="50"></dxi-column>
-    <dxi-column dataField="Model" [width]="50"></dxi-column> -->
+                        <dxi-column dataField="Model" [width]="50"></dxi-column> -->
                     </dx-data-grid>
                 </div>
             </div>
@@ -139,7 +135,7 @@
                     <div class="col-span-1">
                         <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
                             <mat-label class="form-label">Description</mat-label>
-                            <input matInput [formControlName]="'Description'"/>
+                            <input matInput [formControlName]="'Description'" />
                         </mat-form-field>
                     </div>
                     <div style="align-items: center;">
@@ -160,10 +156,8 @@
                                   class="grid-container" [hoverStateEnabled]="true" displayExpr="MeterNo" valueExpr="Id"
                                   (onRowClick)="selectMappedMeter($event)">
                         <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
-                        <dxo-filter-row
-                            [visible]="'true'"
-                            [applyFilter]="currentFilter"
-                        ></dxo-filter-row>
+                        <dxo-filter-row [visible]="'true'"
+                                        [applyFilter]="currentFilter"></dxo-filter-row>
                         <dxo-paging [pageSize]="10"> </dxo-paging>
                         <dxo-pager [visible]="true" [allowedPageSizes]="allowedPageSizes" [displayMode]="'compact'"
                                    [showPageSizeSelector]="true" [showInfo]="true" [showNavigationButtons]="true">
