@@ -16,17 +16,18 @@
                 <div class="bg-card flex flex-col gap-y-2 p-2">
                     <div class="text-lg py-1 border-b flex"><mat-icon>developer_board</mat-icon> UMFA Meters</div>
                     <dx-data-grid [dataSource]="umfaMeters" id="umfaMetersGrid" keyExpr="MeterId"
-                        [selectedRowKeys]="[]" [showBorders]="true" class="grid-container" [hoverStateEnabled]="true"
-                        (onRowClick)="selectUmfaMeter($event)" (onRowPrepared)="onUmfaMeterRowPrepared($event)" #umfaMeterTable>
+                                  [selectedRowKeys]="[]" [showBorders]="true" class="grid-container" [hoverStateEnabled]="true"
+                                  (onRowClick)="selectUmfaMeter($event)" (onRowPrepared)="onUmfaMeterRowPrepared($event)" #umfaMeterTable>
                         <dxo-scrolling rowRenderingMode="virtual"></dxo-scrolling>
+                        <dxo-filter-row [visible]="true"></dxo-filter-row>
                         <dxo-selection mode="single"></dxo-selection>
                         <dxo-paging [pageSize]="10"> </dxo-paging>
                         <dxo-pager [visible]="true" [allowedPageSizes]="allowedPageSizes" [displayMode]="'compact'"
-                            [showPageSizeSelector]="true" [showInfo]="true" [showNavigationButtons]="true">
+                                   [showPageSizeSelector]="true" [showInfo]="true" [showNavigationButtons]="true">
                         </dxo-pager>
                         <dxo-search-panel [visible]="true" [width]="200" placeholder="Search..."></dxo-search-panel>
                         <dxi-column dataField="MeterId" [visible]="false" width="70"></dxi-column>
-                        <dxi-column dataField="Mapped" [width]="70"></dxi-column>
+                        <dxi-column dataField="Mapped" [width]="70">False</dxi-column>
                         <dxi-column dataField="MeterNo" [width]="110"></dxi-column>
                         <dxi-column dataField="Description"></dxi-column>
                         <dxi-column dataField="RegisterType" [width]="70"></dxi-column>
@@ -40,20 +41,21 @@
                 <div class="bg-card p-2 flex flex-col gap-y-2">
                     <div class="text-lg py-1 border-b flex"><mat-icon>developer_board</mat-icon> AMR Scada Meters</div>
                     <dx-data-grid [dataSource]="scadaMeters" id="scadaMetersGrid" [showBorders]="true"
-                        class="grid-container" [hoverStateEnabled]="true" keyExpr="Serial" [selectedRowKeys]="[]"
-                        (onRowClick)="selectScadaMeter($event)" (onRowPrepared)="onScadaMeterRowPrepared($event)" #scadaMeterTable>
+                                  class="grid-container" [hoverStateEnabled]="true" keyExpr="Serial" [selectedRowKeys]="[]"
+                                  (onRowClick)="selectScadaMeter($event)" (onRowPrepared)="onScadaMeterRowPrepared($event)" #scadaMeterTable>
                         <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+                        <dxo-filter-row [visible]="true"></dxo-filter-row>
                         <dxo-paging [pageSize]="10"> </dxo-paging>
                         <dxo-selection mode="single"></dxo-selection>
                         <dxo-pager [visible]="true" [allowedPageSizes]="allowedPageSizes" [displayMode]="'compact'"
-                            [showPageSizeSelector]="true" [showInfo]="true" [showNavigationButtons]="true">
+                                   [showPageSizeSelector]="true" [showInfo]="true" [showNavigationButtons]="true">
                         </dxo-pager>
                         <dxo-search-panel [visible]="true" [width]="200" placeholder="Search..."></dxo-search-panel>
-                        <dxi-column dataField="Mapped" [width]="70"></dxi-column>
+                        <dxi-column dataField="Mapped" [width]="70">False</dxi-column>
                         <dxi-column dataField="Serial" [width]="120"></dxi-column>
                         <dxi-column dataField="Name"></dxi-column>
                         <!-- <dxi-column dataField="Make" [width]="50"></dxi-column>
-                        <dxi-column dataField="Model" [width]="50"></dxi-column> -->
+    <dxi-column dataField="Model" [width]="50"></dxi-column> -->
                     </dx-data-grid>
                 </div>
             </div>
@@ -150,12 +152,13 @@
                 <div class="bg-card flex flex-col gap-y-2 p-2">
                     <div class="text-lg py-1 border-b flex">Mapped Meters</div>
                     <dx-data-grid [dataSource]="mappedMeters" id="MappedMetersGrid" [showBorders]="true"
-                        class="grid-container" [hoverStateEnabled]="true" displayExpr="MeterNo" valueExpr="Id"
-                        (onRowClick)="selectMappedMeter($event)">
+                                  class="grid-container" [hoverStateEnabled]="true" displayExpr="MeterNo" valueExpr="Id"
+                                  (onRowClick)="selectMappedMeter($event)">
                         <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+                        <dxo-filter-row [visible]="true"></dxo-filter-row>
                         <dxo-paging [pageSize]="10"> </dxo-paging>
                         <dxo-pager [visible]="true" [allowedPageSizes]="allowedPageSizes" [displayMode]="'compact'"
-                            [showPageSizeSelector]="true" [showInfo]="true" [showNavigationButtons]="true">
+                                   [showPageSizeSelector]="true" [showInfo]="true" [showNavigationButtons]="true">
                         </dxo-pager>
                         <dxo-search-panel [visible]="true" [width]="200" placeholder="Search..."></dxo-search-panel>
                         <dxi-column dataField="BuildingName" [width]="150"></dxi-column>
@@ -169,11 +172,9 @@
                         <dxi-column dataField="SupplyType" [width]="100"></dxi-column>
                         <dxi-column dataField="Location" [width]="100"></dxi-column>
                         <dxi-column type="buttons" [width]="80">
-                            <dxi-button
-                              hint="Delete"
-                              icon="trash"
-                              [onClick]="onRemoveMappedMeter"
-                            ></dxi-button>
+                            <dxi-button hint="Delete"
+                                        icon="trash"
+                                        [onClick]="onRemoveMappedMeter"></dxi-button>
                         </dxi-column>
                     </dx-data-grid>
                 </div>

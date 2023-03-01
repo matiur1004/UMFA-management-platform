@@ -209,7 +209,7 @@ export class MeterMappingComponent implements OnInit {
             const dialogRef = this._ufUtils.fuseConfirmDialog(
                 ALERT_MODAL_CONFIG,
                 '', 
-                `This mapped meter is already existing!`);
+                `This Meter is already Mapped!`);
         } else {
             this.bldService.addMappedMeter(data).subscribe(res => {
                 this.umfaMeterGrid.instance.clearSelection();
