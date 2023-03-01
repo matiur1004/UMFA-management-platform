@@ -12,47 +12,47 @@ namespace ClientPortal.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class RegisterTypesController : ControllerBase
+    public class SupplyTypesController : ControllerBase
     {
         private readonly PortalDBContext _context;
 
-        public RegisterTypesController(PortalDBContext context)
+        public SupplyTypesController(PortalDBContext context)
         {
             _context = context;
         }
 
-        // GET: RegisterTypes
-        [HttpGet("GetAll")]
-        public async Task<ActionResult<IEnumerable<RegisterType>>> GetRegisterTypes()
+        // GET: api/SupplyTypes
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<SupplyType>>> GetSupplyTypes()
         {
-            return await _context.RegisterTypes.ToListAsync();
+            return await _context.SupplyTypes.ToListAsync();
         }
 
-        // GET: RegisterTypes/5
+        // GET: api/SupplyTypes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<RegisterType>> GetRegisterType(int id)
+        public async Task<ActionResult<SupplyType>> GetSupplyType(int id)
         {
-            var registerType = await _context.RegisterTypes.FindAsync(id);
+            var supplyType = await _context.SupplyTypes.FindAsync(id);
 
-            if (registerType == null)
+            if (supplyType == null)
             {
                 return NotFound();
             }
 
-            return registerType;
+            return supplyType;
         }
 
-        // PUT: RegisterTypes/5
+        // PUT: api/SupplyTypes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutRegisterType(int id, RegisterType registerType)
+        public async Task<IActionResult> PutSupplyType(int id, SupplyType supplyType)
         {
-            if (id != registerType.RegisterTypeId)
+            if (id != supplyType.SupplyTypeId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(registerType).State = EntityState.Modified;
+            _context.Entry(supplyType).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace ClientPortal.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!RegisterTypeExists(id))
+                if (!SupplyTypeExists(id))
                 {
                     return NotFound();
                 }
@@ -73,36 +73,36 @@ namespace ClientPortal.Controllers
             return NoContent();
         }
 
-        // POST: RegisterTypes
+        // POST: api/SupplyTypes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<RegisterType>> PostRegisterType(RegisterType registerType)
+        public async Task<ActionResult<SupplyType>> PostSupplyType(SupplyType supplyType)
         {
-            _context.RegisterTypes.Add(registerType);
+            _context.SupplyTypes.Add(supplyType);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetRegisterType", new { id = registerType.RegisterTypeId }, registerType);
+            return CreatedAtAction("GetSupplyType", new { id = supplyType.SupplyTypeId }, supplyType);
         }
 
-        // DELETE: RegisterTypes/5
+        // DELETE: api/SupplyTypes/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRegisterType(int id)
+        public async Task<IActionResult> DeleteSupplyType(int id)
         {
-            var registerType = await _context.RegisterTypes.FindAsync(id);
-            if (registerType == null)
+            var supplyType = await _context.SupplyTypes.FindAsync(id);
+            if (supplyType == null)
             {
                 return NotFound();
             }
 
-            _context.RegisterTypes.Remove(registerType);
+            _context.SupplyTypes.Remove(supplyType);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool RegisterTypeExists(int id)
+        private bool SupplyTypeExists(int id)
         {
-            return _context.RegisterTypes.Any(e => e.RegisterTypeId == id);
+            return _context.SupplyTypes.Any(e => e.SupplyTypeId == id);
         }
     }
 }

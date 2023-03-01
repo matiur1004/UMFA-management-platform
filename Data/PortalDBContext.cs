@@ -54,6 +54,8 @@ namespace ClientPortal.Data
         public DbSet<ScadaReadingData> scadaReadingData { get; set; }
         public DbSet<RegisterType> RegisterTypes { get; set; }
         public DbSet<MappedMeter> MappedMeters { get; set; }
+        public DbSet<SupplyType> SupplyTypes { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
