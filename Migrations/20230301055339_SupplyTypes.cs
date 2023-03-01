@@ -8,15 +8,6 @@ namespace ClientPortal.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Key1",
-                table: "MappedMeters");
-
-            migrationBuilder.RenameColumn(
-                name: "Key2",
-                table: "MappedMeters",
-                newName: "ScadaSerial");
-
             migrationBuilder.CreateTable(
                 name: "SupplyTypes",
                 columns: table => new
@@ -50,17 +41,6 @@ namespace ClientPortal.Migrations
             migrationBuilder.DropTable(
                 name: "SupplyTypes");
 
-            migrationBuilder.RenameColumn(
-                name: "ScadaSerial",
-                table: "MappedMeters",
-                newName: "Key2");
-
-            migrationBuilder.AddColumn<string>(
-                name: "Key1",
-                table: "MappedMeters",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "");
         }
     }
 }

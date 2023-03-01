@@ -21,14 +21,14 @@ namespace ClientPortal.Controllers
             _context = context;
         }
 
-        // GET: api/SupplyTypes
+        // GET: SupplyTypes
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SupplyType>>> GetSupplyTypes()
         {
             return await _context.SupplyTypes.ToListAsync();
         }
 
-        // GET: api/SupplyTypes/5
+        // GET: SupplyTypes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<SupplyType>> GetSupplyType(int id)
         {
@@ -42,7 +42,7 @@ namespace ClientPortal.Controllers
             return supplyType;
         }
 
-        // PUT: api/SupplyTypes/5
+        // PUT: SupplyTypes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutSupplyType(int id, SupplyType supplyType)
@@ -73,7 +73,7 @@ namespace ClientPortal.Controllers
             return NoContent();
         }
 
-        // POST: api/SupplyTypes
+        // POST: SupplyTypes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<SupplyType>> PostSupplyType(SupplyType supplyType)
@@ -84,7 +84,7 @@ namespace ClientPortal.Controllers
             return CreatedAtAction("GetSupplyType", new { id = supplyType.SupplyTypeId }, supplyType);
         }
 
-        // DELETE: api/SupplyTypes/5
+        // DELETE: SupplyTypes/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSupplyType(int id)
         {
