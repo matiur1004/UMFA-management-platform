@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using ClientPortal.Helpers;
 using System.Text.Json;
 using Microsoft.AspNetCore.Cors;
+using ClientPortal.Data.Entities;
 
 namespace ClientPortal.Controllers
 {
@@ -130,7 +131,22 @@ namespace ClientPortal.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest($"Server error while updaying user: {ex.Message}");
+                return BadRequest($"Server error while updating user: {ex.Message}");
+            }
+        }
+
+        [HttpPost("UpdatePortalUserRole")]
+        public IActionResult UpdatePortalUserRole(User user, int roleId)
+        {
+            try
+            {
+                user.RoleId= roleId;
+                var retUser = _userService.UpdatePortalUsers(user);
+                return Ok(retUser);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Server error while updating user: {ex.Message}");
             }
         }
 
