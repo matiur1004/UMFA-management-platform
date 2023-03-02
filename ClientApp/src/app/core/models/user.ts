@@ -25,4 +25,9 @@ export interface IUser {
     SgdUrl: string;
     Active: boolean;
   }
+
+  export interface Role {
+    RoleId: number;
+    RoleName: string;
+  }
   

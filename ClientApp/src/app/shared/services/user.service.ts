@@ -3,12 +3,14 @@ import { Injectable } from "@angular/core";
 import { CONFIG } from "app/core/helpers";
 import { BehaviorSubject, lastValueFrom, Observable, of, throwError } from "rxjs";
 import { catchError, delay, map, take, tap } from "rxjs/operators";
-import { IAmrUser, IopUser } from "../../core/models";
+import { IAmrUser, IopUser, Role } from "../../core/models";
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
 
   private userSubject: BehaviorSubject<IopUser>;
+  private _roles: BehaviorSubject<Role[]> = new BehaviorSubject([]);;
+  
   public user$: Observable<IopUser>;
 
   private decrSubject: BehaviorSubject<string>;
@@ -29,6 +31,10 @@ export class UserService {
     return this.userSubject.value;
   }
 
+  public get roles$(): Observable<Role[]> {
+    return this._roles.asObservable();
+  }
+
   getUser(id: number): Observable<any> {
     return this.http.get<any>(`${CONFIG.apiURL}${CONFIG.getUser}${id}`, { withCredentials: true })
       .pipe(
@@ -36,6 +42,20 @@ export class UserService {
         //tap(u => console.log(`Http response from getUser: ${JSON.stringify(u)}`)),
         map(u => {
           this.userSubject.next(u);
+          return u;
+        }),
+        take(1)
+      )
+  }
+
+  getRoles(): Observable<any> {
+    const url = `${CONFIG.apiURL}/Roles/GetRoles`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchErrors('getRole', err)),
+        //tap(u => console.log(`Http response from getUser: ${JSON.stringify(u)}`)),
+        map(u => {
+          this._roles.next(u);
           return u;
         }),
         take(1)

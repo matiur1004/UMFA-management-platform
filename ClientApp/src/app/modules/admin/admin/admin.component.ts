@@ -23,7 +23,7 @@ export class AdminComponent implements OnInit {
       this.router.navigate(['/admin/amrUser']);
     }
     if(event.index == 1) {
-      this.router.navigate(['/admin/amrMeter']);
+      this.router.navigate(['/admin/user-management']);
     }
     if(event.index == 2) {
         this.router.navigate(['/admin/meterMapping']);

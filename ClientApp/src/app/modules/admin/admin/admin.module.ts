@@ -26,6 +26,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { AmrUserPasswordComponent } from './amr-user/amr-user-password/amr-user-password.component';
 import { PasswordMatchDirective } from 'app/shared/validators/password-match.directive';
 import { MeterMappingComponent } from './meter-mapping/meter-mapping.component';
+import { UserManagementComponent } from './user-management/user-management.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { MeterMappingComponent } from './meter-mapping/meter-mapping.component';
     AmrMeterEditComponent,
     AmrUserPasswordComponent,
     PasswordMatchDirective,
-    MeterMappingComponent
+    MeterMappingComponent,
+    UserManagementComponent
   ],
   imports: [
     FormsModule,
