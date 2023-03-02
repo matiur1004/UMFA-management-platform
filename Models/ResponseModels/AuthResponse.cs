@@ -9,6 +9,7 @@
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string UserName { get; set; }
+        public int RoleId { get; set; }
         public string JwtToken { get; set; }
         [JsonIgnore]
         public string RefreshToken { get; set; }
@@ -19,6 +20,7 @@
             FirstName = user.FirstName;
             LastName = user.LastName;
             UserName = user.UserName;
+            RoleId = user.RoleId;
             JwtToken = jwtToken;
             RefreshToken = refreshToken;
         }
