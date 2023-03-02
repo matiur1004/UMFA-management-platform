@@ -10,6 +10,9 @@
         public string LastName { get; set; }
         public string UserName { get; set; }
         public bool IsAdmin { get; set; } = false;
+        public int RoleId { get; set; }
+
+
         [JsonIgnore]
         public string PasswordHash { get; set; }
         public List<RefreshToken> RefreshTokens { get; set; }
