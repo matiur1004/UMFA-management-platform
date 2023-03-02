@@ -1,4 +1,5 @@
-﻿using DevExpress.Pdf.Native;
+﻿using ClientPortal.Controllers.Authorization;
+using DevExpress.Pdf.Native;
 using DevExpress.XtraRichEdit.Model;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -8,6 +9,7 @@ using System.Xml.Linq;
 
 namespace ClientPortal.Controllers
 {
+    [Authorize]
     [Route("[controller]")]
     [ApiController]
     public class ScadaMetersController : ControllerBase
