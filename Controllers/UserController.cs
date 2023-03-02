@@ -6,6 +6,8 @@ using ClientPortal.Helpers;
 using System.Text.Json;
 using Microsoft.AspNetCore.Cors;
 using ClientPortal.Data.Entities;
+using ClientPortal.Data.Entities.PortalEntities;
+using ClientPortal.Data;
 
 namespace ClientPortal.Controllers
 {
@@ -14,6 +16,7 @@ namespace ClientPortal.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
+        private readonly PortalDBContext _context;
         private readonly IUserService _userService;
         private readonly AppSettings _options;
 
@@ -119,6 +122,12 @@ namespace ClientPortal.Controllers
                 }
                 else return BadRequest("Server Error");
             }
+        }
+
+        [HttpGet("GetAllUsers")]
+        public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
+        {
+            return await _context.Users.ToListAsync();
         }
 
         [HttpPost("UpdateUser")]
