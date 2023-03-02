@@ -9,6 +9,7 @@ namespace ClientPortal.Services
 {
     public interface IUserService
     {
+        User UpdatePortalUsers(User user, int roleId);
         AuthResponse Authenticate(AuthRequest model, string ipAddress);
         AuthResponse RefreshToken(string token, string ipAddress);
         void RevokeToken(string token, string ipAddress);
@@ -395,6 +396,28 @@ namespace ClientPortal.Services
             {
                 _logger.LogError("Error while updating user {UserId}", user.UserId);
                 throw new ApplicationException($"Error while updating user {user.UserId}: {ex.Message}");
+            }
+        }
+
+        public User UpdatePortalUsers(User user, int roleId)
+        {
+            _logger.LogInformation("Updating user {UserId}", user.Id);
+            try
+            {
+                var usr = _dbContext.Users.FirstOrDefault<User>(u => u.Id == user.Id);
+                if (usr == null) throw new ApplicationException($"User with id {user.Id} not found");
+                
+                usr.RoleId = roleId;
+
+                _dbContext.Users.Update(usr);
+                int res = _dbContext.SaveChanges();
+                //if (res != 2) throw new ApplicationException($"Unexpected number of rows updated: {res}");
+                return usr;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error while updating user {UserId}", user.Id);
+                throw new ApplicationException($"Error while updating user {user.Id}: {ex.Message}");
             }
         }
     }
