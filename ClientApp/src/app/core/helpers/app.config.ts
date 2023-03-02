@@ -104,10 +104,10 @@ export const CONFIG: ApplicationConfiguration = {
     getScadaMetersForUser: '/ScadaMeters/GetAsync',
     //Path For Roles
     getRoles: '/Roles/GetRoles',
-    getRole: '/GetRole',
-    putRole: '/PutRole',
-    postRole: '/PostRole',
-    deleteRole: '/DeleteRole',
+    getRole: '/Roles/GetRole',
+    putRole: '/Roles/PutRole',
+    postRole: '/Roles/PostRole',
+    deleteRole: '/Roles/DeleteRole',
     //path for PortalUsers
     getAllPortalUsers: '/user/GetAllUsers'
 };
