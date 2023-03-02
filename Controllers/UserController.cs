@@ -140,8 +140,8 @@ namespace ClientPortal.Controllers
         {
             try
             {
-                user.RoleId = roleId;
-                var retUser = _userService.UpdatePortalUsers(user, roleId);
+                user.RoleId= roleId;
+                var retUser = _userService.UpdatePortalUsers(user);
                 return Ok(retUser);
             }
             catch (Exception ex)
