@@ -56,6 +56,18 @@ export class UserService {
       );
   }
 
+  getScadaMetersForUser(scadaUserName: string, scadaUserPassword: string): Observable<any> {
+    const url = `${CONFIG.apiURL}${CONFIG.getScadaMetersForUser}`;
+    return this.http.post<any>(url, {scadaUserName, scadaUserPassword}, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchErrors('getAmrScadaUser', err)),
+        tap(u => {
+          //console.log(`Http response from getAmrScadaUser: ${JSON.stringify(u)}`)
+        }),
+        map(pl => { return pl.xml.line })
+      );
+  }
+
   async decryptWrapper(value: string) {
     const url = `${CONFIG.apiURL}${CONFIG.decryptString}${encodeURIComponent(value)}`;
     const ret = await lastValueFrom(this.http.get(url, { responseType: 'text', withCredentials: true }));

@@ -34,6 +34,17 @@ export interface ApplicationConfiguration {
   getWaterProfile: string;
   getPartners: string;
   getPeriods: string;
+  //paths for MappedMeters
+  getAllMappedMeters: string;
+  getAllMappedMetersForBuilding: string;
+  getMappedMeter: string;
+  updateMappedMeter: string;
+  addMappedMeter: string;
+  removeMappedMeter: string;
+  //path for UmfaMeters
+  getAllUmfaMetersForBuilding: string;
+  //path for ScadaMeters
+  getScadaMetersForUser: string
 }
 
 export const CONFIG: ApplicationConfiguration = {
@@ -69,4 +80,15 @@ export const CONFIG: ApplicationConfiguration = {
   getTouHeaders: '/AMRData/getTOUHeaders',
   getDemandProfile: '/AMRData/getDemandProfile',
   getWaterProfile: '/AMRData/getWaterProfile',
+  //paths for MappedMeters
+  getAllMappedMeters: "/MappedMeters/GetAll",
+  getAllMappedMetersForBuilding: "MappedMeters/GetAllMappedMetersForBuilding/",
+  getMappedMeter: "/MappedMeters/GetMappedMeter/",
+  updateMappedMeter: "MappedMeters/UpdateMappedMeter/",
+  addMappedMeter: "/MappedMeters/AddMappedMeter/",
+  removeMappedMeter: "MappedMeters/RemoveMappedMeter/",
+  //path for UmfaMeters
+  getAllUmfaMetersForBuilding: "/Building/umfameters/",
+  //path for ScadaMeters
+  getScadaMetersForUser: "/ScadaMeters/GetAsync"
 };

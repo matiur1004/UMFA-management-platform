@@ -4,6 +4,7 @@ using ClientPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClientPortal.Migrations
 {
     [DbContext(typeof(PortalDBContext))]
-    partial class DataDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230227033751_AddRegisterTypes")]
+    partial class AddRegisterTypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -332,93 +334,6 @@ namespace ClientPortal.Migrations
                     b.ToTable("MetersMakeModels");
                 });
 
-            modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.MappedMeter", b =>
-                {
-                    b.Property<int>("MappedMeterId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MappedMeterId"), 1L, 1);
-
-                    b.Property<int>("BuildingId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("BuildingName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("BuildingServiceId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MeterNo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PartnerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PartnerName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RegisterType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ScadaDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ScadaSerial")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SupplyType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TOUHeader")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UmfaDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("MappedMeterId");
-
-                    b.ToTable("MappedMeters");
-                });
-
-            modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.MeterLocation", b =>
-                {
-                    b.Property<int>("MeterLocationId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MeterLocationId"), 1L, 1);
-
-                    b.Property<string>("MeterLocationDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MeterLocationName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("MeterLocationId");
-
-                    b.ToTable("MeterLocations");
-                });
-
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.RegisterType", b =>
                 {
                     b.Property<int>("RegisterTypeId")
@@ -557,23 +472,6 @@ namespace ClientPortal.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("scadaReadingData");
-                });
-
-            modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.SupplyType", b =>
-                {
-                    b.Property<int>("SupplyTypeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SupplyTypeId"), 1L, 1);
-
-                    b.Property<string>("SupplyTypeName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("SupplyTypeId");
-
-                    b.ToTable("SupplyTypes");
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.ProfileData", b =>

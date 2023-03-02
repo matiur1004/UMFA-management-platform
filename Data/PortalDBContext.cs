@@ -52,6 +52,10 @@ namespace ClientPortal.Data
         public DbSet<TOUDayOfWeekDayType> TOUDayOfWeekDayTypes { get; set; }
         public DbSet<ScadaProfileData> ScadaProfileData { get; set; }
         public DbSet<ScadaReadingData> scadaReadingData { get; set; }
+        public DbSet<RegisterType> RegisterTypes { get; set; }
+        public DbSet<MappedMeter> MappedMeters { get; set; }
+        public DbSet<SupplyType> SupplyTypes { get; set; }
+        public DbSet<MeterLocation> MeterLocations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

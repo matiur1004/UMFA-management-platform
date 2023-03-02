@@ -40,6 +40,28 @@ namespace ClientPortal.Controllers
             }
         }
 
+        [HttpGet("umfameters/{umfabuildingid}")]
+        public IActionResult GetUmfaMeters(int umfaBuildingId)
+        {
+            _logger.LogInformation($"Get umfa meters via service for building {umfaBuildingId}");
+            try
+            {
+                var response = _buildingService.GetUmfaMetersAsync(umfaBuildingId).Result.UmfaMeters;
+                if (response != null)
+                {
+                    _logger.LogInformation($"Successfully got umfa meters for building {umfaBuildingId}");
+                    return Ok(response);
+                }
+                else throw new ApplicationException($"Failed to get umfa meters for building {umfaBuildingId}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while getting meters for building {umfaBuildingId}: {ex.Message}");
+                return BadRequest(new ApplicationException(ex.Message));
+            }
+        }
+
+
         [HttpGet("Periods/{umfabuildingid:int}")]
         public IActionResult GetPeriods(int umfaBuildingId)
         {

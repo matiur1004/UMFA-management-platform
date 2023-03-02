@@ -1,5 +1,6 @@
 ﻿using ClientPortal.Data.Repositories;
 using ClientPortal.Models;
+using ClientPortal.Models.ResponseModels;
 using System.Linq.Expressions;
 
 namespace ClientPortal.Services
@@ -9,6 +10,8 @@ namespace ClientPortal.Services
         Task<UMFABuildingResponse> GetUmfaBuildingsAsync(int umfaUserId);
         Task<UMFAPartnerResponse> GetPartnersForUserAsync(int umfaUserId);
         Task<UMFAPeriodResponse> GetPeriodsForBuildingAsync(int umfaBuildingId);
+        Task<UMFAMeterResponse> GetUmfaMetersAsync(int umfaBuildingId);
+
     }
     public class BuildingService : IBuildingService
     {
@@ -91,5 +94,25 @@ namespace ClientPortal.Services
                 throw new ApplicationException(ex.Message);
             }
         }
+        public async Task<UMFAMeterResponse> GetUmfaMetersAsync(int umfaBuildingId)
+        {
+            _logger.LogInformation($"Get all umfa buildings for user {umfaBuildingId}");
+            try
+            {
+                var ret = await _buildingRepo.GetMetersForBuilding(umfaBuildingId);
+                if (ret == null || ret.UmfaMeters.Count == 0)
+                {
+                    _logger.LogError($"Failure to get buildings for user {umfaBuildingId}: {ret?.Response ?? "No Response message"}");
+                    throw new ApplicationException(ret?.Response ?? "No Response message");
+                }
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while getting buildings for user {umfaBuildingId}: {ex.Message}");
+                throw new ApplicationException(ex.Message);
+            }
+        }
+
     }
 }
