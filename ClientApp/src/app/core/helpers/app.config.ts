@@ -109,5 +109,5 @@ export const CONFIG: ApplicationConfiguration = {
     postRole: '/PostRole',
     deleteRole: '/DeleteRole',
     //path for PortalUsers
-    getAllPortalUsers: '/users/GetAllUsers'
+    getAllPortalUsers: '/user/GetAllUsers'
 };
