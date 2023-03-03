@@ -146,11 +146,10 @@ namespace ClientPortal.Controllers
         }
 
         [HttpPost("UpdatePortalUserRole")]
-        public IActionResult UpdatePortalUserRole(User user, int roleId)
+        public IActionResult UpdatePortalUserRole(User user)
         {
             try
             {
-                user.RoleId= roleId;
                 var retUser = _userService.UpdatePortalUsers(user);
                 return Ok(retUser);
             }
