@@ -52,6 +52,7 @@ export interface ApplicationConfiguration {
     deleteRole: string;
     //Path For Users
     getAllPortalUsers: string;
+    updateUserRole: string;
 }
 
 export const CONFIG: ApplicationConfiguration = {
@@ -109,5 +110,6 @@ export const CONFIG: ApplicationConfiguration = {
     postRole: '/Roles/PostRole',
     deleteRole: '/Roles/DeleteRole',
     //path for PortalUsers
-    getAllPortalUsers: '/user/GetAllUsers'
+    getAllPortalUsers: '/user/GetAllUsers',
+    updateUserRole: '/user/UpdatePortalUserRole'
 };

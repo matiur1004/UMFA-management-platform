@@ -1,14 +1,14 @@
 <div class="flex flex-col relative">
-    <div class="absolute left-2 top-2 z-20">
+    <!-- <div class="absolute left-2 top-2 z-20">
       <button mat-raised-button color="primary" class="dnm-btn dnm-btn-primary">
         <mat-icon [svgIcon]="'feather:addUser'" class="mr-1"></mat-icon>
         Add new user
       </button>
-    </div>
+    </div> -->
     <div class="flex w-full">
       <div class="flex flex-col bg-card p-2">
         <dx-data-grid
-            [dataSource]="(users$ | async)"
+            [dataSource]="(users)"
             [showBorders]="true"
             class="grid-container"
         >
@@ -28,13 +28,14 @@
                 [width]="200"
                 placeholder="Search..."
             ></dxo-search-panel>
-            <dxi-column dataField="ProfileName" [width]="200"></dxi-column>
-            <dxi-column dataField="ScadaUserName" [width]="200"></dxi-column>
-            <dxi-column dataField="SgdUrl"></dxi-column>
-            <dxi-column dataField="Active" [width]="120"></dxi-column>
+            <dxi-column dataField="FirstName" ></dxi-column>
+            <dxi-column dataField="LastName" ></dxi-column>
+            <dxi-column dataField="UserName" ></dxi-column>
+            <dxi-column dataField="IsAdmin" [width]="100"></dxi-column>
+            <dxi-column dataField="RoleName"></dxi-column>
             <dxi-column type="buttons">
               <dxi-button
-                hint="Edit"
+                hint="Role Edit"
                 icon="edit"
                 [onClick]="onEdit"
               ></dxi-button>

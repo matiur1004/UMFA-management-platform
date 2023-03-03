@@ -17,7 +17,8 @@ export class UserManagementResolver implements Resolve<any> {
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     return forkJoin([
-      this._userService.getRoles()
+      this._userService.getRoles(),
+      this._userService.getAllUsers()
     ]);
   }
 }

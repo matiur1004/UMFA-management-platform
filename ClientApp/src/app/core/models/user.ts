@@ -14,6 +14,8 @@ export interface IUser {
     LastName: string;
     UserName: string;
     IsAdmin: boolean;
+    RoleId: number;
+    RoleName: string;
     AmrScadaUsers?: IAmrUser[];
   }
   

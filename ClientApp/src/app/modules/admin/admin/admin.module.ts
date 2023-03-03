@@ -27,6 +27,7 @@ import { AmrUserPasswordComponent } from './amr-user/amr-user-password/amr-user-
 import { PasswordMatchDirective } from 'app/shared/validators/password-match.directive';
 import { MeterMappingComponent } from './meter-mapping/meter-mapping.component';
 import { UserManagementComponent } from './user-management/user-management.component';
+import { RoleAddEditPopupComponent } from './user-management/role-add-edit-popup/role-add-edit-popup.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { UserManagementComponent } from './user-management/user-management.compo
     AmrUserPasswordComponent,
     PasswordMatchDirective,
     MeterMappingComponent,
-    UserManagementComponent
+    UserManagementComponent,
+    RoleAddEditPopupComponent
   ],
   imports: [
     FormsModule,

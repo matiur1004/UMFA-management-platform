@@ -20,10 +20,11 @@ namespace ClientPortal.Controllers
         private readonly IUserService _userService;
         private readonly AppSettings _options;
 
-        public UserController(IUserService userService, IOptions<AppSettings> options)
+        public UserController(IUserService userService, IOptions<AppSettings> options, PortalDBContext context)
         {
             _userService = userService;
             _options = options.Value;
+            _context = context;
         }
 
         #region Authentication methods

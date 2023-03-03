@@ -12,9 +12,8 @@ export class AdminComponent implements OnInit {
   constructor(private router: Router, activeRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    console.log(location.pathname)
     if(location.pathname.includes('amrUser')) this.selectedTab = 0;
-    if(location.pathname.includes('amrMeter')) this.selectedTab = 1;
+    if(location.pathname.includes('user-management')) this.selectedTab = 1;
     if(location.pathname.includes('meterMapping')) this.selectedTab = 2;
   }
 
