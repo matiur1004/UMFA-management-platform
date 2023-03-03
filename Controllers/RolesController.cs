@@ -45,7 +45,7 @@ namespace ClientPortal.Controllers
         }
 
         // PUT: CreateRole/5
-        [HttpPut("CreateRole/{id}")]
+        [HttpPut("PutRole/{id}")]
         public async Task<IActionResult> PutRole(int id, Role role)
         {
             if (id != role.RoleId)
@@ -85,7 +85,7 @@ namespace ClientPortal.Controllers
         }
 
         // DELETE: RemoveRole/5
-        [HttpDelete("RemoveRole/{id}")]
+        [HttpDelete("DeleteRole/{id}")]
         public async Task<IActionResult> DeleteRole(int id)
         {
             var role = await _context.Roles.FindAsync(id);

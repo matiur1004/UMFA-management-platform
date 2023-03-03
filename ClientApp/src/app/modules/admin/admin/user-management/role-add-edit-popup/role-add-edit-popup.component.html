@@ -1,0 +1,46 @@
+<div class="flex flex-col flex-auto min-w-100 max-w-100 max-h-screen -m-6 ">
+
+    <!-- Header -->
+    <div class="flex flex-0 items-center justify-between h-12 pr-3 sm:pr-5 pl-4 sm:pl-8 bg-primary text-white">
+        <div class="text-lg font-medium">{{data.detail ? 'Edit' : 'Add New'}}</div>
+        <button
+            mat-icon-button
+            (click)="matDialogRef.close()"
+            [tabIndex]="-1">
+            <mat-icon
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+
+    <form
+        class="flex flex-col flex-0 w-full p-4 gap-y-4"
+        [formGroup]="form">
+        <div class="row grid grid-cols-1 gap-2">
+            <div class="col-span-1">
+                <mat-label class="form-label"> Role </mat-label>
+                <ng-select
+                    [items]="roleItems"
+                    bindLabel="RoleName"
+                    bindValue="RoleId"
+                    [placeholder]="'Role'"
+                    [formControlName]="'RoleId'"
+                    [searchable]="false"
+                    [closeOnSelect]="true"
+                    [clearable]="false"
+                    [multiple]="false"
+                    >
+                </ng-select>
+                <mat-error *ngIf="form.get('RoleId').getError('required') && submitted">
+                   Role is required
+                </mat-error>
+            </div>
+        </div>
+        <div class="row flex gap-y-2 justify-end flex">
+            <div class="col-span-1">
+                <button mat-stroked-button color="primary" class="w-30 mr-4" type="button" (click)="close()">Cancel</button>
+                <button mat-raised-button color="primary" class="w-30 text-white" type="button" [disabled]="!form.valid" (click)="submit()">{{data.detail ? 'Update' : 'Create'}}</button>
+            </div>
+        </div>
+    </form>
+</div>

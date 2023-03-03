@@ -19,7 +19,8 @@ const PROXY_CONFIG = [
       "/DXXRDV",
       "/MappedMeters",
       "/ScadaMeters",
-      "/Swagger"
+      "/Swagger",
+      "/Roles"
    ],
     target: target,
     secure: false,

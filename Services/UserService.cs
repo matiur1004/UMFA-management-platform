@@ -363,7 +363,7 @@ namespace ClientPortal.Services
                 throw new AppException(ex.Message);
             }
         }
-
+        
         public User UpdateScadaUsers(AMRScadaUserUpdateRequest user)
         {
             _logger.LogInformation("Updating user {UserId}", user.UserId);

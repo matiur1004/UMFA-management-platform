@@ -3,12 +3,15 @@ import { Injectable } from "@angular/core";
 import { CONFIG } from "app/core/helpers";
 import { BehaviorSubject, lastValueFrom, Observable, of, throwError } from "rxjs";
 import { catchError, delay, map, take, tap } from "rxjs/operators";
-import { IAmrUser, IopUser } from "../../core/models";
+import { IAmrUser, IopUser, Role } from "../../core/models";
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
 
   private userSubject: BehaviorSubject<IopUser>;
+  private _roles: BehaviorSubject<Role[]> = new BehaviorSubject([]);
+  private _users: BehaviorSubject<IopUser[]> = new BehaviorSubject([]);
+
   public user$: Observable<IopUser>;
 
   private decrSubject: BehaviorSubject<string>;
@@ -29,6 +32,14 @@ export class UserService {
     return this.userSubject.value;
   }
 
+  public get roles$(): Observable<Role[]> {
+    return this._roles.asObservable();
+  }
+
+  public get users$(): Observable<IopUser[]> {
+    return this._users.asObservable();
+  }
+
   getUser(id: number): Observable<any> {
     return this.http.get<any>(`${CONFIG.apiURL}${CONFIG.getUser}${id}`, { withCredentials: true })
       .pipe(
@@ -36,6 +47,47 @@ export class UserService {
         //tap(u => console.log(`Http response from getUser: ${JSON.stringify(u)}`)),
         map(u => {
           this.userSubject.next(u);
+          return u;
+        }),
+        take(1)
+      )
+  }
+
+  getRoles(): Observable<Role[]> {
+    const url = `${CONFIG.apiURL}/Roles/GetRoles`;
+    return this.http.get<Role[]>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchErrors('getRole', err)),
+        //tap(u => console.log(`Http response from getUser: ${JSON.stringify(u)}`)),
+        map((u: Role[]) => {
+          this._roles.next(u);
+          return u;
+        }),
+        take(1)
+      )
+  }
+
+  getAllUsers(): Observable<IopUser[]> {
+    const url = `${CONFIG.apiURL}${CONFIG.getAllPortalUsers}`;
+    return this.http.get<IopUser[]>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchErrors('getAllPortalUsers', err)),
+        //tap(u => console.log(`Http response from getUser: ${JSON.stringify(u)}`)),
+        map((u: IopUser[]) => {
+          this._users.next(u);
+          return u;
+        }),
+        take(1)
+      )
+  }
+
+  onUpdatePortalUserRole(data): Observable<any> {
+    const url = `${CONFIG.apiURL}${CONFIG.updateUserRole}`;
+    return this.http.post<any>(url, data, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchErrors('updatePortalUserRole', err)),
+        //tap(u => console.log(`Http response from getUser: ${JSON.stringify(u)}`)),
+        map((u: any) => {
           return u;
         }),
         take(1)

@@ -11,6 +11,8 @@ import { AmrMeterEditComponent } from './amr-meter/amr-meter-edit/amr-meter-edit
 import { UserDataResolver } from 'app/shared/resolvers/user.resolver';
 import { MeterMappingComponent } from './meter-mapping/meter-mapping.component';
 import { MeterMappingResolver } from './meter-mapping/meter-mapping.resolver';
+import { UserManagementComponent } from './user-management/user-management.component';
+import { UserManagementResolver } from './user-management/user-management.resolver';
 const routes: Routes = [
   {
     path: '', component: AdminComponent, //redirectTo: 'amrUser', pathMatch: 'full'
@@ -43,7 +45,13 @@ const routes: Routes = [
         path: 'meterMapping', component: MeterMappingComponent,
         resolve  : {
           data: MeterMappingResolver
-      }
+        } 
+      },
+      {
+        path: 'user-management', component: UserManagementComponent,
+        resolve  : {
+          data: UserManagementResolver
+        } 
       }
     ]
   }
