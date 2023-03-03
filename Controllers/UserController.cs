@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Cors;
 using ClientPortal.Data.Entities;
 using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Data;
+using Microsoft.Extensions.Logging;
 
 namespace ClientPortal.Controllers
 {
@@ -19,9 +20,11 @@ namespace ClientPortal.Controllers
         private readonly PortalDBContext _context;
         private readonly IUserService _userService;
         private readonly AppSettings _options;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(IUserService userService, IOptions<AppSettings> options, PortalDBContext context)
+        public UserController(ILogger<UserController> logger, IUserService userService, IOptions<AppSettings> options, PortalDBContext context)
         {
+            _logger = logger;   
             _userService = userService;
             _options = options.Value;
             _context = context;
@@ -161,26 +164,25 @@ namespace ClientPortal.Controllers
         //    }
         //}
 
-        [HttpPut("UpdatePortalUserRole/{id}")]
-        public async Task<IActionResult> UpdatePortalUserRole(int id, User user)
+        [HttpPost("UpdatePortalUserRole")]
+        public IActionResult UpdatePortalUserRole(int userId, int roleId)
         {
-            if (id != user.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(user).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                _logger.LogInformation($"update User with Id: {userId}");
+                var response = _context.Users.FromSqlRaw($"UPDATE [dbo].[Users] SET [RoleId] = {roleId} WHERE Id = {userId}");
+                if (response != null)
+                {
+                    _logger.LogInformation($"Successfully updated user: {userId}");
+                    return Ok(response);
+                }
+                else throw new Exception($"Failed to User With Id: {userId}");
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-             
+                _logger?.LogError($"Failed to update meter: {ex.Message}");
+                return BadRequest(new ApplicationException($"Failed to update meter: {ex.Message}"));
             }
-
-            return NoContent();
         }
 
 
