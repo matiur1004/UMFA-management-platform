@@ -145,19 +145,44 @@ namespace ClientPortal.Controllers
             }
         }
 
-        [HttpPost("UpdatePortalUserRole")]
-        public IActionResult UpdatePortalUserRole(User user)
+        //[HttpPost("UpdatePortalUserRole")]
+        //public async Task<ActionResult<User>> UpdatePortalUserRole(User user)
+        //{
+        //    try
+        //    {
+        //        var retUser = _context.Users.Update(user);
+        //        await _context.SaveChangesAsync();
+
+        //        return Ok(retUser);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest($"Server error while updating user: {ex.Message}");
+        //    }
+        //}
+
+        [HttpPut("UpdatePortalUserRole/{id}")]
+        public async Task<IActionResult> UpdatePortalUserRole(int id, User user)
         {
+            if (id != user.Id)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(user).State = EntityState.Modified;
+
             try
             {
-                var retUser = _userService.UpdatePortalUsers(user);
-                return Ok(retUser);
+                await _context.SaveChangesAsync();
             }
-            catch (Exception ex)
+            catch (DbUpdateConcurrencyException)
             {
-                return BadRequest($"Server error while updating user: {ex.Message}");
+             
             }
+
+            return NoContent();
         }
+
 
         #region Private methods
         private string IpAddress()
