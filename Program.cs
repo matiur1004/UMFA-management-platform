@@ -58,14 +58,14 @@ IConfiguration? configuration = builder.Configuration;
                 Url = new Uri("https://example.com/license")
             }
         });
-        c.AddSecurityDefinition("bearerAuth", new OpenApiSecurityScheme
+        options.AddSecurityDefinition("bearerAuth", new OpenApiSecurityScheme
         {
             Type = SecuritySchemeType.Http,
             Scheme = "bearer",
             BearerFormat = "JWT",
             Description = "JWT Authorization header using the Bearer scheme."
         });
-        c.AddSecurityRequirement(new OpenApiSecurityRequirement
+        options.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
             new OpenApiSecurityScheme
@@ -175,7 +175,8 @@ var app = builder.Build();
         {
             options.SerializeAsV2 = true;
         });
-        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Umfa Client Portal WebApi v1"));
+        app.UseSwaggerUI(c => c.SwaggerEndpoint("v1/swagger.json", "Umfa Client Portal WebApi v1"));
+        
     }
 
 }
