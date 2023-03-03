@@ -9,7 +9,6 @@ using ClientPortal.Services;
 using Serilog;
 using System.Text.Json.Serialization;
 using ClientPortal.Data.Repositories;
-using Microsoft.OpenApi.Models;
 using DevExpress.Security.Resources;
 using Microsoft.Extensions.Options;
 
@@ -38,48 +37,7 @@ IConfiguration? configuration = builder.Configuration;
     services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
     services.AddControllers();
-    services.AddEndpointsApiExplorer();
-    services.AddSwaggerGen(options =>
-    {
-        options.SwaggerDoc("v1", new OpenApiInfo
-        {
-            Version = "v1",
-            Title = "UMFA Client Portal",
-            Description = "Web API Endpoints for UMFA's Client Portal",
-            TermsOfService = new Uri("https://example.com/terms"),
-            Contact = new OpenApiContact
-            {
-                Name = "Example Contact",
-                Url = new Uri("https://example.com/contact")
-            },
-            License = new OpenApiLicense
-            {
-                Name = "Example License",
-                Url = new Uri("https://example.com/license")
-            }
-        });
-        options.AddSecurityDefinition("bearerAuth", new OpenApiSecurityScheme
-        {
-            Type = SecuritySchemeType.Http,
-            Scheme = "bearer",
-            BearerFormat = "JWT",
-            Description = "JWT Authorization header using the Bearer scheme."
-        });
-        options.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "bearerAuth" }
-            },
-            new string[] {}
-        }
-    });
-
-        // using System.Reflection;
-        //var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-        //options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
-    });
+    services.AddOpenApiDocument();
 
     //DevExpress
     services.AddDevExpressControls();
@@ -143,11 +101,20 @@ var app = builder.Build();
     {
         // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();
-    } else
-    {
     }
-    
-    
+
+    app.UseCors("AllowAngularDevClient");
+    app.UseRouting();
+    app.UseAuthentication();
+    app.UseAuthorization();
+    app.UseEndpoints(endpoints =>
+    {
+        endpoints.MapControllers();
+    });
+
+    app.UseOpenApi();
+    app.UseSwaggerUi3();
+
 
     app.UseHttpsRedirection();
     app.UseStaticFiles();
@@ -168,16 +135,6 @@ var app = builder.Build();
         pattern: "{controller}/{action=Index}/{id?}");
 
     app.MapFallbackToFile("index.html");
-
-    if (app.Environment.IsDevelopment())
-    {
-        app.UseSwagger(options =>
-        {
-            options.SerializeAsV2 = true;
-        });
-        app.UseSwaggerUI(c => c.SwaggerEndpoint("v1/swagger.json", "Umfa Client Portal WebApi v1"));
-        
-    }
 
 }
 
