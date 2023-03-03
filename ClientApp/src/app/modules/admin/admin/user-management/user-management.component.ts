@@ -31,7 +31,6 @@ export class UserManagementComponent implements OnInit {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((res: Role[]) => {
         this.roles = res;
-        console.log('roles', this.roles);
       })
 
     this._userService.users$
@@ -44,7 +43,6 @@ export class UserManagementComponent implements OnInit {
           }
           return obj;
         });
-        console.log('users', this.users);
       })
   }
 
@@ -59,10 +57,10 @@ export class UserManagementComponent implements OnInit {
         .afterClosed()
         .subscribe((res) => {
           if(res) {
-            let data = {user: item, roleId: res['RoleId']};
+            let data = {userId: item.Id, roleId: res['RoleId']};
             this._userService.onUpdatePortalUserRole(data)
               .subscribe(() => {
-                //this._service.getList(this.siteId).subscribe();
+                this._userService.getAllUsers().subscribe();
               })
           }
         });
