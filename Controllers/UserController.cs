@@ -9,6 +9,7 @@ using ClientPortal.Data.Entities;
 using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Data;
 using Microsoft.Extensions.Logging;
+using ClientPortal.Models.ResponseModels;
 
 namespace ClientPortal.Controllers
 {
@@ -165,18 +166,18 @@ namespace ClientPortal.Controllers
         //}
 
         [HttpPost("UpdatePortalUserRole")]
-        public IActionResult UpdatePortalUserRole(int userId, int roleId)
+        public IActionResult UpdatePortalUserRole([FromBody]RoleUpdateModel roleUpdateModel)
         {
             try
             {
-                _logger.LogInformation($"update User with Id: {userId}");
-                var response = _context.Database.ExecuteSqlRaw($"UPDATE [dbo].[Users] SET [RoleId] = {roleId} WHERE Id = {userId}");
+                _logger.LogInformation($"update User with Id: {roleUpdateModel.UserId}");
+                var response = _context.Database.ExecuteSqlRaw($"UPDATE [dbo].[Users] SET [RoleId] = {roleUpdateModel.RoleId} WHERE Id = {roleUpdateModel.UserId}");
                 if (response != 0)
                 {
-                    _logger.LogInformation($"Successfully updated user: {userId}");
+                    _logger.LogInformation($"Successfully updated user: {roleUpdateModel.UserId}");
                     return Ok(response);
                 }
-                else throw new Exception($"Failed to User With Id: {userId}");
+                else throw new Exception($"Failed to User With Id: {roleUpdateModel.UserId}");
             }
             catch (Exception ex)
             {
