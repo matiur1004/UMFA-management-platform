@@ -37,6 +37,50 @@ IConfiguration? configuration = builder.Configuration;
     //strongly typed configuration settings
     services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
+    services.AddControllers();
+    services.AddEndpointsApiExplorer();
+    services.AddSwaggerGen(options =>
+    {
+        options.SwaggerDoc("v1", new OpenApiInfo
+        {
+            Version = "v1",
+            Title = "UMFA Client Portal",
+            Description = "Web API Endpoints for UMFA's Client Portal",
+            TermsOfService = new Uri("https://example.com/terms"),
+            Contact = new OpenApiContact
+            {
+                Name = "Example Contact",
+                Url = new Uri("https://example.com/contact")
+            },
+            License = new OpenApiLicense
+            {
+                Name = "Example License",
+                Url = new Uri("https://example.com/license")
+            }
+        });
+        c.AddSecurityDefinition("bearerAuth", new OpenApiSecurityScheme
+        {
+            Type = SecuritySchemeType.Http,
+            Scheme = "bearer",
+            BearerFormat = "JWT",
+            Description = "JWT Authorization header using the Bearer scheme."
+        });
+        c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "bearerAuth" }
+            },
+            new string[] {}
+        }
+    });
+
+        // using System.Reflection;
+        //var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+        //options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+    });
+
     //DevExpress
     services.AddDevExpressControls();
     services.AddScoped<IReportProviderAsync, CustomReportProvider>();
@@ -89,7 +133,6 @@ IConfiguration? configuration = builder.Configuration;
     services.AddScoped<IAMRScadaUserRepository, AMRScadaUserRepository>();
     services.AddScoped<IAMRDataRepository, AMRDataRepository>();
     services.AddScoped<IReportRepository, ReportRepository>();
-
 }
 
 var app = builder.Build();
@@ -103,10 +146,13 @@ var app = builder.Build();
     } else
     {
     }
+    
+    
 
     app.UseHttpsRedirection();
     app.UseStaticFiles();
     app.UseRouting();
+    app.MapControllers();
 
     var contentDirectoryAllowRule = DirectoryAccessRule.Allow(new DirectoryInfo(Path.Combine(builder.Environment.ContentRootPath, "..", "Content")).FullName);
     AccessSettings.ReportingSpecificResources.TrySetRules(contentDirectoryAllowRule, UrlAccessRule.Allow());
@@ -121,7 +167,17 @@ var app = builder.Build();
         name: "default",
         pattern: "{controller}/{action=Index}/{id?}");
 
-    app.MapFallbackToFile("index.html"); ;
+    app.MapFallbackToFile("index.html");
+
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger(options =>
+        {
+            options.SerializeAsV2 = true;
+        });
+        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Umfa Client Portal WebApi v1"));
+    }
+
 }
 
 //Inject configuration options into static class used for encryption
