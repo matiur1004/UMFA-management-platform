@@ -170,8 +170,8 @@ namespace ClientPortal.Controllers
             try
             {
                 _logger.LogInformation($"update User with Id: {userId}");
-                var response = _context.Users.FromSqlRaw($"UPDATE [dbo].[Users] SET [RoleId] = {roleId} WHERE Id = {userId}");
-                if (response != null)
+                var response = _context.Database.ExecuteSqlRaw($"UPDATE [dbo].[Users] SET [RoleId] = {roleId} WHERE Id = {userId}");
+                if (response != 0)
                 {
                     _logger.LogInformation($"Successfully updated user: {userId}");
                     return Ok(response);
