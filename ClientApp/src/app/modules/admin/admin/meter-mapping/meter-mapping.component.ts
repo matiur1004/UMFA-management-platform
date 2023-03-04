@@ -141,6 +141,11 @@ export class MeterMappingComponent implements OnInit {
         }
     }
 
+    customBuildingSearch(term: string, item: any) {
+        term = term.toLocaleLowerCase();
+        return item.Name.toLocaleLowerCase().startsWith(term);
+    }
+
     getScadaUserDetails(userId) {
         this.usrService.getAmrScadaUser(1).subscribe({
             next: au => {
