@@ -33,3 +33,11 @@ export interface IUser {
     RoleName: string;
   }
   
+  export enum RoleType {
+    All,
+    UMFAAdministrator,
+    UMFAOperator,
+    ClientAdministrator,
+    ClientOperator,
+    Tenant
+  }

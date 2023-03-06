@@ -13,6 +13,8 @@ import { MeterMappingComponent } from './meter-mapping/meter-mapping.component';
 import { MeterMappingResolver } from './meter-mapping/meter-mapping.resolver';
 import { UserManagementComponent } from './user-management/user-management.component';
 import { UserManagementResolver } from './user-management/user-management.resolver';
+import { UmfaAdministratorAuthGuard } from '@shared/infrastructures/umfa-administrator.auth.guard';
+import { UmfaOperatorAuthGuard } from '@shared/infrastructures/umfa-operator.auth.guard';
 const routes: Routes = [
   {
     path: '', component: AdminComponent, //redirectTo: 'amrUser', pathMatch: 'full'
@@ -25,9 +27,11 @@ const routes: Routes = [
       },
       {
         path: 'amrUser', component: AmrUserComponent,
+        canActivate: [UmfaAdministratorAuthGuard]
       },
       {
-        path: 'amrUser/:id', component: AmrUserDetailComponent
+        path: 'amrUser/:id', component: AmrUserDetailComponent,
+        canActivate: [UmfaAdministratorAuthGuard]
       },
       {
         path: 'amrMeter', component: AmrMeterComponent
@@ -43,12 +47,14 @@ const routes: Routes = [
       },
       {
         path: 'meterMapping', component: MeterMappingComponent,
+        canActivate: [UmfaOperatorAuthGuard],
         resolve  : {
           data: MeterMappingResolver
         } 
       },
       {
         path: 'user-management', component: UserManagementComponent,
+        canActivate: [UmfaAdministratorAuthGuard],
         resolve  : {
           data: UserManagementResolver
         } 

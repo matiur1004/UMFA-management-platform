@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { forkJoin, Observable } from 'rxjs';
 import { NavigationService } from 'app/core/navigation/navigation.service';
-import { UserService } from 'app/core/user/user.service';
-
+import { UserService } from './shared/services/user.service';
+import { AuthService } from '@core/auth/auth.service';
 @Injectable({
     providedIn: 'root'
 })
@@ -14,9 +14,11 @@ export class InitialDataResolver implements Resolve<any>
      */
     constructor(
         private _navigationService: NavigationService,
-        private _userService: UserService
+        private _userService: UserService,
+        private _authService: AuthService
     )
     {
+        console.log('dfdfdfdfdfdf');
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -33,8 +35,7 @@ export class InitialDataResolver implements Resolve<any>
     {
         // Fork join multiple API endpoint calls to wait all of them to finish
         return forkJoin([
-            this._navigationService.get(),
-            this._userService.get()
+            this._userService.getUser(this._authService.userValue.Id)
         ]);
     }
 }
