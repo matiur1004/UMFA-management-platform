@@ -1,16 +1,17 @@
-using DevExpress.AspNetCore.Reporting;
-using DevExpress.AspNetCore;
-using DevExpress.XtraReports.Services;
-using Microsoft.Extensions.FileProviders;
-using System.Reflection;
 using ClientPortal.Data;
+using ClientPortal.Data.Repositories;
 using ClientPortal.Helpers;
 using ClientPortal.Services;
-using Serilog;
-using System.Text.Json.Serialization;
-using ClientPortal.Data.Repositories;
+using DevExpress.AspNetCore;
+using DevExpress.AspNetCore.Reporting;
 using DevExpress.Security.Resources;
+using DevExpress.XtraReports.Services;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
+using Serilog;
+using System.Reflection;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,9 +36,35 @@ IConfiguration? configuration = builder.Configuration;
 
     //strongly typed configuration settings
     services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
-
+    services.AddMvcCore();
     services.AddControllers();
-    services.AddOpenApiDocument();
+    services.AddSwaggerGen(c => {
+        c.SwaggerDoc("v1", new OpenApiInfo
+        {
+            Title = "UMFA Client Portal API",
+            Version = "v1"
+        });
+        c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+        {
+            Name = "Authorization",
+            Type = SecuritySchemeType.ApiKey,
+            Scheme = "Bearer",
+            BearerFormat = "JWT",
+            In = ParameterLocation.Header,
+            Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
+        });
+        c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+        {
+            new OpenApiSecurityScheme {
+                Reference = new OpenApiReference {
+                    Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+    });
 
     //DevExpress
     services.AddDevExpressControls();
@@ -84,13 +111,14 @@ IConfiguration? configuration = builder.Configuration;
     services.AddScoped<DashboardService, DashboardService>();
     services.AddScoped<MappedMetersService, MappedMetersService>();
 
-        //Data components
+    //Data components
     services.AddScoped<IPortalStatsRepository, PortalStatsRepository>();
     services.AddScoped<IAMRMeterRepository, AMRMeterRepository>();
     services.AddScoped<IUMFABuildingRepository, UMFABuildingRepository>();
     services.AddScoped<IAMRScadaUserRepository, AMRScadaUserRepository>();
     services.AddScoped<IAMRDataRepository, AMRDataRepository>();
     services.AddScoped<IReportRepository, ReportRepository>();
+
 }
 
 var app = builder.Build();
@@ -102,24 +130,13 @@ var app = builder.Build();
         // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();
     }
-
-    app.UseCors("AllowAngularDevClient");
-    app.UseRouting();
-    app.UseAuthentication();
-    app.UseAuthorization();
-    app.UseEndpoints(endpoints =>
+    else
     {
-        endpoints.MapControllers();
-    });
-
-    app.UseOpenApi();
-    app.UseSwaggerUi3();
-
+    }
 
     app.UseHttpsRedirection();
     app.UseStaticFiles();
     app.UseRouting();
-    app.MapControllers();
 
     var contentDirectoryAllowRule = DirectoryAccessRule.Allow(new DirectoryInfo(Path.Combine(builder.Environment.ContentRootPath, "..", "Content")).FullName);
     AccessSettings.ReportingSpecificResources.TrySetRules(contentDirectoryAllowRule, UrlAccessRule.Allow());
@@ -135,7 +152,9 @@ var app = builder.Build();
         pattern: "{controller}/{action=Index}/{id?}");
 
     app.MapFallbackToFile("index.html");
-
+   
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 //Inject configuration options into static class used for encryption
