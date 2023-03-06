@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using ClientPortal.Controllers.Authorization;
-using ClientPortal.Models;
+using ClientPortal.Models.RequestModels;
+using ClientPortal.Models.ResponseModels;
 using ClientPortal.Services;
 
 namespace ClientPortal.Controllers

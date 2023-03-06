@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace ClientPortal.Data.Entities
+namespace ClientPortal.Data.Entities.UMFAEntities
 {
     [Serializable]
     [Keyless]

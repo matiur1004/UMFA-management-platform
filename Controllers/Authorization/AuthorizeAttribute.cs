@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
-using ClientPortal.Data.Entities;
+﻿using ClientPortal.Data.Entities.PortalEntities;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace ClientPortal.Controllers.Authorization
 {

@@ -1,6 +1,6 @@
-﻿using Dapper;
-using DXReports.Models;
-using ClientPortal.Models;
+﻿using ClientPortal.DtOs;
+using ClientPortal.Models.ResponseModels;
+using Dapper;
 
 namespace ClientPortal.Data.Repositories
 {

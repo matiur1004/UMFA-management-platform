@@ -1,7 +1,8 @@
-﻿namespace ClientPortal.Models
+﻿using ClientPortal.Data.Entities.PortalEntities;
+
+namespace ClientPortal.Models.ResponseModels
 {
     using System.Text.Json.Serialization;
-    using ClientPortal.Data.Entities;
 
     public class AuthResponse
     {

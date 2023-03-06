@@ -1,5 +1,5 @@
 ﻿
-namespace ClientPortal.Models
+namespace ClientPortal.Models.RequestModels
 {
     public class AMRWaterProfileRequest
     {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using ClientPortal.Controllers.Authorization;
-using ClientPortal.Models;
+using ClientPortal.Models.RequestModels;
+using ClientPortal.Models.ResponseModels;
 using ClientPortal.Services;
 
 namespace ClientPortal.Controllers
@@ -20,7 +21,7 @@ namespace ClientPortal.Controllers
         }
 
         [HttpPost("addmeter")]
-        public IActionResult Create([FromBody]AMRMeterUpdateRequest meterReq)
+        public IActionResult Create([FromBody] AMRMeterUpdateRequest meterReq)
         {
             try
             {

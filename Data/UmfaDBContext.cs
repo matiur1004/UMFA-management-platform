@@ -1,5 +1,4 @@
-﻿using ClientPortal.Data.Entities;
-using ClientPortal.Data.Entities.UMFAEntities;
+﻿using ClientPortal.Data.Entities.UMFAEntities;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClientPortal.Data

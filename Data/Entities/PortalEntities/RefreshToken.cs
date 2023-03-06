@@ -1,4 +1,4 @@
-﻿namespace ClientPortal.Data.Entities
+﻿namespace ClientPortal.Data.Entities.PortalEntities
 {
     using Microsoft.EntityFrameworkCore;
     using System.Text.Json.Serialization;

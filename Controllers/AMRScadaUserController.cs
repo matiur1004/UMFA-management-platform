@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using ClientPortal.Controllers.Authorization;
-using ClientPortal.Models;
+using ClientPortal.Models.RequestModels;
+using ClientPortal.Models.ResponseModels;
 using ClientPortal.Services;
 using System.Web;
 
@@ -85,7 +86,7 @@ namespace ClientPortal.Controllers
         }
 
         [HttpPost("edit/{id}")]
-        public IActionResult Edit([FromRoute]int id, [FromBody]AMRScadaUserRequest request)
+        public IActionResult Edit([FromRoute]int id, [FromBody] AMRScadaUserRequest request)
         {
             _logger.LogInformation($"Saving amr scada user {request?.ScadaUserName ?? "Empty object recieved"}");
             try

@@ -1,4 +1,4 @@
-﻿using ClientPortal.Data.Entities;
+﻿using ClientPortal.Data.Entities.UMFAEntities;
 
 namespace ClientPortal.Models.ResponseModels
 {

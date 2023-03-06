@@ -1,4 +1,4 @@
-﻿namespace DXReports.Models
+﻿namespace ClientPortal.DtOs
 {
     public class Header
     {

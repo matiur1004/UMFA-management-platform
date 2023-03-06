@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using ClientPortal.Data.Entities;
-using ClientPortal.Models;
+using ClientPortal.Data.Entities.UMFAEntities;
+using ClientPortal.Models.ResponseModels;
 using Dapper;
 using System.Data;
 

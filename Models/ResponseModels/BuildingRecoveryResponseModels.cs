@@ -1,4 +1,4 @@
-﻿namespace ClientPortal.Models
+﻿namespace ClientPortal.Models.ResponseModels
 {
     public class BuildingRecoveryReport
     {

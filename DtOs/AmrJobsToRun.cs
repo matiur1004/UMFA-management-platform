@@ -1,5 +1,4 @@
-﻿using ClientPortal.Data.Entities;
-
+﻿
 namespace ClientPortal.DtOs
 {
     public class AmrJobToRun

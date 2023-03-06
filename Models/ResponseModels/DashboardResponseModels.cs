@@ -1,6 +1,6 @@
 using ClientPortal.Migrations;
 
-namespace ClientPortal.Models
+namespace ClientPortal.Models.ResponseModels
 {
     public class DashboardMainResponse
     {

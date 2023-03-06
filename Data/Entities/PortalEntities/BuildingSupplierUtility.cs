@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace ClientPortal.Data.Entities
+namespace ClientPortal.Data.Entities.PortalEntities
 {
     public class BuildingSupplierUtility
     {
