@@ -59,6 +59,8 @@ namespace ClientPortal.Controllers
             return jsonText;
         }
 
+        // GET: ScadaMeters/GetAsync
+        [HttpGet("GeMeters")]
         public List<MeterItem> GetMeters(string result)
         {
             var _meterItems = new List<MeterItem>();

@@ -1,5 +1,5 @@
 ﻿using ClientPortal.Data.Repositories;
-using ClientPortal.Models;
+using ClientPortal.Models.ResponseModels;
 
 namespace ClientPortal.Services
 {

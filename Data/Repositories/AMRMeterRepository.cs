@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
-using ClientPortal.Data.Entities;
-using ClientPortal.Models;
+using ClientPortal.Data.Entities.PortalEntities;
+using ClientPortal.Data.Entities.UMFAEntities;
+using ClientPortal.Models.RequestModels;
+using ClientPortal.Models.ResponseModels;
 
 namespace ClientPortal.Data.Repositories
 {

@@ -2,7 +2,7 @@
 using DevExpress.XtraPrinting;
 using DevExpress.XtraReports.UI;
 using ClientPortal.Data.Repositories;
-using ClientPortal.Models;
+using ClientPortal.Models.ResponseModels;
 using ClientPortal.PredefinedReports;
 using ServiceStack;
 using System.Drawing;

@@ -1,13 +1,12 @@
 ﻿using ClientPortal.Services;
 using ClientPortal.Controllers.Authorization;
-using ClientPortal.Models;
 using Microsoft.Extensions.Options;
 using ClientPortal.Helpers;
+using ClientPortal.Models.RequestModels;
 using System.Text.Json;
 using Microsoft.AspNetCore.Cors;
-using ClientPortal.Data.Entities;
-using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Data;
+using ClientPortal.Data.Entities.PortalEntities;
 using Microsoft.Extensions.Logging;
 using ClientPortal.Models.ResponseModels;
 

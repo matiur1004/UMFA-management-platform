@@ -1,6 +1,6 @@
-﻿using ClientPortal.Data.Entities;
+﻿using ClientPortal.Data.Entities.UMFAEntities;
 using ClientPortal.Data.Repositories;
-using ClientPortal.Models;
+using ClientPortal.Models.ResponseModels;
 
 namespace ClientPortal.Services
 {

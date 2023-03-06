@@ -1,5 +1,4 @@
-﻿using ClientPortal.Data.Entities;
-using ClientPortal.Models;
+﻿using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Models.ResponseModels;
 
 namespace ClientPortal.Data.Repositories

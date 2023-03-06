@@ -19,7 +19,7 @@ namespace ClientPortal.Controllers
             _buildingService = buildingService;
         }
 
-        [HttpGet("umfabuildings/{umfauserid}")]
+        [HttpGet("umfaBuildings/{umfaUserId}")]
         public IActionResult GetUmfaBuildings(int umfaUserId)
         {
             _logger.LogInformation($"Get umfa buildngs via service for user {umfaUserId}");
@@ -40,7 +40,7 @@ namespace ClientPortal.Controllers
             }
         }
 
-        [HttpGet("umfameters/{umfabuildingid}")]
+        [HttpGet("umfaMeters/{umfaBuildingId}")]
         public IActionResult GetUmfaMeters(int umfaBuildingId)
         {
             _logger.LogInformation($"Get umfa meters via service for building {umfaBuildingId}");
@@ -62,7 +62,7 @@ namespace ClientPortal.Controllers
         }
 
 
-        [HttpGet("Periods/{umfabuildingid:int}")]
+        [HttpGet("Periods/{umfaBuildingId:int}")]
         public IActionResult GetPeriods(int umfaBuildingId)
         {
             _logger.LogInformation("API initiated to retrieve periods for building {buildingId", umfaBuildingId);
@@ -83,7 +83,7 @@ namespace ClientPortal.Controllers
             }
         }
 
-        [HttpGet("Partners/{umfauserid:int}")]
+        [HttpGet("Partners/{umfaUserId:int}")]
         public IActionResult GetPartners(int umfaUserId)
         {
             _logger.LogInformation("API initiated to retrieve partners for user {umfaUserId", umfaUserId);

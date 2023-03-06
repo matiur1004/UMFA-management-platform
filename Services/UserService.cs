@@ -1,9 +1,10 @@
 ﻿using Microsoft.Extensions.Options;
 using ClientPortal.Data;
-using ClientPortal.Data.Entities;
+using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.DtOs;
 using ClientPortal.Helpers;
-using ClientPortal.Models;
+using ClientPortal.Models.RequestModels;
+using ClientPortal.Models.ResponseModels;
 
 namespace ClientPortal.Services
 {

@@ -1,7 +1,7 @@
 ﻿
 using DevExpress.Xpo;
 
-namespace ClientPortal.Data.Entities
+namespace ClientPortal.Data.Entities.UMFAEntities
 {
     [Serializable]
     public class UMFABuildingService

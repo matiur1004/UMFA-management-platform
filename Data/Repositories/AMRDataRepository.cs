@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using ClientPortal.Data.Entities;
 using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.DtOs;
 using System.Globalization;

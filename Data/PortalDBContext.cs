@@ -1,5 +1,4 @@
-﻿using ClientPortal.Data.Entities;
-using ClientPortal.Data.Entities.PortalEntities;
+﻿using ClientPortal.Data.Entities.PortalEntities;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Policy;
 

@@ -1,5 +1,4 @@
 ﻿using ClientPortal.Data.Repositories;
-using ClientPortal.Models;
 using ClientPortal.Models.ResponseModels;
 using System.Linq.Expressions;
 

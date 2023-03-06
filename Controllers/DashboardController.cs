@@ -18,7 +18,7 @@ namespace ClientPortal.Controllers
             _logger = logger;
         }
 
-        [HttpGet("getDBStats/{umfauserid}")]
+        [HttpGet("getDBStats/{umfaUserId}")]
         public IActionResult GetDBStats(int umfaUserId)
         {
             try
@@ -33,7 +33,7 @@ namespace ClientPortal.Controllers
             }
         }
 
-        [HttpGet("getDBBuildingStats/{umfabuildingid}")]
+        [HttpGet("getDBBuildingStats/{umfaBuildingId}")]
         public IActionResult GetDBBuildingStats(int umfaBuildingId)
         {
             try
@@ -48,7 +48,7 @@ namespace ClientPortal.Controllers
             }
         }
 
-        [HttpGet("getBuildingList/{umfauserid}")]
+        [HttpGet("getBuildingList/{umfaUserId}")]
         public IActionResult GetBuildingList(int umfaUserId)
         {
             try
