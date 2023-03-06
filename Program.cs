@@ -64,6 +64,7 @@ IConfiguration? configuration = builder.Configuration;
             new string[] {}
         }
     });
+        c.DescribeAllParametersInCamelCase();
     });
 
     //DevExpress
@@ -152,9 +153,12 @@ var app = builder.Build();
         pattern: "{controller}/{action=Index}/{id?}");
 
     app.MapFallbackToFile("index.html");
-   
-    app.UseSwagger();
-    app.UseSwaggerUI();
+
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
 }
 
 //Inject configuration options into static class used for encryption
