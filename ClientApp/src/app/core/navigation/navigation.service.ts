@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, ReplaySubject, tap } from 'rxjs';
 import { Navigation } from 'app/core/navigation/navigation.types';
 import { FuseNavigationItem } from '@fuse/components/navigation';
+import { UserService } from '@shared/services';
+import { RoleType } from '@core/models';
 
 @Injectable({
     providedIn: 'root'
@@ -14,7 +16,7 @@ export class NavigationService
     /**
      * Constructor
      */
-    constructor(private _httpClient: HttpClient)
+    constructor(private _httpClient: HttpClient, private _userService: UserService)
     {
     }
 
@@ -47,13 +49,15 @@ export class NavigationService
     }
 
     generateNavigation(): FuseNavigationItem[]{
+        let roleId = this._userService.userValue.RoleId;
+        //roleId = 2;
         const navigation: FuseNavigationItem[] = [
             {
                 id: 'dashboard',
                 title: 'Dashboard',
                 type: 'basic',
                 link: '/project',
-                icon    : 'heroicons_solid:dashboard',  
+                icon    : 'heroicons_solid:dashboard'
             },
             {
                 id: 'admin',
@@ -61,6 +65,10 @@ export class NavigationService
                 type: 'basic',
                 link: '/admin',
                 icon    : 'feather:gear',
+                hidden: function(){    
+                    if(roleId == RoleType.UMFAAdministrator || roleId == RoleType.UMFAOperator) return false;
+                    return true;
+                }
             },
             {
                 id: 'amr_graph',
