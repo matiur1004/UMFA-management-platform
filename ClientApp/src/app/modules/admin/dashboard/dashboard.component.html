@@ -259,7 +259,7 @@
                                             </div>
                                             <div class="flex justify-between gap-x-2">
                                                 <div class="flex flex-col w-full">
-                                                    <div class="grid grid-cols-3 gap-y-1 gap-x-2 text-lg">
+                                                    <div class="grid grid-cols-3 gap-y-1 gap-x-2 text-lg" *ngIf="isMobileScreen">
                                                         <div class="col-span-1"></div>
                                                         <div class="col-span-1 flex gap-x-1 md:gap-x-2 electricity-lbl">
                                                             <div class="service-icon electricity-icon"></div> Electricity
@@ -291,8 +291,9 @@
                                                         </div>
                                                         <div class="col-span-1 text-lg md:text-xl">{{totalElectricityUsage * 0.97 / 1000 * 1000 / 27 / 400 * 1000 / 12000 | number : '1.0-0'}}</div>
                                                         <div class="col-span-1 text-lg md:text-xl">{{totalWaterUsage * 0.298 / 1000 * 1000 / 27 / 400 * 1000 / 12000 | number : '1.0-0'}}</div>
-
-                                                        <!-- <div class="col-span-3"></div>
+                                                    </div>
+                                                     <div class="grid grid-cols-11 gap-2 text-lg" *ngIf="!isMobileScreen">
+                                                        <div class="col-span-3"></div>
                                                         <div class="col-span-2">CO<span class="leading-3 text-sm">2</span> Tonnes</div>
                                                         <div class="col-span-2">Trees</div>
                                                         <div class="col-span-2">Area-Hectare</div>
@@ -310,7 +311,7 @@
                                                         <div class="col-span-2 text-xl">{{totalWaterUsage * 0.298 / 1000 | number : '1.0-0'}}</div>
                                                         <div class="col-span-2 text-xl">{{totalWaterUsage * 0.298 / 1000 * 1000 / 27 | number : '1.0-0'}}</div>
                                                         <div class="col-span-2 text-xl">{{totalWaterUsage * 0.298 / 1000 * 1000 / 27 / 400 | number : '1.0-0'}}</div>
-                                                        <div class="col-span-2 text-xl">{{totalWaterUsage * 0.298 / 1000 * 1000 / 27 / 400 * 1000 / 12000 | number : '1.0-0'}}</div> -->
+                                                        <div class="col-span-2 text-xl">{{totalWaterUsage * 0.298 / 1000 * 1000 / 27 / 400 * 1000 / 12000 | number : '1.0-0'}}</div>
                                                     </div>
                                                 </div>
                                             </div>

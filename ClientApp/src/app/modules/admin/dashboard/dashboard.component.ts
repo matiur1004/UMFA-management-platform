@@ -19,6 +19,7 @@ import {
     ApexFill,
     ApexTooltip
   } from "ng-apexcharts";
+import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 
 export type ChartOptions = {
     series: ApexAxisChartSeries;
@@ -105,6 +106,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
     varianceWater: number;
     varianceSales: number;
 
+    isMobileScreen: boolean = false;
+
     readonly allowedPageSizes = [10, 15, 20, 'All'];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     
@@ -115,7 +118,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
         private _dbService: DashboardService,
         private _bldService: BuildingService,
         private _usrService: AuthService,
-        private _cdr: ChangeDetectorRef
+        private _cdr: ChangeDetectorRef,
+        private _fuseMediaWatcherService: FuseMediaWatcherService,
     ) {
         this.chartElectricityUsage = {
             series: [
@@ -216,6 +220,13 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     ngOnInit(): void {
+        // Subscribe to media changes
+        this._fuseMediaWatcherService.onMediaChange$
+        .pipe(takeUntil(this._unsubscribeAll))
+        .subscribe(({matchingAliases}) => {
+            // Check if the screen is small
+            this.isMobileScreen = !matchingAliases.includes('md');
+        });
     }
 
     onDetail(type: EHomeTabType) {
