@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
+import { environment } from 'environments/environment';
 
 @Component({
     selector     : 'auth-sign-in',
@@ -46,8 +47,8 @@ export class AuthSignInComponent implements OnInit
     {
         // Create the form
         this.signInForm = this._formBuilder.group({
-            email     : ['nici@umfa.co.za', [Validators.required, Validators.email]],
-            password  : ['Nici12#', Validators.required],
+            email: [(environment.production) ? '' : 'nici@umfa.co.za', [Validators.required, Validators.email]],
+            password: [(environment.production) ? '' : 'Nici12#', Validators.required],
             rememberMe: ['']
         });
     }

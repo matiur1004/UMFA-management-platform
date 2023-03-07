@@ -5,6 +5,8 @@ using ClientPortal.DtOs;
 using ClientPortal.Helpers;
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
+using ClientPortal.Data.Entities;
+using ClientPortal.Models;
 
 namespace ClientPortal.Services
 {
@@ -69,7 +71,8 @@ namespace ClientPortal.Services
                         LastName = aspUser.Surname,
                         UserName = model.UserName,
                         IsAdmin = (bool)aspUser.IsSiteAdmin,
-                        PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password)
+                        PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password),
+                        RoleId = 2
                     };
                 }
                 else //validate the user within local db
@@ -92,7 +95,8 @@ namespace ClientPortal.Services
                             FirstName = aspUser.Name,
                             LastName = aspUser.Surname,
                             UserName = model.UserName,
-                            PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password)
+                            PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password),
+                            RoleId = 2
                         };
                     }
                 }

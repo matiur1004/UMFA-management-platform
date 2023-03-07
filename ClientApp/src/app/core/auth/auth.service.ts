@@ -88,7 +88,6 @@ export class AuthService
             //tap(u => console.log(`Http response from login: ${JSON.stringify(u)}`)),
             catchError(err => this.catchAuthErrors('login', err)),
             map((response) => {
-                console.log(response);
                 this.accessToken = response.JwtToken;
                 this._authenticated = true;
                 this._userService.user = {email: response['UserName'], name: `${response['FirstName']} ${response['LastName']}`, id: response['Id']};
@@ -114,6 +113,7 @@ export class AuthService
             map(user => {
               //console.log(`refreshtoken: ${user}`);
               this.userSubject.next(user);
+              localStorage.setItem('user', JSON.stringify(user));
               this.startRefreshTokenTimer();
               return user;
             }));
