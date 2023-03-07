@@ -9,6 +9,7 @@ using ClientPortal.Data;
 using ClientPortal.Data.Entities.PortalEntities;
 using Microsoft.Extensions.Logging;
 using ClientPortal.Models.ResponseModels;
+using ClientPortal.Models.RequestModels;
 
 namespace ClientPortal.Controllers
 {
