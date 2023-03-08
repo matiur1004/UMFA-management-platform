@@ -1,9 +1,11 @@
-﻿using ClientPortal.Interfaces;
+﻿using ClientPortal.Controllers.Authorization;
+using ClientPortal.Interfaces;
 using ClientPortal.Models.MailModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClientPortal.Controllers
 {
+    [Authorize]
     [Route("[controller]")]
     [ApiController]
     public class MailController : ControllerBase
