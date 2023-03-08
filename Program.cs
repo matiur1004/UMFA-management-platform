@@ -1,7 +1,9 @@
 using ClientPortal.Data;
 using ClientPortal.Data.Repositories;
 using ClientPortal.Helpers;
+using ClientPortal.Interfaces;
 using ClientPortal.Services;
+using ClientPortal.Settings;
 using DevExpress.AspNetCore;
 using DevExpress.AspNetCore.Reporting;
 using DevExpress.Security.Resources;
@@ -36,6 +38,8 @@ IConfiguration? configuration = builder.Configuration;
 
     //strongly typed configuration settings
     services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+    services.Configure<MailSettings>(builder.Configuration.GetSection(nameof(MailSettings)));
+    services.AddTransient<IMailService, MailService>();
     services.AddMvcCore();
     services.AddControllers();
     services.AddSwaggerGen(c => {
