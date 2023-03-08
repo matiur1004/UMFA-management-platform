@@ -149,22 +149,6 @@ namespace ClientPortal.Controllers
             }
         }
 
-        //[HttpPost("UpdatePortalUserRole")]
-        //public async Task<ActionResult<User>> UpdatePortalUserRole(User user)
-        //{
-        //    try
-        //    {
-        //        var retUser = _context.Users.Update(user);
-        //        await _context.SaveChangesAsync();
-
-        //        return Ok(retUser);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest($"Server error while updating user: {ex.Message}");
-        //    }
-        //}
-
         [HttpPost("UpdatePortalUserRole")]
         public IActionResult UpdatePortalUserRole([FromBody]RoleUpdateModel roleUpdateModel)
         {
