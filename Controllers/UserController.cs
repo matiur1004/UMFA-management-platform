@@ -157,9 +157,9 @@ namespace ClientPortal.Controllers
                 _logger.LogInformation($"update User with Id: {roleUpdateModel.UserId}");
                 var response = _context.Database.ExecuteSqlRaw($"UPDATE [dbo].[Users] SET " +
                     $"[RoleId] = {roleUpdateModel.RoleId}, " +
-                    $"[NotificationEmailAddress] = {roleUpdateModel.NotificationEmailAddress}, " +
-                    $"[NotificationMobileNumber] = {roleUpdateModel.NotificationMobileNumber} " +
-                    $"WHERE Id = {roleUpdateModel.UserId}");
+                    $"[NotificationEmailAddress] = '{roleUpdateModel.NotificationEmailAddress}', " +
+                    $"[NotificationMobileNumber] = '{roleUpdateModel.NotificationMobileNumber}' " +
+                    $" WHERE Id = {roleUpdateModel.UserId}");
 
                 if (response != 0)
                 {
@@ -170,8 +170,8 @@ namespace ClientPortal.Controllers
             }
             catch (Exception ex)
             {
-                _logger?.LogError($"Failed to update meter: {ex.Message}");
-                return BadRequest(new ApplicationException($"Failed to update meter: {ex.Message}"));
+                _logger?.LogError($"Failed to update User Roles: {ex.Message}");
+                return BadRequest(new ApplicationException($"Failed to update User Roles and Notification Settings: {ex.Message}"));
             }
         }
 
