@@ -57,6 +57,7 @@ namespace ClientPortal.Data
         public DbSet<SupplyType> SupplyTypes { get; set; }
         public DbSet<MeterLocation> MeterLocations { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<NotificationType> NotificationTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
