@@ -31,8 +31,9 @@ export class RoleAddEditPopupComponent implements OnInit {
   ngOnInit(): void {
     // Prepare the card form
     this.form = this._formBuilder.group({
-      id: [0],
-      RoleId: [null, Validators.required]
+      RoleId: [null, Validators.required],
+      NotificationEmailAddress: ['', [Validators.email]],
+      NotificationMobileNumber: ['']
     });
 
     this.roleItems = this.data['roleItems'];

@@ -1,4 +1,4 @@
-<div class="flex flex-col flex-auto min-w-100 max-w-100 max-h-screen -m-6 ">
+<div class="flex flex-col flex-auto min-w-160 max-w-160 max-h-screen -m-6 ">
 
     <!-- Header -->
     <div class="flex flex-0 items-center justify-between h-12 pr-3 sm:pr-5 pl-4 sm:pl-8 bg-primary text-white">
@@ -16,7 +16,7 @@
     <form
         class="flex flex-col flex-0 w-full p-4 gap-y-4"
         [formGroup]="form">
-        <div class="row grid grid-cols-1 gap-2">
+        <div class="row grid grid-cols-2 gap-4">
             <div class="col-span-1">
                 <mat-label class="form-label"> Role </mat-label>
                 <ng-select
@@ -34,6 +34,23 @@
                 <mat-error *ngIf="form.get('RoleId').getError('required') && submitted">
                    Role is required
                 </mat-error>
+            </div>
+        </div>
+        <div class="row grid grid-cols-2 gap-4">
+            <div class="col-span-1">
+                <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
+                    <mat-label class="form-label">Notification Email Address</mat-label>
+                    <input matInput [formControlName]="'NotificationEmailAddress'" [placeholder]="''"/>
+                    <mat-error *ngIf="form.get('NotificationEmailAddress').getError('email')">
+                        Invalid Email.
+                     </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-span-1">
+                <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
+                    <mat-label class="form-label">Notification Mobile Number</mat-label>
+                    <input matInput [formControlName]="'NotificationMobileNumber'" [placeholder]="''"/>
+                  </mat-form-field>
             </div>
         </div>
         <div class="row flex gap-y-2 justify-end flex">
