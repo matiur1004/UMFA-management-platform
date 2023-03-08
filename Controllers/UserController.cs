@@ -155,7 +155,12 @@ namespace ClientPortal.Controllers
             try
             {
                 _logger.LogInformation($"update User with Id: {roleUpdateModel.UserId}");
-                var response = _context.Database.ExecuteSqlRaw($"UPDATE [dbo].[Users] SET [RoleId] = {roleUpdateModel.RoleId} WHERE Id = {roleUpdateModel.UserId}");
+                var response = _context.Database.ExecuteSqlRaw($"UPDATE [dbo].[Users] SET " +
+                    $"[RoleId] = {roleUpdateModel.RoleId}, " +
+                    $"[NotificationEmailAddress] = {roleUpdateModel.NotificationEmailAddress}, " +
+                    $"[NotificationMobileNumber] = {roleUpdateModel.NotificationMobileNumber} " +
+                    $"WHERE Id = {roleUpdateModel.UserId}");
+
                 if (response != 0)
                 {
                     _logger.LogInformation($"Successfully updated user: {roleUpdateModel.UserId}");
