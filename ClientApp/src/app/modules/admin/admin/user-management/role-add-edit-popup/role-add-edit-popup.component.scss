@@ -1,3 +1,6 @@
 ::ng-deep .mat-dialog-container {
     overflow: visible;
 }
+.table-grid {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}

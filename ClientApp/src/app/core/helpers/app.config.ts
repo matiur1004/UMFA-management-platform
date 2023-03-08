@@ -52,6 +52,7 @@ export interface ApplicationConfiguration {
     deleteRole: string;
     //Path For Users
     getAllPortalUsers: string;
+    getAllNotificationTypes: string;
     updateUserRole: string;
 }
 
@@ -111,5 +112,6 @@ export const CONFIG: ApplicationConfiguration = {
     deleteRole: '/Roles/DeleteRole',
     //path for PortalUsers
     getAllPortalUsers: '/user/GetAllUsers',
-    updateUserRole: '/user/UpdatePortalUserRole'
+    updateUserRole: '/user/UpdatePortalUserRole',
+    getAllNotificationTypes: '/NotificationTypes/getAll'
 };

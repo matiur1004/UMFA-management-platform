@@ -15,6 +15,7 @@ export class RoleAddEditPopupComponent implements OnInit {
   form: UntypedFormGroup;
   data: any;
   roleItems = [];
+  notificationTypesItems = [];
   submitted: boolean = false;
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -33,10 +34,13 @@ export class RoleAddEditPopupComponent implements OnInit {
     this.form = this._formBuilder.group({
       RoleId: [null, Validators.required],
       NotificationEmailAddress: ['', [Validators.email]],
-      NotificationMobileNumber: ['']
+      NotificationMobileNumber: [''],
+      NotificationGroup: this._formBuilder.array([])
     });
 
     this.roleItems = this.data['roleItems'];
+    this.notificationTypesItems = this.data['notificationTypeItems'];
+    console.log('dfdf', this.notificationTypesItems);
     if(this.data.detail) {
       this.form.patchValue(this.data.detail);
     }

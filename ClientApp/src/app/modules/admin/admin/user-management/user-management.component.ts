@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AllowedPageSizes } from '@core/helpers';
-import { IopUser, Role } from '@core/models';
+import { IopUser, NotificationType, Role } from '@core/models';
 import { UserService } from '@shared/services';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { RoleAddEditPopupComponent } from './role-add-edit-popup/role-add-edit-popup.component';
@@ -15,7 +15,8 @@ export class UserManagementComponent implements OnInit {
 
   users: IopUser[] = [];
   roles: Role[] = [];
-  
+  notificationTypes: NotificationType[] = [];
+
   readonly allowedPageSizes = AllowedPageSizes;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
@@ -44,6 +45,12 @@ export class UserManagementComponent implements OnInit {
           return obj;
         });
       })
+
+    this._userService.notificationTypes$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((res: NotificationType[]) => {
+        this.notificationTypes = res;
+      });
   }
 
   onEdit(e) {
@@ -53,7 +60,7 @@ export class UserManagementComponent implements OnInit {
 
   onAction(actionType: string, item = null) {
     if(actionType == 'New' || actionType == 'Edit') {
-      this._matDialog.open(RoleAddEditPopupComponent, {autoFocus: false, data: {detail: item, roleItems: this.roles}})
+      this._matDialog.open(RoleAddEditPopupComponent, {autoFocus: false, data: {detail: item, roleItems: this.roles, notificationTypeItems: this.notificationTypes}})
         .afterClosed()
         .subscribe((res) => {
           if(res) {

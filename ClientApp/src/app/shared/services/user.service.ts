@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { CONFIG } from "app/core/helpers";
 import { BehaviorSubject, lastValueFrom, Observable, of, throwError } from "rxjs";
 import { catchError, delay, map, take, tap } from "rxjs/operators";
-import { IAmrUser, IopUser, Role } from "../../core/models";
+import { IAmrUser, IopUser, NotificationType, Role } from "../../core/models";
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -11,6 +11,7 @@ export class UserService {
   private userSubject: BehaviorSubject<IopUser>;
   private _roles: BehaviorSubject<Role[]> = new BehaviorSubject([]);
   private _users: BehaviorSubject<IopUser[]> = new BehaviorSubject([]);
+  private _notificationTypes: BehaviorSubject<NotificationType[]> = new BehaviorSubject([]);
 
   public user$: Observable<IopUser>;
 
@@ -38,6 +39,10 @@ export class UserService {
 
   public get users$(): Observable<IopUser[]> {
     return this._users.asObservable();
+  }
+
+  public get notificationTypes$(): Observable<NotificationType[]> {
+    return this._notificationTypes.asObservable();
   }
 
   getUser(id: number): Observable<any> {
@@ -75,6 +80,20 @@ export class UserService {
         //tap(u => console.log(`Http response from getUser: ${JSON.stringify(u)}`)),
         map((u: IopUser[]) => {
           this._users.next(u);
+          return u;
+        }),
+        take(1)
+      )
+  }
+
+  getNotificationTypes(): Observable<NotificationType[]> {
+    const url = `${CONFIG.apiURL}${CONFIG.getAllNotificationTypes}`;
+    return this.http.get<NotificationType[]>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchErrors('getAllNotificationTypes', err)),
+        //tap(u => console.log(`Http response from getUser: ${JSON.stringify(u)}`)),
+        map((u: NotificationType[]) => {
+          this._notificationTypes.next(u);
           return u;
         }),
         take(1)

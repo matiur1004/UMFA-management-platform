@@ -19,6 +19,10 @@ export interface IUser {
     AmrScadaUsers?: IAmrUser[];
   }
   
+  export interface NotificationType {
+    Id: number;
+    Name: string;
+  }
   export interface IAmrUser {
     Id: number;
     ProfileName: string;
