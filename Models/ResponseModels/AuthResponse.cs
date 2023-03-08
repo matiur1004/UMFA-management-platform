@@ -11,6 +11,8 @@ namespace ClientPortal.Models.ResponseModels
         public string LastName { get; set; }
         public string UserName { get; set; }
         public int RoleId { get; set; }
+        public string NotificationEmailAddress { get; set; }
+        public string NotificationMobileNumber { get; set; } 
         public string JwtToken { get; set; }
         [JsonIgnore]
         public string RefreshToken { get; set; }
@@ -22,6 +24,8 @@ namespace ClientPortal.Models.ResponseModels
             LastName = user.LastName;
             UserName = user.UserName;
             RoleId = user.RoleId;
+            NotificationEmailAddress = user.NotificationEmailAddress;
+            NotificationMobileNumber = user.NotificationMobileNumber;
             JwtToken = jwtToken;
             RefreshToken = refreshToken;
         }
