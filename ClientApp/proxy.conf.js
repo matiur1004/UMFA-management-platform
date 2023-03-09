@@ -20,7 +20,8 @@ const PROXY_CONFIG = [
       "/MappedMeters",
       "/ScadaMeters",
       "/Swagger",
-      "/Roles"
+      "/Roles",
+      "/NotificationTypes"
    ],
     target: target,
     secure: false,

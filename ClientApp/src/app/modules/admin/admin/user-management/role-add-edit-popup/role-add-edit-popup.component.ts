@@ -1,7 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormArray, FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CONFIRM_MODAL_CONFIG } from '@core/config/modal.config';
+import { NotificationType } from '@core/models';
 import { UmfaUtils } from '@core/utils/umfa.utils';
 import { Subject } from 'rxjs';
 
@@ -15,7 +16,7 @@ export class RoleAddEditPopupComponent implements OnInit {
   form: UntypedFormGroup;
   data: any;
   roleItems = [];
-  notificationTypesItems = [];
+  notificationTypesItems: NotificationType[] = [];
   submitted: boolean = false;
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -40,11 +41,23 @@ export class RoleAddEditPopupComponent implements OnInit {
 
     this.roleItems = this.data['roleItems'];
     this.notificationTypesItems = this.data['notificationTypeItems'];
-    console.log('dfdf', this.notificationTypesItems);
+    const checkArray = <FormArray>this.form.get('NotificationGroup');
+    this.notificationTypesItems.forEach(type => {
+      checkArray.push(this._formBuilder.group({
+        NotificationTypeId: [type.Id],
+        Email: [false],
+        WhatsApp: [false],
+        Telegram: [false]
+      }));
+    });
     if(this.data.detail) {
       this.form.patchValue(this.data.detail);
     }
 
+  }
+
+  get notificationGroup(): FormArray {
+    return this.form.controls.NotificationGroup as FormArray;
   }
 
   close() {
