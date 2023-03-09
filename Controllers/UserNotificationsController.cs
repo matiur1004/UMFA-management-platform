@@ -49,45 +49,39 @@ namespace ClientPortal.Controllers
             return  userNotifications;
         }
 
-        // PUT: UserNotifications/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUserNotifications(int id, UserNotifications userNotifications)
-        {
-            if (id != userNotifications.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(userNotifications).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserNotificationsExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
         // POST: UserNotifications
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<UserNotifications>> PostUserNotifications(UserNotifications userNotifications)
+        [HttpPost("createOrUpdateUserNotifications")]
+        public async Task<ActionResult<UserNotifications>> CreateOrUpdateUserNotifications(UserNotifications userNotifications)
         {
-            _context.UserNotifications.Add(userNotifications);
-            await _context.SaveChangesAsync();
+            var notificationId = userNotifications.Id;
+            var exists = await _context.UserNotifications.FindAsync(notificationId);
 
-            return CreatedAtAction("GetUserNotifications", new { id = userNotifications.Id }, userNotifications);
+            if (exists == null) //Create
+            {
+                _context.UserNotifications.Add(userNotifications);
+                await _context.SaveChangesAsync();
+                return CreatedAtAction("GetUserNotifications", new { id = userNotifications.Id }, userNotifications);
+            }
+            else                //Update
+            {
+                _context.Entry(userNotifications).State = EntityState.Modified;
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!UserNotificationsExists(notificationId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+            return NoContent();
         }
 
         // DELETE: UserNotifications/5
