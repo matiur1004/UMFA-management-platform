@@ -1,5 +1,6 @@
 ﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
+using ClientPortal.Data.Entities.DunamisEntities;
 using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Services;
 
@@ -11,11 +12,13 @@ namespace ClientPortal.Controllers
     public class MappedMetersController : ControllerBase
     {
         private readonly PortalDBContext _context;
+        private readonly DunamisDBContext _dbContext;
         private readonly MappedMetersService _mappedMetersService;
 
-        public MappedMetersController(PortalDBContext context, MappedMetersService mappedMetersService)
+        public MappedMetersController(PortalDBContext context, DunamisDBContext dBContext, MappedMetersService mappedMetersService)
         {
             _context = context;
+            _dbContext = dBContext;
             _mappedMetersService = mappedMetersService;
         }
 
@@ -108,5 +111,48 @@ namespace ClientPortal.Controllers
         {
             return _context.MappedMeters.Any(e => e.MappedMeterId == id);
         }
+
+        // MappedMeters Dropdowns
+
+        //RegisterTypes
+        // GET: MappedMeters/getAllRegisterTypes
+        [HttpGet("getAllRegisterTypes")]
+        public async Task<ActionResult<IEnumerable<RegisterType>>> GetAllRegisterTypes()
+        {
+            return await _context.RegisterTypes.ToListAsync();
+        }
+
+        //TimeOfUse
+        //GET: MappedMeters/getAllTimeOfUse
+        [HttpGet("getAllTimeOfUse")]
+        public async Task<ActionResult<IEnumerable<TOUHeader>>> GetAllTouHeaders()
+        {
+            return await _context.TOUHeaders.ToListAsync();
+        }
+
+        //SupplyTypes
+        //GET: MappedMeters/getAllSupplyTypes
+        [HttpGet("getAllSupplyTypes")]
+        public async Task<ActionResult<IEnumerable<SupplyType>>> GetAllSupplyTypes()
+        {
+            return await _context.SupplyTypes.ToListAsync();
+        }
+
+        //SupplyTo
+        //GET: MappedMeters/getAllSuppliesTo
+        [HttpGet("getAllSuppliesTo")]
+        public async Task<ActionResult<IEnumerable<SuppliesTo>>> GetAllSuppliesTo()
+        {
+            return await _dbContext.SuppliesTo.ToListAsync();
+        }
+
+        //LocationType
+        //GET: MappedMeters/getAllLocationTypes
+        [HttpGet("getAllLocationTypes")]
+        public async Task<ActionResult<IEnumerable<LocationType>>> GetAllLocationTypes()
+        {
+            return await _dbContext.LocationType.ToListAsync();
+        }
+
     }
 }
