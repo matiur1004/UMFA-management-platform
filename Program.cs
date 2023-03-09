@@ -95,6 +95,9 @@ IConfiguration? configuration = builder.Configuration;
     var UmfaConnectionString = builder.Configuration.GetConnectionString("UmfaDb");
     services.AddDbContext<UmfaDBContext>(x => x.UseSqlServer(UmfaConnectionString));
 
+    var DunamisConnectionString = builder.Configuration.GetConnectionString("DunamisDb");
+    services.AddDbContext<UmfaDBContext>(x => x.UseSqlServer(DunamisConnectionString));
+
     services.AddControllersWithViews()
         .AddJsonOptions(x => x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull)
         .AddJsonOptions(x => x.JsonSerializerOptions.PropertyNamingPolicy = null)
