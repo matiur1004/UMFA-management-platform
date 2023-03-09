@@ -53,16 +53,13 @@ namespace ClientPortal.Controllers
         [HttpPost("createOrUpdateUserNotifications")]
         public async Task<ActionResult<UserNotifications>> CreateOrUpdateUserNotifications(UserNotifications userNotifications)
         {
-            var notificationId = userNotifications.Id;
-            var exists = await _context.UserNotifications.FindAsync(notificationId);
-
-            if (exists == null) //Create
+            if(userNotifications.Id == 0) //Create
             {
                 _context.UserNotifications.Add(userNotifications);
                 await _context.SaveChangesAsync();
                 return CreatedAtAction("GetUserNotifications", new { id = userNotifications.Id }, userNotifications);
             }
-            else                //Update
+            else                          //Update  
             {
                 _context.Entry(userNotifications).State = EntityState.Modified;
                 try
@@ -71,7 +68,7 @@ namespace ClientPortal.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserNotificationsExists(notificationId))
+                    if (!UserNotificationsExists(userNotifications.Id))
                     {
                         return NotFound();
                     }
