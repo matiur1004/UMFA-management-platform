@@ -37,8 +37,19 @@ namespace ClientPortal.Controllers
             return userNotifications;
         }
 
+        [HttpGet("getAllUserNotificationsForUser/{userId}")]
+        public async Task<ActionResult<IEnumerable<UserNotifications>>> GetAllUserNotificationsForUser(int userId)
+        {
+            var userNotifications = await _context.UserNotifications.Where(n => n.UserId == userId).ToListAsync();
+
+            if (userNotifications == null)
+            {
+                return NotFound();
+            }
+            return  userNotifications;
+        }
+
         // PUT: UserNotifications/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUserNotifications(int id, UserNotifications userNotifications)
         {

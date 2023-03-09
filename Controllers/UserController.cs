@@ -1,15 +1,12 @@
-﻿using ClientPortal.Services;
-using ClientPortal.Controllers.Authorization;
-using Microsoft.Extensions.Options;
-using ClientPortal.Helpers;
-using ClientPortal.Models.RequestModels;
-using System.Text.Json;
-using Microsoft.AspNetCore.Cors;
+﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.PortalEntities;
-using Microsoft.Extensions.Logging;
-using ClientPortal.Models.ResponseModels;
+using ClientPortal.Helpers;
 using ClientPortal.Models.RequestModels;
+using ClientPortal.Models.ResponseModels;
+using ClientPortal.Services;
+using Microsoft.Extensions.Options;
+using System.Text.Json;
 
 namespace ClientPortal.Controllers
 {
