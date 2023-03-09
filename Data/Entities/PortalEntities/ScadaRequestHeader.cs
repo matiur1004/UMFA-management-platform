@@ -12,5 +12,7 @@
         public DateTime? CurrentRunDTM { get; set; }
         public List<ScadaRequestDetail> ScadaRequestDetails { get; set; }
         public int JobType { get; set; } //1 for profile, 2 for readings
+        public string Description { get; set; }
+        public int Interval { get; set; } //time to execute after previous run in minutes
     }
 }
