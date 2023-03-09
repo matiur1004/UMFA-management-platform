@@ -54,6 +54,8 @@ export interface ApplicationConfiguration {
     getAllPortalUsers: string;
     getAllNotificationTypes: string;
     updateUserRole: string;
+    getAllUserNotificationsForUser: string;
+    createOrUpdateUserNotifications: string;
 }
 
 export const CONFIG: ApplicationConfiguration = {
@@ -113,5 +115,7 @@ export const CONFIG: ApplicationConfiguration = {
     //path for PortalUsers
     getAllPortalUsers: '/user/GetAllUsers',
     updateUserRole: '/user/UpdatePortalUserRole',
-    getAllNotificationTypes: '/NotificationTypes/getAll'
+    getAllNotificationTypes: '/NotificationTypes/getAll',
+    getAllUserNotificationsForUser: '/UserNotifications/getAllUserNotificationsForUser',
+    createOrUpdateUserNotifications: '/UserNotifications/createOrUpdateUserNotifications'
 };

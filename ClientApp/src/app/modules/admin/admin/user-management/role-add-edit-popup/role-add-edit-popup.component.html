@@ -68,10 +68,9 @@
                 <ng-container *ngFor="let notificationType of notificationGroup.controls; let i = index">
                     <div class="table-grid grid items-center gap-4 py-2 px-2 md:px-4 border-b text-md" [formGroupName]="i">
                         <div class="block truncate">{{notificationTypesItems[i]['Name']}}</div>
-                        <div><mat-checkbox [color]="'primary'" [formControlName]="'Email'"></mat-checkbox> </div>
-                        <div><mat-checkbox [color]="'primary'" [formControlName]="'WhatsApp'"></mat-checkbox> </div>
-                        <div><mat-checkbox [color]="'primary'" [formControlName]="'Telegram'"></mat-checkbox> </div>
-
+                        <div><mat-checkbox [color]="'primary'" [formControlName]="'Email'" (change)="onChangeNotificationType(i)"></mat-checkbox> </div>
+                        <div><mat-checkbox [color]="'primary'" [formControlName]="'WhatsApp'" (change)="onChangeNotificationType(i)"></mat-checkbox> </div>
+                        <div><mat-checkbox [color]="'primary'" [formControlName]="'Telegram'" (change)="onChangeNotificationType(i)"></mat-checkbox> </div>
                     </div>
                 </ng-container>                
             </div>

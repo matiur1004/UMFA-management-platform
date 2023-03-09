@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { CONFIG } from "app/core/helpers";
 import { BehaviorSubject, lastValueFrom, Observable, of, throwError } from "rxjs";
 import { catchError, delay, map, take, tap } from "rxjs/operators";
-import { IAmrUser, IopUser, NotificationType, Role } from "../../core/models";
+import { IAmrUser, IopUser, NotificationType, Role, UserNotification } from "../../core/models";
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -94,6 +94,32 @@ export class UserService {
         //tap(u => console.log(`Http response from getUser: ${JSON.stringify(u)}`)),
         map((u: NotificationType[]) => {
           this._notificationTypes.next(u);
+          return u;
+        }),
+        take(1)
+      )
+  }
+
+  getAllUserNotificationsForUser(userId): Observable<UserNotification[]> {
+    const url = `${CONFIG.apiURL}${CONFIG.getAllUserNotificationsForUser}/${userId}`;
+    return this.http.get<UserNotification[]>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchErrors('getAllUserNotificationsForUser', err)),
+        //tap(u => console.log(`Http response from getUser: ${JSON.stringify(u)}`)),
+        map((u: UserNotification[]) => {
+          return u;
+        }),
+        take(1)
+      )
+  }
+
+  createOrUpdateUserNotifications(data): Observable<any> {
+    const url = `${CONFIG.apiURL}${CONFIG.createOrUpdateUserNotifications}`;
+    return this.http.post<any>(url, data, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchErrors('createOrUpdateUserNotifications', err)),
+        //tap(u => console.log(`Http response from getUser: ${JSON.stringify(u)}`)),
+        map((u: any) => {
           return u;
         }),
         take(1)
