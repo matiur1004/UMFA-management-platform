@@ -69,7 +69,6 @@ namespace ClientPortal.Data
             //mapped entities
             modelBuilder.Entity<RefreshToken>().HasOne(r => r.User).WithMany(r => r.RefreshTokens).OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<AMRMeter>().HasOne(a => a.Building).WithMany(r => r.AMRMeters).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<AMRMeter>().HasOne(a => a.User).WithMany(r => r.AmrMeters).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<AMRMeter>().HasOne(a => a.MakeModel).WithMany(r => r.AMRMeters).OnDelete(DeleteBehavior.Restrict);
 
