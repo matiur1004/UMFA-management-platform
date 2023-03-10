@@ -2,7 +2,9 @@
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.DunamisEntities;
 using ClientPortal.Data.Entities.PortalEntities;
+using ClientPortal.Models.ResponseModels;
 using ClientPortal.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClientPortal.Controllers
 {
@@ -149,10 +151,16 @@ namespace ClientPortal.Controllers
         //LocationType
         //GET: MappedMeters/getAllLocationTypes
         [HttpGet("getAllLocationTypes")]
-        public async Task<ActionResult<IEnumerable<LocationType>>> GetAllLocationTypes()
+        public async Task<List<LocationType>> GetAllLocationTypes()
         {
-            return await _dbContext.LocationType.ToListAsync();
+            var locationTypes = await  _dbContext.LocationTypes.FromSqlRaw("SELECT t.name AS SuppliesTo, " +
+                "CASE typ.SupplyType WHEN 0 THEN 'Electricity' WHEN 1 THEN 'Water' WHEN 2 THEN 'Gas' WHEN 3 THEN 'Sewerage' " +
+                "WHEN 4 THEN 'Solar' ELSE 'AdHoc' END AS SupplyType, loc.Name AS LocationName FROM SuppliesTo t " +
+                "JOIN SuppliesToSupplyTypes typ ON (t.Id = typ.SuppliesToId)" +
+                "JOIN SuppliesToSupplyTypesLocations l ON (typ.Id = l.SuppliesToSupplyTypeId)" +
+                "JOIN SupplyToLocations loc ON (l.SupplyToLocationId = loc.Id) ORDER BY 1, 2, 3").ToListAsync();
+            return locationTypes.ToList();
         }
-
+        
     }
 }

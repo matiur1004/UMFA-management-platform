@@ -19,13 +19,15 @@ namespace ClientPortal.Data
         [NotMapped]
         public DbSet<SuppliesTo> SuppliesTo { get; set; }
 
+        [NotMapped]
+        public DbSet<LocationType> LocationTypes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //Not Mapped Entities
             modelBuilder.Entity<SuppliesTo>().ToTable("SuppliesTo", t => t.ExcludeFromMigrations());
 
         }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var connectionString = _configuration.GetConnectionString("DunamisDb");
