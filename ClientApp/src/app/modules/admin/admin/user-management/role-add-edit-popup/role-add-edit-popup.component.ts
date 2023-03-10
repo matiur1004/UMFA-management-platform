@@ -59,8 +59,6 @@ export class RoleAddEditPopupComponent implements OnInit {
     this._userService.getAllUserNotificationsForUser(this.data.detail.Id)
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((res: UserNotification[]) => {
-        //this.roles = res;
-        console.log('sssss', res);
         res.map(item => {
           let index = this.notificationTypesItems.findIndex(type => type.Id == item.NotificationTypeId);
           this.form.get('NotificationGroup')['controls'][index].patchValue(item);
@@ -101,10 +99,11 @@ export class RoleAddEditPopupComponent implements OnInit {
   }
 
   onChangeNotificationType(index) {
-    console.log(this.form.get('NotificationGroup').value[index]);
     this._userService.createOrUpdateUserNotifications(this.form.get('NotificationGroup').value[index])
       .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((res: any) => {})
+      .subscribe((res: any) => {
+        this.form.get('NotificationGroup')['controls'][index].patchValue(res);
+      })
   }
 
   /**
