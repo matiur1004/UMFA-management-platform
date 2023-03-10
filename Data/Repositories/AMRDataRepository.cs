@@ -205,7 +205,8 @@ namespace ClientPortal.Data.Repositories
             try
             {
                 var header = await _context.ScadaRequestHeaders.AsNoTracking()
-                    .Where(h => h.Active == true && h.Status == 0 && h.StartRunDTM <= DateTime.UtcNow && (h.LastRunDTM == null || h.LastRunDTM < DateTime.UtcNow))
+                    .Where(h => h.Active == true && h.Status == 0 && h.StartRunDTM <= DateTime.UtcNow && 
+                        (h.LastRunDTM == null || h.LastRunDTM < DateTime.UtcNow.AddMinutes(-h.Interval)))
                     .Include(h => h.ScadaRequestDetails.Where(d => d.Active && d.Status == 0))
                         .ThenInclude(d => d.AmrScadaUser)
                     .Include(h => h.ScadaRequestDetails)

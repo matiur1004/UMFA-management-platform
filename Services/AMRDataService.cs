@@ -48,13 +48,13 @@ namespace ClientPortal.Services
 
         public async Task<AmrJob> ProcessReadingsJob(AmrJobToRun job)
         {
-            _logger.LogInformation("Retrieving Reading Data from Scada for: {commsid}", job.CommsId);
+            _logger.LogInformation("Retrieving Reading Data from Scada for: {key1}", job.Key1);
             //get tracked item for updates
             ScadaRequestHeader trackedHeader = await _repo.GetTrackedScadaHeader(job.HeaderId, job.DetailId);
             try
             {
                 DateTime runStart = DateTime.UtcNow;
-                AmrJob ret = new() { CommsIs = job.CommsId, RunDate = runStart, Success = false };
+                AmrJob ret = new() { CommsIs = job.CommsId, Key1 = job.Key1, RunDate = runStart, Success = false };
 
                 //update the current run date and status (2: running) for header and detail
                 trackedHeader.ScadaRequestDetails[0].CurrentRunDTM = runStart;
@@ -106,7 +106,7 @@ namespace ClientPortal.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error while retrieving scada data for {commsid}: {msg}", job.CommsId, ex.Message);
+                _logger.LogError("Error while retrieving scada data for {key1}: {msg}", job.Key1, ex.Message);
                 trackedHeader.ScadaRequestDetails[0].Status = 6;
                 await _repo.SaveTrackedItems();
                 throw;
@@ -115,13 +115,13 @@ namespace ClientPortal.Services
 
         public async Task<AmrJob> ProcessProfileJob(AmrJobToRun job)
         {
-            _logger.LogInformation("Retrieving Data from Scada for: {commsid}", job.CommsId);
+            _logger.LogInformation("Retrieving Data from Scada for: {key1}", job.Key1);
             //get tracked item for updates
             ScadaRequestHeader trackedHeader = await _repo.GetTrackedScadaHeader(job.HeaderId, job.DetailId);
             try
             {
                 DateTime runStart = DateTime.UtcNow;
-                AmrJob ret = new() { CommsIs = job.CommsId, RunDate = runStart, Success = false };
+                AmrJob ret = new() { CommsIs = job.CommsId, Key1 = job.Key1, RunDate = runStart, Success = false };
 
                 //update the current run date and status (2: running) for header and detail
                 trackedHeader.ScadaRequestDetails[0].CurrentRunDTM = runStart;
@@ -178,7 +178,7 @@ namespace ClientPortal.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error while retrieving scada data for {commsid}: {msg}", job.CommsId, ex.Message);
+                _logger.LogError("Error while retrieving scada data for {key1}: {msg}", job.Key1, ex.Message);
                 trackedHeader.ScadaRequestDetails[0].Status = 6;
                 await _repo.SaveTrackedItems();
                 throw;
@@ -220,6 +220,7 @@ namespace ClientPortal.Services
                                                 HeaderId = header.Id,
                                                 DetailId = detail.Id,
                                                 CommsId = detail.AmrMeter.CommsId,
+                                                Key1 = detail.AmrMeter.MeterSerial,
                                                 SqdUrl = detail.AmrScadaUser.SgdUrl,
                                                 ProfileName = detail.AmrScadaUser.ProfileName,
                                                 ScadaUserName = detail.AmrScadaUser.ScadaUserName,
@@ -253,6 +254,7 @@ namespace ClientPortal.Services
                                                 HeaderId = header.Id,
                                                 DetailId = detail.Id,
                                                 CommsId = detail.AmrMeter.CommsId,
+                                                Key1 = detail.AmrMeter.MeterSerial,
                                                 SqdUrl = detail.AmrScadaUser.SgdUrl,
                                                 ProfileName = detail.AmrScadaUser.ProfileName,
                                                 ScadaUserName = detail.AmrScadaUser.ScadaUserName,
