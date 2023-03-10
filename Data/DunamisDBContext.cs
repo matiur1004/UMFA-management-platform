@@ -26,6 +26,7 @@ namespace ClientPortal.Data
         {
             //Not Mapped Entities
             modelBuilder.Entity<SuppliesTo>().ToTable("SuppliesTo", t => t.ExcludeFromMigrations());
+            modelBuilder.Entity<LocationType>().ToTable("LocationTypes", t => t.ExcludeFromMigrations()).HasNoKey();
 
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
