@@ -10,7 +10,6 @@ namespace ClientPortal.Data.Entities.PortalEntities
         public string Name { get; set; }
         public int PartnerId { get; set; }
         public string Partner { get; set; }
-        public List<AMRMeter> AMRMeters { get; set; }
         [JsonIgnore]
         public List<BuildingSupplierUtility> BuildingSupplierUtilities { get; set; }
         public List<User> Users { get; set; }

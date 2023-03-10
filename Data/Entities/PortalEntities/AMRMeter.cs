@@ -25,7 +25,6 @@ namespace ClientPortal.Data.Entities.PortalEntities
         public int UserId { get; set; }
         public User User { get; set; }
         public int BuildingId { get; set; }
-        public Building Building { get; set; }
         [JsonIgnore]
         public List<ScadaRequestDetail> ScadaRequestDetails { get; set; }
         [JsonIgnore]

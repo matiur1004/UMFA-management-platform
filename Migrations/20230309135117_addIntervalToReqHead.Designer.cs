@@ -4,6 +4,7 @@ using ClientPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClientPortal.Migrations
 {
     [DbContext(typeof(PortalDBContext))]
-    partial class DataDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230309135117_addIntervalToReqHead")]
+    partial class addIntervalToReqHead
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -319,7 +321,7 @@ namespace ClientPortal.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LocationType")
+                    b.Property<string>("Location")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -343,10 +345,6 @@ namespace ClientPortal.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ScadaSerial")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SupplyTo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -1241,9 +1239,8 @@ namespace ClientPortal.Migrations
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AMRMeter", b =>
                 {
-                    b.HasOne("ClientPortal.Data.Entities.PortalEntities.Building", "Building")
-                        .WithMany("AMRMeters")
                     b.HasOne("ClientPortal.Data.Entities.PortalEntities.MeterMakeModel", "MakeModel")
+                        .WithMany("AMRMeters")
                         .HasForeignKey("MakeModelId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
