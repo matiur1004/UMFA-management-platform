@@ -1,8 +1,6 @@
 ﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.DunamisEntities;
-using ClientPortal.Data.Entities.PortalEntities;
-using Microsoft.EntityFrameworkCore;
 
 namespace ClientPortal.Controllers
 {
@@ -36,7 +34,7 @@ namespace ClientPortal.Controllers
         }
 
         //LocationType
-        //GET: MappedMeters/getAllLocationTypes
+        //GET: Dunamis/getAllLocationTypes
         [HttpGet("getAllLocationTypes")]
         public async Task<List<LocationType>> GetAllLocationTypes()
         {
@@ -54,10 +52,7 @@ namespace ClientPortal.Controllers
             {
                 _logger.LogError($"Error while retrieving SuppliesTo Items: {ex.Message}");
                 return new List<LocationType> { };
-            }
-
-           
+            }           
         }
-
     }
 }
