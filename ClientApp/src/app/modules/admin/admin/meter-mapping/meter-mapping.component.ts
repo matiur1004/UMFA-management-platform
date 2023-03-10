@@ -11,6 +11,7 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import { IUmfaBuilding, IopUser } from 'app/core/models';
 import {
     BuildingService,
+    MeterMappingService,
     UserService,
 } from 'app/shared/services'
 import {
@@ -62,10 +63,18 @@ export class MeterMappingComponent implements OnInit {
     applyFilterTypes: any;
     currentFilter: any;
 
+    registerTypes: any[] = [];
+    timeOfUses: any[] = [];
+    supplyTypes: any[] = [];
+    supplyToItems: any[] = [];
+    locationTypes: any[] = [];
+    filteredlocationTypes: any[] = [];
+
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     constructor(
         private bldService: BuildingService,
+        private mappedMetersService: MeterMappingService,
         private usrService: UserService,
         private _formBuilder: UntypedFormBuilder,
         private _ufUtils: UmfaUtils
@@ -90,7 +99,8 @@ export class MeterMappingComponent implements OnInit {
             RegisterType: [null, Validators.required],
             TimeOfUse: [null, Validators.required],
             SupplyType: [null, Validators.required],
-            Location: [null, Validators.required],
+            SupplyTo: [null, Validators.required],
+            LocationType: [null, Validators.required],
             Description: ['', Validators.required]
         })
         this.bldService.buildings$
@@ -98,6 +108,51 @@ export class MeterMappingComponent implements OnInit {
             .subscribe((data: IUmfaBuilding[]) => {
                 this.buildings = data;
             });
+
+        this.mappedMetersService.registerTypes$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((data: any[]) => {
+                this.registerTypes = data;
+            });
+
+        this.mappedMetersService.timeOfUses$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((data: any[]) => {
+                this.timeOfUses = data;
+            });
+
+        this.mappedMetersService.supplyTypes$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((data: any[]) => {
+                this.supplyTypes = data;
+            });
+
+        this.mappedMetersService.supplyToItems$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((data: any[]) => {
+                this.supplyToItems = data;
+            });
+
+        this.mappedMetersService.locationTypes$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((data: any[]) => {
+                this.locationTypes = data;
+                this.filteredlocationTypes = data;
+            });
+
+        this.form.get('SupplyType').valueChanges.subscribe(supplyType => {
+            this.filteredlocationTypes = this.locationTypes.filter(item => item.SupplyType == supplyType);
+            if(this.form.get('SupplyTo').value) {
+                this.filteredlocationTypes = this.filteredlocationTypes.filter(item => item.SuppliesTo == this.form.get('SupplyTo').value);
+            }
+        })
+
+        this.form.get('SupplyTo').valueChanges.subscribe(supplyTo => {
+            this.filteredlocationTypes = this.locationTypes.filter(item => item.SuppliesTo == supplyTo);
+            if(this.form.get('SupplyType').value) {
+                this.filteredlocationTypes = this.filteredlocationTypes.filter(item => item.SupplyType == this.form.get('SupplyType').value);
+            }
+        })
         //this.meters$ =  this.meterService.getMetersForUser(usr.Id);
     }
 

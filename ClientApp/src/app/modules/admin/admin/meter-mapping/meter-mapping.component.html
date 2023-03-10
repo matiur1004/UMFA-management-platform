@@ -65,32 +65,65 @@
                     <div class="text-lg py-1 border-b flex"><mat-icon>add_location</mat-icon> Mapping Selection</div>
                     <div class="col-span-1">
                         <mat-label class="form-label">Register Type</mat-label>
-                        <ng-select placeholder="Select Register Type..." [formControlName]="'RegisterType'">
-
+                        <ng-select 
+                            [items]="registerTypes"
+                            bindLabel="RegisterTypeName"
+                            bindValue="RegisterTypeName"
+                            [searchable]="false"
+                            [clearable]="false"
+                            placeholder="Select Register Type..."
+                            [formControlName]="'RegisterType'">
                         </ng-select>
                     </div>
                     <div class="col-span-1">
                         <mat-label class="form-label">Time Of Use</mat-label>
-                        <ng-select placeholder="Select Time Of Use..." [formControlName]="'TimeOfUse'">
+                        <ng-select 
+                            placeholder="Select Time Of Use..."
+                            [items]="timeOfUses"
+                            bindLabel="Name"
+                            bindValue="Name"
+                            [searchable]="false"
+                            [clearable]="false"
+                            [formControlName]="'TimeOfUse'">
 
                         </ng-select>
                     </div>
                     <div class="col-span-1">
                         <mat-label class="form-label">Supply Type</mat-label>
-                        <ng-select placeholder="Select Supply Type..." [formControlName]="'SupplyType'">
+                        <ng-select 
+                            placeholder="Select Supply Type..." 
+                            [formControlName]="'SupplyType'"
+                            [items]="supplyTypes"
+                            bindLabel="SupplyTypeName"
+                            bindValue="SupplyTypeName"
+                            [searchable]="false"
+                            [clearable]="false">
 
                         </ng-select>
                     </div>
                     <div class="col-span-1">
                         <mat-label class="form-label">Supply To</mat-label>
-                        <ng-select placeholder="Select Supply To..." [formControlName]="'SupplyTo'">
+                        <ng-select 
+                            placeholder="Select Supply To..." 
+                            [formControlName]="'SupplyTo'"
+                            [items]="supplyToItems"
+                            bindLabel="Name"
+                            bindValue="Name"
+                            [searchable]="false"
+                            [clearable]="false">
 
                         </ng-select>
                     </div>
                     <div class="col-span-1">
                         <mat-label class="form-label">Location Type</mat-label>
-                        <ng-select placeholder="Select Location Type..." [formControlName]="'LocationType'">
-
+                        <ng-select 
+                            placeholder="Select Location Type..."
+                            [formControlName]="'LocationType'"
+                            [items]="filteredlocationTypes"
+                            bindLabel="LocationName"
+                            bindValue="LocationName"
+                            [searchable]="false"
+                            [clearable]="false">
                         </ng-select>
                     </div>
                     <div class="col-span-1">
