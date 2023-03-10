@@ -1240,24 +1240,23 @@ namespace ClientPortal.Migrations
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AMRMeter", b =>
-                {
-                    b.HasOne("ClientPortal.Data.Entities.PortalEntities.Building", "Building")
-                        .WithMany("AMRMeters")
-                    b.HasOne("ClientPortal.Data.Entities.PortalEntities.MeterMakeModel", "MakeModel")
-                        .HasForeignKey("MakeModelId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+            {
+                b.HasOne("ClientPortal.Data.Entities.PortalEntities.MeterMakeModel", "MakeModel")
+                    .WithMany("AMRMeters")
+                    .HasForeignKey("MakeModelId")
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .IsRequired();
 
-                    b.HasOne("ClientPortal.Data.Entities.PortalEntities.User", "User")
-                        .WithMany("AmrMeters")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                b.HasOne("ClientPortal.Data.Entities.PortalEntities.User", "User")
+                    .WithMany("AmrMeters")
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .IsRequired();
 
-                    b.Navigation("MakeModel");
+                b.Navigation("MakeModel");
 
-                    b.Navigation("User");
-                });
+                b.Navigation("User");
+            });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AMRScadaUser", b =>
                 {
