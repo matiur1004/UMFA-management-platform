@@ -24,7 +24,7 @@ namespace ClientPortal.Controllers
         }
 
         // GET: SupplyTypes
-        [HttpGet]
+        [HttpGet("getAll")]
         public async Task<ActionResult<IEnumerable<SupplyType>>> GetSupplyTypes()
         {
             return await _context.SupplyTypes.ToListAsync();

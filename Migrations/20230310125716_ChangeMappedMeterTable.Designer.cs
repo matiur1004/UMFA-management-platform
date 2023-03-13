@@ -4,6 +4,7 @@ using ClientPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClientPortal.Migrations
 {
     [DbContext(typeof(PortalDBContext))]
-    partial class DataDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230310125716_ChangeMappedMeterTable")]
+    partial class ChangeMappedMeterTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,6 +94,8 @@ namespace ClientPortal.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BuildingId");
 
                     b.HasIndex("MakeModelId");
 
@@ -749,13 +753,6 @@ namespace ClientPortal.Migrations
                     b.Property<DateTime?>("CurrentRunDTM")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Interval")
-                        .HasColumnType("int");
-
                     b.Property<int>("JobType")
                         .HasColumnType("int");
 
@@ -1240,23 +1237,31 @@ namespace ClientPortal.Migrations
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AMRMeter", b =>
-            {
-                b.HasOne("ClientPortal.Data.Entities.PortalEntities.MeterMakeModel", "MakeModel")
-                    .WithMany("AMRMeters")
-                    .HasForeignKey("MakeModelId")
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .IsRequired();
+                {
+                    b.HasOne("ClientPortal.Data.Entities.PortalEntities.Building", "Building")
+                        .WithMany("AMRMeters")
+                        .HasForeignKey("BuildingId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
-                b.HasOne("ClientPortal.Data.Entities.PortalEntities.User", "User")
-                    .WithMany("AmrMeters")
-                    .HasForeignKey("UserId")
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .IsRequired();
+                    b.HasOne("ClientPortal.Data.Entities.PortalEntities.MeterMakeModel", "MakeModel")
+                        .WithMany("AMRMeters")
+                        .HasForeignKey("MakeModelId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
-                b.Navigation("MakeModel");
+                    b.HasOne("ClientPortal.Data.Entities.PortalEntities.User", "User")
+                        .WithMany("AmrMeters")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
-                b.Navigation("User");
-            });
+                    b.Navigation("Building");
+
+                    b.Navigation("MakeModel");
+
+                    b.Navigation("User");
+                });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AMRScadaUser", b =>
                 {
@@ -1543,6 +1548,8 @@ namespace ClientPortal.Migrations
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.Building", b =>
                 {
+                    b.Navigation("AMRMeters");
+
                     b.Navigation("BuildingSupplierUtilities");
                 });
 
