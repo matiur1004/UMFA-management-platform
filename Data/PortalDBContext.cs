@@ -2,6 +2,7 @@
 using ClientPortal.Data.Entities.PortalEntities;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Policy;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClientPortal.Data
 {
@@ -59,10 +60,13 @@ namespace ClientPortal.Data
         public DbSet<Role> Roles { get; set; }
         public DbSet<NotificationType> NotificationTypes { get; set; }
         public DbSet<UserNotifications> UserNotifications { get; set; }
+        public DbSet<UserNotificationSchedule> UserNotificationsSchedules { get; set; }
+        public DbSet<UserNotificationSummaryType> UserNotificationSummaryTypes { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //not mapped entites
+            //not mapped entities
             modelBuilder.Entity<DemandProfileHeader>().ToTable("DemandProfileHeaders", t => t.ExcludeFromMigrations());
             modelBuilder.Entity<DemandProfile>().ToTable("DemandProfiles", t => t.ExcludeFromMigrations());
             modelBuilder.Entity<AMRWaterProfileHeader>().ToTable("AMRWaterProfileHeaders", t => t.ExcludeFromMigrations());
@@ -120,5 +124,7 @@ namespace ClientPortal.Data
             var connectionString = _configuration.GetConnectionString("APIDb");
             optionsBuilder.UseSqlServer(connectionString);
         }
+
+        public DbSet<ClientPortal.Data.Entities.PortalEntities.UserNotificationSchedule> UserNotificationSchedule { get; set; }
     }
 }

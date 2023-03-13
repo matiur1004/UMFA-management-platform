@@ -10,8 +10,8 @@
         public string NotificationType { get; set; }
         
         //Hours
-        public TimeOnly StartTime { get; set; }
-        public TimeOnly EndTime { get; set; }
+        public string StartTime { get; set; }
+        public string EndTime { get; set; }
 
         //Day Of Week
         public bool Monday { get; set; }
