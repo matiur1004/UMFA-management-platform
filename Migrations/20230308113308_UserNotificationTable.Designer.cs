@@ -4,6 +4,7 @@ using ClientPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClientPortal.Migrations
 {
     [DbContext(typeof(PortalDBContext))]
-    partial class DataDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230308113308_UserNotificationTable")]
+    partial class UserNotificationTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,6 +94,8 @@ namespace ClientPortal.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BuildingId");
 
                     b.HasIndex("MakeModelId");
 
@@ -319,7 +323,7 @@ namespace ClientPortal.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LocationType")
+                    b.Property<string>("Location")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -343,10 +347,6 @@ namespace ClientPortal.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ScadaSerial")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SupplyTo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -766,13 +766,6 @@ namespace ClientPortal.Migrations
                     b.Property<DateTime?>("CurrentRunDTM")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Interval")
-                        .HasColumnType("int");
-
                     b.Property<int>("JobType")
                         .HasColumnType("int");
 
@@ -791,23 +784,6 @@ namespace ClientPortal.Migrations
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.SupplyType", b =>
-                {
-                    b.Property<int>("SupplyTypeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SupplyTypeId"), 1L, 1);
-
-                    b.Property<string>("SupplyTypeName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("SupplyTypeId");
-
-                    b.ToTable("SupplyTypes");
-                });
-
-            modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.TariffHeader", b =>
                 {
                     b.Property<int>("SupplyTypeId")
                         .ValueGeneratedOnAdd()
@@ -1329,10 +1305,12 @@ namespace ClientPortal.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                b.Navigation("MakeModel");
+                    b.Navigation("Building");
 
-                b.Navigation("User");
-            });
+                    b.Navigation("MakeModel");
+
+                    b.Navigation("User");
+                });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AMRScadaUser", b =>
                 {
@@ -1619,6 +1597,8 @@ namespace ClientPortal.Migrations
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.Building", b =>
                 {
+                    b.Navigation("AMRMeters");
+
                     b.Navigation("BuildingSupplierUtilities");
                 });
 

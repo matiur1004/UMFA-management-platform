@@ -146,29 +146,18 @@ namespace ClientPortal.Controllers
             }
         }
 
-        //[HttpPost("UpdatePortalUserRole")]
-        //public async Task<ActionResult<User>> UpdatePortalUserRole(User user)
-        //{
-        //    try
-        //    {
-        //        var retUser = _context.Users.Update(user);
-        //        await _context.SaveChangesAsync();
-
-        //        return Ok(retUser);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest($"Server error while updating user: {ex.Message}");
-        //    }
-        //}
-
         [HttpPost("UpdatePortalUserRole")]
         public IActionResult UpdatePortalUserRole([FromBody]RoleUpdateModel roleUpdateModel)
         {
             try
             {
                 _logger.LogInformation($"update User with Id: {roleUpdateModel.UserId}");
-                var response = _context.Database.ExecuteSqlRaw($"UPDATE [dbo].[Users] SET [RoleId] = {roleUpdateModel.RoleId} WHERE Id = {roleUpdateModel.UserId}");
+                var response = _context.Database.ExecuteSqlRaw($"UPDATE [dbo].[Users] SET " +
+                    $"[RoleId] = {roleUpdateModel.RoleId}, " +
+                    $"[NotificationEmailAddress] = '{roleUpdateModel.NotificationEmailAddress}', " +
+                    $"[NotificationMobileNumber] = '{roleUpdateModel.NotificationMobileNumber}' " +
+                    $" WHERE Id = {roleUpdateModel.UserId}");
+
                 if (response != 0)
                 {
                     _logger.LogInformation($"Successfully updated user: {roleUpdateModel.UserId}");
@@ -178,8 +167,8 @@ namespace ClientPortal.Controllers
             }
             catch (Exception ex)
             {
-                _logger?.LogError($"Failed to update meter: {ex.Message}");
-                return BadRequest(new ApplicationException($"Failed to update meter: {ex.Message}"));
+                _logger?.LogError($"Failed to update User Roles: {ex.Message}");
+                return BadRequest(new ApplicationException($"Failed to update User Roles and Notification Settings: {ex.Message}"));
             }
         }
 

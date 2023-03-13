@@ -87,6 +87,13 @@ namespace ClientPortal.Controllers
         [HttpPost("AddMappedMeter")]
         public async Task<ActionResult<MappedMeter>> PostMappedMeter(MappedMeter mappedMeter)
         {
+            //add building if not exist
+            var bldng = await _context.Buildings.Where(b => b.UmfaId == mappedMeter.BuildingId).FirstOrDefaultAsync();
+            if (bldng == null)
+            {
+                bldng = new() { UmfaId = mappedMeter.BuildingId, Name = mappedMeter.BuildingName, PartnerId = mappedMeter.PartnerId, Partner = mappedMeter.PartnerName };
+                _context.Buildings.Add(bldng);
+            }
             _context.MappedMeters.Add(mappedMeter);
             await _context.SaveChangesAsync();
 

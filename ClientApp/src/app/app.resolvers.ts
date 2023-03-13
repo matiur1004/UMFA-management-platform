@@ -18,7 +18,6 @@ export class InitialDataResolver implements Resolve<any>
         private _authService: AuthService
     )
     {
-        console.log('dfdfdfdfdfdf');
     }
 
     // -----------------------------------------------------------------------------------------------------

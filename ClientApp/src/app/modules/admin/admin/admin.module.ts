@@ -28,6 +28,7 @@ import { PasswordMatchDirective } from 'app/shared/validators/password-match.dir
 import { MeterMappingComponent } from './meter-mapping/meter-mapping.component';
 import { UserManagementComponent } from './user-management/user-management.component';
 import { RoleAddEditPopupComponent } from './user-management/role-add-edit-popup/role-add-edit-popup.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { RoleAddEditPopupComponent } from './user-management/role-add-edit-popup
     MatSnackBarModule,
     MatButtonModule,
     MatIconModule,
+    MatCheckboxModule,
     MatTabsModule,
     MatTableModule,
     MatFormFieldModule,

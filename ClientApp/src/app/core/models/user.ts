@@ -19,6 +19,11 @@ export interface IUser {
     AmrScadaUsers?: IAmrUser[];
   }
   
+  export interface NotificationType {
+    Id: number;
+    Name: string;
+  }
+
   export interface IAmrUser {
     Id: number;
     ProfileName: string;
@@ -40,4 +45,12 @@ export interface IUser {
     ClientAdministrator,
     ClientOperator,
     Tenant
+  }
+
+  export interface UserNotification {
+    NotificationTypeId: number;
+    Email: boolean;
+    WhatsApp: boolean;
+    Telegram: boolean;
+    UserId: number;
   }
