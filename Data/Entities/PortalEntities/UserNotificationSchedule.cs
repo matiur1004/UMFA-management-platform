@@ -21,5 +21,6 @@
         public bool Friday { get; set; }
         public bool Saturday { get; set; }
         public bool Sunday { get; set; }
+        public int UserNotificationSummaryTypeId { get; set; }
     }
 }
