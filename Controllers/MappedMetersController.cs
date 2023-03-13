@@ -1,7 +1,10 @@
 ﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
+using ClientPortal.Data.Entities.DunamisEntities;
 using ClientPortal.Data.Entities.PortalEntities;
+using ClientPortal.Models.ResponseModels;
 using ClientPortal.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClientPortal.Controllers
 {
@@ -11,11 +14,13 @@ namespace ClientPortal.Controllers
     public class MappedMetersController : ControllerBase
     {
         private readonly PortalDBContext _context;
+        private readonly DunamisDBContext _dbContext;
         private readonly MappedMetersService _mappedMetersService;
 
-        public MappedMetersController(PortalDBContext context, MappedMetersService mappedMetersService)
+        public MappedMetersController(PortalDBContext context, DunamisDBContext dBContext, MappedMetersService mappedMetersService)
         {
             _context = context;
+            _dbContext = dBContext;
             _mappedMetersService = mappedMetersService;
         }
 
@@ -115,5 +120,54 @@ namespace ClientPortal.Controllers
         {
             return _context.MappedMeters.Any(e => e.MappedMeterId == id);
         }
+
+        // MappedMeters Dropdowns
+
+        //RegisterTypes
+        // GET: MappedMeters/getAllRegisterTypes
+        [HttpGet("getAllRegisterTypes")]
+        public async Task<ActionResult<IEnumerable<RegisterType>>> GetAllRegisterTypes()
+        {
+            return await _context.RegisterTypes.ToListAsync();
+        }
+
+        //TimeOfUse
+        //GET: MappedMeters/getAllTimeOfUse
+        [HttpGet("getAllTimeOfUse")]
+        public async Task<ActionResult<IEnumerable<TOUHeader>>> GetAllTouHeaders()
+        {
+            return await _context.TOUHeaders.ToListAsync();
+        }
+
+        //SupplyTypes
+        //GET: MappedMeters/getAllSupplyTypes
+        [HttpGet("getAllSupplyTypes")]
+        public async Task<ActionResult<IEnumerable<SupplyType>>> GetAllSupplyTypes()
+        {
+            return await _context.SupplyTypes.ToListAsync();
+        }
+
+        //SupplyTo
+        //GET: MappedMeters/getAllSuppliesTo
+        [HttpGet("getAllSuppliesTo")]
+        public async Task<ActionResult<IEnumerable<SuppliesTo>>> GetAllSuppliesTo()
+        {
+            return await _dbContext.SuppliesTo.ToListAsync();
+        }
+
+        //LocationType
+        //GET: MappedMeters/getAllLocationTypes
+        [HttpGet("getAllLocationTypes")]
+        public async Task<List<LocationType>> GetAllLocationTypes()
+        {
+            var locationTypes = await  _dbContext.LocationTypes.FromSqlRaw("SELECT t.name AS SuppliesTo, " +
+                "CASE typ.SupplyType WHEN 0 THEN 'Electricity' WHEN 1 THEN 'Water' WHEN 2 THEN 'Gas' WHEN 3 THEN 'Sewerage' " +
+                "WHEN 4 THEN 'Solar' ELSE 'AdHoc' END AS SupplyType, loc.Name AS LocationName FROM SuppliesTo t " +
+                "JOIN SuppliesToSupplyTypes typ ON (t.Id = typ.SuppliesToId)" +
+                "JOIN SuppliesToSupplyTypesLocations l ON (typ.Id = l.SuppliesToSupplyTypeId)" +
+                "JOIN SupplyToLocations loc ON (l.SupplyToLocationId = loc.Id) ORDER BY 1, 2, 3").ToListAsync();
+            return locationTypes.ToList();
+        }
+        
     }
 }

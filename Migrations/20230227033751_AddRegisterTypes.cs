@@ -32,7 +32,8 @@ namespace ClientPortal.Migrations
                     {"kWh - Standard"},
                     {"kWh - Off-Peak"},
                     {"kVA"},
-                    {"kVARh"}
+                    {"kVARh"},
+                    {"kL - Water" }
                });
 
         }

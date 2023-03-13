@@ -19,6 +19,7 @@ namespace ClientPortal.Data.Entities.PortalEntities
         public string RegisterType { get; set; }
         public string TOUHeader { get; set; }
         public string SupplyType { get; set; }
-        public string Location { get; set; }
+        public string SupplyTo { get; set; }
+        public string LocationType { get; set;}
     }
 }

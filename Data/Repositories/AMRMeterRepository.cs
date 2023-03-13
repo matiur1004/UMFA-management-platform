@@ -52,7 +52,7 @@ namespace ClientPortal.Data.Repositories
                 if (SaveChangesAsync().Result)
                 {
                     _logger.LogInformation("Successfully saved meter {MeterNo}", meter.Meter.MeterNo);
-                    retMeter = await _dbContext.AMRMeters.Include(m => m.Building).Include(m => m.MakeModel).FirstOrDefaultAsync(m => m.Id == newMeter.Id);
+                    retMeter = await _dbContext.AMRMeters.Include(m => m.MakeModel).FirstOrDefaultAsync(m => m.Id == newMeter.Id);
                 }
                 return new AMRMeterResponse(retMeter);
             }
@@ -132,7 +132,7 @@ namespace ClientPortal.Data.Repositories
             //_logger.LogInformation($"Retrieving meter with id {id}");
             try
             {
-                var meter = await _dbContext.AMRMeters.Include(m => m.Building)
+                var meter = await _dbContext.AMRMeters
                     .Include(m => m.MakeModel)
                     .ThenInclude(mm => mm.Utility)
                     .FirstOrDefaultAsync(m => m.Id == id);
@@ -163,8 +163,7 @@ namespace ClientPortal.Data.Repositories
                 AMRMeterResponseList respList = new();
                 var meters = await _dbContext.AMRMeters
                     .Include(a => a.MakeModel)
-                    .Include(a => a.Building)
-                    .Where(a => (a.Active && a.Building.Users.Contains(user)))
+                    .Where(a => (a.Active && a.UserId == userId))
                     .ToListAsync();
                 if (meters != null && meters.Count > 0)
                 {
@@ -210,8 +209,7 @@ namespace ClientPortal.Data.Repositories
                 AMRMeterResponseList respList = new();
                 var meters = await _dbContext.AMRMeters
                     .Include(a => a.MakeModel)
-                    .Include(a => a.Building)
-                    .Where(a => (a.Active && a.MakeModel.UtilityId == meterMakeModelId && a.Building.Users.Contains(user)))
+                    .Where(a => (a.Active && a.MakeModel.UtilityId == meterMakeModelId && a.UserId == userId))
                     .ToListAsync();
                 if (meters != null && meters.Count > 0)
                 {

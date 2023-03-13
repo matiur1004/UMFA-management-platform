@@ -9,6 +9,7 @@ namespace ClientPortal.DtOs
         public string ScadaPassword { get; set; }
         public int JobType { get; set; }
         public string CommsId { get; set; }
+        public string Key1 { get; set; }
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
         public int HeaderId { get; set; }

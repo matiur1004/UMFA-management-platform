@@ -41,7 +41,8 @@ IConfiguration? configuration = builder.Configuration;
     services.Configure<MailSettings>(builder.Configuration.GetSection(nameof(MailSettings)));
     services.AddTransient<IMailService, MailService>();
     services.AddMvcCore();
-    services.AddControllers();
+    services.AddControllers().AddJsonOptions(x =>
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
     services.AddSwaggerGen(c => {
         c.SwaggerDoc("v1", new OpenApiInfo
         {
@@ -94,6 +95,9 @@ IConfiguration? configuration = builder.Configuration;
 
     var UmfaConnectionString = builder.Configuration.GetConnectionString("UmfaDb");
     services.AddDbContext<UmfaDBContext>(x => x.UseSqlServer(UmfaConnectionString));
+
+    var DunamisConnectionString = builder.Configuration.GetConnectionString("DunamisDb");
+    services.AddDbContext<DunamisDBContext>(x => x.UseSqlServer(DunamisConnectionString));
 
     services.AddControllersWithViews()
         .AddJsonOptions(x => x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull)

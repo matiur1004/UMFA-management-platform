@@ -13,7 +13,7 @@ namespace ClientPortal.Data
         {
             CreateMap<PortalStats, PortalStatsResponse>().ReverseMap();
             CreateMap<AMRMeter, AMRMeterResponse>()
-                .ForMember(d => d.UmfaId, opt => opt.MapFrom(s => s.Building.UmfaId))
+                .ForMember(d => d.UmfaId, opt => opt.MapFrom(s => s.BuildingId ))
                 .ForMember(d => d.MakeModelId, opt => opt.MapFrom(s => s.MakeModel.Id))
                 .ForMember(d => d.Make, opt => opt.MapFrom(s => s.MakeModel.Make))
                 .ForMember(d => d.Model, opt => opt.MapFrom(s => s.MakeModel.Model))
