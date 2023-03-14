@@ -62,6 +62,8 @@ namespace ClientPortal.Data
         public DbSet<UserNotifications> UserNotifications { get; set; }
         public DbSet<UserNotificationSchedule> UserNotificationSchedules { get; set; }
         public DbSet<UserNotificationSummaryType> UserNotificationSummaryTypes { get; set; }
+        public DbSet<NotificationSendType> NotificationSendTypes { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -102,10 +102,17 @@ namespace ClientPortal.Controllers
             return _context.UserNotificationSchedules.Any(e => e.Id == id);
         }
 
-        [HttpGet("getAllSummaryTypes")] //To Get SummaryTypes Name and Id
+        [HttpGet("getAllNotificationSummaryTypes")] //To Get SummaryTypes Name and Id - None, StartOfDay, EndOfDay, Both
         public async Task<ActionResult<IEnumerable<UserNotificationSummaryType>>> GetNotificationSummaryTypes()
         {
             return await _context.UserNotificationSummaryTypes.ToListAsync();
         }
+
+        [HttpGet("getAllNotificationSendTypes")] //To Get NotificationSendTypes Name and Id - Email, Whatsapp, Telegram
+        public async Task<ActionResult<IEnumerable<NotificationSendType>>> GetNotificationSendTypes()
+        {
+            return await _context.NotificationSendTypes.ToListAsync();
+        }
     }
 }
+
