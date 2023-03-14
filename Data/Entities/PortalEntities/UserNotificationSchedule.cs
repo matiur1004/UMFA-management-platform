@@ -6,8 +6,8 @@
         public int UserId { get; set; }
         public int BuildingId { get; set; }
 
-        //Social or Email
-        public string NotificationType { get; set; }
+        //Email, Whatsapp or Telegram - NotificationTypeId
+        public int NotificationTypeId { get; set; }
         
         //Hours
         public string StartTime { get; set; }

@@ -60,9 +60,8 @@ namespace ClientPortal.Data
         public DbSet<Role> Roles { get; set; }
         public DbSet<NotificationType> NotificationTypes { get; set; }
         public DbSet<UserNotifications> UserNotifications { get; set; }
-        public DbSet<UserNotificationSchedule> UserNotificationsSchedules { get; set; }
+        public DbSet<UserNotificationSchedule> UserNotificationSchedules { get; set; }
         public DbSet<UserNotificationSummaryType> UserNotificationSummaryTypes { get; set; }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -125,6 +124,5 @@ namespace ClientPortal.Data
             optionsBuilder.UseSqlServer(connectionString);
         }
 
-        public DbSet<ClientPortal.Data.Entities.PortalEntities.UserNotificationSchedule> UserNotificationSchedule { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using ClientPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClientPortal.Migrations
 {
     [DbContext(typeof(PortalDBContext))]
-    partial class DataDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230314073855_RenameUserNotificationSchedule")]
+    partial class RenameUserNotificationSchedule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1237,8 +1239,9 @@ namespace ClientPortal.Migrations
                     b.Property<bool>("Monday")
                         .HasColumnType("bit");
 
-                    b.Property<int>("NotificationTypeId")
-                        .HasColumnType("int");
+                    b.Property<string>("NotificationType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Saturday")
                         .HasColumnType("bit");
