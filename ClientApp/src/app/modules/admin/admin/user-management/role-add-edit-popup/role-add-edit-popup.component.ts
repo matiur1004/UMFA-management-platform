@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormArray, FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CONFIRM_MODAL_CONFIG } from '@core/config/modal.config';
-import { NotificationType, UserNotification } from '@core/models';
+import { IUmfaBuilding, NotificationType, UserNotification } from '@core/models';
 import { UmfaUtils } from '@core/utils/umfa.utils';
 import { UserService } from '@shared/services';
 import { Subject, takeUntil } from 'rxjs';
@@ -19,6 +19,10 @@ export class RoleAddEditPopupComponent implements OnInit {
   roleItems = [];
   notificationTypesItems: NotificationType[] = [];
   submitted: boolean = false;
+  buildings: IUmfaBuilding[];
+  additionalTypes = ['Socail Media', 'Email'];
+  dayOfWeeks = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  summaries = ['None', 'StartOfDay', 'EndOfDay', 'Both'];
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -38,11 +42,14 @@ export class RoleAddEditPopupComponent implements OnInit {
       RoleId: [null, Validators.required],
       NotificationEmailAddress: ['', [Validators.email]],
       NotificationMobileNumber: [''],
-      NotificationGroup: this._formBuilder.array([])
+      UmfaId: [null],
+      NotificationGroup: this._formBuilder.array([]),
+      Additional: this._formBuilder.array([])
     });
 
     this.roleItems = this.data['roleItems'];
     this.notificationTypesItems = this.data['notificationTypeItems'];
+    this.buildings = this.data['buildings'];
     const checkArray = <FormArray>this.form.get('NotificationGroup');
     this.notificationTypesItems.forEach(type => {
       checkArray.push(this._formBuilder.group({
@@ -55,6 +62,31 @@ export class RoleAddEditPopupComponent implements OnInit {
       }));
     });
 
+    // additional notification
+    const additionalArray = <FormArray>this.form.get('Additional');
+    this.additionalTypes.forEach(type => {
+      additionalArray.push(this._formBuilder.group({
+        DayOfWeek: this._formBuilder.group({
+          Monday: [false],
+          Tuesday: [false],
+          Wednesday: [false],
+          Thursday: [false],  
+          Friday: [false],
+          Saturday: [false],
+          Sunday: [false],
+        }),
+        Hours: this._formBuilder.group({
+          Start: [],
+          End: []
+        }),
+        Summary: this._formBuilder.group({
+          None: [false],
+          StartOfDay: [false],
+          EndOfDay: [false],
+          Both: [false]
+        })
+      }))
+    })
     // to get notification types for user
     this._userService.getAllUserNotificationsForUser(this.data.detail.Id)
       .pipe(takeUntil(this._unsubscribeAll))
@@ -73,6 +105,10 @@ export class RoleAddEditPopupComponent implements OnInit {
 
   get notificationGroup(): FormArray {
     return this.form.controls.NotificationGroup as FormArray;
+  }
+
+  get additionalNotifications(): FormArray {
+    return this.form.controls.Additional as FormArray;
   }
 
   close() {
@@ -104,6 +140,16 @@ export class RoleAddEditPopupComponent implements OnInit {
       .subscribe((res: any) => {
         this.form.get('NotificationGroup')['controls'][index].patchValue(res);
       })
+  }
+
+  selectionChanged(e: any) {
+    //this.selectedBuildingId = e.BuildingId;
+    //this.getMappedMetersForBuilding(e.BuildingId)
+  }
+  
+  customBuildingSearch(term: string, item: any) {
+    term = term.toLocaleLowerCase();
+    return item.Name.toLocaleLowerCase().startsWith(term);
   }
 
   /**

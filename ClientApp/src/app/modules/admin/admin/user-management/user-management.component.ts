@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AllowedPageSizes } from '@core/helpers';
-import { IopUser, NotificationType, Role } from '@core/models';
-import { UserService } from '@shared/services';
+import { IopUser, IUmfaBuilding, NotificationType, Role } from '@core/models';
+import { BuildingService, UserService } from '@shared/services';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { RoleAddEditPopupComponent } from './role-add-edit-popup/role-add-edit-popup.component';
 
@@ -16,13 +16,15 @@ export class UserManagementComponent implements OnInit {
   users: IopUser[] = [];
   roles: Role[] = [];
   notificationTypes: NotificationType[] = [];
+  buildings: IUmfaBuilding[];
 
   readonly allowedPageSizes = AllowedPageSizes;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
   constructor(
     private _userService: UserService,
-    private _matDialog: MatDialog
+    private _matDialog: MatDialog,
+    private _bldService: BuildingService
   ) {
     this.onEdit = this.onEdit.bind(this);
    }
@@ -51,6 +53,12 @@ export class UserManagementComponent implements OnInit {
       .subscribe((res: NotificationType[]) => {
         this.notificationTypes = res;
       });
+
+    this._bldService.buildings$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((data: IUmfaBuilding[]) => {
+          this.buildings = data;
+      })
   }
 
   onEdit(e) {
@@ -60,7 +68,7 @@ export class UserManagementComponent implements OnInit {
 
   onAction(actionType: string, item = null) {
     if(actionType == 'New' || actionType == 'Edit') {
-      this._matDialog.open(RoleAddEditPopupComponent, {autoFocus: false, data: {detail: item, roleItems: this.roles, notificationTypeItems: this.notificationTypes}})
+      this._matDialog.open(RoleAddEditPopupComponent, {autoFocus: false, data: {detail: item, roleItems: this.roles, notificationTypeItems: this.notificationTypes, buildings: this.buildings}})
         .afterClosed()
         .subscribe((res) => {
           if(res) {

@@ -4,7 +4,7 @@ import {
   RouterStateSnapshot,
   ActivatedRouteSnapshot
 } from '@angular/router';
-import { UserService } from '@shared/services';
+import { BuildingService, UserService } from '@shared/services';
 import { forkJoin, Observable, of } from 'rxjs';
 
 @Injectable({
@@ -12,11 +12,13 @@ import { forkJoin, Observable, of } from 'rxjs';
 })
 export class UserManagementResolver implements Resolve<any> {
   constructor(
-    private _userService: UserService
+    private _userService: UserService,
+    private _buildingService: BuildingService
   ){}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     return forkJoin([
+      this._buildingService.getBuildingsForUser(this._userService.userValue.UmfaId),
       this._userService.getRoles(),
       this._userService.getAllUsers(),
       this._userService.getNotificationTypes()
