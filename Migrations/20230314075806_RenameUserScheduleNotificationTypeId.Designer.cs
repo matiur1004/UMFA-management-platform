@@ -4,6 +4,7 @@ using ClientPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClientPortal.Migrations
 {
     [DbContext(typeof(PortalDBContext))]
-    partial class DataDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230314075806_RenameUserScheduleNotificationTypeId")]
+    partial class RenameUserScheduleNotificationTypeId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -419,27 +421,6 @@ namespace ClientPortal.Migrations
                     b.HasIndex("UtilityId");
 
                     b.ToTable("MetersMakeModels");
-                });
-
-            modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.NotificationSendType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("NotificationSendTypes");
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.NotificationType", b =>
@@ -1258,7 +1239,7 @@ namespace ClientPortal.Migrations
                     b.Property<bool>("Monday")
                         .HasColumnType("bit");
 
-                    b.Property<int>("NotificationSendTypeId")
+                    b.Property<int>("NotificationTypeId")
                         .HasColumnType("int");
 
                     b.Property<bool>("Saturday")
