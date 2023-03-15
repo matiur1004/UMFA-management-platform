@@ -53,6 +53,16 @@ export class UserNotificationScheduleService {
       );
   }
 
+  createOrUpdate(data) {
+    const url = `${CONFIG.apiURL}/UserNotificationSchedules/createOrUpdate`;
+    return this.http.post<any>(url, data, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchErrors(err)),
+        tap(bl => {
+        })
+      );
+  }
+
   //catches errors
   private catchErrors(error: { error: { message: any; }; message: any; }): Observable<Response> {
     if (error && error.error && error.error.message) { //clientside error

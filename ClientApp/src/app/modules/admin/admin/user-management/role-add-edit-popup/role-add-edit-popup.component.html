@@ -65,7 +65,9 @@
         <div class="flex flex-col" formArrayName="Additional" *ngIf="selectedBuildingId">
             <span class="text-lg">Social Media(WhatsApp / Telegram)</span>
             <mat-tab-group
-                [animationDuration]="'500ms'">
+                [animationDuration]="'500ms'"
+                [selectedIndex]="selectedNotificationTab"
+                (selectedIndexChange)="selectedNotificationTab = $event">
                 <ng-container *ngFor="let notificationType of additionalNotifications.controls; let i = index">
                     <mat-tab label="{{senderTypes[i].Name}}">
                         <ng-container [formGroupName]="i">
@@ -75,7 +77,7 @@
                                     <div class="row grid grid-cols-7 gap-x-2 pl-4 justify-between">
                                         <div class="flex flex-col items-center" *ngFor="let day of dayOfWeeks">
                                             <span class="text-md">{{day}}</span>
-                                            <mat-checkbox [color]="'primary'" [formControl]="getDayOfWeekControl(i, day)" (change)="onChangeBuildingNotificationSchedule(i)"></mat-checkbox>
+                                            <mat-checkbox [color]="'primary'" [formControl]="getDayOfWeekControl(i, day)"></mat-checkbox>
                                         </div>
                                     </div>
                                 </div>
@@ -85,13 +87,13 @@
                                         <div class="col-span-1">
                                             <div class="flex flex-col w-full">
                                                 <dx-date-box type="time" placeholder="Time" displayFormat="HH:mm" [formControlName]="'Start'" label="Start time"
-                                                    labelMode="static" required class="form-control" (onValueChanged)="onChangeBuildingNotificationSchedule(i)"> </dx-date-box>
+                                                    labelMode="static" required class="form-control"> </dx-date-box>
                                             </div>
                                         </div>
                                         <div class="col-span-1">
                                             <div class="flex flex-col w-full">
                                                 <dx-date-box type="time" placeholder="Time" displayFormat="HH:mm" [formControlName]="'End'" label="End time"
-                                                    labelMode="static" required class="form-control"> </dx-date-box>
+                                                    labelMode="static" required class="form-control"></dx-date-box>
                                             </div>
                                         </div>
                                     </div>
@@ -102,7 +104,7 @@
                                         <ng-container *ngFor="let summaryType of summaryTypes;">
                                             <div class="flex flex-col items-center">
                                                 <span class="text-md">{{summaryType.Name}}</span>
-                                                <mat-checkbox [color]="'primary'" [formControl]="getSummaryTypeControl(i, summaryType.Id)"></mat-checkbox>
+                                                <mat-checkbox [color]="'primary'" [formControl]="getSummaryTypeControl(i, summaryType.Id)" (change)="onChangeBuildingNotificationScheduleFromSummaryType(i, summaryType.Id)"></mat-checkbox>
                                             </div>
                                         </ng-container>
                                     </div>
@@ -113,16 +115,16 @@
                     
                 </ng-container>
             </mat-tab-group>
-            
-                
-            
+            <div class="flex justify-end border-t pt-2">
+                <button mat-raised-button color="primary" class="w-30 text-white" type="button" (click)="submitNotificationSchedule()">Update</button>
+            </div>
         </div>
         <div class="flex flex-col">
             <div
                 class="table-grid z-10 sticky top-0 grid gap-4 py-2 px-2 md:px-4 shadow text-base font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5"
                 >
                 <div class="flex flex-col justify-between gap-y-2">
-                    Notification Type             
+                    Notification Type
                 </div>
                 <div class="block">Email</div>
                 <div class="block">Whatsapp</div>

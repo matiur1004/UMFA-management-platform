@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CONFIRM_MODAL_CONFIG } from '@core/config/modal.config';
 import { IUmfaBuilding, NotificationType, UserNotification } from '@core/models';
 import { UmfaUtils } from '@core/utils/umfa.utils';
-import { UserService } from '@shared/services';
+import { NotificationService, UserService } from '@shared/services';
 import { UserNotificationScheduleService } from '@shared/services/user-notification-schedule.service';
 import { Subject, takeUntil } from 'rxjs';
 
@@ -27,7 +27,7 @@ export class RoleAddEditPopupComponent implements OnInit {
   allUserNotificationSchedules: any[] = [];
 
   dayOfWeeks = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
+  selectedNotificationTab = 0;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
@@ -36,6 +36,7 @@ export class RoleAddEditPopupComponent implements OnInit {
     private _ufUtils: UmfaUtils,
     private _userService: UserService,
     private _userNotificationScheduleService: UserNotificationScheduleService,
+    private notificationService: NotificationService,
     @Inject(MAT_DIALOG_DATA) data
   ) { 
     this.data = data;
@@ -57,7 +58,6 @@ export class RoleAddEditPopupComponent implements OnInit {
     this.buildings = this.data['buildings'];
     this.senderTypes = this.data['senderTypes'];
     this.summaryTypes = this.data['summaryTypes'];
-    console.log(this.summaryTypes);
     const checkArray = <FormArray>this.form.get('NotificationGroup');
     this.notificationTypesItems.forEach(type => {
       checkArray.push(this._formBuilder.group({
@@ -70,6 +70,42 @@ export class RoleAddEditPopupComponent implements OnInit {
       }));
     });
 
+    // to initialize default Form
+    this.onInitForm();
+    
+    // to get notification types for user
+    this._userService.getAllUserNotificationsForUser(this.data.detail.Id)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((res: UserNotification[]) => {
+        res.map(item => {
+          let index = this.notificationTypesItems.findIndex(type => type.Id == item.NotificationTypeId);
+          this.form.get('NotificationGroup')['controls'][index].patchValue(item);
+        })
+      })
+
+    this.getUserNotificationSchedules();
+    if(this.data.detail) {
+      this.form.patchValue(this.data.detail);
+    }
+  }
+  
+  get notificationGroup(): FormArray {
+    return this.form.controls.NotificationGroup as FormArray;
+  }
+
+  get additionalNotifications(): FormArray {
+    return this.form.controls.Additional as FormArray;
+  }
+
+  getUserNotificationSchedules() {
+    this._userNotificationScheduleService.getAllForUser(this.data.detail.Id)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((res: any[]) => {
+        this.allUserNotificationSchedules = res;
+      })
+  }
+
+  onInitForm() {
     // additional notification
     let summaryTypesControls = {};
     this.summaryTypes.forEach(item => {
@@ -77,10 +113,15 @@ export class RoleAddEditPopupComponent implements OnInit {
       else summaryTypesControls[item.Id] = [false];
     })
 
-    const additionalArray = <FormArray>this.form.get('Additional');
+    let additionalArray = <FormArray>this.form.get('Additional');
+    while (0 !== additionalArray.length) {
+      additionalArray.removeAt(0);
+    }
     this.senderTypes.forEach(type => {
       additionalArray.push(this._formBuilder.group({
-        NotificationSenderTypeId: [type.Id],
+        Id: [0],
+        NotificationSendTypeId: [type.Id],
+        UserId: [this.data.detail.Id],
         DayOfWeek: this._formBuilder.group({
           Monday: [true],
           Tuesday: [true],
@@ -97,35 +138,7 @@ export class RoleAddEditPopupComponent implements OnInit {
         Summary: this._formBuilder.group(summaryTypesControls)
       }))
     })
-    // to get notification types for user
-    this._userService.getAllUserNotificationsForUser(this.data.detail.Id)
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((res: UserNotification[]) => {
-        res.map(item => {
-          let index = this.notificationTypesItems.findIndex(type => type.Id == item.NotificationTypeId);
-          this.form.get('NotificationGroup')['controls'][index].patchValue(item);
-        })
-      })
-
-    this._userNotificationScheduleService.getAllForUser(this.data.detail.Id)
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((res: any[]) => {
-        this.allUserNotificationSchedules = res;
-      })
-    if(this.data.detail) {
-      this.form.patchValue(this.data.detail);
-    }
-
   }
-
-  get notificationGroup(): FormArray {
-    return this.form.controls.NotificationGroup as FormArray;
-  }
-
-  get additionalNotifications(): FormArray {
-    return this.form.controls.Additional as FormArray;
-  }
-
   getSummaryTypeControl(index, Id) {
     return this.form.get('Additional')['controls'][index].get('Summary')['controls'][Id];
   }
@@ -153,8 +166,7 @@ export class RoleAddEditPopupComponent implements OnInit {
           this.matDialogRef.close();
         }
       });
-    }
-    
+    }    
   }
 
   onChangeNotificationType(index) {
@@ -166,17 +178,33 @@ export class RoleAddEditPopupComponent implements OnInit {
   }
 
   onChangeBuildingNotificationSchedule(index) {
-    console.log(this.form.get('Additional').value[index]);
     let formData = this.transformNotificationSchedule(this.form.get('Additional').value[index]);
-    console.log('formData', formData);
+    this._userNotificationScheduleService.createOrUpdate(formData)
+    .pipe(takeUntil(this._unsubscribeAll))
+    .subscribe((res: any) => {
+      this.getUserNotificationSchedules();
+      this.form.get('Additional')['controls'][index].get("Id").setValue(res['Id']);
+      this.notificationService.message('Updated successfuly!');
+    })
+  }
+
+  onChangeBuildingNotificationScheduleFromSummaryType(index, Id) {
+    let summaryValue = this.form.get('Additional').value[index]['Summary'];
+    Object.keys(summaryValue).forEach(key => {
+      if(key == Id) summaryValue[key] = true;
+      else summaryValue[key] = false;
+    })
+    this.form.get('Additional')['controls'][index].get('Summary').setValue(summaryValue);
   }
 
   transformNotificationSchedule(data) {
     let result = {};
+    result['Id'] = data['Id'];
     result['BuildingId'] = this.form.get('BuildingId').value;
-    result['StartTime'] = new Date(data['Hours']['Start']).getHours() + ':00';
-    result['EndTime'] = new Date(data['Hours']['End']).getHours() + ':00';
-    result['NotificationSenderTypeId'] = data['NotificationSenderTypeId'];
+    result['StartTime'] = new Date(data['Hours']['Start']).getHours().toString().padStart(2, '0') + ':' + new Date(data['Hours']['Start']).getMinutes().toString().padEnd(2, '0');
+    result['EndTime'] = new Date(data['Hours']['End']).getHours().toString().padStart(2, '0') + ':' + new Date(data['Hours']['End']).getMinutes().toString().padEnd(2, '0');
+    result['NotificationSendTypeId'] = data['NotificationSendTypeId'];
+    result['UserId'] = data['UserId'];
     result['Monday'] = data['DayOfWeek']['Monday'];
     result['Tuesday'] = data['DayOfWeek']['Tuesday'];
     result['Wednesday'] = data['DayOfWeek']['Wednesday'];
@@ -193,14 +221,43 @@ export class RoleAddEditPopupComponent implements OnInit {
 
   selectionChanged(e: any) {
     this.selectedBuildingId = e.BuildingId;
-    let notificationSchedule = this.allUserNotificationSchedules.filter(item => item.BuildingId == e.BuildingId);
+    let notificationSchedule = this.allUserNotificationSchedules.find(item => item.BuildingId == e.BuildingId);
     if(notificationSchedule) {
-      
+      this.initNotificationSchedule(notificationSchedule);
+    } else {
+      this.onInitForm();
     }
-    //this.selectedBuildingId = e.BuildingId;
-    //this.getMappedMetersForBuilding(e.BuildingId)
   }
   
+  initNotificationSchedule(formData) {    
+    let sendTypeId = formData['NotificationSendTypeId'];
+    let sendTypeIdx = this.senderTypes.findIndex(item => item.Id == Number(sendTypeId));
+    this.form.get('Additional')['controls'][sendTypeIdx].get("DayOfWeek").patchValue({
+      Monday: formData['Monday'],
+      Tuesday: formData['Tuesday'],
+      Wednesday: formData['Wednesday'],
+      Thursday: formData['Thursday'],
+      Friday: formData['Friday'],
+      Saturday: formData['Saturday'],
+      Sunday: formData['Sunday']
+    })
+    this.form.get('Additional')['controls'][sendTypeIdx].get("Id").setValue(formData['Id']);
+    this.form.get('Additional')['controls'][sendTypeIdx].get("Hours").patchValue({
+      Start: new Date().setHours(Number(formData['StartTime'].split(':')[0]), Number(formData['StartTime'].split(':')[1]), 0),
+      End: new Date().setHours(Number(formData['EndTime'].split(':')[0]), Number(formData['EndTime'].split(':')[1]), 0)
+    });
+    let summaryTypeId = formData['UserNotificationSummaryTypeId'];
+    let summaryValue: any = {};
+    this.summaryTypes.forEach(summaryType => {
+      if(summaryType.Id == summaryTypeId) {
+        summaryValue[summaryType.Id] = true;
+      } else {
+        summaryValue[summaryType.Id] = false;
+      }
+    });
+    this.form.get('Additional')['controls'][sendTypeIdx].get("Summary").patchValue(summaryValue);
+  }
+
   customBuildingSearch(term: string, item: any) {
     term = term.toLocaleLowerCase();
     return item.Name.toLocaleLowerCase().startsWith(term);
@@ -216,4 +273,7 @@ export class RoleAddEditPopupComponent implements OnInit {
       this._unsubscribeAll.complete();
   }
 
+  submitNotificationSchedule() {
+    this.onChangeBuildingNotificationSchedule(this.selectedNotificationTab);
+  }
 }
