@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AllowedPageSizes } from '@core/helpers';
 import { IopUser, IUmfaBuilding, NotificationType, Role } from '@core/models';
 import { BuildingService, UserService } from '@shared/services';
+import { UserNotificationScheduleService } from '@shared/services/user-notification-schedule.service';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { RoleAddEditPopupComponent } from './role-add-edit-popup/role-add-edit-popup.component';
 
@@ -17,6 +18,8 @@ export class UserManagementComponent implements OnInit {
   roles: Role[] = [];
   notificationTypes: NotificationType[] = [];
   buildings: IUmfaBuilding[];
+  senderTypes: any[] = [];
+  summaryTypes: any[] = [];
 
   readonly allowedPageSizes = AllowedPageSizes;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -24,7 +27,8 @@ export class UserManagementComponent implements OnInit {
   constructor(
     private _userService: UserService,
     private _matDialog: MatDialog,
-    private _bldService: BuildingService
+    private _bldService: BuildingService,
+    private _userNotificationScheduleService: UserNotificationScheduleService
   ) {
     this.onEdit = this.onEdit.bind(this);
    }
@@ -59,6 +63,18 @@ export class UserManagementComponent implements OnInit {
       .subscribe((data: IUmfaBuilding[]) => {
           this.buildings = data;
       })
+
+    this._userNotificationScheduleService.senderTypes$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((data: any[]) => {
+          this.senderTypes = data;
+      })
+      
+    this._userNotificationScheduleService.summaryTypes$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((data: any[]) => {
+          this.summaryTypes = data;
+      })
   }
 
   onEdit(e) {
@@ -68,7 +84,14 @@ export class UserManagementComponent implements OnInit {
 
   onAction(actionType: string, item = null) {
     if(actionType == 'New' || actionType == 'Edit') {
-      this._matDialog.open(RoleAddEditPopupComponent, {autoFocus: false, data: {detail: item, roleItems: this.roles, notificationTypeItems: this.notificationTypes, buildings: this.buildings}})
+      this._matDialog.open(RoleAddEditPopupComponent, {autoFocus: false, data: 
+        { detail: item, 
+          roleItems: this.roles, 
+          notificationTypeItems: this.notificationTypes, 
+          buildings: this.buildings,
+          senderTypes: this.senderTypes,
+          summaryTypes: this.summaryTypes
+        }})
         .afterClosed()
         .subscribe((res) => {
           if(res) {

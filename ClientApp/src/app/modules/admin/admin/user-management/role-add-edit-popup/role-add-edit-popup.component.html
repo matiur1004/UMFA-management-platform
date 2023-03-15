@@ -57,94 +57,64 @@
             <div class="col-span-1">
                 <mat-label> Select Building </mat-label>
                 <ng-select [items]="buildings" bindLabel="Name" bindValue="BuildingId" [placeholder]="'Select Building'"
-                           [formControlName]="'UmfaId'" [searchable]="true" [clearable]="false" [searchFn]="customBuildingSearch"
+                           [formControlName]="'BuildingId'" [searchable]="true" [clearable]="false" [searchFn]="customBuildingSearch"
                            (change)="selectionChanged($event)">
                 </ng-select>
             </div>
         </div>
-        <div class="flex flex-col" formArrayName="Additional">
+        <div class="flex flex-col" formArrayName="Additional" *ngIf="selectedBuildingId">
             <span class="text-lg">Social Media(WhatsApp / Telegram)</span>
-            <ng-container *ngFor="let notificationType of additionalNotifications.controls; let i = index">
-                <ng-container [formGroupName]="i">
-                    <div class="flex flex-col p-2 gap-y-2 border-b">
-                        <div class="text-md">{{additionalTypes[i]}}</div>
-                        <div class="flex flex-col pl-4 gap-y-1">
-                            <div class="flex flex-col" [formGroupName]="'DayOfWeek'">
-                                <div class="text-md font-semibold">Day Of Week</div>
-                                <div class="row grid grid-cols-7 gap-x-2 pl-4 justify-between">
-                                    <div class="flex flex-col items-center">
-                                        <span class="text-md">Sunday</span>
-                                        <mat-checkbox [color]="'primary'" [formControlName]="'Sunday'"></mat-checkbox>
-                                    </div>
-                                    <div class="flex flex-col items-center">
-                                        <span class="text-md">Monday</span>
-                                        <mat-checkbox [color]="'primary'" [formControlName]="'Monday'"></mat-checkbox>
-                                    </div>
-                                    <div class="flex flex-col items-center">
-                                        <span class="text-md">Tuesday</span>
-                                        <mat-checkbox [color]="'primary'" [formControlName]="'Tuesday'"></mat-checkbox>
-                                    </div>
-                                    <div class="flex flex-col items-center">
-                                        <span class="text-md">Wednesday</span>
-                                        <mat-checkbox [color]="'primary'" [formControlName]="'Wednesday'"></mat-checkbox>
-                                    </div>
-                                    <div class="flex flex-col items-center">
-                                        <span class="text-md">Thursday</span>
-                                        <mat-checkbox [color]="'primary'" [formControlName]="'Thursday'"></mat-checkbox>
-                                    </div>
-                                    <div class="flex flex-col items-center">
-                                        <span class="text-md">Friday</span>
-                                        <mat-checkbox [color]="'primary'" [formControlName]="'Friday'"></mat-checkbox>
-                                    </div>
-                                    <div class="flex flex-col items-center">
-                                        <span class="text-md">Saturday</span>
-                                        <mat-checkbox [color]="'primary'" [formControlName]="'Saturday'"></mat-checkbox>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex flex-col">
-                                <div class="text-md font-semibold">Hours</div>
-                                <div class="row grid grid-cols-2 gap-x-2 pl-4 justify-between" [formGroupName]="'Hours'">
-                                    <div class="col-span-1">
-                                        <div class="flex flex-col w-full">
-                                            <dx-date-box type="time" placeholder="Time" displayFormat="HH:mm" [formControlName]="'Start'" label="Start time"
-                                              labelMode="static" required class="form-control"> </dx-date-box>
-                                        </div>
-                                    </div>
-                                    <div class="col-span-1">
-                                        <div class="flex flex-col w-full">
-                                            <dx-date-box type="time" placeholder="Time" displayFormat="HH:mm" [formControlName]="'End'" label="End time"
-                                              labelMode="static" required class="form-control"> </dx-date-box>
+            <mat-tab-group
+                [animationDuration]="'500ms'">
+                <ng-container *ngFor="let notificationType of additionalNotifications.controls; let i = index">
+                    <mat-tab label="{{senderTypes[i].Name}}">
+                        <ng-container [formGroupName]="i">
+                            <div class="flex flex-col pl-4 gap-y-1">
+                                <div class="flex flex-col" [formGroupName]="'DayOfWeek'">
+                                    <div class="text-md font-semibold">Day Of Week</div>
+                                    <div class="row grid grid-cols-7 gap-x-2 pl-4 justify-between">
+                                        <div class="flex flex-col items-center" *ngFor="let day of dayOfWeeks">
+                                            <span class="text-md">{{day}}</span>
+                                            <mat-checkbox [color]="'primary'" [formControl]="getDayOfWeekControl(i, day)" (change)="onChangeBuildingNotificationSchedule(i)"></mat-checkbox>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="flex flex-col">
-                                <div class="text-md">Summary</div>
-                                <div class="row grid grid-cols-4 gap-x-2 pl-4 justify-between" [formGroupName]="'Summary'">
-                                    <div class="flex flex-col items-center">
-                                        <span class="text-md">None</span>
-                                        <mat-checkbox [color]="'primary'" [formControlName]="'None'"></mat-checkbox>
+                                <div class="flex flex-col">
+                                    <div class="text-md font-semibold">Hours</div>
+                                    <div class="row grid grid-cols-2 gap-x-2 pl-4 justify-between" [formGroupName]="'Hours'">
+                                        <div class="col-span-1">
+                                            <div class="flex flex-col w-full">
+                                                <dx-date-box type="time" placeholder="Time" displayFormat="HH:mm" [formControlName]="'Start'" label="Start time"
+                                                    labelMode="static" required class="form-control" (onValueChanged)="onChangeBuildingNotificationSchedule(i)"> </dx-date-box>
+                                            </div>
+                                        </div>
+                                        <div class="col-span-1">
+                                            <div class="flex flex-col w-full">
+                                                <dx-date-box type="time" placeholder="Time" displayFormat="HH:mm" [formControlName]="'End'" label="End time"
+                                                    labelMode="static" required class="form-control"> </dx-date-box>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="flex flex-col items-center">
-                                        <span class="text-md">Start-Of-Day</span>
-                                        <mat-checkbox [color]="'primary'" [formControlName]="'StartOfDay'"></mat-checkbox>
-                                    </div>
-                                    <div class="flex flex-col items-center">
-                                        <span class="text-md">End-Of-Day</span>
-                                        <mat-checkbox [color]="'primary'" [formControlName]="'EndOfDay'"></mat-checkbox>
-                                    </div>
-                                    <div class="flex flex-col items-center">
-                                        <span class="text-md">Both</span>
-                                        <mat-checkbox [color]="'primary'" [formControlName]="'Both'"></mat-checkbox>
+                                </div>
+                                <div class="flex flex-col">
+                                    <div class="text-md font-semibold">Summary</div>
+                                    <div class="row grid grid-cols-4 gap-x-2 pl-4 justify-between" [formGroupName]="'Summary'">
+                                        <ng-container *ngFor="let summaryType of summaryTypes;">
+                                            <div class="flex flex-col items-center">
+                                                <span class="text-md">{{summaryType.Name}}</span>
+                                                <mat-checkbox [color]="'primary'" [formControl]="getSummaryTypeControl(i, summaryType.Id)"></mat-checkbox>
+                                            </div>
+                                        </ng-container>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </ng-container>
+                    </mat-tab>
+                    
                 </ng-container>
+            </mat-tab-group>
+            
                 
-            </ng-container>
             
         </div>
         <div class="flex flex-col">

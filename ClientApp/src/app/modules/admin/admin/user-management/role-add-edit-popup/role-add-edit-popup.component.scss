@@ -8,3 +8,6 @@
     max-height: calc(100vh - 100px);
     overflow: scroll;
 }
+::ng-deep .mat-tab-group .mat-tab-body-content {
+    padding: 12px !important;
+}

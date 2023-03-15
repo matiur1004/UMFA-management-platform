@@ -22,7 +22,8 @@ const PROXY_CONFIG = [
       "/Swagger",
       "/Roles",
       "/NotificationTypes",
-      "/UserNotifications"
+      "/UserNotifications",
+      "/UserNotificationSchedules"
    ],
     target: target,
     secure: false,

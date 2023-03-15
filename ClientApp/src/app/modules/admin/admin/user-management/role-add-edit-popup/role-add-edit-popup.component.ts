@@ -5,6 +5,7 @@ import { CONFIRM_MODAL_CONFIG } from '@core/config/modal.config';
 import { IUmfaBuilding, NotificationType, UserNotification } from '@core/models';
 import { UmfaUtils } from '@core/utils/umfa.utils';
 import { UserService } from '@shared/services';
+import { UserNotificationScheduleService } from '@shared/services/user-notification-schedule.service';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -20,9 +21,12 @@ export class RoleAddEditPopupComponent implements OnInit {
   notificationTypesItems: NotificationType[] = [];
   submitted: boolean = false;
   buildings: IUmfaBuilding[];
-  additionalTypes = ['Socail Media', 'Email'];
+  senderTypes: any[];
+  summaryTypes: any[];
+  selectedBuildingId: number;
+  allUserNotificationSchedules: any[] = [];
+
   dayOfWeeks = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  summaries = ['None', 'StartOfDay', 'EndOfDay', 'Both'];
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -31,6 +35,7 @@ export class RoleAddEditPopupComponent implements OnInit {
     private _formBuilder: UntypedFormBuilder,
     private _ufUtils: UmfaUtils,
     private _userService: UserService,
+    private _userNotificationScheduleService: UserNotificationScheduleService,
     @Inject(MAT_DIALOG_DATA) data
   ) { 
     this.data = data;
@@ -42,7 +47,7 @@ export class RoleAddEditPopupComponent implements OnInit {
       RoleId: [null, Validators.required],
       NotificationEmailAddress: ['', [Validators.email]],
       NotificationMobileNumber: [''],
-      UmfaId: [null],
+      BuildingId: [null],
       NotificationGroup: this._formBuilder.array([]),
       Additional: this._formBuilder.array([])
     });
@@ -50,6 +55,9 @@ export class RoleAddEditPopupComponent implements OnInit {
     this.roleItems = this.data['roleItems'];
     this.notificationTypesItems = this.data['notificationTypeItems'];
     this.buildings = this.data['buildings'];
+    this.senderTypes = this.data['senderTypes'];
+    this.summaryTypes = this.data['summaryTypes'];
+    console.log(this.summaryTypes);
     const checkArray = <FormArray>this.form.get('NotificationGroup');
     this.notificationTypesItems.forEach(type => {
       checkArray.push(this._formBuilder.group({
@@ -63,28 +71,30 @@ export class RoleAddEditPopupComponent implements OnInit {
     });
 
     // additional notification
+    let summaryTypesControls = {};
+    this.summaryTypes.forEach(item => {
+      if(item.Name == 'End Of Day') summaryTypesControls[item.Id] = [true];
+      else summaryTypesControls[item.Id] = [false];
+    })
+
     const additionalArray = <FormArray>this.form.get('Additional');
-    this.additionalTypes.forEach(type => {
+    this.senderTypes.forEach(type => {
       additionalArray.push(this._formBuilder.group({
+        NotificationSenderTypeId: [type.Id],
         DayOfWeek: this._formBuilder.group({
-          Monday: [false],
-          Tuesday: [false],
-          Wednesday: [false],
-          Thursday: [false],  
-          Friday: [false],
+          Monday: [true],
+          Tuesday: [true],
+          Wednesday: [true],
+          Thursday: [true],  
+          Friday: [true],
           Saturday: [false],
           Sunday: [false],
         }),
         Hours: this._formBuilder.group({
-          Start: [],
-          End: []
+          Start: [new Date().setHours(7, 0, 0)],
+          End: [new Date().setHours(17, 0, 0)]
         }),
-        Summary: this._formBuilder.group({
-          None: [false],
-          StartOfDay: [false],
-          EndOfDay: [false],
-          Both: [false]
-        })
+        Summary: this._formBuilder.group(summaryTypesControls)
       }))
     })
     // to get notification types for user
@@ -95,7 +105,12 @@ export class RoleAddEditPopupComponent implements OnInit {
           let index = this.notificationTypesItems.findIndex(type => type.Id == item.NotificationTypeId);
           this.form.get('NotificationGroup')['controls'][index].patchValue(item);
         })
+      })
 
+    this._userNotificationScheduleService.getAllForUser(this.data.detail.Id)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((res: any[]) => {
+        this.allUserNotificationSchedules = res;
       })
     if(this.data.detail) {
       this.form.patchValue(this.data.detail);
@@ -111,10 +126,18 @@ export class RoleAddEditPopupComponent implements OnInit {
     return this.form.controls.Additional as FormArray;
   }
 
+  getSummaryTypeControl(index, Id) {
+    return this.form.get('Additional')['controls'][index].get('Summary')['controls'][Id];
+  }
+
+  getDayOfWeekControl(index, day) {
+    return this.form.get('Additional')['controls'][index].get('DayOfWeek')['controls'][day];
+  }
+
   close() {
     this.matDialogRef.close();
   }
-
+  
   submit() {
     this.submitted = true;
     if(this.form.valid) {
@@ -142,7 +165,38 @@ export class RoleAddEditPopupComponent implements OnInit {
       })
   }
 
+  onChangeBuildingNotificationSchedule(index) {
+    console.log(this.form.get('Additional').value[index]);
+    let formData = this.transformNotificationSchedule(this.form.get('Additional').value[index]);
+    console.log('formData', formData);
+  }
+
+  transformNotificationSchedule(data) {
+    let result = {};
+    result['BuildingId'] = this.form.get('BuildingId').value;
+    result['StartTime'] = new Date(data['Hours']['Start']).getHours() + ':00';
+    result['EndTime'] = new Date(data['Hours']['End']).getHours() + ':00';
+    result['NotificationSenderTypeId'] = data['NotificationSenderTypeId'];
+    result['Monday'] = data['DayOfWeek']['Monday'];
+    result['Tuesday'] = data['DayOfWeek']['Tuesday'];
+    result['Wednesday'] = data['DayOfWeek']['Wednesday'];
+    result['Thursday'] = data['DayOfWeek']['Thursday'];
+    result['Friday'] = data['DayOfWeek']['Friday'];
+    result['Saturday'] = data['DayOfWeek']['Saturday'];
+    result['Sunday'] = data['DayOfWeek']['Sunday'];
+
+    Object.keys(data['Summary']).forEach(key => {
+      if(data['Summary'][key] == true) result['UserNotificationSummaryTypeId'] = key;
+    })
+    return result;
+  }
+
   selectionChanged(e: any) {
+    this.selectedBuildingId = e.BuildingId;
+    let notificationSchedule = this.allUserNotificationSchedules.filter(item => item.BuildingId == e.BuildingId);
+    if(notificationSchedule) {
+      
+    }
     //this.selectedBuildingId = e.BuildingId;
     //this.getMappedMetersForBuilding(e.BuildingId)
   }
