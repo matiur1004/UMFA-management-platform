@@ -81,4 +81,8 @@
       </ResolvedFileToPublish>
     </ItemGroup>
   </Target>
+  
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy /s /y &quot;$(ProjectDir)ClientApp\dist\fuse&quot; &quot;$(ProjectDir)wwwroot\&quot;" />
+  </Target>
 </Project>
