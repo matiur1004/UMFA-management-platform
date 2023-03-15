@@ -71,7 +71,7 @@
                 <ng-container *ngFor="let notificationType of additionalNotifications.controls; let i = index">
                     <mat-tab label="{{senderTypes[i].Name}}">
                         <ng-container [formGroupName]="i">
-                            <div class="flex flex-col pl-4 gap-y-1">
+                            <div class="flex flex-col gap-y-1">
                                 <div class="flex flex-col" [formGroupName]="'DayOfWeek'">
                                     <div class="text-md font-semibold">Day Of Week</div>
                                     <div class="row grid grid-cols-7 gap-x-2 pl-4 justify-between">
