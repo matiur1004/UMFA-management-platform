@@ -2,9 +2,13 @@
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.DunamisEntities;
 using ClientPortal.Data.Entities.PortalEntities;
+using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 using ClientPortal.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using ServiceStack;
+using System.Security.Claims;
 
 namespace ClientPortal.Controllers
 {
@@ -16,12 +20,14 @@ namespace ClientPortal.Controllers
         private readonly PortalDBContext _context;
         private readonly DunamisDBContext _dbContext;
         private readonly MappedMetersService _mappedMetersService;
+        private readonly IAMRMeterService _amRMeterService;
 
-        public MappedMetersController(PortalDBContext context, DunamisDBContext dBContext, MappedMetersService mappedMetersService)
+        public MappedMetersController(PortalDBContext context, DunamisDBContext dBContext, MappedMetersService mappedMetersService, IAMRMeterService amRMeterService)
         {
             _context = context;
             _dbContext = dBContext;
             _mappedMetersService = mappedMetersService;
+            _amRMeterService = amRMeterService;
         }
 
         // GET: MappedMeters/GetAll
@@ -96,6 +102,31 @@ namespace ClientPortal.Controllers
             }
             _context.MappedMeters.Add(mappedMeter);
             await _context.SaveChangesAsync();
+
+            var makeModelId = mappedMeter.SupplyType == "Water" ? 6 : 5;
+            var userId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            //Add AMRMeter
+            var amrMeter = new AMRMeterRequest { 
+                Active = true, 
+                BuildingId = mappedMeter.BuildingId, 
+                CbSize = 60, 
+                CommsId = "0", 
+                CtSizePrim = 5, 
+                CtSizeSec = 5, 
+                Description = mappedMeter.Description, 
+                Digits = 7, 
+                Id = 0, 
+                MakeModelId = makeModelId, 
+                MeterNo = mappedMeter.MeterNo, 
+                MeterSerial = mappedMeter.MeterNo, 
+                Phase = 3, 
+                ProgFact = 1, 
+                UserId = userId };
+
+            var meterUpdateRequest = new AMRMeterUpdateRequest { UserId = userId, Meter = amrMeter };
+            await _amRMeterService.AddMeterAsync(meterUpdateRequest);
+            // End Add AMRMeter
 
             return CreatedAtAction("GetMappedMeter", new { id = mappedMeter.MappedMeterId }, mappedMeter);
         }
