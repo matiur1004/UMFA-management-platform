@@ -20,7 +20,7 @@ namespace ClientPortal.Controllers
             _amrService = amrService;
         }
 
-        [HttpPost("addmeter")]
+        [HttpPost("addMeter")]
         public IActionResult Create([FromBody] AMRMeterUpdateRequest meterReq)
         {
             try
@@ -62,7 +62,7 @@ namespace ClientPortal.Controllers
             }
         }
 
-        [HttpGet("usermeters/{userId}")]
+        [HttpGet("userMeters/{userId}")]
         public IActionResult GetMetersForUser(int userId)
         {
             try
@@ -87,7 +87,7 @@ namespace ClientPortal.Controllers
             }
         }
 
-        [HttpGet("usermeterschart/{userId}/{chartId}")]
+        [HttpGet("userMetersChart/{userId}/{chartId}")]
         public IActionResult GetMetersForUserChart(int userId, int chartId)
         {
             try
@@ -112,7 +112,7 @@ namespace ClientPortal.Controllers
             }
         }
 
-        [HttpPut("updatemeter")]
+        [HttpPut("updateMeter")]
         public IActionResult Update(AMRMeterUpdateRequest request) {
             try
             {
@@ -132,7 +132,7 @@ namespace ClientPortal.Controllers
             }
         }
 
-        [HttpGet("getmakemodels")]
+        [HttpGet("getMakeModels")]
         public IActionResult GetMakeModels()
         {
             _logger.LogInformation("Getting all active make and models");
