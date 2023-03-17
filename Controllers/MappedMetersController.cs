@@ -103,11 +103,17 @@ namespace ClientPortal.Controllers
             _context.MappedMeters.Add(mappedMeter);
             await _context.SaveChangesAsync();
 
-            var makeModelId = mappedMeter.SupplyType == "Water" ? 6 : 5;
-            var userId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
-
             //Add AMRMeter
+            var makeModelId = mappedMeter.SupplyType == "Water" ? 6 : 5;
+            var makeModels = _amRMeterService.GetMakeModels();
+                        
             var amrMeter = new AMRMeterRequest { 
+                BuildingName= mappedMeter.BuildingName,
+                Make = " ",
+                Model = " ",
+                UmfaId= mappedMeter.UserId,
+                UtilityId = 0,
+                Utility = " ",
                 Active = true, 
                 BuildingId = mappedMeter.BuildingId, 
                 CbSize = 60, 
@@ -122,9 +128,9 @@ namespace ClientPortal.Controllers
                 MeterSerial = mappedMeter.MeterNo, 
                 Phase = 3, 
                 ProgFact = 1, 
-                UserId = userId };
+                UserId = mappedMeter.UserId };
 
-            var meterUpdateRequest = new AMRMeterUpdateRequest { UserId = userId, Meter = amrMeter };
+            var meterUpdateRequest = new AMRMeterUpdateRequest { UserId = mappedMeter.UserId, Meter = amrMeter };
             await _amRMeterService.AddMeterAsync(meterUpdateRequest);
             // End Add AMRMeter
 

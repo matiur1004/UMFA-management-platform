@@ -21,5 +21,6 @@ namespace ClientPortal.Data.Entities.PortalEntities
         public string SupplyType { get; set; }
         public string SupplyTo { get; set; }
         public string LocationType { get; set;}
+        public int UserId { get; set; }
     }
 }
