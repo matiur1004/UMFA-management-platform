@@ -85,7 +85,7 @@ namespace ClientPortal.Helpers
                 var jwtToken = (JwtSecurityToken)validatedToken;
                 var userId = int.Parse(jwtToken.Claims.First(c => c.Type == "id").Value);
 
-                _logger.LogInformation("Succesfully validate token for userid: {userId}", userId);
+                _logger.LogInformation("Successfully validate token for userid: {userId}", userId);
 
                 return userId;
             }
