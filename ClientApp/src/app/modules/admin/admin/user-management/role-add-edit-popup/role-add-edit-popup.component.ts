@@ -221,9 +221,11 @@ export class RoleAddEditPopupComponent implements OnInit {
 
   selectionChanged(e: any) {
     this.selectedBuildingId = e.BuildingId;
-    let notificationSchedule = this.allUserNotificationSchedules.find(item => item.BuildingId == e.BuildingId);
+    let notificationSchedule = this.allUserNotificationSchedules.filter(item => item.BuildingId == e.BuildingId);
     if(notificationSchedule) {
-      this.initNotificationSchedule(notificationSchedule);
+      notificationSchedule.forEach(obj => {
+        this.initNotificationSchedule(obj);
+      });
     } else {
       this.onInitForm();
     }
@@ -232,6 +234,7 @@ export class RoleAddEditPopupComponent implements OnInit {
   initNotificationSchedule(formData) {    
     let sendTypeId = formData['NotificationSendTypeId'];
     let sendTypeIdx = this.senderTypes.findIndex(item => item.Id == Number(sendTypeId));
+    console.log('sendTypeIdx', sendTypeIdx, formData);
     this.form.get('Additional')['controls'][sendTypeIdx].get("DayOfWeek").patchValue({
       Monday: formData['Monday'],
       Tuesday: formData['Tuesday'],
