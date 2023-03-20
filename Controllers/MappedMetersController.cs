@@ -103,7 +103,40 @@ namespace ClientPortal.Controllers
             _context.MappedMeters.Add(mappedMeter);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMappedMeter", new { id = mappedMeter.MappedMeterId }, mappedMeter);
+            //Add AMRMeter
+            var makeModelId = mappedMeter.SupplyType == "Water" ? 6 : 5;
+            var makeModels = _amRMeterService.GetMakeModels();
+
+            var amrMeter = new AMRMeterRequest
+            {
+                BuildingName = mappedMeter.BuildingName,
+                Make = " ",
+                Model = " ",
+                UmfaId = mappedMeter.BuildingId,
+                UtilityId = 0,
+                Utility = " ",
+                Active = true,
+                BuildingId = mappedMeter.BuildingId,
+                CbSize = 60,
+                CommsId = "0",
+                CtSizePrim = 5,
+                CtSizeSec = 5,
+                Description = mappedMeter.Description,
+                Digits = 7,
+                Id = 0,
+                MakeModelId = makeModelId,
+                MeterNo = mappedMeter.MeterNo,
+                MeterSerial = mappedMeter.MeterNo,
+                Phase = 3,
+                ProgFact = 1,
+                UserId = mappedMeter.UserId
+            };
+
+            var meterUpdateRequest = new AMRMeterUpdateRequest { UserId = mappedMeter.UserId, Meter = amrMeter };
+            await _amRMeterService.AddMeterAsync(meterUpdateRequest);
+            // End Add AMRMeter
+
+            return CreatedAtAction("PostMappedMeter", new { id = mappedMeter.MappedMeterId }, mappedMeter);
         }
 
         // DELETE: MappedMeters/RemoveMappedMeter/5
