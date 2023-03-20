@@ -78,7 +78,7 @@ namespace ClientPortal.Controllers
                     }
                 }
             }
-            return NoContent();
+            return CreatedAtAction("CreateOrUpdateUserNotificationSchedule", new { id = userNotificationSchedules.Id }, userNotificationSchedules);
         }
 
         // DELETE: UserNotifications/5

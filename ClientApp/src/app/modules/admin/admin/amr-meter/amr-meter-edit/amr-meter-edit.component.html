@@ -3,9 +3,9 @@
 <form class="flex flex-col bg-card py-6 px-4 w-full" [formGroup]="form">
   <div class="row grid grid-cols-3 gap-x-4 gap-y-2 w-full">
     <div class="col-span-1">
-        <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
+        <mat-form-field class="fuse-mat-dense w-full readonly-field" [floatLabel]="'always'">
             <mat-label class="form-label">Meter No</mat-label>
-            <input matInput [formControlName]="'MeterNo'" [placeholder]="'Meter No'"/>
+            <input matInput [formControlName]="'MeterNo'" [placeholder]="'Meter No'" readonly/>
         </mat-form-field>
     </div>
     <div class="col-span-2">
@@ -15,20 +15,7 @@
       </mat-form-field>
     </div>
   </div>
-  <div class="row grid grid-cols-5 gap-x-4 gap-y-2 w-full">
-    <div class="col-span-1">
-      <mat-label class="form-label"> Building </mat-label>
-      <ng-select
-          [items]="buildings"
-          bindLabel="Name"
-          bindValue="BuildingId"
-          [placeholder]="'Select Building'"
-          [formControlName]="'UmfaId'"
-          [searchable]="false"
-          [clearable]="false"
-          >
-      </ng-select>
-    </div>
+  <div class="row grid grid-cols-4 gap-x-4 gap-y-2 w-full">
     <div class="col-span-1">
       <mat-label class="form-label"> Utility </mat-label>
       <ng-select
@@ -58,16 +45,32 @@
       </ng-select>
     </div>
     <div class="col-span-1">
-      <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
-        <mat-label class="form-label">Make</mat-label>
-        <input matInput [formControlName]="'Make'"/>
-      </mat-form-field>
+        <mat-label class="form-label"> Make </mat-label>
+        <ng-select
+            [items]="makeItems"
+            bindLabel="Name"
+            bindValue="Name"
+            [placeholder]="'Select Make'"
+            [formControlName]="'Make'"
+            [searchable]="false"
+            [clearable]="false"
+            >
+        </ng-select>
+        <!-- <mat-label class="form-label">Make</mat-label>
+        <input matInput [formControlName]="'Make'"/> -->
     </div>
     <div class="col-span-1">
-      <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
-        <mat-label class="form-label">Model</mat-label>
-        <input matInput [formControlName]="'Model'"/>
-      </mat-form-field>
+      <mat-label class="form-label"> Model </mat-label>
+      <ng-select
+          [items]="modelItems"
+          bindLabel="Name"
+          bindValue="Name"
+          [placeholder]="'Select Model'"
+          [formControlName]="'Model'"
+          [searchable]="false"
+          [clearable]="false"
+          >
+      </ng-select>
     </div>
   </div>
   <div class="row grid grid-cols-4 gap-x-4 gap-y-2 w-full">
@@ -123,9 +126,9 @@
       </mat-form-field>
     </div>
     <div class="col-span-1">
-      <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
+      <mat-form-field class="fuse-mat-dense w-full readonly-field" [floatLabel]="'always'">
         <mat-label class="form-label">Scada Serial No</mat-label>
-        <input matInput [formControlName]="'MeterSerial'" placeholder="Scada Serial Number"/>
+        <input matInput [formControlName]="'MeterSerial'" placeholder="Scada Serial Number" readonly/>
       </mat-form-field>
     </div>
   </div>

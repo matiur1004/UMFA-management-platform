@@ -18,7 +18,7 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { ReportsRoutingModule } from '../reports/reports-routing.module';
 import { SharedModule } from 'app/shared/shared.module';
 import { MatTabsModule } from '@angular/material/tabs';
-import { DxButtonModule, DxDataGridModule } from 'devextreme-angular';
+import { DxButtonModule, DxDataGridModule, DxDateBoxModule } from 'devextreme-angular';
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -61,6 +61,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatInputModule,
     NgSelectModule,
     DxDataGridModule,
+    DxDateBoxModule,
     DxButtonModule,
     SharedModule
   ],

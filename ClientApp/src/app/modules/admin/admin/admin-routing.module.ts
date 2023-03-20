@@ -34,7 +34,8 @@ const routes: Routes = [
         canActivate: [UmfaAdministratorAuthGuard]
       },
       {
-        path: 'amrMeter', component: AmrMeterComponent
+        path: 'amrMeter', component: AmrMeterComponent,
+        canActivate: [UmfaOperatorAuthGuard],
       },
       {
         path: 'amrUser/edit/:opId/:asuId', component: AmrUserEditComponent
