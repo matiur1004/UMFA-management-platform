@@ -214,6 +214,8 @@ export class AmrMeterEditComponent implements OnInit {
     this.updMeter.Meter = this.amrMeter;
     this.updMeter.Meter.Active = false;
     
+    this.updMeter.Meter.BuildingName = 'BuildingName';
+
     var dialData = DialogConstants.deleteDialog;
     this.dialogService.confirmDialog(dialData).subscribe({
       next: r => {
