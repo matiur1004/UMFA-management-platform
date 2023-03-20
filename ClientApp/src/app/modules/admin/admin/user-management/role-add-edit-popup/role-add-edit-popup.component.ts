@@ -221,20 +221,19 @@ export class RoleAddEditPopupComponent implements OnInit {
 
   selectionChanged(e: any) {
     this.selectedBuildingId = e.BuildingId;
+    this.selectedNotificationTab = 0;
+    this.onInitForm();
     let notificationSchedule = this.allUserNotificationSchedules.filter(item => item.BuildingId == e.BuildingId);
     if(notificationSchedule) {
       notificationSchedule.forEach(obj => {
         this.initNotificationSchedule(obj);
       });
-    } else {
-      this.onInitForm();
     }
   }
   
   initNotificationSchedule(formData) {    
     let sendTypeId = formData['NotificationSendTypeId'];
     let sendTypeIdx = this.senderTypes.findIndex(item => item.Id == Number(sendTypeId));
-    console.log('sendTypeIdx', sendTypeIdx, formData);
     this.form.get('Additional')['controls'][sendTypeIdx].get("DayOfWeek").patchValue({
       Monday: formData['Monday'],
       Tuesday: formData['Tuesday'],
