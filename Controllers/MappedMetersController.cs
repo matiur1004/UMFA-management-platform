@@ -2,9 +2,13 @@
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.DunamisEntities;
 using ClientPortal.Data.Entities.PortalEntities;
+using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 using ClientPortal.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using ServiceStack;
+using System.Security.Claims;
 
 namespace ClientPortal.Controllers
 {
@@ -16,12 +20,14 @@ namespace ClientPortal.Controllers
         private readonly PortalDBContext _context;
         private readonly DunamisDBContext _dbContext;
         private readonly MappedMetersService _mappedMetersService;
+        private readonly IAMRMeterService _amRMeterService;
 
-        public MappedMetersController(PortalDBContext context, DunamisDBContext dBContext, MappedMetersService mappedMetersService)
+        public MappedMetersController(PortalDBContext context, DunamisDBContext dBContext, MappedMetersService mappedMetersService, IAMRMeterService amRMeterService)
         {
             _context = context;
             _dbContext = dBContext;
             _mappedMetersService = mappedMetersService;
+            _amRMeterService = amRMeterService;
         }
 
         // GET: MappedMeters/GetAll

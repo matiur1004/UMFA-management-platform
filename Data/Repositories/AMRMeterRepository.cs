@@ -83,7 +83,7 @@ namespace ClientPortal.Data.Repositories
                     if (result == null) throw new ApplicationException($"Amr meter with id {meter.Id} not found");
                     if (result.MeterNo != meter.MeterNo) result.MeterNo = meter.MeterNo;
                     if (result.Description != meter.Description) result.Description = meter.Description;
-                    if (result.BuildingId != meter.BuildingId) result.BuildingId = meter.BuildingId;
+                    if (result.BuildingId != meter.BuildingId && meter.BuildingId != 0) result.BuildingId = meter.BuildingId;
                     if (result.MakeModelId != meter.MakeModelId) result.MakeModelId = meter.MakeModelId;
                     if (result.Phase != meter.Phase) result.Phase = meter.Phase;
                     if (result.CbSize != meter.CbSize) result.CbSize = meter.CbSize;

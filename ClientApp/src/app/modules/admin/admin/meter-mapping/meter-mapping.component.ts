@@ -263,6 +263,7 @@ export class MeterMappingComponent implements OnInit {
         let data: any = {};
         data = {
             ...data,
+            'UserId': this.usrService.userValue.Id,
             'BuildingId': formData['UmfaId'],
             'BuildingName': building.Name,
             'PartnerId': building.PartnerId,
@@ -276,7 +277,8 @@ export class MeterMappingComponent implements OnInit {
             'RegisterType': formData['RegisterType'],
             'TOUHeader': formData['TimeOfUse'],
             'SupplyType': formData['SupplyType'],
-            'Location': formData['Location']
+            'SupplyTo': formData['SupplyTo'],
+            'LocationType': formData['LocationType']
         };
         if (this.checkExistingInMappedMeters(data)) {
             const dialogRef = this._ufUtils.fuseConfirmDialog(

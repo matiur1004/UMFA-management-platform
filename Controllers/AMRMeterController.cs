@@ -20,7 +20,7 @@ namespace ClientPortal.Controllers
             _amrService = amrService;
         }
 
-        [HttpPost("addmeter")]
+        [HttpPost("addMeter")]
         public IActionResult Create([FromBody] AMRMeterUpdateRequest meterReq)
         {
             try
@@ -29,7 +29,7 @@ namespace ClientPortal.Controllers
                 var response = _amrService.AddMeterAsync(meterReq).Result;
                 if (response != null)
                 {
-                    _logger.LogInformation($"Succesfully added new meter: {response.Id}");
+                    _logger.LogInformation($"Successfully added new meter: {response.Id}");
                     return Ok(response);
                 }
                 else throw new Exception($"Failed to add meter: {meterReq.Meter.MeterNo}");
@@ -50,7 +50,7 @@ namespace ClientPortal.Controllers
                 var response = _amrService.GetMeterAsync(id).Result;
                 if (response != null)
                 {
-                    _logger.LogInformation($"Succesfully got meter: {response.Id}");
+                    _logger.LogInformation($"Successfully got meter: {response.Id}");
                     return Ok(response);
                 }
                 else throw new Exception($"Failed to get meter: {id}");
@@ -62,7 +62,7 @@ namespace ClientPortal.Controllers
             }
         }
 
-        [HttpGet("usermeters/{userId}")]
+        [HttpGet("userMeters/{userId}")]
         public IActionResult GetMetersForUser(int userId)
         {
             try
@@ -72,7 +72,7 @@ namespace ClientPortal.Controllers
                 if (response.Message.StartsWith("Error")) throw new Exception($"Failed to get meters for user: {userId}");
                 else if (response.Message == "Success")
                 {
-                    _logger.LogInformation(1, $"Succesfully got meters for user: {userId}");
+                    _logger.LogInformation(1, $"Successfully got meters for user: {userId}");
                     return Ok(response.AMRMeterResponses.ToList());
                 }
                 else
@@ -87,7 +87,7 @@ namespace ClientPortal.Controllers
             }
         }
 
-        [HttpGet("usermeterschart/{userId}/{chartId}")]
+        [HttpGet("userMetersChart/{userId}/{chartId}")]
         public IActionResult GetMetersForUserChart(int userId, int chartId)
         {
             try
@@ -97,7 +97,7 @@ namespace ClientPortal.Controllers
                 if (response.Message.StartsWith("Error")) throw new Exception($"Failed to get meters for user: {userId} and chart: {chartId}");
                 else if (response.Message == "Success")
                 {
-                    _logger.LogInformation(1, $"Succesfully got meters for user: {userId} and chart: {chartId}");
+                    _logger.LogInformation(1, $"Successfully got meters for user: {userId} and chart: {chartId}");
                     return Ok(response.AMRMeterResponses.ToList());
                 }
                 else
@@ -112,7 +112,7 @@ namespace ClientPortal.Controllers
             }
         }
 
-        [HttpPut("updatemeter")]
+        [HttpPut("updateMeter")]
         public IActionResult Update(AMRMeterUpdateRequest request) {
             try
             {
@@ -120,7 +120,7 @@ namespace ClientPortal.Controllers
                 var response = _amrService.EditMeterAsync(request).Result;
                 if (response != null)
                 {
-                    _logger.LogInformation($"Succesfully updated meter: {response.Id}");
+                    _logger.LogInformation($"Successfully updated meter: {response.Id}");
                     return Ok(response);
                 }
                 else throw new Exception($"Failed to update meter: {request.Meter.MeterNo}");
@@ -132,7 +132,7 @@ namespace ClientPortal.Controllers
             }
         }
 
-        [HttpGet("getmakemodels")]
+        [HttpGet("getMakeModels")]
         public IActionResult GetMakeModels()
         {
             _logger.LogInformation("Getting all active make and models");
@@ -141,7 +141,7 @@ namespace ClientPortal.Controllers
                 var resp = _amrService.GetMakeModels().Result;
                 if (resp != null)
                 {
-                    _logger.LogInformation("Succesfully got makes and models");
+                    _logger.LogInformation("Successfully got makes and models");
                     return Ok(resp);
                 }
                 else throw new Exception("Failed to get makes and models");
