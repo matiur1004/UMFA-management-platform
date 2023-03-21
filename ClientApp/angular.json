@@ -38,7 +38,13 @@
                             "flat",
                             "moment",
                             "quill",
-                            "virtual-dom"
+                            "virtual-dom",
+                            "ace-builds",
+                            "jquery",
+                            "jszip",
+                            "devexpress-diagram",
+                            "devexpress-gantt",
+                            "devextreme-quill"
                         ],
                         "assets": [
                             "src/favicon-16x16.png",
