@@ -1,9 +1,9 @@
 {
-    "name": "fuse-angular",
+    "name": "umfa-client-portal",
     "version": "15.1.0",
-    "description": "Fuse - Angular Admin Template and Starter Project",
-    "author": "https://themeforest.net/user/srcn",
-    "license": "https://themeforest.net/licenses/standard",
+    "description": "UMFA Client Portal",
+    "author": "UMFA Dev team",
+    "license": "Yes it is",
     "private": true,
     "scripts": {
         "ng": "ng",

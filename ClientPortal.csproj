@@ -85,6 +85,6 @@
   </Target>
   
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy /s /y /C &quot;$(ProjectDir)ClientApp\dist\fuse&quot; &quot;$(ProjectDir)wwwroot\&quot;" />
+    <Exec Command="xcopy /s /y /C /I &quot;$(ProjectDir)ClientApp\dist&quot; &quot;$(ProjectDir)wwwroot\&quot;" />
   </Target>
 </Project>

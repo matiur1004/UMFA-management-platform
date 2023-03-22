@@ -221,11 +221,13 @@ export class RoleAddEditPopupComponent implements OnInit {
 
   selectionChanged(e: any) {
     this.selectedBuildingId = e.BuildingId;
-    let notificationSchedule = this.allUserNotificationSchedules.find(item => item.BuildingId == e.BuildingId);
+    this.selectedNotificationTab = 0;
+    this.onInitForm();
+    let notificationSchedule = this.allUserNotificationSchedules.filter(item => item.BuildingId == e.BuildingId);
     if(notificationSchedule) {
-      this.initNotificationSchedule(notificationSchedule);
-    } else {
-      this.onInitForm();
+      notificationSchedule.forEach(obj => {
+        this.initNotificationSchedule(obj);
+      });
     }
   }
   

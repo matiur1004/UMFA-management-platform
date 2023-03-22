@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NotificationType } from '@core/models/notification.model';
 import { NotificationService } from '@shared/services';
+import { environment } from 'environments/environment';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 
@@ -17,6 +18,11 @@ export class AppComponent implements OnInit
      */
     constructor(private toastr: ToastrService, private notificationService: NotificationService,)
     {
+      if (environment.production) {
+        console.log('Running in production environment');
+      } else {
+        console.log('Running in development environment');
+      }
     }
 
     ngOnInit(): void {
