@@ -94,8 +94,11 @@ namespace ClientPortal.Data.Repositories
         {
             try
             {
-                Building building = new Building() { UmfaId = umfaId, Name = name, PartnerId = partnerId, Partner = partner };
-                building.Users.Add(user);
+                Building building = new Building() { UmfaId = umfaId, Name = name, PartnerId = partnerId, Partner = partner, Users = new List<User>() };
+                
+                User thisUser = user;
+                building.Users.Add(thisUser);
+
                 await _dbContext.AddAsync(building);
                 if (SaveLocalAsync().Result)
                 {

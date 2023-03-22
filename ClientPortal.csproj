@@ -17,6 +17,8 @@
     <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="DevExpress.AspNetCore.Core" Version="22.1.6" />
     <PackageReference Include="DevExpress.AspNetCore.Reporting" Version="22.1.6" />
+    <PackageReference Include="DevExtreme.AspNet.Core" Version="22.1.6" />
+    <PackageReference Include="DevExtreme.AspNet.Data" Version="2.8.6" />
     <PackageReference Include="MailKit" Version="3.6.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="6.0.14" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.14" />
