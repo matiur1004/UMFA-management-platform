@@ -3,12 +3,7 @@ using ClientPortal.Data;
 using ClientPortal.Data.Entities.DunamisEntities;
 using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Models.RequestModels;
-using ClientPortal.Models.ResponseModels;
 using ClientPortal.Services;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using ServiceStack;
-using System.Security.Claims;
 
 namespace ClientPortal.Controllers
 {
@@ -105,45 +100,54 @@ namespace ClientPortal.Controllers
             _context.MappedMeters.Add(mappedMeter);
             await _context.SaveChangesAsync();
             _logger?.LogInformation($"Added MappedMeter {mappedMeter.MappedMeterId}");
+
             //Add AMRMeter
-            try
+            var aMrMeterNo = mappedMeter.MeterNo;
+            var mter = await _context.AMRMeters.Where(b => b.MeterNo == aMrMeterNo).FirstOrDefaultAsync();
+            if (mter == null)
             {
-                var makeModelId = mappedMeter.SupplyType == "Water" ? 6 : 5;
-
-                var amrMeter = new AMRMeterRequest
+                try
                 {
-                    BuildingName = mappedMeter.BuildingName,
-                    Make = " ",
-                    Model = " ",
-                    UmfaId = mappedMeter.BuildingId,
-                    UtilityId = 0,
-                    Utility = " ",
-                    Active = true,
-                    BuildingId = mappedMeter.BuildingId,
-                    CbSize = 60,
-                    CommsId = "0",
-                    CtSizePrim = 5,
-                    CtSizeSec = 5,
-                    Description = mappedMeter.Description,
-                    Digits = 7,
-                    Id = 0,
-                    MakeModelId = makeModelId,
-                    MeterNo = mappedMeter.MeterNo,
-                    MeterSerial = mappedMeter.MeterNo,
-                    Phase = 3,
-                    ProgFact = 1,
-                    UserId = mappedMeter.UserId
-                };
+                    var makeModelId = mappedMeter.SupplyType == "Water" ? 6 : 5;
 
-                var meterUpdateRequest = new AMRMeterUpdateRequest { UserId = mappedMeter.UserId, Meter = amrMeter };
-                await _amRMeterService.AddMeterAsync(meterUpdateRequest);
-                _logger?.LogInformation($"Added AMRMeter {amrMeter.Id}");
+                    var amrMeter = new AMRMeterRequest
+                    {
+                        BuildingName = mappedMeter.BuildingName,
+                        Make = " ",
+                        Model = " ",
+                        UmfaId = mappedMeter.BuildingId,
+                        UtilityId = 0,
+                        Utility = " ",
+                        Active = true,
+                        BuildingId = mappedMeter.BuildingId,
+                        CbSize = 60,
+                        CommsId = "0",
+                        CtSizePrim = 5,
+                        CtSizeSec = 5,
+                        Description = mappedMeter.Description,
+                        Digits = 7,
+                        Id = 0,
+                        MakeModelId = makeModelId,
+                        MeterNo = mappedMeter.MeterNo,
+                        MeterSerial = mappedMeter.MeterNo,
+                        Phase = 3,
+                        ProgFact = 1,
+                        UserId = mappedMeter.UserId
+                    };
+
+                    var meterUpdateRequest = new AMRMeterUpdateRequest { UserId = mappedMeter.UserId, Meter = amrMeter };
+                    await _amRMeterService.AddMeterAsync(meterUpdateRequest);
+                    _logger?.LogInformation($"Added AMRMeter {amrMeter.Id}");
+                }
+                catch (Exception ex)
+                {
+                    _logger?.LogError($"ERROR: Could not add AMRMeter {ex.Message}");
+                }
             }
-            catch (Exception ex)
+            else
             {
-                _logger?.LogError($"ERROR: Could not add AMRMeter {ex.Message}");
+                _logger?.LogError($"ERROR: Could not add AMRMeter {aMrMeterNo} as it already exists!");
             }
-            
             // End Add AMRMeter
 
             return CreatedAtAction("PostMappedMeter", new { id = mappedMeter.MappedMeterId }, mappedMeter);
