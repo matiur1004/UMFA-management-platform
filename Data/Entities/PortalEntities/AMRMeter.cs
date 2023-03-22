@@ -46,7 +46,7 @@ namespace ClientPortal.Data.Entities.PortalEntities
             CommsId = meterReq.CommsId;
             MeterSerial = meterReq.CommsId != null && meterReq.MeterSerial == null ? meterReq.MeterNo : meterReq.MeterSerial;
             UserId = user.Id;
-            BuildingId = building.Id;
+            BuildingId = building.UmfaId;
         }
     }
 }

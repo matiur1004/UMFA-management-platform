@@ -94,16 +94,27 @@ namespace ClientPortal.Data.Repositories
         {
             try
             {
-                Building building = new Building() { UmfaId = umfaId, Name = name, PartnerId = partnerId, Partner = partner, Users = new List<User>() };
-                
+                Building building = _dbContext.Buildings.Where(b => b.UmfaId == umfaId)
+                    .Include(b => b.Users)
+                    .FirstOrDefault();
                 User thisUser = user;
-                building.Users.Add(thisUser);
 
-                await _dbContext.AddAsync(building);
+                if (building == null)
+                {
+                    building = new Building() { UmfaId = umfaId, Name = name, PartnerId = partnerId, Partner = partner, Users = new List<User>() };
+                    building.Users.Add(thisUser);
+                    await _dbContext.AddAsync(building);
+                }
+                else
+                {
+                    building.Users.Add(thisUser);
+                }
+
                 if (SaveLocalAsync().Result)
                 {
                     _logger.LogInformation("Successfully saved building {Building}", name);
                 }
+
                 return building;
             }
             catch (Exception ex)

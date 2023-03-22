@@ -129,7 +129,7 @@ namespace ClientPortal.Controllers
                         Id = 0,
                         MakeModelId = makeModelId,
                         MeterNo = mappedMeter.MeterNo,
-                        MeterSerial = mappedMeter.MeterNo,
+                        MeterSerial = mappedMeter.ScadaSerial,
                         Phase = 3,
                         ProgFact = 1,
                         UserId = mappedMeter.UserId
