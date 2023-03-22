@@ -234,3 +234,4 @@ _Pvt_Extensions
 .fake/
 appsettings.json
 /wwwroot
+/appsettings.Development.json
