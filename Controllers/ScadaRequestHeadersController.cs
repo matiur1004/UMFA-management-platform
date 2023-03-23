@@ -165,6 +165,46 @@ namespace ClientPortal.Controllers
             }
         }
 
+        // GET: getScadaRequestHeaderStatus/5
+        [HttpGet("getScadaRequestHeaderStatus/{id}")]
+        public async Task<ActionResult<int>> GetScadaRequestHeaderStatus(int id)
+        {
+            if (_context.ScadaRequestHeaders == null)
+            {
+                _logger.LogError($"ScadaRequestHeaders Entries Not Found in Table!");
+                return NotFound();
+            }
+            var scadaRequestHeader = await _context.ScadaRequestHeaders.FindAsync(id);
+
+            if (scadaRequestHeader == null)
+            {
+                _logger.LogError($"ScadaRequestHeader with Id: {id} Not Found!");
+                return NotFound();
+            }
+            _logger.LogInformation($"ScadaRequestHeader with Id: {id} Found and Returned!");
+            return scadaRequestHeader.Status;
+        }
+
+        // GET: getScadaRequestHeaderJobType/5
+        [HttpGet("getScadaRequestHeaderJobType/{id}")]
+        public async Task<ActionResult<int>> GetScadaRequestHeaderJobType(int id)
+        {
+            if (_context.ScadaRequestHeaders == null)
+            {
+                _logger.LogError($"ScadaRequestHeaders Entries Not Found in Table!");
+                return NotFound();
+            }
+            var scadaRequestHeader = await _context.ScadaRequestHeaders.FindAsync(id);
+
+            if (scadaRequestHeader == null)
+            {
+                _logger.LogError($"ScadaRequestHeader with Id: {id} Not Found!");
+                return NotFound();
+            }
+            _logger.LogInformation($"ScadaRequestHeader with Id: {id} Found and Returned!");
+            return scadaRequestHeader.JobType;
+        }
+
         // DELETE: deleteScadaRequestHeader/5
         [HttpDelete("deleteScadaRequestHeader/{id}")]
         public async Task<IActionResult> DeleteScadaRequestHeader(int id)
