@@ -140,6 +140,32 @@ namespace ClientPortal.Controllers
             }
         }
 
+        //POST: updateRequestDetailStatus
+        [HttpPost("updateRequestDetailStatus")]
+        public IActionResult UpdateRequestDetailStatus([FromBody] ScadaRequestDetail scadaRequestDetail)
+        {
+            try
+            {
+                _logger.LogInformation($"update ScadaRequestDetail with Id: {scadaRequestDetail.Id}");
+                var response = _context.Database.ExecuteSqlRaw($"UPDATE [dbo].[ScadaRequestDetails] SET " +
+                    $"[Status] = {0}, " +
+                    $" WHERE [Id] = {scadaRequestDetail.Id}");
+
+                if (response != 0)
+                {
+                    _logger.LogInformation($"Successfully updated ScadaRequestDetail: {scadaRequestDetail.Id}");
+                    return Ok(response);
+                }
+                else throw new Exception($"Failed to ScadaRequestDetail With Id: {scadaRequestDetail.Id}");
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError($"Failed to update ScadaRequestDetail: {ex.Message}");
+                return BadRequest(new ApplicationException($"Failed to update ScadaRequestDetail: {ex.Message}"));
+            }
+        }
+
+
         // DELETE: ScadaRequestDetails/5
         [HttpDelete("deleteScadaRequestDetail/{id}")]
         public async Task<IActionResult> DeleteScadaRequestDetail(int id)
@@ -169,6 +195,8 @@ namespace ClientPortal.Controllers
             
             return NoContent();
         }
+
+
 
         private bool ScadaRequestDetailExists(int id)
         {

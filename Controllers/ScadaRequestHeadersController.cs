@@ -1,6 +1,7 @@
 ﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.PortalEntities;
+using ClientPortal.Models.ResponseModels;
 
 namespace ClientPortal.Controllers
 {
@@ -136,6 +137,31 @@ namespace ClientPortal.Controllers
                     }
                 }
                 return NoContent();
+            }
+        }
+
+        //POST: updateRequestHeaderStatus
+        [HttpPost("updateRequestHeaderStatus")]
+        public IActionResult UpdateRequestHeaderStatus([FromBody] ScadaRequestHeader scadaRequestHeader)
+        {
+            try
+            {
+                _logger.LogInformation($"update ScadaRequestHeader with Id: {scadaRequestHeader.Id}");
+                var response = _context.Database.ExecuteSqlRaw($"UPDATE [dbo].[ScadaRequestHeaders] SET " +
+                    $"[Status] = {0}, " +
+                    $" WHERE [Id] = {scadaRequestHeader.Id}");
+
+                if (response != 0)
+                {
+                    _logger.LogInformation($"Successfully updated ScadaRequestHeader: {scadaRequestHeader.Id}");
+                    return Ok(response);
+                }
+                else throw new Exception($"Failed to ScadaRequestHeader With Id: {scadaRequestHeader.Id}");
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError($"Failed to update ScadaRequestHeader: {ex.Message}");
+                return BadRequest(new ApplicationException($"Failed to update ScadaRequestHeader: {ex.Message}"));
             }
         }
 
