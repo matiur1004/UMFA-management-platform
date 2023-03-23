@@ -181,7 +181,7 @@ namespace ClientPortal.Controllers
                 _logger.LogError($"ScadaRequestHeader with Id: {id} Not Found!");
                 return NotFound();
             }
-            _logger.LogInformation($"ScadaRequestHeader with Id: {id} Found and Returned!");
+            _logger.LogInformation($"ScadaRequestHeader with Id: {id} Status: {scadaRequestHeader.Status} Found and Returned!");
             return scadaRequestHeader.Status;
         }
 
@@ -201,7 +201,7 @@ namespace ClientPortal.Controllers
                 _logger.LogError($"ScadaRequestHeader with Id: {id} Not Found!");
                 return NotFound();
             }
-            _logger.LogInformation($"ScadaRequestHeader with Id: {id} Found and Returned!");
+            _logger.LogInformation($"ScadaRequestHeader with Id: {id} JobType: {scadaRequestHeader.JobType} Found and Returned!");
             return scadaRequestHeader.JobType;
         }
 

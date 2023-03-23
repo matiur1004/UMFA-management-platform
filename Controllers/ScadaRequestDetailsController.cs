@@ -181,7 +181,7 @@ namespace ClientPortal.Controllers
                 _logger.LogError($"ScadaRequestDetail with Id: {id} Not Found!");
                 return NotFound();
             }
-            _logger.LogInformation($"ScadaRequestDetail with Id: {id} Found and Returned!");
+            _logger.LogInformation($"ScadaRequestDetail with Id: {id} Status: {scadaRequestDetail.Status} Found and Returned!");
             return scadaRequestDetail.Status;
         }
 
