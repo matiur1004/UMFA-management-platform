@@ -10,19 +10,21 @@ using ClientPortal.Data.Entities.PortalEntities;
 
 namespace ClientPortal.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ScadaRequestDetailsController : ControllerBase
     {
         private readonly PortalDBContext _context;
+        private readonly ILogger<ScadaRequestHeadersController> _logger;
 
-        public ScadaRequestDetailsController(PortalDBContext context)
+        public ScadaRequestDetailsController(PortalDBContext context, ILogger<ScadaRequestHeadersController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
-        // GET: api/ScadaRequestDetails
-        [HttpGet]
+        // GET: ScadaRequestDetails
+        [HttpGet("getScadaRequestDetails")]
         public async Task<ActionResult<IEnumerable<ScadaRequestDetail>>> GetScadaRequestDetails()
         {
           if (_context.ScadaRequestDetails == null)
@@ -32,7 +34,7 @@ namespace ClientPortal.Controllers
             return await _context.ScadaRequestDetails.ToListAsync();
         }
 
-        // GET: api/ScadaRequestDetails/5
+        // GET: ScadaRequestDetails/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ScadaRequestDetail>> GetScadaRequestDetail(int id)
         {
@@ -50,7 +52,7 @@ namespace ClientPortal.Controllers
             return scadaRequestDetail;
         }
 
-        // PUT: api/ScadaRequestDetails/5
+        // PUT: ScadaRequestDetails/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutScadaRequestDetail(int id, ScadaRequestDetail scadaRequestDetail)
@@ -81,7 +83,7 @@ namespace ClientPortal.Controllers
             return NoContent();
         }
 
-        // POST: api/ScadaRequestDetails
+        // POST: ScadaRequestDetails
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<ScadaRequestDetail>> PostScadaRequestDetail(ScadaRequestDetail scadaRequestDetail)
@@ -96,7 +98,7 @@ namespace ClientPortal.Controllers
             return CreatedAtAction("GetScadaRequestDetail", new { id = scadaRequestDetail.Id }, scadaRequestDetail);
         }
 
-        // DELETE: api/ScadaRequestDetails/5
+        // DELETE: ScadaRequestDetails/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteScadaRequestDetail(int id)
         {
