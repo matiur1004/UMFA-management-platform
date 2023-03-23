@@ -165,6 +165,25 @@ namespace ClientPortal.Controllers
             }
         }
 
+        // GET: getScadaRequestDetailStatus/5
+        [HttpGet("getScadaRequestDetailStatus/{id}")]
+        public async Task<ActionResult<int>> GetScadaRequestDetailStatus(int id)
+        {
+            if (_context.ScadaRequestDetails == null)
+            {
+                _logger.LogError($"ScadaRequestDetails Entries Not Found in Table!");
+                return NotFound();
+            }
+            var scadaRequestDetail = await _context.ScadaRequestDetails.FindAsync(id);
+
+            if (scadaRequestDetail == null)
+            {
+                _logger.LogError($"ScadaRequestDetail with Id: {id} Not Found!");
+                return NotFound();
+            }
+            _logger.LogInformation($"ScadaRequestDetail with Id: {id} Found and Returned!");
+            return scadaRequestDetail.Status;
+        }
 
         // DELETE: ScadaRequestDetails/5
         [HttpDelete("deleteScadaRequestDetail/{id}")]
