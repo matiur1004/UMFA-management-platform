@@ -98,6 +98,47 @@ namespace ClientPortal.Controllers
             return CreatedAtAction("GetScadaRequestHeader", new { id = scadaRequestHeader.Id }, scadaRequestHeader);
         }
 
+        //POST: createOrUpdateRequestHeader
+        [HttpPost("createOrUpdateScadaRequestHeader")]
+        public async Task<ActionResult<ScadaRequestHeader>> CreateOrUpdateScadaRequestHeader(ScadaRequestHeader scadaRequestHeader)
+        {
+            if (scadaRequestHeader.Id == 0) //Create
+            {
+                if (_context.ScadaRequestHeaders == null)
+                {
+                    _logger.LogError($"ScadaRequestHeaders Table is Not Found");
+                    return Problem("Entity set 'PortalDBContext.ScadaRequestHeaders' is null.");
+                }
+                _context.ScadaRequestHeaders.Add(scadaRequestHeader);
+                await _context.SaveChangesAsync();
+                _logger.LogInformation($"ScadaRequestHeader Saved Successfully!");
+                return CreatedAtAction("GetScadaRequestHeader", new { id = scadaRequestHeader.Id }, scadaRequestHeader);
+            }
+            else                            //Update 
+            {
+                _context.Entry(scadaRequestHeader).State = EntityState.Modified;
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ScadaRequestHeaderExists(scadaRequestHeader.Id))
+                    {
+                        _logger.LogError($"ScadaRequestHeader with Id: {scadaRequestHeader.Id} Not Found!");
+                        return NotFound();
+                    }
+                    else
+                    {
+                        _logger.LogError($"ScadaRequestHeader with Id: {scadaRequestHeader.Id} Could Not Be Updated!");
+                        return Problem($"ScadaRequestHeader with Id: {scadaRequestHeader.Id} Could Not Be Updated!");
+                    }
+                }
+                return NoContent();
+            }
+        }
+
         // DELETE: deleteScadaRequestHeader/5
         [HttpDelete("deleteScadaRequestHeader/{id}")]
         public async Task<IActionResult> DeleteScadaRequestHeader(int id)

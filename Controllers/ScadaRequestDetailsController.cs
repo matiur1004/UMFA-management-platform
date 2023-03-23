@@ -10,9 +10,9 @@ namespace ClientPortal.Controllers
     public class ScadaRequestDetailsController : ControllerBase
     {
         private readonly PortalDBContext _context;
-        private readonly ILogger<ScadaRequestHeadersController> _logger;
+        private readonly ILogger<ScadaRequestDetailsController> _logger;
 
-        public ScadaRequestDetailsController(PortalDBContext context, ILogger<ScadaRequestHeadersController> logger)
+        public ScadaRequestDetailsController(PortalDBContext context, ILogger<ScadaRequestDetailsController> logger)
         {
             _context = context;
             _logger = logger;
@@ -97,6 +97,47 @@ namespace ClientPortal.Controllers
             await _context.SaveChangesAsync();
             _logger.LogInformation($"ScadaRequestDetail Saved Successfully!");
             return CreatedAtAction("GetScadaRequestDetail", new { id = scadaRequestDetail.Id }, scadaRequestDetail);
+        }
+
+        //POST: createOrUpdateRequestDetail
+        [HttpPost("createOrUpdateScadaRequestDetail")]
+        public async Task<ActionResult<ScadaRequestDetail>> CreateOrUpdateScadaRequestDetail(ScadaRequestDetail scadaRequestDetail)
+        {
+            if (scadaRequestDetail.Id == 0) //Create
+            {
+                if (_context.ScadaRequestDetails == null)
+                {
+                    _logger.LogError($"ScadaRequestDetails Table is Not Found");
+                    return Problem("Entity set 'PortalDBContext.ScadaRequestDetails' is null.");
+                }
+                _context.ScadaRequestDetails.Add(scadaRequestDetail);
+                await _context.SaveChangesAsync();
+                _logger.LogInformation($"ScadaRequestDetail Saved Successfully!");
+                return CreatedAtAction("GetScadaRequestDetail", new { id = scadaRequestDetail.Id }, scadaRequestDetail);
+            }
+            else                            //Update 
+            {
+                _context.Entry(scadaRequestDetail).State = EntityState.Modified;
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ScadaRequestDetailExists(scadaRequestDetail.Id))
+                    {
+                        _logger.LogError($"ScadaRequestDetail with Id: {scadaRequestDetail.Id} Not Found!");
+                        return NotFound();
+                    }
+                    else
+                    {
+                        _logger.LogError($"ScadaRequestDetail with Id: {scadaRequestDetail.Id} Could Not Be Updated!");
+                        return Problem($"ScadaRequestDetail with Id: {scadaRequestDetail.Id} Could Not Be Updated!");
+                    }
+                }
+                return NoContent();
+            }
         }
 
         // DELETE: ScadaRequestDetails/5
