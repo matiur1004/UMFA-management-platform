@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.PortalEntities;
 
 namespace ClientPortal.Controllers
 {
+    [Authorize]
     [Route("[controller]")]
     [ApiController]
     public class ScadaRequestDetailsController : ControllerBase
@@ -29,36 +24,40 @@ namespace ClientPortal.Controllers
         {
           if (_context.ScadaRequestDetails == null)
           {
-              return NotFound();
+                _logger.LogError("ScadaRequestDetails Not Found!");
+                return NotFound();
           }
+            _logger.LogInformation("ScadaRequestDetails Found!");
             return await _context.ScadaRequestDetails.ToListAsync();
         }
 
-        // GET: ScadaRequestDetails/5
-        [HttpGet("{id}")]
+        // GET: getScadaRequestDetail/5
+        [HttpGet("getScadaRequestDetail/{id}")]
         public async Task<ActionResult<ScadaRequestDetail>> GetScadaRequestDetail(int id)
         {
           if (_context.ScadaRequestDetails == null)
           {
-              return NotFound();
+                _logger.LogError($"ScadaRequestDetails Entries Not Found in Table!");
+                return NotFound();
           }
             var scadaRequestDetail = await _context.ScadaRequestDetails.FindAsync(id);
 
             if (scadaRequestDetail == null)
             {
+                _logger.LogError($"ScadaRequestDetails with Id: {id} Not Found!");
                 return NotFound();
             }
-
+            _logger.LogInformation($"ScadaRequestDetails with Id: {id} Found and Returned!");
             return scadaRequestDetail;
         }
 
         // PUT: ScadaRequestDetails/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("updateScadaRequestDetail/{id}")]
         public async Task<IActionResult> PutScadaRequestDetail(int id, ScadaRequestDetail scadaRequestDetail)
         {
             if (id != scadaRequestDetail.Id)
             {
+                _logger.LogError($"ScadaRequestDetail Id: {id} Not Same as Data! Cannot Update!");
                 return BadRequest();
             }
 
@@ -72,11 +71,13 @@ namespace ClientPortal.Controllers
             {
                 if (!ScadaRequestDetailExists(id))
                 {
+                    _logger.LogError($"ScadaRequestDetail with Id: {id} Not Found!");
                     return NotFound();
                 }
                 else
                 {
-                    throw;
+                    _logger.LogError($"ScadaRequestDetail with Id: {id} Could Not Be Updated!");
+                    return Problem($"ScadaRequestDetail with Id: {id} Could Not Be Updated!");
                 }
             }
 
@@ -84,37 +85,47 @@ namespace ClientPortal.Controllers
         }
 
         // POST: ScadaRequestDetails
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost("addScadaRequestDetail")]
         public async Task<ActionResult<ScadaRequestDetail>> PostScadaRequestDetail(ScadaRequestDetail scadaRequestDetail)
         {
           if (_context.ScadaRequestDetails == null)
           {
-              return Problem("Entity set 'PortalDBContext.ScadaRequestDetails'  is null.");
+                _logger.LogError($"ScadaRequestDetails Table is Not Found");
+                return Problem("Entity set 'PortalDBContext.ScadaRequestDetails'  is null.");
           }
             _context.ScadaRequestDetails.Add(scadaRequestDetail);
             await _context.SaveChangesAsync();
-
+            _logger.LogInformation($"ScadaRequestDetail Saved Successfully!");
             return CreatedAtAction("GetScadaRequestDetail", new { id = scadaRequestDetail.Id }, scadaRequestDetail);
         }
 
         // DELETE: ScadaRequestDetails/5
-        [HttpDelete("{id}")]
+        [HttpDelete("deleteScadaRequestDetail/{id}")]
         public async Task<IActionResult> DeleteScadaRequestDetail(int id)
         {
             if (_context.ScadaRequestDetails == null)
             {
+                _logger.LogError($"ScadaRequestDetail with Id: {id} Not Found!");
                 return NotFound();
             }
             var scadaRequestDetail = await _context.ScadaRequestDetails.FindAsync(id);
             if (scadaRequestDetail == null)
             {
+                _logger.LogError($"ScadaRequestDetail with Id: {id} Not Found!");
                 return NotFound();
             }
-
-            _context.ScadaRequestDetails.Remove(scadaRequestDetail);
-            await _context.SaveChangesAsync();
-
+            try
+            {
+                _context.ScadaRequestDetails.Remove(scadaRequestDetail);
+                await _context.SaveChangesAsync();
+                _logger.LogInformation($"ScadaRequestDetail with ID: {id} Deleted Successfully!");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation($"Error Deleting ScadaRequestDetail with ID: {id}!");
+                return Problem($"Error Deleting Entry ScadaRequestDetail With Id: {id} - Detail: {ex.Message}");
+            }
+            
             return NoContent();
         }
 

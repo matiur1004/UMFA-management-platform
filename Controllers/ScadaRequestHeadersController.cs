@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.PortalEntities;
 
 namespace ClientPortal.Controllers
 {
+    [Authorize]
     [Route("[controller]")]
     [ApiController]
     public class ScadaRequestHeadersController : ControllerBase
@@ -82,7 +77,7 @@ namespace ClientPortal.Controllers
                 else
                 {
                     _logger.LogError($"ScadaRequestHeader with Id: {id} Could Not Be Updated!");
-                    throw;
+                    return Problem($"ScadaRequestHeader with Id: {id} Could Not Be Updated!");
                 }
             }
             return NoContent();
@@ -122,12 +117,12 @@ namespace ClientPortal.Controllers
             {
                 _context.ScadaRequestHeaders.Remove(scadaRequestHeader);
                 await _context.SaveChangesAsync();
-                _logger.LogInformation($"ScadaRequestHeader with ID: {id} Deleted SUccessfully!");
+                _logger.LogInformation($"ScadaRequestHeader with ID: {id} Deleted Successfully!");
             }
             catch (Exception ex)
             {
                 _logger.LogInformation($"Error Deleting ScadaRequestHeader with ID: {id}!");
-                return Problem($"Error Deleting Entry With Id: {id} - Detail: {ex.Message}");
+                return Problem($"Error Deleting Entry ScadaRequestHeader With Id: {id} - Detail: {ex.Message}");
             }
             return NoContent();
         }
