@@ -20,6 +20,7 @@ export class AdminComponent implements OnInit {
     if(location.pathname.includes('user-management')) this.selectedTab = 1;
     if(location.pathname.includes('meterMapping')) this.selectedTab = 2;
     if(location.pathname.includes('amrMeter')) this.selectedTab = 3;
+    if(location.pathname.includes('amrSchedule')) this.selectedTab = 4;
 
     this.roleId = this._userService.userValue.RoleId;
   }
@@ -36,6 +37,9 @@ export class AdminComponent implements OnInit {
     }
     if(event.index == 3) {
       this.router.navigate(['/admin/amrMeter']);
+    }
+    if(event.index == 4) {
+      this.router.navigate(['/admin/amrSchedule']);
     }
   }
 }

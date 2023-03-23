@@ -29,6 +29,8 @@ import { MeterMappingComponent } from './meter-mapping/meter-mapping.component';
 import { UserManagementComponent } from './user-management/user-management.component';
 import { RoleAddEditPopupComponent } from './user-management/role-add-edit-popup/role-add-edit-popup.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { AmrScheduleComponent } from './amr-schedule/amr-schedule.component';
+import { AmrScheduleEditComponent } from './amr-schedule/amr-schedule-edit/amr-schedule-edit.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     PasswordMatchDirective,
     MeterMappingComponent,
     UserManagementComponent,
-    RoleAddEditPopupComponent
+    RoleAddEditPopupComponent,
+    AmrScheduleComponent,
+    AmrScheduleEditComponent
   ],
   imports: [
     FormsModule,

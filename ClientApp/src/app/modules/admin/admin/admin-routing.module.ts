@@ -15,6 +15,8 @@ import { UserManagementComponent } from './user-management/user-management.compo
 import { UserManagementResolver } from './user-management/user-management.resolver';
 import { UmfaAdministratorAuthGuard } from '@shared/infrastructures/umfa-administrator.auth.guard';
 import { UmfaOperatorAuthGuard } from '@shared/infrastructures/umfa-operator.auth.guard';
+import { AmrScheduleComponent } from './amr-schedule/amr-schedule.component';
+import { AmrScheduleEditComponent } from './amr-schedule/amr-schedule-edit/amr-schedule-edit.component';
 const routes: Routes = [
   {
     path: '', component: AdminComponent, //redirectTo: 'amrUser', pathMatch: 'full'
@@ -59,7 +61,14 @@ const routes: Routes = [
         resolve  : {
           data: UserManagementResolver
         } 
-      }
+      },
+      {
+        path: 'amrSchedule', component: AmrScheduleComponent,
+        canActivate: [UmfaOperatorAuthGuard],
+      },
+      {
+        path: 'amrSchedule/:id', component: AmrScheduleEditComponent
+      },
     ]
   }
 ];

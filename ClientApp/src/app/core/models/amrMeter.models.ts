@@ -42,3 +42,7 @@ export interface IAmrMeter {
     MakeModels: IMeterMakeModel[];
   }
   
+  export interface IAmrSchedule {
+    Description: string;
+    JobType: number;
+  }
