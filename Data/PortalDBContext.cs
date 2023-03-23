@@ -26,6 +26,8 @@ namespace ClientPortal.Data
         public DbSet<AMRWaterProfileHeader> AmrWaterProfiles { get; set; }
         [NotMapped]
         public DbSet<WaterProfile> WaterProfiles { get; set; }
+        [NotMapped]
+        public DbSet<AMRMetersNotScheduled> aMRMetersNotScheduled { get; set; }
 
         //Mapped entities
         public DbSet<User> Users { get; set; }
@@ -72,6 +74,7 @@ namespace ClientPortal.Data
             modelBuilder.Entity<DemandProfile>().ToTable("DemandProfiles", t => t.ExcludeFromMigrations());
             modelBuilder.Entity<AMRWaterProfileHeader>().ToTable("AMRWaterProfileHeaders", t => t.ExcludeFromMigrations());
             modelBuilder.Entity<WaterProfile>().ToTable("WaterProfiles", t => t.ExcludeFromMigrations());
+            modelBuilder.Entity<AMRMetersNotScheduled>().HasNoKey().ToTable("AMRMetersNotScheduled", t => t.ExcludeFromMigrations());
 
             //mapped entities
             modelBuilder.Entity<RefreshToken>().HasOne(r => r.User).WithMany(r => r.RefreshTokens).OnDelete(DeleteBehavior.Cascade);
