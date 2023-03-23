@@ -10,7 +10,7 @@ using ClientPortal.Data.Entities.PortalEntities;
 
 namespace ClientPortal.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ScadaRequestHeadersController : ControllerBase
     {
@@ -21,8 +21,8 @@ namespace ClientPortal.Controllers
             _context = context;
         }
 
-        // GET: api/ScadaRequestHeaders
-        [HttpGet]
+        // GET: getScadaRequestHeaders
+        [HttpGet("getScadaRequestHeaders")]
         public async Task<ActionResult<IEnumerable<ScadaRequestHeader>>> GetScadaRequestHeaders()
         {
           if (_context.ScadaRequestHeaders == null)
@@ -32,8 +32,8 @@ namespace ClientPortal.Controllers
             return await _context.ScadaRequestHeaders.ToListAsync();
         }
 
-        // GET: api/ScadaRequestHeaders/5
-        [HttpGet("{id}")]
+        // GET: getScadaRequestHeader/5
+        [HttpGet("getScadaRequestHeader/{id}")]
         public async Task<ActionResult<ScadaRequestHeader>> GetScadaRequestHeader(int id)
         {
           if (_context.ScadaRequestHeaders == null)
@@ -50,9 +50,8 @@ namespace ClientPortal.Controllers
             return scadaRequestHeader;
         }
 
-        // PUT: api/ScadaRequestHeaders/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        // PUT: updateScadaRequestHeader/5
+        [HttpPut("updateScadaRequestHeader/{id}")]
         public async Task<IActionResult> PutScadaRequestHeader(int id, ScadaRequestHeader scadaRequestHeader)
         {
             if (id != scadaRequestHeader.Id)
@@ -81,9 +80,8 @@ namespace ClientPortal.Controllers
             return NoContent();
         }
 
-        // POST: api/ScadaRequestHeaders
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        // POST: addScadaRequestHeaders
+        [HttpPost("addScadaRequestHeader")]
         public async Task<ActionResult<ScadaRequestHeader>> PostScadaRequestHeader(ScadaRequestHeader scadaRequestHeader)
         {
           if (_context.ScadaRequestHeaders == null)
@@ -96,8 +94,8 @@ namespace ClientPortal.Controllers
             return CreatedAtAction("GetScadaRequestHeader", new { id = scadaRequestHeader.Id }, scadaRequestHeader);
         }
 
-        // DELETE: api/ScadaRequestHeaders/5
-        [HttpDelete("{id}")]
+        // DELETE: deleteScadaRequestHeader/5
+        [HttpDelete("deleteScadaRequestHeader/{id}")]
         public async Task<IActionResult> DeleteScadaRequestHeader(int id)
         {
             if (_context.ScadaRequestHeaders == null)
