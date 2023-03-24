@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AllowedPageSizes } from '@core/helpers';
-import { IAmrSchedule } from '@core/models';
-import { Observable } from 'rxjs';
-
+import { IScadaRequestHeader } from '@core/models';
+import { AMRScheduleService } from '@shared/services/amr-schedule.service';
+import { Observable, Subject, takeUntil } from 'rxjs';
+import * as moment from 'moment';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-amr-schedule',
   templateUrl: './amr-schedule.component.html',
@@ -12,18 +14,34 @@ export class AmrScheduleComponent implements OnInit {
 
   readonly allowedPageSizes = AllowedPageSizes;
   
-  schedules$: Observable<IAmrSchedule[]>;
+  scadaRequestHeaders: IScadaRequestHeader[] = [];
   
-  constructor() { 
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
+  
+  constructor(private _amrScheduleService: AMRScheduleService, private _router: Router) { 
     this.onEdit = this.onEdit.bind(this);
   }
 
   ngOnInit(): void {
+
+    this._amrScheduleService.scadaRequestHeaders$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((data: IScadaRequestHeader[]) => {
+          this.scadaRequestHeaders = data;
+      })
+  }
+
+  onCustomizeDateTime(cellInfo) {
+    return moment(new Date(cellInfo.value)).format('YYYY-MM-DD mm:hh:ss');
   }
 
   onEdit(e) {
     e.event.preventDefault();
-    //this._router.navigate([`/admin/amrMeter/edit/${this.user.Id}/${e.row.data.Id}`]);
+    this._router.navigate([`/admin/amrSchedule/edit/${e.row.data.Id}`]);
   }
 
+  ngOnDestroy() {
+    this._unsubscribeAll.next(null);
+    this._unsubscribeAll.complete();
+  }
 }

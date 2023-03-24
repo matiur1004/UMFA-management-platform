@@ -23,7 +23,9 @@ const PROXY_CONFIG = [
       "/Roles",
       "/NotificationTypes",
       "/UserNotifications",
-      "/UserNotificationSchedules"
+      "/UserNotificationSchedules",
+      "/ScadaRequestHeaders",
+      "/ScadaRequestDetails",
    ],
     target: target,
     secure: false,

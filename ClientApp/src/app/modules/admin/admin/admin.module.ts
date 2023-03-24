@@ -31,6 +31,7 @@ import { RoleAddEditPopupComponent } from './user-management/role-add-edit-popup
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AmrScheduleComponent } from './amr-schedule/amr-schedule.component';
 import { AmrScheduleEditComponent } from './amr-schedule/amr-schedule-edit/amr-schedule-edit.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { AmrScheduleEditComponent } from './amr-schedule/amr-schedule-edit/amr-s
     MatCheckboxModule,
     MatTabsModule,
     MatTableModule,
+    MatTooltipModule,
     MatFormFieldModule,
     MatInputModule,
     NgSelectModule,

@@ -8,7 +8,7 @@
     <div class="flex w-full">
       <div class="flex flex-col bg-card p-2">
         <dx-data-grid
-            [dataSource]="schedules$ | async"
+            [dataSource]="scadaRequestHeaders"
             [showBorders]="true"
             class="grid-container"
         >
@@ -31,9 +31,9 @@
             <dxi-column dataField="Description" [width]="200"></dxi-column>
             <dxi-column dataField="JobType"></dxi-column>
             <dxi-column dataField="Interval" [width]="120"></dxi-column>
-            <dxi-column dataField="CurrentStatus" [width]="120"></dxi-column>
-            <dxi-column dataField="StartRunDate" [width]="120"></dxi-column>
-            <dxi-column dataField="LastRunDate" [width]="120"></dxi-column>
+            <dxi-column dataField="Status" [width]="120"></dxi-column>
+            <dxi-column dataField="StartRunDTM" [customizeText]="onCustomizeDateTime" [width]="160"></dxi-column>
+            <dxi-column dataField="LastRunDTM" [customizeText]="onCustomizeDateTime" [width]="160"></dxi-column>
             <dxi-column type="buttons">
               <dxi-button
                 hint="Edit"

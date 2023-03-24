@@ -42,7 +42,8 @@ export interface IAmrMeter {
     MakeModels: IMeterMakeModel[];
   }
   
-  export interface IAmrSchedule {
+  export interface IScadaRequestHeader {
+    Id: number;
     Description: string;
     JobType: number;
   }
