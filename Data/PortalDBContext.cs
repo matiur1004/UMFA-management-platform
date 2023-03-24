@@ -1,8 +1,5 @@
-﻿using ClientPortal.Data.Entities;
-using ClientPortal.Data.Entities.PortalEntities;
+﻿using ClientPortal.Data.Entities.PortalEntities;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Security.Policy;
-using Microsoft.EntityFrameworkCore;
 
 namespace ClientPortal.Data
 {
@@ -26,6 +23,8 @@ namespace ClientPortal.Data
         public DbSet<AMRWaterProfileHeader> AmrWaterProfiles { get; set; }
         [NotMapped]
         public DbSet<WaterProfile> WaterProfiles { get; set; }
+        [NotMapped]
+        public DbSet<AMRMetersNotScheduled> aMRMetersNotScheduled { get; set; }
 
         //Mapped entities
         public DbSet<User> Users { get; set; }
@@ -63,7 +62,8 @@ namespace ClientPortal.Data
         public DbSet<UserNotificationSchedule> UserNotificationSchedules { get; set; }
         public DbSet<UserNotificationSummaryType> UserNotificationSummaryTypes { get; set; }
         public DbSet<NotificationSendType> NotificationSendTypes { get; set; }
-
+        public DbSet<ScheduleStatus> ScheduleStatus { get; set; }
+        public DbSet<JobStatus> JobStatus { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -72,6 +72,7 @@ namespace ClientPortal.Data
             modelBuilder.Entity<DemandProfile>().ToTable("DemandProfiles", t => t.ExcludeFromMigrations());
             modelBuilder.Entity<AMRWaterProfileHeader>().ToTable("AMRWaterProfileHeaders", t => t.ExcludeFromMigrations());
             modelBuilder.Entity<WaterProfile>().ToTable("WaterProfiles", t => t.ExcludeFromMigrations());
+            modelBuilder.Entity<AMRMetersNotScheduled>().HasNoKey().ToTable("AMRMetersNotScheduled", t => t.ExcludeFromMigrations());
 
             //mapped entities
             modelBuilder.Entity<RefreshToken>().HasOne(r => r.User).WithMany(r => r.RefreshTokens).OnDelete(DeleteBehavior.Cascade);

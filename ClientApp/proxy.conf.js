@@ -23,7 +23,10 @@ const PROXY_CONFIG = [
       "/Roles",
       "/NotificationTypes",
       "/UserNotifications",
-      "/UserNotificationSchedules"
+      "/UserNotificationSchedules",
+      "/SupplyTypes",
+      "/JobStatus",
+      "/ScheduleStatus"
    ],
     target: target,
     secure: false,

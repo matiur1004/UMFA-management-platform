@@ -221,6 +221,5 @@ namespace ClientPortal.Controllers
                 "JOIN SupplyToLocations loc ON (l.SupplyToLocationId = loc.Id) ORDER BY 1, 2, 3").ToListAsync();
             return locationTypes.ToList();
         }
-        
     }
 }

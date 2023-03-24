@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.PortalEntities;
-using ClientPortal.Controllers.Authorization;
 
 namespace ClientPortal.Controllers
 {
@@ -45,7 +38,6 @@ namespace ClientPortal.Controllers
         }
 
         // PUT: SupplyTypes/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutSupplyType(int id, SupplyType supplyType)
         {
@@ -76,7 +68,6 @@ namespace ClientPortal.Controllers
         }
 
         // POST: SupplyTypes
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<SupplyType>> PostSupplyType(SupplyType supplyType)
         {
