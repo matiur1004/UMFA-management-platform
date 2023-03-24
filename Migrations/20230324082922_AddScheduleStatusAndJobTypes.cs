@@ -64,9 +64,12 @@ namespace ClientPortal.Migrations
             //Update the JobStatus On Headers Table
             migrationBuilder.Sql("UPDATE [dbo].[ScadaRequestHeaders] " +
                 "SET [Status] = 1 " +
-                ",[JobType] = 1 " +
-                "WHERE [Status] = 0 OR [JobType] = 0");
+                "WHERE [Status] = 0");
 
+            //Update the JobStatus On Details Table
+            migrationBuilder.Sql("UPDATE [dbo].[ScadaRequestDetails] " +
+                "SET [Status] = 1 " +
+                "WHERE [Status] = 0");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

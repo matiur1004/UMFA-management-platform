@@ -1,8 +1,10 @@
-﻿using ClientPortal.Data;
+﻿using ClientPortal.Controllers.Authorization;
+using ClientPortal.Data;
 using ClientPortal.Data.Entities.PortalEntities;
 
 namespace ClientPortal.Controllers
 {
+    [Authorize]
     [Route("[controller]")]
     [ApiController]
     public class ScheduleStatusController : ControllerBase
