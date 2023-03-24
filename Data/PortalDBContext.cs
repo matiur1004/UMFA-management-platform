@@ -1,8 +1,5 @@
-﻿using ClientPortal.Data.Entities;
-using ClientPortal.Data.Entities.PortalEntities;
+﻿using ClientPortal.Data.Entities.PortalEntities;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Security.Policy;
-using Microsoft.EntityFrameworkCore;
 
 namespace ClientPortal.Data
 {
@@ -65,7 +62,8 @@ namespace ClientPortal.Data
         public DbSet<UserNotificationSchedule> UserNotificationSchedules { get; set; }
         public DbSet<UserNotificationSummaryType> UserNotificationSummaryTypes { get; set; }
         public DbSet<NotificationSendType> NotificationSendTypes { get; set; }
-
+        public DbSet<ScheduleStatus> ScheduleStatus { get; set; }
+        public DbSet<JobStatus> JobStatus { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
