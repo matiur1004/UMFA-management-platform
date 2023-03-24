@@ -3,6 +3,9 @@ using ClientPortal.Controllers.Authorization;
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 using ClientPortal.Services;
+using ClientPortal.Data;
+using Microsoft.EntityFrameworkCore;
+using ClientPortal.Data.Entities.PortalEntities;
 
 namespace ClientPortal.Controllers
 {
@@ -13,11 +16,13 @@ namespace ClientPortal.Controllers
     {
         private readonly ILogger<AMRMeterController> _logger;
         private readonly IAMRMeterService _amrService;
+        private readonly PortalDBContext _context;
 
-        public AMRMeterController(ILogger<AMRMeterController> logger, IAMRMeterService amrService)
+        public AMRMeterController(ILogger<AMRMeterController> logger, IAMRMeterService amrService, PortalDBContext portalDBContext)
         {
             _logger = logger;
             _amrService = amrService;
+            _context = portalDBContext;
         }
 
         [HttpPost("addMeter")]
@@ -86,6 +91,32 @@ namespace ClientPortal.Controllers
                 return BadRequest(new ApplicationException($"Failed to get meters for user {User}: {ex.Message}"));
             }
         }
+
+        [HttpGet("getMetersNotScheduledForUser/{userId}/{jobTypeId}")]
+        public async Task<ActionResult<IEnumerable<AMRMetersNotScheduled>>> GetMetersNotScheduledForUser(int userId, int jobTypeId)
+        {
+            try
+            {
+                _logger.LogInformation(1, $"Get meters for user {userId} with JobTypeId {jobTypeId} from database");
+                var meters = await _context.aMRMetersNotScheduled.FromSqlRaw($"exec spUserMetersNotScheduled {userId}, {jobTypeId}").ToListAsync();
+
+                if (meters != null)
+                { 
+                    _logger.LogInformation(1, $"Successfully got meters for user: {userId}");
+                    return Ok(meters.ToList());
+                }
+                else
+                {
+                    return Ok(new List<AMRMetersNotScheduled>());
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError($"Failed to get meters for user {User}: {ex.Message}");
+                return BadRequest(new ApplicationException($"Failed to get meters for user {User}: {ex.Message}"));
+            }
+        }
+
 
         [HttpGet("userMetersChart/{userId}/{chartId}")]
         public IActionResult GetMetersForUserChart(int userId, int chartId)

@@ -26,6 +26,9 @@ const PROXY_CONFIG = [
       "/UserNotificationSchedules",
       "/ScadaRequestHeaders",
       "/ScadaRequestDetails",
+      "/SupplyTypes",
+      "/JobStatus",
+      "/ScheduleStatus"
    ],
     target: target,
     secure: false,
