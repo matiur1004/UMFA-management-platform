@@ -1,0 +1,105 @@
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CONFIRM_MODAL_CONFIG } from '@core/config/modal.config';
+import { AllowedPageSizes } from '@core/helpers';
+import { IopUser, IScadaRequestDetail, IScadaScheduleStatus } from '@core/models';
+import { UmfaUtils } from '@core/utils/umfa.utils';
+import { UserService } from '@shared/services';
+import { AMRScheduleService } from '@shared/services/amr-schedule.service';
+import moment from 'moment';
+import { Subject, takeUntil } from 'rxjs';
+import { AmrMeterAssignmentEditComponent } from '../amr-meter-assignment-edit/amr-meter-assignment-edit.component';
+
+@Component({
+  selector: 'app-amr-meter-assignments',
+  templateUrl: './amr-meter-assignments.component.html',
+  styleUrls: ['./amr-meter-assignments.component.scss']
+})
+export class AmrMeterAssignmentsComponent implements OnInit {
+
+  scadaRequestDetails: IScadaRequestDetail[] = [];
+  headerId: number;
+  user: IopUser;
+  scheduleStatus: IScadaScheduleStatus[] = [];
+  readonly allowedPageSizes = AllowedPageSizes;
+  
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
+  
+  constructor(
+    private _router: Router, 
+    private _amrScheduleService: AMRScheduleService, 
+    private actRoute: ActivatedRoute, 
+    private _matDialog: MatDialog,
+    private userService: UserService,
+    private _ufUtils: UmfaUtils
+  ) {
+    this.onEdit = this.onEdit.bind(this);
+    this.onRemove = this.onRemove.bind(this);
+    this.user = this.userService.userValue;
+  }
+
+  ngOnInit(): void {
+    this.actRoute.params.subscribe(params => {
+      this.headerId = +params['id'];
+    })
+
+    this._amrScheduleService.scadaRequestDetails$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((data: IScadaRequestDetail[]) => {
+          this.scadaRequestDetails = data;
+      })
+
+    this._amrScheduleService.scheduleStatus$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((data: any) => {
+        this.scheduleStatus = data;
+      })
+  }
+
+  onEdit(e) {
+    e.event.preventDefault();
+    this._matDialog.open(AmrMeterAssignmentEditComponent, {autoFocus: false, data: 
+      {
+        userId: this.user.Id,
+        detail: e.row.data,
+        scheduleStatus: this.scheduleStatus
+      }})
+      .afterClosed()
+      .subscribe((res) => {
+
+      });
+  }
+
+  onRemove(e) {
+    e.event.preventDefault();
+    const dialogRef = this._ufUtils.fuseConfirmDialog(
+      CONFIRM_MODAL_CONFIG,
+      '', 
+      `Are you sure you need to remove?`);
+    // Subscribe to afterClosed from the dialog reference
+    dialogRef.afterClosed().subscribe((result) => {
+      if(result == 'confirmed') {
+        this._amrScheduleService.deleteScadaRequestDetail(e.row.data.Id)
+          .subscribe(() => {
+            this._amrScheduleService.getScadaRequestDetails().subscribe();
+          })
+      } else {
+      }
+    });
+
+  }
+
+  onCustomizeDateTime(cellInfo) {
+    return moment(new Date(cellInfo.value)).format('YYYY-MM-DD mm:hh:ss');
+  }
+
+  back() {
+    this._router.navigate([`/admin/amrSchedule/edit/${this.headerId}`]);
+  }
+
+  ngOnDestroy() {
+    this._unsubscribeAll.next(null);
+    this._unsubscribeAll.complete();
+  }
+}

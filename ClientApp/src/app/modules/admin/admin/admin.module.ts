@@ -32,6 +32,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AmrScheduleComponent } from './amr-schedule/amr-schedule.component';
 import { AmrScheduleEditComponent } from './amr-schedule/amr-schedule-edit/amr-schedule-edit.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { AmrMeterAssignmentsComponent } from './amr-schedule/amr-meter-assignments/amr-meter-assignments.component';
+import { AmrMeterAssignmentEditComponent } from './amr-schedule/amr-meter-assignment-edit/amr-meter-assignment-edit.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +50,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     UserManagementComponent,
     RoleAddEditPopupComponent,
     AmrScheduleComponent,
-    AmrScheduleEditComponent
+    AmrScheduleEditComponent,
+    AmrMeterAssignmentsComponent,
+    AmrMeterAssignmentEditComponent
   ],
   imports: [
     FormsModule,

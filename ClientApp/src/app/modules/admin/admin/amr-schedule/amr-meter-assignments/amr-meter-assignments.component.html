@@ -1,14 +1,14 @@
 <div class="flex flex-col relative">
     <div class="absolute left-2 top-2 z-20">
-      <button mat-raised-button color="primary" class="dnm-btn dnm-btn-primary" [routerLink]="['/admin/amrSchedule/']">
+      <button [matTooltip]="'New Meter Assignment'" mat-raised-button color="primary" class="dnm-btn dnm-btn-primary" [routerLink]="['/admin/amrSchedule/']">
         <mat-icon [svgIcon]="'feather:addMeter'" class="mr-1"></mat-icon>
-        Add New Meter
+        Add New
       </button>
     </div>
     <div class="flex w-full">
       <div class="flex flex-col bg-card p-2">
         <dx-data-grid
-            [dataSource]="scadaRequestHeaders"
+            [dataSource]="scadaRequestDetails"
             [showBorders]="true"
             class="grid-container"
         >
@@ -28,20 +28,31 @@
                 [width]="200"
                 placeholder="Search..."
             ></dxo-search-panel>
-            <dxi-column dataField="Description" [width]="200"></dxi-column>
-            <dxi-column dataField="JobType"></dxi-column>
-            <dxi-column dataField="Interval" [width]="120"></dxi-column>
+            <dxi-column dataField="AmrMeterId" caption="Meter No" [width]="100"></dxi-column>
             <dxi-column dataField="Status" [width]="120"></dxi-column>
-            <dxi-column dataField="StartRunDTM" [customizeText]="onCustomizeDateTime" [width]="160"></dxi-column>
-            <dxi-column dataField="LastRunDTM" [customizeText]="onCustomizeDateTime" [width]="160"></dxi-column>
+            <dxi-column dataField="UpdateFrequency" caption="Update Frequency" [width]="140"></dxi-column>
+            <dxi-column dataField="CurrentRunDTM" [customizeText]="onCustomizeDateTime"></dxi-column>
+            <dxi-column dataField="LastRunDTM" [customizeText]="onCustomizeDateTime"></dxi-column>
+            <dxi-column dataField="LastDataDate" [customizeText]="onCustomizeDateTime"></dxi-column>
+            
             <dxi-column type="buttons">
               <dxi-button
                 hint="Edit"
                 icon="edit"
                 [onClick]="onEdit"
               ></dxi-button>
+              <dxi-button
+                [cssClass]="'text-red-500'"
+                hint="Remove"
+                icon="trash"
+                [onClick]="onRemove"
+              ></dxi-button>
             </dxi-column>
         </dx-data-grid>
+
+        <div class="pt-3 px-4 border-t border-gray-300 text-gray-600 flex justify-end gap-x-4">
+            <button mat-raised-button color="primary" class="dnm-btn dnm-btn-primary" (click)="back()">Back</button>
+        </div>
       </div>
     </div>
   </div>

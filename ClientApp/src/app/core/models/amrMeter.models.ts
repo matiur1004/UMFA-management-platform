@@ -42,8 +42,22 @@ export interface IAmrMeter {
     MakeModels: IMeterMakeModel[];
   }
   
-  export interface IScadaRequestHeader {
-    Id: number;
-    Description: string;
-    JobType: number;
-  }
+export interface IScadaRequestHeader {
+  Id: number;
+  Description: string;
+  JobType: number;
+  Status: number;
+}
+
+export interface IScadaScheduleStatus {
+  Id: number;
+  Description: string;
+  Name: string;
+}
+
+export interface IScadaRequestDetail {
+  Id: number;
+  HeaderId: number;
+  AmrMeterId: number;
+  Status: number;
+}
