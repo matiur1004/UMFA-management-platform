@@ -1,6 +1,7 @@
 ﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.PortalEntities;
+using MimeKit;
 
 namespace ClientPortal.Controllers
 {
@@ -48,6 +49,26 @@ namespace ClientPortal.Controllers
                 return NotFound();
             }
             _logger.LogInformation($"ScadaRequestDetails with Id: {id} Found and Returned!");
+            return scadaRequestDetail;
+        }
+
+        // GET: getScadaRequestDetailByHeaderId/5
+        [HttpGet("getScadaRequestDetailByHeaderId/{headerId}")]
+        public async Task<List<ScadaRequestDetail>> GetScadaRequestDetailByHeaderId(int headerId)
+        {
+            if (_context.ScadaRequestDetails == null)
+            {
+                _logger.LogError($"ScadaRequestDetails Entries Not Found in Table!");
+                return new List<ScadaRequestDetail> { };
+            }
+            var scadaRequestDetail = await _context.ScadaRequestDetails.Where(n => n.HeaderId == headerId).ToListAsync();
+
+            if (scadaRequestDetail == null)
+            {
+                _logger.LogError($"ScadaRequestDetails with Id: {headerId} Not Found!");
+                return new List<ScadaRequestDetail> { };
+            }
+            _logger.LogInformation($"ScadaRequestDetails with Id: {headerId} Found and Returned!");
             return scadaRequestDetail;
         }
 
