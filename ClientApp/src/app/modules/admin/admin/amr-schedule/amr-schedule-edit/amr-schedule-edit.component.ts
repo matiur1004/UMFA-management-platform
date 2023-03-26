@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CONFIRM_MODAL_CONFIG } from '@core/config/modal.config';
-import { IScadaRequestHeader, IScadaScheduleStatus } from '@core/models';
+import { IScadaJobStatus, IScadaRequestHeader, IScadaScheduleStatus } from '@core/models';
 import { UmfaUtils } from '@core/utils/umfa.utils';
 import { AMRScheduleService } from '@shared/services/amr-schedule.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -17,7 +17,7 @@ export class AmrScheduleEditComponent implements OnInit {
   form: UntypedFormGroup;
   scheduleHeaderDetail: IScadaRequestHeader;
   scheduleHeaderStatus: IScadaScheduleStatus[] = [];
-  jobTypeItems = [{Label: 'Profile Data Retrieval', Id: 1}, {Label: 'Reading Data Retrieval', Id: 2}];
+  jobStatus: IScadaJobStatus[] = [];
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
@@ -38,6 +38,12 @@ export class AmrScheduleEditComponent implements OnInit {
       Description: [''],
 
     });
+
+    this._amrScheduleService.jobStatus$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((data: any) => {
+        this.jobStatus = data;
+      })
 
     this._amrScheduleService.scadaRequestHeaderDetail$
       .pipe(takeUntil(this._unsubscribeAll))

@@ -20,6 +20,7 @@ export class AmrScheduleEditResolver implements Resolve<any> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     let id = route.params['id'];
     return forkJoin([
+      this._amrService.getJobStatus(),
       this._amrService.getScheduleStatus(),
       this._amrService.getScadaRequestHeaderDetail(id),
     ]);

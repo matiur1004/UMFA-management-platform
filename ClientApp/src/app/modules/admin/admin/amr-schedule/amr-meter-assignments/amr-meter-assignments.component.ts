@@ -44,17 +44,23 @@ export class AmrMeterAssignmentsComponent implements OnInit {
       this.headerId = +params['id'];
     })
 
-    this._amrScheduleService.scadaRequestDetails$
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((data: IScadaRequestDetail[]) => {
-          this.scadaRequestDetails = data;
-      })
-
     this._amrScheduleService.scheduleStatus$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: any) => {
         this.scheduleStatus = data;
       })
+
+    this._amrScheduleService.scadaRequestDetails$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((data: IScadaRequestDetail[]) => {
+          this.scadaRequestDetails = data;
+          this.scadaRequestDetails = this.scadaRequestDetails.map(item => {
+            let statusItem = this.scheduleStatus.find(obj => obj.Id == item.Status);
+            return {...item, StatusLabel: statusItem.Name};
+          })
+      })
+
+    
   }
 
   onEdit(e) {
@@ -82,7 +88,7 @@ export class AmrMeterAssignmentsComponent implements OnInit {
       if(result == 'confirmed') {
         this._amrScheduleService.deleteScadaRequestDetail(e.row.data.Id)
           .subscribe(() => {
-            this._amrScheduleService.getScadaRequestDetails().subscribe();
+            this._amrScheduleService.getScadaRequestDetails(this.headerId).subscribe();
           })
       } else {
       }

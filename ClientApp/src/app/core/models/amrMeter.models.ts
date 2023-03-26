@@ -55,6 +55,11 @@ export interface IScadaScheduleStatus {
   Name: string;
 }
 
+export interface IScadaJobStatus{
+  Id: number;
+  Description: string;
+  Name: string;
+}
 export interface IScadaRequestDetail {
   Id: number;
   HeaderId: number;

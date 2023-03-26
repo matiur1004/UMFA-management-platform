@@ -15,9 +15,10 @@ export class AmrMeterAssignmentsResolver implements Resolve<boolean> {
     private _amrService: AMRScheduleService,
   ){}
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
+    let id = route.params['id'];
     return forkJoin([
       this._amrService.getScheduleStatus(),
-      this._amrService.getScadaRequestDetails(),
+      this._amrService.getScadaRequestDetails(id),
     ]);
   }
 }

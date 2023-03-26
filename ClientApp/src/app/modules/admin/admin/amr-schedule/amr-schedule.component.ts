@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AllowedPageSizes } from '@core/helpers';
-import { IScadaRequestHeader, IScadaScheduleStatus } from '@core/models';
+import { IScadaJobStatus, IScadaRequestHeader, IScadaScheduleStatus } from '@core/models';
 import { AMRScheduleService } from '@shared/services/amr-schedule.service';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import * as moment from 'moment';
@@ -16,7 +16,8 @@ export class AmrScheduleComponent implements OnInit {
   
   scadaRequestHeaders: IScadaRequestHeader[] = [];
   scheduleHeaderStatus: IScadaScheduleStatus[] = [];
-  
+  jobStatus: IScadaJobStatus[] = [];
+
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
   constructor(private _amrScheduleService: AMRScheduleService, private _router: Router) { 
@@ -30,13 +31,20 @@ export class AmrScheduleComponent implements OnInit {
         this.scheduleHeaderStatus = data;
       })
     
+    this._amrScheduleService.jobStatus$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((data: any) => {
+        this.jobStatus = data;
+      })
+
     this._amrScheduleService.scadaRequestHeaders$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: IScadaRequestHeader[]) => {
           this.scadaRequestHeaders = data;
           this.scadaRequestHeaders = this.scadaRequestHeaders.map(item => {
             let statusItem = this.scheduleHeaderStatus.find(obj => obj.Id == item.Status);
-            return {...item, StatusLabel: statusItem.Name};
+            let jobItem = this.jobStatus.find(job => job.Id == item.JobType);
+            return {...item, StatusLabel: statusItem.Name, JobLabel: jobItem.Name};
           })
           console.log(this.scheduleHeaderStatus);
       })

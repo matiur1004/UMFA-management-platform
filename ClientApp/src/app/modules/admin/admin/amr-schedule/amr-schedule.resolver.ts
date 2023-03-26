@@ -18,6 +18,7 @@ export class AmrScheduleResolver implements Resolve<boolean> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     return forkJoin([
       this._amrService.getScheduleStatus(),
+      this._amrService.getJobStatus(),
       this._amrService.getScadaRequestHeaders(),
     ]);
   }

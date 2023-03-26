@@ -13,6 +13,7 @@ export class AMRScheduleService {
     private _scadaRequestHeaderDetail: BehaviorSubject<any> = new BehaviorSubject([]);
     private _scadaRequestDetails: BehaviorSubject<any> = new BehaviorSubject([]);
     private _scheduleStatus: BehaviorSubject<any> = new BehaviorSubject([]);
+    private _jobStatus: BehaviorSubject<any> = new BehaviorSubject([]);
 
     constructor(private http: HttpClient, private notificationService: NotificationService,) { }
 
@@ -30,6 +31,10 @@ export class AMRScheduleService {
 
     get scadaRequestDetails$(): Observable<any> {
       return this._scadaRequestDetails.asObservable();
+    }
+
+    get jobStatus$(): Observable<any> {
+      return this._jobStatus.asObservable();
     }
 
     getScadaRequestHeaders() {
@@ -56,17 +61,17 @@ export class AMRScheduleService {
 
     getScheduleStatus() {
       const url = `${CONFIG.apiURL}/ScheduleStatus/getAll`;
-        return this.http.get<any>(url, { withCredentials: true })
-          .pipe(
-            catchError(err => this.catchErrors(err)),
-            tap(res => {
-              this._scheduleStatus.next(res);
-            })
-          );
+      return this.http.get<any>(url, { withCredentials: true })
+        .pipe(
+          catchError(err => this.catchErrors(err)),
+          tap(res => {
+            this._scheduleStatus.next(res);
+          })
+        );
     }
 
-    getScadaRequestDetails() {
-      const url = `${CONFIG.apiURL}/ScadaRequestDetails/getScadaRequestDetails`;
+    getScadaRequestDetails(headerId) {
+      const url = `${CONFIG.apiURL}/ScadaRequestDetails/getScadaRequestDetailByHeaderId/${headerId}`;
       return this.http.get<any>(url, { withCredentials: true })
         .pipe(
           catchError(err => this.catchErrors(err)),
@@ -94,6 +99,17 @@ export class AMRScheduleService {
           catchError(err => this.catchErrors(err)),
           tap(bl => {
             this.notificationService.message('Removed successfully!');
+          })
+        );
+    }
+
+    getJobStatus() {
+      const url = `${CONFIG.apiURL}/JobStatus/getAll`;
+      return this.http.get<any>(url, { withCredentials: true })
+        .pipe(
+          catchError(err => this.catchErrors(err)),
+          tap(res => {
+            this._jobStatus.next(res);
           })
         );
     }
