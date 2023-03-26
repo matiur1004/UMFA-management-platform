@@ -58,7 +58,7 @@ namespace ClientPortal.Services
 
                 //update the current run date and status (2: running) for header and detail
                 trackedHeader.ScadaRequestDetails[0].CurrentRunDTM = runStart;
-                trackedHeader.ScadaRequestDetails[0].Status = 2;
+                trackedHeader.ScadaRequestDetails[0].Status = 3;
 
                 if (!await _repo.SaveTrackedItems())
                 {
@@ -72,7 +72,7 @@ namespace ClientPortal.Services
                     throw new ApplicationException($"Scada call returned failure: {readings?.Result ?? "Empty Object"}");
                 }
 
-                trackedHeader.ScadaRequestDetails[0].Status = 3;
+                trackedHeader.ScadaRequestDetails[0].Status = 4;
 
                 //insert the data into the database
                 if (!await _repo.InsertScadaReadingData(readings))
@@ -80,7 +80,7 @@ namespace ClientPortal.Services
                     throw new ApplicationException($"Failed to insert reading data");
                 }
 
-                trackedHeader.ScadaRequestDetails[0].Status = 4;
+                trackedHeader.ScadaRequestDetails[0].Status = 5;
                 if (!await _repo.SaveTrackedItems())
                 {
                     throw new ApplicationException("Could not save tracked items form service");
@@ -88,7 +88,7 @@ namespace ClientPortal.Services
 
                 //update the detail 
                 trackedHeader.LastRunDTM = runStart;
-                trackedHeader.ScadaRequestDetails[0].Status = 0;
+                trackedHeader.ScadaRequestDetails[0].Status = 1;
                 trackedHeader.ScadaRequestDetails[0].LastRunDTM = runStart;
                 DateTime lastDate = (DateTime.Parse(readings.Meter.EndTotal.ReadingDate) < job.FromDate.AddHours(24)) ?
                     job.FromDate.AddHours(24) :
@@ -107,7 +107,7 @@ namespace ClientPortal.Services
             catch (Exception ex)
             {
                 _logger.LogError("Error while retrieving scada data for {key1}: {msg}", job.Key1, ex.Message);
-                trackedHeader.ScadaRequestDetails[0].Status = 6;
+                trackedHeader.ScadaRequestDetails[0].Status = 7;
                 await _repo.SaveTrackedItems();
                 throw;
             }
@@ -125,7 +125,7 @@ namespace ClientPortal.Services
 
                 //update the current run date and status (2: running) for header and detail
                 trackedHeader.ScadaRequestDetails[0].CurrentRunDTM = runStart;
-                trackedHeader.ScadaRequestDetails[0].Status = 2;
+                trackedHeader.ScadaRequestDetails[0].Status = 3;
 
                 if (!await _repo.SaveTrackedItems())
                 {
@@ -139,7 +139,7 @@ namespace ClientPortal.Services
                     throw new ApplicationException($"Scada call returned failure: {profile.Result ?? "Empty Object"}");
                 }
 
-                trackedHeader.ScadaRequestDetails[0].Status = 3;
+                trackedHeader.ScadaRequestDetails[0].Status = 4;
 
                 if (!await _repo.SaveTrackedItems())
                 {
@@ -152,7 +152,7 @@ namespace ClientPortal.Services
                     throw new ApplicationException($"Failed to insert profile data");
                 }
 
-                trackedHeader.ScadaRequestDetails[0].Status = 4;
+                trackedHeader.ScadaRequestDetails[0].Status = 5;
                 if (!await _repo.SaveTrackedItems())
                 {
                     throw new ApplicationException("Could not save tracked items form service");
@@ -162,7 +162,7 @@ namespace ClientPortal.Services
 
                 //update the detail 
                 trackedHeader.LastRunDTM = runStart;
-                trackedHeader.ScadaRequestDetails[0].Status = 0;
+                trackedHeader.ScadaRequestDetails[0].Status = 1;
                 trackedHeader.ScadaRequestDetails[0].LastRunDTM = runStart;
                 if (profile.Meter.ProfileSamples.Length > 0)
                     trackedHeader.ScadaRequestDetails[0].LastDataDate = DateTime.Parse(profile.Meter.ProfileSamples[profile.Meter.ProfileSamples.Length - 1].Date);
@@ -179,7 +179,7 @@ namespace ClientPortal.Services
             catch (Exception ex)
             {
                 _logger.LogError("Error while retrieving scada data for {key1}: {msg}", job.Key1, ex.Message);
-                trackedHeader.ScadaRequestDetails[0].Status = 6;
+                trackedHeader.ScadaRequestDetails[0].Status = 7;
                 await _repo.SaveTrackedItems();
                 throw;
             }
@@ -196,12 +196,12 @@ namespace ClientPortal.Services
 
                 if (headers != null && headers.Count > 0)
                 {
-                    bool statusChanged = await _repo.UpdateAmrJobStatus(headers, 1); //update status to running = 1
+                    bool statusChanged = await _repo.UpdateAmrJobStatus(headers, 2); //update status to running = 2
                     if (statusChanged)
                     {
                         foreach (var header in headers)
                         {
-                            if (header.JobType == 1)
+                            if (header.JobType == 1) //Profile Job
                             {
                                 foreach (var detail in header.ScadaRequestDetails)
                                 {
@@ -235,7 +235,7 @@ namespace ClientPortal.Services
                                     }
                                 }
                             }
-                            else if (header.JobType == 2)
+                            else if (header.JobType == 2) //Readings
                             {
                                 foreach (var detail in header.ScadaRequestDetails)
                                 {
@@ -270,7 +270,7 @@ namespace ClientPortal.Services
                                 }
                             }
                         }
-                        await _repo.UpdateAmrJobStatus(headers, 0);
+                        await _repo.UpdateAmrJobStatus(headers, 1);
                     }
                 }
 
