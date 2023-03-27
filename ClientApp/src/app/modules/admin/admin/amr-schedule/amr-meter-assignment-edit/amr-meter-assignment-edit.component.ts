@@ -73,4 +73,8 @@ export class AmrMeterAssignmentEditComponent implements OnInit {
       });
     } 
   }
+
+  onResetStatus() {
+    
+  }
 }

@@ -79,7 +79,20 @@ export class AmrScheduleEditComponent implements OnInit {
   }
 
   onSave() {
-
+    const dialogRef = this._ufUtils.fuseConfirmDialog(
+      CONFIRM_MODAL_CONFIG,
+      '', 
+      `Are you sure you need to ${this.scheduleHeaderDetail ? 'update' : 'create'}?`);
+    // Subscribe to afterClosed from the dialog reference
+    dialogRef.afterClosed().subscribe((result) => {
+      if(result == 'confirmed') {
+        this._amrScheduleService.createOrUpdateScadaRequestHeader(this.form.value).subscribe(() => {
+          this._router.navigate([`/admin/amrSchedule`]);
+        });
+        //this.matDialogRef.close(this.form.value);    
+      } else {
+      }
+    });
   }
 
   getNameFromList(id: number, list){
@@ -90,6 +103,22 @@ export class AmrScheduleEditComponent implements OnInit {
 
   onMeterAssignments() {
     this._router.navigate([`/admin/amrSchedule/edit/${this.scheduleHeaderDetail.Id}/meterAssignment`]);
+  }
+
+  onResetStatus() {
+    const dialogRef = this._ufUtils.fuseConfirmDialog(
+      CONFIRM_MODAL_CONFIG,
+      '', 
+      `Are you sure you will reset status?`);
+    // Subscribe to afterClosed from the dialog reference
+    dialogRef.afterClosed().subscribe((result) => {
+      if(result == 'confirmed') {
+        this._amrScheduleService.updateRequestHeaderStatus({Id: this.scheduleHeaderDetail.Status}).subscribe(() => {
+          //this._router.navigate([`/admin/amrSchedule`]);
+        });
+      } else {
+      }
+    });
   }
 
   ngOnDestroy() {

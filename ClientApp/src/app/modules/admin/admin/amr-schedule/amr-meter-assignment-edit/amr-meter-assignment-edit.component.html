@@ -42,7 +42,7 @@
                 </mat-form-field>
             </div>
             <div class="col-span-1">
-                <mat-form-field class="fuse-mat-dense w-full readonly-field" [floatLabel]="'always'">
+                <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
                     <mat-label class="form-label">Update Frequency</mat-label>
                     <input matInput [formControlName]="'UpdateFrequency'" [placeholder]="'Update Frequency'" type="number" 
                         [matTooltip]="'The time to wait after last successful execution of task per meter. In minutes '"/>
@@ -54,7 +54,7 @@
                         <mat-label class="form-label">Status</mat-label>
                         <input matInput value="{{getNameFromList(meterAssignmentDetail.Status, scheduleStatus)}}" readonly />   
                     </mat-form-field>
-                    <button mat-icon-button><mat-icon [svgIcon]="'feather:repeat'" [matTooltip]="'Reset Status'"></mat-icon></button>
+                    <button mat-icon-button *ngIf="meterAssignmentDetail.Status == 6"><mat-icon [svgIcon]="'feather:repeat'" [matTooltip]="'Reset Status'" (click)="onResetStatus()"></mat-icon></button>
                 </div>
             </div>
         </div>

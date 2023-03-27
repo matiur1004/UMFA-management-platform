@@ -73,7 +73,12 @@ export class AmrMeterAssignmentsComponent implements OnInit {
       }})
       .afterClosed()
       .subscribe((res) => {
-
+        if(res) {
+          this._amrScheduleService.createOrUpdateScadaRequestDetail(res)
+            .subscribe(() => {
+              this._amrScheduleService.getScadaRequestDetails(this.headerId);
+            });  
+        }
       });
   }
 
