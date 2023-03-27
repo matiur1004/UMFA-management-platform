@@ -3,6 +3,7 @@ using ClientPortal.Data;
 using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Models.ResponseModels;
 using ClientPortal.Models.ScadaRequestsForTableUpdate;
+using Microsoft.EntityFrameworkCore;
 using static DevExpress.DataProcessing.InMemoryDataProcessor.AddSurrogateOperationAlgorithm;
 
 namespace ClientPortal.Controllers
@@ -143,8 +144,8 @@ namespace ClientPortal.Controllers
         }
 
         //POST: updateRequestDetailStatus
-        [HttpPost("createOrUpdateRequestDetailTable")]
-        public IActionResult UpdateRequestDetailStatus([FromBody] ScadaRequestHeaderTable scadaRequestHeader)
+        [HttpPost("createOrUpdateRequestHeaderTable")]
+        public IActionResult UpdateRequestHeaderStatus([FromBody] ScadaRequestHeaderTable scadaRequestHeader)
         {
             try
             {
@@ -175,18 +176,24 @@ namespace ClientPortal.Controllers
                 else                           // UPDATE
                 {
                     _logger.LogInformation($"Updating ScadaRequestHeader with Id: {scadaRequestHeader.Id}");
-                    var response = _context.Database.ExecuteSqlRaw($"UPDATE [dbo].[ScadaRequestHeaders] " +
+                    var scadaRequestHeaderEntity = _context.ScadaRequestHeaders.Find(scadaRequestHeader.Id);
+                    var sql = $"UPDATE [dbo].[ScadaRequestHeaders] " +
                         $"SET [Status] = {scadaRequestHeader.Status}, " +
                         $"[Active] = {scadaRequestHeader.Active}, " +
                         $"[CreatedDTM] = '{scadaRequestHeader.CreatedDTM}', " +
-                        $"[StartRunDTM] = '{scadaRequestHeader.StartRunDTM}', " +
-                        $"[LastRunDTM] = '{scadaRequestHeader.LastRunDTM}', " +
-                        $"[CurrentRunDTM] = '{scadaRequestHeader.CurrentRunDTM}', " +
-                        $"[JobType] = {scadaRequestHeader.JobType}, " +
+                        $"[StartRunDTM] = '{scadaRequestHeader.StartRunDTM}', ";
+                    if(scadaRequestHeaderEntity.LastRunDTM != null) 
+                    { sql += $"[LastRunDTM] = '{scadaRequestHeaderEntity.LastRunDTM}', "; }
+                    else { sql+= $"[LastRunDTM] = Null, "; }
+                    if (scadaRequestHeaderEntity.CurrentRunDTM != null)
+                    { sql += $"[CurrentRunDTM] = '{scadaRequestHeaderEntity.CurrentRunDTM}', "; }
+                    else { sql += $"[CurrentRunDTM] = Null, "; }
+                    sql+= $"[JobType] = {scadaRequestHeader.JobType}, " +
                         $"[Description] = '{scadaRequestHeader.Description}', " +
                         $"[Interval] = {scadaRequestHeader.Interval} " +
-                        $"WHERE [Id] = {scadaRequestHeader.Id}");
+                        $"WHERE [Id] = {scadaRequestHeader.Id}"; 
 
+                    var response = _context.Database.ExecuteSqlRaw(sql);
                     if (response != 0)
                     {
                         _logger.LogInformation($"Successfully Updated ScadaRequestHeader: {scadaRequestHeader.Id}");

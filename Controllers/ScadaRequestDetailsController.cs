@@ -4,6 +4,7 @@ using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Migrations;
 using ClientPortal.Models.ScadaRequestsForTableUpdate;
 using DevExpress.Charts.Native;
+using Microsoft.EntityFrameworkCore;
 using MimeKit;
 
 namespace ClientPortal.Controllers
@@ -141,10 +142,10 @@ namespace ClientPortal.Controllers
                         $"{scadaRequestDetail.AmrScadaUserId}, " +
                         $"{scadaRequestDetail.Status}, " +
                         $"{scadaRequestDetail.Active}, " +
-                        $"{scadaRequestDetail.LastRunDTM}, " +
-                        $"{scadaRequestDetail.CurrentRunDTM}, " +
+                        $"Null, " +
+                        $"Null, " +
                         $"{scadaRequestDetail.UpdateFrequency}, " +
-                        $"{scadaRequestDetail.LastDataDate})");
+                        $"Null)");
 
                     if (response != 0)
                     {
@@ -156,17 +157,40 @@ namespace ClientPortal.Controllers
                 else
                 {
                     _logger.LogInformation($"Updating ScadaRequestDetail with Id: {scadaRequestDetail.Id}");
-                    var response = _context.Database.ExecuteSqlRaw($"UPDATE [dbo].[ScadaRequestDetails] " +
+                    var scadaRequestDetailEntity = _context.ScadaRequestDetails.Find(scadaRequestDetail.Id);
+                    var sql = $"UPDATE [dbo].[ScadaRequestDetails] " +
                         $"SET [HeaderId] = {scadaRequestDetail.HeaderId}, " +
                         $"[AmrMeterId] = {scadaRequestDetail.AmrMeterId}, " +
                         $"[AmrScadaUserId] = {scadaRequestDetail.AmrScadaUserId}, " +
                         $"[Status] = {scadaRequestDetail.Status}, " +
-                        $"[Active] = {scadaRequestDetail.Active}, " +
-                        $"[LastRunDTM] = {scadaRequestDetail.LastRunDTM}, " +
-                        $"[CurrentRunDTM] = {scadaRequestDetail.CurrentRunDTM}, " +
-                        $"[UpdateFrequency] = {scadaRequestDetail.UpdateFrequency}, " +
-                        $"[LastDataDate] = {scadaRequestDetail.LastDataDate} " +
-                        $"WHERE [Id] = {scadaRequestDetail.Id}");
+                        $"[Active] = {scadaRequestDetail.Active}, ";
+                    if (scadaRequestDetailEntity.LastRunDTM != null)
+                    {
+                        sql += $"[LastRunDTM] = {scadaRequestDetailEntity.LastRunDTM}, ";
+                    }
+                    else
+                    {
+                        sql += $"[LastRunDTM] = Null, ";
+                    }
+                    if(scadaRequestDetailEntity.CurrentRunDTM!= null)
+                    {
+                        sql += $"[CurrentRunDTM] = {scadaRequestDetail.CurrentRunDTM}, ";
+                    }
+                    else
+                    {
+                        sql += $"[CurrentRunDTM] = Null, ";
+                    }
+                    sql += $"[UpdateFrequency] = {scadaRequestDetail.UpdateFrequency}, ";
+                    if (scadaRequestDetailEntity.LastDataDate != null) {
+                        sql += $"[LastDataDate] = {scadaRequestDetail.LastDataDate} ";
+                    }
+                    else
+                    {
+                        sql += $"[LastDataDate] = Null ";
+                    }
+                    sql += $"WHERE [Id] = {scadaRequestDetail.Id}";
+
+                    var response = _context.Database.ExecuteSqlRaw(sql);
 
                     if (response != 0)
                     {
