@@ -148,7 +148,7 @@ namespace ClientPortal.Controllers
         {
             try
             {
-                if (scadaRequestHeader.Id == 0)
+                if (scadaRequestHeader.Id == 0) // CREATE
                 {
                     _logger.LogInformation($"Creating ScadaRequestHeader with Id: {scadaRequestHeader.Id}");
 
@@ -157,10 +157,10 @@ namespace ClientPortal.Controllers
                         $"VALUES " +
                         $"({scadaRequestHeader.Status}, " +
                         $"{scadaRequestHeader.Active}, " +
-                        $"{scadaRequestHeader.CreatedDTM}, " +
-                        $"{scadaRequestHeader.StartRunDTM}, " +
-                        $"{scadaRequestHeader.LastRunDTM}, " +
-                        $"{scadaRequestHeader.CurrentRunDTM}, " +
+                        $"'{scadaRequestHeader.CreatedDTM}', " +
+                        $"'{scadaRequestHeader.StartRunDTM}', " +
+                        $"Null, " +
+                        $"Null, " +
                         $"{scadaRequestHeader.JobType}, " +
                         $"'{scadaRequestHeader.Description}', " +
                         $"{scadaRequestHeader.Interval})");
@@ -172,16 +172,16 @@ namespace ClientPortal.Controllers
                     }
                     else throw new Exception($"Failed to Create ScadaRequestHeader With Id: {scadaRequestHeader.Id}");
                 }
-                else
+                else                           // UPDATE
                 {
                     _logger.LogInformation($"Updating ScadaRequestHeader with Id: {scadaRequestHeader.Id}");
                     var response = _context.Database.ExecuteSqlRaw($"UPDATE [dbo].[ScadaRequestHeaders] " +
                         $"SET [Status] = {scadaRequestHeader.Status}, " +
                         $"[Active] = {scadaRequestHeader.Active}, " +
-                        $"[CreatedDTM] = {scadaRequestHeader.CreatedDTM}, " +
-                        $"[StartRunDTM] = {scadaRequestHeader.StartRunDTM}, " +
-                        $"[LastRunDTM] = {scadaRequestHeader.LastRunDTM}, " +
-                        $"[CurrentRunDTM] = {scadaRequestHeader.CurrentRunDTM}, " +
+                        $"[CreatedDTM] = '{scadaRequestHeader.CreatedDTM}', " +
+                        $"[StartRunDTM] = '{scadaRequestHeader.StartRunDTM}', " +
+                        $"[LastRunDTM] = '{scadaRequestHeader.LastRunDTM}', " +
+                        $"[CurrentRunDTM] = '{scadaRequestHeader.CurrentRunDTM}', " +
                         $"[JobType] = {scadaRequestHeader.JobType}, " +
                         $"[Description] = '{scadaRequestHeader.Description}', " +
                         $"[Interval] = {scadaRequestHeader.Interval} " +
@@ -203,15 +203,15 @@ namespace ClientPortal.Controllers
         }
 
         //POST: updateRequestHeaderStatus
-        [HttpPost("updateRequestHeaderStatus")]
-        public IActionResult UpdateRequestHeaderStatus([FromBody] int scadaRequestHeaderId)
+        [HttpPost("updateRequestHeaderStatus/{scadaRequestHeaderId}")]
+        public IActionResult UpdateRequestHeaderStatus(int scadaRequestHeaderId)
         {
             try
             {
                 _logger.LogInformation($"update ScadaRequestHeader with Id: {scadaRequestHeaderId}");
                 var response = _context.Database.ExecuteSqlRaw($"UPDATE [dbo].[ScadaRequestHeaders] SET " +
-                    $"[Status] = {0}, " +
-                    $" WHERE [Id] = {scadaRequestHeaderId}");
+                    $"[Status] = {0} " +
+                    $"WHERE [Id] = {scadaRequestHeaderId}");
 
                 if (response != 0)
                 {

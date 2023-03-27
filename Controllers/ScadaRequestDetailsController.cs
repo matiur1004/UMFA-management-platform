@@ -225,15 +225,15 @@ namespace ClientPortal.Controllers
         }
 
         //POST: updateRequestDetailStatus
-        [HttpPost("updateRequestDetailStatus")]
-        public IActionResult UpdateRequestDetailStatus([FromBody] int scadaRequestId)
+        [HttpPost("updateRequestDetailStatus/{scadaRequestDetailId}")]
+        public IActionResult UpdateRequestDetailStatus(int scadaRequestId)
         {
             try
             {
                 _logger.LogInformation($"update ScadaRequestDetail with Id: {scadaRequestId}");
                 var response = _context.Database.ExecuteSqlRaw($"UPDATE [dbo].[ScadaRequestDetails] SET " +
-                    $"[Status] = {0}, " +
-                    $" WHERE [Id] = {scadaRequestId}");
+                    $"[Status] = {0} " +
+                    $"WHERE [Id] = {scadaRequestId}");
 
                 if (response != 0)
                 {
