@@ -7,7 +7,7 @@
       public int AmrMeterId { get; set; }
       public int AmrScadaUserId { get; set; }
       public int Status { get; set; }
-      public bool Active { get; set; }
+      public int Active { get; set; }
       public DateTime LastRunDTM { get; set; }
       public DateTime CurrentRunDTM { get; set; }
       public int UpdateFrequency { get; set; }

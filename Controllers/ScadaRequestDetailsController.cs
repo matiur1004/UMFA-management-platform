@@ -256,7 +256,7 @@ namespace ClientPortal.Controllers
             {
                 _logger.LogInformation($"update ScadaRequestDetail with Id: {scadaRequestDetailId}");
                 var response = _context.Database.ExecuteSqlRaw($"UPDATE [dbo].[ScadaRequestDetails] SET " +
-                    $"[Status] = {0} " +
+                    $"[Status] = {1} " +
                     $"WHERE [Id] = {scadaRequestDetailId}");
 
                 if (response != 0)
