@@ -10,6 +10,8 @@
                 [formControlName]="'JobType'"
                 [searchable]="false"
                 [clearable]="false"
+                [ngClass]="{'read-only': scheduleHeaderDetail}"
+                [readonly]="scheduleHeaderDetail? true : false"
                 >
             </ng-select>
         </div>
@@ -24,7 +26,7 @@
             <mat-form-field class="fuse-mat-dense w-full readonly-field" [floatLabel]="'always'">
                 <mat-label class="form-label">Status</mat-label>
                 <input matInput value="{{getNameFromList(scheduleHeaderDetail.Status, scheduleHeaderStatus)}}" readonly />
-                <button [matTooltip]="'Reset'" mat-icon-button><mat-icon [svgIcon]="'feather:repeat'" (click)="onResetStatus()"></mat-icon></button>   
+                <button [matTooltip]="'Reset Status'" mat-icon-button><mat-icon [svgIcon]="'feather:repeat'" (click)="onResetStatus()"></mat-icon></button>   
             </mat-form-field>
         </div>
         <div class="col-span-1">

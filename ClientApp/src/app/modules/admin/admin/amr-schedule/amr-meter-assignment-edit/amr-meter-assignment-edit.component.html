@@ -20,7 +20,7 @@
             <div class="col-span-1">
                 <mat-label class="form-label"> Meter No </mat-label>
                 <ng-select
-                    [items]="meters$ | async"
+                    [items]="meters"
                     bindLabel="MeterNo"
                     bindValue="Id"
                     [placeholder]="'Meter No'"
@@ -29,6 +29,8 @@
                     [closeOnSelect]="true"
                     [clearable]="false"
                     [multiple]="false"
+                    (change)="onChangeAMRMeter($event)"
+                    [readonly]="meterAssignmentDetail? true : false"
                     >
                 </ng-select>
                 <mat-error *ngIf="form.get('AmrMeterId').getError('required')">
@@ -37,10 +39,12 @@
             </div>
             <div class="col-span-1">
                 <mat-form-field class="fuse-mat-dense w-full readonly-field" [floatLabel]="'always'">
-                    <mat-label class="form-label">Description</mat-label>
-                    <input matInput [formControlName]="'Description'" [placeholder]="'Description'"/>
+                    <mat-label class="form-label">AMR Description</mat-label>
+                    <input matInput [formControlName]="'AmrDescription'" [placeholder]="'Description'"/>
                 </mat-form-field>
             </div>
+        </div>
+        <div class="row grid grid-cols-2 gap-4">
             <div class="col-span-1">
                 <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
                     <mat-label class="form-label">Update Frequency</mat-label>
@@ -56,6 +60,14 @@
                     </mat-form-field>
                     <button mat-icon-button *ngIf="meterAssignmentDetail.Status == 6"><mat-icon [svgIcon]="'feather:repeat'" [matTooltip]="'Reset Status'" (click)="onResetStatus()"></mat-icon></button>
                 </div>
+            </div>
+        </div>
+        <div class="row grid grid-cols-2 gap-4">
+            <div class="col-span-1">
+                <mat-form-field class="fuse-mat-dense w-full readonly-field" [floatLabel]="'always'">
+                    <mat-label class="form-label">Last Run Date</mat-label>
+                    <input matInput [formControlName]="'LastRunDTM'" [placeholder]="'Last Run Date'" type="date" readonly/>
+                </mat-form-field>
             </div>
             <div class="col-span-1">
                 <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">

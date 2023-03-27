@@ -1,6 +1,6 @@
 <div class="flex flex-col relative">
     <div class="absolute left-2 top-2 z-20">
-      <button [matTooltip]="'New Meter Assignment'" mat-raised-button color="primary" class="dnm-btn dnm-btn-primary" [routerLink]="['/admin/amrSchedule/']">
+      <button [matTooltip]="'New Meter Assignment'" mat-raised-button color="primary" class="dnm-btn dnm-btn-primary" (click)="onAdd()">
         <mat-icon [svgIcon]="'feather:addMeter'" class="mr-1"></mat-icon>
         Add New
       </button>
@@ -29,7 +29,7 @@
                 placeholder="Search..."
             ></dxo-search-panel>
             <dxi-column dataField="AmrMeterId" caption="Meter No" [width]="100"></dxi-column>
-            <dxi-column dataField="StatusLabel" caption="Status" [width]="120"></dxi-column>
+            <dxi-column dataField="StatusLabel" caption="Status" [width]="160"></dxi-column>
             <dxi-column dataField="UpdateFrequency" caption="Update Frequency" [width]="140"></dxi-column>
             <dxi-column dataField="CurrentRunDTM" [customizeText]="onCustomizeDateTime"></dxi-column>
             <dxi-column dataField="LastRunDTM" [customizeText]="onCustomizeDateTime"></dxi-column>

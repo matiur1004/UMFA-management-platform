@@ -3,9 +3,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CONFIRM_MODAL_CONFIG } from '@core/config/modal.config';
 import { AllowedPageSizes } from '@core/helpers';
-import { IopUser, IScadaRequestDetail, IScadaScheduleStatus } from '@core/models';
+import { IAmrMeter, IopUser, IScadaRequestDetail, IScadaScheduleStatus } from '@core/models';
 import { UmfaUtils } from '@core/utils/umfa.utils';
-import { UserService } from '@shared/services';
+import { MeterService, UserService } from '@shared/services';
 import { AMRScheduleService } from '@shared/services/amr-schedule.service';
 import moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
@@ -22,6 +22,7 @@ export class AmrMeterAssignmentsComponent implements OnInit {
   headerId: number;
   user: IopUser;
   scheduleStatus: IScadaScheduleStatus[] = [];
+  meters: IAmrMeter[] = [];
   readonly allowedPageSizes = AllowedPageSizes;
   
   private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -32,6 +33,7 @@ export class AmrMeterAssignmentsComponent implements OnInit {
     private actRoute: ActivatedRoute, 
     private _matDialog: MatDialog,
     private userService: UserService,
+    private meterService: MeterService,
     private _ufUtils: UmfaUtils
   ) {
     this.onEdit = this.onEdit.bind(this);
@@ -50,17 +52,21 @@ export class AmrMeterAssignmentsComponent implements OnInit {
         this.scheduleStatus = data;
       })
 
+    this.meterService.meters$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((data: any) => {
+        this.meters = data;
+      })
+
     this._amrScheduleService.scadaRequestDetails$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: IScadaRequestDetail[]) => {
           this.scadaRequestDetails = data;
           this.scadaRequestDetails = this.scadaRequestDetails.map(item => {
             let statusItem = this.scheduleStatus.find(obj => obj.Id == item.Status);
-            return {...item, StatusLabel: statusItem.Name};
+            return {...item, StatusLabel: statusItem? statusItem.Name : ''};
           })
       })
-
-    
   }
 
   onEdit(e) {
@@ -69,12 +75,43 @@ export class AmrMeterAssignmentsComponent implements OnInit {
       {
         userId: this.user.Id,
         detail: e.row.data,
-        scheduleStatus: this.scheduleStatus
+        scheduleStatus: this.scheduleStatus,
+        meters: this.meters,
+        headerId: this.headerId
       }})
       .afterClosed()
       .subscribe((res) => {
         if(res) {
-          this._amrScheduleService.createOrUpdateScadaRequestDetail(res)
+          res['LastDataDate'] = new Date(res['LastDataDate']).toISOString();
+          res['LastRunDTM'] = new Date().toISOString();
+          res['CurrentRunDTM'] = new Date().toISOString();
+          res['Active'] = 1;
+          console.log(res);
+          this._amrScheduleService.createOrUpdateRequestDetailTable(res)
+            .subscribe(() => {
+              this._amrScheduleService.getScadaRequestDetails(this.headerId);
+            });  
+        }
+      });
+  }
+
+  onAdd() {
+    this._matDialog.open(AmrMeterAssignmentEditComponent, {autoFocus: false, data: 
+      {
+        userId: this.user.Id,
+        detail: null,
+        scheduleStatus: this.scheduleStatus,
+        meters: this.meters,
+        headerId: this.headerId
+      }})
+      .afterClosed()
+      .subscribe((res) => {
+        if(res) {
+          res['LastDataDate'] = new Date(res['LastDataDate']).toISOString();
+          res['LastRunDTM'] = new Date().toISOString();
+          res['CurrentRunDTM'] = new Date().toISOString();  
+          res['Active'] = 1;
+          this._amrScheduleService.createOrUpdateRequestDetailTable(res)
             .subscribe(() => {
               this._amrScheduleService.getScadaRequestDetails(this.headerId);
             });  

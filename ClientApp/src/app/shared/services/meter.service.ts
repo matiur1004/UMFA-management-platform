@@ -1,13 +1,18 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { CONFIG } from "app/core/helpers";
-import { catchError, Observable, of, tap, throwError } from "rxjs";
+import { BehaviorSubject, catchError, Observable, of, tap, throwError } from "rxjs";
 import { IAmrMeter, AmrMeterUpdate, IUtility } from "../../core/models";
 
 @Injectable({ providedIn: 'root' })
 export class MeterService {
-
+  private _meters: BehaviorSubject<any> = new BehaviorSubject([]);
+  
   constructor(private http: HttpClient) { }
+
+  get meters$(): Observable<any> {
+    return this._meters.asObservable();
+  }
 
   getMetersForUser(userId: number): Observable<IAmrMeter[]> {
     const url = `${CONFIG.apiURL}${CONFIG.metersForUser}${userId}`;
@@ -15,6 +20,7 @@ export class MeterService {
       .pipe(
         catchError(err => this.catchErrors(err)),
         tap(m => {
+          this._meters.next(m);
           //console.log(`getMetersForUser observable returned ${m}`);
         }),
       );

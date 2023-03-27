@@ -1,11 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CONFIRM_MODAL_CONFIG } from '@core/config/modal.config';
 import { IAmrMeter, IScadaRequestDetail, IScadaScheduleStatus } from '@core/models';
 import { UmfaUtils } from '@core/utils/umfa.utils';
 import { MeterService } from '@shared/services';
 import { AMRScheduleService } from '@shared/services/amr-schedule.service';
+import moment from 'moment';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -17,11 +18,12 @@ export class AmrMeterAssignmentEditComponent implements OnInit {
 
   data: any;
   amrMeterItems: any[] = [];
-  meters$: Observable<IAmrMeter[]>;
+  meters: IAmrMeter[] = [];
   meterAssignmentDetail: IScadaRequestDetail;
   scheduleStatus: IScadaScheduleStatus[] = [];
 
   form: UntypedFormGroup;
+  selectedMeter: IAmrMeter;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) data,
@@ -35,19 +37,38 @@ export class AmrMeterAssignmentEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.meters$ =  this.meterService.getMetersForUser(this.data.userId);
+    this.meterService.getMetersForUser(this.data.userId).subscribe(res => this.meters = res);
     // Prepare the card form
     this.form = this._formBuilder.group({
-      AmrMeterId: [],
-      Description: [''],
+      Id: [0],
+      HeaderId: [this.data.headerId],
+      AmrMeterId: [null, [Validators.required]],
+      AmrDescription: [''],
+      Status: [1],
+      Active: [1],
       UpdateFrequency: [0],
-      LastDataDate: [null]
+      LastDataDate: [null],
+      LastRunDTM: [moment(new Date()).format('YYYY-MM-DD')]
     })
+    
+    this.scheduleStatus = this.data.scheduleStatus;
+    this.meters = this.data.meters;
     if(this.data.detail) {
       this.meterAssignmentDetail = this.data.detail;
-      this.scheduleStatus = this.data.scheduleStatus;
+      
       this.form.patchValue(this.meterAssignmentDetail);
+      this.form.get('LastRunDTM').setValue(moment(this.meterAssignmentDetail.LastRunDTM).format('YYYY-MM-DD'));
+      this.form.get('LastDataDate').setValue(moment(this.meterAssignmentDetail.LastDataDate).format('YYYY-MM-DD'));
+      this.selectedMeter = this.meters.find(meter => meter.Id == this.meterAssignmentDetail.AmrMeterId);
+      if(this.selectedMeter) {
+        this.form.get('AmrDescription').setValue(this.selectedMeter.Description);
+      }
     }
+  }
+
+  onChangeAMRMeter(event) {
+    this.selectedMeter = event;
+    this.form.get('AmrDescription').setValue(event.Description);
   }
 
   close(): void {
@@ -78,7 +99,18 @@ export class AmrMeterAssignmentEditComponent implements OnInit {
   }
 
   onResetStatus() {
-    this.amrScheduleService.updateRequestDetailStatus(this.meterAssignmentDetail.Id)
-      .subscribe(() => {})
+    const dialogRef = this._ufUtils.fuseConfirmDialog(
+      CONFIRM_MODAL_CONFIG,
+      '', 
+      `Are you sure you will reset status?`);
+    // Subscribe to afterClosed from the dialog reference
+    dialogRef.afterClosed().subscribe((result) => {
+      if(result == 'confirmed') {
+        this.amrScheduleService.updateRequestDetailStatus(this.meterAssignmentDetail.Id)
+          .subscribe(() => {})
+      } else {
+      }
+    });
+    
   }
 }

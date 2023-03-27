@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CONFIRM_MODAL_CONFIG } from '@core/config/modal.config';
 import { IScadaJobStatus, IScadaRequestHeader, IScadaScheduleStatus } from '@core/models';
@@ -31,12 +31,11 @@ export class AmrScheduleEditComponent implements OnInit {
   ngOnInit(): void {
     this.form = this._formBuilder.group({
       Id: [0],
-      JobType: [],
+      JobType: [null, [Validators.required]],
       Interval: [],
-      Status: [0],
+      Status: [1],
       Active: [1],
-      Description: [''],
-
+      Description: ['']
     });
 
     this._amrScheduleService.jobStatus$
@@ -86,7 +85,15 @@ export class AmrScheduleEditComponent implements OnInit {
     // Subscribe to afterClosed from the dialog reference
     dialogRef.afterClosed().subscribe((result) => {
       if(result == 'confirmed') {
-        this._amrScheduleService.createOrUpdateScadaRequestHeader(this.form.value).subscribe(() => {
+        let formData = {
+          ...this.form.value, 
+          CreatedDTM: new Date().toISOString(),
+          StartRunDTM: new Date().toISOString(),
+          LastRunDTM: new Date().toISOString(),
+          CurrentRunDTM: new Date().toISOString(),
+          Active: 1
+        };
+        this._amrScheduleService.createOrUpdateRequestHeaderTable(formData).subscribe(() => {
           this._router.navigate([`/admin/amrSchedule`]);
         });
         //this.matDialogRef.close(this.form.value);    
@@ -113,7 +120,7 @@ export class AmrScheduleEditComponent implements OnInit {
     // Subscribe to afterClosed from the dialog reference
     dialogRef.afterClosed().subscribe((result) => {
       if(result == 'confirmed') {
-        this._amrScheduleService.updateRequestHeaderStatus({Id: this.scheduleHeaderDetail.Status}).subscribe(() => {
+        this._amrScheduleService.updateRequestHeaderStatus(this.scheduleHeaderDetail.Id).subscribe(() => {
           //this._router.navigate([`/admin/amrSchedule`]);
         });
       } else {

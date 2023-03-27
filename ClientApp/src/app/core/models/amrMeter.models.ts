@@ -65,4 +65,6 @@ export interface IScadaRequestDetail {
   HeaderId: number;
   AmrMeterId: number;
   Status: number;
+  LastRunDTM: string;
+  LastDataDate: string;
 }

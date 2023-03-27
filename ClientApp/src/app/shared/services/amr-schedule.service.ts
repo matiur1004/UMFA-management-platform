@@ -92,8 +92,8 @@ export class AMRScheduleService {
         );
     }
 
-    createOrUpdateScadaRequestHeader(formData) {
-      const url = `${CONFIG.apiURL}/ScadaRequestHeaders/createOrUpdateScadaRequestHeader`;
+    createOrUpdateRequestHeaderTable(formData) {
+      const url = `${CONFIG.apiURL}/ScadaRequestHeaders/createOrUpdateRequestHeaderTable`;
       return this.http.post<any>(url, formData, { withCredentials: true })
         .pipe(
           catchError(err => this.catchErrors(err)),
@@ -103,8 +103,8 @@ export class AMRScheduleService {
         );
     }
 
-    createOrUpdateScadaRequestDetail(formData) {
-      const url = `${CONFIG.apiURL}/ScadaRequestDetails/createOrUpdateScadaRequestDetail`;
+    createOrUpdateRequestDetailTable(formData) {
+      const url = `${CONFIG.apiURL}/ScadaRequestDetails/createOrUpdateRequestDetailTable`;
       return this.http.post<any>(url, formData, { withCredentials: true })
         .pipe(
           catchError(err => this.catchErrors(err)),
@@ -114,9 +114,9 @@ export class AMRScheduleService {
         );
     }
 
-    updateRequestHeaderStatus(data) {
-      const url = `${CONFIG.apiURL}/ScadaRequestHeaders/updateRequestHeaderStatus`;
-      return this.http.post<any>(url, data, { withCredentials: true })
+    updateRequestHeaderStatus(detailId) {
+      const url = `${CONFIG.apiURL}/ScadaRequestHeaders/updateRequestHeaderStatus/${detailId}`;
+      return this.http.post<any>(url, {}, { withCredentials: true })
         .pipe(
           catchError(err => this.catchErrors(err)),
           tap(bl => {
