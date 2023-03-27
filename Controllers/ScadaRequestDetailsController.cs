@@ -250,47 +250,27 @@ namespace ClientPortal.Controllers
 
         //POST: updateRequestDetailStatus
         [HttpPost("updateRequestDetailStatus/{scadaRequestDetailId}")]
-        public IActionResult UpdateRequestDetailStatus(int scadaRequestId)
+        public IActionResult UpdateRequestDetailStatus(int scadaRequestDetailId)
         {
             try
             {
-                _logger.LogInformation($"update ScadaRequestDetail with Id: {scadaRequestId}");
+                _logger.LogInformation($"update ScadaRequestDetail with Id: {scadaRequestDetailId}");
                 var response = _context.Database.ExecuteSqlRaw($"UPDATE [dbo].[ScadaRequestDetails] SET " +
                     $"[Status] = {0} " +
-                    $"WHERE [Id] = {scadaRequestId}");
+                    $"WHERE [Id] = {scadaRequestDetailId}");
 
                 if (response != 0)
                 {
-                    _logger.LogInformation($"Successfully updated ScadaRequestDetail: {scadaRequestId}");
+                    _logger.LogInformation($"Successfully updated ScadaRequestDetail: {scadaRequestDetailId}");
                     return Ok(response);
                 }
-                else throw new Exception($"Failed to ScadaRequestDetail With Id: {scadaRequestId}");
+                else throw new Exception($"Failed to ScadaRequestDetail With Id: {scadaRequestDetailId}");
             }
             catch (Exception ex)
             {
                 _logger?.LogError($"Failed to update ScadaRequestDetail: {ex.Message}");
                 return BadRequest(new ApplicationException($"Failed to update ScadaRequestDetail: {ex.Message}"));
             }
-        }
-
-        // GET: getScadaRequestDetailStatus/5
-        [HttpGet("getScadaRequestDetailStatus/{id}")]
-        public async Task<ActionResult<int>> GetScadaRequestDetailStatus(int id)
-        {
-            if (_context.ScadaRequestDetails == null)
-            {
-                _logger.LogError($"ScadaRequestDetails Entries Not Found in Table!");
-                return NotFound();
-            }
-            var scadaRequestDetail = await _context.ScadaRequestDetails.FindAsync(id);
-
-            if (scadaRequestDetail == null)
-            {
-                _logger.LogError($"ScadaRequestDetail with Id: {id} Not Found!");
-                return NotFound();
-            }
-            _logger.LogInformation($"ScadaRequestDetail with Id: {id} Status: {scadaRequestDetail.Status} Found and Returned!");
-            return scadaRequestDetail.Status;
         }
 
         // DELETE: ScadaRequestDetails/5
