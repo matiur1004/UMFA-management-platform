@@ -24,7 +24,7 @@
             <mat-form-field class="fuse-mat-dense w-full readonly-field" [floatLabel]="'always'">
                 <mat-label class="form-label">Status</mat-label>
                 <input matInput value="{{getNameFromList(scheduleHeaderDetail.Status, scheduleHeaderStatus)}}" readonly />
-                <button [matTooltip]="'Reset'" mat-icon-button><mat-icon [svgIcon]="'feather:repeat'"></mat-icon></button>   
+                <button [matTooltip]="'Reset'" mat-icon-button><mat-icon [svgIcon]="'feather:repeat'" (click)="onResetStatus()"></mat-icon></button>   
             </mat-form-field>
         </div>
         <div class="col-span-1">
@@ -37,7 +37,7 @@
     <div class="pt-3 px-4 border-t border-gray-300 text-gray-600 flex justify-end gap-x-4">
         <button *ngIf="scheduleHeaderDetail && scheduleHeaderDetail.Id > 0" class="dnm-btn dnm-btn-delete" type="button" (click)="onDelete()">Delete</button>
         <button routerLink="/admin/amrSchedule" class="dnm-btn dnm-btn-cancel" type="button">Cancel</button>
-        <button mat-raised-button color="primary" class="dnm-btn dnm-btn-primary" (click)="onMeterAssignments()">Meter Assignments</button>
+        <button mat-raised-button color="primary" class="dnm-btn dnm-btn-primary" (click)="onMeterAssignments()" *ngIf="scheduleHeaderDetail && scheduleHeaderDetail.Id">Meter Assignments</button>
         <button mat-raised-button color="primary" class="dnm-btn dnm-btn-primary" (click)="onSave()">Save</button>
     </div>
 </form>

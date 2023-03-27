@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CONFIG } from '@core/helpers';
-import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, of, tap, throwError } from 'rxjs';
 import { NotificationService } from './notification.service';
 
 @Injectable({
@@ -49,14 +49,25 @@ export class AMRScheduleService {
     }
 
     getScadaRequestHeaderDetail(id) {
-      const url = `${CONFIG.apiURL}/ScadaRequestHeaders/getScadaRequestHeader/${id}`;
-      return this.http.get<any>(url, { withCredentials: true })
-        .pipe(
-          catchError(err => this.catchErrors(err)),
-          tap(bl => {
-              this._scadaRequestHeaderDetail.next(bl);
-          })
-        );
+      if(id == 0) {
+        return of(null)
+          .pipe(
+            catchError(err => this.catchErrors(err)),
+            tap(bl => {
+                this._scadaRequestHeaderDetail.next(bl);
+            })
+          );
+      } else {
+        const url = `${CONFIG.apiURL}/ScadaRequestHeaders/getScadaRequestHeader/${id}`;
+        return this.http.get<any>(url, { withCredentials: true })
+          .pipe(
+            catchError(err => this.catchErrors(err)),
+            tap(bl => {
+                this._scadaRequestHeaderDetail.next(bl);
+            })
+          );
+      }
+      
     }
 
     getScheduleStatus() {
@@ -77,6 +88,50 @@ export class AMRScheduleService {
           catchError(err => this.catchErrors(err)),
           tap(bl => {
               this._scadaRequestDetails.next(bl);
+          })
+        );
+    }
+
+    createOrUpdateScadaRequestHeader(formData) {
+      const url = `${CONFIG.apiURL}/ScadaRequestHeaders/createOrUpdateScadaRequestHeader`;
+      return this.http.post<any>(url, formData, { withCredentials: true })
+        .pipe(
+          catchError(err => this.catchErrors(err)),
+          tap(bl => {
+            this.notificationService.message(formData['Id'] ? 'Updated successfully!' : 'Created successfully');
+          })
+        );
+    }
+
+    createOrUpdateScadaRequestDetail(formData) {
+      const url = `${CONFIG.apiURL}/ScadaRequestDetails/createOrUpdateScadaRequestDetail`;
+      return this.http.post<any>(url, formData, { withCredentials: true })
+        .pipe(
+          catchError(err => this.catchErrors(err)),
+          tap(bl => {
+            this.notificationService.message(formData['Id'] ? 'Updated successfully!' : 'Created successfully');
+          })
+        );
+    }
+
+    updateRequestHeaderStatus(data) {
+      const url = `${CONFIG.apiURL}/ScadaRequestHeaders/updateRequestHeaderStatus`;
+      return this.http.post<any>(url, data, { withCredentials: true })
+        .pipe(
+          catchError(err => this.catchErrors(err)),
+          tap(bl => {
+            this.notificationService.message('Reset successfully!');
+          })
+        );
+    }
+
+    updateRequestDetailStatus(data) {
+      const url = `${CONFIG.apiURL}/ScadaRequestDetails/updateRequestDetailStatus`;
+      return this.http.post<any>(url, data, { withCredentials: true })
+        .pipe(
+          catchError(err => this.catchErrors(err)),
+          tap(bl => {
+            this.notificationService.message('Reset successfully!');
           })
         );
     }
