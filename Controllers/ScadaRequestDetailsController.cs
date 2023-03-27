@@ -1,6 +1,9 @@
 ﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.PortalEntities;
+using ClientPortal.Migrations;
+using ClientPortal.Models.ScadaRequestsForTableUpdate;
+using DevExpress.Charts.Native;
 using MimeKit;
 
 namespace ClientPortal.Controllers
@@ -120,6 +123,66 @@ namespace ClientPortal.Controllers
             return CreatedAtAction("GetScadaRequestDetail", new { id = scadaRequestDetail.Id }, scadaRequestDetail);
         }
 
+        //POST: updateRequestDetailStatus
+        [HttpPost("createOrUpdateRequestDetailTable")]
+        public IActionResult UpdateRequestDetailStatus([FromBody] ScadaRequestDetailTable scadaRequestDetail)
+        {
+            try
+            {
+                if (scadaRequestDetail.Id == 0)
+                {
+                    _logger.LogInformation($"Creating ScadaRequestDetail with Id: {scadaRequestDetail.Id}");
+
+                    var response = _context.Database.ExecuteSqlRaw($"INSERT INTO [dbo].[ScadaRequestDetails] " +
+                        $"([HeaderId],[AmrMeterId],[AmrScadaUserId],[Status],[Active],[LastRunDTM],[CurrentRunDTM],[UpdateFrequency],[LastDataDate]) " +
+                        $"VALUES " +
+                        $"({scadaRequestDetail.HeaderId}, " +
+                        $"{scadaRequestDetail.AmrMeterId}, " +
+                        $"{scadaRequestDetail.AmrScadaUserId}, " +
+                        $"{scadaRequestDetail.Status}, " +
+                        $"{scadaRequestDetail.Active}, " +
+                        $"{scadaRequestDetail.LastRunDTM}, " +
+                        $"{scadaRequestDetail.CurrentRunDTM}, " +
+                        $"{scadaRequestDetail.UpdateFrequency}, " +
+                        $"{scadaRequestDetail.LastDataDate})");
+
+                    if (response != 0)
+                    {
+                        _logger.LogInformation($"Successfully Created ScadaRequestDetail: {scadaRequestDetail.Id}");
+                        return Ok(response);
+                    }
+                    else throw new Exception($"Failed to Create ScadaRequestDetail With Id: {scadaRequestDetail.Id}");
+                }
+                else
+                {
+                    _logger.LogInformation($"Updating ScadaRequestDetail with Id: {scadaRequestDetail.Id}");
+                    var response = _context.Database.ExecuteSqlRaw($"UPDATE [dbo].[ScadaRequestDetails] " +
+                        $"SET [HeaderId] = {scadaRequestDetail.HeaderId}, " +
+                        $"[AmrMeterId] = {scadaRequestDetail.AmrMeterId}, " +
+                        $"[AmrScadaUserId] = {scadaRequestDetail.AmrScadaUserId}, " +
+                        $"[Status] = {scadaRequestDetail.Status}, " +
+                        $"[Active] = {scadaRequestDetail.Active}, " +
+                        $"[LastRunDTM] = {scadaRequestDetail.LastRunDTM}, " +
+                        $"[CurrentRunDTM] = {scadaRequestDetail.CurrentRunDTM}, " +
+                        $"[UpdateFrequency] = {scadaRequestDetail.UpdateFrequency}, " +
+                        $"[LastDataDate] = {scadaRequestDetail.LastDataDate} " +
+                        $"WHERE [Id] = {scadaRequestDetail.Id}");
+
+                    if (response != 0)
+                    {
+                        _logger.LogInformation($"Successfully Updated ScadaRequestDetail: {scadaRequestDetail.Id}");
+                        return Ok(response);
+                    }
+                    else throw new Exception($"Failed to Update ScadaRequestDetail With Id: {scadaRequestDetail.Id}");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError($"Failed to Create Or Update ScadaRequestDetail: {ex.Message}");
+                return BadRequest(new ApplicationException($"Failed to Create Or Update ScadaRequestDetail: {ex.Message}"));
+            }
+        }
+
         //POST: createOrUpdateRequestDetail
         [HttpPost("createOrUpdateScadaRequestDetail")]
         public async Task<ActionResult<ScadaRequestDetail>> CreateOrUpdateScadaRequestDetail(ScadaRequestDetail scadaRequestDetail)
@@ -163,21 +226,21 @@ namespace ClientPortal.Controllers
 
         //POST: updateRequestDetailStatus
         [HttpPost("updateRequestDetailStatus")]
-        public IActionResult UpdateRequestDetailStatus([FromBody] ScadaRequestDetail scadaRequestDetail)
+        public IActionResult UpdateRequestDetailStatus([FromBody] int scadaRequestId)
         {
             try
             {
-                _logger.LogInformation($"update ScadaRequestDetail with Id: {scadaRequestDetail.Id}");
+                _logger.LogInformation($"update ScadaRequestDetail with Id: {scadaRequestId}");
                 var response = _context.Database.ExecuteSqlRaw($"UPDATE [dbo].[ScadaRequestDetails] SET " +
                     $"[Status] = {0}, " +
-                    $" WHERE [Id] = {scadaRequestDetail.Id}");
+                    $" WHERE [Id] = {scadaRequestId}");
 
                 if (response != 0)
                 {
-                    _logger.LogInformation($"Successfully updated ScadaRequestDetail: {scadaRequestDetail.Id}");
+                    _logger.LogInformation($"Successfully updated ScadaRequestDetail: {scadaRequestId}");
                     return Ok(response);
                 }
-                else throw new Exception($"Failed to ScadaRequestDetail With Id: {scadaRequestDetail.Id}");
+                else throw new Exception($"Failed to ScadaRequestDetail With Id: {scadaRequestId}");
             }
             catch (Exception ex)
             {
