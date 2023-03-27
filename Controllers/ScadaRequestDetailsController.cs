@@ -4,6 +4,7 @@ using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Migrations;
 using ClientPortal.Models.ScadaRequestsForTableUpdate;
 using DevExpress.Charts.Native;
+using Microsoft.EntityFrameworkCore;
 using MimeKit;
 
 namespace ClientPortal.Controllers
@@ -141,10 +142,10 @@ namespace ClientPortal.Controllers
                         $"{scadaRequestDetail.AmrScadaUserId}, " +
                         $"{scadaRequestDetail.Status}, " +
                         $"{scadaRequestDetail.Active}, " +
-                        $"{scadaRequestDetail.LastRunDTM}, " +
-                        $"{scadaRequestDetail.CurrentRunDTM}, " +
+                        $"Null, " +
+                        $"Null, " +
                         $"{scadaRequestDetail.UpdateFrequency}, " +
-                        $"{scadaRequestDetail.LastDataDate})");
+                        $"Null)");
 
                     if (response != 0)
                     {
@@ -156,17 +157,40 @@ namespace ClientPortal.Controllers
                 else
                 {
                     _logger.LogInformation($"Updating ScadaRequestDetail with Id: {scadaRequestDetail.Id}");
-                    var response = _context.Database.ExecuteSqlRaw($"UPDATE [dbo].[ScadaRequestDetails] " +
+                    var scadaRequestDetailEntity = _context.ScadaRequestDetails.Find(scadaRequestDetail.Id);
+                    var sql = $"UPDATE [dbo].[ScadaRequestDetails] " +
                         $"SET [HeaderId] = {scadaRequestDetail.HeaderId}, " +
                         $"[AmrMeterId] = {scadaRequestDetail.AmrMeterId}, " +
                         $"[AmrScadaUserId] = {scadaRequestDetail.AmrScadaUserId}, " +
                         $"[Status] = {scadaRequestDetail.Status}, " +
-                        $"[Active] = {scadaRequestDetail.Active}, " +
-                        $"[LastRunDTM] = {scadaRequestDetail.LastRunDTM}, " +
-                        $"[CurrentRunDTM] = {scadaRequestDetail.CurrentRunDTM}, " +
-                        $"[UpdateFrequency] = {scadaRequestDetail.UpdateFrequency}, " +
-                        $"[LastDataDate] = {scadaRequestDetail.LastDataDate} " +
-                        $"WHERE [Id] = {scadaRequestDetail.Id}");
+                        $"[Active] = {scadaRequestDetail.Active}, ";
+                    if (scadaRequestDetailEntity.LastRunDTM != null)
+                    {
+                        sql += $"[LastRunDTM] = {scadaRequestDetailEntity.LastRunDTM}, ";
+                    }
+                    else
+                    {
+                        sql += $"[LastRunDTM] = Null, ";
+                    }
+                    if(scadaRequestDetailEntity.CurrentRunDTM!= null)
+                    {
+                        sql += $"[CurrentRunDTM] = {scadaRequestDetail.CurrentRunDTM}, ";
+                    }
+                    else
+                    {
+                        sql += $"[CurrentRunDTM] = Null, ";
+                    }
+                    sql += $"[UpdateFrequency] = {scadaRequestDetail.UpdateFrequency}, ";
+                    if (scadaRequestDetailEntity.LastDataDate != null) {
+                        sql += $"[LastDataDate] = {scadaRequestDetail.LastDataDate} ";
+                    }
+                    else
+                    {
+                        sql += $"[LastDataDate] = Null ";
+                    }
+                    sql += $"WHERE [Id] = {scadaRequestDetail.Id}";
+
+                    var response = _context.Database.ExecuteSqlRaw(sql);
 
                     if (response != 0)
                     {
@@ -226,47 +250,27 @@ namespace ClientPortal.Controllers
 
         //POST: updateRequestDetailStatus
         [HttpPost("updateRequestDetailStatus/{scadaRequestDetailId}")]
-        public IActionResult UpdateRequestDetailStatus(int scadaRequestId)
+        public IActionResult UpdateRequestDetailStatus(int scadaRequestDetailId)
         {
             try
             {
-                _logger.LogInformation($"update ScadaRequestDetail with Id: {scadaRequestId}");
+                _logger.LogInformation($"update ScadaRequestDetail with Id: {scadaRequestDetailId}");
                 var response = _context.Database.ExecuteSqlRaw($"UPDATE [dbo].[ScadaRequestDetails] SET " +
                     $"[Status] = {0} " +
-                    $"WHERE [Id] = {scadaRequestId}");
+                    $"WHERE [Id] = {scadaRequestDetailId}");
 
                 if (response != 0)
                 {
-                    _logger.LogInformation($"Successfully updated ScadaRequestDetail: {scadaRequestId}");
+                    _logger.LogInformation($"Successfully updated ScadaRequestDetail: {scadaRequestDetailId}");
                     return Ok(response);
                 }
-                else throw new Exception($"Failed to ScadaRequestDetail With Id: {scadaRequestId}");
+                else throw new Exception($"Failed to ScadaRequestDetail With Id: {scadaRequestDetailId}");
             }
             catch (Exception ex)
             {
                 _logger?.LogError($"Failed to update ScadaRequestDetail: {ex.Message}");
                 return BadRequest(new ApplicationException($"Failed to update ScadaRequestDetail: {ex.Message}"));
             }
-        }
-
-        // GET: getScadaRequestDetailStatus/5
-        [HttpGet("getScadaRequestDetailStatus/{id}")]
-        public async Task<ActionResult<int>> GetScadaRequestDetailStatus(int id)
-        {
-            if (_context.ScadaRequestDetails == null)
-            {
-                _logger.LogError($"ScadaRequestDetails Entries Not Found in Table!");
-                return NotFound();
-            }
-            var scadaRequestDetail = await _context.ScadaRequestDetails.FindAsync(id);
-
-            if (scadaRequestDetail == null)
-            {
-                _logger.LogError($"ScadaRequestDetail with Id: {id} Not Found!");
-                return NotFound();
-            }
-            _logger.LogInformation($"ScadaRequestDetail with Id: {id} Status: {scadaRequestDetail.Status} Found and Returned!");
-            return scadaRequestDetail.Status;
         }
 
         // DELETE: ScadaRequestDetails/5
