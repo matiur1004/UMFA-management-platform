@@ -125,9 +125,9 @@ export class AMRScheduleService {
         );
     }
 
-    updateRequestDetailStatus(data) {
-      const url = `${CONFIG.apiURL}/ScadaRequestDetails/updateRequestDetailStatus`;
-      return this.http.post<any>(url, data, { withCredentials: true })
+    updateRequestDetailStatus(detailId) {
+      const url = `${CONFIG.apiURL}/ScadaRequestDetails/updateRequestDetailStatus/${detailId}`;
+      return this.http.post<any>(url, {}, { withCredentials: true })
         .pipe(
           catchError(err => this.catchErrors(err)),
           tap(bl => {

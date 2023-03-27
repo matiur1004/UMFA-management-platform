@@ -5,6 +5,7 @@ import { CONFIRM_MODAL_CONFIG } from '@core/config/modal.config';
 import { IAmrMeter, IScadaRequestDetail, IScadaScheduleStatus } from '@core/models';
 import { UmfaUtils } from '@core/utils/umfa.utils';
 import { MeterService } from '@shared/services';
+import { AMRScheduleService } from '@shared/services/amr-schedule.service';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -27,6 +28,7 @@ export class AmrMeterAssignmentEditComponent implements OnInit {
     public matDialogRef: MatDialogRef<AmrMeterAssignmentEditComponent>,
     private _formBuilder: UntypedFormBuilder,
     private meterService: MeterService,
+    private amrScheduleService: AMRScheduleService,
     private _ufUtils: UmfaUtils,
   ) { 
     this.data = data;
@@ -38,7 +40,8 @@ export class AmrMeterAssignmentEditComponent implements OnInit {
     this.form = this._formBuilder.group({
       AmrMeterId: [],
       Description: [''],
-      UpdateFrequency: [0]
+      UpdateFrequency: [0],
+      LastDataDate: [null]
     })
     if(this.data.detail) {
       this.meterAssignmentDetail = this.data.detail;
@@ -75,6 +78,7 @@ export class AmrMeterAssignmentEditComponent implements OnInit {
   }
 
   onResetStatus() {
-    
+    this.amrScheduleService.updateRequestDetailStatus(this.meterAssignmentDetail.Id)
+      .subscribe(() => {})
   }
 }

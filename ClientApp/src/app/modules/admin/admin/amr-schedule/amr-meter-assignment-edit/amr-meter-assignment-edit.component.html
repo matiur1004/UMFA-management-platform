@@ -57,6 +57,13 @@
                     <button mat-icon-button *ngIf="meterAssignmentDetail.Status == 6"><mat-icon [svgIcon]="'feather:repeat'" [matTooltip]="'Reset Status'" (click)="onResetStatus()"></mat-icon></button>
                 </div>
             </div>
+            <div class="col-span-1">
+                <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
+                    <mat-label class="form-label">Last Data Date</mat-label>
+                    <input matInput [formControlName]="'LastDataDate'" [placeholder]="'Last Data Date'" type="date" 
+                        [matTooltip]="'Retrieve all data from this date, changing this will result in existing data to be replaced'"/>
+                </mat-form-field>
+            </div>
         </div>
         <div class="row flex gap-y-2 justify-end flex">
             <div class="flex gap-x-2">
