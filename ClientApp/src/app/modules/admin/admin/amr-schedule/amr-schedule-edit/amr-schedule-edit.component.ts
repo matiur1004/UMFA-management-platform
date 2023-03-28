@@ -35,7 +35,7 @@ export class AmrScheduleEditComponent implements OnInit {
       Interval: [],
       Status: [1],
       Active: [1],
-      Description: ['']
+      Description: ['', [Validators.required]]
     });
 
     this._amrScheduleService.jobStatus$
@@ -78,28 +78,29 @@ export class AmrScheduleEditComponent implements OnInit {
   }
 
   onSave() {
-    const dialogRef = this._ufUtils.fuseConfirmDialog(
-      CONFIRM_MODAL_CONFIG,
-      '', 
-      `Are you sure you need to ${this.scheduleHeaderDetail ? 'update' : 'create'}?`);
-    // Subscribe to afterClosed from the dialog reference
-    dialogRef.afterClosed().subscribe((result) => {
-      if(result == 'confirmed') {
-        let formData = {
-          ...this.form.value, 
-          CreatedDTM: new Date().toISOString(),
-          StartRunDTM: new Date().toISOString(),
-          LastRunDTM: new Date().toISOString(),
-          CurrentRunDTM: new Date().toISOString(),
-          Active: 1
-        };
-        this._amrScheduleService.createOrUpdateRequestHeaderTable(formData).subscribe(() => {
-          this._router.navigate([`/admin/amrSchedule`]);
-        });
-        //this.matDialogRef.close(this.form.value);    
-      } else {
-      }
-    });
+    if(this.form.valid) {
+      const dialogRef = this._ufUtils.fuseConfirmDialog(
+        CONFIRM_MODAL_CONFIG,
+        '', 
+        `Are you sure you need to ${this.scheduleHeaderDetail ? 'update' : 'create'}?`);
+      // Subscribe to afterClosed from the dialog reference
+      dialogRef.afterClosed().subscribe((result) => {
+        if(result == 'confirmed') {
+          let formData = {
+            ...this.form.value, 
+            CreatedDTM: new Date().toISOString(),
+            StartRunDTM: new Date().toISOString(),
+            LastRunDTM: new Date().toISOString(),
+            CurrentRunDTM: new Date().toISOString(),
+            Active: 1
+          };
+          this._amrScheduleService.createOrUpdateRequestHeaderTable(formData).subscribe(() => {
+            this._router.navigate([`/admin/amrSchedule`]);
+          }); 
+        } else {
+        }
+      });
+    }
   }
 
   getNameFromList(id: number, list){
