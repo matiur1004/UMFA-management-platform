@@ -42,6 +42,7 @@ export class AmrMeterAssignmentEditComponent implements OnInit {
     this.form = this._formBuilder.group({
       Id: [0],
       HeaderId: [this.data.headerId],
+      AmrScadaUserId: [this.data.userId],
       AmrMeterId: [null, [Validators.required]],
       AmrDescription: [''],
       Status: [1],
@@ -90,6 +91,7 @@ export class AmrMeterAssignmentEditComponent implements OnInit {
       // Subscribe to afterClosed from the dialog reference
       dialogRef.afterClosed().subscribe((result) => {
         if(result == 'confirmed') {
+          delete this.form.value['AmrDescription'];
           this.matDialogRef.close(this.form.value);
         } else {
           this.matDialogRef.close();

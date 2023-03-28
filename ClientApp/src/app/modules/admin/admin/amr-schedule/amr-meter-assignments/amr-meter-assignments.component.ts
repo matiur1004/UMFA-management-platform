@@ -85,7 +85,7 @@ export class AmrMeterAssignmentsComponent implements OnInit {
           res['LastDataDate'] = new Date(res['LastDataDate']).toISOString();
           res['LastRunDTM'] = new Date().toISOString();
           res['CurrentRunDTM'] = new Date().toISOString();
-          res['Active'] = 1;
+          res['Active'] = 1;          
           console.log(res);
           this._amrScheduleService.createOrUpdateRequestDetailTable(res)
             .subscribe(() => {
