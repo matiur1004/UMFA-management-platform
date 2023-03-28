@@ -89,7 +89,7 @@ export class AmrMeterAssignmentsComponent implements OnInit {
           console.log(res);
           this._amrScheduleService.createOrUpdateRequestDetailTable(res)
             .subscribe(() => {
-              this._amrScheduleService.getScadaRequestDetails(this.headerId);
+              this._amrScheduleService.getScadaRequestDetails(this.headerId).subscribe();
             });  
         }
       });
@@ -113,7 +113,7 @@ export class AmrMeterAssignmentsComponent implements OnInit {
           res['Active'] = 1;
           this._amrScheduleService.createOrUpdateRequestDetailTable(res)
             .subscribe(() => {
-              this._amrScheduleService.getScadaRequestDetails(this.headerId);
+              this._amrScheduleService.getScadaRequestDetails(this.headerId).subscribe();
             });  
         }
       });

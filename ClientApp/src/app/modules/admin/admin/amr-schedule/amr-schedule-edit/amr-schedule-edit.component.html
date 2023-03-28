@@ -33,6 +33,9 @@
             <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
                 <mat-label class="form-label">Description</mat-label>
                 <input matInput [formControlName]="'Description'" [placeholder]="'Description'"/>
+                <mat-error *ngIf="form.get('Description').getError('required')">
+                    Description is required
+                 </mat-error>
             </mat-form-field>
         </div>
     </div>
