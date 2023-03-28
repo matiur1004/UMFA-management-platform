@@ -150,7 +150,7 @@ namespace ClientPortal.Controllers
                     if (response != 0)
                     {
                         _logger.LogInformation($"Successfully Created ScadaRequestDetail: {scadaRequestDetail.Id}");
-                        return Ok(response);
+                        return Ok("Success");
                     }
                     else throw new Exception($"Failed to Create ScadaRequestDetail With Id: {scadaRequestDetail.Id}");
                 }
@@ -195,7 +195,7 @@ namespace ClientPortal.Controllers
                     if (response != 0)
                     {
                         _logger.LogInformation($"Successfully Updated ScadaRequestDetail: {scadaRequestDetail.Id}");
-                        return Ok(response);
+                        return Ok("Success");
                     }
                     else throw new Exception($"Failed to Update ScadaRequestDetail With Id: {scadaRequestDetail.Id}");
                 }
@@ -262,7 +262,7 @@ namespace ClientPortal.Controllers
                 if (response != 0)
                 {
                     _logger.LogInformation($"Successfully updated ScadaRequestDetail: {scadaRequestDetailId}");
-                    return Ok(response);
+                    return Ok("Success");
                 }
                 else throw new Exception($"Failed to ScadaRequestDetail With Id: {scadaRequestDetailId}");
             }

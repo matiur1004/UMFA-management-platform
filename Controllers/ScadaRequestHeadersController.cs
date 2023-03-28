@@ -169,7 +169,7 @@ namespace ClientPortal.Controllers
                     if (response != 0)
                     {
                         _logger.LogInformation($"Successfully Created ScadaRequestHeader: {scadaRequestHeader.Id}");
-                        return Ok(response);
+                        return Ok("Success");
                     }
                     else throw new Exception($"Failed to Create ScadaRequestHeader With Id: {scadaRequestHeader.Id}");
                 }
@@ -199,7 +199,7 @@ namespace ClientPortal.Controllers
                     if (response != 0)
                     {
                         _logger.LogInformation($"Successfully Updated ScadaRequestHeader: {scadaRequestHeader.Id}");
-                        return Ok(response);
+                        return Ok("Success");
                     }
                     else throw new Exception($"Failed to Update ScadaRequestHeader With Id: {scadaRequestHeader.Id}");
                 }
@@ -225,7 +225,7 @@ namespace ClientPortal.Controllers
                 if (response != 0)
                 {
                     _logger.LogInformation($"Successfully updated ScadaRequestHeader: {scadaRequestHeaderId}");
-                    return Ok(response);
+                    return Ok("Success");
                 }
                 else throw new Exception($"Failed to ScadaRequestHeader With Id: {scadaRequestHeaderId}");
             }
