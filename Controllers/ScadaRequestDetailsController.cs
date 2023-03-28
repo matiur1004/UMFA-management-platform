@@ -166,7 +166,7 @@ namespace ClientPortal.Controllers
                         $"[Active] = {scadaRequestDetail.Active}, ";
                     if (scadaRequestDetailEntity.LastRunDTM != null)
                     {
-                        sql += $"[LastRunDTM] = {scadaRequestDetailEntity.LastRunDTM}, ";
+                        sql += $"[LastRunDTM] = '{scadaRequestDetailEntity.LastRunDTM}', ";
                     }
                     else
                     {
@@ -174,15 +174,16 @@ namespace ClientPortal.Controllers
                     }
                     if(scadaRequestDetailEntity.CurrentRunDTM!= null)
                     {
-                        sql += $"[CurrentRunDTM] = {scadaRequestDetail.CurrentRunDTM}, ";
+                        sql += $"[CurrentRunDTM] = '{scadaRequestDetail.CurrentRunDTM}', ";
                     }
                     else
                     {
                         sql += $"[CurrentRunDTM] = Null, ";
                     }
                     sql += $"[UpdateFrequency] = {scadaRequestDetail.UpdateFrequency}, ";
-                    if (scadaRequestDetailEntity.LastDataDate != null) {
-                        sql += $"[LastDataDate] = {scadaRequestDetail.LastDataDate} ";
+                    if (scadaRequestDetailEntity.LastDataDate != null) 
+                    {
+                        sql += $"[LastDataDate] = '{scadaRequestDetail.LastDataDate}' ";
                     }
                     else
                     {
