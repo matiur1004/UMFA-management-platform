@@ -142,10 +142,10 @@ namespace ClientPortal.Controllers
                         $"{scadaRequestDetail.AmrScadaUserId}, " +
                         $"{scadaRequestDetail.Status}, " +
                         $"{scadaRequestDetail.Active}, " +
-                        $"Null, " +
-                        $"Null, " +
+                        $"'{scadaRequestDetail.LastRunDTM}', " +
+                        $"'{scadaRequestDetail.CurrentRunDTM}', " +
                         $"{scadaRequestDetail.UpdateFrequency}, " +
-                        $"Null)");
+                        $"'{scadaRequestDetail.LastDataDate}')");
 
                     if (response != 0)
                     {
