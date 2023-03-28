@@ -208,7 +208,7 @@ namespace ClientPortal.Controllers
         }
 
         //POST: createOrUpdateRequestDetail
-        [HttpPost("createOrUpdateScadaRequestDetail")]
+        [HttpPost("createOrUpdateScadaRequestDetailFull")]
         public async Task<ActionResult<ScadaRequestDetail>> CreateOrUpdateScadaRequestDetail(ScadaRequestDetail scadaRequestDetail)
         {
             if (scadaRequestDetail.Id == 0) //Create

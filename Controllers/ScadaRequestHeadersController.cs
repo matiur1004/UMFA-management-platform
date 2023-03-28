@@ -103,7 +103,7 @@ namespace ClientPortal.Controllers
         }
 
         //POST: createOrUpdateRequestHeader
-        [HttpPost("createOrUpdateScadaRequestHeader")]
+        [HttpPost("createOrUpdateScadaRequestHeaderFull")]
         public async Task<ActionResult<ScadaRequestHeader>> CreateOrUpdateScadaRequestHeader(ScadaRequestHeader scadaRequestHeader)
         {
             if (scadaRequestHeader.Id == 0) //Create
@@ -182,12 +182,14 @@ namespace ClientPortal.Controllers
                         $"[Active] = {scadaRequestHeader.Active}, " +
                         $"[CreatedDTM] = '{scadaRequestHeader.CreatedDTM}', " +
                         $"[StartRunDTM] = '{scadaRequestHeader.StartRunDTM}', ";
-                    if(scadaRequestHeaderEntity.LastRunDTM != null) 
-                    { sql += $"[LastRunDTM] = '{scadaRequestHeaderEntity.LastRunDTM}', "; }
-                    else { sql+= $"[LastRunDTM] = Null, "; }
-                    if (scadaRequestHeaderEntity.CurrentRunDTM != null)
-                    { sql += $"[CurrentRunDTM] = '{scadaRequestHeaderEntity.CurrentRunDTM}', "; }
-                    else { sql += $"[CurrentRunDTM] = Null, "; }
+                    if(scadaRequestHeaderEntity.LastRunDTM != null) { 
+                        sql += $"[LastRunDTM] = '{scadaRequestHeaderEntity.LastRunDTM}', "; }
+                    else { 
+                        sql+= $"[LastRunDTM] = Null, "; }
+                    if (scadaRequestHeaderEntity.CurrentRunDTM != null) { 
+                        sql += $"[CurrentRunDTM] = '{scadaRequestHeaderEntity.CurrentRunDTM}', "; }
+                    else { 
+                        sql += $"[CurrentRunDTM] = Null, "; }
                     sql+= $"[JobType] = {scadaRequestHeader.JobType}, " +
                         $"[Description] = '{scadaRequestHeader.Description}', " +
                         $"[Interval] = {scadaRequestHeader.Interval} " +
