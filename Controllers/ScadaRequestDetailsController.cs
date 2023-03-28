@@ -163,33 +163,12 @@ namespace ClientPortal.Controllers
                         $"[AmrMeterId] = {scadaRequestDetail.AmrMeterId}, " +
                         $"[AmrScadaUserId] = {scadaRequestDetail.AmrScadaUserId}, " +
                         $"[Status] = {scadaRequestDetail.Status}, " +
-                        $"[Active] = {scadaRequestDetail.Active}, ";
-                    if (scadaRequestDetailEntity.LastRunDTM != null)
-                    {
-                        sql += $"[LastRunDTM] = '{scadaRequestDetailEntity.LastRunDTM}', ";
-                    }
-                    else
-                    {
-                        sql += $"[LastRunDTM] = Null, ";
-                    }
-                    if(scadaRequestDetailEntity.CurrentRunDTM!= null)
-                    {
-                        sql += $"[CurrentRunDTM] = '{scadaRequestDetail.CurrentRunDTM}', ";
-                    }
-                    else
-                    {
-                        sql += $"[CurrentRunDTM] = Null, ";
-                    }
-                    sql += $"[UpdateFrequency] = {scadaRequestDetail.UpdateFrequency}, ";
-                    if (scadaRequestDetailEntity.LastDataDate != null) 
-                    {
-                        sql += $"[LastDataDate] = '{scadaRequestDetail.LastDataDate}' ";
-                    }
-                    else
-                    {
-                        sql += $"[LastDataDate] = Null ";
-                    }
-                    sql += $"WHERE [Id] = {scadaRequestDetail.Id}";
+                        $"[Active] = {scadaRequestDetail.Active}, " +
+                        $"[LastRunDTM] = '{scadaRequestDetailEntity.LastRunDTM}', " +
+                        $"[CurrentRunDTM] = '{scadaRequestDetail.CurrentRunDTM}', " +
+                        $"[UpdateFrequency] = {scadaRequestDetail.UpdateFrequency}, " +
+                        $"[LastDataDate] = '{scadaRequestDetail.LastDataDate}' " + 
+                        $"WHERE [Id] = {scadaRequestDetail.Id}";
 
                     var response = _context.Database.ExecuteSqlRaw(sql);
 
