@@ -98,7 +98,7 @@ namespace ClientPortal.Controllers
             try
             {
                 _logger.LogInformation(1, $"Get meters for user {userId} with JobTypeId {jobTypeId} from database");
-                var meters = await _context.aMRMetersNotScheduled.FromSqlRaw($"exec spUserMetersNotScheduled {userId}, {jobTypeId}").ToListAsync();
+                var meters = await _context.AMRMetersNotScheduled.FromSqlRaw($"exec spUserMetersNotScheduled {userId}, {jobTypeId}").ToListAsync();
 
                 if (meters != null)
                 { 
@@ -117,6 +117,30 @@ namespace ClientPortal.Controllers
             }
         }
 
+        [HttpGet("getAMRMetersWithAlarms/{buildingId}")]
+        public async Task<ActionResult<IEnumerable<AMRMetersWithAlarms>>> GetAMRMetersWithAlarms(int buildingId)
+        {
+            try
+            {
+                _logger.LogInformation(1, $"Get meters alarms for building id: {buildingId} from database");
+                var meters = await _context.AMRMetersNotScheduled.FromSqlRaw($"exec spGetAMRMEterAlarms {buildingId}").ToListAsync();
+
+                if (meters != null)
+                {
+                    _logger.LogInformation(1, $"Successfully got meters with alarms for building: {buildingId}");
+                    return Ok(meters.ToList());
+                }
+                else
+                {
+                    return Ok(new List<AMRMetersWithAlarms>());
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError($"Failed to get meters for user {User}: {ex.Message}");
+                return BadRequest(new ApplicationException($"Failed to get meters for user {User}: {ex.Message}"));
+            }
+        }
 
         [HttpGet("userMetersChart/{userId}/{chartId}")]
         public IActionResult GetMetersForUserChart(int userId, int chartId)
