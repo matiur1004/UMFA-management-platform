@@ -27,7 +27,7 @@ namespace ClientPortal.Migrations
                new[] { "Name" },
                new object[,]
                {
-                    {"Night flow"},
+                    {"Night Flow"},
                     {"Burst Pipe"},
                     {"Leak Detection"},
                     {"Daily Usage Exceeded"},
