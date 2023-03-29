@@ -27,13 +27,12 @@ namespace ClientPortal.Migrations
                new[] { "Name" },
                new object[,]
                {
-                    {"Burst Pipe"},
-                    {"UMFA Operator"},
                     {"Night Flow"},
-                    {"Max Usage Exceeded"},
-                    {"Peak Exceeded"},
+                    {"Burst Pipe"},
                     {"Leak Detection"},
-                    {"Total Exceeded"}
+                    {"Daily Usage Exceeded"},
+                    {"Peak Exceeded"},
+                    {"Average Exceeded"}
                });
         }
 
