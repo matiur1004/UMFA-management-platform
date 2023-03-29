@@ -64,6 +64,7 @@ namespace ClientPortal.Data
         public DbSet<NotificationSendType> NotificationSendTypes { get; set; }
         public DbSet<ScheduleStatus> ScheduleStatus { get; set; }
         public DbSet<JobStatus> JobStatus { get; set; }
+        public DbSet<AlarmType> AlarmTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
