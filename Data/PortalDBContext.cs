@@ -66,6 +66,7 @@ namespace ClientPortal.Data
         public DbSet<JobStatus> JobStatus { get; set; }
         public DbSet<AlarmType> AlarmTypes { get; set; }
         public DbSet<AlarmTriggerMethod> AlarmTriggerMethods { get; set; }
+        public DbSet<AMRMeterAlarm> AMRMeterAlarms { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

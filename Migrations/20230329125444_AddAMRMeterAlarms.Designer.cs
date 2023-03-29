@@ -4,6 +4,7 @@ using ClientPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClientPortal.Migrations
 {
     [DbContext(typeof(PortalDBContext))]
-    partial class DataDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230329125444_AddAMRMeterAlarms")]
+    partial class AddAMRMeterAlarms
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -185,8 +187,8 @@ namespace ClientPortal.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("Threshold")
-                        .HasColumnType("real");
+                    b.Property<decimal>("Threshold")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("AMRMeterAlarmId");
 
