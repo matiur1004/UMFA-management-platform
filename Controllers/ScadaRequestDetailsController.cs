@@ -1,11 +1,9 @@
-﻿using ClientPortal.Controllers.Authorization;
+﻿using AutoMapper;
+using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.PortalEntities;
-using ClientPortal.Migrations;
 using ClientPortal.Models.ScadaRequestsForTableUpdate;
-using DevExpress.Charts.Native;
-using Microsoft.EntityFrameworkCore;
-using MimeKit;
+using ClientPortal.Services;
 
 namespace ClientPortal.Controllers
 {
@@ -15,12 +13,16 @@ namespace ClientPortal.Controllers
     public class ScadaRequestDetailsController : ControllerBase
     {
         private readonly PortalDBContext _context;
+        private readonly IAMRMeterService _meterService;
         private readonly ILogger<ScadaRequestDetailsController> _logger;
+        private readonly IMapper _mapper;
 
-        public ScadaRequestDetailsController(PortalDBContext context, ILogger<ScadaRequestDetailsController> logger)
+        public ScadaRequestDetailsController(PortalDBContext context, IAMRMeterService meterService, ILogger<ScadaRequestDetailsController> logger, IMapper mapper)
         {
             _context = context;
             _logger = logger;
+            _meterService = meterService;
+            _mapper = mapper;
         }
 
         // GET: ScadaRequestDetails
@@ -72,8 +74,23 @@ namespace ClientPortal.Controllers
                 _logger.LogError($"ScadaRequestDetails with Id: {headerId} Not Found!");
                 return new List<ScadaRequestDetail> { };
             }
-            _logger.LogInformation($"ScadaRequestDetails with Id: {headerId} Found and Returned!");
-            return scadaRequestDetail;
+            _logger.LogInformation($"ScadaRequestDetails with Id: {headerId} Found!");
+            //UpdateMetersInRequest
+            foreach (var detailItem in scadaRequestDetail)
+            {
+                try
+                {
+                    var meter = _meterService.GetMeterAsync(detailItem.AmrMeterId).Result;
+                    _logger.LogInformation($"Adding AMRMeter {meter.MeterNo} To ScadaRequestDetails with Id: {headerId}!");
+                    var mappedMeter = _mapper.Map<AMRMeter>(meter);
+                    detailItem.AmrMeter = mappedMeter;
+                }
+                catch (Exception)
+                {
+                    detailItem.AmrMeter = new AMRMeter();
+                }
+            }
+           return scadaRequestDetail;
         }
 
         // PUT: ScadaRequestDetails/5
