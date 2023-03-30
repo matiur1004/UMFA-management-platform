@@ -122,58 +122,52 @@ namespace ClientPortal.Controllers
         public ActionResult<IEnumerable<dynamic>> GetAMRMetersWithAlarms(int buildingId)
         {
             List<dynamic> resultList = new List<dynamic>();
-
-            using (var command = _context.Database.GetDbConnection().CreateCommand())
+            _logger.LogInformation(1, $"Get meter alarms for building id: {buildingId} from database");
+            try
             {
-                command.CommandText = "spGetAMRMeterAlarms";
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-
-                var parameter = command.CreateParameter();
-                parameter.ParameterName = "@BuildingId";
-                parameter.Value = buildingId;
-                command.Parameters.Add(parameter);
-
-                _context.Database.OpenConnection();
-
-                using (var reader = command.ExecuteReader())
+                using (var command = _context.Database.GetDbConnection().CreateCommand())
                 {
-                    while (reader.Read())
+                    command.CommandText = "spGetAMRMeterAlarms";
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    var parameter = command.CreateParameter();
+                    parameter.ParameterName = "@BuildingId";
+                    parameter.Value = buildingId;
+                    command.Parameters.Add(parameter);
+
+                    _context.Database.OpenConnection();
+
+                    using (var reader = command.ExecuteReader())
                     {
-                        dynamic result = new ExpandoObject();
-                        var dictionary = result as IDictionary<string, object>;
-
-                        for (int i = 0; i < reader.FieldCount; i++)
+                        while (reader.Read())
                         {
-                            dictionary.Add(reader.GetName(i), reader.IsDBNull(i) ? null : reader[i]);
-                        }
+                            dynamic result = new ExpandoObject();
+                            var dictionary = result as IDictionary<string, object>;
 
-                        resultList.Add(result);
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                dictionary.Add(reader.GetName(i), reader.IsDBNull(i) ? null : reader[i]);
+                            }
+                            resultList.Add(result);
+                        }
                     }
                 }
             }
-
+            catch (Exception)
+            {
+                _logger?.LogError($"Failed to get meters for BuildingId {buildingId}");
+                return Problem($"Failed to get meters with alarms for BuildingId {buildingId}");
+            }
+            if (resultList.Count > 0) 
+            {
+                _logger.LogInformation(1, $"Returning meters with alarms for building: {buildingId}");
+            }
+            else
+            {
+                _logger.LogError(1, $"No Results Found For Meters with alarms for building: {buildingId}");
+            }
+            
             return Ok(resultList);
-
-            //try
-            //{
-            //    _logger.LogInformation(1, $"Get meters alarms for building id: {buildingId} from database");
-            //    var meters = await _context.Database.ExecuteSqlRawAsync($"exec spGetAMRMeterAlarms {buildingId}");
-
-            //    if (meters != null)
-            //    {
-            //        _logger.LogInformation(1, $"Successfully got meters with alarms for building: {buildingId}");
-            //        return Ok(meters.ToList());
-            //    }
-            //    else
-            //    {
-            //        return Problem("No Meters Found!");
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    _logger?.LogError($"Failed to get meters for user {User}: {ex.Message}");
-            //    return BadRequest(new ApplicationException($"Failed to get meters for user {User}: {ex.Message}"));
-            //}
         }
 
         [HttpGet("userMetersChart/{userId}/{chartId}")]
