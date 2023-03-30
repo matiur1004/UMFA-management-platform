@@ -21,6 +21,8 @@ import { AmrScheduleResolver } from './amr-schedule/amr-schedule.resolver';
 import { AmrScheduleEditResolver } from './amr-schedule/amr-schedule-edit/amr-schedule-edit.resolver';
 import { AmrMeterAssignmentsComponent } from './amr-schedule/amr-meter-assignments/amr-meter-assignments.component';
 import { AmrMeterAssignmentsResolver } from './amr-schedule/amr-meter-assignments/amr-meter-assignments.resolver';
+import { AlarmConfigurationComponent } from './alarm-configuration/alarm-configuration.component';
+import { AlarmConfigurationResolver } from './alarm-configuration/alarm-configuration.resolver';
 const routes: Routes = [
   {
     path: '', component: AdminComponent, //redirectTo: 'amrUser', pathMatch: 'full'
@@ -85,6 +87,13 @@ const routes: Routes = [
         canActivate: [UmfaOperatorAuthGuard],
         resolve  : {
           data: AmrMeterAssignmentsResolver
+        }
+      },
+      {
+        path: 'alarm-configuration', component: AlarmConfigurationComponent,
+        canActivate: [UmfaOperatorAuthGuard],
+        resolve  : {
+          data: AlarmConfigurationResolver
         }
       },
     ]

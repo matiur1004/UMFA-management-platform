@@ -7,11 +7,16 @@ import { IAmrMeter, AmrMeterUpdate, IUtility } from "../../core/models";
 @Injectable({ providedIn: 'root' })
 export class MeterService {
   private _meters: BehaviorSubject<any> = new BehaviorSubject([]);
-  
+  private _metersWithAlarms: BehaviorSubject<any> = new BehaviorSubject([]);
+
   constructor(private http: HttpClient) { }
 
   get meters$(): Observable<any> {
     return this._meters.asObservable();
+  }
+
+  get metersWithAlarms$(): Observable<any> {
+    return this._metersWithAlarms.asObservable();
   }
 
   getMetersForUser(userId: number): Observable<IAmrMeter[]> {
@@ -110,6 +115,18 @@ export class MeterService {
       UtilityId: 0,
       Utility: '',
     };
+  }
+
+  // amr alarm configuration
+  getAMRMetersWithAlarms(buildingId) {
+    const url = `${CONFIG.apiURL}/AMRMeter/getAMRMetersWithAlarms/${buildingId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchErrors(err)),
+        tap(bl => {
+          this._metersWithAlarms.next(bl);
+        })
+      );
   }
 
   //catches errors

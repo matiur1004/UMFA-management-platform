@@ -34,6 +34,7 @@ import { AmrScheduleEditComponent } from './amr-schedule/amr-schedule-edit/amr-s
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AmrMeterAssignmentsComponent } from './amr-schedule/amr-meter-assignments/amr-meter-assignments.component';
 import { AmrMeterAssignmentEditComponent } from './amr-schedule/amr-meter-assignment-edit/amr-meter-assignment-edit.component';
+import { AlarmConfigurationComponent } from './alarm-configuration/alarm-configuration.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { AmrMeterAssignmentEditComponent } from './amr-schedule/amr-meter-assign
     AmrScheduleComponent,
     AmrScheduleEditComponent,
     AmrMeterAssignmentsComponent,
-    AmrMeterAssignmentEditComponent
+    AmrMeterAssignmentEditComponent,
+    AlarmConfigurationComponent
   ],
   imports: [
     FormsModule,
