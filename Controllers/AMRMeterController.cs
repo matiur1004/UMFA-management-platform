@@ -6,6 +6,7 @@ using ClientPortal.Services;
 using ClientPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using ClientPortal.Data.Entities.PortalEntities;
+using System.Dynamic;
 
 namespace ClientPortal.Controllers
 {
@@ -118,28 +119,61 @@ namespace ClientPortal.Controllers
         }
 
         [HttpGet("getAMRMetersWithAlarms/{buildingId}")]
-        public async Task<ActionResult<IEnumerable<AMRMetersWithAlarms>>> GetAMRMetersWithAlarms(int buildingId)
+        public ActionResult<IEnumerable<dynamic>> GetAMRMetersWithAlarms(int buildingId)
         {
-            try
-            {
-                _logger.LogInformation(1, $"Get meters alarms for building id: {buildingId} from database");
-                var meters = await _context.AMRMetersNotScheduled.FromSqlRaw($"exec spGetAMRMEterAlarms {buildingId}").ToListAsync();
+            List<dynamic> resultList = new List<dynamic>();
 
-                if (meters != null)
-                {
-                    _logger.LogInformation(1, $"Successfully got meters with alarms for building: {buildingId}");
-                    return Ok(meters.ToList());
-                }
-                else
-                {
-                    return Ok(new List<AMRMetersWithAlarms>());
-                }
-            }
-            catch (Exception ex)
+            using (var command = _context.Database.GetDbConnection().CreateCommand())
             {
-                _logger?.LogError($"Failed to get meters for user {User}: {ex.Message}");
-                return BadRequest(new ApplicationException($"Failed to get meters for user {User}: {ex.Message}"));
+                command.CommandText = "spGetAMRMeterAlarms";
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                var parameter = command.CreateParameter();
+                parameter.ParameterName = "@BuildingId";
+                parameter.Value = buildingId;
+                command.Parameters.Add(parameter);
+
+                _context.Database.OpenConnection();
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        dynamic result = new ExpandoObject();
+                        var dictionary = result as IDictionary<string, object>;
+
+                        for (int i = 0; i < reader.FieldCount; i++)
+                        {
+                            dictionary.Add(reader.GetName(i), reader.IsDBNull(i) ? null : reader[i]);
+                        }
+
+                        resultList.Add(result);
+                    }
+                }
             }
+
+            return Ok(resultList);
+
+            //try
+            //{
+            //    _logger.LogInformation(1, $"Get meters alarms for building id: {buildingId} from database");
+            //    var meters = await _context.Database.ExecuteSqlRawAsync($"exec spGetAMRMeterAlarms {buildingId}");
+
+            //    if (meters != null)
+            //    {
+            //        _logger.LogInformation(1, $"Successfully got meters with alarms for building: {buildingId}");
+            //        return Ok(meters.ToList());
+            //    }
+            //    else
+            //    {
+            //        return Problem("No Meters Found!");
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    _logger?.LogError($"Failed to get meters for user {User}: {ex.Message}");
+            //    return BadRequest(new ApplicationException($"Failed to get meters for user {User}: {ex.Message}"));
+            //}
         }
 
         [HttpGet("userMetersChart/{userId}/{chartId}")]
