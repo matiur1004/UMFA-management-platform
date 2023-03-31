@@ -114,7 +114,7 @@ namespace ClientPortal.Helpers
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error while retreiving refreshtoken for user {UserName}: {Message}", user.UserName, ex.Message);
+                _logger.LogError("Error while retrieving refreshtoken for user {UserName}: {Message}", user.UserName, ex.Message);
                 return null;
             }
         }
