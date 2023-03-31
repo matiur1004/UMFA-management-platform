@@ -1,10 +1,12 @@
-﻿using ClientPortal.Models.RequestModels;
+﻿using ClientPortal.Controllers.Authorization;
+using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 using ClientPortal.Services;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace ClientPortal.Controllers
 {
+    [Authorize]
     [Route("[controller]")]
     [ApiController]
     public class AMRMeterGraphsController : ControllerBase
