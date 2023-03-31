@@ -1,0 +1,13 @@
+.border-bottom {
+    border-bottom: 1px solid #ccc;
+}
+.apply-btn {
+    min-height: 36px !important;
+    height: 36px !important;
+}
+::ng-deep .mat-form-field.mat-form-field-appearance-fill .mat-form-field-wrapper {
+    margin-bottom: 0px;
+}
+.width-fit {
+    width: fit-content;
+}

@@ -18,7 +18,7 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { ReportsRoutingModule } from '../reports/reports-routing.module';
 import { SharedModule } from 'app/shared/shared.module';
 import { MatTabsModule } from '@angular/material/tabs';
-import { DxButtonModule, DxDataGridModule, DxDateBoxModule } from 'devextreme-angular';
+import { DxButtonModule, DxDataGridModule, DxDateBoxModule, DxSelectBoxModule } from 'devextreme-angular';
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -35,6 +35,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { AmrMeterAssignmentsComponent } from './amr-schedule/amr-meter-assignments/amr-meter-assignments.component';
 import { AmrMeterAssignmentEditComponent } from './amr-schedule/amr-meter-assignment-edit/amr-meter-assignment-edit.component';
 import { AlarmConfigurationComponent } from './alarm-configuration/alarm-configuration.component';
+import { MeterAlarmDetailComponent } from './meter-alarm-detail/meter-alarm-detail.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { AlarmConfigurationComponent } from './alarm-configuration/alarm-configu
     AmrScheduleEditComponent,
     AmrMeterAssignmentsComponent,
     AmrMeterAssignmentEditComponent,
-    AlarmConfigurationComponent
+    AlarmConfigurationComponent,
+    MeterAlarmDetailComponent
   ],
   imports: [
     FormsModule,
@@ -74,6 +76,7 @@ import { AlarmConfigurationComponent } from './alarm-configuration/alarm-configu
     NgSelectModule,
     DxDataGridModule,
     DxDateBoxModule,
+    DxSelectBoxModule,
     DxButtonModule,
     SharedModule
   ],

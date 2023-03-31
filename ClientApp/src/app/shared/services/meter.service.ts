@@ -8,6 +8,7 @@ import { IAmrMeter, AmrMeterUpdate, IUtility } from "../../core/models";
 export class MeterService {
   private _meters: BehaviorSubject<any> = new BehaviorSubject([]);
   private _metersWithAlarms: BehaviorSubject<any> = new BehaviorSubject([]);
+  private _detailMeterAlarm: BehaviorSubject<any> = new BehaviorSubject(null);
 
   constructor(private http: HttpClient) { }
 
@@ -17,6 +18,10 @@ export class MeterService {
 
   get metersWithAlarms$(): Observable<any> {
     return this._metersWithAlarms.asObservable();
+  }
+
+  get detailMeterAlarm$(): Observable<any> {
+    return this._detailMeterAlarm.asObservable();
   }
 
   getMetersForUser(userId: number): Observable<IAmrMeter[]> {
@@ -127,6 +132,10 @@ export class MeterService {
           this._metersWithAlarms.next(bl);
         })
       );
+  }
+
+  onSelectMeterAlarm(data) {
+    this._detailMeterAlarm.next(data);
   }
 
   //catches errors
