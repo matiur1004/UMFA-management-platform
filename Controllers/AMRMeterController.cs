@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Cors;
-using ClientPortal.Controllers.Authorization;
+﻿using ClientPortal.Controllers.Authorization;
+using ClientPortal.Data;
+using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 using ClientPortal.Services;
-using ClientPortal.Data;
-using Microsoft.EntityFrameworkCore;
-using ClientPortal.Data.Entities.PortalEntities;
+using System.Dynamic;
 
 namespace ClientPortal.Controllers
 {
@@ -39,7 +38,7 @@ namespace ClientPortal.Controllers
                 }
                 else throw new Exception($"Failed to add meter: {meterReq.Meter.MeterNo}");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger?.LogError($"Failed to add new meter: {ex.Message}");
                 return BadRequest(new ApplicationException(ex.Message));
@@ -101,7 +100,7 @@ namespace ClientPortal.Controllers
                 var meters = await _context.AMRMetersNotScheduled.FromSqlRaw($"exec spUserMetersNotScheduled {userId}, {jobTypeId}").ToListAsync();
 
                 if (meters != null)
-                { 
+                {
                     _logger.LogInformation(1, $"Successfully got meters for user: {userId}");
                     return Ok(meters.ToList());
                 }
@@ -118,28 +117,55 @@ namespace ClientPortal.Controllers
         }
 
         [HttpGet("getAMRMetersWithAlarms/{buildingId}")]
-        public async Task<ActionResult<IEnumerable<AMRMetersWithAlarms>>> GetAMRMetersWithAlarms(int buildingId)
+        public ActionResult<IEnumerable<dynamic>> GetAMRMetersWithAlarms(int buildingId)
         {
+            List<dynamic> resultList = new List<dynamic>();
+            _logger.LogInformation(1, $"Get meter alarms for building id: {buildingId} from database");
             try
             {
-                _logger.LogInformation(1, $"Get meters alarms for building id: {buildingId} from database");
-                var meters = await _context.AMRMetersNotScheduled.FromSqlRaw($"exec spGetAMRMEterAlarms {buildingId}").ToListAsync();
+                using (var command = _context.Database.GetDbConnection().CreateCommand())
+                {
+                    command.CommandText = "spGetAMRMeterAlarms";
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
 
-                if (meters != null)
-                {
-                    _logger.LogInformation(1, $"Successfully got meters with alarms for building: {buildingId}");
-                    return Ok(meters.ToList());
-                }
-                else
-                {
-                    return Ok(new List<AMRMetersWithAlarms>());
+                    var parameter = command.CreateParameter();
+                    parameter.ParameterName = "@BuildingId";
+                    parameter.Value = buildingId;
+                    command.Parameters.Add(parameter);
+
+                    _context.Database.OpenConnection();
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            dynamic result = new ExpandoObject();
+                            var dictionary = result as IDictionary<string, object>;
+
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                dictionary.Add(reader.GetName(i), reader.IsDBNull(i) ? null : reader[i]);
+                            }
+                            resultList.Add(result);
+                        }
+                    }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                _logger?.LogError($"Failed to get meters for user {User}: {ex.Message}");
-                return BadRequest(new ApplicationException($"Failed to get meters for user {User}: {ex.Message}"));
+                _logger?.LogError($"Failed to get meters for BuildingId {buildingId}");
+                return Problem($"Failed to get meters with alarms for BuildingId {buildingId}");
             }
+            if (resultList.Count > 0)
+            {
+                _logger.LogInformation(1, $"Returning meters with alarms for building: {buildingId}");
+            }
+            else
+            {
+                _logger.LogError(1, $"No Results Found For Meters with alarms for building: {buildingId}");
+            }
+
+            return Ok(resultList);
         }
 
         [HttpGet("userMetersChart/{userId}/{chartId}")]
@@ -168,7 +194,8 @@ namespace ClientPortal.Controllers
         }
 
         [HttpPut("updateMeter")]
-        public IActionResult Update(AMRMeterUpdateRequest request) {
+        public IActionResult Update(AMRMeterUpdateRequest request)
+        {
             try
             {
                 _logger.LogInformation($"update meter with number: {request.Meter.MeterNo}");
