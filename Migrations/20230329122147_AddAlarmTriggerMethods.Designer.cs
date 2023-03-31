@@ -4,6 +4,7 @@ using ClientPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClientPortal.Migrations
 {
     [DbContext(typeof(PortalDBContext))]
-    partial class DataDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230329122147_AddAlarmTriggerMethods")]
+    partial class AddAlarmTriggerMethods
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -154,45 +156,6 @@ namespace ClientPortal.Migrations
                     b.ToTable("AMRMeters");
                 });
 
-            modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AMRMeterAlarm", b =>
-                {
-                    b.Property<int>("AMRMeterAlarmId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AMRMeterAlarmId"), 1L, 1);
-
-                    b.Property<int>("AMRMeterId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("AlarmTriggerMethodId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AlarmTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Duration")
-                        .HasColumnType("int");
-
-                    b.Property<string>("EndTime")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StartTime")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<float>("Threshold")
-                        .HasColumnType("real");
-
-                    b.HasKey("AMRMeterAlarmId");
-
-                    b.ToTable("AMRMeterAlarms");
-                });
-
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AMRMetersNotScheduled", b =>
                 {
                     b.Property<int>("AMRMeterId")
@@ -211,40 +174,6 @@ namespace ClientPortal.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.ToTable("AMRMetersNotScheduled", null, t => t.ExcludeFromMigrations());
-                });
-
-            modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AMRMetersWithAlarms", b =>
-                {
-                    b.Property<int>("AMRMeterId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Average")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Burst_Pipe")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Daily_Usage")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Leak")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("MeterNo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Night_Flow")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Peak")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ScadaMeterNo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.ToTable("AMRMetersWithAlarms", null, t => t.ExcludeFromMigrations());
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AMRScadaUser", b =>
