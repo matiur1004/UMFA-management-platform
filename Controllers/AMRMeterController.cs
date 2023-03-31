@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Cors;
-using ClientPortal.Controllers.Authorization;
+﻿using ClientPortal.Controllers.Authorization;
+using ClientPortal.Data;
+using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 using ClientPortal.Services;
-using ClientPortal.Data;
-using Microsoft.EntityFrameworkCore;
-using ClientPortal.Data.Entities.PortalEntities;
+using System.Dynamic;
 using System.Dynamic;
 
 namespace ClientPortal.Controllers
@@ -40,7 +39,7 @@ namespace ClientPortal.Controllers
                 }
                 else throw new Exception($"Failed to add meter: {meterReq.Meter.MeterNo}");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger?.LogError($"Failed to add new meter: {ex.Message}");
                 return BadRequest(new ApplicationException(ex.Message));
@@ -102,7 +101,7 @@ namespace ClientPortal.Controllers
                 var meters = await _context.AMRMetersNotScheduled.FromSqlRaw($"exec spUserMetersNotScheduled {userId}, {jobTypeId}").ToListAsync();
 
                 if (meters != null)
-                { 
+                {
                     _logger.LogInformation(1, $"Successfully got meters for user: {userId}");
                     return Ok(meters.ToList());
                 }
@@ -158,7 +157,7 @@ namespace ClientPortal.Controllers
                 _logger?.LogError($"Failed to get meters for BuildingId {buildingId}");
                 return Problem($"Failed to get meters with alarms for BuildingId {buildingId}");
             }
-            if (resultList.Count > 0) 
+            if (resultList.Count > 0)
             {
                 _logger.LogInformation(1, $"Returning meters with alarms for building: {buildingId}");
             }
@@ -166,7 +165,7 @@ namespace ClientPortal.Controllers
             {
                 _logger.LogError(1, $"No Results Found For Meters with alarms for building: {buildingId}");
             }
-            
+
             return Ok(resultList);
         }
 
@@ -196,7 +195,8 @@ namespace ClientPortal.Controllers
         }
 
         [HttpPut("updateMeter")]
-        public IActionResult Update(AMRMeterUpdateRequest request) {
+        public IActionResult Update(AMRMeterUpdateRequest request)
+        {
             try
             {
                 _logger.LogInformation($"update meter with number: {request.Meter.MeterNo}");
