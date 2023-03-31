@@ -52,6 +52,9 @@ export class AlarmConfigurationComponent implements OnInit {
       .subscribe((data: IUmfaPartner[]) => {
         this.partners = data;
       })
+
+    this._meterService.getAMRMetersWithAlarms(3015).subscribe();
+      
   }
 
   onPartnerChanged(event) {
@@ -60,6 +63,11 @@ export class AlarmConfigurationComponent implements OnInit {
 
   onBuildingChanged(event) {
     this._meterService.getAMRMetersWithAlarms(event.BuildingId).subscribe();
+  }
+
+  onSelectRow(e) {
+    this._meterService.onSelectMeterAlarm(e.data);
+    console.log(e.data)
   }
 
   ngOnDestroy() {
