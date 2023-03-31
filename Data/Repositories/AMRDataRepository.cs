@@ -286,7 +286,7 @@ namespace ClientPortal.Data.Repositories
                 string eDate = endDate.ToString("yyyy/MM/dd HH:mm");
                 string nfsTime = nightFlowStart.ToString("HH:mm");
                 string nfeTime = nightFlowEnd.ToString("HH:mm");
-                var CommandText = $"exec spGetGraphProfile {meterId}, '{sDate}', '{eDate}', '{nfsTime}', '{nfeTime}'";
+                var CommandText = $"exec spGetWaterProfile {meterId}, '{sDate}', '{eDate}', '{nfsTime}', '{nfeTime}'";
                 AMRGraphProfileHeader header = new();
                 var connection = _context.Database.GetDbConnection();
                 await connection.OpenAsync();
