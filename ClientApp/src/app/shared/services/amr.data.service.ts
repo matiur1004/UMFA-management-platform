@@ -82,6 +82,9 @@ export class AmrDataService {
   private bsWaterProfile: BehaviorSubject<IWaterProfileResponse>;
   public obsWaterProfile$: Observable<IWaterProfileResponse>;
 
+  private bsMeterGraphProfile: BehaviorSubject<any>;
+  public obsMeterGraphProfile$: Observable<any>;
+
   constructor(private router: Router, private http: HttpClient) {
     this.bsSelectedChart = new BehaviorSubject<IAmrChart>(null);
     this.obsSelectedChart = this.bsSelectedChart.asObservable();
@@ -95,6 +98,9 @@ export class AmrDataService {
     this.obsProfChart$ = this.bsProfChart.asObservable();
     this.bsWaterProfile = new BehaviorSubject<IWaterProfileResponse>(null);
     this.obsWaterProfile$ = this.bsWaterProfile.asObservable();
+
+    this.bsMeterGraphProfile = new BehaviorSubject<any>(null);
+    this.obsMeterGraphProfile$ = this.bsMeterGraphProfile.asObservable();
   }
 
   //common methods
@@ -189,4 +195,23 @@ export class AmrDataService {
       ).subscribe();
   }
 
+  getMeterProfileForGraph(meterId: number, sDate: Date, eDate: Date, nfsTime: Time, nfeTime: Time) {
+    this.bsMeterGraphProfile.next(null);
+    // let url = `${CONFIG.apiURL}/AMRMeterGraphs/getGraphProfile?MeterID=${meterId}&StartDate=${this.formatDateString(sDate)}&EndDate=${this.formatDateString(eDate)}`;
+    // url += `&NightFlowStart=${this.formatTimeString(nfsTime)}&NightFlowEnd=${this.formatTimeString(nfeTime)}`;
+    let url = `${CONFIG.apiURL}${CONFIG.getWaterProfile}?MeterID=${meterId}&StartDate=${this.formatDateString(sDate)}&EndDate=${this.formatDateString(eDate)}`;
+    url += `&NightFlowStart=${this.formatTimeString(nfsTime)}&NightFlowEnd=${this.formatTimeString(nfeTime)}`;
+    console.log('url', url);
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchErrors(err)),
+        //tap(p =>
+        //  console.log(`Http response from getDemandProfile: ${p.Status}`)
+        //),
+        map((prof: any) => {
+          this.bsMeterGraphProfile.next(prof);
+          return prof;
+        })
+      );
+  }
 }

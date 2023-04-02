@@ -3,82 +3,121 @@
     <div class="flex">
         <span class="text-lg font-semibold">Alarm Mapping for AMR Meter 35145822284 - Charlesville Bulk Meter</span>
     </div>
-    <div class="flex items-center">
+    <div class="flex items-center" [formGroup]="profileForm">
         <span class="text-lg font-semibold min-w-40">Show Profile for:</span>
-        <div class="grid grid-cols-4 w-full gap-x-2">
-            <div class="col-span-1">
+        <div class="grid grid-cols-9 w-full gap-x-2">
+            <div class="col-span-2">
                 <div class="flex flex-col w-full">
                     <dx-date-box id="sDateId" class="form-control" placeholder="Date From" type="date" label="Start date"
-                      labelMode="static" name="sdp" displayFormat="yyyy-MM-dd"> </dx-date-box>
+                      labelMode="static" name="sdp" displayFormat="yyyy-MM-dd" [formControlName]="'sdp'"> </dx-date-box>
                   </div>
             </div>
-            <div class="col-span-1">
+            <div class="col-span-2">
                 <dx-date-box type="time" placeholder="Time" displayFormat="HH:mm" label="Start time"
-                    labelMode="static" name="sdT" required class="form-control"> </dx-date-box>
+                    labelMode="static" name="sdT" required class="form-control" [formControlName]="'sdT'"> </dx-date-box>
             </div>
-            <div class="col-span-1">
+            <div class="col-span-2">
                 <dx-date-box id="eDateId" class="form-control" placeholder="Date To" type="date" label="End date"
-                    labelMode="static" name="edp" required  displayFormat="yyyy-MM-dd"> </dx-date-box>
+                    labelMode="static" name="edp" required  displayFormat="yyyy-MM-dd" [formControlName]="'edp'"> </dx-date-box>
             </div>
-            <div class="col-span-1">
+            <div class="col-span-2">
                 <dx-date-box type="time" placeholder="Time" displayFormat="HH:mm" label="End time"
-                    labelMode="static" name="edT" required class="form-control"> </dx-date-box>
+                    labelMode="static" name="edT" required class="form-control" [formControlName]="'edT'"> </dx-date-box>
+            </div>
+            <div class="col-span-1 flex items-end justify-center">
+                <button mat-raised-button color="primary" class="apply-btn dnm-btn dnm-btn-primary min-w-20" (click)="onShowMeterGraph()">Show</button>
             </div>
         </div>
     </div>
+    <div class="flex">
+        <div class="flex w-full" *ngIf="waterDataSource" style="height: 500px; overflow: visible !important; background-color: #f8f9fa;">
+            <dx-chart [dataSource]="waterDataSource.Detail" [customizePoint]="customizePoint" (onPointClick)="pointClick($event)" class="w-full">
+                <dxo-title [text]="chartTitleWater" [subtitle]="chartSubTitleWater"></dxo-title>
+                <dxo-size [height]="500"></dxo-size>
+                <dxi-series argumentField="ReadingDateString" valueField="ActFlow" type="bar" color="blue" name="Usage(kL)">
+                  <dxo-hover-style color="#0af5ed"></dxo-hover-style>
+                </dxi-series>
+                <dxo-argument-axis argumentType="string">
+                  <dxo-label displayMode="rotate" [rotationAngle]="-60"></dxo-label>
+                </dxo-argument-axis>
+                <dxo-tooltip [enabled]="false" [zIndex]="5000"
+                             [customizeTooltip]="customizeTooltip">
+                </dxo-tooltip>
+                <dxo-export [enabled]="true"></dxo-export>
+                <dxo-scroll-bar [visible]="true"></dxo-scroll-bar>
+                <dxo-zoom-and-pan argumentAxis="both"></dxo-zoom-and-pan>
+                <dxo-loading-indicator [enabled]="true"></dxo-loading-indicator>
+                <dxo-legend verticalAlignment="bottom" horizontalAlignment="center" zIndex="6000">
+                </dxo-legend>
+            </dx-chart>
+        </div>
+        
+    </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-6 gap-4 w-full">
         <div class="bg-gradient-to-r from-indigo-800 to-indigo-500 col-span-1 lg:col-span-1 flex flex-col flex-auto px-3 py-2 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100">
-            <div class="flex flex-col w-full gap-y-1"> 
+            <div class="flex flex-col w-full gap-y-1 justify-between h-full"> 
                 <span class="text-md text-white font-semibold">Night Flow Analysis For Period:</span>
-                <span class="text-sm text-white">Threshold: 5kl</span>
-                <div class="flex py-1 px-2 bg-white">
-                    <span class="text-md text-red-500 font-semibold">Alarms: 3</span>
-                </div>
+                <div class="flex flex-col gap-y-1">
+                    <span class="text-sm text-white">Threshold: 5kl</span>
+                    <div class="flex py-1 px-2 bg-white">
+                        <span class="text-md text-red-500 font-semibold">Alarms: 3</span>
+                    </div>
+                </div>                
             </div>
         </div>
         <div class="bg-gradient-to-r from-blue-500 to-blue-800 col-span-1 lg:col-span-1 flex flex-col flex-auto px-3 py-2 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100">
-            <div class="flex flex-col w-full gap-y-1"> 
+            <div class="flex flex-col w-full gap-y-1 justify-between h-full"> 
                 <span class="text-md text-white font-semibold">Burst Pipe Analysis For Period:</span>
-                <span class="text-sm text-white">Threshold: 5kL</span>
-                <div class="flex py-1 px-2 bg-white">
-                    <span class="text-md text-red-500 font-semibold">Alarms: 3</span>
-                </div>
+                <div class="flex flex-col gap-y-1">
+                    <span class="text-sm text-white">Threshold: 5kL</span>
+                    <div class="flex py-1 px-2 bg-white">
+                        <span class="text-md text-red-500 font-semibold">Alarms: 3</span>
+                    </div>
+                </div>                
             </div>
         </div>
         <div class="bg-gradient-to-r from-green-700 to-green-500 col-span-1 lg:col-span-1 flex flex-col flex-auto px-3 py-2 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100">
-            <div class="flex flex-col w-full gap-y-1"> 
+            <div class="flex flex-col w-full gap-y-1 justify-between h-full"> 
                 <span class="text-md text-white font-semibold">Leak Analysis For Period:</span>
-                <span class="text-sm text-white">Threshold: 5kL</span>
-                <div class="flex py-1 px-2 bg-white">
-                    <span class="text-md text-red-500 font-semibold">Alarms: 3</span>
-                </div>
+                <div class="flex flex-col gap-y-1">
+                    <span class="text-sm text-white">Threshold: 5kL</span>
+                    <div class="flex py-1 px-2 bg-white">
+                        <span class="text-md text-red-500 font-semibold">Alarms: 3</span>
+                    </div>
+                </div>                
             </div>
         </div>
         <div class="bg-gradient-to-r from-yellow-600 to-yellow-400 col-span-1 lg:col-span-1 flex flex-col flex-auto px-3 py-2 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100">
-            <div class="flex flex-col w-full gap-y-1"> 
+            <div class="flex flex-col w-full gap-y-1 justify-between h-full">
                 <span class="text-md text-white font-semibold">Daily Usage Analysis For Period:</span>
-                <span class="text-sm text-white">Threshold: 5kL</span>
-                <div class="flex py-1 px-2 bg-white">
-                    <span class="text-md text-red-500 font-semibold">Alarms: 3</span>
+                <div class="flex flex-col gap-y-1">
+                    <span class="text-sm text-white">Threshold: 5kL</span>
+                    <div class="flex py-1 px-2 bg-white">
+                        <span class="text-md text-red-500 font-semibold">Alarms: 3</span>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="bg-gradient-to-r from-purple-700 to-purple-500 col-span-1 lg:col-span-1 flex flex-col flex-auto px-3 py-2 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100">
-            <div class="flex flex-col w-full gap-y-1"> 
+            <div class="flex flex-col w-full gap-y-1 justify-between h-full">
                 <span class="text-md text-white font-semibold">Peak Analysis For Period:</span>
-                <span class="text-sm text-white">Threshold: 5kL</span>
-                <div class="flex py-1 px-2 bg-white">
-                    <span class="text-md text-red-500 font-semibold">Alarms: 3</span>
-                </div>
+                <div class="flex flex-col gap-y-1">
+                    <span class="text-sm text-white">Threshold: 5kL</span>
+                    <div class="flex py-1 px-2 bg-white">
+                        <span class="text-md text-red-500 font-semibold">Alarms: 3</span>
+                    </div>
+                </div>                
             </div>
         </div>
         <div class="bg-gradient-to-r from-orange-700 to-orange-500 col-span-1 lg:col-span-1 flex flex-col flex-auto px-3 py-2 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100">
-            <div class="flex flex-col w-full gap-y-1"> 
+            <div class="flex flex-col w-full gap-y-1 justify-between h-full"> 
                 <span class="text-md text-white font-semibold">Average Analysis For Period:</span>
-                <span class="text-sm text-white">Threshold: 5kL</span>
-                <div class="flex py-1 px-2 bg-white">
-                    <span class="text-md text-red-500 font-semibold">Alarms: 3</span>
-                </div>
+                <div class="flex flex-col gap-y-1">
+                    <span class="text-sm text-white">Threshold: 5kL</span>
+                    <div class="flex py-1 px-2 bg-white">
+                        <span class="text-md text-red-500 font-semibold">Alarms: 3</span>
+                    </div>
+                </div>                
             </div>
         </div>
     </div>
@@ -95,88 +134,7 @@
     <div class="flex text-orange-500 min-h-16 bg-gray-200 items-center px-4 text-md rounded-md">
         The Alarm will trigger if the average usage exceeds the threshold during the selected time range.
     </div>
-    <div class="flex flex-col width-fit gap-y-4">
-        <div class="flex px-4">
-            <div class="flex items-center gap-x-4">
-                <div class="text-lg font-semibold">Specify night time hours:</div>
-                <div class="flex">
-                    <dx-date-box type="time" placeholder="Time" displayFormat="HH:mm" label="Start time"
-                        labelMode="static" name="sdT" required class="form-control"> </dx-date-box>
-                </div>
-                <div class="flex">
-                    <dx-date-box type="time" placeholder="Time" displayFormat="HH:mm" label="End time"
-                        labelMode="static" name="edT" required class="form-control"> </dx-date-box>
-                </div>
-                <div class="flex">
-                    <dx-select-box [items]="minutues" displayExpr="Value" valueExpr="Value" class="form-control" label="Duration"
-                        required placeholder="In Minutes" lableMode="static" name="meter" [searchEnabled]="true">
-                        </dx-select-box>
-                </div>
-                <div class="flex h-full items-end ml-2">
-                    <button mat-raised-button color="primary" class="apply-btn dnm-btn dnm-btn-primary min-w-30" (click)="onApply()">Apply</button>
-                </div>
-            </div>
-        </div>
-        <div class="flex flex-col py-6 gap-y-2 bg-gray-200 px-4">
-            <div class="flex">
-                <div class="text-lg font-semibold min-w-80">Average usage observed:</div>
-                <div class="flex items-center gap-x-1">
-                    <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
-                        <input matInput type="text"/> 
-                    </mat-form-field>
-                    <span class="text-lg font-semibold">KL</span>
-                </div>
-            </div>
-            <div class="flex">
-                <div class="text-lg font-semibold min-w-80">Peak usage observed:</div>
-                <div class="flex items-center gap-x-1">
-                    <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
-                        <input matInput type="text"/> 
-                    </mat-form-field>
-                    <span class="text-lg font-semibold">KL</span>
-                </div>
-            </div>
-            <div class="flex">
-                <div class="text-lg font-semibold min-w-80">Minimum usage observed:</div>
-                <div class="flex items-center gap-x-1">
-                    <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
-                        <input matInput type="text"/> 
-                    </mat-form-field>
-                    <span class="text-lg font-semibold">KL</span>
-                </div>
-            </div>
-        </div>
-        <div class="flex flex-col py-6 gap-y-8 px-4">
-            <div class="flex justify-between w-full">
-                <div class="flex items-center">
-                    <div class="text-lg font-semibold min-w-80">Alarm Threshold Value:</div>
-                    <div class="flex items-center gap-x-1">
-                        <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
-                            <input matInput type="text"/> 
-                        </mat-form-field>
-                        <span class="text-lg font-semibold">KL</span>
-                    </div>
-                </div>
-                <div class="flex h-full items-end ml-2">
-                    <button mat-raised-button color="primary" class="apply-btn dnm-btn dnm-btn-primary min-w-30" (click)="onApply()">Apply</button>
-                </div>
-            </div>
-            <div class="flex justify-between w-full">
-                <div class="flex items-center">
-                    <div class="text-lg font-semibold min-w-80">Number of Alarms for above period:</div>
-                    <div class="flex items-center gap-x-1">
-                        <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
-                            <input matInput type="text"/> 
-                        </mat-form-field>
-                        <span class="text-lg font-semibold hidden">KL</span>
-                    </div>
-                </div>
-                <div class="flex items-center">
-                    <div class="text-lg font-semibold min-w-20">Active:</div>
-                    <mat-checkbox [color]="'primary'"></mat-checkbox>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- <app-alarm-night-flow></app-alarm-night-flow> -->
+    <app-alarm-burst-pipe></app-alarm-burst-pipe>
     
 </div>

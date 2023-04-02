@@ -28,7 +28,8 @@ const PROXY_CONFIG = [
       "/ScadaRequestDetails",
       "/SupplyTypes",
       "/JobStatus",
-      "/ScheduleStatus"
+      "/ScheduleStatus",
+      "/AMRMeterGraphs"
    ],
     target: target,
     secure: false,
