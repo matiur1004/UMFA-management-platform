@@ -1,0 +1,62 @@
+<div class="flex flex-col width-fit gap-y-4">
+    <div class="flex flex-col py-6 gap-y-2 bg-gray-200 px-4">
+        <div class="flex">
+            <div class="text-lg font-semibold min-w-80">Average usage observed:</div>
+            <div class="flex items-center gap-x-1">
+                <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
+                    <input matInput type="text"/> 
+                </mat-form-field>
+                <span class="text-lg font-semibold">KL</span>
+            </div>
+        </div>
+        <div class="flex">
+            <div class="text-lg font-semibold min-w-80">Peak usage observed:</div>
+            <div class="flex items-center gap-x-1">
+                <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
+                    <input matInput type="text"/> 
+                </mat-form-field>
+                <span class="text-lg font-semibold">KL</span>
+            </div>
+        </div>
+        <div class="flex">
+            <div class="text-lg font-semibold min-w-80">Minimum usage observed:</div>
+            <div class="flex items-center gap-x-1">
+                <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
+                    <input matInput type="text"/> 
+                </mat-form-field>
+                <span class="text-lg font-semibold">KL</span>
+            </div>
+        </div>
+    </div>
+    <div class="flex flex-col py-6 gap-y-8 px-4">
+        <div class="flex justify-between w-full">
+            <div class="flex items-center">
+                <div class="text-lg font-semibold min-w-80">Alarm Threshold Value:</div>
+                <div class="flex items-center gap-x-1">
+                    <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
+                        <input matInput type="text"/> 
+                    </mat-form-field>
+                    <span class="text-lg font-semibold">KL</span>
+                </div>
+            </div>
+            <div class="flex h-full items-end ml-2">
+                <button mat-raised-button color="primary" class="apply-btn dnm-btn dnm-btn-primary min-w-30" (click)="onApply()">Apply</button>
+            </div>
+        </div>
+        <div class="flex justify-between w-full">
+            <div class="flex items-center">
+                <div class="text-lg font-semibold min-w-80">Number of Alarms for above period:</div>
+                <div class="flex items-center gap-x-1">
+                    <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
+                        <input matInput type="text"/> 
+                    </mat-form-field>
+                    <span class="text-lg font-semibold hidden">KL</span>
+                </div>
+            </div>
+            <div class="flex items-center">
+                <div class="text-lg font-semibold min-w-20">Active:</div>
+                <mat-checkbox [color]="'primary'"></mat-checkbox>
+            </div>
+        </div>
+    </div>
+</div>

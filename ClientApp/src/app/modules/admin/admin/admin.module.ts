@@ -38,6 +38,10 @@ import { AlarmConfigurationComponent } from './alarm-configuration/alarm-configu
 import { MeterAlarmDetailComponent } from './meter-alarm-detail/meter-alarm-detail.component';
 import { AlarmNightFlowComponent } from './meter-alarm-detail/alarm-night-flow/alarm-night-flow.component';
 import { AlarmBurstPipeComponent } from './meter-alarm-detail/alarm-burst-pipe/alarm-burst-pipe.component';
+import { AlarmLeakDetectionComponent } from './meter-alarm-detail/alarm-leak-detection/alarm-leak-detection.component';
+import { AlarmPeakUsageComponent } from './meter-alarm-detail/alarm-peak-usage/alarm-peak-usage.component';
+import { AlarmDailyUsageComponent } from './meter-alarm-detail/alarm-daily-usage/alarm-daily-usage.component';
+import { AlarmAverageUsageComponent } from './meter-alarm-detail/alarm-average-usage/alarm-average-usage.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +64,11 @@ import { AlarmBurstPipeComponent } from './meter-alarm-detail/alarm-burst-pipe/a
     AlarmConfigurationComponent,
     MeterAlarmDetailComponent,
     AlarmNightFlowComponent,
-    AlarmBurstPipeComponent
+    AlarmBurstPipeComponent,
+    AlarmLeakDetectionComponent,
+    AlarmPeakUsageComponent,
+    AlarmDailyUsageComponent,
+    AlarmAverageUsageComponent
   ],
   imports: [
     FormsModule,

@@ -16,11 +16,11 @@ export class MeterAlarmDetailComponent implements OnInit {
   waterDataSource: IWaterProfileResponse;
   chartSubTitleWater: string = '';
   chartTitleWater = `Water Profile for Meter:`;
+  selectedAlarmType: string;
 
   obsWaterProfile$ = this._amrDataService.obsWaterProfile$
     .pipe(
       tap(p => {
-        console.log('sdfsdfsdf', p);
         //if (p) console.log(`Next value observed: ${(p.Detail.length)} long details`)
       }),
       catchError(err => {
@@ -28,13 +28,12 @@ export class MeterAlarmDetailComponent implements OnInit {
         return throwError(err);
       }),
       map((prof: IWaterProfileResponse) => {
-        console.log('sdfsdfsdfsd', prof);
         if (prof) {
           if (prof.Status == 'Error') {
             this._amrDataService.setError(`Error getting data: ${prof.ErrorMessage}`);
           } else
-            this.setDataSourceWater(prof);
-        } else this.setDataSourceWater(prof);
+            this.setDataSource(prof);
+        } else this.setDataSource(prof);
       })
     );
 
@@ -73,12 +72,12 @@ export class MeterAlarmDetailComponent implements OnInit {
       let data = {MeterId: formData['MeterId'], StartDate: sDate, EndDate: eDate, nightFlowStart: formData['NightFlowStart'], NightFlowEnd: formData['NightFlowEnd']};
       this._amrDataService.getMeterProfileForGraph(formData['MeterId'], sDate, eDate, formData['NightFlowStart'], formData['NightFlowEnd']).subscribe(res => {
         console.log("qwqwqw", res);
-        this.setDataSourceWater(res);
+        this.setDataSource(res);
       })
     }
   }
 
-  setDataSourceWater(ds: IWaterProfileResponse): void {
+  setDataSource(ds: IWaterProfileResponse): void {
     var pipe = new DatePipe('en_ZA');
     if (ds) {
       ds.Detail.forEach((det) => { det.ReadingDateString = pipe.transform(det.ReadingDate, "yyyy-MM-dd HH:mm") });
@@ -110,5 +109,9 @@ export class MeterAlarmDetailComponent implements OnInit {
   pointClick(e: any) {
     const point = e.target;
     point.showTooltip();
+  }
+
+  onSelectAlarmType(type) {
+    this.selectedAlarmType = type;
   }
 }
