@@ -7,19 +7,19 @@ namespace ClientPortal.Controllers
     [Authorize]
     [ApiController]
     [Route("[controller]")]
-    public class AlarmConfigNightFlowController : ControllerBase
+    public class AlarmNightFlowController : ControllerBase
     {
-        private readonly ILogger<AlarmConfigNightFlowController> _logger;
+        private readonly ILogger<AlarmNightFlowController> _logger;
         private readonly PortalDBContext _context;
 
-        public AlarmConfigNightFlowController(ILogger<AlarmConfigNightFlowController> logger, PortalDBContext portalDBContext)
+        public AlarmNightFlowController(ILogger<AlarmNightFlowController> logger, PortalDBContext portalDBContext)
         {
             _logger = logger;
             _context = portalDBContext;
         }
 
         [HttpPost("getAlarmConfigNightFlow")]
-        public ActionResult<IEnumerable<dynamic>> GetAlarmConfigNightFlow([FromBody] AlarmConfigNightFlowModel model)
+        public ActionResult<IEnumerable<dynamic>> GetAlarmConfigNightFlow([FromBody] AlarmNightFlowModel model)
         {
             if (!model.MeterSerialNo.Any()) return BadRequest(new ApplicationException($"Invalid Meter Number: '{model.MeterSerialNo}'"));
             if (!DateTime.TryParse(model.ProfileStartDTM, out DateTime sDt)) return BadRequest(new ApplicationException($"Invalid StartDate: '{model.ProfileStartDTM}'"));
@@ -95,7 +95,7 @@ namespace ClientPortal.Controllers
         }
     }
 
-    public class AlarmConfigNightFlowModel
+    public class AlarmNightFlowModel
     {
         public string MeterSerialNo { get; set; }
         public string ProfileStartDTM { get; set; }
