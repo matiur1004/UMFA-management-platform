@@ -1,6 +1,5 @@
 ﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
-using ClientPortal.Models.RequestModels;
 using System.Dynamic;
 
 namespace ClientPortal.Controllers
@@ -18,13 +17,6 @@ namespace ClientPortal.Controllers
             _logger = logger;
             _context = portalDBContext;
         }
-
-        //@MeterSerialNo nvarchar(250),
-        //@ProfileStartDTM smalldatetime,
-        //@ProfileEndDTM smalldatetime,
-        //@NFStartTime time,
-        //@NFEndTime time
-
 
         [HttpPost("getAlarmConfigNightFlow")]
         public ActionResult<IEnumerable<dynamic>> GetAlarmConfigNightFlow([FromBody] AlarmConfigNightFlowModel model)
