@@ -223,7 +223,7 @@ namespace ClientPortal.Data.Repositories
             }
         }
 
-        public async Task<AMRWaterProfileHeader> GetWaterProfile(int meterId, DateTime startDate, DateTime endDate, TimeOnly nightFlowStart, TimeOnly nightFlowEnd)
+        public async Task<AMRWaterProfileHeader> GetWaterProfile(int meterId, DateTime startDate, DateTime endDate, TimeOnly nightFlowStart, TimeOnly nightFlowEnd, bool applyNightFlow)
         {
             try
             {
@@ -231,7 +231,8 @@ namespace ClientPortal.Data.Repositories
                 string eDate = endDate.ToString("yyyy/MM/dd HH:mm");
                 string nfsTime = nightFlowStart.ToString("HH:mm");
                 string nfeTime = nightFlowEnd.ToString("HH:mm");
-                var CommandText = $"exec spGetWaterProfile {meterId}, '{sDate}', '{eDate}', '{nfsTime}', '{nfeTime}'";
+                bool applyNF = applyNightFlow;
+                var CommandText = $"exec spGetWaterProfile {meterId}, '{sDate}', '{eDate}', '{nfsTime}', '{nfeTime}', {applyNF}";
                 AMRWaterProfileHeader header = new();
                 var connection = _context.Database.GetDbConnection();
                 await connection.OpenAsync();
@@ -278,7 +279,7 @@ namespace ClientPortal.Data.Repositories
         }
 
 
-        public async Task<AMRGraphProfileHeader> GetGraphProfile(int meterId, DateTime startDate, DateTime endDate, TimeOnly nightFlowStart, TimeOnly nightFlowEnd)
+        public async Task<AMRGraphProfileHeader> GetGraphProfile(int meterId, DateTime startDate, DateTime endDate, TimeOnly nightFlowStart, TimeOnly nightFlowEnd, bool applyNightFlow)
         {
             try
             {
@@ -286,7 +287,8 @@ namespace ClientPortal.Data.Repositories
                 string eDate = endDate.ToString("yyyy/MM/dd HH:mm");
                 string nfsTime = nightFlowStart.ToString("HH:mm");
                 string nfeTime = nightFlowEnd.ToString("HH:mm");
-                var CommandText = $"exec spGetWaterProfile {meterId}, '{sDate}', '{eDate}', '{nfsTime}', '{nfeTime}'";
+                bool applyNF = applyNightFlow;
+                var CommandText = $"exec spGetWaterProfile {meterId}, '{sDate}', '{eDate}', '{nfsTime}', '{nfeTime}', {applyNF}";
                 AMRGraphProfileHeader header = new();
                 var connection = _context.Database.GetDbConnection();
                 await connection.OpenAsync();
