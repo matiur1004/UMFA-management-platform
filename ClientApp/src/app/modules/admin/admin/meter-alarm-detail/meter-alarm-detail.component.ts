@@ -1,8 +1,9 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IWaterProfileResponse } from '@core/models';
 import { AmrDataService } from '@shared/services';
+import { AlarmConfigurationService } from '@shared/services/alarm-configuration.service';
 import { catchError, map, tap, throwError } from 'rxjs';
 
 @Component({
@@ -11,6 +12,8 @@ import { catchError, map, tap, throwError } from 'rxjs';
   styleUrls: ['./meter-alarm-detail.component.scss']
 })
 export class MeterAlarmDetailComponent implements OnInit {
+
+  @Input() meter: any;
 
   profileForm: FormGroup;
   waterDataSource: IWaterProfileResponse;
@@ -39,10 +42,24 @@ export class MeterAlarmDetailComponent implements OnInit {
 
   constructor(
     private _formBuilder: FormBuilder,
-    private _amrDataService: AmrDataService
+    private _amrDataService: AmrDataService,
+    private _alarmConfigService: AlarmConfigurationService
   ) { }
 
   ngOnInit(): void {
+    this.meter = {
+      "AMRMEterId": 114,
+      "MeterNo": "220041204(W)",
+      "Make": "Elster",
+      "Model": "A1400",
+      "ScadaMeterNo": "81501574",
+      "Night Flow": 0,
+      "Burst Pipe": 0,
+      "Leak": 0,
+      "Daily Usage": 0,
+      "Peak": 0,
+      "Average": 0
+    }
     //114
     this.profileForm = this._formBuilder.group({
       MeterId: [70, [Validators.required]],
@@ -58,20 +75,27 @@ export class MeterAlarmDetailComponent implements OnInit {
 
     this.profileForm.get('sdp').valueChanges.subscribe(sdp => {
       let sdpDate = new Date(sdp);
-      this.profileForm.get('sdT').setValue(new Date(sdpDate.setHours(0, 30, 0)));
+      this.profileForm.get('sdT').setValue(new Date(sdpDate.setHours(0, 0, 0)));
       this.profileForm.get('edp').setValue(new Date(sdpDate.setDate(sdp.getDate() + 7)));
       this.profileForm.get('edT').setValue(new Date(sdpDate.setHours(0, 0, 0)));
+    })
+
+    this.profileForm.valueChanges.subscribe(formData => {
+      
+      if(formData && formData['sdp'] && formData['edp'] && formData['sdT'] && formData['edT']) {
+        var sDate = new Date(formData['sdp'].getFullYear(), formData['sdp'].getMonth(), formData['sdp'].getDate(), formData['sdT'].getHours(), formData['sdT'].getMinutes());
+        var eDate = new Date(formData['edp'].getFullYear(), formData['edp'].getMonth(), formData['edp'].getDate(), formData['edT'].getHours(), formData['edT'].getMinutes());
+
+        this._alarmConfigService.profileInfo = {StartDate: sDate, EndDate: eDate, MeterSerialNo: '13138213'};
+      }
     })
   }
 
   onShowMeterGraph() {
     if(this.profileForm.valid) {
       let formData = this.profileForm.value;
-      var sDate = new Date(formData['sdp'].getFullYear(), formData['sdp'].getMonth(), formData['sdp'].getDate(), formData['sdT'].getHours(), formData['sdT'].getMinutes());
-      var eDate = new Date(formData['edp'].getFullYear(), formData['edp'].getMonth(), formData['edp'].getDate(), formData['edT'].getHours(), formData['edT'].getMinutes());
-      let data = {MeterId: formData['MeterId'], StartDate: sDate, EndDate: eDate, nightFlowStart: formData['NightFlowStart'], NightFlowEnd: formData['NightFlowEnd']};
-      this._amrDataService.getMeterProfileForGraph(formData['MeterId'], sDate, eDate, formData['NightFlowStart'], formData['NightFlowEnd']).subscribe(res => {
-        console.log("qwqwqw", res);
+      let data = {...this._alarmConfigService.profileInfo, MeterId: formData['MeterId'], nightFlowStart: formData['NightFlowStart'], NightFlowEnd: formData['NightFlowEnd']};
+      this._amrDataService.getMeterProfileForGraph(formData['MeterId'], data['StartDate'], data['EndDate'], formData['NightFlowStart'], formData['NightFlowEnd']).subscribe(res => {
         this.setDataSource(res);
       })
     }

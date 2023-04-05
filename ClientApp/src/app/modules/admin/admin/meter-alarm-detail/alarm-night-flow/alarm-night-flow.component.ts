@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { formatDateString, formatTimeString } from '@core/utils/umfa.help';
+import { AlarmConfigurationService } from '@shared/services/alarm-configuration.service';
 
 @Component({
   selector: 'app-alarm-night-flow',
@@ -8,13 +11,47 @@ import { Component, OnInit } from '@angular/core';
 export class AlarmNightFlowComponent implements OnInit {
 
   minutues = [];
+  form: FormGroup;
+  configInfo: any;
 
-  constructor() { }
+  constructor(
+    private _alarmConfigService: AlarmConfigurationService,
+    private _formBuilder: FormBuilder
+  ) { }
 
   ngOnInit(): void {
     for(let i = 1; i <= 60; i++) {
       this.minutues.push({Value: i});
     }
+
+    // form 
+    this.form = this._formBuilder.group({
+      NightStartTime: [],
+      NightEndTime: []
+    })
+  }
+
+  onAlarmNightFlow() {
+    let formData = this.form.value;
+    if(this._alarmConfigService.profileInfo) {
+      let nStartTime = {hours: formData['NightStartTime'].getHours(), minutes: formData['NightStartTime'].getMinutes()};
+      let nEndTime = {hours: formData['NightEndTime'].getHours(), minutes: formData['NightEndTime'].getMinutes()};
+
+      let data = {  
+        ProfileStartDTM: formatDateString(this._alarmConfigService.profileInfo.StartDate), 
+        ProfileEndDTM: formatDateString(this._alarmConfigService.profileInfo.EndDate), 
+        NFStartTime: formatTimeString(nStartTime), 
+        NFEndTime: formatTimeString(nEndTime),
+        MeterSerialNo: this._alarmConfigService.profileInfo.MeterSerialNo
+      };
+      console.log(data);
+      this._alarmConfigService.getAlarmConfigNightFlow(data).subscribe(res => {
+        console.log('alarm config', res);
+        if(res && res.length > 0) this.configInfo = res[0];
+      });
+      
+    }
+    
   }
 
   onApply() {

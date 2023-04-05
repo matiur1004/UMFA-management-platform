@@ -9,17 +9,17 @@
                 <mat-tab label="AMR Meters"></mat-tab>
                 <mat-tab label="AMR Schedule"></mat-tab>
                 <mat-tab label="Alarm Configuration"></mat-tab>
-                <!-- <ng-container *ngFor="let detail of detailsList; let i = index;">
+                <ng-container *ngFor="let detail of detailsList; let i = index;">
                     <mat-tab label="Detail">
                         <ng-template mat-tab-label>
                             {{detail.MeterNo}}
                             <mat-icon class="icon-size-4 hover:text-red-500 ml-2" [svgIcon]="'feather:x'" (click)="removeTab(i)"></mat-icon>
                         </ng-template>
                         <ng-template matTabContent>
-                            <app-meter-alarm-detail></app-meter-alarm-detail>
+                            <app-meter-alarm-detail [meter]="detail"></app-meter-alarm-detail>
                         </ng-template>
                     </mat-tab>
-                </ng-container> -->
+                </ng-container>
                 <mat-tab label="Detail">
                     <ng-template mat-tab-label>
                         detail

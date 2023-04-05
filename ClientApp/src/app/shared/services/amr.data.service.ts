@@ -2,6 +2,7 @@ import { Time } from "@angular/common";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
+import { formatDateString, formatTimeString } from "@core/utils/umfa.help";
 import { CONFIG } from "app/core/helpers";
 import { BehaviorSubject, catchError, map, Observable, of, throwError } from "rxjs";
 import { IAmrChart, IAmrChartDemProfParams, IAmrChartWaterProfParams, IDemandProfileResponse, ITouHeader, IWaterProfileResponse } from "../../core/models";
@@ -121,11 +122,6 @@ export class AmrDataService {
     return ret;
   }
 
-  formatTimeString(tim: Time): string {
-    let ret = `${ String(tim.hours).padStart(2, '0') }:${ String(tim.minutes).padStart(2, '0') }`;
-    return ret;
-  }
-
   catchErrors(error: { error: { message: any; }; message: any; }): Observable<Response> {
     if (error && error.error && error.error.message) { //clientside error
       console.log(`Client side error: ${error.error.message}`);
@@ -180,8 +176,8 @@ export class AmrDataService {
 
   getWaterProfile(meterId: number, sDate: Date, eDate: Date, nfsTime: Time, nfeTime: Time) {
     this.bsWaterProfile.next(null);
-    let url = `${CONFIG.apiURL}${CONFIG.getWaterProfile}?MeterID=${meterId}&StartDate=${this.formatDateString(sDate)}&EndDate=${this.formatDateString(eDate)}`;
-    url += `&NightFlowStart=${this.formatTimeString(nfsTime)}&NightFlowEnd=${this.formatTimeString(nfeTime)}`;
+    let url = `${CONFIG.apiURL}${CONFIG.getWaterProfile}?MeterID=${meterId}&StartDate=${formatDateString(sDate)}&EndDate=${formatDateString(eDate)}`;
+    url += `&NightFlowStart=${formatTimeString(nfsTime)}&NightFlowEnd=${formatTimeString(nfeTime)}`;
     this.http.get<any>(url, { withCredentials: true })
       .pipe(
         catchError(err => this.catchErrors(err)),
@@ -199,8 +195,8 @@ export class AmrDataService {
     this.bsMeterGraphProfile.next(null);
     // let url = `${CONFIG.apiURL}/AMRMeterGraphs/getGraphProfile?MeterID=${meterId}&StartDate=${this.formatDateString(sDate)}&EndDate=${this.formatDateString(eDate)}`;
     // url += `&NightFlowStart=${this.formatTimeString(nfsTime)}&NightFlowEnd=${this.formatTimeString(nfeTime)}`;
-    let url = `${CONFIG.apiURL}${CONFIG.getWaterProfile}?MeterID=${meterId}&StartDate=${this.formatDateString(sDate)}&EndDate=${this.formatDateString(eDate)}`;
-    url += `&NightFlowStart=${this.formatTimeString(nfsTime)}&NightFlowEnd=${this.formatTimeString(nfeTime)}`;
+    let url = `${CONFIG.apiURL}${CONFIG.getWaterProfile}?MeterID=${meterId}&StartDate=${formatDateString(sDate)}&EndDate=${formatDateString(eDate)}`;
+    url += `&NightFlowStart=${formatTimeString(nfsTime)}&NightFlowEnd=${formatTimeString(nfeTime)}`;
     console.log('url', url);
     return this.http.get<any>(url, { withCredentials: true })
       .pipe(

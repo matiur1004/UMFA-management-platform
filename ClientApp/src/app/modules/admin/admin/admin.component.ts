@@ -33,7 +33,6 @@ export class AdminComponent implements OnInit {
     this._meterService.detailMeterAlarm$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: any) => {
-        console.log(data);
         if(data) this.detailsList.push(data);
       });
   }

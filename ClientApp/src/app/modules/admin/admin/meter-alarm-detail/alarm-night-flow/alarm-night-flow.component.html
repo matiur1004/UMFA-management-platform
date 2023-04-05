@@ -1,22 +1,17 @@
 <div class="flex flex-col width-fit gap-y-4">
     <div class="flex px-4">
-        <div class="flex items-center gap-x-4">
+        <div class="flex items-center gap-x-4" [formGroup]="form">
             <div class="text-lg font-semibold">Specify night time hours:</div>
             <div class="flex">
                 <dx-date-box type="time" placeholder="Time" displayFormat="HH:mm" label="Start time"
-                    labelMode="static" name="sdT" required class="form-control"> </dx-date-box>
+                    labelMode="static" name="sdT" required class="form-control" [formControlName]="'NightStartTime'"> </dx-date-box>
             </div>
             <div class="flex">
                 <dx-date-box type="time" placeholder="Time" displayFormat="HH:mm" label="End time"
-                    labelMode="static" name="edT" required class="form-control"> </dx-date-box>
-            </div>
-            <div class="flex">
-                <dx-select-box [items]="minutues" displayExpr="Value" valueExpr="Value" class="form-control" label="Duration"
-                    required placeholder="In Minutes" lableMode="static" name="meter" [searchEnabled]="true">
-                    </dx-select-box>
+                    labelMode="static" name="edT" required class="form-control" [formControlName]="'NightEndTime'"> </dx-date-box>
             </div>
             <div class="flex h-full items-end ml-2">
-                <button mat-raised-button color="primary" class="apply-btn dnm-btn dnm-btn-primary min-w-30" (click)="onApply()">Apply</button>
+                <button mat-raised-button color="primary" class="apply-btn dnm-btn dnm-btn-primary min-w-30" (click)="onAlarmNightFlow()">Apply</button>
             </div>
         </div>
     </div>
@@ -25,7 +20,7 @@
             <div class="text-lg font-semibold min-w-80">Average usage observed:</div>
             <div class="flex items-center gap-x-1">
                 <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
-                    <input matInput type="text"/> 
+                    <input matInput type="text" [readonly]="true" value="{{configInfo ? configInfo.IntervalAvg : ''}}"/> 
                 </mat-form-field>
                 <span class="text-lg font-semibold">KL</span>
             </div>
@@ -34,7 +29,7 @@
             <div class="text-lg font-semibold min-w-80">Peak usage observed:</div>
             <div class="flex items-center gap-x-1">
                 <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
-                    <input matInput type="text"/> 
+                    <input matInput type="text" [readonly]="true" value="{{configInfo ? configInfo.NFPeak : ''}}"/> 
                 </mat-form-field>
                 <span class="text-lg font-semibold">KL</span>
             </div>
@@ -43,7 +38,7 @@
             <div class="text-lg font-semibold min-w-80">Minimum usage observed:</div>
             <div class="flex items-center gap-x-1">
                 <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
-                    <input matInput type="text"/> 
+                    <input matInput type="text" [readonly]="true" value="{{configInfo ? configInfo.NFMin : ''}}"/> 
                 </mat-form-field>
                 <span class="text-lg font-semibold">KL</span>
             </div>
@@ -51,15 +46,22 @@
     </div>
     <div class="flex flex-col py-6 gap-y-8 px-4">
         <div class="flex justify-between w-full">
-            <div class="flex items-center">
-                <div class="text-lg font-semibold min-w-80">Alarm Threshold Value:</div>
-                <div class="flex items-center gap-x-1">
-                    <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
-                        <input matInput type="text"/> 
-                    </mat-form-field>
-                    <span class="text-lg font-semibold">KL</span>
+            <div class="flex">
+                <div class="flex items-center">
+                    <div class="text-lg font-semibold min-w-80">Alarm Threshold Value:</div>
+                    <div class="flex items-center gap-x-1">
+                        <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
+                            <input matInput type="text"/> 
+                        </mat-form-field>
+                        <span class="text-lg font-semibold">KL</span>
+                    </div>
                 </div>
-            </div>
+                <div class="flex">
+                    <dx-select-box [items]="minutues" displayExpr="Value" valueExpr="Value" class="form-control" label="Duration"
+                        required placeholder="In Minutes" lableMode="static" name="meter" [searchEnabled]="true">
+                        </dx-select-box>
+                </div>
+            </div>            
             <div class="flex h-full items-end ml-2">
                 <button mat-raised-button color="primary" class="apply-btn dnm-btn dnm-btn-primary min-w-30" (click)="onApply()">Apply</button>
             </div>

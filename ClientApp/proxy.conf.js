@@ -29,7 +29,8 @@ const PROXY_CONFIG = [
       "/SupplyTypes",
       "/JobStatus",
       "/ScheduleStatus",
-      "/AMRMeterGraphs"
+      "/AMRMeterGraphs",
+      "/AlarmNightFlow"
    ],
     target: target,
     secure: false,
