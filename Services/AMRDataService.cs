@@ -290,7 +290,7 @@ namespace ClientPortal.Services
             AMRWaterProfileResponse result = new();
             try
             {
-                var res = await _repo.GetWaterProfile(request.MeterId, request.StartDate, request.EndDate, request.NightFlowStart, request.NightFlowEnd);
+                var res = await _repo.GetWaterProfile(request.MeterId, request.StartDate, request.EndDate, request.NightFlowStart, request.NightFlowEnd, request.ApplyNightFlow);
                 result.Header = _mapper.Map<AMRWaterProfileResponseHeader>(res);
                 result.Detail = _mapper.Map<List<WaterProfileResponseDetail>>(res.Profile);
                 return result;
@@ -330,7 +330,7 @@ namespace ClientPortal.Services
             AMRGraphProfileResponse result = new();
             try
             {
-                var res = await _repo.GetGraphProfile(request.MeterId, request.StartDate, request.EndDate, request.NightFlowStart, request.NightFlowEnd);
+                var res = await _repo.GetGraphProfile(request.MeterId, request.StartDate, request.EndDate, request.NightFlowStart, request.NightFlowEnd, request.ApplyNightFlow);
                 result.Header = _mapper.Map<AMRGraphProfileResponseHeader>(res);
                 result.Detail = _mapper.Map<List<GraphProfileResponseDetail>>(res.Profile);
                 return result;

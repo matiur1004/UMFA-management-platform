@@ -5,7 +5,6 @@ using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 using ClientPortal.Services;
 using System.Dynamic;
-using System.Dynamic;
 
 namespace ClientPortal.Controllers
 {
