@@ -30,7 +30,7 @@ namespace ClientPortal.Controllers
                 if (!DateTime.TryParse(gq.EndDate, out DateTime eDt)) return BadRequest(new ApplicationException($"Invalid EndDate: '{gq.EndDate}'"));
                 if (!TimeOnly.TryParse(gq.NightFlowStart, out TimeOnly nfsTime)) return BadRequest(new ApplicationException($"Invalid NightFlow Start: '{gq.NightFlowStart}'"));
                 if (!TimeOnly.TryParse(gq.NightFlowEnd, out TimeOnly nfeTime)) return BadRequest(new ApplicationException($"Invalid NightFlow End: '{gq.NightFlowEnd}'"));
-                if (!bool.TryParse(p.ApplyNightFlow.ToString(), out bool applyNF)) return BadRequest(new ApplicationException($"Invalid ApplyNightFlow Bool: '{p.ApplyNightFlow}'"));
+                if (!bool.TryParse(gq.ApplyNightFlow.ToString(), out bool applyNF)) return BadRequest(new ApplicationException($"Invalid ApplyNightFlow Bool: '{gq.ApplyNightFlow}'"));
                 AMRGraphProfileRequest request = new() { MeterId = meterId, StartDate = sDt, EndDate = eDt, NightFlowStart = nfsTime, NightFlowEnd = nfeTime, ApplyNightFlow = applyNF };
 
                 AMRGraphProfileResponse resp = _service.GetGraphProfile(request).Result;
