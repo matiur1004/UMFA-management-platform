@@ -9,7 +9,7 @@ namespace ClientPortal.Data.Repositories
     {
         Task<List<TOUHeader>> GetTOUHeaders();
         Task<DemandProfileHeader> GetDemandProfile(int meterId, DateTime startDate, DateTime endDate, int touHeaderId);
-        Task<AMRWaterProfileHeader> GetWaterProfile(int meterId, DateTime startDate, DateTime endDate, TimeOnly nightFlowStart, TimeOnly nightFlowEnd);
+        Task<AMRWaterProfileHeader> GetWaterProfile(int meterId, DateTime startDate, DateTime endDate, TimeOnly nightFlowStart, TimeOnly nightFlowEnd, bool ApplyNightFlow);
         Task<List<ScadaRequestHeader>> GetJobsToRunAsync();
         Task<bool> UpdateAmrJobStatus(List<ScadaRequestHeader> headers, int status);
         Task<ScadaRequestHeader> GetTrackedScadaHeader(int headerId, int detailId);
@@ -17,7 +17,7 @@ namespace ClientPortal.Data.Repositories
         Task<bool> InsertScadaProfileData(ScadaMeterProfile profile);
         Task<bool> InsertScadaReadingData(ScadaMeterReading readings);
         Task<bool> UpdateDetailStatus(int detailId, int status);
-        Task<AMRGraphProfileHeader> GetGraphProfile(int meterId, DateTime startDate, DateTime endDate, TimeOnly nightFlowStart, TimeOnly nightFlowEnd);
+        Task<AMRGraphProfileHeader> GetGraphProfile(int meterId, DateTime startDate, DateTime endDate, TimeOnly nightFlowStart, TimeOnly nightFlowEnd, bool ApplyNightFlow);
     }
 
     public class AMRDataRepository : IAMRDataRepository
