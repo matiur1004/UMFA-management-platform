@@ -31,7 +31,9 @@ namespace ClientPortal.Controllers
                 if (!DateTime.TryParse(p.EndDate, out DateTime eDt)) return BadRequest(new ApplicationException($"Invalid EndDate: '{p.EndDate}'"));
                 if (!TimeOnly.TryParse(p.NightFlowStart, out TimeOnly nfsTime)) return BadRequest(new ApplicationException($"Invalid NightFlow Start: '{p.NightFlowStart}'"));
                 if (!TimeOnly.TryParse(p.NightFlowEnd, out TimeOnly nfeTime)) return BadRequest(new ApplicationException($"Invalid NightFlow End: '{p.NightFlowEnd}'"));
-                AMRWaterProfileRequest request = new() { MeterId = meterId, StartDate = sDt, EndDate = eDt, NightFlowStart = nfsTime, NightFlowEnd = nfeTime };
+                if (!bool.TryParse(p.ApplyNightFlow.ToString(), out bool applyNF)) return BadRequest(new ApplicationException($"Invalid ApplyNightFlow Bool: '{p.ApplyNightFlow}'"));
+
+                AMRWaterProfileRequest request = new() { MeterId = meterId, StartDate = sDt, EndDate = eDt, NightFlowStart = nfsTime, NightFlowEnd = nfeTime, ApplyNightFlow = applyNF };
 
                 AMRWaterProfileResponse resp = _service.GetWaterProfile(request).Result;
 
@@ -108,5 +110,6 @@ namespace ClientPortal.Controllers
         public string NightFlowStart { get; set; }
         [BindRequired]
         public string NightFlowEnd { get; set; }
+        public bool ApplyNightFlow { get; set; } = false;
     }
 }
