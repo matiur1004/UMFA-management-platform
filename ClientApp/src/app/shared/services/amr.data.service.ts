@@ -116,12 +116,6 @@ export class AmrDataService {
     this.bsTouHeaderSub.next(null);
   }
 
-  formatDateString(dt: Date): string {
-    let ret = `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2, '0')}-${String(dt.getDate()).padStart(2, '0')}`
-    ret += ` ${ String(dt.getHours()).padStart(2, '0') }:${ String(dt.getMinutes()).padStart(2, '0') }`;
-    return ret;
-  }
-
   catchErrors(error: { error: { message: any; }; message: any; }): Observable<Response> {
     if (error && error.error && error.error.message) { //clientside error
       console.log(`Client side error: ${error.error.message}`);
@@ -140,7 +134,7 @@ export class AmrDataService {
 
   getDemandProfile(meterId: number, sDate: Date, eDate: Date, touHeaderId: number) {
     this.bsDemSubject.next(null);
-    const url = `${CONFIG.apiURL}${CONFIG.getDemandProfile}?MeterID=${meterId}&StartDate=${this.formatDateString(sDate)}&EndDate=${this.formatDateString(eDate)}&TouHeaderId=${touHeaderId}`;
+    const url = `${CONFIG.apiURL}${CONFIG.getDemandProfile}?MeterID=${meterId}&StartDate=${formatDateString(sDate)}&EndDate=${formatDateString(eDate)}&TouHeaderId=${touHeaderId}`;
     this.http.get<any>(url, { withCredentials: true })
       .pipe(
         catchError(err => this.catchErrors(err)),
@@ -191,12 +185,12 @@ export class AmrDataService {
       ).subscribe();
   }
 
-  getMeterProfileForGraph(meterId: number, sDate: Date, eDate: Date, nfsTime: Time, nfeTime: Time) {
+  getMeterProfileForGraph(meterId: number, sDate: Date, eDate: Date, nfsTime: Time, nfeTime: Time, applyNightFlow: boolean) {
     this.bsMeterGraphProfile.next(null);
-    // let url = `${CONFIG.apiURL}/AMRMeterGraphs/getGraphProfile?MeterID=${meterId}&StartDate=${this.formatDateString(sDate)}&EndDate=${this.formatDateString(eDate)}`;
-    // url += `&NightFlowStart=${this.formatTimeString(nfsTime)}&NightFlowEnd=${this.formatTimeString(nfeTime)}`;
-    let url = `${CONFIG.apiURL}${CONFIG.getWaterProfile}?MeterID=${meterId}&StartDate=${formatDateString(sDate)}&EndDate=${formatDateString(eDate)}`;
-    url += `&NightFlowStart=${formatTimeString(nfsTime)}&NightFlowEnd=${formatTimeString(nfeTime)}`;
+    let url = `${CONFIG.apiURL}/AMRMeterGraphs/getGraphProfile?MeterID=${meterId}&StartDate=${formatDateString(sDate)}&EndDate=${formatDateString(eDate)}`;
+    url += `&NightFlowStart=${formatTimeString(nfsTime)}&NightFlowEnd=${formatTimeString(nfeTime)}&applyNightFlow=${applyNightFlow}`;
+    // let url = `${CONFIG.apiURL}${CONFIG.getWaterProfile}?MeterID=${meterId}&StartDate=${formatDateString(sDate)}&EndDate=${formatDateString(eDate)}`;
+    // url += `&NightFlowStart=${formatTimeString(nfsTime)}&NightFlowEnd=${formatTimeString(nfeTime)}`;
     console.log('url', url);
     return this.http.get<any>(url, { withCredentials: true })
       .pipe(

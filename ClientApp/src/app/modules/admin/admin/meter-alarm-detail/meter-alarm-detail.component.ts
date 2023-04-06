@@ -20,6 +20,7 @@ export class MeterAlarmDetailComponent implements OnInit {
   chartSubTitleWater: string = '';
   chartTitleWater = `Water Profile for Meter:`;
   selectedAlarmType: string;
+  applyNightFlow: boolean = false;
 
   obsWaterProfile$ = this._amrDataService.obsWaterProfile$
     .pipe(
@@ -95,8 +96,9 @@ export class MeterAlarmDetailComponent implements OnInit {
     if(this.profileForm.valid) {
       let formData = this.profileForm.value;
       let data = {...this._alarmConfigService.profileInfo, MeterId: formData['MeterId'], nightFlowStart: formData['NightFlowStart'], NightFlowEnd: formData['NightFlowEnd']};
-      this._amrDataService.getMeterProfileForGraph(formData['MeterId'], data['StartDate'], data['EndDate'], formData['NightFlowStart'], formData['NightFlowEnd']).subscribe(res => {
+      this._amrDataService.getMeterProfileForGraph(formData['MeterId'], data['StartDate'], data['EndDate'], formData['NightFlowStart'], formData['NightFlowEnd'], this.applyNightFlow).subscribe(res => {
         this.setDataSource(res);
+        this.applyNightFlow = true;
       })
     }
   }
