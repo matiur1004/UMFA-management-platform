@@ -17,7 +17,11 @@ export class AlarmAverageUsageComponent implements OnInit {
     }
   }
 
-  onApply() {
+  onAlarmConfigAverageUsage() {
+    
+  }
+
+  getAlarmAnalyzeAverageUsage() {
     
   }
 }

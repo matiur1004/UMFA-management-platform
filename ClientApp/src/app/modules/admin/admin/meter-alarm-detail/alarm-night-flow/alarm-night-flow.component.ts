@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ALERT_MODAL_CONFIG } from '@core/config/modal.config';
 import { formatDateString, formatTimeString } from '@core/utils/umfa.help';
+import { UmfaUtils } from '@core/utils/umfa.utils';
 import { AlarmConfigurationService } from '@shared/services/alarm-configuration.service';
 
 @Component({
@@ -18,7 +20,8 @@ export class AlarmNightFlowComponent implements OnInit {
 
   constructor(
     private _alarmConfigService: AlarmConfigurationService,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private _ufUtils: UmfaUtils
   ) { }
 
   ngOnInit(): void {
@@ -54,30 +57,41 @@ export class AlarmNightFlowComponent implements OnInit {
       this._alarmConfigService.getAlarmConfigNightFlow(data).subscribe(res => {
         if(res && res.length > 0) this.configInfo = res[0];
       });
-    }    
+    } else {
+      this.showAlert('You should set profile option first!');
+    }
   }
 
   getAlarmAnalyzeNightFlow() {
-      if(this.analyzeForm.valid) {
-        if(this._alarmConfigService.profileInfo) {
-          let configData = this.form.value;
-          let nStartTime = {hours: configData['NightStartTime'].getHours(), minutes: configData['NightStartTime'].getMinutes()};
-          let nEndTime = {hours: configData['NightEndTime'].getHours(), minutes: configData['NightEndTime'].getMinutes()};
+    if(this.analyzeForm.valid) {
+      if(this._alarmConfigService.profileInfo) {
+        let configData = this.form.value;
+        let nStartTime = {hours: configData['NightStartTime'].getHours(), minutes: configData['NightStartTime'].getMinutes()};
+        let nEndTime = {hours: configData['NightEndTime'].getHours(), minutes: configData['NightEndTime'].getMinutes()};
 
-          let data = {  
-            ...this.analyzeForm.value,
-            ProfileStartDTM: formatDateString(this._alarmConfigService.profileInfo.StartDate), 
-            ProfileEndDTM: formatDateString(this._alarmConfigService.profileInfo.EndDate), 
-            NFStartTime: formatTimeString(nStartTime), 
-            NFEndTime: formatTimeString(nEndTime),
-            MeterSerialNo: this._alarmConfigService.profileInfo.MeterSerialNo,
-          };
-          this._alarmConfigService.getAlarmAnalyzeNightFlow(data).subscribe(res => {
-            if(res && res.length > 0) {
-              this.analyzeInfo = res[0];
-            }
-          });
-        }
+        let data = {  
+          ...this.analyzeForm.value,
+          ProfileStartDTM: formatDateString(this._alarmConfigService.profileInfo.StartDate), 
+          ProfileEndDTM: formatDateString(this._alarmConfigService.profileInfo.EndDate), 
+          NFStartTime: formatTimeString(nStartTime), 
+          NFEndTime: formatTimeString(nEndTime),
+          MeterSerialNo: this._alarmConfigService.profileInfo.MeterSerialNo,
+        };
+        this._alarmConfigService.getAlarmAnalyzeNightFlow(data).subscribe(res => {
+          if(res && res.length > 0) {
+            this.analyzeInfo = res[0];
+          }
+        });
+      } else {
+        this.showAlert('You should set profile option first!');
       }
+    }
+  }
+
+  showAlert(title: string) {
+    const dialogRef = this._ufUtils.fuseConfirmDialog(
+      ALERT_MODAL_CONFIG,
+      '',
+      title);
   }
 }

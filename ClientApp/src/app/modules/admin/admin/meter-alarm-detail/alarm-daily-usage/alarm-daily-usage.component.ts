@@ -12,7 +12,7 @@ export class AlarmDailyUsageComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onApply() {
+  onAlarmAnalyzeDailyUsage() {
     
   }
 }

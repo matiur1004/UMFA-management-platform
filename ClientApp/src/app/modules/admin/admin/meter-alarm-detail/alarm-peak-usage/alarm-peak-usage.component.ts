@@ -12,7 +12,11 @@ export class AlarmPeakUsageComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onApply() {
+  onAlarmConfigPeakUsage() {
+
+  }
+  
+  getAlarmAnalyzePeakUsage() {
     
   }
 }
