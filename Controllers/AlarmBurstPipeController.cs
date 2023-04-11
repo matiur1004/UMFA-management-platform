@@ -1,6 +1,6 @@
 ﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
-using System.Dynamic;
+using Dapper;
 
 namespace ClientPortal.Controllers
 {
@@ -19,66 +19,37 @@ namespace ClientPortal.Controllers
         }
 
         [HttpPost("getAlarmConfigBurstPipe")]
-        public ActionResult<IEnumerable<dynamic>> GetAlarmConfigBurstPipe([FromBody] AlarmConfigBurstPipeModel model)
+        public async Task<ActionResult<AlarmConfigBurstPipeResultModel>> GetAlarmConfigBurstPipe([FromBody] AlarmConfigBurstPipeModel model)
         {
             if (!model.MeterSerialNo.Any()) return BadRequest(new ApplicationException($"Invalid Meter Number: '{model.MeterSerialNo}'"));
             if (!DateTime.TryParse(model.ProfileStartDTM, out DateTime sDt)) return BadRequest(new ApplicationException($"Invalid StartDate: '{model.ProfileStartDTM}'"));
             if (!DateTime.TryParse(model.ProfileEndDTM, out DateTime eDt)) return BadRequest(new ApplicationException($"Invalid EndDate: '{model.ProfileEndDTM}'"));
-            if (!int.TryParse(model.NoOfPeaks.ToString(), out int duration)) return BadRequest(new ApplicationException($"Invalid BurstPipe Threshold: '{model.NoOfPeaks}'"));
+            if (!int.TryParse(model.NoOfPeaks.ToString(), out int noOfPeaks)) return BadRequest(new ApplicationException($"Invalid BurstPipe No Of Peaks: '{model.NoOfPeaks}'"));
 
-            var resultList = new List<dynamic>();
+            var returnResult = new AlarmConfigBurstPipeResultModel();
 
             _logger.LogInformation(1, "Get AlarmConfigBurstPipe Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
+
             try
             {
-                using var command = _context.Database.GetDbConnection().CreateCommand();
-                command.CommandText = "spAlarmConfigBurstPipe";
-                command.CommandType = System.Data.CommandType.StoredProcedure;
+                var CommandText = $"execute spAlarmConfigBurstPipe '{model.MeterSerialNo}','{sDt}','{eDt}',{noOfPeaks}";
+                var connection = _context.Database.GetDbConnection();
+                await connection.OpenAsync();
+                var results = await connection.QueryMultipleAsync(CommandText);
 
-                //Add MeterSerialNo
-                var p1 = command.CreateParameter();
-                p1.ParameterName = "@MeterSerialNo";
-                p1.Value = model.MeterSerialNo;
-                command.Parameters.Add(p1);
-                //Add ProfileStartDTM
-                var p2 = command.CreateParameter();
-                p2.ParameterName = "@ProfileStartDTM";
-                p2.Value = model.ProfileStartDTM;
-                command.Parameters.Add(p2);
-                //Add ProfileEndDTM
-                var p3 = command.CreateParameter();
-                p3.ParameterName = "@ProfileEndDTM";
-                p3.Value = model.ProfileEndDTM;
-                command.Parameters.Add(p3);
-                //Add NoOfPeaks
-                var p4 = command.CreateParameter();
-                p4.ParameterName = "@Threshold";
-                p4.Value = model.NoOfPeaks;
-                command.Parameters.Add(p4);
+                List<AlarmConfigBurstPipeResultDataModel> resultData = results.Read<AlarmConfigBurstPipeResultDataModel>().ToList();
+                List<AlarmConfigBurstPipeResultPeaksModel> peaksData = results.Read<AlarmConfigBurstPipeResultPeaksModel>().ToList();
 
-                _context.Database.OpenConnection();
-
-                //var result = new List<AlarmConfigBurstPipeResult>();
-
-                using var reader = command.ExecuteReader();
-                while (reader.Read())
-                {
-                    dynamic result = new ExpandoObject();
-                    var dictionary = result as IDictionary<string, object>;
-
-                    for (int i = 0; i < reader.FieldCount; i++)
-                    {
-                        dictionary.Add(reader.GetName(i), reader.IsDBNull(i) ? null : reader[i]);
-                    }
-                    resultList.Add(result);
-                }
+                returnResult.MeterData = resultData;
+                returnResult.PeaksData = peaksData;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 _logger?.LogError("Failed to get AlarmConfigBurstPipe Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
+                Console.WriteLine(ex.ToString());
                 return Problem($"Failed to get AlarmConfigBurstPipe Details for Meter: {model.MeterSerialNo}");
             }
-            if (resultList.Count > 0)
+            if (returnResult.MeterData.Count >= 0)
             {
                 _logger.LogInformation(1, message: "Returning AlarmConfigBurstPipe Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
             }
@@ -87,83 +58,48 @@ namespace ClientPortal.Controllers
                 _logger.LogError(1, "No Results Found For AlarmConfigBurstPipe Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
             }
 
-            return Ok(resultList);
+            return Ok(returnResult);
+
         }
 
         [HttpPost("getAlarmAnalyzeBurstPipe")]
-        public ActionResult<IEnumerable<dynamic>> GetAlarmAnalyzeBurstPipe([FromBody] AlarmAnalyzeBurstPipeModel model)
+        public async Task<ActionResult<AlarmAnalyzeBurstPipeResultModel>> GetAlarmAnalyzeBurstPipe([FromBody] AlarmAnalyzeBurstPipeModel model)
         {
-            if (!model.MeterSerialNo.Any()) return BadRequest(new ApplicationException($"Invalid Meter Number: '{model.MeterSerialNo}'"));
-            if (!DateTime.TryParse(model.ProfileStartDTM, out DateTime sDt)) return BadRequest(new ApplicationException($"Invalid StartDate: '{model.ProfileStartDTM}'"));
-            if (!DateTime.TryParse(model.ProfileEndDTM, out DateTime eDt)) return BadRequest(new ApplicationException($"Invalid EndDate: '{model.ProfileEndDTM}'"));
-            if (!decimal.TryParse(model.Threshold.ToString(), out decimal threshold)) return BadRequest(new ApplicationException($"Invalid BurstPipe Threshold: '{model.Threshold}'"));
-            if (!int.TryParse(model.Duration.ToString(), out int duration)) return BadRequest(new ApplicationException($"Invalid BurstPipe Threshold: '{model.Threshold}'"));
-
-            var resultList = new List<dynamic>();
+            var returnResult = new AlarmAnalyzeBurstPipeResultModel();
 
             _logger.LogInformation(1, "Get AlarmAnalyzeBurstPipe Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
+
             try
             {
-                using var command = _context.Database.GetDbConnection().CreateCommand();
-                command.CommandText = "spAlarmAnalyzeBurstPipe";
-                command.CommandType = System.Data.CommandType.StoredProcedure;
+                var CommandText = $"execute spAlarmAnalyzeBurstPipe '{model.MeterSerialNo}','{model.ProfileStartDTM}','{model.ProfileEndDTM}',{model.Threshold},{model.Duration}";
+                var connection = _context.Database.GetDbConnection();
+                await connection.OpenAsync();
+                var results = await connection.QueryMultipleAsync(CommandText);
 
-                //Add MeterSerialNo
-                var p1 = command.CreateParameter();
-                p1.ParameterName = "@MeterSerialNo";
-                p1.Value = model.MeterSerialNo;
-                command.Parameters.Add(p1);
-                //Add ProfileStartDTM
-                var p2 = command.CreateParameter();
-                p2.ParameterName = "@ProfileStartDTM";
-                p2.Value = model.ProfileStartDTM;
-                command.Parameters.Add(p2);
-                //Add ProfileEndDTM
-                var p3 = command.CreateParameter();
-                p3.ParameterName = "@ProfileEndDTM";
-                p3.Value = model.ProfileEndDTM;
-                command.Parameters.Add(p3);
-                //Add Threshold
-                var p6 = command.CreateParameter();
-                p6.ParameterName = "@Threshold";
-                p6.Value = model.Threshold;
-                command.Parameters.Add(p6);
-                //Add Duration
-                var p7 = command.CreateParameter();
-                p7.ParameterName = "@Duration";
-                p7.Value = model.Duration;
-                command.Parameters.Add(p7);
+                List<AlarmAnalyzeBurstPipeResultDataModel> resultData = results.Read<AlarmAnalyzeBurstPipeResultDataModel>().ToList();
+                AlarmAnalyzeBurstPipeResultCountModel countData = results.Read<AlarmAnalyzeBurstPipeResultCountModel>().First();
 
-                _context.Database.OpenConnection();
-
-                using var reader = command.ExecuteReader();
-                while (reader.Read())
-                {
-                    dynamic result = new ExpandoObject();
-                    var dictionary = result as IDictionary<string, object>;
-
-                    for (int i = 0; i < reader.FieldCount; i++)
-                    {
-                        dictionary.Add(reader.GetName(i), reader.IsDBNull(i) ? null : reader[i]);
-                    }
-                    resultList.Add(result);
-                }
+                returnResult.MeterData = resultData;
+                returnResult.Alarms = countData;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 _logger?.LogError("Failed to get AlarmAnalyzeBurstPipe Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
+                Console.Write(ex.ToString());
                 return Problem($"Failed to get AlarmAnalyzeBurstPipe Details for Meter: {model.MeterSerialNo}");
             }
-            if (resultList.Count > 0)
+
+            if (returnResult.MeterData.Count > 0)
             {
                 _logger.LogInformation(1, message: "Returning AlarmAnalyzeBurstPipe Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
             }
             else
             {
                 _logger.LogError(1, "No Results Found For AlarmAnalyzeBurstPipe Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
+                return Problem($"Failed to get AlarmAnalyzeBurstPipe Details for Meter: {model.MeterSerialNo}");
             }
 
-            return Ok(resultList);
+            return Ok(returnResult);
         }
     }
     public class AlarmConfigBurstPipeModel
@@ -172,6 +108,27 @@ namespace ClientPortal.Controllers
         public string ProfileStartDTM { get; set; }
         public string ProfileEndDTM { get; set; }
         public int NoOfPeaks { get; set; }
+    }
+
+    public class AlarmConfigBurstPipeResultDataModel
+    {
+        public string ReadingDate { get; set; }
+        public decimal ActFlow { get; set; }
+        public bool Calculated { get; set; }
+        public string Color { get; set; }
+    }
+
+    public class AlarmConfigBurstPipeResultPeaksModel
+    {
+        public int Id { get; set; }
+        public string ReadingDate { get; set; }
+        public decimal Peak { get; set; }
+    }
+
+    public class AlarmConfigBurstPipeResultModel
+    {
+        public List<AlarmConfigBurstPipeResultDataModel> MeterData { get; set; }
+        public List<AlarmConfigBurstPipeResultPeaksModel> PeaksData { get; set; }
     }
 
     public class AlarmAnalyzeBurstPipeModel
@@ -183,26 +140,24 @@ namespace ClientPortal.Controllers
         public int Duration { get; set; }
     }
 
-    public class AlarmConfigBurstPipeResult
-    { 
-        public AlarmConfigBurstPipeFlowResult alarmConfigBurstPipeFlowResult { get; set; }
-        public AlarmConfigBurstPipePeakResult alarmConfigBurstPipePeakResult { get; set; }
-        public int ReturnValue { get; set; }
-    }
-
-    public class AlarmConfigBurstPipeFlowResult
-    { 
-        public DateTime ReadingDate { get; set; }
+    public class AlarmAnalyzeBurstPipeResultDataModel
+    {
+        public string ReadingDate { get; set; }
         public decimal ActFlow { get; set; }
-        public int Calculated { get; set; }
+        public bool Calculated { get; set; }
         public string Color { get; set; }
     }
 
-    public class AlarmConfigBurstPipePeakResult
+    public class AlarmAnalyzeBurstPipeResultCountModel
     {
-        public int Id { get; set; }
-        public DateTime ReadingDate { get; set; }
-        public decimal Peak { get; set; } = 0;
+        public int NoOfAlarms { get; set; }
     }
+
+    public class AlarmAnalyzeBurstPipeResultModel
+    {
+        public List<AlarmAnalyzeBurstPipeResultDataModel> MeterData { get; set; }
+        public AlarmAnalyzeBurstPipeResultCountModel Alarms { get; set; }
+    }
+
 }
 
