@@ -30,8 +30,8 @@
         </div>
     </div>
     <div class="flex">
-        <div class="flex w-full" *ngIf="waterDataSource" style="height: 500px; overflow: visible !important; background-color: #f8f9fa;">
-            <dx-chart [dataSource]="waterDataSource.Detail" [customizePoint]="customizePoint" (onPointClick)="pointClick($event)" class="w-full">
+        <div class="flex w-full" *ngIf="profileDataSource" style="height: 500px; overflow: visible !important; background-color: #f8f9fa;">
+            <dx-chart [dataSource]="profileDataSource.Detail" [customizePoint]="customizePoint" (onPointClick)="pointClick($event)" class="w-full">
                 <dxo-title [text]="chartTitleWater" [subtitle]="chartSubTitleWater"></dxo-title>
                 <dxo-size [height]="500"></dxo-size>
                 <dxi-series argumentField="ReadingDateString" valueField="ActFlow" type="bar" color="blue" name="Usage(kL)">
@@ -134,7 +134,7 @@
     <div class="flex text-orange-500 min-h-16 bg-gray-200 items-center px-4 text-md rounded-md">
         The Alarm will trigger if the average usage exceeds the threshold during the selected time range.
     </div>
-    <app-alarm-night-flow *ngIf="selectedAlarmType == 'Night Flow'"></app-alarm-night-flow>
+    <app-alarm-night-flow (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Night Flow'"></app-alarm-night-flow>
     <app-alarm-burst-pipe *ngIf="selectedAlarmType == 'Burst Pipe'"></app-alarm-burst-pipe>
     <app-alarm-leak-detection *ngIf="selectedAlarmType == 'Leak Detection'"></app-alarm-leak-detection>
     <app-alarm-daily-usage *ngIf="selectedAlarmType == 'Daily Usage'"></app-alarm-daily-usage>

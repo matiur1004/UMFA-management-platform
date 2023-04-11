@@ -16,7 +16,7 @@ export class MeterAlarmDetailComponent implements OnInit {
   @Input() meter: any;
 
   profileForm: FormGroup;
-  waterDataSource: IWaterProfileResponse;
+  profileDataSource: IWaterProfileResponse;
   chartSubTitleWater: string = '';
   chartTitleWater = `Water Profile for Meter:`;
   selectedAlarmType: string;
@@ -87,7 +87,7 @@ export class MeterAlarmDetailComponent implements OnInit {
         var sDate = new Date(formData['sdp'].getFullYear(), formData['sdp'].getMonth(), formData['sdp'].getDate(), formData['sdT'].getHours(), formData['sdT'].getMinutes());
         var eDate = new Date(formData['edp'].getFullYear(), formData['edp'].getMonth(), formData['edp'].getDate(), formData['edT'].getHours(), formData['edT'].getMinutes());
 
-        this._alarmConfigService.profileInfo = {StartDate: sDate, EndDate: eDate, MeterSerialNo: '13138213'};
+        this._alarmConfigService.profileInfo = {StartDate: sDate, EndDate: eDate, NightFlowStart: formData['NightFlowStart'], NightFlowEnd: formData['NightFlowEnd'], MeterSerialNo: '13138213'};
       }
     })
   }
@@ -107,7 +107,7 @@ export class MeterAlarmDetailComponent implements OnInit {
     var pipe = new DatePipe('en_ZA');
     if (ds) {
       ds.Detail.forEach((det) => { det.ReadingDateString = pipe.transform(det.ReadingDate, "yyyy-MM-dd HH:mm") });
-      this.waterDataSource = ds;
+      this.profileDataSource = ds;
       if (ds) {
         var flowDate = pipe.transform(ds.Header.MaxFlowDate, "HH:mm on dd MMM yyyy");
         this.chartTitleWater = `Water Profile for Meter: ${ds.Header.Description} (${ds.Header.MeterNo})`;
@@ -139,5 +139,11 @@ export class MeterAlarmDetailComponent implements OnInit {
 
   onSelectAlarmType(type) {
     this.selectedAlarmType = type;
+  }
+
+  onChangeGraph(data) {
+    var pipe = new DatePipe('en_ZA');
+    data.forEach((det) => { det.ReadingDateString = pipe.transform(det.ReadingDate, "yyyy-MM-dd HH:mm") });
+    this.profileDataSource.Detail = data;
   }
 }

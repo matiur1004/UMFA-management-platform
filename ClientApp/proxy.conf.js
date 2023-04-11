@@ -30,7 +30,9 @@ const PROXY_CONFIG = [
       "/JobStatus",
       "/ScheduleStatus",
       "/AMRMeterGraphs",
-      "/AlarmNightFlow"
+      "/AlarmNightFlow",
+      "/AlarmBurstPipe",
+      "/AlarmLeakDetection"
    ],
     target: target,
     secure: false,
