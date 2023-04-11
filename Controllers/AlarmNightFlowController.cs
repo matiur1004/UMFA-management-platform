@@ -100,14 +100,6 @@ namespace ClientPortal.Controllers
         [HttpPost("getAlarmAnalyzeNightFlow")]
         public async Task<AlarmAnalyzeNightFlowResultModel> GetAlarmAnalyzeNightFlow([FromBody] AlarmAnalyzeNightFlowModel model)
         {
-            //if (!model.MeterSerialNo.Any()) return ($"Invalid Meter Number: '{model.MeterSerialNo}'");
-            //if (!DateTime.TryParse(model.ProfileStartDTM, out DateTime sDt)) return BadRequest(new ApplicationException($"Invalid StartDate: '{model.ProfileStartDTM}'"));
-            //if (!DateTime.TryParse(model.ProfileEndDTM, out DateTime eDt)) return BadRequest(new ApplicationException($"Invalid EndDate: '{model.ProfileEndDTM}'"));
-            //if (!TimeOnly.TryParse(model.NFStartTime, out TimeOnly nfsTime)) return BadRequest(new ApplicationException($"Invalid NightFlow Start: '{model.NFStartTime}'"));
-            //if (!TimeOnly.TryParse(model.NFEndTime, out TimeOnly nfeTime)) return BadRequest(new ApplicationException($"Invalid NightFlow End: '{model.NFEndTime}'"));
-            //if (!decimal.TryParse(model.Threshold.ToString(), out decimal threshold)) return BadRequest(new ApplicationException($"Invalid NightFlow Threshold: '{model.Threshold}'"));
-            //if (!int.TryParse(model.Duration.ToString(), out int duration)) return BadRequest(new ApplicationException($"Invalid NightFlow Threshold: '{model.Threshold}'"));
-
             var returnResult = new AlarmAnalyzeNightFlowResultModel();
 
             _logger.LogInformation(1, "Get AlarmAnalyzeNightflow Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
@@ -118,11 +110,11 @@ namespace ClientPortal.Controllers
                 await connection.OpenAsync();
                 var results = await connection.QueryMultipleAsync(CommandText);
 
-                AlarmAnalyzeNightFlowResultDataModel resultData = results.Read<AlarmAnalyzeNightFlowResultDataModel>().ToList()[0];
+                List<AlarmAnalyzeNightFlowResultDataModel> resultData = results.Read<AlarmAnalyzeNightFlowResultDataModel>().ToList();
                 AlarmAnalyzeNightFlowResultCountModel countData = results.Read<AlarmAnalyzeNightFlowResultCountModel>().First();
 
-                returnResult.DataModel = resultData;
-                returnResult.CountModel = countData;
+                returnResult.MeterData = resultData;
+                returnResult.Alarms = countData;
             }
             catch (Exception ex)
             {
@@ -130,7 +122,7 @@ namespace ClientPortal.Controllers
                 Console.Write(ex.ToString());
                 return returnResult;
             }
-            if (returnResult.CountModel.NoOfAlarms >= 0)
+            if (returnResult.Alarms.NoOfAlarms >= 0)
             {
                 _logger.LogInformation(1, message: "Returning AlarmAnalyzeNightflow Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
             }
@@ -147,8 +139,8 @@ namespace ClientPortal.Controllers
         public string MeterSerialNo { get; set; }
         public string ProfileStartDTM { get; set; }
         public string ProfileEndDTM { get; set; }
-        public string NFStartTime { get; set; }
-        public string NFEndTime { get; set; }
+        public string NFStartTime { get; set; } = "10:00";
+        public string NFEndTime { get; set; } = "05:00";
     }
 
     public class AlarmAnalyzeNightFlowModel
@@ -156,8 +148,8 @@ namespace ClientPortal.Controllers
         public string MeterSerialNo { get; set; }
         public string ProfileStartDTM { get; set; }
         public string ProfileEndDTM { get; set; }
-        public string NFStartTime { get; set; }
-        public string NFEndTime { get; set; }
+        public string NFStartTime { get; set; } = "10:00";
+        public string NFEndTime { get; set; } = "05:00";
         public decimal Threshold { get; set; }
         public int Duration { get; set; }
     }
@@ -177,8 +169,8 @@ namespace ClientPortal.Controllers
 
     public class AlarmAnalyzeNightFlowResultModel
     {
-        public AlarmAnalyzeNightFlowResultDataModel DataModel { get; set; }
-        public AlarmAnalyzeNightFlowResultCountModel CountModel { get; set; }
+        public List<AlarmAnalyzeNightFlowResultDataModel> MeterData { get; set; }
+        public AlarmAnalyzeNightFlowResultCountModel Alarms { get; set; }
     }
 
 }
