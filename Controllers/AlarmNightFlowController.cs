@@ -64,8 +64,14 @@ namespace ClientPortal.Controllers
         }
 
         [HttpPost("getAlarmAnalyzeNightFlow")]
-        public async Task<AlarmAnalyzeNightFlowResultModel> GetAlarmAnalyzeNightFlow([FromBody] AlarmAnalyzeNightFlowModel model)
+        public async Task<ActionResult<AlarmAnalyzeNightFlowResultModel>> GetAlarmAnalyzeNightFlow([FromBody] AlarmAnalyzeNightFlowModel model)
         {
+            if (!model.MeterSerialNo.Any()) return BadRequest(new ApplicationException($"Invalid Meter Number: '{model.MeterSerialNo}'"));
+            if (!DateTime.TryParse(model.ProfileStartDTM, out DateTime sDt)) return BadRequest(new ApplicationException($"Invalid StartDate: '{model.ProfileStartDTM}'"));
+            if (!DateTime.TryParse(model.ProfileEndDTM, out DateTime eDt)) return BadRequest(new ApplicationException($"Invalid EndDate: '{model.ProfileEndDTM}'"));
+            if (!decimal.TryParse(model.Threshold.ToString(), out decimal threshold)) return BadRequest(new ApplicationException($"Invalid BurstPipe Threshold: '{model.Threshold}'"));
+            if (!int.TryParse(model.Duration.ToString(), out int duration)) return BadRequest(new ApplicationException($"Invalid BurstPipe Duration: '{model.Duration}'"));
+
             var returnResult = new AlarmAnalyzeNightFlowResultModel();
 
             _logger.LogInformation(1, "Get AlarmAnalyzeNightflow Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
@@ -86,9 +92,9 @@ namespace ClientPortal.Controllers
             {
                 _logger?.LogError("Failed to get AlarmAnalyzeNightflow Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
                 Console.Write(ex.ToString());
-                return returnResult;
+                return Problem($"Failed to get AlarmConfigNightflow Details for Meter: {model.MeterSerialNo}");
             }
-            if (returnResult.Alarms.NoOfAlarms >= 0)
+            if (returnResult.MeterData.Count > 0)
             {
                 _logger.LogInformation(1, message: "Returning AlarmAnalyzeNightflow Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
             }
@@ -97,7 +103,7 @@ namespace ClientPortal.Controllers
                 _logger.LogError(1, "No Results Found For AlarmAnalyzeNightflow Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
             }
 
-            return returnResult;
+            return Ok(returnResult);
         }
     }
     public class AlarmConfigNightFlowModel

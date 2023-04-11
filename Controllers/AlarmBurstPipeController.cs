@@ -65,6 +65,12 @@ namespace ClientPortal.Controllers
         [HttpPost("getAlarmAnalyzeBurstPipe")]
         public async Task<ActionResult<AlarmAnalyzeBurstPipeResultModel>> GetAlarmAnalyzeBurstPipe([FromBody] AlarmAnalyzeBurstPipeModel model)
         {
+            if (!model.MeterSerialNo.Any()) return BadRequest(new ApplicationException($"Invalid Meter Number: '{model.MeterSerialNo}'"));
+            if (!DateTime.TryParse(model.ProfileStartDTM, out DateTime sDt)) return BadRequest(new ApplicationException($"Invalid StartDate: '{model.ProfileStartDTM}'"));
+            if (!DateTime.TryParse(model.ProfileEndDTM, out DateTime eDt)) return BadRequest(new ApplicationException($"Invalid EndDate: '{model.ProfileEndDTM}'"));
+            if (!decimal.TryParse(model.Threshold.ToString(), out decimal threshold)) return BadRequest(new ApplicationException($"Invalid BurstPipe Threshold: '{model.Threshold}'"));
+            if (!int.TryParse(model.Duration.ToString(), out int duration)) return BadRequest(new ApplicationException($"Invalid BurstPipe Duration: '{model.Duration}'"));
+
             var returnResult = new AlarmAnalyzeBurstPipeResultModel();
 
             _logger.LogInformation(1, "Get AlarmAnalyzeBurstPipe Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
