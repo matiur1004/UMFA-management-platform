@@ -24,7 +24,8 @@ namespace ClientPortal.Controllers
             if (!model.MeterSerialNo.Any()) return BadRequest(new ApplicationException($"Invalid Meter Number: '{model.MeterSerialNo}'"));
             if (!DateTime.TryParse(model.ProfileStartDTM, out DateTime sDt)) return BadRequest(new ApplicationException($"Invalid StartDate: '{model.ProfileStartDTM}'"));
             if (!DateTime.TryParse(model.ProfileEndDTM, out DateTime eDt)) return BadRequest(new ApplicationException($"Invalid EndDate: '{model.ProfileEndDTM}'"));
-            if (!int.TryParse(model.NoOfPeaks.ToString(), out int noOfPeaks)) return BadRequest(new ApplicationException($"Invalid LeakDetection No Of Peaks: '{model.NoOfPeaks}'"));
+            if (!TimeOnly.TryParse(model.NFStartTime, out TimeOnly nfsTime)) return BadRequest(new ApplicationException($"Invalid LeakDetection Start: '{model.NFStartTime}'"));
+            if (!TimeOnly.TryParse(model.NFEndTime, out TimeOnly nfeTime)) return BadRequest(new ApplicationException($"Invalid LeakDetection End: '{model.NFEndTime}'"));
 
             var returnResult = new AlarmConfigLeakDetectionResultModel();
 
@@ -32,16 +33,16 @@ namespace ClientPortal.Controllers
 
             try
             {
-                var CommandText = $"execute spAlarmConfigLeakDetection '{model.MeterSerialNo}','{sDt}','{eDt}',{noOfPeaks}";
+                var CommandText = $"execute spAlarmConfigLeakDetection '{model.MeterSerialNo}','{sDt}','{eDt}','{nfsTime}', '{nfeTime}'";
                 var connection = _context.Database.GetDbConnection();
                 await connection.OpenAsync();
                 var results = await connection.QueryMultipleAsync(CommandText);
 
                 List<AlarmConfigLeakDetectionResultDataModel> resultData = results.Read<AlarmConfigLeakDetectionResultDataModel>().ToList();
-                List<AlarmConfigLeakDetectionResultPeaksModel> peaksData = results.Read<AlarmConfigLeakDetectionResultPeaksModel>().ToList();
+                AlarmConfigLeakDetectionResultConfigModel configData = results.Read<AlarmConfigLeakDetectionResultConfigModel>().First();
 
                 returnResult.MeterData = resultData;
-                returnResult.PeaksData = peaksData;
+                returnResult.MeterConfig = configData;
             }
             catch (Exception ex)
             {
@@ -49,6 +50,7 @@ namespace ClientPortal.Controllers
                 Console.WriteLine(ex.ToString());
                 return Problem($"Failed to get AlarmConfigLeakDetection Details for Meter: {model.MeterSerialNo}");
             }
+
             if (returnResult.MeterData.Count >= 0)
             {
                 _logger.LogInformation(1, message: "Returning AlarmConfigLeakDetection Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
@@ -77,7 +79,7 @@ namespace ClientPortal.Controllers
 
             try
             {
-                var CommandText = $"execute spAlarmAnalyzeLeakDetection '{model.MeterSerialNo}','{model.ProfileStartDTM}','{model.ProfileEndDTM}',{model.Threshold},{model.Duration}";
+                var CommandText = $"execute spAlarmAnalyzeLeakDetection '{model.MeterSerialNo}','{model.ProfileStartDTM}','{model.ProfileEndDTM}','{model.StartTime}','{model.EndTime}', {model.Threshold}, {model.Duration}";
                 var connection = _context.Database.GetDbConnection();
                 await connection.OpenAsync();
                 var results = await connection.QueryMultipleAsync(CommandText);
@@ -113,7 +115,8 @@ namespace ClientPortal.Controllers
         public string MeterSerialNo { get; set; }
         public string ProfileStartDTM { get; set; }
         public string ProfileEndDTM { get; set; }
-        public int NoOfPeaks { get; set; }
+        public string NFStartTime { get; set; }
+        public string NFEndTime { get; set; }
     }
 
     public class AlarmConfigLeakDetectionResultDataModel
@@ -124,17 +127,21 @@ namespace ClientPortal.Controllers
         public string Color { get; set; }
     }
 
-    public class AlarmConfigLeakDetectionResultPeaksModel
+    public class AlarmConfigLeakDetectionResultConfigModel
     {
-        public int Id { get; set; }
-        public string ReadingDate { get; set; }
-        public decimal Peak { get; set; }
+        public string MeterSerial { get; set; }
+        public string PeriodStartDTM { get; set; }
+        public string PeriodEndDTM { get; set; }
+        public decimal IntervalAvg { get; set; }
+        public decimal NFAvg { get; set; }
+        public decimal NFPeak { get; set; }
+        public decimal NFMin { get; set; }
     }
 
     public class AlarmConfigLeakDetectionResultModel
     {
         public List<AlarmConfigLeakDetectionResultDataModel> MeterData { get; set; }
-        public List<AlarmConfigLeakDetectionResultPeaksModel> PeaksData { get; set; }
+        public AlarmConfigLeakDetectionResultConfigModel MeterConfig { get; set; }
     }
 
     public class AlarmAnalyzeLeakDetectionModel
@@ -142,6 +149,8 @@ namespace ClientPortal.Controllers
         public string MeterSerialNo { get; set; }
         public string ProfileStartDTM { get; set; }
         public string ProfileEndDTM { get; set; }
+        public string StartTime { get; set; }
+        public string EndTime { get; set; }
         public decimal Threshold { get; set; }
         public int Duration { get; set; }
     }
