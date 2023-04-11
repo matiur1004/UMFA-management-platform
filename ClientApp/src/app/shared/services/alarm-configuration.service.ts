@@ -1,6 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { ALERT_MODAL_CONFIG } from "@core/config/modal.config";
 import { CONFIG } from "@core/helpers";
+import { UmfaUtils } from "@core/utils/umfa.utils";
 import { catchError, Observable, tap, throwError } from "rxjs";
 
 @Injectable({ providedIn: 'root' })
@@ -8,7 +10,10 @@ export class AlarmConfigurationService {
 
     profileInfo: any;
     
-    constructor(private http: HttpClient) { }
+    constructor(
+        private http: HttpClient,
+        private _ufUtils: UmfaUtils
+    ) { }
     
     // AlarmNightFlow/getAlarmConfigNightFlow
     getAlarmConfigNightFlow(formData): Observable<any> {
@@ -31,6 +36,13 @@ export class AlarmConfigurationService {
                 //console.log(`getMetersForUser observable returned ${m}`);
                 }),
             );
+    }
+
+    showAlert(title: string) {
+        const dialogRef = this._ufUtils.fuseConfirmDialog(
+        ALERT_MODAL_CONFIG,
+          '',
+        title);
     }
 
     //catches errors

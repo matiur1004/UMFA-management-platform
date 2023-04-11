@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ALERT_MODAL_CONFIG } from '@core/config/modal.config';
 import { formatDateString, formatTimeString } from '@core/utils/umfa.help';
 import { UmfaUtils } from '@core/utils/umfa.utils';
 import { AlarmConfigurationService } from '@shared/services/alarm-configuration.service';
@@ -20,8 +19,7 @@ export class AlarmNightFlowComponent implements OnInit {
 
   constructor(
     private _alarmConfigService: AlarmConfigurationService,
-    private _formBuilder: FormBuilder,
-    private _ufUtils: UmfaUtils
+    private _formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {
@@ -58,7 +56,7 @@ export class AlarmNightFlowComponent implements OnInit {
         if(res && res.length > 0) this.configInfo = res[0];
       });
     } else {
-      this.showAlert('You should set profile option first!');
+      this._alarmConfigService.showAlert('You should set profile option first!');
     }
   }
 
@@ -83,15 +81,8 @@ export class AlarmNightFlowComponent implements OnInit {
           }
         });
       } else {
-        this.showAlert('You should set profile option first!');
+        this._alarmConfigService.showAlert('You should set profile option first!');
       }
     }
-  }
-
-  showAlert(title: string) {
-    const dialogRef = this._ufUtils.fuseConfirmDialog(
-      ALERT_MODAL_CONFIG,
-      '',
-      title);
   }
 }
