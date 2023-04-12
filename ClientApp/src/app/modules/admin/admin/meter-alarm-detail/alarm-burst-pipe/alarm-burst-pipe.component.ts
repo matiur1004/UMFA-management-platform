@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { formatDateString, formatTimeString } from '@core/utils/umfa.help';
 import { AlarmConfigurationService } from '@shared/services/alarm-configuration.service';
@@ -10,9 +10,11 @@ import { AlarmConfigurationService } from '@shared/services/alarm-configuration.
 })
 export class AlarmBurstPipeComponent implements OnInit {
 
+  @Output() onChangeGraph: EventEmitter<any> = new EventEmitter<any>();
+  
   form: FormGroup;
   analyzeForm: FormGroup;
-  configInfo: any;
+  configInfo: any[] = [];
   analyzeInfo: any;
   
   constructor(
@@ -23,8 +25,7 @@ export class AlarmBurstPipeComponent implements OnInit {
   ngOnInit(): void {
     // form 
     this.form = this._formBuilder.group({
-      NightStartTime: [],
-      NightEndTime: []
+      NoOfPeaks: []
     })
 
     this.analyzeForm = this._formBuilder.group({
@@ -36,18 +37,15 @@ export class AlarmBurstPipeComponent implements OnInit {
   onAlarmConfigBurstPipe() {
     let formData = this.form.value;
     if(this._alarmConfigService.profileInfo) {
-      let nStartTime = {hours: formData['NightStartTime'].getHours(), minutes: formData['NightStartTime'].getMinutes()};
-      let nEndTime = {hours: formData['NightEndTime'].getHours(), minutes: formData['NightEndTime'].getMinutes()};
-
       let data = {  
         ProfileStartDTM: formatDateString(this._alarmConfigService.profileInfo.StartDate), 
-        ProfileEndDTM: formatDateString(this._alarmConfigService.profileInfo.EndDate), 
-        NFStartTime: formatTimeString(nStartTime), 
-        NFEndTime: formatTimeString(nEndTime),
+        ProfileEndDTM: formatDateString(this._alarmConfigService.profileInfo.EndDate),
+        NoOfPeaks: formData['NoOfPeaks'],
         MeterSerialNo: this._alarmConfigService.profileInfo.MeterSerialNo
       };
-      this._alarmConfigService.getAlarmConfigNightFlow(data).subscribe(res => {
-        if(res && res.length > 0) this.configInfo = res[0];
+      this._alarmConfigService.getAlarmConfigBurstPipe(data).subscribe(res => {
+        if(res && res['PeaksData']) this.configInfo = res['PeaksData'];
+        if(res && res['MeterData']) this.onChangeGraph.emit(res['MeterData']);
       });
     } else {
       this._alarmConfigService.showAlert('You should set profile option first!');
@@ -57,22 +55,15 @@ export class AlarmBurstPipeComponent implements OnInit {
   getAlarmAnalyzeBurstPipe() {
     if(this.analyzeForm.valid) {
       if(this._alarmConfigService.profileInfo) {
-        let configData = this.form.value;
-        let nStartTime = {hours: configData['NightStartTime'].getHours(), minutes: configData['NightStartTime'].getMinutes()};
-        let nEndTime = {hours: configData['NightEndTime'].getHours(), minutes: configData['NightEndTime'].getMinutes()};
-
         let data = {  
           ...this.analyzeForm.value,
           ProfileStartDTM: formatDateString(this._alarmConfigService.profileInfo.StartDate), 
-          ProfileEndDTM: formatDateString(this._alarmConfigService.profileInfo.EndDate), 
-          NFStartTime: formatTimeString(nStartTime), 
-          NFEndTime: formatTimeString(nEndTime),
+          ProfileEndDTM: formatDateString(this._alarmConfigService.profileInfo.EndDate),
           MeterSerialNo: this._alarmConfigService.profileInfo.MeterSerialNo,
         };
-        this._alarmConfigService.getAlarmAnalyzeNightFlow(data).subscribe(res => {
-          if(res && res.length > 0) {
-            this.analyzeInfo = res[0];
-          }
+        this._alarmConfigService.getAlarmAnalyzeBurstPipe(data).subscribe(res => {
+          if(res && res['Alarms']) this.analyzeInfo = res['Alarms'];
+          if(res && res['MeterData']) this.onChangeGraph.emit(res['MeterData']);
         });
       } else {
         this._alarmConfigService.showAlert('You should set profile option first!');

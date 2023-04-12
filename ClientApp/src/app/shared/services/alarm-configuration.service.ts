@@ -38,6 +38,50 @@ export class AlarmConfigurationService {
             );
     }
 
+    getAlarmConfigBurstPipe(formData): Observable<any> {
+        const url = `${CONFIG.apiURL}/AlarmBurstPipe/getAlarmConfigBurstPipe`;
+        return this.http.post<any>(url, formData, { withCredentials: true })
+            .pipe(
+                catchError(err => this.catchErrors(err)),
+                tap(m => {
+                //console.log(`getMetersForUser observable returned ${m}`);
+                }),
+            );
+    }
+
+    getAlarmAnalyzeBurstPipe(formData): Observable<any> {
+        const url = `${CONFIG.apiURL}/AlarmBurstPipe/getAlarmAnalyzeBurstPipe`;
+        return this.http.post<any>(url, formData, { withCredentials: true })
+            .pipe(
+                catchError(err => this.catchErrors(err)),
+                tap(m => {
+                //console.log(`getMetersForUser observable returned ${m}`);
+                }),
+            );
+    }
+
+    getAlarmConfigLeakDetection(formData): Observable<any> {
+        const url = `${CONFIG.apiURL}/AlarmLeakDetection/getAlarmConfigLeakDetection`;
+        return this.http.post<any>(url, formData, { withCredentials: true })
+            .pipe(
+                catchError(err => this.catchErrors(err)),
+                tap(m => {
+                //console.log(`getMetersForUser observable returned ${m}`);
+                }),
+            );
+    }
+
+    getAlarmAnalyzeLeakDetection(formData): Observable<any> {
+        const url = `${CONFIG.apiURL}/AlarmLeakDetection/getAlarmAnalyzeLeakDetection`;
+        return this.http.post<any>(url, formData, { withCredentials: true })
+            .pipe(
+                catchError(err => this.catchErrors(err)),
+                tap(m => {
+                //console.log(`getMetersForUser observable returned ${m}`);
+                }),
+            );
+    }
+
     showAlert(title: string) {
         const dialogRef = this._ufUtils.fuseConfirmDialog(
         ALERT_MODAL_CONFIG,

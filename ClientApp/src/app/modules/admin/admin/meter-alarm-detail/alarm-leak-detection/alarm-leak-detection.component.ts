@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { formatDateString, formatTimeString } from '@core/utils/umfa.help';
 import { AlarmConfigurationService } from '@shared/services/alarm-configuration.service';
@@ -9,6 +9,8 @@ import { AlarmConfigurationService } from '@shared/services/alarm-configuration.
   styleUrls: ['./alarm-leak-detection.component.scss']
 })
 export class AlarmLeakDetectionComponent implements OnInit {
+
+  @Output() onChangeGraph: EventEmitter<any> = new EventEmitter<any>();
 
   minutues = [];
   form: FormGroup;
@@ -51,8 +53,9 @@ export class AlarmLeakDetectionComponent implements OnInit {
         NFEndTime: formatTimeString(nEndTime),
         MeterSerialNo: this._alarmConfigService.profileInfo.MeterSerialNo
       };
-      this._alarmConfigService.getAlarmConfigNightFlow(data).subscribe(res => {
-        if(res && res.length > 0) this.configInfo = res[0];
+      this._alarmConfigService.getAlarmConfigLeakDetection(data).subscribe(res => {
+        if(res && res['MeterConfig']) this.configInfo = res['MeterConfig'];
+        if(res && res['MeterData']) this.onChangeGraph.emit(res['MeterData']);
       });
     } else {
       this._alarmConfigService.showAlert('You should set profile option first!');
@@ -70,14 +73,13 @@ export class AlarmLeakDetectionComponent implements OnInit {
           ...this.analyzeForm.value,
           ProfileStartDTM: formatDateString(this._alarmConfigService.profileInfo.StartDate), 
           ProfileEndDTM: formatDateString(this._alarmConfigService.profileInfo.EndDate), 
-          NFStartTime: formatTimeString(nStartTime), 
-          NFEndTime: formatTimeString(nEndTime),
+          StartTime: formatTimeString(nStartTime), 
+          EndTime: formatTimeString(nEndTime),
           MeterSerialNo: this._alarmConfigService.profileInfo.MeterSerialNo,
         };
-        this._alarmConfigService.getAlarmAnalyzeNightFlow(data).subscribe(res => {
-          if(res && res.length > 0) {
-            this.analyzeInfo = res[0];
-          }
+        this._alarmConfigService.getAlarmAnalyzeLeakDetection(data).subscribe(res => {
+          if(res && res['Alarms']) this.analyzeInfo = res['Alarms'];
+          if(res && res['MeterData']) this.onChangeGraph.emit(res['MeterData']);
         });
       } else {
         this._alarmConfigService.showAlert('You should set profile option first!');

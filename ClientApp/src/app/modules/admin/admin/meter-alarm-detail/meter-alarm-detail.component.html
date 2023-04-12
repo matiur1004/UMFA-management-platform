@@ -135,8 +135,8 @@
         The Alarm will trigger if the average usage exceeds the threshold during the selected time range.
     </div>
     <app-alarm-night-flow (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Night Flow'"></app-alarm-night-flow>
-    <app-alarm-burst-pipe *ngIf="selectedAlarmType == 'Burst Pipe'"></app-alarm-burst-pipe>
-    <app-alarm-leak-detection *ngIf="selectedAlarmType == 'Leak Detection'"></app-alarm-leak-detection>
+    <app-alarm-burst-pipe (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Burst Pipe'"></app-alarm-burst-pipe>
+    <app-alarm-leak-detection (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Leak Detection'"></app-alarm-leak-detection>
     <app-alarm-daily-usage *ngIf="selectedAlarmType == 'Daily Usage'"></app-alarm-daily-usage>
     <app-alarm-peak-usage *ngIf="selectedAlarmType == 'Peak Usage'"></app-alarm-peak-usage>
     <app-alarm-average-usage *ngIf="selectedAlarmType == 'Average Usage'"></app-alarm-average-usage>
