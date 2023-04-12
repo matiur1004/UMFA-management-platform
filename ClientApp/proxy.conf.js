@@ -32,7 +32,10 @@ const PROXY_CONFIG = [
       "/AMRMeterGraphs",
       "/AlarmNightFlow",
       "/AlarmBurstPipe",
-      "/AlarmLeakDetection"
+      "/AlarmLeakDetection",
+      "/AlarmAverageUsage",
+      "/AlarmDailyUsage",
+      "/AlarmPeakUsage"
    ],
     target: target,
     secure: false,

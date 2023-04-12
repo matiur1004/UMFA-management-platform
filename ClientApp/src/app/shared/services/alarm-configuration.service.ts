@@ -82,6 +82,73 @@ export class AlarmConfigurationService {
             );
     }
 
+    getAlarmConfigAvgUsage(formData): Observable<any> {
+        const url = `${CONFIG.apiURL}/AlarmAverageUsage/getAlarmConfigAvgUsage`;
+        return this.http.post<any>(url, formData, { withCredentials: true })
+            .pipe(
+                catchError(err => this.catchErrors(err)),
+                tap(m => {
+                //console.log(`getMetersForUser observable returned ${m}`);
+                }),
+            );
+    }
+
+    getAlarmAnalyzeAvgUsage(formData): Observable<any> {
+        const url = `${CONFIG.apiURL}/AlarmAverageUsage/getAlarmAnalyzeAvgUsage`;
+        return this.http.post<any>(url, formData, { withCredentials: true })
+            .pipe(
+                catchError(err => this.catchErrors(err)),
+                tap(m => {
+                //console.log(`getMetersForUser observable returned ${m}`);
+                }),
+            );
+    }
+
+    getAlarmConfigPeakUsage(formData): Observable<any> {
+        const url = `${CONFIG.apiURL}/AlarmPeakUsage/getAlarmConfigPeakUsage`;
+        return this.http.post<any>(url, formData, { withCredentials: true })
+            .pipe(
+                catchError(err => this.catchErrors(err)),
+                tap(m => {
+                //console.log(`getMetersForUser observable returned ${m}`);
+                }),
+            );
+    }
+
+    getAlarmAnalyzePeakUsage(formData): Observable<any> {
+        const url = `${CONFIG.apiURL}/AlarmPeakUsage/getAlarmAnalyzePeakUsage`;
+        return this.http.post<any>(url, formData, { withCredentials: true })
+            .pipe(
+                catchError(err => this.catchErrors(err)),
+                tap(m => {
+                //console.log(`getMetersForUser observable returned ${m}`);
+                }),
+            );
+    }
+
+
+    getAlarmConfigDailyUsage(formData): Observable<any> {
+        const url = `${CONFIG.apiURL}/AlarmDailyUsage/getAlarmConfigDailyUsage`;
+        return this.http.post<any>(url, formData, { withCredentials: true })
+            .pipe(
+                catchError(err => this.catchErrors(err)),
+                tap(m => {
+                //console.log(`getMetersForUser observable returned ${m}`);
+                }),
+            );
+    }
+
+    getAlarmAnalyzeDailyUsage(formData): Observable<any> {
+        const url = `${CONFIG.apiURL}/AlarmDailyUsage/getAlarmAnalyzeDailyUsage`;
+        return this.http.post<any>(url, formData, { withCredentials: true })
+            .pipe(
+                catchError(err => this.catchErrors(err)),
+                tap(m => {
+                //console.log(`getMetersForUser observable returned ${m}`);
+                }),
+            );
+    }
+
     showAlert(title: string) {
         const dialogRef = this._ufUtils.fuseConfirmDialog(
         ALERT_MODAL_CONFIG,

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { formatDateString, formatTimeString } from '@core/utils/umfa.help';
 import { AlarmConfigurationService } from '@shared/services/alarm-configuration.service';
@@ -10,9 +10,11 @@ import { AlarmConfigurationService } from '@shared/services/alarm-configuration.
 })
 export class AlarmPeakUsageComponent implements OnInit {
 
+  @Output() onChangeGraph: EventEmitter<any> = new EventEmitter<any>();
+  
   form: FormGroup;
   analyzeForm: FormGroup;
-  configInfo: any;
+  configInfo: any[] = [];
   analyzeInfo: any;
   
   constructor(
@@ -23,8 +25,9 @@ export class AlarmPeakUsageComponent implements OnInit {
   ngOnInit(): void {
     // form 
     this.form = this._formBuilder.group({
-      NightStartTime: [],
-      NightEndTime: []
+      PeakStartTime: [],
+      PeakEndTime: [],
+      NoOfPeaks: [5]
     })
 
     this.analyzeForm = this._formBuilder.group({
@@ -36,18 +39,20 @@ export class AlarmPeakUsageComponent implements OnInit {
   onAlarmConfigPeakUsage() {
     let formData = this.form.value;
     if(this._alarmConfigService.profileInfo) {
-      let nStartTime = {hours: formData['NightStartTime'].getHours(), minutes: formData['NightStartTime'].getMinutes()};
-      let nEndTime = {hours: formData['NightEndTime'].getHours(), minutes: formData['NightEndTime'].getMinutes()};
+      let nStartTime = {hours: formData['PeakStartTime'].getHours(), minutes: formData['PeakStartTime'].getMinutes()};
+      let nEndTime = {hours: formData['PeakEndTime'].getHours(), minutes: formData['PeakEndTime'].getMinutes()};
 
       let data = {  
         ProfileStartDTM: formatDateString(this._alarmConfigService.profileInfo.StartDate), 
         ProfileEndDTM: formatDateString(this._alarmConfigService.profileInfo.EndDate), 
-        NFStartTime: formatTimeString(nStartTime), 
-        NFEndTime: formatTimeString(nEndTime),
+        PeakStartTime: formatTimeString(nStartTime), 
+        PeakEndTime: formatTimeString(nEndTime),
         MeterSerialNo: this._alarmConfigService.profileInfo.MeterSerialNo
       };
-      this._alarmConfigService.getAlarmConfigNightFlow(data).subscribe(res => {
-        if(res && res.length > 0) this.configInfo = res[0];
+      this._alarmConfigService.getAlarmConfigPeakUsage(data).subscribe(res => {
+        if(res && res['MeterPeaks']) this.configInfo = res['MeterPeaks'];
+        if(res && res['MeterData']) this.onChangeGraph.emit(res['MeterData']);
+        
       });
     } else {
       this._alarmConfigService.showAlert('You should set profile option first!');
@@ -58,21 +63,20 @@ export class AlarmPeakUsageComponent implements OnInit {
     if(this.analyzeForm.valid) {
       if(this._alarmConfigService.profileInfo) {
         let configData = this.form.value;
-        let nStartTime = {hours: configData['NightStartTime'].getHours(), minutes: configData['NightStartTime'].getMinutes()};
-        let nEndTime = {hours: configData['NightEndTime'].getHours(), minutes: configData['NightEndTime'].getMinutes()};
+        let nStartTime = {hours: configData['PeakStartTime'].getHours(), minutes: configData['PeakStartTime'].getMinutes()};
+        let nEndTime = {hours: configData['PeakEndTime'].getHours(), minutes: configData['PeakEndTime'].getMinutes()};
 
         let data = {  
           ...this.analyzeForm.value,
           ProfileStartDTM: formatDateString(this._alarmConfigService.profileInfo.StartDate), 
           ProfileEndDTM: formatDateString(this._alarmConfigService.profileInfo.EndDate), 
-          NFStartTime: formatTimeString(nStartTime), 
-          NFEndTime: formatTimeString(nEndTime),
+          PeakStartTime: formatTimeString(nStartTime), 
+          PeakEndTime: formatTimeString(nEndTime),
           MeterSerialNo: this._alarmConfigService.profileInfo.MeterSerialNo,
         };
-        this._alarmConfigService.getAlarmAnalyzeNightFlow(data).subscribe(res => {
-          if(res && res.length > 0) {
-            this.analyzeInfo = res[0];
-          }
+        this._alarmConfigService.getAlarmAnalyzePeakUsage(data).subscribe(res => {
+          if(res && res['Alarms']) this.analyzeInfo = res['Alarms'];
+          if(res && res['MeterData']) this.onChangeGraph.emit(res['MeterData']);
         });
       } else {
         this._alarmConfigService.showAlert('You should set profile option first!');
