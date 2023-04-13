@@ -1,10 +1,9 @@
 ﻿using ClientPortal.Data.Entities.DunamisEntities;
-using ClientPortal.Data.Entities.PortalEntities;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClientPortal.Data
 {
-    public class DunamisDBContext: DbContext
+    public class DunamisDBContext : DbContext
     {
         private readonly IConfiguration? _configuration;
 
