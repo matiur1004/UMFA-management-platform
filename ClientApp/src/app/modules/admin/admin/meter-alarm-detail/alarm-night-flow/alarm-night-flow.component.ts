@@ -12,7 +12,7 @@ import { AlarmConfigurationService } from '@shared/services/alarm-configuration.
 export class AlarmNightFlowComponent implements OnInit {
 
   @Output() onChangeGraph: EventEmitter<any> = new EventEmitter<any>();
-  
+
   minutues = [];
   form: FormGroup;
   analyzeForm: FormGroup;
@@ -25,8 +25,8 @@ export class AlarmNightFlowComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    for(let i = 1; i <= 60; i++) {
-      this.minutues.push({Value: i});
+    for(let i = 1; i <= 10; i++) {
+      this.minutues.push({Value: i * 30});
     }
 
     // form 

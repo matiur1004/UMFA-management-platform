@@ -131,8 +131,25 @@
             <div class="flex cursor-pointer hover:text-gray-500" [ngClass]="{'font-bold underline': selectedAlarmType == 'Average Usage'}" (click)="onSelectAlarmType('Average Usage')">Average Usage</div>
         </div>
     </div>
-    <div class="flex text-orange-500 min-h-16 bg-gray-200 items-center px-4 text-md rounded-md">
-        The Alarm will trigger if the average usage exceeds the threshold during the selected time range.
+    <div class="flex text-orange-500 min-h-16 bg-gray-200 items-center px-4 text-md rounded-md" *ngIf="selectedAlarmType">
+        <ng-container *ngIf="selectedAlarmType == 'Burst Pipe'">
+            The Alarm will trigger if the usage exceeds the threshold for the set number of consecutive profiles.    
+        </ng-container>
+        <ng-container *ngIf="selectedAlarmType == 'Night Flow'">
+            The Alarm will trigger if the usage exceeds the threshold for the duration during the selected time range.    
+        </ng-container>
+        <ng-container *ngIf="selectedAlarmType == 'Leak Detection'">
+            The Alarm will trigger if the usage do not fall below the threshold for a set duration during the selected time range.    
+        </ng-container>
+        <ng-container *ngIf="selectedAlarmType == 'Daily Usage'">
+            TThe Alarm will trigger if the daily (24Hr Cycle) usage exceeds the threshold.
+        </ng-container>
+        <ng-container *ngIf="selectedAlarmType == 'Peak Usage'">
+            The Alarm will trigger if the usage exceeds the threshold for the set number of consecutive profiles during the time range
+        </ng-container>
+        <ng-container *ngIf="selectedAlarmType == 'Average Usage'">
+            The Alarm will trigger if the average usage exceeds the threshold during the selected time range.    
+        </ng-container>
     </div>
     <app-alarm-night-flow (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Night Flow'"></app-alarm-night-flow>
     <app-alarm-burst-pipe (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Burst Pipe'"></app-alarm-burst-pipe>
