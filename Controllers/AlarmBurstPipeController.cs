@@ -104,7 +104,6 @@ namespace ClientPortal.Controllers
                 _logger.LogError(1, "No Results Found For AlarmAnalyzeBurstPipe Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
                 return Problem($"Failed to get AlarmAnalyzeBurstPipe Details for Meter: {model.MeterSerialNo}");
             }
-
             return Ok(returnResult);
         }
     }
