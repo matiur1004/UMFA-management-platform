@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Cors;
-using ClientPortal.Controllers.Authorization;
+﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Services;
 
 namespace ClientPortal.Controllers
@@ -7,7 +6,7 @@ namespace ClientPortal.Controllers
     [Authorize]
     [ApiController]
     [Route("[controller]")]
-    public class HomeController: ControllerBase
+    public class HomeController : ControllerBase
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IHomeService _dashboardService;

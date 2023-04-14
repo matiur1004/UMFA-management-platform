@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
-using ClientPortal.Controllers.Authorization;
+﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 using ClientPortal.Services;
@@ -86,7 +84,7 @@ namespace ClientPortal.Controllers
         }
 
         [HttpPost("edit/{id}")]
-        public IActionResult Edit([FromRoute]int id, [FromBody] AMRScadaUserRequest request)
+        public IActionResult Edit([FromRoute] int id, [FromBody] AMRScadaUserRequest request)
         {
             _logger.LogInformation($"Saving amr scada user {request?.ScadaUserName ?? "Empty object recieved"}");
             try
@@ -96,7 +94,7 @@ namespace ClientPortal.Controllers
                 {
                     _logger.LogInformation($"New amr scada user {request?.ScadaUserName ?? "Empty object recieved"}");
                     List<AMRScadaUserRequest> asuL = new();
-                    if ( request != null) asuL.Add(request);
+                    if (request != null) asuL.Add(request);
                     AMRScadaUserUpdateRequest ur = new() { UserId = id, ScadaUsers = asuL };
                     var response = _opuService.UpdateScadaUsers(ur).AmrScadaUsers.FirstOrDefault(asu => asu.ScadaUserName == request?.ScadaUserName);
                     return Ok(response);
@@ -108,13 +106,14 @@ namespace ClientPortal.Controllers
                     {
                         var response = _asuService.Update(request, id).Result;
                         return Ok(response);
-                    } else throw new ArgumentNullException(nameof(request));
+                    }
+                    else throw new ArgumentNullException(nameof(request));
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error while saving amr scada user {request?.ScadaUserName?? "Empty object"}: {ex.Message}");
-                return BadRequest($"Error while saving amr scada user {request?.ScadaUserName?? "Empty object"}: {ex.Message}");
+                _logger.LogError($"Error while saving amr scada user {request?.ScadaUserName ?? "Empty object"}: {ex.Message}");
+                return BadRequest($"Error while saving amr scada user {request?.ScadaUserName ?? "Empty object"}: {ex.Message}");
             }
         }
 

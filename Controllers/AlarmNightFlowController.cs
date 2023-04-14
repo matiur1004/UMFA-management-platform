@@ -58,9 +58,7 @@ namespace ClientPortal.Controllers
             {
                 _logger.LogError(1, "No Results Found For AlarmConfigNightflow Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
             }
-
             return Ok(returnResult);
-
         }
 
         [HttpPost("getAlarmAnalyzeNightFlow")]
@@ -102,10 +100,10 @@ namespace ClientPortal.Controllers
             {
                 _logger.LogError(1, "No Results Found For AlarmAnalyzeNightflow Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
             }
-
             return Ok(returnResult);
         }
     }
+
     public class AlarmConfigNightFlowModel
     {
         public string MeterSerialNo { get; set; }
@@ -169,6 +167,5 @@ namespace ClientPortal.Controllers
         public List<AlarmAnalyzeNightFlowResultDataModel> MeterData { get; set; }
         public AlarmAnalyzeNightFlowResultCountModel Alarms { get; set; }
     }
-
 }
 
