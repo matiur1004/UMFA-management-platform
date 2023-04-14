@@ -1,6 +1,5 @@
 ﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Services;
-using Microsoft.AspNetCore.DataProtection;
 
 namespace ClientPortal.Controllers
 {
