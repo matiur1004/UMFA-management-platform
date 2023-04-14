@@ -1,6 +1,7 @@
 ﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.PortalEntities;
+using ClientPortal.Models.RequestModels;
 
 namespace ClientPortal.Controllers
 {
@@ -52,8 +53,66 @@ namespace ClientPortal.Controllers
         }
 
         // POST: AMRMeterAlarms
-        [HttpPost("createOrUpdateAMRMeterAlarm")]
-        public async Task<ActionResult<AMRMeterAlarm>> CreateOrUpdateAMRMeterAlarm(AMRMeterAlarm alarmType)
+        [HttpPost("createOrUpdateAMRMeterAlarmByAlarmTypeName")]
+        public async Task<ActionResult<AMRMeterAlarm>> CreateOrUpdateAMRMeterAlarm(AMRMeterAlarmRequest alarmType)
+        {
+            if (_context.AMRMeterAlarms == null)
+            {
+                return Problem("Entity set 'PortalDBContext.AMRMeterAlarms'  is null.");
+            }
+            
+            var alarmTypeResponse = new AMRMeterAlarm();
+
+            //Find AlarmTypeId
+            var alarmTypeId = (await _context.AlarmTypes.FirstOrDefaultAsync<AlarmType>(c => c.AlarmName == alarmType.AlarmTypeName)).AlarmTypeId;
+
+            //Update Response
+            alarmTypeResponse.AMRMeterAlarmId = alarmType.AMRMeterAlarmId;
+            alarmTypeResponse.AlarmTypeId = alarmTypeId;
+            alarmTypeResponse.AMRMeterId = alarmType.AMRMeterId;
+            alarmTypeResponse.AlarmTriggerMethodId = alarmType.AlarmTriggerMethodId;
+            alarmTypeResponse.Threshold = alarmType.Threshold;
+            alarmTypeResponse.Duration = alarmType.Duration;
+            alarmTypeResponse.StartTime = alarmType.StartTime;
+            alarmTypeResponse.EndTime = alarmType.EndTime;
+            alarmTypeResponse.Active = alarmType.Active;
+
+            if (alarmTypeResponse.AMRMeterAlarmId == 0) //Create
+            {
+                _context.AMRMeterAlarms.Add(alarmTypeResponse);
+                await _context.SaveChangesAsync();
+                _logger.LogInformation($"Successfully Created AMRMeterAlarm with ID: {alarmTypeResponse.AMRMeterAlarmId}");
+                return CreatedAtAction("CreateOrUpdateAMRMeterAlarm", new { id = alarmTypeResponse.AMRMeterAlarmId }, alarmTypeResponse);
+            }
+            else                         //Update
+            {
+                _context.Entry(alarmTypeResponse).State = EntityState.Modified;
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+                    _logger.LogInformation($"Successfully Updated AMRMeterAlarm with ID: {alarmTypeResponse.AMRMeterAlarmId}");
+                    return CreatedAtAction("CreateOrUpdateAMRMeterAlarm", new { id = alarmTypeResponse.AMRMeterAlarmId }, alarmTypeResponse);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!AMRMeterAlarmExists(alarmTypeResponse.AMRMeterAlarmId))
+                    {
+                        _logger.LogError($"AMRMeterAlarm With Id: {alarmTypeResponse.AMRMeterAlarmId} does not exist!");
+                        return NotFound();
+                    }
+                    else
+                    {
+                        _logger.LogError($"Database Confirmation on AMRMeterAlarm does exist and was Updated!");
+                        return NoContent();
+                    }
+                }
+            }
+        }
+
+        // POST: AMRMeterAlarms
+        [HttpPost("createOrUpdateAMRMeterAlarmById")]
+        public async Task<ActionResult<AMRMeterAlarm>> CreateOrUpdateAMRMeterAlarmByAlarmTypeId(AMRMeterAlarm alarmType)
         {
             if (_context.AMRMeterAlarms == null)
             {
