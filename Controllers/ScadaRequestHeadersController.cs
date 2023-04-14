@@ -1,6 +1,10 @@
 ﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.PortalEntities;
+using ClientPortal.Models.ResponseModels;
+using ClientPortal.Models.ScadaRequestsForTableUpdate;
+using Microsoft.EntityFrameworkCore;
+using static DevExpress.DataProcessing.InMemoryDataProcessor.AddSurrogateOperationAlgorithm;
 
 namespace ClientPortal.Controllers
 {
@@ -99,7 +103,7 @@ namespace ClientPortal.Controllers
         }
 
         //POST: createOrUpdateRequestHeader
-        [HttpPost("createOrUpdateScadaRequestHeader")]
+        [HttpPost("createOrUpdateScadaRequestHeaderFull")]
         public async Task<ActionResult<ScadaRequestHeader>> CreateOrUpdateScadaRequestHeader(ScadaRequestHeader scadaRequestHeader)
         {
             if (scadaRequestHeader.Id == 0) //Create
@@ -139,23 +143,91 @@ namespace ClientPortal.Controllers
             }
         }
 
-        //POST: updateRequestHeaderStatus
-        [HttpPost("updateRequestHeaderStatus")]
-        public IActionResult UpdateRequestHeaderStatus([FromBody] ScadaRequestHeader scadaRequestHeader)
+        //POST: updateRequestDetailStatus
+        [HttpPost("createOrUpdateRequestHeaderTable")]
+        public IActionResult UpdateRequestHeaderStatus([FromBody] ScadaRequestHeaderTable scadaRequestHeader)
         {
             try
             {
-                _logger.LogInformation($"update ScadaRequestHeader with Id: {scadaRequestHeader.Id}");
+                if (scadaRequestHeader.Id == 0) // CREATE
+                {
+                    _logger.LogInformation($"Creating ScadaRequestHeader with Id: {scadaRequestHeader.Id}");
+
+                    var response = _context.Database.ExecuteSqlRaw($"INSERT INTO [dbo].[ScadaRequestHeaders] " +
+                        "([Status],[Active],[CreatedDTM],[StartRunDTM],[LastRunDTM],[CurrentRunDTM],[JobType],[Description],[Interval]) " + 
+                        $"VALUES " +
+                        $"({scadaRequestHeader.Status}, " +
+                        $"{scadaRequestHeader.Active}, " +
+                        $"'{scadaRequestHeader.CreatedDTM}', " +
+                        $"'{scadaRequestHeader.StartRunDTM}', " +
+                        $"Null, " +
+                        $"Null, " +
+                        $"{scadaRequestHeader.JobType}, " +
+                        $"'{scadaRequestHeader.Description}', " +
+                        $"{scadaRequestHeader.Interval})");
+
+                    if (response != 0)
+                    {
+                        _logger.LogInformation($"Successfully Created ScadaRequestHeader: {scadaRequestHeader.Id}");
+                        return Ok("{\"Data\": { \"Code\": 1, \"Message\": \"Success\"}}");
+                    }
+                    else throw new Exception($"Failed to Create ScadaRequestHeader With Id: {scadaRequestHeader.Id}");
+                }
+                else                           // UPDATE
+                {
+                    _logger.LogInformation($"Updating ScadaRequestHeader with Id: {scadaRequestHeader.Id}");
+                    var scadaRequestHeaderEntity = _context.ScadaRequestHeaders.Find(scadaRequestHeader.Id);
+                    var sql = $"UPDATE [dbo].[ScadaRequestHeaders] " +
+                        $"SET [Status] = {scadaRequestHeader.Status}, " +
+                        $"[Active] = {scadaRequestHeader.Active}, " +
+                        $"[CreatedDTM] = '{scadaRequestHeader.CreatedDTM}', " +
+                        $"[StartRunDTM] = '{scadaRequestHeader.StartRunDTM}', ";
+                    if(scadaRequestHeaderEntity.LastRunDTM != null) { 
+                        sql += $"[LastRunDTM] = '{scadaRequestHeaderEntity.LastRunDTM}', "; }
+                    else { 
+                        sql+= $"[LastRunDTM] = Null, "; }
+                    if (scadaRequestHeaderEntity.CurrentRunDTM != null) { 
+                        sql += $"[CurrentRunDTM] = '{scadaRequestHeaderEntity.CurrentRunDTM}', "; }
+                    else { 
+                        sql += $"[CurrentRunDTM] = Null, "; }
+                    sql+= $"[JobType] = {scadaRequestHeader.JobType}, " +
+                        $"[Description] = '{scadaRequestHeader.Description}', " +
+                        $"[Interval] = {scadaRequestHeader.Interval} " +
+                        $"WHERE [Id] = {scadaRequestHeader.Id}"; 
+
+                    var response = _context.Database.ExecuteSqlRaw(sql);
+                    if (response != 0)
+                    {
+                        _logger.LogInformation($"Successfully Updated ScadaRequestHeader: {scadaRequestHeader.Id}");
+                        return Ok("{\"Data\": { \"Code\": 1, \"Message\": \"Success\"}}");
+                    }
+                    else throw new Exception($"Failed to Update ScadaRequestHeader With Id: {scadaRequestHeader.Id}");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError($"Failed to Create Or Update ScadaRequestHeader: {ex.Message}");
+                return BadRequest(new ApplicationException($"Failed to Create Or Update ScadaRequestHeader: {ex.Message}"));
+            }
+        }
+
+        //POST: updateRequestHeaderStatus
+        [HttpPost("updateRequestHeaderStatus/{scadaRequestHeaderId}")]
+        public IActionResult UpdateRequestHeaderStatus(int scadaRequestHeaderId)
+        {
+            try
+            {
+                _logger.LogInformation($"update ScadaRequestHeader with Id: {scadaRequestHeaderId}");
                 var response = _context.Database.ExecuteSqlRaw($"UPDATE [dbo].[ScadaRequestHeaders] SET " +
-                    $"[Status] = {0}, " +
-                    $" WHERE [Id] = {scadaRequestHeader.Id}");
+                    $"[Status] = {1} " +
+                    $"WHERE [Id] = {scadaRequestHeaderId}");
 
                 if (response != 0)
                 {
-                    _logger.LogInformation($"Successfully updated ScadaRequestHeader: {scadaRequestHeader.Id}");
-                    return Ok(response);
+                    _logger.LogInformation($"Successfully updated ScadaRequestHeader: {scadaRequestHeaderId}");
+                    return Ok("Success");
                 }
-                else throw new Exception($"Failed to ScadaRequestHeader With Id: {scadaRequestHeader.Id}");
+                else throw new Exception($"Failed to ScadaRequestHeader With Id: {scadaRequestHeaderId}");
             }
             catch (Exception ex)
             {

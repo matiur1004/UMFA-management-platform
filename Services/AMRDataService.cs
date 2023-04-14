@@ -16,6 +16,7 @@ namespace ClientPortal.Services
         Task<bool> DetailQueueStatusChange(int detailId, int status);
         Task<AmrJob> ProcessProfileJob(AmrJobToRun job);
         Task<AmrJob> ProcessReadingsJob(AmrJobToRun job);
+        Task<AMRGraphProfileResponse> GetGraphProfile(AMRGraphProfileRequest request);
     }
 
     public class AMRDataService : IAMRDataService
@@ -289,16 +290,16 @@ namespace ClientPortal.Services
             AMRWaterProfileResponse result = new();
             try
             {
-                var res = await _repo.GetWaterProfile(request.MeterId, request.StartDate, request.EndDate, request.NightFlowStart, request.NightFlowEnd);
+                var res = await _repo.GetWaterProfile(request.MeterId, request.StartDate, request.EndDate, request.NightFlowStart, request.NightFlowEnd, request.ApplyNightFlow);
                 result.Header = _mapper.Map<AMRWaterProfileResponseHeader>(res);
                 result.Detail = _mapper.Map<List<WaterProfileResponseDetail>>(res.Profile);
                 return result;
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error retreiving water profile data for meter {meterId}: {Message}", request.MeterId, ex.Message);
+                _logger.LogError("Error retrieving water profile data for meter {meterId}: {Message}", request.MeterId, ex.Message);
                 result.Status = "Error";
-                result.ErrorMessage = $"Error retreiving water profile data for meter {request.MeterId}: {ex.Message}";
+                result.ErrorMessage = $"Error retrieving water profile data for meter {request.MeterId}: {ex.Message}";
                 return result;
             }
         }
@@ -316,9 +317,29 @@ namespace ClientPortal.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error retreiving demand profile data for meter {meterId}: {Message}", request.MeterId, ex.Message);
+                _logger.LogError("Error retrieving demand profile data for meter {meterId}: {Message}", request.MeterId, ex.Message);
                 result.Status = "Error";
-                result.ErrorMessage = $"Error retreiving demand profile data for meter {request.MeterId}: {ex.Message}";
+                result.ErrorMessage = $"Error retrieving demand profile data for meter {request.MeterId}: {ex.Message}";
+                return result;
+            }
+        }
+
+        public async Task<AMRGraphProfileResponse> GetGraphProfile(AMRGraphProfileRequest request)
+        {
+            _logger.LogInformation($"Attempting to retrieve graph profile data for meter {request.MeterId}");
+            AMRGraphProfileResponse result = new();
+            try
+            {
+                var res = await _repo.GetGraphProfile(request.MeterId, request.StartDate, request.EndDate, request.NightFlowStart, request.NightFlowEnd, request.ApplyNightFlow);
+                result.Header = _mapper.Map<AMRGraphProfileResponseHeader>(res);
+                result.Detail = _mapper.Map<List<GraphProfileResponseDetail>>(res.Profile);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error retrieving graph profile data for meter {meterId}: {Message}", request.MeterId, ex.Message);
+                result.Status = "Error";
+                result.ErrorMessage = $"Error retrieving graph profile data for meter {request.MeterId}: {ex.Message}";
                 return result;
             }
         }
