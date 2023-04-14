@@ -3,6 +3,20 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using ClientPortal.Controllers.Authorization;
+using ClientPortal.Data;
+using Dapper;
+using ClientPortal.Controllers;
+
+//WHATSAPP BUSINESS CREDENTIALS
+//marketing@umfa.co.za
+//Shining-Slip-Reopen-Treason
+//+27674148318
+//https://developers.facebook.com/docs/whatsapp/on-premises
+
+[Authorize]
+[ApiController]
+[Route("[controller]")]
 
 public class WhatsAppController : ControllerBase
 {
@@ -14,6 +28,7 @@ public class WhatsAppController : ControllerBase
         _httpClient = new HttpClient();
     }
 
+    [HttpPost("sendWhatsAppMessage")]
     public async Task<HttpResponseMessage> SendMessage(string phoneNumber, string message)
     {
         var requestBody = new
@@ -33,4 +48,18 @@ public class WhatsAppController : ControllerBase
         var response = await _httpClient.SendAsync(request);
         return response;
     }
+
+    public async Task<ActionResult<AlarmConfigBurstPipeResultModel>> SendWhatsAppMessage([FromBody] WhatsAppRequestModel model)
+    {
+
+    }
+
+    
+
+}
+public class WhatsAppRequestModel
+{
+    public string PhoneNumber { get; set; }
+    public string Message { get; set; }
+
 }
