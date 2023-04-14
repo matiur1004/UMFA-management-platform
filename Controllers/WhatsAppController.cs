@@ -12,6 +12,10 @@ using ClientPortal.Controllers;
 //marketing@umfa.co.za
 //Shining-Slip-Reopen-Treason
 //+27674148318
+//Bearer Token
+//EAALDEr686ZAoBAMeTIZCIvpxASMeR5ZBChQVFhyDw7u0GILHmv5ZBc63dIKI3NW3zGcug3BO4QZBAHmB6EUyzmJXc6e5adZCV1ZBxZA2A6GGRe1kkkLVgQ7gbQ97LFQCv1opN2ARSsc079tLnHHunYvMPSbpTs4ZA6aBW088nGrfGfGSdsvPYGZBpTcqlyXD0l3ZAOWbop0oKaxnwZDZD
+//WABA ID: 4854103951344634
+
 //https://developers.facebook.com/docs/whatsapp/on-premises
 
 [Authorize]
@@ -21,7 +25,7 @@ using ClientPortal.Controllers;
 public class WhatsAppController : ControllerBase
 {
     private readonly HttpClient _httpClient;
-    private const string _whatsappApiUrl = "https://api.chat-api.com/instance/<INSTANCE_ID>/message?token=<TOKEN>";
+    private const string _whatsappApiUrl = "https://api.chat-api.com/instance/<INSTANCE_ID>/message?token='EAALDEr686ZAoBAMeTIZCIvpxASMeR5ZBChQVFhyDw7u0GILHmv5ZBc63dIKI3NW3zGcug3BO4QZBAHmB6EUyzmJXc6e5adZCV1ZBxZA2A6GGRe1kkkLVgQ7gbQ97LFQCv1opN2ARSsc079tLnHHunYvMPSbpTs4ZA6aBW088nGrfGfGSdsvPYGZBpTcqlyXD0l3ZAOWbop0oKaxnwZDZD'";
 
     public WhatsAppController()
     {
