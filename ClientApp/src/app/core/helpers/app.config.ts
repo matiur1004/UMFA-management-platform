@@ -60,10 +60,10 @@ export interface ApplicationConfiguration {
 
 export const CONFIG: ApplicationConfiguration = {
     apiURL: environment.production
-        ? 'https://umfaclientportal.azurewebsites.net'
+        ? 'https://umfaportal.azurewebsites.net'
         : 'https://localhost:7054',
     devExpressUrl: environment.production
-        ? 'https://umfaclientportal.azurewebsites.net/'
+        ? 'https://umfaportal.azurewebsites.net/'
         : 'https://localhost:7054/',
     authPath: '/user/authenticate',
     refreshPath: '/user/refresh-token',
