@@ -72,7 +72,7 @@ namespace ClientPortal.Controllers
             {
                 //Stop If No AlarmTypeId is Found
                 _logger.LogError($"AlarmType With Name: {alarmType.AlarmTypeName} does not exist!");
-                return Problem("alarmTypeId Could Not Be Matched In 'PortalDBContext.AlarmTypes'");
+                return Problem($"alarmTypeId Could Not Be Matched In 'PortalDBContext.AlarmTypes', AlarmType With Name: {alarmType.AlarmTypeName} does not exist!");
             }
 
             //Update Response If AlarmTypeId is Found
