@@ -62,11 +62,20 @@ namespace ClientPortal.Controllers
             }
             
             var alarmTypeResponse = new AMRMeterAlarm();
+            var alarmTypeId = 0;
+            try
+            {
+                //Find AlarmTypeId
+                alarmTypeId = (await _context.AlarmTypes.FirstOrDefaultAsync<AlarmType>(c => c.AlarmName == alarmType.AlarmTypeName)).AlarmTypeId;
+            }
+            catch (Exception)
+            {
+                //Stop If No AlarmTypeId is Found
+                _logger.LogError($"AlarmType With Name: {alarmType.AlarmTypeName} does not exist!");
+                return Problem("alarmTypeId Could Not Be Matched In 'PortalDBContext.AlarmTypes'");
+            }
 
-            //Find AlarmTypeId
-            var alarmTypeId = (await _context.AlarmTypes.FirstOrDefaultAsync<AlarmType>(c => c.AlarmName == alarmType.AlarmTypeName)).AlarmTypeId;
-
-            //Update Response
+            //Update Response If AlarmTypeId is Found
             alarmTypeResponse.AMRMeterAlarmId = alarmType.AMRMeterAlarmId;
             alarmTypeResponse.AlarmTypeId = alarmTypeId;
             alarmTypeResponse.AMRMeterId = alarmType.AMRMeterId;
@@ -82,7 +91,7 @@ namespace ClientPortal.Controllers
                 _context.AMRMeterAlarms.Add(alarmTypeResponse);
                 await _context.SaveChangesAsync();
                 _logger.LogInformation($"Successfully Created AMRMeterAlarm with ID: {alarmTypeResponse.AMRMeterAlarmId}");
-                return CreatedAtAction("CreateOrUpdateAMRMeterAlarm", new { id = alarmTypeResponse.AMRMeterAlarmId }, alarmTypeResponse);
+                return Ok(CreatedAtAction("CreateOrUpdateAMRMeterAlarm", new { id = alarmTypeResponse.AMRMeterAlarmId }, alarmTypeResponse));
             }
             else                         //Update
             {
@@ -92,7 +101,7 @@ namespace ClientPortal.Controllers
                 {
                     await _context.SaveChangesAsync();
                     _logger.LogInformation($"Successfully Updated AMRMeterAlarm with ID: {alarmTypeResponse.AMRMeterAlarmId}");
-                    return CreatedAtAction("CreateOrUpdateAMRMeterAlarm", new { id = alarmTypeResponse.AMRMeterAlarmId }, alarmTypeResponse);
+                    return Ok(CreatedAtAction("CreateOrUpdateAMRMeterAlarm", new { id = alarmTypeResponse.AMRMeterAlarmId }, alarmTypeResponse));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
