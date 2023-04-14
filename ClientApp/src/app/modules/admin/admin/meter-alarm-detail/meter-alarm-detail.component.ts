@@ -154,4 +154,29 @@ export class MeterAlarmDetailComponent implements OnInit {
     data.forEach((det) => { det.ReadingDateString = pipe.transform(det.ReadingDate, "yyyy-MM-dd HH:mm") });
     this.profileDataSource.Detail = data;
   }
+
+  onSave($event) {
+    let alarmData = {
+      ...$event,
+      AMRMeterAlarmId: 0,
+      AlarmTypeId: this.getAlarmTypeId(),
+      AMRMeterId: this.profileForm.get('MeterId').value,
+      AlarmTriggerMethodId: 1
+    };
+    this._alarmConfigService.createOrUpdateAMRMeterAlarm(alarmData).subscribe();
+  }
+
+  onDelete(event) {
+    this._alarmConfigService.delete(1).subscribe();
+  }
+
+  getAlarmTypeId() {
+    if(this.selectedAlarmType == 'Night Flow') return 1;
+    if(this.selectedAlarmType == 'Burst Pipe') return 2;
+    if(this.selectedAlarmType == 'Leak Detection') return 3;
+    if(this.selectedAlarmType == 'Daily Usage') return 4;
+    if(this.selectedAlarmType == 'Peak Usage') return 5;
+    if(this.selectedAlarmType == 'Average Usage') return 6;
+    return 0;
+  }
 }

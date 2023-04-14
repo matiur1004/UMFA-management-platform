@@ -11,7 +11,9 @@ import { AlarmConfigurationService } from '@shared/services/alarm-configuration.
 export class AlarmLeakDetectionComponent implements OnInit {
 
   @Output() onChangeGraph: EventEmitter<any> = new EventEmitter<any>();
-
+  @Output() delete: EventEmitter<any> = new EventEmitter<any>();
+  @Output() save: EventEmitter<any> = new EventEmitter<any>();
+  
   minutues = [];
   form: FormGroup;
   analyzeForm: FormGroup;
@@ -85,5 +87,23 @@ export class AlarmLeakDetectionComponent implements OnInit {
         this._alarmConfigService.showAlert('You should set profile option first!');
       }
     }
+  }
+
+  onSave() {
+    let configData = this.form.value;
+    let nStartTime = {hours: configData['NightStartTime'].getHours(), minutes: configData['NightStartTime'].getMinutes()};
+    let nEndTime = {hours: configData['NightEndTime'].getHours(), minutes: configData['NightEndTime'].getMinutes()};
+
+    let data = {
+      ...this.analyzeForm.value,
+      StartTime: formatTimeString(nStartTime),
+      EndTime: formatTimeString(nEndTime),
+      Active: true
+    };
+    this.save.emit(data);
+  }
+
+  onRemove() {
+    this.delete.emit(true);
   }
 }

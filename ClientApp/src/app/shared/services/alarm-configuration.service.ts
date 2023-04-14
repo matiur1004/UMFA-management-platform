@@ -4,6 +4,7 @@ import { ALERT_MODAL_CONFIG } from "@core/config/modal.config";
 import { CONFIG } from "@core/helpers";
 import { UmfaUtils } from "@core/utils/umfa.utils";
 import { catchError, Observable, tap, throwError } from "rxjs";
+import { NotificationService } from "./notification.service";
 
 @Injectable({ providedIn: 'root' })
 export class AlarmConfigurationService {
@@ -12,7 +13,8 @@ export class AlarmConfigurationService {
     
     constructor(
         private http: HttpClient,
-        private _ufUtils: UmfaUtils
+        private _ufUtils: UmfaUtils,
+        private _notificationService: NotificationService
     ) { }
     
     // AlarmNightFlow/getAlarmConfigNightFlow
@@ -145,6 +147,28 @@ export class AlarmConfigurationService {
                 catchError(err => this.catchErrors(err)),
                 tap(m => {
                 //console.log(`getMetersForUser observable returned ${m}`);
+                }),
+            );
+    }
+
+    createOrUpdateAMRMeterAlarm(formData): Observable<any> {
+        const url = `${CONFIG.apiURL}/AMRMeterAlarms/createOrUpdateAMRMeterAlarm`;
+        return this.http.post<any>(url, formData, { withCredentials: true })
+            .pipe(
+                catchError(err => this.catchErrors(err)),
+                tap(m => {
+                    this._notificationService.message(formData['AMRMeterAlarmId'] ? 'Updated successfully' : 'Created successfully');
+                }),
+            );
+    }
+
+    delete(id): Observable<any> {
+        const url = `${CONFIG.apiURL}/AMRMeterAlarms/delete/${id}`;
+        return this.http.delete<any>(url, { withCredentials: true })
+            .pipe(
+                catchError(err => this.catchErrors(err)),
+                tap(m => {
+                    this._notificationService.message('Deleted successfully!');
                 }),
             );
     }

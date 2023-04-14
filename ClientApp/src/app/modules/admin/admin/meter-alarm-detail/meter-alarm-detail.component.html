@@ -151,10 +151,10 @@
             The Alarm will trigger if the average usage exceeds the threshold during the selected time range.    
         </ng-container>
     </div>
-    <app-alarm-night-flow (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Night Flow'"></app-alarm-night-flow>
-    <app-alarm-burst-pipe (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Burst Pipe'"></app-alarm-burst-pipe>
-    <app-alarm-leak-detection (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Leak Detection'"></app-alarm-leak-detection>
-    <app-alarm-daily-usage (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Daily Usage'"></app-alarm-daily-usage>
-    <app-alarm-peak-usage (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Peak Usage'"></app-alarm-peak-usage>
-    <app-alarm-average-usage (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Average Usage'"></app-alarm-average-usage>
+    <app-alarm-night-flow (delete)="onDelete($event)" (save)="onSave($event)" (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Night Flow'"></app-alarm-night-flow>
+    <app-alarm-burst-pipe (delete)="onDelete($event)" (save)="onSave($event)" (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Burst Pipe'"></app-alarm-burst-pipe>
+    <app-alarm-leak-detection (delete)="onDelete($event)" (save)="onSave($event)" (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Leak Detection'"></app-alarm-leak-detection>
+    <app-alarm-daily-usage (delete)="onDelete($event)" (save)="onSave($event)" (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Daily Usage'"></app-alarm-daily-usage>
+    <app-alarm-peak-usage (delete)="onDelete($event)" (save)="onSave($event)" (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Peak Usage'"></app-alarm-peak-usage>
+    <app-alarm-average-usage (delete)="onDelete($event)" (save)="onSave($event)" (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Average Usage'"></app-alarm-average-usage>
 </div>

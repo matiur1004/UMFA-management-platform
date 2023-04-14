@@ -11,7 +11,9 @@ import { AlarmConfigurationService } from '@shared/services/alarm-configuration.
 export class AlarmPeakUsageComponent implements OnInit {
 
   @Output() onChangeGraph: EventEmitter<any> = new EventEmitter<any>();
-  
+  @Output() save: EventEmitter<any> = new EventEmitter<any>();
+  @Output() delete: EventEmitter<any> = new EventEmitter<any>();
+
   form: FormGroup;
   analyzeForm: FormGroup;
   configInfo: any[] = [];
@@ -82,5 +84,24 @@ export class AlarmPeakUsageComponent implements OnInit {
         this._alarmConfigService.showAlert('You should set profile option first!');
       }
     }
+  }
+
+  onSave() {
+    let configData = this.form.value;
+    let nStartTime = {hours: configData['PeakStartTime'].getHours(), minutes: configData['PeakStartTime'].getMinutes()};
+    let nEndTime = {hours: configData['PeakEndTime'].getHours(), minutes: configData['PeakEndTime'].getMinutes()};
+
+    let data = {
+      ...this.analyzeForm.value,
+      NoOfPeaks: configData['NoOfPeaks'],
+      StartTime: formatTimeString(nStartTime),
+      EndTime: formatTimeString(nEndTime),
+      Active: true
+    };
+    this.save.emit(data);
+  }
+
+  onRemove() {
+    this.delete.emit(true);
   }
 }

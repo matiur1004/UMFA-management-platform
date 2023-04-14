@@ -62,8 +62,8 @@
         </div>
     </div>
     <div class="pt-3 border-t border-gray-300 text-gray-600 flex justify-end gap-x-4">
-        <button class="dnm-btn dnm-btn-delete" type="button">Delete</button>
+        <button class="dnm-btn dnm-btn-delete" type="button" (click)="onRemove()">Delete</button>
         <button routerLink="/admin" class="dnm-btn dnm-btn-cancel" type="button">Cancel</button>
-        <button mat-raised-button color="primary" class="dnm-btn dnm-btn-primary" type="button">Save</button>
+        <button mat-raised-button color="primary" class="dnm-btn dnm-btn-primary" type="button" (click)="onSave()">Save</button>
     </div>
 </div>

@@ -11,7 +11,9 @@ import { AlarmConfigurationService } from '@shared/services/alarm-configuration.
 export class AlarmDailyUsageComponent implements OnInit {
   
   @Output() onChangeGraph: EventEmitter<any> = new EventEmitter<any>();
-  
+  @Output() save: EventEmitter<any> = new EventEmitter<any>();
+  @Output() delete: EventEmitter<any> = new EventEmitter<any>();
+
   analyzeForm: FormGroup;
   configInfo: any;
   analyzeInfo: any;
@@ -64,5 +66,17 @@ export class AlarmDailyUsageComponent implements OnInit {
         this._alarmConfigService.showAlert('You should set profile option first!');
       }
     }
+  }
+
+  onSave() {
+    let data = {
+      ...this.analyzeForm.value,
+      Active: true
+    };
+    this.save.emit(data);
+  }
+
+  onRemove() {
+    this.delete.emit(true);
   }
 }
