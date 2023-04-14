@@ -32,7 +32,7 @@ namespace ClientPortal.Controllers
 
             try
             {
-                var CommandText = $"execute spAlarmConfigBurstPipe '{model.MeterSerialNo}','{sDt}','{eDt}',{noOfPeaks}";
+                var CommandText = $"execute spAlarmConfigBurstPipe '{model.MeterSerialNo}','{model.ProfileStartDTM}','{model.ProfileEndDTM}',{model.NoOfPeaks}";
                 var connection = _context.Database.GetDbConnection();
                 await connection.OpenAsync();
                 var results = await connection.QueryMultipleAsync(CommandText);
