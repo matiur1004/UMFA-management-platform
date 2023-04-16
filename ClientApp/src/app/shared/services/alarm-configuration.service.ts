@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { ALERT_MODAL_CONFIG } from "@core/config/modal.config";
 import { CONFIG } from "@core/helpers";
 import { UmfaUtils } from "@core/utils/umfa.utils";
-import { catchError, Observable, tap, throwError } from "rxjs";
+import { BehaviorSubject, catchError, Observable, tap, throwError } from "rxjs";
 import { NotificationService } from "./notification.service";
 
 @Injectable({ providedIn: 'root' })
@@ -11,12 +11,18 @@ export class AlarmConfigurationService {
 
     profileInfo: any;
     
+    private _alarmMeterDetail: BehaviorSubject<any> = new BehaviorSubject(null);
+
     constructor(
         private http: HttpClient,
         private _ufUtils: UmfaUtils,
         private _notificationService: NotificationService
     ) { }
     
+    get alarmMeterDetail$(): Observable<any> {
+        return this._alarmMeterDetail.asObservable();
+    }
+
     // AlarmNightFlow/getAlarmConfigNightFlow
     getAlarmConfigNightFlow(formData): Observable<any> {
         const url = `${CONFIG.apiURL}/AlarmNightFlow/getAlarmConfigNightFlow`;
@@ -151,8 +157,19 @@ export class AlarmConfigurationService {
             );
     }
 
+    getAlarmMeterDetail(id) {
+        const url = `${CONFIG.apiURL}/AMRMeterAlarms/getSingle/${id}`;
+        return this.http.get<any>(url, { withCredentials: true })
+            .pipe(
+                catchError(err => this.catchErrors(err)),
+                tap(m => {
+                    this._alarmMeterDetail.next(m);
+                }),
+            );
+    }
+
     createOrUpdateAMRMeterAlarm(formData): Observable<any> {
-        const url = `${CONFIG.apiURL}/AMRMeterAlarms/createOrUpdateAMRMeterAlarm`;
+        const url = `${CONFIG.apiURL}/AMRMeterAlarms/createOrUpdateAMRMeterAlarmByAlarmTypeName`;
         return this.http.post<any>(url, formData, { withCredentials: true })
             .pipe(
                 catchError(err => this.catchErrors(err)),

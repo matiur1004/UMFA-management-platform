@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { formatDateString, formatTimeString } from '@core/utils/umfa.help';
 import { AlarmConfigurationService } from '@shared/services/alarm-configuration.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-alarm-leak-detection',
@@ -19,7 +20,9 @@ export class AlarmLeakDetectionComponent implements OnInit {
   analyzeForm: FormGroup;
   configInfo: any;
   analyzeInfo: any;
-  
+  alarmMeterDetail: any;
+
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
   constructor(
     private _alarmConfigService: AlarmConfigurationService,
     private _formBuilder: FormBuilder
@@ -40,6 +43,31 @@ export class AlarmLeakDetectionComponent implements OnInit {
       Duration: ['', [Validators.required]],
       Threshold: ['', [Validators.required]]
     });
+
+    this._alarmConfigService.alarmMeterDetail$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((data: any) => {
+        this.alarmMeterDetail = data;
+        if(this.alarmMeterDetail) {
+          let startDate = new Date();
+          let endDate = new Date();
+          startDate.setHours(Number(this.alarmMeterDetail['StartTime'].split(':')[0]))
+          startDate.setMinutes(Number(this.alarmMeterDetail['StartTime'].split(':')[1]));
+
+          endDate.setHours(Number(this.alarmMeterDetail['EndTime'].split(':')[0]))
+          endDate.setMinutes(Number(this.alarmMeterDetail['EndTime'].split(':')[1]));
+
+          this.form.patchValue({
+            NightStartTime:  startDate,
+            NightEndTime: endDate
+          });
+
+          this.analyzeForm.patchValue({
+            Duration: this.alarmMeterDetail['Duration'],
+            Threshold: this.alarmMeterDetail['Threshold'],
+          });
+        }
+      });
   }
 
   onAlarmConfigLeakDetection() {
@@ -105,5 +133,10 @@ export class AlarmLeakDetectionComponent implements OnInit {
 
   onRemove() {
     this.delete.emit(true);
+  }
+
+  ngOnDestroy(): void {
+    this._unsubscribeAll.next(null);
+    this._unsubscribeAll.complete();
   }
 }
