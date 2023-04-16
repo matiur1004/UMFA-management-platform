@@ -56,11 +56,11 @@ export class MeterAlarmDetailComponent implements OnInit {
       "Model": "A1400",
       "ScadaMeterNo": "13138213",
       "Night Flow": 2,
-      "Burst Pipe": 0,
-      "Leak": 0,
-      "Daily Usage": 0,
-      "Peak": 0,
-      "Average": 0
+      "Burst Pipe": 4,
+      "Leak": 5,
+      "Daily Usage": 6,
+      "Peak": 7,
+      "Average": 8
     }
     //114
     this.profileForm = this._formBuilder.group({
@@ -142,9 +142,9 @@ export class MeterAlarmDetailComponent implements OnInit {
     if(this._alarmConfigService.profileInfo) {
       if(this.selectedAlarmType == type) return;
       this.applyNightFlow = false;
-      console.log(this.meter[type]);
-      if(this.meter[type]) {
-        this.getAlarmMeterDetail(this.meter[type]);
+      console.log(this.meter[this.getAlarmTypeName(type)]);
+      if(this.meter[this.getAlarmTypeName(type)]) {
+        this.getAlarmMeterDetail(this.meter[this.getAlarmTypeName(type)]);
       }
       //this.onShowMeterGraph();
       this.selectedAlarmType = type;
@@ -167,8 +167,7 @@ export class MeterAlarmDetailComponent implements OnInit {
   onSave($event) {
     let alarmData = {
       ...$event,
-      AMRMeterAlarmId: this.meter[this.selectedAlarmType],
-      AlarmTypeName: this.selectedAlarmType,
+      AlarmTypeName: this.getAlarmTypeName(this.selectedAlarmType),
       AMRMeterId: this.profileForm.get('MeterId').value,
       AlarmTriggerMethodId: 1
     };
@@ -179,13 +178,10 @@ export class MeterAlarmDetailComponent implements OnInit {
     this._alarmConfigService.delete(1).subscribe();
   }
 
-  getAlarmTypeId() {
-    if(this.selectedAlarmType == 'Night Flow') return 1;
-    if(this.selectedAlarmType == 'Burst Pipe') return 2;
-    if(this.selectedAlarmType == 'Leak Detection') return 3;
-    if(this.selectedAlarmType == 'Daily Usage') return 4;
-    if(this.selectedAlarmType == 'Peak Usage') return 5;
-    if(this.selectedAlarmType == 'Average Usage') return 6;
-    return 0;
+  getAlarmTypeName(type) {
+    if(type == 'Leak Detection') return 'Leak';
+    if(type == 'Peak Usage') return 'Peak';
+    if(type == 'Average Usage') return 'Average';
+    return type;
   }
 }

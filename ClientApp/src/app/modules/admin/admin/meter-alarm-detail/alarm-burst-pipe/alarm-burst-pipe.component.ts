@@ -21,6 +21,7 @@ export class AlarmBurstPipeComponent implements OnInit {
   analyzeInfo: any;
   
   alarmMeterDetail: any;
+  active: boolean = false;
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
@@ -50,6 +51,8 @@ export class AlarmBurstPipeComponent implements OnInit {
             Duration: this.alarmMeterDetail['Duration'],
             Threshold: this.alarmMeterDetail['Threshold'],
           });
+
+          this.active = this.alarmMeterDetail['Active'];
         }
       });
   }
@@ -92,13 +95,12 @@ export class AlarmBurstPipeComponent implements OnInit {
   }
 
   onSave() {
-    let configData = this.form.value;
-
     let data = {
       ...this.analyzeForm.value,
+      AMRMeterAlarmId: this.alarmMeterDetail ? this.alarmMeterDetail.AMRMeterAlarmId : 0,
       StartTime: '22:00',
       EndTime: '05:00',
-      Active: true
+      Active: this.active
     };
     this.save.emit(data);
   }

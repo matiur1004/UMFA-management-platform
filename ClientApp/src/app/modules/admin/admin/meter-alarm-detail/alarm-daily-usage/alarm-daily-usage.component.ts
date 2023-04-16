@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { formatDateString } from '@core/utils/umfa.help';
 import { AlarmConfigurationService } from '@shared/services/alarm-configuration.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-alarm-daily-usage',
@@ -17,18 +18,34 @@ export class AlarmDailyUsageComponent implements OnInit {
   analyzeForm: FormGroup;
   configInfo: any;
   analyzeInfo: any;
+  alarmMeterDetail: any;
+  active: boolean = false;
 
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
   constructor(
     private _alarmConfigService: AlarmConfigurationService,
     private _formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {
-    console.log('daily average');
     this.onAlarmConfigDailyUsage();
     this.analyzeForm = this._formBuilder.group({
       Threshold: ['', [Validators.required]]
     });
+
+    this._alarmConfigService.alarmMeterDetail$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((data: any) => {
+        this.alarmMeterDetail = data;
+        if(this.alarmMeterDetail) {
+
+          this.analyzeForm.patchValue({
+            Threshold: this.alarmMeterDetail['Threshold'],
+          });
+
+          this.active = this.alarmMeterDetail['Active'];
+        }
+      });
   }
 
   onAlarmConfigDailyUsage() {
@@ -71,12 +88,21 @@ export class AlarmDailyUsageComponent implements OnInit {
   onSave() {
     let data = {
       ...this.analyzeForm.value,
-      Active: true
+      AMRMeterAlarmId: this.alarmMeterDetail ? this.alarmMeterDetail.AMRMeterAlarmId : 0,
+      Duration: 0,
+      StartTime: '22:00',
+      EndTime: '05:00',
+      Active: this.active
     };
     this.save.emit(data);
   }
 
   onRemove() {
     this.delete.emit(true);
+  }
+
+  ngOnDestroy(): void {
+    this._unsubscribeAll.next(null);
+    this._unsubscribeAll.complete();
   }
 }

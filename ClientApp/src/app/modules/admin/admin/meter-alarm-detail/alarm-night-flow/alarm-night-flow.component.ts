@@ -22,7 +22,7 @@ export class AlarmNightFlowComponent implements OnInit {
   configInfo: any;
   analyzeInfo: any;
   alarmMeterDetail: any;
-
+  active: boolean = false;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
@@ -68,6 +68,8 @@ export class AlarmNightFlowComponent implements OnInit {
             Duration: this.alarmMeterDetail['Duration'],
             Threshold: this.alarmMeterDetail['Threshold'],
           });
+
+          this.active = this.alarmMeterDetail['Active'];
         }
       });
   }
@@ -127,9 +129,10 @@ export class AlarmNightFlowComponent implements OnInit {
 
     let data = {
       ...this.analyzeForm.value,
+      AMRMeterAlarmId: this.alarmMeterDetail ? this.alarmMeterDetail.AMRMeterAlarmId : 0,
       StartTime: formatTimeString(nStartTime),
       EndTime: formatTimeString(nEndTime),
-      Active: true
+      Active: this.active
     };
     this.save.emit(data);
   }

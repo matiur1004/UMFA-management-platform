@@ -21,6 +21,7 @@ export class AlarmLeakDetectionComponent implements OnInit {
   configInfo: any;
   analyzeInfo: any;
   alarmMeterDetail: any;
+  active: boolean = false;
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   constructor(
@@ -29,8 +30,8 @@ export class AlarmLeakDetectionComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    for(let i = 1; i <= 60; i++) {
-      this.minutues.push({Value: i});
+    for(let i = 1; i <= 10; i++) {
+      this.minutues.push({Value: i * 30});
     }
 
     // form 
@@ -66,6 +67,8 @@ export class AlarmLeakDetectionComponent implements OnInit {
             Duration: this.alarmMeterDetail['Duration'],
             Threshold: this.alarmMeterDetail['Threshold'],
           });
+
+          this.active = this.alarmMeterDetail['Active'];
         }
       });
   }
@@ -124,9 +127,10 @@ export class AlarmLeakDetectionComponent implements OnInit {
 
     let data = {
       ...this.analyzeForm.value,
+      AMRMeterAlarmId: this.alarmMeterDetail ? this.alarmMeterDetail.AMRMeterAlarmId : 0,
       StartTime: formatTimeString(nStartTime),
       EndTime: formatTimeString(nEndTime),
-      Active: true
+      Active: this.active
     };
     this.save.emit(data);
   }

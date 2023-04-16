@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { formatDateString, formatTimeString } from '@core/utils/umfa.help';
 import { AlarmConfigurationService } from '@shared/services/alarm-configuration.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-alarm-average-usage',
@@ -18,7 +19,10 @@ export class AlarmAverageUsageComponent implements OnInit {
   analyzeForm: FormGroup;
   configInfo: any;
   analyzeInfo: any;
-  
+  alarmMeterDetail: any;
+  active: boolean = false;
+
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
   constructor(
     private _alarmConfigService: AlarmConfigurationService,
     private _formBuilder: FormBuilder
@@ -34,6 +38,34 @@ export class AlarmAverageUsageComponent implements OnInit {
     this.analyzeForm = this._formBuilder.group({
       Threshold: ['', [Validators.required]]
     });
+
+    this._alarmConfigService.alarmMeterDetail$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((data: any) => {
+        this.alarmMeterDetail = data;
+        console.log('alarmMeterDetail', this.alarmMeterDetail);
+        if(this.alarmMeterDetail) {
+          let startDate = new Date();
+          let endDate = new Date();
+          startDate.setHours(Number(this.alarmMeterDetail['StartTime'].split(':')[0]))
+          startDate.setMinutes(Number(this.alarmMeterDetail['StartTime'].split(':')[1]));
+
+          endDate.setHours(Number(this.alarmMeterDetail['EndTime'].split(':')[0]))
+          endDate.setMinutes(Number(this.alarmMeterDetail['EndTime'].split(':')[1]));
+
+          this.form.patchValue({
+            AveStartTime:  startDate,
+            AveEndTime: endDate
+          });
+
+          this.analyzeForm.patchValue({
+            Threshold: this.alarmMeterDetail['Threshold'],
+          });
+
+          this.active = this.alarmMeterDetail['Active'];
+        }
+      });
+
   }
 
   onAlarmConfigAverageUsage() {
@@ -91,14 +123,21 @@ export class AlarmAverageUsageComponent implements OnInit {
 
     let data = {
       ...this.analyzeForm.value,
+      AMRMeterAlarmId: this.alarmMeterDetail ? this.alarmMeterDetail.AMRMeterAlarmId : 0,
       StartTime: formatTimeString(nStartTime),
       EndTime: formatTimeString(nEndTime),
-      Active: true
+      Duration: 0,
+      Active: this.active
     };
     this.save.emit(data);
   }
 
   onRemove() {
     this.delete.emit(true);
+  }
+
+  ngOnDestroy(): void {
+    this._unsubscribeAll.next(null);
+    this._unsubscribeAll.complete();
   }
 }
