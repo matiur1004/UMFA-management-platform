@@ -140,6 +140,7 @@ export class AlarmLeakDetectionComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
+    this._alarmConfigService.destroy();
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }

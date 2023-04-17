@@ -137,6 +137,7 @@ export class AlarmAverageUsageComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
+    this._alarmConfigService.destroy();
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }

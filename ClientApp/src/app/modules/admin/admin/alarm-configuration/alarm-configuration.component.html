@@ -11,10 +11,11 @@
                     class="w-60"
                     [placeholder]="'Meter No'"
                     [formControlName]="'partnerId'"
-                    [searchable]="false"
+                    [searchable]="true"
                     [closeOnSelect]="true"
                     [clearable]="false"
                     [multiple]="false"
+                    [searchFn]="customSearch"
                     (change)="onPartnerChanged($event)"
                     >
                 </ng-select>
@@ -28,10 +29,11 @@
                     class="w-60"
                     [placeholder]="'Buildings'"
                     [formControlName]="'buildingId'"
-                    [searchable]="false"
+                    [searchable]="true"
                     [closeOnSelect]="true"
                     [clearable]="false"
                     [multiple]="false"
+                    [searchFn]="customSearch"
                     (change)="onBuildingChanged($event)"
                     >
                 </ng-select>

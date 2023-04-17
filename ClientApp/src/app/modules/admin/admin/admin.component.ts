@@ -33,7 +33,11 @@ export class AdminComponent implements OnInit {
     this._meterService.detailMeterAlarm$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: any) => {
-        if(data) this.detailsList.push(data);
+        if(data) {
+          this.detailsList.push(data);          
+          this.selectedTab = this.detailsList.length - 1 + 6;
+        }
+
       });
   }
 
@@ -60,10 +64,14 @@ export class AdminComponent implements OnInit {
   }
 
   removeTab(index) {
-
+    this.detailsList.splice(index, 1);
+    this.selectedTab = 5;
+    //this._cdr.markForCheck();
   }
 
   ngOnDestroy() {
+    this.detailsList = [];
+    this._meterService.onSelectMeterAlarm(null);
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }
