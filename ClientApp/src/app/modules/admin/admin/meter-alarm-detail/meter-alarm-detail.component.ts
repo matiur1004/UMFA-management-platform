@@ -170,7 +170,9 @@ export class MeterAlarmDetailComponent implements OnInit {
       AMRMeterId: this.profileForm.get('MeterId').value,
       AlarmTriggerMethodId: 1
     };
-    this._alarmConfigService.createOrUpdateAMRMeterAlarm(alarmData).subscribe();
+    this._alarmConfigService.createOrUpdateAMRMeterAlarm(alarmData).subscribe((res) => {
+      //this.meter[this.getAlarmTypeName(this.selectedAlarmType)] = res['Value']['AMRMeterAlarmId'];
+    });
   }
 
   onDelete(event) {
