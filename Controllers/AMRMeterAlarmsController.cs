@@ -63,7 +63,6 @@ namespace ClientPortal.Controllers
             }
             
             var alarmTypeResponse = new AMRMeterAlarm();
-            var savedAMRMeterAlarm = new List<AMRMeterAlarm>();
 
             var alarmTypeId = 0;
             try
@@ -110,8 +109,7 @@ namespace ClientPortal.Controllers
             }
             catch (Exception)
             {
-
-                throw;
+                return Problem("Entity set 'PortalDBContext.AMRMeterAlarms' returned an error. -- Check If Alarms Exists With All Required Parameters");
             }
 
             if (alarmTypeResponse.AMRMeterAlarmId == 0) //Create
