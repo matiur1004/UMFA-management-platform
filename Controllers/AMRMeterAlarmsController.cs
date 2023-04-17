@@ -2,7 +2,6 @@
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Models.RequestModels;
-using ServiceStack;
 
 namespace ClientPortal.Controllers
 {
