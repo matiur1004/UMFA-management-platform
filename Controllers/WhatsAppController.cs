@@ -15,7 +15,7 @@ using ClientPortal.Controllers;
 //Bearer Token
 //EAALDEr686ZAoBAMeTIZCIvpxASMeR5ZBChQVFhyDw7u0GILHmv5ZBc63dIKI3NW3zGcug3BO4QZBAHmB6EUyzmJXc6e5adZCV1ZBxZA2A6GGRe1kkkLVgQ7gbQ97LFQCv1opN2ARSsc079tLnHHunYvMPSbpTs4ZA6aBW088nGrfGfGSdsvPYGZBpTcqlyXD0l3ZAOWbop0oKaxnwZDZD
 //WABA ID: 4854103951344634
-
+//API: https://graph.facebook.com/{{Version}}4854103951344634/{{Phone-Number-ID}}/messages
 //https://developers.facebook.com/docs/whatsapp/on-premises
 
 [Authorize]
@@ -53,10 +53,10 @@ public class WhatsAppController : ControllerBase
         return response;
     }
 
-    public async Task<ActionResult<AlarmConfigBurstPipeResultModel>> SendWhatsAppMessage([FromBody] WhatsAppRequestModel model)
-    {
+    //public async Task<ActionResult<AlarmConfigBurstPipeResultModel>> SendWhatsAppMessage([FromBody] WhatsAppRequestModel model)
+    //{
 
-    }
+    //}
 
     
 
