@@ -2,7 +2,6 @@
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Models.RequestModels;
-using ServiceStack;
 
 namespace ClientPortal.Controllers
 {
@@ -61,9 +60,8 @@ namespace ClientPortal.Controllers
             {
                 return Problem("Entity set 'PortalDBContext.AMRMeterAlarms'  is null.");
             }
-            
+
             var alarmTypeResponse = new AMRMeterAlarm();
-            var savedAMRMeterAlarm = new List<AMRMeterAlarm>();
 
             var alarmTypeId = 0;
             try
@@ -93,14 +91,14 @@ namespace ClientPortal.Controllers
             try
             {
                 var aMRMeterAlarm = await _context.AMRMeterAlarms.FirstOrDefaultAsync(c =>
-                c.AlarmTypeId == alarmTypeResponse.AlarmTypeId && 
-                c.AMRMeterId == alarmTypeResponse.AMRMeterId && 
-                c.AlarmTriggerMethodId == alarmTypeResponse.AlarmTriggerMethodId 
-                //c.StartTime == alarmTypeResponse.StartTime && 
-                //c.EndTime == alarmTypeResponse.EndTime && 
-                //c.Active == alarmTypeResponse.Active && 
-                //c.Duration == alarmTypeResponse.Duration &&
-                //c.Threshold == alarmTypeResponse.Threshold
+                c.AlarmTypeId == alarmTypeResponse.AlarmTypeId &&
+                c.AMRMeterId == alarmTypeResponse.AMRMeterId &&
+                c.AlarmTriggerMethodId == alarmTypeResponse.AlarmTriggerMethodId &&
+                c.StartTime == alarmTypeResponse.StartTime &&
+                c.EndTime == alarmTypeResponse.EndTime &&
+                c.Active == alarmTypeResponse.Active &&
+                c.Duration == alarmTypeResponse.Duration &&
+                c.Threshold == alarmTypeResponse.Threshold
                 );
 
                 if (aMRMeterAlarm != null)
@@ -110,8 +108,7 @@ namespace ClientPortal.Controllers
             }
             catch (Exception)
             {
-
-                throw;
+                return Problem("Entity set 'PortalDBContext.AMRMeterAlarms' returned an error. -- Check If Alarms Exists With All Required Parameters");
             }
 
             if (alarmTypeResponse.AMRMeterAlarmId == 0) //Create
