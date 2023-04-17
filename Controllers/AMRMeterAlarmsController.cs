@@ -2,6 +2,7 @@
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Models.RequestModels;
+using ServiceStack;
 
 namespace ClientPortal.Controllers
 {
@@ -62,6 +63,8 @@ namespace ClientPortal.Controllers
             }
             
             var alarmTypeResponse = new AMRMeterAlarm();
+            var savedAMRMeterAlarm = new List<AMRMeterAlarm>();
+
             var alarmTypeId = 0;
             try
             {
@@ -86,6 +89,31 @@ namespace ClientPortal.Controllers
             alarmTypeResponse.EndTime = alarmType.EndTime;
             alarmTypeResponse.Active = alarmType.Active;
 
+            //Check If Alarms Exists With All Required Parameters And Set AMRMeterAlarmId To Saved One -- Update
+            try
+            {
+                var aMRMeterAlarm = await _context.AMRMeterAlarms.FirstOrDefaultAsync(c =>
+                c.AlarmTypeId == alarmTypeResponse.AlarmTypeId && 
+                c.AMRMeterId == alarmTypeResponse.AMRMeterId && 
+                c.AlarmTriggerMethodId == alarmTypeResponse.AlarmTriggerMethodId 
+                //c.StartTime == alarmTypeResponse.StartTime && 
+                //c.EndTime == alarmTypeResponse.EndTime && 
+                //c.Active == alarmTypeResponse.Active && 
+                //c.Duration == alarmTypeResponse.Duration &&
+                //c.Threshold == alarmTypeResponse.Threshold
+                );
+
+                if (aMRMeterAlarm != null)
+                {
+                    alarmTypeResponse.AMRMeterAlarmId = aMRMeterAlarm.AMRMeterAlarmId;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
             if (alarmTypeResponse.AMRMeterAlarmId == 0) //Create
             {
                 _context.AMRMeterAlarms.Add(alarmTypeResponse);
@@ -93,7 +121,7 @@ namespace ClientPortal.Controllers
                 _logger.LogInformation($"Successfully Created AMRMeterAlarm with ID: {alarmTypeResponse.AMRMeterAlarmId}");
                 return Ok(CreatedAtAction("CreateOrUpdateAMRMeterAlarm", new { id = alarmTypeResponse.AMRMeterAlarmId }, alarmTypeResponse));
             }
-            else                         //Update
+            else                                       //Update
             {
                 _context.Entry(alarmTypeResponse).State = EntityState.Modified;
 
