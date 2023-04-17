@@ -87,29 +87,29 @@ namespace ClientPortal.Controllers
             alarmTypeResponse.EndTime = alarmType.EndTime;
             alarmTypeResponse.Active = alarmType.Active;
 
-            //Check If Alarms Exists With All Required Parameters And Set AMRMeterAlarmId To Saved One -- Update
-            try
-            {
-                var aMRMeterAlarm = await _context.AMRMeterAlarms.FirstOrDefaultAsync(c =>
-                c.AlarmTypeId == alarmTypeResponse.AlarmTypeId &&
-                c.AMRMeterId == alarmTypeResponse.AMRMeterId &&
-                c.AlarmTriggerMethodId == alarmTypeResponse.AlarmTriggerMethodId &&
-                c.StartTime == alarmTypeResponse.StartTime &&
-                c.EndTime == alarmTypeResponse.EndTime &&
-                c.Active == alarmTypeResponse.Active &&
-                c.Duration == alarmTypeResponse.Duration &&
-                c.Threshold == alarmTypeResponse.Threshold
-                );
+            ////Check If Alarms Exists With All Required Parameters And Set AMRMeterAlarmId To Saved One -- Update
+            //try
+            //{
+            //    var aMRMeterAlarm = await _context.AMRMeterAlarms.FirstOrDefaultAsync(c =>
+            //    c.AlarmTypeId == alarmTypeResponse.AlarmTypeId &&
+            //    c.AMRMeterId == alarmTypeResponse.AMRMeterId &&
+            //    c.AlarmTriggerMethodId == alarmTypeResponse.AlarmTriggerMethodId &&
+            //    c.StartTime == alarmTypeResponse.StartTime &&
+            //    c.EndTime == alarmTypeResponse.EndTime &&
+            //    c.Active == alarmTypeResponse.Active &&
+            //    c.Duration == alarmTypeResponse.Duration &&
+            //    c.Threshold == alarmTypeResponse.Threshold
+            //    );
 
-                if (aMRMeterAlarm != null)
-                {
-                    alarmTypeResponse.AMRMeterAlarmId = aMRMeterAlarm.AMRMeterAlarmId;
-                }
-            }
-            catch (Exception)
-            {
-                return Problem("Entity set 'PortalDBContext.AMRMeterAlarms' returned an error. -- Check If Alarms Exists With All Required Parameters");
-            }
+            //    if (aMRMeterAlarm != null)
+            //    {
+            //        alarmTypeResponse.AMRMeterAlarmId = aMRMeterAlarm.AMRMeterAlarmId;
+            //    }
+            //}
+            //catch (Exception)
+            //{
+            //    return Problem("Entity set 'PortalDBContext.AMRMeterAlarms' returned an error. -- Check If Alarms Exists With All Required Parameters");
+            //}
 
             if (alarmTypeResponse.AMRMeterAlarmId == 0) //Create
             {
