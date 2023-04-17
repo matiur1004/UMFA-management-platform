@@ -29,11 +29,11 @@ namespace ClientPortal.Controllers
 
             var returnResult = new AlarmConfigNightFlowResultModel();
 
-            _logger.LogInformation(1, "Get AlarmConfigNightflow Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
+            _logger.LogInformation(1, "Get AlarmConfigNightFlow Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
 
             try
             {
-                var CommandText = $"execute spAlarmConfigNightFlow '{model.MeterSerialNo}','{sDt}','{eDt}','{nfsTime}','{nfeTime}'";
+                var CommandText = $"execute spAlarmConfigNightFlow '{model.MeterSerialNo}','{model.ProfileStartDTM}','{model.ProfileEndDTM}','{model.NFStartTime}','{model.NFEndTime}'";
                 var connection = _context.Database.GetDbConnection();
                 await connection.OpenAsync();
                 var results = await connection.QueryMultipleAsync(CommandText);
@@ -46,17 +46,17 @@ namespace ClientPortal.Controllers
             }
             catch (Exception ex)
             {
-                _logger?.LogError("Failed to get AlarmConfigNightflow Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
+                _logger?.LogError("Failed to get AlarmConfigNightFlow Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
                 Console.WriteLine(ex.ToString());
-                return Problem($"Failed to get AlarmConfigNightflow Details for Meter: {model.MeterSerialNo}");
+                return Problem($"Failed to get AlarmConfigNightFlow Details for Meter: {model.MeterSerialNo}");
             }
             if (returnResult.MeterData.Count >= 0)
             {
-                _logger.LogInformation(1, message: "Returning AlarmConfigNightflow Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
+                _logger.LogInformation(1, message: "Returning AlarmConfigNightFlow Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
             }
             else
             {
-                _logger.LogError(1, "No Results Found For AlarmConfigNightflow Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
+                _logger.LogError(1, "No Results Found For AlarmConfigNightFlow Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
             }
             return Ok(returnResult);
         }
@@ -72,7 +72,7 @@ namespace ClientPortal.Controllers
 
             var returnResult = new AlarmAnalyzeNightFlowResultModel();
 
-            _logger.LogInformation(1, "Get AlarmAnalyzeNightflow Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
+            _logger.LogInformation(1, "Get AlarmAnalyzeNightFlow Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
             try
             {
                 var CommandText = $"execute spAlarmAnalyzeNightFlow '{model.MeterSerialNo}','{model.ProfileStartDTM}','{model.ProfileEndDTM}','{model.NFStartTime}','{model.NFEndTime}',{model.Threshold},{model.Duration}";
@@ -88,17 +88,17 @@ namespace ClientPortal.Controllers
             }
             catch (Exception ex)
             {
-                _logger?.LogError("Failed to get AlarmAnalyzeNightflow Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
+                _logger?.LogError("Failed to get AlarmAnalyzeNightFlow Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
                 Console.Write(ex.ToString());
-                return Problem($"Failed to get AlarmConfigNightflow Details for Meter: {model.MeterSerialNo}");
+                return Problem($"Failed to get AlarmConfigNightFlow Details for Meter: {model.MeterSerialNo}");
             }
             if (returnResult.MeterData.Count > 0)
             {
-                _logger.LogInformation(1, message: "Returning AlarmAnalyzeNightflow Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
+                _logger.LogInformation(1, message: "Returning AlarmAnalyzeNightFlow Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
             }
             else
             {
-                _logger.LogError(1, "No Results Found For AlarmAnalyzeNightflow Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
+                _logger.LogError(1, "No Results Found For AlarmAnalyzeNightFlow Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
             }
             return Ok(returnResult);
         }
@@ -130,6 +130,7 @@ namespace ClientPortal.Controllers
         public decimal NFAvg { get; set; }
         public decimal NFPeak { get; set; }
         public decimal NFMin { get; set; }
+        public decimal TotalNightFlow { get; set; }
     }
 
     public class AlarmConfigNightFlowResultModel

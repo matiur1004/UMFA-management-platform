@@ -33,7 +33,7 @@ namespace ClientPortal.Controllers
 
             try
             {
-                var CommandText = $"execute spAlarmConfigLeakDetection '{model.MeterSerialNo}','{sDt}','{eDt}','{nfsTime}', '{nfeTime}'";
+                var CommandText = $"execute spAlarmConfigLeakDetection '{model.MeterSerialNo}','{model.ProfileStartDTM}','{model.ProfileEndDTM}','{model.NFStartTime}', '{model.NFEndTime}'";
                 var connection = _context.Database.GetDbConnection();
                 await connection.OpenAsync();
                 var results = await connection.QueryMultipleAsync(CommandText);

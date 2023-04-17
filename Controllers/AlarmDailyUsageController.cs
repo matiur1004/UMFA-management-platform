@@ -31,7 +31,7 @@ namespace ClientPortal.Controllers
 
             try
             {
-                var CommandText = $"execute spAlarmConfigDailyUsage '{model.MeterSerialNo}','{sDt}','{eDt}'";
+                var CommandText = $"execute spAlarmConfigDailyUsage '{model.MeterSerialNo}','{model.ProfileStartDTM}','{model.ProfileEndDTM}'";
                 var connection = _context.Database.GetDbConnection();
                 await connection.OpenAsync();
                 var results = await connection.QueryMultipleAsync(CommandText);

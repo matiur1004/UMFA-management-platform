@@ -34,7 +34,7 @@ namespace ClientPortal.Controllers
 
             try
             {
-                var CommandText = $"execute spAlarmConfigPeakUsage '{model.MeterSerialNo}','{sDt}','{eDt}','{nfsTime}','{nfeTime}','{noPeaks}'";
+                var CommandText = $"execute spAlarmConfigPeakUsage '{model.MeterSerialNo}','{model.ProfileStartDTM}','{model.ProfileEndDTM}','{model.PeakStartTime}','{model.PeakEndTime}','{model.NoOfPeaks}'";
                 var connection = _context.Database.GetDbConnection();
                 await connection.OpenAsync();
                 var results = await connection.QueryMultipleAsync(CommandText);
@@ -82,7 +82,7 @@ namespace ClientPortal.Controllers
 
             try
             {
-                var CommandText = $"execute spAlarmAnalyzePeakUsage '{model.MeterSerialNo}','{sDt}','{eDt}','{psTime}','{peTime}',{threshold},{duration}";
+                var CommandText = $"execute spAlarmAnalyzePeakUsage '{model.MeterSerialNo}','{model.ProfileStartDTM}','{model.ProfileEndDTM}','{model.PeakStartTime}','{model.PeakEndTime}',{model.Threshold},{model.Duration}";
                 var connection = _context.Database.GetDbConnection();
                 await connection.OpenAsync();
                 var results = await connection.QueryMultipleAsync(CommandText);
