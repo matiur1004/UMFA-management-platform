@@ -130,6 +130,7 @@ namespace ClientPortal.Controllers
         public decimal NFAvg { get; set; }
         public decimal NFPeak { get; set; }
         public decimal NFMin { get; set; }
+        public decimal TotalNightFlow { get; set; }
     }
 
     public class AlarmConfigNightFlowResultModel
