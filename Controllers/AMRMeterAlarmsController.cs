@@ -60,7 +60,7 @@ namespace ClientPortal.Controllers
             {
                 return Problem("Entity set 'PortalDBContext.AMRMeterAlarms'  is null.");
             }
-            
+
             var alarmTypeResponse = new AMRMeterAlarm();
 
             var alarmTypeId = 0;
@@ -91,14 +91,14 @@ namespace ClientPortal.Controllers
             try
             {
                 var aMRMeterAlarm = await _context.AMRMeterAlarms.FirstOrDefaultAsync(c =>
-                c.AlarmTypeId == alarmTypeResponse.AlarmTypeId && 
-                c.AMRMeterId == alarmTypeResponse.AMRMeterId && 
-                c.AlarmTriggerMethodId == alarmTypeResponse.AlarmTriggerMethodId 
-                //c.StartTime == alarmTypeResponse.StartTime && 
-                //c.EndTime == alarmTypeResponse.EndTime && 
-                //c.Active == alarmTypeResponse.Active && 
-                //c.Duration == alarmTypeResponse.Duration &&
-                //c.Threshold == alarmTypeResponse.Threshold
+                c.AlarmTypeId == alarmTypeResponse.AlarmTypeId &&
+                c.AMRMeterId == alarmTypeResponse.AMRMeterId &&
+                c.AlarmTriggerMethodId == alarmTypeResponse.AlarmTriggerMethodId &&
+                c.StartTime == alarmTypeResponse.StartTime &&
+                c.EndTime == alarmTypeResponse.EndTime &&
+                c.Active == alarmTypeResponse.Active &&
+                c.Duration == alarmTypeResponse.Duration &&
+                c.Threshold == alarmTypeResponse.Threshold
                 );
 
                 if (aMRMeterAlarm != null)
