@@ -48,20 +48,20 @@ export class MeterAlarmDetailComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.meter = {
-      "AMRMEterId": 116,
-      "MeterNo": "220005315(W)",
-      "Description": "asdfff",
-      "Make": "Elster",
-      "Model": "A1400",
-      "ScadaMeterNo": "13138213",
-      "Night Flow": 2,
-      "Burst Pipe": 4,
-      "Leak": 5,
-      "Daily Usage": 6,
-      "Peak": 7,
-      "Average": 8
-    }
+    // this.meter = {
+    //   "AMRMEterId": 116,
+    //   "MeterNo": "220005315(W)",
+    //   "Description": "asdfff",
+    //   "Make": "Elster",
+    //   "Model": "A1400",
+    //   "ScadaMeterNo": "13138213",
+    //   "Night Flow": 2,
+    //   "Burst Pipe": 4,
+    //   "Leak": 5,
+    //   "Daily Usage": 6,
+    //   "Peak": 7,
+    //   "Average": 8
+    // }
     //114
     this.profileForm = this._formBuilder.group({
       MeterId: [this.meter.AMRMEterId, [Validators.required]],
@@ -142,7 +142,6 @@ export class MeterAlarmDetailComponent implements OnInit {
     if(this._alarmConfigService.profileInfo) {
       if(this.selectedAlarmType == type) return;
       this.applyNightFlow = false;
-      console.log(this.meter[this.getAlarmTypeName(type)]);
       if(this.meter[this.getAlarmTypeName(type)]) {
         this.getAlarmMeterDetail(this.meter[this.getAlarmTypeName(type)]);
       }

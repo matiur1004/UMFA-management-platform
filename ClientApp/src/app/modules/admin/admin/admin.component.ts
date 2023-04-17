@@ -27,7 +27,7 @@ export class AdminComponent implements OnInit {
     if(location.pathname.includes('amrSchedule')) this.selectedTab = 4;
     if(location.pathname.includes('alarm-configuration')) this.selectedTab = 5;
 
-    this.selectedTab = 6;
+    //this.selectedTab = 6;
     this.roleId = this._userService.userValue.RoleId;
 
     this._meterService.detailMeterAlarm$
