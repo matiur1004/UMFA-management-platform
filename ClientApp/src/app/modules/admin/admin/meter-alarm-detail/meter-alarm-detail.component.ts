@@ -166,12 +166,15 @@ export class MeterAlarmDetailComponent implements OnInit {
   onSave($event) {
     let alarmData = {
       ...$event,
+      AMRMeterAlarmId: this.meter[this.getAlarmTypeName(this.selectedAlarmType)],
       AlarmTypeName: this.getAlarmTypeName(this.selectedAlarmType),
       AMRMeterId: this.profileForm.get('MeterId').value,
       AlarmTriggerMethodId: 1
     };
     this._alarmConfigService.createOrUpdateAMRMeterAlarm(alarmData).subscribe((res) => {
-      //this.meter[this.getAlarmTypeName(this.selectedAlarmType)] = res['Value']['AMRMeterAlarmId'];
+      if(res['Value']['Active']) {
+        this.meter[this.getAlarmTypeName(this.selectedAlarmType)] = res['Value']['AMRMeterAlarmId'];
+      }
     });
   }
 
