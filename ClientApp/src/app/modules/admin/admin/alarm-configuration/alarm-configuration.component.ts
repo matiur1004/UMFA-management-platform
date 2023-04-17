@@ -53,7 +53,7 @@ export class AlarmConfigurationComponent implements OnInit {
         this.partners = data;
       })
 
-    this._meterService.getAMRMetersWithAlarms(3015).subscribe();
+    //this._meterService.getAMRMetersWithAlarms(3015).subscribe();
       
   }
 
