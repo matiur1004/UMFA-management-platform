@@ -39,6 +39,7 @@ IConfiguration? configuration = builder.Configuration;
     //strongly typed configuration settings
     services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
     services.Configure<MailSettings>(builder.Configuration.GetSection(nameof(MailSettings)));
+    services.Configure<WhatsAppSettings>(builder.Configuration.GetSection(nameof(WhatsAppSettings)));
     services.AddTransient<IMailService, MailService>();
     services.AddMvcCore();
     services.AddControllers().AddJsonOptions(x =>

@@ -1,22 +1,9 @@
-﻿using DevExpress.Charts.Model;
+﻿using ClientPortal.Controllers.Authorization;
+using ClientPortal.Settings;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using ClientPortal.Controllers.Authorization;
-using ClientPortal.Data;
-using Dapper;
-using ClientPortal.Controllers;
-
-//WHATSAPP BUSINESS CREDENTIALS
-//marketing@umfa.co.za
-//Shining-Slip-Reopen-Treason
-//+27674148318
-//Bearer Token
-//EAALDEr686ZAoBAMeTIZCIvpxASMeR5ZBChQVFhyDw7u0GILHmv5ZBc63dIKI3NW3zGcug3BO4QZBAHmB6EUyzmJXc6e5adZCV1ZBxZA2A6GGRe1kkkLVgQ7gbQ97LFQCv1opN2ARSsc079tLnHHunYvMPSbpTs4ZA6aBW088nGrfGfGSdsvPYGZBpTcqlyXD0l3ZAOWbop0oKaxnwZDZD
-//WABA ID: 4854103951344634
-//API: https://graph.facebook.com/{{Version}}4854103951344634/{{Phone-Number-ID}}/messages
-//https://developers.facebook.com/docs/whatsapp/on-premises
+using System.Diagnostics;
+using System.Net.Http.Headers;
 
 [Authorize]
 [ApiController]
@@ -25,41 +12,62 @@ using ClientPortal.Controllers;
 public class WhatsAppController : ControllerBase
 {
     private readonly HttpClient _httpClient;
-    private const string _whatsappApiUrl = "https://api.chat-api.com/instance/<INSTANCE_ID>/message?token='EAALDEr686ZAoBAMeTIZCIvpxASMeR5ZBChQVFhyDw7u0GILHmv5ZBc63dIKI3NW3zGcug3BO4QZBAHmB6EUyzmJXc6e5adZCV1ZBxZA2A6GGRe1kkkLVgQ7gbQ97LFQCv1opN2ARSsc079tLnHHunYvMPSbpTs4ZA6aBW088nGrfGfGSdsvPYGZBpTcqlyXD0l3ZAOWbop0oKaxnwZDZD'";
+    private readonly WhatsAppSettings _whatsAppSettings;
 
-    public WhatsAppController()
+    public WhatsAppController(IOptions<WhatsAppSettings> whatsAppSettings, HttpClient httpClient)
     {
-        _httpClient = new HttpClient();
+        _httpClient = httpClient;
+        _whatsAppSettings = whatsAppSettings.Value;
     }
 
-    [HttpPost("sendWhatsAppMessage")]
-    public async Task<HttpResponseMessage> SendMessage(string phoneNumber, string message)
+//{
+//  "PhoneNumber": "+27794000821",
+//  "Message": "Umfa Client-Portal Alarm \r\nLeak Flow Detection Alarm Triggered on Meter: 123234232 in Building 'The Lumierre' \r\nPlease Check Meter Urgently! \r\n\r\n(Please Do Not Respond to this message. This Number is not monitored.)\r\nThank You \r\nUmfa Client Portal"
+//}
+
+[HttpPost("sendWhatsAppMessage")]
+    public async Task<IActionResult> SendMessage([FromBody] WhatsAppRequestModel model)
     {
-        var requestBody = new
+        using (var client = new HttpClient())
         {
-            phone = phoneNumber,
-            body = message
-        };
+            //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _whatsAppSettings.WhatsAppLiveToken);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _whatsAppSettings.WhatsAppTestToken);
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-        var requestBodyJson = JsonConvert.SerializeObject(requestBody);
-        var requestBodyContent = new StringContent(requestBodyJson, Encoding.UTF8, "application/json");
+            var request = new
+            {
+                messaging_product = "whatsapp",
+                recipient_type = "individual",
+                to = model.PhoneNumber,
+                type = "text",
+                text = new
+                {
+                    preview_url = false,
+                    body = model.Message
+                }
+            };
 
-        var request = new HttpRequestMessage(HttpMethod.Post, _whatsappApiUrl)
-        {
-            Content = requestBodyContent
-        };
+            var json = JsonConvert.SerializeObject(request);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-        var response = await _httpClient.SendAsync(request);
-        return response;
+            //var whatsAppApiUrl = _whatsAppSettings.WhatsAppCloudApiBaseUrl + _whatsAppSettings.WhatsAppApiVersion + _whatsAppSettings.WhatsAppLivePhoneId + _whatsAppSettings.WhatsAppApiEndpoint;
+            //var response = await client.PostAsync(whatsAppApiUrl, content);
+
+            var whatsAppApiUrl = _whatsAppSettings.WhatsAppCloudApiBaseUrl + _whatsAppSettings.WhatsAppApiVersion + _whatsAppSettings.WhatsAppTestPhoneId + _whatsAppSettings.WhatsAppApiEndpoint;
+            var response = await client.PostAsync(whatsAppApiUrl, content);
+
+
+            response.EnsureSuccessStatusCode();
+
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            if(responseString != null)
+            {
+                return Ok(responseString);
+            }
+            return BadRequest(responseString);
+        }
     }
-
-    //public async Task<ActionResult<AlarmConfigBurstPipeResultModel>> SendWhatsAppMessage([FromBody] WhatsAppRequestModel model)
-    //{
-
-    //}
-
-    
-
 }
 public class WhatsAppRequestModel
 {
