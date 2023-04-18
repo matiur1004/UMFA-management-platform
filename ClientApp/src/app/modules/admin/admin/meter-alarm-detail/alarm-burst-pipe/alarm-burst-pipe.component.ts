@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { formatDateString, formatTimeString } from '@core/utils/umfa.help';
 import { AlarmConfigurationService } from '@shared/services/alarm-configuration.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-alarm-burst-pipe',
@@ -19,6 +20,11 @@ export class AlarmBurstPipeComponent implements OnInit {
   configInfo: any[] = [];
   analyzeInfo: any;
   
+  alarmMeterDetail: any;
+  active: boolean = false;
+
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
+  
   constructor(
     private _alarmConfigService: AlarmConfigurationService,
     private _formBuilder: FormBuilder
@@ -34,6 +40,21 @@ export class AlarmBurstPipeComponent implements OnInit {
       Duration: ['', [Validators.required]],
       Threshold: ['', [Validators.required]]
     });
+
+    this._alarmConfigService.alarmMeterDetail$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((data: any) => {
+        this.alarmMeterDetail = data;
+        if(this.alarmMeterDetail) {
+
+          this.analyzeForm.patchValue({
+            Duration: this.alarmMeterDetail['Duration'],
+            Threshold: this.alarmMeterDetail['Threshold'],
+          });
+
+          this.active = this.alarmMeterDetail['Active'];
+        }
+      });
   }
 
   onAlarmConfigBurstPipe() {
@@ -74,19 +95,23 @@ export class AlarmBurstPipeComponent implements OnInit {
   }
 
   onSave() {
-    let configData = this.form.value;
-
     let data = {
       ...this.analyzeForm.value,
-      NoOfPeaks: configData['NoOfPeaks'],
-      StartTime: null,
-      EndTime: null,
-      Active: true
+      AMRMeterAlarmId: this.alarmMeterDetail ? this.alarmMeterDetail.AMRMeterAlarmId : 0,
+      StartTime: '22:00',
+      EndTime: '05:00',
+      Active: this.active
     };
     this.save.emit(data);
   }
 
   onRemove() {
     this.delete.emit(true);
+  }
+
+  ngOnDestroy(): void {
+    this._alarmConfigService.destroy();
+    this._unsubscribeAll.next(null);
+    this._unsubscribeAll.complete();
   }
 }

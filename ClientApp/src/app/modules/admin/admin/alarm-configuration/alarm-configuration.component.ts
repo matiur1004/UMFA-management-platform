@@ -53,7 +53,7 @@ export class AlarmConfigurationComponent implements OnInit {
         this.partners = data;
       })
 
-    this._meterService.getAMRMetersWithAlarms(3015).subscribe();
+    //this._meterService.getAMRMetersWithAlarms(3015).subscribe();
       
   }
 
@@ -67,7 +67,11 @@ export class AlarmConfigurationComponent implements OnInit {
 
   onSelectRow(e) {
     this._meterService.onSelectMeterAlarm(e.data);
-    console.log(e.data)
+  }
+
+  customSearch(term: string, item: any) {
+    term = term.toLowerCase();
+    return item.Name.toLowerCase().indexOf(term) > -1;
   }
 
   ngOnDestroy() {
