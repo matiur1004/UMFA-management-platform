@@ -142,10 +142,10 @@ export class MeterAlarmDetailComponent implements OnInit {
     if(this._alarmConfigService.profileInfo) {
       if(this.selectedAlarmType == type) return;
       this.applyNightFlow = false;
+      this.onShowMeterGraph();
       if(this.meter[this.getAlarmTypeName(type)]) {
         this.getAlarmMeterDetail(this.meter[this.getAlarmTypeName(type)]);
       }
-      //this.onShowMeterGraph();
       this.selectedAlarmType = type;
     } else {
       this._alarmConfigService.showAlert('You should set profile option first!');
