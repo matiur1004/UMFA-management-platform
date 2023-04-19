@@ -97,7 +97,7 @@ export class MeterAlarmDetailComponent implements OnInit {
     if(this.profileForm.valid) {
       let formData = this.profileForm.value;
       let data = {...this._alarmConfigService.profileInfo, MeterId: formData['MeterId'], nightFlowStart: formData['NightFlowStart'], NightFlowEnd: formData['NightFlowEnd']};
-      this._amrDataService.getMeterProfileForGraph(70, data['StartDate'], data['EndDate'], formData['NightFlowStart'], formData['NightFlowEnd'], this.applyNightFlow).subscribe(res => {
+      this._amrDataService.getMeterProfileForGraph(this.meter.AMRMEterId, data['StartDate'], data['EndDate'], formData['NightFlowStart'], formData['NightFlowEnd'], this.applyNightFlow).subscribe(res => {
         this.setDataSource(res);
         this.applyNightFlow = true;
       })
@@ -111,7 +111,7 @@ export class MeterAlarmDetailComponent implements OnInit {
       this.profileDataSource = ds;
       if (ds) {
         var flowDate = pipe.transform(ds.Header.MaxFlowDate, "HH:mm on dd MMM yyyy");
-        this.chartTitleWater = `Water Profile for Meter: ${ds.Header.Description} (${ds.Header.MeterNo})`;
+        this.chartTitleWater = `Alarm Configuration for Meter: ${this.meter.Description} (${this.meter.MeterNo})`;
         this.chartSubTitleWater = `Usages for period: ${ds.Header.PeriodUsage.toFixed(2)}kL, Maximun flow: ${ds.Header.MaxFlow.toFixed(2)}kL at ${flowDate}`;
       } else {
         this.chartTitleWater = 'Water Profile';
