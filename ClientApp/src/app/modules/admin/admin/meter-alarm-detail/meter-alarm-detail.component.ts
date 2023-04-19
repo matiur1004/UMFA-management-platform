@@ -93,13 +93,14 @@ export class MeterAlarmDetailComponent implements OnInit {
     })
   }
 
-  onShowMeterGraph() {
+  onShowMeterGraph(isProfile: boolean = false) {
     if(this.profileForm.valid) {
+      if(isProfile) this.applyNightFlow = false;
       let formData = this.profileForm.value;
       let data = {...this._alarmConfigService.profileInfo, MeterId: formData['MeterId'], nightFlowStart: formData['NightFlowStart'], NightFlowEnd: formData['NightFlowEnd']};
       this._amrDataService.getMeterProfileForGraph(this.meter.AMRMEterId, data['StartDate'], data['EndDate'], formData['NightFlowStart'], formData['NightFlowEnd'], this.applyNightFlow).subscribe(res => {
         this.setDataSource(res);
-        this.applyNightFlow = true;
+        //this.applyNightFlow = true;
       })
     }
   }
