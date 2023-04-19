@@ -2,7 +2,7 @@
 
 namespace ClientPortal.Interfaces
 {
-    public interface IMailService
+    public interface ITelegramService
     {
         Task<bool> SendAsync(MailData mailData, CancellationToken ct);
 

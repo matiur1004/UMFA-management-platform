@@ -1,4 +1,4 @@
-﻿namespace ClientPortal.Models.MailModels
+﻿namespace ClientPortal.Models.MessagingModels
 {
     public class MailData
     {

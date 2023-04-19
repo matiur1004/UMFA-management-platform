@@ -11,12 +11,10 @@ using System.Net.Http.Headers;
 
 public class WhatsAppController : ControllerBase
 {
-    private readonly HttpClient _httpClient;
     private readonly WhatsAppSettings _whatsAppSettings;
 
-    public WhatsAppController(IOptions<WhatsAppSettings> whatsAppSettings, HttpClient httpClient)
+    public WhatsAppController(IOptions<WhatsAppSettings> whatsAppSettings)
     {
-        _httpClient = httpClient;
         _whatsAppSettings = whatsAppSettings.Value;
     }
 
@@ -28,45 +26,43 @@ public class WhatsAppController : ControllerBase
 [HttpPost("sendWhatsAppMessage")]
     public async Task<IActionResult> SendMessage([FromBody] WhatsAppRequestModel model)
     {
-        using (var client = new HttpClient())
+        using var client = new HttpClient();
+        //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _whatsAppSettings.WhatsAppLiveToken);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _whatsAppSettings.WhatsAppTestToken);
+        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+        var request = new
         {
-            //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _whatsAppSettings.WhatsAppLiveToken);
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _whatsAppSettings.WhatsAppTestToken);
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            var request = new
+            messaging_product = "whatsapp",
+            recipient_type = "individual",
+            to = model.PhoneNumber,
+            type = "text",
+            text = new
             {
-                messaging_product = "whatsapp",
-                recipient_type = "individual",
-                to = model.PhoneNumber,
-                type = "text",
-                text = new
-                {
-                    preview_url = false,
-                    body = model.Message
-                }
-            };
-
-            var json = JsonConvert.SerializeObject(request);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            //var whatsAppApiUrl = _whatsAppSettings.WhatsAppCloudApiBaseUrl + _whatsAppSettings.WhatsAppApiVersion + _whatsAppSettings.WhatsAppLivePhoneId + _whatsAppSettings.WhatsAppApiEndpoint;
-            //var response = await client.PostAsync(whatsAppApiUrl, content);
-
-            var whatsAppApiUrl = _whatsAppSettings.WhatsAppCloudApiBaseUrl + _whatsAppSettings.WhatsAppApiVersion + _whatsAppSettings.WhatsAppTestPhoneId + _whatsAppSettings.WhatsAppApiEndpoint;
-            var response = await client.PostAsync(whatsAppApiUrl, content);
-
-
-            response.EnsureSuccessStatusCode();
-
-            var responseString = await response.Content.ReadAsStringAsync();
-
-            if(responseString != null)
-            {
-                return Ok(responseString);
+                preview_url = false,
+                body = model.Message
             }
-            return BadRequest(responseString);
+        };
+
+        var json = JsonConvert.SerializeObject(request);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        //var whatsAppApiUrl = _whatsAppSettings.WhatsAppCloudApiBaseUrl + _whatsAppSettings.WhatsAppApiVersion + _whatsAppSettings.WhatsAppLivePhoneId + _whatsAppSettings.WhatsAppApiEndpoint;
+        //var response = await client.PostAsync(whatsAppApiUrl, content);
+
+        var whatsAppApiUrl = _whatsAppSettings.WhatsAppCloudApiBaseUrl + _whatsAppSettings.WhatsAppApiVersion + _whatsAppSettings.WhatsAppTestPhoneId + _whatsAppSettings.WhatsAppApiEndpoint;
+        var response = await client.PostAsync(whatsAppApiUrl, content);
+
+
+        response.EnsureSuccessStatusCode();
+
+        var responseString = await response.Content.ReadAsStringAsync();
+
+        if (responseString != null)
+        {
+            return Ok(responseString);
         }
+        return BadRequest(responseString);
     }
 }
 public class WhatsAppRequestModel

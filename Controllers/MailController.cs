@@ -1,6 +1,6 @@
 ﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Interfaces;
-using ClientPortal.Models.MailModels;
+using ClientPortal.Models.MessagingModels;
 
 namespace ClientPortal.Controllers
 {
