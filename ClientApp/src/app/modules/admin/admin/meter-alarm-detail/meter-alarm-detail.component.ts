@@ -88,7 +88,7 @@ export class MeterAlarmDetailComponent implements OnInit {
         var sDate = new Date(formData['sdp'].getFullYear(), formData['sdp'].getMonth(), formData['sdp'].getDate(), formData['sdT'].getHours(), formData['sdT'].getMinutes());
         var eDate = new Date(formData['edp'].getFullYear(), formData['edp'].getMonth(), formData['edp'].getDate(), formData['edT'].getHours(), formData['edT'].getMinutes());
 
-        this._alarmConfigService.profileInfo = {StartDate: sDate, EndDate: eDate, NightFlowStart: formData['NightFlowStart'], NightFlowEnd: formData['NightFlowEnd'], MeterSerialNo: '13138213'};
+        this._alarmConfigService.profileInfo = {StartDate: sDate, EndDate: eDate, NightFlowStart: formData['NightFlowStart'], NightFlowEnd: formData['NightFlowEnd'], MeterSerialNo: this.meter.ScadaMeterNo};
       }
     })
   }
