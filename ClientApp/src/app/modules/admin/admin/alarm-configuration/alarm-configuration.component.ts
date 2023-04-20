@@ -38,7 +38,10 @@ export class AlarmConfigurationComponent implements OnInit {
     this._meterService.metersWithAlarms$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: any) => {
-        this.metersWithAlarms = data;
+        this.metersWithAlarms = data.map(item => {
+          item = {...item, alarmConfig: {'Night Flow': item['Night Flow'], 'Burst Pipe': item['Burst Pipe'], 'Leak': item['Leak'], 'Daily Usage': item['Daily Usage'], 'Peak': item['Peak'], 'Average': item['Average']}};
+          return item;
+        });
       })
 
     this._buildingService.buildings$
@@ -79,6 +82,10 @@ export class AlarmConfigurationComponent implements OnInit {
   customSearch(term: string, item: any) {
     term = term.toLowerCase();
     return item.Name.toLowerCase().indexOf(term) > -1;
+  }
+
+  alarmConfigTemplate() {
+
   }
 
   ngOnDestroy() {

@@ -18,7 +18,7 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { ReportsRoutingModule } from '../reports/reports-routing.module';
 import { SharedModule } from 'app/shared/shared.module';
 import { MatTabsModule } from '@angular/material/tabs';
-import { DxButtonModule, DxChartModule, DxDataGridModule, DxDateBoxModule, DxSelectBoxModule } from 'devextreme-angular';
+import { DxButtonModule, DxChartModule, DxDataGridModule, DxDateBoxModule, DxSelectBoxModule, DxTreeListModule } from 'devextreme-angular';
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -87,6 +87,7 @@ import { AlarmAverageUsageComponent } from './meter-alarm-detail/alarm-average-u
     MatInputModule,
     NgSelectModule,
     DxDataGridModule,
+    DxTreeListModule,
     DxDateBoxModule,
     DxChartModule,
     DxSelectBoxModule,
