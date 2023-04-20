@@ -96,6 +96,7 @@ namespace ClientPortal.Data.Repositories
                     if (result.MeterSerial != meter.MeterSerial) result.MeterSerial = meter.MeterSerial;
                     if (result.UserId != meter.UserId) result.UserId = meter.UserId;
                     retMeter = _mapper.Map<AMRMeterResponse>(result);
+
                     var ret = await SaveChangesAsync();
                     if (!ret) throw new ApplicationException("Error saving meter");
                 }
