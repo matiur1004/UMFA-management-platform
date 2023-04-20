@@ -62,12 +62,12 @@
                 [width]="200"
                 placeholder="Search..."
             ></dxo-search-panel>
-            <dxi-column dataField="MeterNo" caption="Meter No" [width]="160"></dxi-column>
-            <dxi-column dataField="Description"></dxi-column>
-            <dxi-column dataField="AlarmsTriggered" [width]="200"></dxi-column>
-            <dxi-column dataField="Alarms" [width]="200"></dxi-column>
-            <dxi-column dataField="Make" [width]="100"></dxi-column>
-            <dxi-column dataField="Model" [width]="100"></dxi-column>
+            <dxi-column dataField="MeterNo" caption="Meter No" [minWidth]="100"></dxi-column>
+            <dxi-column dataField="Description" [minWidth]="160"></dxi-column>
+            <dxi-column dataField="AlarmsTriggered" [minWidth]="140"></dxi-column>
+            <dxi-column dataField="Alarms" [minWidth]="160"></dxi-column>
+            <dxi-column dataField="Make" [minWidth]="100"></dxi-column>
+            <dxi-column dataField="Model" [minWidth]="100"></dxi-column>
         </dx-data-grid>
       </div>
     </div>

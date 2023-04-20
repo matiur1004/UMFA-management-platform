@@ -3,6 +3,7 @@ import { FormBuilder, UntypedFormGroup } from '@angular/forms';
 import { AllowedPageSizes } from '@core/helpers';
 import { IUmfaBuilding, IUmfaPartner } from '@core/models';
 import { BuildingService, DXReportService, MeterService } from '@shared/services';
+import { AlarmConfigurationService } from '@shared/services/alarm-configuration.service';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -25,8 +26,8 @@ export class AlarmConfigurationComponent implements OnInit {
   constructor(
     private _meterService: MeterService, 
     private _formBuilder: FormBuilder, 
-    private reportService: DXReportService,
-    private _buildingService: BuildingService
+    private _buildingService: BuildingService,
+    private _alarmConfigurationService: AlarmConfigurationService
   ) { }
 
   ngOnInit(): void {
@@ -45,14 +46,20 @@ export class AlarmConfigurationComponent implements OnInit {
       .subscribe((data: IUmfaBuilding[]) => {
         this.allBuildings = data;
         this.buildings = data;
+        this.searchForm.get('buildingId').setValue(this._alarmConfigurationService.selectedBuilding);
       })
 
     this._buildingService.partners$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: IUmfaPartner[]) => {
         this.partners = data;
+        this.searchForm.get('partnerId').setValue(this._alarmConfigurationService.selectedPartner);
       })
-
+    
+    this.searchForm.valueChanges.subscribe(formValue => {
+      this._alarmConfigurationService.selectedBuilding = formValue['buildingId'];
+      this._alarmConfigurationService.selectedPartner = formValue['partnerId'];
+    })
     //this._meterService.getAMRMetersWithAlarms(3015).subscribe();
       
   }
