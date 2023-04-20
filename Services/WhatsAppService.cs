@@ -3,37 +3,70 @@ using ClientPortal.Models.MessagingModels;
 using ClientPortal.Settings;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 
 namespace ClientPortal.Services
 {
     public class WhatsAppService : IWhatsAppService
     {
-        private readonly HttpClient _httpClient;
-        private readonly string _baseUrl;
-        private readonly string _botToken;
         private readonly WhatsAppSettings _settings;
-
-        public WhatsAppService(string botToken, IOptions<WhatsAppSettings> settings)
+        public WhatsAppService(IOptions<WhatsAppSettings> settings)
         {
             _settings = settings.Value;
-            _botToken = _settings.WhatsAppLiveToken;
-            _baseUrl = $"https://api.telegram.org/bot{_botToken}/";
-            _httpClient = new HttpClient();
         }
 
-        public async Task<bool> SendAsync(WhatsAppData tData, CancellationToken ct)
+        public async Task<bool> SendAsync(WhatsAppData tData, CancellationToken ct = default)
         {
-            var endpoint = $"{_baseUrl}sendMessage";
-            var data = new
+            using var client = new HttpClient();
+
+            //LIVE
+            //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+            //    "Bearer",
+            //    _whatsAppSettings.WhatsAppLiveToken);
+            //TEST
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+              "Bearer",
+              _settings.WhatsAppTestToken);
+
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var request = new
             {
-                chat_id = tData.PhoneNumber,
-                text = tData.Message
+                messaging_product = "whatsapp",
+                recipient_type = "individual",
+                to = tData.PhoneNumber,
+                type = "text",
+                text = new { preview_url = false, body = tData.Message }
             };
 
-            var jsonData = JsonConvert.SerializeObject(data);
-            var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync(endpoint, content);
-            return response.IsSuccessStatusCode;
+            var json = JsonConvert.SerializeObject(request);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            //LIVE
+            //var whatsAppApiUrl = _whatsAppSettings.WhatsAppCloudApiBaseUrl +
+            //    _whatsAppSettings.WhatsAppApiVersion +
+            //    _whatsAppSettings.WhatsAppLivePhoneId +
+            //    _whatsAppSettings.WhatsAppApiEndpoint;
+
+            //TEST
+            var whatsAppApiUrl = _settings.WhatsAppCloudApiBaseUrl +
+            _settings.WhatsAppApiVersion +
+            _settings.WhatsAppTestPhoneId +
+            _settings.WhatsAppApiEndpoint;
+
+            var responseString = "";
+
+            try
+            {
+                var response = await client.PostAsync(whatsAppApiUrl, content);
+                //response.EnsureSuccessStatusCode();
+                responseString = await response.Content.ReadAsStringAsync();
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

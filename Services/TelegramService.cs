@@ -8,22 +8,20 @@ namespace ClientPortal.Services
 {
     public class TelegramService : ITelegramService
     {
-        private readonly HttpClient _httpClient;
-        private readonly string _baseUrl;
-        private readonly string _botToken;
         private readonly TelegramSettings _settings;
 
-        public TelegramService(string botToken, IOptions<TelegramSettings> settings)
+        public TelegramService(IOptions<TelegramSettings> settings)
         {
             _settings = settings.Value;
-            _botToken = _settings.TelegramBotToken;
-            _baseUrl = $"https://api.telegram.org/bot{_botToken}/";
-            _httpClient = new HttpClient();
         }
 
-        public async Task<bool> SendAsync(TelegramData tData, CancellationToken ct)
+        public async Task<bool> SendAsync(TelegramData tData, CancellationToken ct = default)
         {
-            var endpoint = $"{_baseUrl}sendMessage";
+            var botToken = _settings.TelegramBotToken;
+            var baseUrl = $"https://api.telegram.org/bot{botToken}/";
+            var httpClient = new HttpClient();
+
+            var endpoint = $"{baseUrl}sendMessage";
             var data = new
             {
                 chat_id = tData.PhoneNumber,
@@ -32,7 +30,7 @@ namespace ClientPortal.Services
 
             var jsonData = JsonConvert.SerializeObject(data);
             var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync(endpoint, content);
+            var response = await httpClient.PostAsync(endpoint, content);
             return response.IsSuccessStatusCode;
         }
     }
