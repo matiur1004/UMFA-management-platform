@@ -3,8 +3,7 @@
 namespace ClientPortal.Interfaces
 {
     public interface ITelegramService
-    {
-        Task<bool> SendAsync(MailData mailData, CancellationToken ct);
-
+    {        
+        Task<bool> SendAsync(TelegramData tData, CancellationToken ct);
     }
 }

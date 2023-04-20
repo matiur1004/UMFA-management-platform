@@ -31,19 +31,19 @@ namespace ClientPortal.Controllers
             }
         }
 
-        [HttpPost("sendMailWithAttachment")]
-        public async Task<IActionResult> SendMailWithAttachmentAsync([FromForm] MailDataWithAttachments mailData)
-        {
-            bool result = await _mail.SendWithAttachmentsAsync(mailData, new CancellationToken());
+        //[HttpPost("sendMailWithAttachment")]
+        //public async Task<IActionResult> SendMailWithAttachmentAsync([FromForm] MailDataWithAttachments mailData)
+        //{
+        //    bool result = await _mail.SendWithAttachmentsAsync(mailData, new CancellationToken());
 
-            if (result)
-            {
-                return StatusCode(StatusCodes.Status200OK, "Mail with attachment has successfully been sent.");
-            }
-            else
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred. The Mail with attachment could not be sent.");
-            }
-        }
+        //    if (result)
+        //    {
+        //        return StatusCode(StatusCodes.Status200OK, "Mail with attachment has successfully been sent.");
+        //    }
+        //    else
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred. The Mail with attachment could not be sent.");
+        //    }
+        //}
     }
 }

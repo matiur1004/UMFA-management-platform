@@ -4,7 +4,6 @@ namespace ClientPortal.Interfaces
 {
     public interface IWhatsAppService
     {
-        Task<bool> SendAsync(WhatsAppData whatsAppData, CancellationToken ct);
-
+        Task<bool> SendAsync(WhatsAppData wData, CancellationToken ct);
     }
 }

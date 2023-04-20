@@ -4,7 +4,6 @@ namespace ClientPortal.Interfaces
 {
     public interface IMailService
     {
-        Task<bool> SendAsync(MailData mailData, CancellationToken ct);
-
+        Task<bool> SendAsync(MailData mData, CancellationToken ct);
     }
 }
