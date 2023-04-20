@@ -3,6 +3,7 @@ using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Data.Entities.UMFAEntities;
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
+using static DevExpress.Xpo.Helpers.AssociatedCollectionCriteriaHelper;
 
 namespace ClientPortal.Data.Repositories
 {
