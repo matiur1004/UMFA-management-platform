@@ -63,7 +63,11 @@ export class AlarmConfigurationComponent implements OnInit {
       this._alarmConfigurationService.selectedBuilding = formValue['buildingId'];
       this._alarmConfigurationService.selectedPartner = formValue['partnerId'];
     })
-    //this._meterService.getAMRMetersWithAlarms(3015).subscribe();
+
+    if(this._alarmConfigurationService.selectedBuilding) {
+      this._meterService.getAMRMetersWithAlarms(this._alarmConfigurationService.selectedBuilding).subscribe();
+    }
+    //
       
   }
 
