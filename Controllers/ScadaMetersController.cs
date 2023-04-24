@@ -1,9 +1,5 @@
 ﻿using ClientPortal.Controllers.Authorization;
-using DevExpress.Pdf.Native;
-using DevExpress.XtraRichEdit.Model;
-using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System.Net;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -88,8 +84,9 @@ namespace ClientPortal.Controllers
 
     }
 
-    public class GetUserAndPassword{
-            public string scadaUserName {get;set;}
-            public string scadaUserPassword { get;set;}
-     }
+    public class GetUserAndPassword
+    {
+        public string scadaUserName { get; set; }
+        public string scadaUserPassword { get; set; }
+    }
 }

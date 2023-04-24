@@ -1,6 +1,7 @@
 ﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.PortalEntities;
+using ClientPortal.Models.RequestModels;
 
 namespace ClientPortal.Controllers
 {
@@ -52,8 +53,100 @@ namespace ClientPortal.Controllers
         }
 
         // POST: AMRMeterAlarms
-        [HttpPost("createOrUpdateAMRMeterAlarm")]
-        public async Task<ActionResult<AMRMeterAlarm>> CreateOrUpdateAMRMeterAlarm(AMRMeterAlarm alarmType)
+        [HttpPost("createOrUpdateAMRMeterAlarmByAlarmTypeName")]
+        public async Task<ActionResult<AMRMeterAlarm>> CreateOrUpdateAMRMeterAlarm(AMRMeterAlarmRequest alarmType)
+        {
+            if (_context.AMRMeterAlarms == null)
+            {
+                return Problem("Entity set 'PortalDBContext.AMRMeterAlarms'  is null.");
+            }
+
+            var alarmTypeResponse = new AMRMeterAlarm();
+
+            var alarmTypeId = 0;
+            try
+            {
+                //Find AlarmTypeId
+                alarmTypeId = (await _context.AlarmTypes.FirstOrDefaultAsync<AlarmType>(c => c.AlarmName == alarmType.AlarmTypeName)).AlarmTypeId;
+            }
+            catch (Exception)
+            {
+                //Stop If No AlarmTypeId is Found
+                _logger.LogError($"AlarmType With Name: {alarmType.AlarmTypeName} does not exist!");
+                return Problem($"alarmTypeId Could Not Be Matched In 'PortalDBContext.AlarmTypes', AlarmType With Name: {alarmType.AlarmTypeName} does not exist!");
+            }
+
+            //Update Response If AlarmTypeId is Found
+            alarmTypeResponse.AMRMeterAlarmId = alarmType.AMRMeterAlarmId;
+            alarmTypeResponse.AlarmTypeId = alarmTypeId;
+            alarmTypeResponse.AMRMeterId = alarmType.AMRMeterId;
+            alarmTypeResponse.AlarmTriggerMethodId = alarmType.AlarmTriggerMethodId;
+            alarmTypeResponse.Threshold = alarmType.Threshold;
+            alarmTypeResponse.Duration = alarmType.Duration;
+            alarmTypeResponse.StartTime = alarmType.StartTime;
+            alarmTypeResponse.EndTime = alarmType.EndTime;
+            alarmTypeResponse.Active = alarmType.Active;
+
+            ////Check If Alarms Exists With All Required Parameters And Set AMRMeterAlarmId To Saved One -- Update
+            //try
+            //{
+            //    var aMRMeterAlarm = await _context.AMRMeterAlarms.FirstOrDefaultAsync(c =>
+            //    c.AlarmTypeId == alarmTypeResponse.AlarmTypeId &&
+            //    c.AMRMeterId == alarmTypeResponse.AMRMeterId &&
+            //    c.AlarmTriggerMethodId == alarmTypeResponse.AlarmTriggerMethodId &&
+            //    c.StartTime == alarmTypeResponse.StartTime &&
+            //    c.EndTime == alarmTypeResponse.EndTime &&
+            //    c.Active == alarmTypeResponse.Active &&
+            //    c.Duration == alarmTypeResponse.Duration &&
+            //    c.Threshold == alarmTypeResponse.Threshold
+            //    );
+
+            //    if (aMRMeterAlarm != null)
+            //    {
+            //        alarmTypeResponse.AMRMeterAlarmId = aMRMeterAlarm.AMRMeterAlarmId;
+            //    }
+            //}
+            //catch (Exception)
+            //{
+            //    return Problem("Entity set 'PortalDBContext.AMRMeterAlarms' returned an error. -- Check If Alarms Exists With All Required Parameters");
+            //}
+
+            if (alarmTypeResponse.AMRMeterAlarmId == 0) //Create
+            {
+                _context.AMRMeterAlarms.Add(alarmTypeResponse);
+                await _context.SaveChangesAsync();
+                _logger.LogInformation($"Successfully Created AMRMeterAlarm with ID: {alarmTypeResponse.AMRMeterAlarmId}");
+                return Ok(CreatedAtAction("CreateOrUpdateAMRMeterAlarm", new { id = alarmTypeResponse.AMRMeterAlarmId }, alarmTypeResponse));
+            }
+            else                                       //Update
+            {
+                _context.Entry(alarmTypeResponse).State = EntityState.Modified;
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+                    _logger.LogInformation($"Successfully Updated AMRMeterAlarm with ID: {alarmTypeResponse.AMRMeterAlarmId}");
+                    return Ok(CreatedAtAction("CreateOrUpdateAMRMeterAlarm", new { id = alarmTypeResponse.AMRMeterAlarmId }, alarmTypeResponse));
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!AMRMeterAlarmExists(alarmTypeResponse.AMRMeterAlarmId))
+                    {
+                        _logger.LogError($"AMRMeterAlarm With Id: {alarmTypeResponse.AMRMeterAlarmId} does not exist!");
+                        return NotFound();
+                    }
+                    else
+                    {
+                        _logger.LogError($"Database Confirmation on AMRMeterAlarm does exist and was Updated!");
+                        return NoContent();
+                    }
+                }
+            }
+        }
+
+        // POST: AMRMeterAlarms
+        [HttpPost("createOrUpdateAMRMeterAlarmById")]
+        public async Task<ActionResult<AMRMeterAlarm>> CreateOrUpdateAMRMeterAlarmByAlarmTypeId(AMRMeterAlarm alarmType)
         {
             if (_context.AMRMeterAlarms == null)
             {

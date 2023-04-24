@@ -5,7 +5,6 @@ using DevExpress.AspNetCore.Reporting.ReportDesigner.Native.Services;
 using DevExpress.AspNetCore.Reporting.WebDocumentViewer;
 using DevExpress.AspNetCore.Reporting.WebDocumentViewer.Native.Services;
 using DevExpress.XtraReports.Web.ReportDesigner;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ClientPortal.Controllers
 {

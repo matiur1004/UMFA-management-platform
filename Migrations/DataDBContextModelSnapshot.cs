@@ -213,40 +213,6 @@ namespace ClientPortal.Migrations
                     b.ToTable("AMRMetersNotScheduled", null, t => t.ExcludeFromMigrations());
                 });
 
-            modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AMRMetersWithAlarms", b =>
-                {
-                    b.Property<int>("AMRMeterId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Average")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Burst_Pipe")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Daily_Usage")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Leak")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("MeterNo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Night_Flow")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Peak")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ScadaMeterNo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.ToTable("AMRMetersWithAlarms", null, t => t.ExcludeFromMigrations());
-                });
-
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AMRScadaUser", b =>
                 {
                     b.Property<int>("Id")

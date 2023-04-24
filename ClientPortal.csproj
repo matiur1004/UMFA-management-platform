@@ -13,8 +13,8 @@
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Dapper" Version="2.0.123" />
-    <PackageReference Include="DevExpress.AspNetCore.Core" Version="22.1.6" />
-    <PackageReference Include="DevExpress.AspNetCore.Reporting" Version="22.1.6" />
+    <PackageReference Include="DevExpress.AspNetCore.Core" Version="22.2.5" />
+    <PackageReference Include="DevExpress.AspNetCore.Reporting" Version="22.2.5" />
     <PackageReference Include="DevExtreme.AspNet.Core" Version="22.2.5" />
     <PackageReference Include="DevExtreme.AspNet.Data" Version="2.9.0" />
     <PackageReference Include="MailKit" Version="3.6.0" />
