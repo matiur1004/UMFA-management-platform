@@ -1,7 +1,6 @@
 ﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Interfaces;
 using ClientPortal.Models.MailModels;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ClientPortal.Controllers
 {
