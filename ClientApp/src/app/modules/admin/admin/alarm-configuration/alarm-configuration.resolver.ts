@@ -13,7 +13,7 @@ import { forkJoin, Observable, of } from 'rxjs';
 export class AlarmConfigurationResolver implements Resolve<boolean> {
   constructor(
     private _buildingService: BuildingService,
-    private _userService: UserService
+    private _userService: UserService,
   ){}
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     return forkJoin([

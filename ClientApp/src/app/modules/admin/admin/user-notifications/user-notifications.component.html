@@ -41,16 +41,15 @@
                 <mat-label class="form-label"> Users </mat-label>
                 <ng-select
                     [items]="users"
-                    bindLabel="Name"
-                    bindValue="BuildingId"
+                    bindLabel="UserName"
+                    bindValue="Id"
                     class="w-50"
                     [placeholder]="'Users'"
-                    [formControlName]="'buildingId'"
+                    [formControlName]="'userId'"
                     [searchable]="true"
                     [closeOnSelect]="true"
                     [clearable]="false"
                     [multiple]="false"
-                    [searchFn]="customSearch"
                     >
                 </ng-select>
             </div>
@@ -77,12 +76,21 @@
                 [width]="200"
                 placeholder="Search..."
             ></dxo-search-panel>
-            <dxi-column dataField="MeterNo" caption="Meter No" [minWidth]="100"></dxi-column>
-            <dxi-column dataField="Description" [minWidth]="160"></dxi-column>
-            <dxi-column caption="Alarms Configuration" dataField="alarmConfig" [minWidth]="190"></dxi-column>
-            <dxi-column dataField="AlarmsTriggered" [minWidth]="140"></dxi-column>            
-            <dxi-column dataField="Make" [minWidth]="100"></dxi-column>
-            <dxi-column dataField="Model" [minWidth]="100"></dxi-column>
+            <dxi-column dataField="MeterNo" caption="Meter No" [minWidth]="120"></dxi-column>
+            <dxi-column dataField="Description" [minWidth]="200"></dxi-column>
+            <dxi-column dataField="Night Flow" [minWidth]="80"></dxi-column>
+            <dxi-column dataField="Burst Pipe" [minWidth]="80"></dxi-column>
+            <dxi-column dataField="Leak" caption="Leak Detected" [minWidth]="80"></dxi-column>
+            <dxi-column dataField="Daily Usage" [minWidth]="80"></dxi-column>
+            <dxi-column dataField="Peak" caption="Peak Excedeed" [minWidth]="80"></dxi-column>
+            <dxi-column dataField="Average" caption="Avg Excedeed" [minWidth]="80"></dxi-column>
+            <dxi-column type="buttons">
+                <dxi-button
+                  hint="Edit"
+                  icon="edit"
+                  [onClick]="onEdit"
+                ></dxi-button>
+            </dxi-column>
         </dx-data-grid>
       </div>
     </div>

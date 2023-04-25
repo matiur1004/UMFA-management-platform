@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, UntypedFormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AllowedPageSizes } from '@core/helpers';
 import { IUmfaBuilding, IUmfaPartner } from '@core/models';
-import { BuildingService } from '@shared/services';
+import { BuildingService, UserService } from '@shared/services';
 import { UserNotificationsService } from '@shared/services/user-notifications.service';
 import { Subject, takeUntil } from 'rxjs';
 
@@ -28,18 +29,32 @@ export class UserNotificationsComponent implements OnInit {
   constructor(
     private _formBuilder: FormBuilder,
     private _buildingService: BuildingService,
-    private _userNotificationsService: UserNotificationsService
-  ) { }
+    private _userService: UserService,
+    private _userNotificationsService: UserNotificationsService,
+    private _router: Router
+  ) { 
+    this.onEdit = this.onEdit.bind(this);
+  }
 
   ngOnInit(): void {
     this.searchForm = this._formBuilder.group({
       partnerId: [],
-      buildingId: []
+      buildingId: [],
+      userId: []
     });
     this._userNotificationsService.userNotifications$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: any) => {
-        this.userNotifications = data;
+        this.userNotifications = data.map(item => {
+          item['Night Flow'] = item['Night Flow'] == 1 ? true : false;
+          item['Burst Pipe'] = item['Burst Pipe'] == 1 ? true : false;
+          item['Leak'] = item['Leak'] == 1 ? true : false;
+          item['Daily Usage'] = item['Daily Usage'] == 1 ? true : false;
+          item['Peak'] = item['Peak'] == 1 ? true : false;
+          item['Average'] = item['Average'] == 1 ? true : false;
+
+          return item;
+        });
       })
 
     this._buildingService.buildings$
@@ -55,6 +70,17 @@ export class UserNotificationsComponent implements OnInit {
         this.partners = data;
       })
 
+    this._userService.users$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((data) => {
+        this.users = data;
+      })
+
+    this.searchForm.valueChanges.subscribe(formData => {
+      if(formData['buildingId'] && formData['userId']) {
+        this._userNotificationsService.getUserAlarmNotificationConfig(formData).subscribe();
+      }
+    })
   }
 
   customSearch(term: string, item: any) {
@@ -72,5 +98,10 @@ export class UserNotificationsComponent implements OnInit {
   ngOnDestroy() {
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
+  }
+
+  onEdit(e) {
+    e.event.preventDefault();
+    //this._router.navigate([`/admin/amrSchedule/edit/${e.row.data.Id}`]);
   }
 }
