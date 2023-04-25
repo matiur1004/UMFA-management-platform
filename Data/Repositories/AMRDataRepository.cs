@@ -9,7 +9,7 @@ namespace ClientPortal.Data.Repositories
     {
         Task<List<TOUHeader>> GetTOUHeaders();
         Task<DemandProfileHeader> GetDemandProfile(int meterId, DateTime startDate, DateTime endDate, int touHeaderId);
-        Task<AMRWaterProfileHeader> GetWaterProfile(int meterId, DateTime startDate, DateTime endDate, TimeOnly nightFlowStart, TimeOnly nightFlowEnd);
+        Task<AMRWaterProfileHeader> GetWaterProfile(int meterId, DateTime startDate, DateTime endDate, TimeOnly nightFlowStart, TimeOnly nightFlowEnd, bool ApplyNightFlow);
         Task<List<ScadaRequestHeader>> GetJobsToRunAsync();
         Task<bool> UpdateAmrJobStatus(List<ScadaRequestHeader> headers, int status);
         Task<ScadaRequestHeader> GetTrackedScadaHeader(int headerId, int detailId);
@@ -17,6 +17,7 @@ namespace ClientPortal.Data.Repositories
         Task<bool> InsertScadaProfileData(ScadaMeterProfile profile);
         Task<bool> InsertScadaReadingData(ScadaMeterReading readings);
         Task<bool> UpdateDetailStatus(int detailId, int status);
+        Task<AMRGraphProfileHeader> GetGraphProfile(int meterId, DateTime startDate, DateTime endDate, TimeOnly nightFlowStart, TimeOnly nightFlowEnd, bool ApplyNightFlow);
     }
 
     public class AMRDataRepository : IAMRDataRepository
@@ -339,7 +340,7 @@ namespace ClientPortal.Data.Repositories
             }
         }
 
-        public async Task<AMRWaterProfileHeader> GetWaterProfile(int meterId, DateTime startDate, DateTime endDate, TimeOnly nightFlowStart, TimeOnly nightFlowEnd)
+        public async Task<AMRWaterProfileHeader> GetWaterProfile(int meterId, DateTime startDate, DateTime endDate, TimeOnly nightFlowStart, TimeOnly nightFlowEnd, bool applyNightFlow)
         {
             try
             {
@@ -347,7 +348,8 @@ namespace ClientPortal.Data.Repositories
                 string eDate = endDate.ToString("yyyy/MM/dd HH:mm");
                 string nfsTime = nightFlowStart.ToString("HH:mm");
                 string nfeTime = nightFlowEnd.ToString("HH:mm");
-                var CommandText = $"exec spGetWaterProfile {meterId}, '{sDate}', '{eDate}', '{nfsTime}', '{nfeTime}'";
+                bool applyNF = applyNightFlow;
+                var CommandText = $"exec spGetWaterProfile {meterId}, '{sDate}', '{eDate}', '{nfsTime}', '{nfeTime}', {applyNF}";
                 AMRWaterProfileHeader header = new();
                 var connection = _context.Database.GetDbConnection();
                 await connection.OpenAsync();
@@ -386,6 +388,36 @@ namespace ClientPortal.Data.Repositories
             {
                 _logger.LogError("Error while retrieving demand profile data for meterId {meterId}: {message}", meterId, ex.Message);
                 throw new ApplicationException($"Error while retrieving demand profile data for meterId {meterId}: {ex.Message}");
+            }
+            finally
+            {
+                await _context.Database.CloseConnectionAsync();
+            }
+        }
+
+
+        public async Task<AMRGraphProfileHeader> GetGraphProfile(int meterId, DateTime startDate, DateTime endDate, TimeOnly nightFlowStart, TimeOnly nightFlowEnd, bool applyNightFlow)
+        {
+            try
+            {
+                string sDate = startDate.ToString("yyyy/MM/dd HH:mm");
+                string eDate = endDate.ToString("yyyy/MM/dd HH:mm");
+                string nfsTime = nightFlowStart.ToString("HH:mm");
+                string nfeTime = nightFlowEnd.ToString("HH:mm");
+                bool applyNF = applyNightFlow;
+                var CommandText = $"exec spGetWaterProfile {meterId}, '{sDate}', '{eDate}', '{nfsTime}', '{nfeTime}', {applyNF}";
+                AMRGraphProfileHeader header = new();
+                var connection = _context.Database.GetDbConnection();
+                await connection.OpenAsync();
+                var results = await connection.QueryMultipleAsync(CommandText);
+                header = results.Read<AMRGraphProfileHeader>().ToList()[0];
+                header.Profile = results.Read<GraphProfile>().ToList();
+                return header;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error while retrieving water profile data for meterId {meterId}: {message}", meterId, ex.Message);
+                throw new ApplicationException($"Error while retrieving water profile data for meterId {meterId}: {ex.Message}");
             }
             finally
             {

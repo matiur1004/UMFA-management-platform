@@ -149,7 +149,6 @@ export class AmrGraphResultComponent implements OnInit, OnDestroy {
   }
 
   Runit(): void {
-    console.log('sdfsdfsdf');
     this.showReport = true;
     this.loading = true;
 

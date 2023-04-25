@@ -8,5 +8,6 @@ namespace ClientPortal.Models.RequestModels
         public DateTime EndDate { get; set; }
         public TimeOnly NightFlowStart { get; set; }
         public TimeOnly NightFlowEnd { get; set; }
+        public bool ApplyNightFlow { get; set; }
     }
 }
