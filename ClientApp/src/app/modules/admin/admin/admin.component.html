@@ -9,6 +9,7 @@
                 <mat-tab label="AMR Meters"></mat-tab>
                 <mat-tab label="AMR Schedule"></mat-tab>
                 <mat-tab label="Alarm Configuration"></mat-tab>
+                <mat-tab label="User Notifications"></mat-tab>
                 <ng-container *ngFor="let detail of detailsList; let i = index;">
                     <mat-tab label="Detail">
                         <ng-template mat-tab-label>
@@ -32,7 +33,7 @@
             </mat-tab-group>
         </div>
     </div>
-    <div class="flex px-8 py-2" *ngIf="selectedTab <= 5">
+    <div class="flex px-8 py-2" *ngIf="selectedTab <= 6">
         <router-outlet></router-outlet>
     </div>
 </div>

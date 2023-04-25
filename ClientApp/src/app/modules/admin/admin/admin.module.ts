@@ -42,6 +42,7 @@ import { AlarmLeakDetectionComponent } from './meter-alarm-detail/alarm-leak-det
 import { AlarmPeakUsageComponent } from './meter-alarm-detail/alarm-peak-usage/alarm-peak-usage.component';
 import { AlarmDailyUsageComponent } from './meter-alarm-detail/alarm-daily-usage/alarm-daily-usage.component';
 import { AlarmAverageUsageComponent } from './meter-alarm-detail/alarm-average-usage/alarm-average-usage.component';
+import { UserNotificationsComponent } from './user-notifications/user-notifications.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { AlarmAverageUsageComponent } from './meter-alarm-detail/alarm-average-u
     AlarmLeakDetectionComponent,
     AlarmPeakUsageComponent,
     AlarmDailyUsageComponent,
-    AlarmAverageUsageComponent
+    AlarmAverageUsageComponent,
+    UserNotificationsComponent
   ],
   imports: [
     FormsModule,

@@ -1,0 +1,90 @@
+<div class="flex flex-col relative">
+    <div class="flex w-full">
+      <div class="flex flex-col bg-card p-2">
+        <div class="flex gap-x-4 flex-wrap" [formGroup]="searchForm">
+            <div class="flex flex-col">
+                <mat-label class="form-label"> Partners </mat-label>
+                <ng-select
+                    [items]="partners"
+                    bindLabel="Name"
+                    bindValue="Id"
+                    class="w-50"
+                    [placeholder]="'Partner'"
+                    [formControlName]="'partnerId'"
+                    [searchable]="true"
+                    [closeOnSelect]="true"
+                    [clearable]="false"
+                    [multiple]="false"
+                    [searchFn]="customSearch"
+                    (change)="onPartnerChanged($event)"
+                    >
+                </ng-select>
+            </div>
+            <div class="flex flex-col">
+                <mat-label class="form-label"> Buildings </mat-label>
+                <ng-select
+                    [items]="buildings"
+                    bindLabel="Name"
+                    bindValue="BuildingId"
+                    class="w-50"
+                    [placeholder]="'Buildings'"
+                    [formControlName]="'buildingId'"
+                    [searchable]="true"
+                    [closeOnSelect]="true"
+                    [clearable]="false"
+                    [multiple]="false"
+                    [searchFn]="customSearch"
+                    >
+                </ng-select>
+            </div>
+            <div class="flex flex-col">
+                <mat-label class="form-label"> Users </mat-label>
+                <ng-select
+                    [items]="users"
+                    bindLabel="Name"
+                    bindValue="BuildingId"
+                    class="w-50"
+                    [placeholder]="'Users'"
+                    [formControlName]="'buildingId'"
+                    [searchable]="true"
+                    [closeOnSelect]="true"
+                    [clearable]="false"
+                    [multiple]="false"
+                    [searchFn]="customSearch"
+                    >
+                </ng-select>
+            </div>
+        </div>
+        <dx-data-grid
+            [dataSource]="userNotifications"
+            [showBorders]="true"
+            class="grid-container"
+            [hoverStateEnabled]="true"
+        >
+            <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+            <dxo-paging [pageSize]="10"> </dxo-paging>
+            <dxo-pager
+                [visible]="true"
+                [allowedPageSizes]="allowedPageSizes"
+                [displayMode]="'compact'"
+                [showPageSizeSelector]="true"
+                [showInfo]="true"
+                [showNavigationButtons]="true"
+            >
+            </dxo-pager>
+            <dxo-search-panel
+                [visible]="true"
+                [width]="200"
+                placeholder="Search..."
+            ></dxo-search-panel>
+            <dxi-column dataField="MeterNo" caption="Meter No" [minWidth]="100"></dxi-column>
+            <dxi-column dataField="Description" [minWidth]="160"></dxi-column>
+            <dxi-column caption="Alarms Configuration" dataField="alarmConfig" [minWidth]="190"></dxi-column>
+            <dxi-column dataField="AlarmsTriggered" [minWidth]="140"></dxi-column>            
+            <dxi-column dataField="Make" [minWidth]="100"></dxi-column>
+            <dxi-column dataField="Model" [minWidth]="100"></dxi-column>
+        </dx-data-grid>
+      </div>
+    </div>
+</div>
+  
