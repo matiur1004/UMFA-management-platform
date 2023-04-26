@@ -63,8 +63,9 @@ export class MeterAlarmDetailComponent implements OnInit {
     //   "Average": 8
     // }
     //114
+    console.log('sdfsdf', this.meter);
     this.profileForm = this._formBuilder.group({
-      MeterId: [this.meter.AMRMEterId, [Validators.required]],
+      MeterId: [this.meter.AMRMeterId, [Validators.required]],
       sdp: [null, [Validators.required]],
       sdT: [null, [Validators.required]],
       edp: [null, [Validators.required]],
@@ -94,11 +95,12 @@ export class MeterAlarmDetailComponent implements OnInit {
   }
 
   onShowMeterGraph(isProfile: boolean = false) {
+    //console.log('sdfsdf', this.profileForm.value);
     if(this.profileForm.valid) {
       if(isProfile) this.applyNightFlow = false;
       let formData = this.profileForm.value;
       let data = {...this._alarmConfigService.profileInfo, MeterId: formData['MeterId'], nightFlowStart: formData['NightFlowStart'], NightFlowEnd: formData['NightFlowEnd']};
-      this._amrDataService.getMeterProfileForGraph(this.meter.AMRMEterId, data['StartDate'], data['EndDate'], formData['NightFlowStart'], formData['NightFlowEnd'], this.applyNightFlow).subscribe(res => {
+      this._amrDataService.getMeterProfileForGraph(this.meter.AMRMeterId, data['StartDate'], data['EndDate'], formData['NightFlowStart'], formData['NightFlowEnd'], this.applyNightFlow).subscribe(res => {
         this.setDataSource(res);
         //this.applyNightFlow = true;
       })
