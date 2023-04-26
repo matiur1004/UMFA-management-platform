@@ -1,9 +1,11 @@
-﻿using ClientPortal.Controllers.Authorization;
+﻿using AutoMapper;
+using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 using ClientPortal.Services;
+using DevExpress.DataAccess.Native.Web;
 using System.Dynamic;
 
 namespace ClientPortal.Controllers
@@ -16,12 +18,14 @@ namespace ClientPortal.Controllers
         private readonly ILogger<AMRMeterController> _logger;
         private readonly IAMRMeterService _amrService;
         private readonly PortalDBContext _context;
+        private readonly IMapper _mapper;
 
-        public AMRMeterController(ILogger<AMRMeterController> logger, IAMRMeterService amrService, PortalDBContext portalDBContext)
+        public AMRMeterController(ILogger<AMRMeterController> logger, IAMRMeterService amrService, PortalDBContext portalDBContext, IMapper mapper)
         {
             _logger = logger;
             _amrService = amrService;
             _context = portalDBContext;
+            _mapper = mapper;
         }
 
         [HttpPost("addMeter")]
@@ -199,13 +203,35 @@ namespace ClientPortal.Controllers
             try
             {
                 _logger.LogInformation($"update meter with number: {request.Meter.MeterNo}");
-                var response = _amrService.EditMeterAsync(request).Result;
-                if (response != null)
+                var updMeter = _mapper.Map<AMRMeter>(request);
+                updMeter.UserId = request.UserId;
+                _context.Entry(updMeter).State = EntityState.Modified;
+
+                try
                 {
-                    _logger.LogInformation($"Successfully updated meter: {response.Id}");
-                    return Ok(response);
+                    _context.AMRMeters.Update(updMeter);
+                    _context.SaveChangesAsync();
+                    return Ok(updMeter);
                 }
-                else throw new Exception($"Failed to update meter: {request.Meter.MeterNo}");
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!AMRMeterExists(request.Meter.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                //var response = _amrService.EditMeterAsync(request).Result;
+                //if (response != null)
+                //{
+                //    _logger.LogInformation($"Successfully updated meter: {response.Id}");
+                //    return Ok(response);
+                //}
+                //else throw new Exception($"Failed to update meter: {request.Meter.MeterNo}");
             }
             catch (Exception ex)
             {
@@ -234,6 +260,10 @@ namespace ClientPortal.Controllers
                 //return BadRequest(new ApplicationException($"Error while getting all active make and models: {ex.Message}"));
                 return BadRequest($"Error while getting all active make and models: {ex.Message}");
             }
+        }
+        private bool AMRMeterExists(int id)
+        {
+            return (_context.AMRMeters?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
