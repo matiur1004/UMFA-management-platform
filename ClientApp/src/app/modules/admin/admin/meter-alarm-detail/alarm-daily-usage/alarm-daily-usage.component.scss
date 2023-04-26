@@ -1,0 +1,11 @@
+.width-fit {
+    width: fit-content;
+}
+.daily-usage {
+    width: 850px;
+}
+@media only screen and (max-width: 1200px) {
+    .daily-usage {
+        width: 100%;
+    }
+}

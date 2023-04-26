@@ -11,11 +11,16 @@ import { IMappedMeter } from "@core/models/mappedmeter.model";
 export class BuildingService {
 
   private _buildings: BehaviorSubject<IUmfaBuilding[]> = new BehaviorSubject([]);
+  private _partners: BehaviorSubject<IUmfaPartner[]> = new BehaviorSubject([]);
 
   constructor(private http: HttpClient) { }
 
-  get buildings$(): Observable<any> {
+  get buildings$(): Observable<IUmfaBuilding[]> {
     return this._buildings.asObservable();
+  }
+
+  get partners$(): Observable<IUmfaPartner[]> {
+    return this._partners.asObservable();
   }
 
   //buildings
@@ -50,6 +55,7 @@ export class BuildingService {
       .pipe(
         catchError(err => this.catchErrors(err)),
         tap(pr => {
+          this._partners.next(pr.Partners);
           //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
         }),
         map(pl => { return pl.Partners })
