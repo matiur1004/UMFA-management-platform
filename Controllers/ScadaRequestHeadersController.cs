@@ -1,7 +1,7 @@
 ﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.PortalEntities;
-using ClientPortal.Models.ResponseModels;
+using ClientPortal.Models.ScadaRequestsForTableUpdate;
 
 namespace ClientPortal.Controllers
 {
@@ -23,11 +23,11 @@ namespace ClientPortal.Controllers
         [HttpGet("getScadaRequestHeaders")]
         public async Task<ActionResult<IEnumerable<ScadaRequestHeader>>> GetScadaRequestHeaders()
         {
-          if (_context.ScadaRequestHeaders == null)
-          {
-              _logger.LogError("ScadaRequestHeaders Not Found!");
-              return NotFound();
-          }
+            if (_context.ScadaRequestHeaders == null)
+            {
+                _logger.LogError("ScadaRequestHeaders Not Found!");
+                return NotFound();
+            }
             _logger.LogInformation("ScadaRequestHeaders Found!");
             return await _context.ScadaRequestHeaders.ToListAsync();
         }
@@ -36,11 +36,11 @@ namespace ClientPortal.Controllers
         [HttpGet("getScadaRequestHeader/{id}")]
         public async Task<ActionResult<ScadaRequestHeader>> GetScadaRequestHeader(int id)
         {
-          if (_context.ScadaRequestHeaders == null)
-          {
+            if (_context.ScadaRequestHeaders == null)
+            {
                 _logger.LogError($"ScadaRequestHeaders Entries Not Found in Table!");
                 return NotFound();
-          }
+            }
             var scadaRequestHeader = await _context.ScadaRequestHeaders.FindAsync(id);
 
             if (scadaRequestHeader == null)
@@ -88,11 +88,11 @@ namespace ClientPortal.Controllers
         [HttpPost("addScadaRequestHeader")]
         public async Task<ActionResult<ScadaRequestHeader>> PostScadaRequestHeader(ScadaRequestHeader scadaRequestHeader)
         {
-          if (_context.ScadaRequestHeaders == null)
-          {
+            if (_context.ScadaRequestHeaders == null)
+            {
                 _logger.LogError($"ScadaRequestHeaders Table is Not Found");
                 return Problem("Entity set 'PortalDBContext.ScadaRequestHeaders' is null.");
-          }
+            }
             _context.ScadaRequestHeaders.Add(scadaRequestHeader);
             await _context.SaveChangesAsync();
             _logger.LogInformation($"ScadaRequestHeader Saved Successfully!");
