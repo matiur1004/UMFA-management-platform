@@ -1,6 +1,5 @@
 ﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
-using Dapper;
 using System.Dynamic;
 
 namespace ClientPortal.Controllers
@@ -79,6 +78,55 @@ namespace ClientPortal.Controllers
 
             return Ok(resultList);
         }
+
+        [HttpPost("setUserAlarmNotification")]
+        public IActionResult MaintainUserAlarmNotification([FromBody] UserAlarmNotificationMaintainModel model)
+        {
+            if (!int.TryParse(model.UserId.ToString(), out int userId)) return BadRequest(new ApplicationException($"Invalid UserId: '{model.UserId}'"));
+            if (!int.TryParse(model.AMRMeterId.ToString(), out int amrMeterId)) return BadRequest(new ApplicationException($"Invalid BuildingId: '{model.AMRMeterId}'"));
+            if (!int.TryParse(model.AlarmTypeId.ToString(), out int alarmTypeId)) return BadRequest(new ApplicationException($"Invalid BuildingId: '{model.AlarmTypeId}'"));
+            if (!bool.TryParse(model.Enabled.ToString(), out bool enabled)) return BadRequest(new ApplicationException($"Invalid BuildingId: '{model.Enabled}'"));
+
+            _logger.LogInformation(1, "Maintain UserAlarmNotification Details for User: {0}", model.UserId);
+            try
+            {
+                using (var command = _context.Database.GetDbConnection().CreateCommand())
+                {
+                    command.CommandText = "spMaintainUserAlarmNotification";
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    var parameter = command.CreateParameter();
+                    parameter.ParameterName = "@UserId";
+                    parameter.Value = userId;
+                    command.Parameters.Add(parameter);
+
+                    var parameter2 = command.CreateParameter();
+                    parameter2.ParameterName = "@AMRMeterId";
+                    parameter2.Value = amrMeterId;
+                    command.Parameters.Add(parameter2);
+
+                    var parameter3 = command.CreateParameter();
+                    parameter3.ParameterName = "@AlarmTypeId";
+                    parameter3.Value = alarmTypeId;
+                    command.Parameters.Add(parameter3);
+                    
+                    var parameter4 = command.CreateParameter();
+                    parameter4.ParameterName = "@Enabled";
+                    parameter4.Value = model.Enabled;
+                    command.Parameters.Add(parameter4);
+
+                    _context.Database.OpenConnection();
+                    var result = command.ExecuteNonQuery();
+                    return Ok("Success: " + result);
+                }
+            }
+            catch (Exception)
+            {
+                string message = $"Failed to Update UserAMRMeterActiveNotifications for User: {model.UserId}";
+                _logger?.LogError(1, message);
+                return Problem($"Failed to Update UserAMRMeterActiveNotifications for User: {model.UserId}");
+            }
+        }
     }
 
     //Config
@@ -87,6 +135,18 @@ namespace ClientPortal.Controllers
         public int UserId { get; set; }
         public int BuildingId { get; set; }
     }
+
+    //Maintain
+    public class UserAlarmNotificationMaintainModel
+    {
+        public int UserId { get; set; }
+        public int AMRMeterId { get; set; }
+        public int AlarmTypeId { get; set; }
+        public bool Enabled { get; set; }
+    }
 }
+
+
+
 
 

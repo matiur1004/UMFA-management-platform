@@ -58,7 +58,7 @@
                         <mat-label class="form-label">Status</mat-label>
                         <input matInput value="{{getNameFromList(meterAssignmentDetail.Status, scheduleStatus)}}" readonly />   
                     </mat-form-field>
-                    <button mat-icon-button *ngIf="meterAssignmentDetail.Status == 6"><mat-icon [svgIcon]="'feather:repeat'" [matTooltip]="'Reset Status'" (click)="onResetStatus()"></mat-icon></button>
+                    <button mat-icon-button *ngIf="meterAssignmentDetail.Status == 7"><mat-icon [svgIcon]="'feather:repeat'" [matTooltip]="'Reset Status'" (click)="onResetStatus()"></mat-icon></button>
                 </div>
             </div>
         </div>
