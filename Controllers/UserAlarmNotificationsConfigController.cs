@@ -1,7 +1,5 @@
 ﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
-using Dapper;
-using Microsoft.Data.SqlClient;
 using System.Dynamic;
 
 namespace ClientPortal.Controllers
