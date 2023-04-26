@@ -118,15 +118,15 @@ namespace ClientPortal.Controllers
                     command.Parameters.Add(parameter4);
 
                     _context.Database.OpenConnection();
-                    command.ExecuteNonQuery();
-                    return Ok("Success");
+                    var result = command.ExecuteNonQuery();
+                    return Ok("Success: " + result);
                 }
             }
             catch (Exception)
             {
                 string message = $"Failed to Update UserAMRMeterActiveNotifications for User: {model.UserId}";
                 _logger?.LogError(1, message);
-                return Problem($"Failed to set UserAlarmNotificationConfig for User: {model.UserId}");
+                return Problem($"Failed to Update UserAMRMeterActiveNotifications for User: {model.UserId}");
             }
         }
     }
