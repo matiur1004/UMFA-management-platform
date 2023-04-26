@@ -95,7 +95,7 @@ export class MeterAlarmDetailComponent implements OnInit {
   }
 
   onShowMeterGraph(isProfile: boolean = false) {
-    console.log('sdfsdf', this.profileForm.value);
+    //console.log('sdfsdf', this.profileForm.value);
     if(this.profileForm.valid) {
       if(isProfile) this.applyNightFlow = false;
       let formData = this.profileForm.value;
