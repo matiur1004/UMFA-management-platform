@@ -51,15 +51,55 @@ namespace ClientPortal.Data.Repositories
         {
             try
             {
-                List<ScadaReadingData> existing = await _context.scadaReadingData
-                    .Where(r => r.SerialNumber == readings.Meter.SerialNumber && r.ReadingDate.ToString().Substring(0, 16) == 
-                        readings.Meter.EndTotal.ReadingDate.ToString().Substring(0, 16))
-                    .ToListAsync();
+                List<ScadaReadingData> existing = new();
+
+                int cntRetry = 0;
+                while (cntRetry < 3)
+                {
+                    try
+                    {
+                        existing = await _context.scadaReadingData
+                            .Where(r => r.SerialNumber == readings.Meter.SerialNumber && r.ReadingDate.ToString().Substring(0, 16) ==
+                                readings.Meter.EndTotal.ReadingDate.ToString().Substring(0, 16))
+                            .ToListAsync();
+                        break;
+                    }
+                    catch
+                    {
+                        cntRetry++;
+                        if (cntRetry == 3)
+                            throw new Exception($"Cant connect to db to get existing readings for 3 retries");
+                        else
+                        {
+                            Thread.Sleep(1000);
+                            continue;
+                        }
+                    }
+                }
 
                 if (existing != null && existing.Count > 0) //first disable existing records
                 {
                     foreach (ScadaReadingData p in existing) p.IsActive = false;
-                    await _context.SaveChangesAsync();
+                    cntRetry = 0;
+                    while (cntRetry < 3)
+                    {
+                        try
+                        {
+                            await _context.SaveChangesAsync();
+                            break;
+                        }
+                        catch
+                        {
+                            cntRetry++;
+                            if (cntRetry == 3)
+                                throw new Exception($"Cant connect to db to update existing profiles for 3 retries");
+                            else
+                            {
+                                Thread.Sleep(1000);
+                                continue;
+                            }
+                        }
+                    }
                 }
 
                 ScadaReadingData newItem = new()
@@ -85,7 +125,26 @@ namespace ClientPortal.Data.Repositories
                 await _context.scadaReadingData.AddAsync(newItem);
 
                 _context.Database.SetCommandTimeout(120);
-                await _context.SaveChangesAsync();
+                cntRetry = 0;
+                while (cntRetry < 3)
+                {
+                    try
+                    {
+                        await _context.SaveChangesAsync();
+                        break;
+                    }
+                    catch
+                    {
+                        cntRetry++;
+                        if (cntRetry == 3)
+                            throw new Exception($"Cant connect to db to update existing profiles for 3 retries");
+                        else
+                        {
+                            Thread.Sleep(1000);
+                            continue;
+                        }
+                    }
+                }
 
                 return true;
             }
@@ -103,13 +162,52 @@ namespace ClientPortal.Data.Repositories
                 _context.Database.SetCommandTimeout(120);
 
                 List<string> readingDates = profile.Meter.ProfileSamples.Select(p => p.Date.Substring(0, 19)).ToList();
-                List<ScadaProfileData> existing = await _context.ScadaProfileData
-                    .Where(p => p.SerialNumber == profile.Meter.SerialNumber && readingDates.Contains(p.ReadingDate.ToString().Substring(0, 19))).ToListAsync();
+                List<ScadaProfileData> existing = new();
+                int cntRetry = 0;
+                while (cntRetry < 3)
+                {
+                    try
+                    {
+                        existing = await _context.ScadaProfileData
+                            .Where(p => p.SerialNumber == profile.Meter.SerialNumber && readingDates.Contains(p.ReadingDate.ToString().Substring(0, 19))).ToListAsync();
+                        break;
+                    }
+                    catch
+                    {
+                        cntRetry++;
+                        if (cntRetry == 3)
+                            throw new Exception($"Cant connect to db to get existing profiles for 3 retries");
+                        else
+                        {
+                            Thread.Sleep(1000);
+                            continue;
+                        }
+                    }
+                }
 
                 if (existing != null && existing.Count > 0) //first disable existing records
                 {
                     foreach (ScadaProfileData p in existing) p.IsActive = false;
-                    await _context.SaveChangesAsync();
+                    cntRetry = 0;
+                    while (cntRetry < 3)
+                    {
+                        try
+                        {
+                            await _context.SaveChangesAsync();
+                            break;
+                        }
+                        catch
+                        {
+                            cntRetry++;
+                            if (cntRetry == 3)
+                                throw new Exception($"Cant connect to db to update existing profiles for 3 retries");
+                            else
+                            {
+                                Thread.Sleep(1000);
+                                continue;
+                            }
+                        }
+                    }
                 }
 
                 List<ScadaProfileData> newItems = new();
@@ -137,7 +235,26 @@ namespace ClientPortal.Data.Repositories
 
                 await _context.ScadaProfileData.AddRangeAsync(newItems);
 
-                await _context.SaveChangesAsync();
+                cntRetry = 0;
+                while (cntRetry < 3)
+                {
+                    try
+                    {
+                        await _context.SaveChangesAsync();
+                        break;
+                    }
+                    catch
+                    {
+                        cntRetry++;
+                        if (cntRetry == 3)
+                            throw new Exception($"Cant connect to db to update existing profiles for 3 retries");
+                        else
+                        {
+                            Thread.Sleep(1000);
+                            continue;
+                        }
+                    }
+                }
 
                 return true;
             }
@@ -206,7 +323,7 @@ namespace ClientPortal.Data.Repositories
             try
             {
                 var header = await _context.ScadaRequestHeaders.AsNoTracking()
-                    .Where(h => h.Active == true && h.Status == 1 && h.StartRunDTM <= DateTime.UtcNow && 
+                    .Where(h => h.Active == true && h.Status == 1 && h.StartRunDTM <= DateTime.UtcNow &&
                         (h.LastRunDTM == null || h.LastRunDTM < DateTime.UtcNow.AddMinutes(-h.Interval)))
                     .Include(h => h.ScadaRequestDetails.Where(d => d.Active && d.Status == 1))
                         .ThenInclude(d => d.AmrScadaUser)

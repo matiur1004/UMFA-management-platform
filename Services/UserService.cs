@@ -52,6 +52,7 @@ namespace ClientPortal.Services
             try
             {
                 if (!_dbContext.Database.CanConnect()) throw new Exception("Database not available");
+                else _logger.LogInformation($"Using connection string: {_dbContext.Database.GetConnectionString()}");
                 var user = _dbContext.Users.SingleOrDefault(u => u.UserName == model.UserName);
 
                 //if user exist validate, else fetch from UMFAWeb
