@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Cors;
-using ClientPortal.Controllers.Authorization;
+﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Services;
 
 namespace ClientPortal.Controllers

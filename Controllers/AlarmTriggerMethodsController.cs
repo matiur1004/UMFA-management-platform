@@ -22,7 +22,7 @@ namespace ClientPortal.Controllers
         [HttpGet("getAll")]
         public async Task<ActionResult<IEnumerable<AlarmTriggerMethod>>> GetAlarmTriggerMethods()
         {
-            if (_context.AlarmTriggerMethods == null)
+            if(_context.AlarmTriggerMethods == null)
             {
                 _logger.LogError($"AlarmTriggerMethods Are Empty!");
                 return NotFound();
@@ -35,14 +35,14 @@ namespace ClientPortal.Controllers
         [HttpGet("getSingle/{id}")]
         public async Task<ActionResult<AlarmTriggerMethod>> GetAlarmTriggerMethod(int id)
         {
-            if (_context.AlarmTriggerMethods == null)
+            if(_context.AlarmTriggerMethods == null)
             {
                 _logger.LogError($"AlarmTriggerMethod With Id: {id} does not exist!");
                 return NotFound();
             }
             var alarmType = await _context.AlarmTriggerMethods.FindAsync(id);
 
-            if (alarmType == null)
+            if(alarmType == null)
             {
                 _logger.LogError($"AlarmTriggerMethod With Id: {id} does not exist!");
                 return NotFound();
@@ -53,37 +53,44 @@ namespace ClientPortal.Controllers
 
         // POST: createOrUpdateAlarmTriggerMethod
         [HttpPost("createOrUpdateAlarmTriggerMethod")]
-        public async Task<ActionResult<AlarmTriggerMethod>> CreateOrUpdateAlarmTriggerMethod(AlarmTriggerMethod alarmType)
+        public async Task<ActionResult<AlarmTriggerMethod>> CreateOrUpdateAlarmTriggerMethod(
+            AlarmTriggerMethod alarmType)
         {
-            if (_context.AlarmTriggerMethods == null)
+            if(_context.AlarmTriggerMethods == null)
             {
                 return Problem("Entity set 'PortalDBContext.AlarmTriggerMethods'  is null.");
             }
-            if (alarmType.AlarmTriggerMethodId == 0) //Create
+            if(alarmType.AlarmTriggerMethodId == 0) //Create
             {
                 _context.AlarmTriggerMethods.Add(alarmType);
                 await _context.SaveChangesAsync();
-                _logger.LogInformation($"Successfully Created AlarmTriggerMethod with ID: {alarmType.AlarmTriggerMethodId}");
-                return CreatedAtAction("CreateOrUpdateAlarmTriggerMethod", new { id = alarmType.AlarmTriggerMethodId }, alarmType);
-            }
-            else                         //Update
+                _logger.LogInformation(
+                    $"Successfully Created AlarmTriggerMethod with ID: {alarmType.AlarmTriggerMethodId}");
+                return CreatedAtAction(
+                    "CreateOrUpdateAlarmTriggerMethod",
+                    new { id = alarmType.AlarmTriggerMethodId },
+                    alarmType);
+            } else                         //Update
             {
                 _context.Entry(alarmType).State = EntityState.Modified;
 
                 try
                 {
                     await _context.SaveChangesAsync();
-                    _logger.LogInformation($"Successfully Updated AlarmTriggerMethod with ID: {alarmType.AlarmTriggerMethodId}");
-                    return CreatedAtAction("CreateOrUpdateAlarmTriggerMethod", new { id = alarmType.AlarmTriggerMethodId }, alarmType);
-                }
-                catch (DbUpdateConcurrencyException)
+                    _logger.LogInformation(
+                        $"Successfully Updated AlarmTriggerMethod with ID: {alarmType.AlarmTriggerMethodId}");
+                    return CreatedAtAction(
+                        "CreateOrUpdateAlarmTriggerMethod",
+                        new { id = alarmType.AlarmTriggerMethodId },
+                        alarmType);
+                } catch(DbUpdateConcurrencyException)
                 {
-                    if (!AlarmTriggerMethodExists(alarmType.AlarmTriggerMethodId))
+                    if(!AlarmTriggerMethodExists(alarmType.AlarmTriggerMethodId))
                     {
-                        _logger.LogError($"AlarmTriggerMethod With Id: {alarmType.AlarmTriggerMethodId} does not exist!");
+                        _logger.LogError(
+                            $"AlarmTriggerMethod With Id: {alarmType.AlarmTriggerMethodId} does not exist!");
                         return NotFound();
-                    }
-                    else
+                    } else
                     {
                         _logger.LogError($"Database Confirmation on AlarmTriggerMethod does exist and was Updated!");
                         return NoContent();
@@ -96,13 +103,13 @@ namespace ClientPortal.Controllers
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteAlarmTriggerMethod(int id)
         {
-            if (_context.AlarmTriggerMethods == null)
+            if(_context.AlarmTriggerMethods == null)
             {
                 _logger.LogError($"AlarmTriggerMethod With Id: {id} does not exist!");
                 return NotFound();
             }
             var alarmType = await _context.AlarmTriggerMethods.FindAsync(id);
-            if (alarmType == null)
+            if(alarmType == null)
             {
                 _logger.LogError($"AlarmTriggerMethod With Id: {id} does not exist!");
                 return NotFound();
@@ -115,8 +122,6 @@ namespace ClientPortal.Controllers
         }
 
         private bool AlarmTriggerMethodExists(int id)
-        {
-            return (_context.AlarmTriggerMethods?.Any(e => e.AlarmTriggerMethodId == id)).GetValueOrDefault();
-        }
+        { return (_context.AlarmTriggerMethods?.Any(e => e.AlarmTriggerMethodId == id)).GetValueOrDefault(); }
     }
 }

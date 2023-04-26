@@ -1,0 +1,166 @@
+
+<div class="flex bg-card flex-col mt-4 py-6 px-4 gap-y-4">
+    <div class="flex">
+        <span class="text-lg font-semibold">Alarm Mapping for AMR Meter {{meter.ScadaMeterNo}} - {{meter.MeterNo}}</span>
+    </div>
+    <div class="flex items-center" [formGroup]="profileForm">
+        <span class="text-lg font-semibold min-w-40">Show Profile for:</span>
+        <div class="grid grid-cols-9 w-full gap-x-2">
+            <div class="col-span-2">
+                <div class="flex flex-col w-full">
+                    <dx-date-box id="sDateId" class="form-control" placeholder="Date From" type="date" label="Start date"
+                      labelMode="static" name="sdp" displayFormat="yyyy-MM-dd" [formControlName]="'sdp'"> </dx-date-box>
+                  </div>
+            </div>
+            <div class="col-span-2">
+                <dx-date-box type="time" placeholder="Time" displayFormat="HH:mm" label="Start time"
+                    labelMode="static" name="sdT" required class="form-control" [formControlName]="'sdT'"> </dx-date-box>
+            </div>
+            <div class="col-span-2">
+                <dx-date-box id="eDateId" class="form-control" placeholder="Date To" type="date" label="End date"
+                    labelMode="static" name="edp" required  displayFormat="yyyy-MM-dd" [formControlName]="'edp'"> </dx-date-box>
+            </div>
+            <div class="col-span-2">
+                <dx-date-box type="time" placeholder="Time" displayFormat="HH:mm" label="End time"
+                    labelMode="static" name="edT" required class="form-control" [formControlName]="'edT'"> </dx-date-box>
+            </div>
+            <div class="col-span-1 flex items-end justify-center">
+                <button mat-raised-button color="primary" class="apply-btn dnm-btn dnm-btn-primary min-w-20" (click)="onShowMeterGraph(true)">Show</button>
+            </div>
+        </div>
+    </div>
+    <div class="flex">
+        <div class="flex w-full" *ngIf="profileDataSource" style="height: 500px; overflow: visible !important; background-color: #f8f9fa;">
+            <dx-chart [dataSource]="profileDataSource.Detail" [customizePoint]="customizePoint" (onPointClick)="pointClick($event)" class="w-full">
+                <dxo-title [text]="chartTitleWater" [subtitle]="chartSubTitleWater"></dxo-title>
+                <dxo-size [height]="500"></dxo-size>
+                <dxi-series argumentField="ReadingDateString" valueField="ActFlow" type="bar" color="blue" name="Usage(kL)">
+                  <dxo-hover-style color="#0af5ed"></dxo-hover-style>
+                </dxi-series>
+                <dxo-argument-axis argumentType="string">
+                  <dxo-label displayMode="rotate" [rotationAngle]="-60"></dxo-label>
+                </dxo-argument-axis>
+                <dxo-tooltip [enabled]="false" [zIndex]="5000"
+                             [customizeTooltip]="customizeTooltip">
+                </dxo-tooltip>
+                <dxo-export [enabled]="true"></dxo-export>
+                <dxo-scroll-bar [visible]="true"></dxo-scroll-bar>
+                <dxo-zoom-and-pan argumentAxis="both"></dxo-zoom-and-pan>
+                <dxo-loading-indicator [enabled]="true"></dxo-loading-indicator>
+                <dxo-legend verticalAlignment="bottom" horizontalAlignment="center" zIndex="6000">
+                </dxo-legend>
+            </dx-chart>
+        </div>
+        
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-6 gap-4 w-full">
+        <div class="bg-gradient-to-r col-span-1 lg:col-span-1 flex flex-col flex-auto px-3 py-2 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100"
+            [ngClass]="{'from-indigo-800 to-indigo-500': meter['Night Flow'], 'from-gray-800 to-gray-500': !meter['Night Flow']}">
+            <div class="flex flex-col w-full gap-y-1 justify-between h-full"> 
+                <span class="text-md text-white font-semibold">Night Flow Analysis For Period:</span>
+                <div class="flex flex-col gap-y-1">
+                    <span class="text-sm text-white">Threshold: 5kl</span>
+                    <div class="flex py-1 px-2 bg-white">
+                        <span class="text-md text-red-500 font-semibold">Alarms: 3</span>
+                    </div>
+                </div>                
+            </div>
+        </div>
+        <div class="bg-gradient-to-r col-span-1 lg:col-span-1 flex flex-col flex-auto px-3 py-2 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100"
+            [ngClass]="{'from-blue-500 to-blue-800': meter['Burst Pipe'], 'from-gray-800 to-gray-500': !meter['Burst Pipe']}">
+            <div class="flex flex-col w-full gap-y-1 justify-between h-full"> 
+                <span class="text-md text-white font-semibold">Burst Pipe Analysis For Period:</span>
+                <div class="flex flex-col gap-y-1">
+                    <span class="text-sm text-white">Threshold: 5kL</span>
+                    <div class="flex py-1 px-2 bg-white">
+                        <span class="text-md text-red-500 font-semibold">Alarms: 3</span>
+                    </div>
+                </div>                
+            </div>
+        </div>
+        <div class="bg-gradient-to-r col-span-1 lg:col-span-1 flex flex-col flex-auto px-3 py-2 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100"
+            [ngClass]="{'from-green-700 to-green-500': meter['Leak'], 'from-gray-800 to-gray-500': !meter['Leak']}">
+            <div class="flex flex-col w-full gap-y-1 justify-between h-full"> 
+                <span class="text-md text-white font-semibold">Leak Analysis For Period:</span>
+                <div class="flex flex-col gap-y-1">
+                    <span class="text-sm text-white">Threshold: 5kL</span>
+                    <div class="flex py-1 px-2 bg-white">
+                        <span class="text-md text-red-500 font-semibold">Alarms: 3</span>
+                    </div>
+                </div>                
+            </div>
+        </div>
+        <div class="bg-gradient-to-r col-span-1 lg:col-span-1 flex flex-col flex-auto px-3 py-2 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100"
+            [ngClass]="{'from-yellow-600 to-yellow-400': meter['Daily Usage'], 'from-gray-800 to-gray-500': !meter['Daily Usage']}">
+            <div class="flex flex-col w-full gap-y-1 justify-between h-full">
+                <span class="text-md text-white font-semibold">Daily Usage Analysis For Period:</span>
+                <div class="flex flex-col gap-y-1">
+                    <span class="text-sm text-white">Threshold: 5kL</span>
+                    <div class="flex py-1 px-2 bg-white">
+                        <span class="text-md text-red-500 font-semibold">Alarms: 3</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bg-gradient-to-r col-span-1 lg:col-span-1 flex flex-col flex-auto px-3 py-2 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100"
+            [ngClass]="{'from-purple-700 to-purple-500': meter['Peak'], 'from-gray-800 to-gray-500': !meter['Peak']}">
+            <div class="flex flex-col w-full gap-y-1 justify-between h-full">
+                <span class="text-md text-white font-semibold">Peak Analysis For Period:</span>
+                <div class="flex flex-col gap-y-1">
+                    <span class="text-sm text-white">Threshold: 5kL</span>
+                    <div class="flex py-1 px-2 bg-white">
+                        <span class="text-md text-red-500 font-semibold">Alarms: 3</span>
+                    </div>
+                </div>                
+            </div>
+        </div>
+        <div class="bg-gradient-to-r col-span-1 lg:col-span-1 flex flex-col flex-auto px-3 py-2 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100"
+            [ngClass]="{'from-orange-700 to-orange-500': meter['Average'], 'from-gray-800 to-gray-500': !meter['Average']}">
+            <div class="flex flex-col w-full gap-y-1 justify-between h-full"> 
+                <span class="text-md text-white font-semibold">Average Analysis For Period:</span>
+                <div class="flex flex-col gap-y-1">
+                    <span class="text-sm text-white">Threshold: 5kL</span>
+                    <div class="flex py-1 px-2 bg-white">
+                        <span class="text-md text-red-500 font-semibold">Alarms: 3</span>
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>
+    <div class="flex pt-2 pb-3 bg-gray-200 rounded-md">
+        <div class="flex flex-row flex-wrap gap-6 px-4 pb-1 border-bottom text-xl w-full">
+            <div class="flex cursor-pointer hover:text-gray-500" [ngClass]="{'font-bold underline': selectedAlarmType == 'Night Flow'}" (click)="onSelectAlarmType('Night Flow')">Night Flow</div>
+            <div class="flex cursor-pointer hover:text-gray-500" [ngClass]="{'font-bold underline': selectedAlarmType == 'Burst Pipe'}" (click)="onSelectAlarmType('Burst Pipe')">Burst Pipe</div>
+            <div class="flex cursor-pointer hover:text-gray-500" [ngClass]="{'font-bold underline': selectedAlarmType == 'Leak Detection'}"(click)="onSelectAlarmType('Leak Detection')">Leak Detection</div>
+            <div class="flex cursor-pointer hover:text-gray-500" [ngClass]="{'font-bold underline': selectedAlarmType == 'Daily Usage'}" (click)="onSelectAlarmType('Daily Usage')">Daily Usage</div>
+            <div class="flex cursor-pointer hover:text-gray-500" [ngClass]="{'font-bold underline': selectedAlarmType == 'Peak Usage'}" (click)="onSelectAlarmType('Peak Usage')">Peak Usage</div>
+            <div class="flex cursor-pointer hover:text-gray-500" [ngClass]="{'font-bold underline': selectedAlarmType == 'Average Usage'}" (click)="onSelectAlarmType('Average Usage')">Average Usage</div>
+        </div>
+    </div>
+    <div class="flex text-orange-500 min-h-16 bg-gray-200 items-center px-4 text-md rounded-md" *ngIf="selectedAlarmType">
+        <ng-container *ngIf="selectedAlarmType == 'Burst Pipe'">
+            The Alarm will trigger if the usage exceeds the threshold for the set number of consecutive profiles.    
+        </ng-container>
+        <ng-container *ngIf="selectedAlarmType == 'Night Flow'">
+            The Alarm will trigger if the usage exceeds the threshold for the duration during the selected time range.    
+        </ng-container>
+        <ng-container *ngIf="selectedAlarmType == 'Leak Detection'">
+            The Alarm will trigger if the usage do not fall below the threshold for a set duration during the selected time range.    
+        </ng-container>
+        <ng-container *ngIf="selectedAlarmType == 'Daily Usage'">
+            The Alarm will trigger if the daily (24Hr Cycle) usage exceeds the threshold.
+        </ng-container>
+        <ng-container *ngIf="selectedAlarmType == 'Peak Usage'">
+            The Alarm will trigger if the usage exceeds the threshold for the set number of consecutive profiles during the time range
+        </ng-container>
+        <ng-container *ngIf="selectedAlarmType == 'Average Usage'">
+            The Alarm will trigger if the average usage exceeds the threshold during the selected time range.    
+        </ng-container>
+    </div>
+    <app-alarm-night-flow (delete)="onDelete($event)" (save)="onSave($event)" (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Night Flow'"></app-alarm-night-flow>
+    <app-alarm-burst-pipe (delete)="onDelete($event)" (save)="onSave($event)" (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Burst Pipe'"></app-alarm-burst-pipe>
+    <app-alarm-leak-detection (delete)="onDelete($event)" (save)="onSave($event)" (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Leak Detection'"></app-alarm-leak-detection>
+    <app-alarm-daily-usage (delete)="onDelete($event)" (save)="onSave($event)" (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Daily Usage'"></app-alarm-daily-usage>
+    <app-alarm-peak-usage (delete)="onDelete($event)" (save)="onSave($event)" (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Peak Usage'"></app-alarm-peak-usage>
+    <app-alarm-average-usage (delete)="onDelete($event)" (save)="onSave($event)" (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Average Usage'"></app-alarm-average-usage>
+</div>

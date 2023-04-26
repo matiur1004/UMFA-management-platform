@@ -18,7 +18,7 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { ReportsRoutingModule } from '../reports/reports-routing.module';
 import { SharedModule } from 'app/shared/shared.module';
 import { MatTabsModule } from '@angular/material/tabs';
-import { DxButtonModule, DxDataGridModule, DxDateBoxModule } from 'devextreme-angular';
+import { DxButtonModule, DxChartModule, DxDataGridModule, DxDateBoxModule, DxSelectBoxModule, DxTreeListModule } from 'devextreme-angular';
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -34,6 +34,14 @@ import { AmrScheduleEditComponent } from './amr-schedule/amr-schedule-edit/amr-s
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AmrMeterAssignmentsComponent } from './amr-schedule/amr-meter-assignments/amr-meter-assignments.component';
 import { AmrMeterAssignmentEditComponent } from './amr-schedule/amr-meter-assignment-edit/amr-meter-assignment-edit.component';
+import { AlarmConfigurationComponent } from './alarm-configuration/alarm-configuration.component';
+import { MeterAlarmDetailComponent } from './meter-alarm-detail/meter-alarm-detail.component';
+import { AlarmNightFlowComponent } from './meter-alarm-detail/alarm-night-flow/alarm-night-flow.component';
+import { AlarmBurstPipeComponent } from './meter-alarm-detail/alarm-burst-pipe/alarm-burst-pipe.component';
+import { AlarmLeakDetectionComponent } from './meter-alarm-detail/alarm-leak-detection/alarm-leak-detection.component';
+import { AlarmPeakUsageComponent } from './meter-alarm-detail/alarm-peak-usage/alarm-peak-usage.component';
+import { AlarmDailyUsageComponent } from './meter-alarm-detail/alarm-daily-usage/alarm-daily-usage.component';
+import { AlarmAverageUsageComponent } from './meter-alarm-detail/alarm-average-usage/alarm-average-usage.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +60,15 @@ import { AmrMeterAssignmentEditComponent } from './amr-schedule/amr-meter-assign
     AmrScheduleComponent,
     AmrScheduleEditComponent,
     AmrMeterAssignmentsComponent,
-    AmrMeterAssignmentEditComponent
+    AmrMeterAssignmentEditComponent,
+    AlarmConfigurationComponent,
+    MeterAlarmDetailComponent,
+    AlarmNightFlowComponent,
+    AlarmBurstPipeComponent,
+    AlarmLeakDetectionComponent,
+    AlarmPeakUsageComponent,
+    AlarmDailyUsageComponent,
+    AlarmAverageUsageComponent
   ],
   imports: [
     FormsModule,
@@ -71,7 +87,10 @@ import { AmrMeterAssignmentEditComponent } from './amr-schedule/amr-meter-assign
     MatInputModule,
     NgSelectModule,
     DxDataGridModule,
+    DxTreeListModule,
     DxDateBoxModule,
+    DxChartModule,
+    DxSelectBoxModule,
     DxButtonModule,
     SharedModule
   ],

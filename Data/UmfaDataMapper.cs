@@ -62,6 +62,8 @@ namespace ClientPortal.Data
             CreateMap<DemandProfileResponseDetail, DemandProfile>().ReverseMap();
             CreateMap<AMRWaterProfileResponseHeader, AMRWaterProfileHeader>().ReverseMap();
             CreateMap<WaterProfileResponseDetail, WaterProfile>().ReverseMap();
+            CreateMap<AMRGraphProfileResponseHeader, AMRGraphProfileHeader>().ReverseMap();
+            CreateMap<GraphProfileResponseDetail, GraphProfile>().ReverseMap();
         }
     }
 }

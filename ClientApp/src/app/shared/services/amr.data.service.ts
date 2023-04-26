@@ -2,6 +2,7 @@ import { Time } from "@angular/common";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
+import { formatDateString, formatTimeString } from "@core/utils/umfa.help";
 import { CONFIG } from "app/core/helpers";
 import { BehaviorSubject, catchError, map, Observable, of, throwError } from "rxjs";
 import { IAmrChart, IAmrChartDemProfParams, IAmrChartWaterProfParams, IDemandProfileResponse, ITouHeader, IWaterProfileResponse } from "../../core/models";
@@ -82,6 +83,9 @@ export class AmrDataService {
   private bsWaterProfile: BehaviorSubject<IWaterProfileResponse>;
   public obsWaterProfile$: Observable<IWaterProfileResponse>;
 
+  private bsMeterGraphProfile: BehaviorSubject<any>;
+  public obsMeterGraphProfile$: Observable<any>;
+
   constructor(private router: Router, private http: HttpClient) {
     this.bsSelectedChart = new BehaviorSubject<IAmrChart>(null);
     this.obsSelectedChart = this.bsSelectedChart.asObservable();
@@ -95,6 +99,9 @@ export class AmrDataService {
     this.obsProfChart$ = this.bsProfChart.asObservable();
     this.bsWaterProfile = new BehaviorSubject<IWaterProfileResponse>(null);
     this.obsWaterProfile$ = this.bsWaterProfile.asObservable();
+
+    this.bsMeterGraphProfile = new BehaviorSubject<any>(null);
+    this.obsMeterGraphProfile$ = this.bsMeterGraphProfile.asObservable();
   }
 
   //common methods
@@ -107,17 +114,6 @@ export class AmrDataService {
     this.bsProfChart.next(null);
     this.bsDemSubject.next(null);
     this.bsTouHeaderSub.next(null);
-  }
-
-  formatDateString(dt: Date): string {
-    let ret = `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2, '0')}-${String(dt.getDate()).padStart(2, '0')}`
-    ret += ` ${ String(dt.getHours()).padStart(2, '0') }:${ String(dt.getMinutes()).padStart(2, '0') }`;
-    return ret;
-  }
-
-  formatTimeString(tim: Time): string {
-    let ret = `${ String(tim.hours).padStart(2, '0') }:${ String(tim.minutes).padStart(2, '0') }`;
-    return ret;
   }
 
   catchErrors(error: { error: { message: any; }; message: any; }): Observable<Response> {
@@ -138,7 +134,7 @@ export class AmrDataService {
 
   getDemandProfile(meterId: number, sDate: Date, eDate: Date, touHeaderId: number) {
     this.bsDemSubject.next(null);
-    const url = `${CONFIG.apiURL}${CONFIG.getDemandProfile}?MeterID=${meterId}&StartDate=${this.formatDateString(sDate)}&EndDate=${this.formatDateString(eDate)}&TouHeaderId=${touHeaderId}`;
+    const url = `${CONFIG.apiURL}${CONFIG.getDemandProfile}?MeterID=${meterId}&StartDate=${formatDateString(sDate)}&EndDate=${formatDateString(eDate)}&TouHeaderId=${touHeaderId}`;
     this.http.get<any>(url, { withCredentials: true })
       .pipe(
         catchError(err => this.catchErrors(err)),
@@ -174,8 +170,8 @@ export class AmrDataService {
 
   getWaterProfile(meterId: number, sDate: Date, eDate: Date, nfsTime: Time, nfeTime: Time) {
     this.bsWaterProfile.next(null);
-    let url = `${CONFIG.apiURL}${CONFIG.getWaterProfile}?MeterID=${meterId}&StartDate=${this.formatDateString(sDate)}&EndDate=${this.formatDateString(eDate)}`;
-    url += `&NightFlowStart=${this.formatTimeString(nfsTime)}&NightFlowEnd=${this.formatTimeString(nfeTime)}`;
+    let url = `${CONFIG.apiURL}${CONFIG.getWaterProfile}?MeterID=${meterId}&StartDate=${formatDateString(sDate)}&EndDate=${formatDateString(eDate)}`;
+    url += `&NightFlowStart=${formatTimeString(nfsTime)}&NightFlowEnd=${formatTimeString(nfeTime)}`;
     this.http.get<any>(url, { withCredentials: true })
       .pipe(
         catchError(err => this.catchErrors(err)),
@@ -189,4 +185,23 @@ export class AmrDataService {
       ).subscribe();
   }
 
+  getMeterProfileForGraph(meterId: number, sDate: Date, eDate: Date, nfsTime: Time, nfeTime: Time, applyNightFlow: boolean) {
+    this.bsMeterGraphProfile.next(null);
+    let url = `${CONFIG.apiURL}/AMRMeterGraphs/getGraphProfile?MeterID=${meterId}&StartDate=${formatDateString(sDate)}&EndDate=${formatDateString(eDate)}`;
+    url += `&NightFlowStart=${formatTimeString(nfsTime)}&NightFlowEnd=${formatTimeString(nfeTime)}&applyNightFlow=${applyNightFlow}`;
+    // let url = `${CONFIG.apiURL}${CONFIG.getWaterProfile}?MeterID=${meterId}&StartDate=${formatDateString(sDate)}&EndDate=${formatDateString(eDate)}`;
+    // url += `&NightFlowStart=${formatTimeString(nfsTime)}&NightFlowEnd=${formatTimeString(nfeTime)}`;
+    console.log('url', url);
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchErrors(err)),
+        //tap(p =>
+        //  console.log(`Http response from getDemandProfile: ${p.Status}`)
+        //),
+        map((prof: any) => {
+          this.bsMeterGraphProfile.next(prof);
+          return prof;
+        })
+      );
+  }
 }

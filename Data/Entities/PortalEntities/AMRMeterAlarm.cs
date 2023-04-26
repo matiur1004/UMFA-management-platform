@@ -1,6 +1,4 @@
-﻿using DevExpress.XtraRichEdit.Fields;
-
-namespace ClientPortal.Data.Entities.PortalEntities
+﻿namespace ClientPortal.Data.Entities.PortalEntities
 {
     public class AMRMeterAlarm
     {
@@ -11,8 +9,8 @@ namespace ClientPortal.Data.Entities.PortalEntities
         public float Threshold { get; set; }
         public int Duration { get; set; }
         public string StartTime { get; set; }
-        public string EndTime { get; set;}
+        public string EndTime { get; set; }
         public bool Active { get; set; }
-        
+
     }
 }
