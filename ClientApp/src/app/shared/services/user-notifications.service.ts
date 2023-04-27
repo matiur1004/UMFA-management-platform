@@ -26,6 +26,17 @@ export class UserNotificationsService {
             );
     }
     
+    setUserAlarmNotification(formData): Observable<any> {
+        const url = `${CONFIG.apiURL}/UserAlarmNotificationsConfig/setUserAlarmNotification`;
+        return this.http.post<any>(url, formData, { withCredentials: true })
+            .pipe(
+                catchError(err => this.catchErrors(err)),
+                tap(m => {
+                //console.log(`getMetersForUser observable returned ${m}`);
+                }),
+            );
+    }
+
     //catches errors
     private catchErrors(error: { error: { message: any; }; message: any; }): Observable<Response> {
         if (error && error.error && error.error.message) { //clientside error

@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, UntypedFormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AllowedPageSizes } from '@core/helpers';
 import { IUmfaBuilding, IUmfaPartner } from '@core/models';
 import { BuildingService, UserService } from '@shared/services';
 import { UserNotificationsService } from '@shared/services/user-notifications.service';
 import { Subject, takeUntil } from 'rxjs';
+import { SetUserNotificationComponent } from './set-user-notification/set-user-notification.component';
 
 @Component({
   selector: 'app-user-notifications',
@@ -31,7 +33,8 @@ export class UserNotificationsComponent implements OnInit {
     private _buildingService: BuildingService,
     private _userService: UserService,
     private _userNotificationsService: UserNotificationsService,
-    private _router: Router
+    private _router: Router,
+    private _matDialog: MatDialog,
   ) { 
     this.onEdit = this.onEdit.bind(this);
   }
@@ -39,8 +42,8 @@ export class UserNotificationsComponent implements OnInit {
   ngOnInit(): void {
     this.searchForm = this._formBuilder.group({
       partnerId: [],
-      buildingId: [],
-      userId: []
+      buildingId: [2983],
+      userId: [1]
     });
     this._userNotificationsService.userNotifications$
       .pipe(takeUntil(this._unsubscribeAll))
@@ -76,11 +79,17 @@ export class UserNotificationsComponent implements OnInit {
         this.users = data;
       })
 
+    this.getUserNotifications();
+
     this.searchForm.valueChanges.subscribe(formData => {
       if(formData['buildingId'] && formData['userId']) {
-        this._userNotificationsService.getUserAlarmNotificationConfig(formData).subscribe();
+        this.getUserNotifications();
       }
     })
+  }
+
+  getUserNotifications() {
+    this._userNotificationsService.getUserAlarmNotificationConfig(this.searchForm.value).subscribe();
   }
 
   customSearch(term: string, item: any) {
@@ -102,6 +111,15 @@ export class UserNotificationsComponent implements OnInit {
 
   onEdit(e) {
     e.event.preventDefault();
+    this._matDialog.open(SetUserNotificationComponent, {autoFocus: false, data: {
+      detail: e.row.data,
+      AMRMeterId: e.row.data['AMRMeterId'],
+      UserId: this.searchForm.get('userId').value
+    } })
+      .afterClosed()
+      .subscribe((res) => {
+        this.getUserNotifications();
+      });
     //this._router.navigate([`/admin/amrSchedule/edit/${e.row.data.Id}`]);
   }
 }
