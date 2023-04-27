@@ -41,10 +41,13 @@ export class SetUserNotificationComponent implements OnInit {
     })
 
     this.form.patchValue(this.data.detail);
+    this.alarmTypes.forEach(alarm => {
+      let name = alarm['name'];
+      if(this.data.detail[name] == 0) this.form.get(name).disable();  
+    })
   }
 
   onAlarmChange(event, type) {
-    console.log(event.checked);
     let alarm = this.alarmTypes.find(item => item.name == type);
     let formData = {
       AlarmTypeId: alarm['id'],
@@ -53,6 +56,12 @@ export class SetUserNotificationComponent implements OnInit {
       UserId: this.data['UserId']
     };
     this.userNotificationService.setUserAlarmNotification(formData).subscribe();
+  }
+
+  onAlarmClick(event, type) {
+    if(this.form.get(type).value == 1) {
+      event.preventDefault();
+    }    
   }
 
   close() {

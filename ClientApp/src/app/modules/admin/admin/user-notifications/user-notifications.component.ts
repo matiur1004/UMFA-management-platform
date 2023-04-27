@@ -42,8 +42,8 @@ export class UserNotificationsComponent implements OnInit {
   ngOnInit(): void {
     this.searchForm = this._formBuilder.group({
       partnerId: [],
-      buildingId: [2983],
-      userId: [1]
+      buildingId: [],
+      userId: []
     });
     this._userNotificationsService.userNotifications$
       .pipe(takeUntil(this._unsubscribeAll))
@@ -78,8 +78,6 @@ export class UserNotificationsComponent implements OnInit {
       .subscribe((data) => {
         this.users = data;
       })
-
-    this.getUserNotifications();
 
     this.searchForm.valueChanges.subscribe(formData => {
       if(formData['buildingId'] && formData['userId']) {
