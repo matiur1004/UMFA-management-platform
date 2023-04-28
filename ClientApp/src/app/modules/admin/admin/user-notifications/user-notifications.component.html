@@ -78,12 +78,12 @@
             ></dxo-search-panel>
             <dxi-column dataField="MeterNo" caption="Meter No" [minWidth]="120"></dxi-column>
             <dxi-column dataField="Description" [minWidth]="200"></dxi-column>
-            <dxi-column dataField="Night Flow" [minWidth]="80"></dxi-column>
-            <dxi-column dataField="Burst Pipe" [minWidth]="80"></dxi-column>
-            <dxi-column dataField="Leak" caption="Leak Detected" [minWidth]="80"></dxi-column>
-            <dxi-column dataField="Daily Usage" [minWidth]="80"></dxi-column>
-            <dxi-column dataField="Peak" caption="Peak Excedeed" [minWidth]="80"></dxi-column>
-            <dxi-column dataField="Average" caption="Avg Excedeed" [minWidth]="80"></dxi-column>
+            <dxi-column dataField="Night Flow" [minWidth]="80" cellTemplate="cellTemplate"></dxi-column>
+            <dxi-column dataField="Burst Pipe" [minWidth]="80" cellTemplate="cellTemplate"></dxi-column>
+            <dxi-column dataField="Leak" caption="Leak Detected" [minWidth]="80" cellTemplate="cellTemplate"></dxi-column>
+            <dxi-column dataField="Daily Usage" [minWidth]="80" cellTemplate="cellTemplate"></dxi-column>
+            <dxi-column dataField="Peak" caption="Peak Excedeed" [minWidth]="80" cellTemplate="cellTemplate"></dxi-column>
+            <dxi-column dataField="Average" caption="Avg Excedeed" [minWidth]="80" cellTemplate="cellTemplate"></dxi-column>
             <dxi-column type="buttons" [minWidth]="80">
                 <dxi-button
                   hint="Edit"
@@ -91,6 +91,18 @@
                   [onClick]="onEdit"
                 ></dxi-button>
             </dxi-column>
+            <div *dxTemplate="let data of 'cellTemplate'">
+                <div class="flex gap-x-1 justify-center items-center">
+                    <ng-container *ngIf="data.value == 1">
+                        <mat-checkbox (click)="$event.preventDefault()"></mat-checkbox>
+                    </ng-container>
+                    <ng-container *ngIf="data.value == 2">
+                        <mat-checkbox [checked]="true" (click)="$event.preventDefault()"></mat-checkbox>
+                    </ng-container>
+                    
+                </div>
+                
+            </div>
         </dx-data-grid>
       </div>
     </div>
