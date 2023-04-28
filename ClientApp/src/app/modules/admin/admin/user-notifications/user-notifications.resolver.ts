@@ -5,20 +5,21 @@ import {
   ActivatedRouteSnapshot
 } from '@angular/router';
 import { BuildingService, UserService } from '@shared/services';
-import { forkJoin, Observable, of } from 'rxjs';
+import { Observable, forkJoin, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AlarmConfigurationResolver implements Resolve<boolean> {
+export class UserNotificationsResolver implements Resolve<any> {
   constructor(
     private _buildingService: BuildingService,
-    private _userService: UserService,
+    private _userService: UserService
   ){}
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     return forkJoin([
       this._buildingService.getBuildingsForUser(this._userService.userValue.UmfaId),
-      this._buildingService.getPartnersForUser(this._userService.userValue.UmfaId)
+      this._buildingService.getPartnersForUser(this._userService.userValue.UmfaId),
+      this._userService.getAllUsers()
     ]);
   }
 }
