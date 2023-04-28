@@ -1,7 +1,7 @@
-﻿using ClientPortal.Data.Entities;
+﻿using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Helpers;
 
-namespace ClientPortal.Models
+namespace ClientPortal.Models.ResponseModels
 {
     public class AMRScadaUserUpdateResponse
     {

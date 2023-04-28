@@ -1,5 +1,5 @@
 ﻿
-namespace ClientPortal.Models
+namespace ClientPortal.Models.ResponseModels
 {
     [Serializable]
     public class DemandProfileResponseHeader

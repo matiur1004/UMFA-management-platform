@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ClientPortal.Data.Entities;
+using ClientPortal.Data.Entities.PortalEntities;
 
 namespace ClientPortal.Data.Repositories
 {

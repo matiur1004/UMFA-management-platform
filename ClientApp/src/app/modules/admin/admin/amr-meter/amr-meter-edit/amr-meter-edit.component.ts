@@ -21,6 +21,9 @@ export class AmrMeterEditComponent implements OnInit {
   buildings: IUmfaBuilding[];
   utils: IUtility[];
   makes: IMeterMakeModel[];
+  makeItems: any[];
+  modelItems: any[];
+
   errMessage: string;
 
   form: UntypedFormGroup;
@@ -71,7 +74,18 @@ export class AmrMeterEditComponent implements OnInit {
   async onUtilitiesRetrieved(utils: IUtility[]): Promise<void> {
     this.utils = utils;
     if (this.amrMeter.Id == 0) this.changeUtil(this.utils[0].Id);
-    else this.makes = this.utils.find(u => u.Id == this.amrMeter.UtilityId).MakeModels;
+    else {
+      this.makes = this.utils.find(u => u.Id == this.amrMeter.UtilityId).MakeModels;
+      this.makeItems = []; 
+      this.modelItems = [];
+      this.makes.forEach(item => {
+        let filterMake = this.makeItems.find(obj => obj.Name == item.Make);
+        if(!filterMake) this.makeItems.push({Name: item.Make});
+
+        let filterModel = this.makeItems.find(obj => obj.Name == item.Model);
+        if(!filterModel) this.modelItems.push({Name: item.Model});
+      });
+    }
   }
 
   async onBuildingsRetrieved(bldgs: IUmfaBuilding[]): Promise<void> {
@@ -167,10 +181,11 @@ export class AmrMeterEditComponent implements OnInit {
       let Utility = util.Name;
 
       // get building 
-      var bld = this.buildings.find(b => b.BuildingId  == this.form.get('UmfaId').value);
-      let BuildingName = bld.Name;
+      // var bld = this.buildings.find(b => b.BuildingId  == this.form.get('UmfaId').value);
+      let BuildingName = 'BuildingName';
 
       this.updMeter.Meter = { ...formData, Utility, BuildingName };
+      this.updMeter.Meter.Active = true;
       var dialData = DialogConstants.updateDialog;
       this.dialogService.confirmDialog(dialData).subscribe({
         next: r => {
@@ -199,6 +214,9 @@ export class AmrMeterEditComponent implements OnInit {
     this.updMeter.UserId = this.opUsrId;
     this.updMeter.Meter = this.amrMeter;
     this.updMeter.Meter.Active = false;
+    
+    this.updMeter.Meter.BuildingName = 'BuildingName';
+
     var dialData = DialogConstants.deleteDialog;
     this.dialogService.confirmDialog(dialData).subscribe({
       next: r => {

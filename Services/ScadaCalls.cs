@@ -22,7 +22,8 @@ namespace ClientPortal.Services
             try
             {
                 string url = $"{job.SqdUrl}readMeterProfile?LOGIN={job.ProfileName}.{job.ScadaUserName}&PWD={job.ScadaPassword}";
-                url += $"&eid={job.CommsId}&startdate={job.FromDate.ToString("yyyy-MM-dd HH:mm")}&enddate={job.ToDate.ToString("yyyy-MM-dd HH:mm")}";
+                //url += $"&eid={job.CommsId}&startdate={job.FromDate.ToString("yyyy-MM-dd HH:mm")}&enddate={job.ToDate.ToString("yyyy-MM-dd HH:mm")}";
+                url += $"&key1={job.Key1}&startdate={job.FromDate.ToString("yyyy-MM-dd HH:mm")}&enddate={job.ToDate.ToString("yyyy-MM-dd HH:mm")}";
                 using var httpClient = new HttpClient();
                 using var resp = await httpClient.GetAsync(url);
                 var result = await resp.Content.ReadAsStreamAsync();
@@ -47,7 +48,8 @@ namespace ClientPortal.Services
             try
             {
                 string url = $"{job.SqdUrl}readMeterTotals?LOGIN={job.ProfileName}.{job.ScadaUserName}&PWD={job.ScadaPassword}";
-                url += $"&eid={job.CommsId}&startdate={job.FromDate.ToString("yyyy-MM-dd HH:mm")}&enddate={job.ToDate.ToString("yyyy-MM-dd HH:mm")}";
+                //url += $"&eid={job.CommsId}&startdate={job.FromDate.ToString("yyyy-MM-dd HH:mm")}&enddate={job.ToDate.ToString("yyyy-MM-dd HH:mm")}";
+                url += $"&key1={job.Key1}&startdate={job.FromDate.ToString("yyyy-MM-dd HH:mm")}&enddate={job.ToDate.ToString("yyyy-MM-dd HH:mm")}";
                 using var httpClient = new HttpClient();
                 using var resp = await httpClient.GetAsync(url);
                 var result = await resp.Content.ReadAsStreamAsync();

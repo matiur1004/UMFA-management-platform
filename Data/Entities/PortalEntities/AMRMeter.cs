@@ -1,7 +1,7 @@
-﻿using ClientPortal.Models;
+﻿using ClientPortal.Models.RequestModels;
 using System.Text.Json.Serialization;
 
-namespace ClientPortal.Data.Entities
+namespace ClientPortal.Data.Entities.PortalEntities
 {
     [Serializable]
 
@@ -25,7 +25,6 @@ namespace ClientPortal.Data.Entities
         public int UserId { get; set; }
         public User User { get; set; }
         public int BuildingId { get; set; }
-        public Building Building { get; set; }
         [JsonIgnore]
         public List<ScadaRequestDetail> ScadaRequestDetails { get; set; }
         [JsonIgnore]
@@ -47,7 +46,7 @@ namespace ClientPortal.Data.Entities
             CommsId = meterReq.CommsId;
             MeterSerial = meterReq.CommsId != null && meterReq.MeterSerial == null ? meterReq.MeterNo : meterReq.MeterSerial;
             UserId = user.Id;
-            BuildingId = building.Id;
+            BuildingId = building.UmfaId;
         }
     }
 }

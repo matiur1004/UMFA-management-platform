@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Cors;
-using ClientPortal.Controllers.Authorization;
+﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Services;
 
 namespace ClientPortal.Controllers
@@ -19,7 +18,7 @@ namespace ClientPortal.Controllers
             _buildingService = buildingService;
         }
 
-        [HttpGet("umfabuildings/{umfauserid}")]
+        [HttpGet("umfaBuildings/{umfaUserId}")]
         public IActionResult GetUmfaBuildings(int umfaUserId)
         {
             _logger.LogInformation($"Get umfa buildngs via service for user {umfaUserId}");
@@ -40,7 +39,29 @@ namespace ClientPortal.Controllers
             }
         }
 
-        [HttpGet("Periods/{umfabuildingid:int}")]
+        [HttpGet("umfaMeters/{umfaBuildingId}")]
+        public IActionResult GetUmfaMeters(int umfaBuildingId)
+        {
+            _logger.LogInformation($"Get umfa meters via service for building {umfaBuildingId}");
+            try
+            {
+                var response = _buildingService.GetUmfaMetersAsync(umfaBuildingId).Result.UmfaMeters;
+                if (response != null)
+                {
+                    _logger.LogInformation($"Successfully got umfa meters for building {umfaBuildingId}");
+                    return Ok(response);
+                }
+                else throw new ApplicationException($"Failed to get umfa meters for building {umfaBuildingId}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while getting meters for building {umfaBuildingId}: {ex.Message}");
+                return BadRequest(new ApplicationException(ex.Message));
+            }
+        }
+
+
+        [HttpGet("Periods/{umfaBuildingId:int}")]
         public IActionResult GetPeriods(int umfaBuildingId)
         {
             _logger.LogInformation("API initiated to retrieve periods for building {buildingId", umfaBuildingId);
@@ -61,7 +82,7 @@ namespace ClientPortal.Controllers
             }
         }
 
-        [HttpGet("Partners/{umfauserid:int}")]
+        [HttpGet("Partners/{umfaUserId:int}")]
         public IActionResult GetPartners(int umfaUserId)
         {
             _logger.LogInformation("API initiated to retrieve partners for user {umfaUserId", umfaUserId);

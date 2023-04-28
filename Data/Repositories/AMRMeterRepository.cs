@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
-using ClientPortal.Data.Entities;
-using ClientPortal.Models;
+using ClientPortal.Data.Entities.PortalEntities;
+using ClientPortal.Data.Entities.UMFAEntities;
+using ClientPortal.Models.RequestModels;
+using ClientPortal.Models.ResponseModels;
+using static DevExpress.Xpo.Helpers.AssociatedCollectionCriteriaHelper;
 
 namespace ClientPortal.Data.Repositories
 {
@@ -50,7 +53,7 @@ namespace ClientPortal.Data.Repositories
                 if (SaveChangesAsync().Result)
                 {
                     _logger.LogInformation("Successfully saved meter {MeterNo}", meter.Meter.MeterNo);
-                    retMeter = await _dbContext.AMRMeters.Include(m => m.Building).Include(m => m.MakeModel).FirstOrDefaultAsync(m => m.Id == newMeter.Id);
+                    retMeter = await _dbContext.AMRMeters.Include(m => m.MakeModel).FirstOrDefaultAsync(m => m.Id == newMeter.Id);
                 }
                 return new AMRMeterResponse(retMeter);
             }
@@ -81,7 +84,7 @@ namespace ClientPortal.Data.Repositories
                     if (result == null) throw new ApplicationException($"Amr meter with id {meter.Id} not found");
                     if (result.MeterNo != meter.MeterNo) result.MeterNo = meter.MeterNo;
                     if (result.Description != meter.Description) result.Description = meter.Description;
-                    if (result.BuildingId != meter.BuildingId) result.BuildingId = meter.BuildingId;
+                    if (result.BuildingId != meter.BuildingId && meter.BuildingId != 0) result.BuildingId = meter.BuildingId;
                     if (result.MakeModelId != meter.MakeModelId) result.MakeModelId = meter.MakeModelId;
                     if (result.Phase != meter.Phase) result.Phase = meter.Phase;
                     if (result.CbSize != meter.CbSize) result.CbSize = meter.CbSize;
@@ -94,6 +97,7 @@ namespace ClientPortal.Data.Repositories
                     if (result.MeterSerial != meter.MeterSerial) result.MeterSerial = meter.MeterSerial;
                     if (result.UserId != meter.UserId) result.UserId = meter.UserId;
                     retMeter = _mapper.Map<AMRMeterResponse>(result);
+
                     var ret = await SaveChangesAsync();
                     if (!ret) throw new ApplicationException("Error saving meter");
                 }
@@ -130,7 +134,7 @@ namespace ClientPortal.Data.Repositories
             //_logger.LogInformation($"Retrieving meter with id {id}");
             try
             {
-                var meter = await _dbContext.AMRMeters.Include(m => m.Building)
+                var meter = await _dbContext.AMRMeters
                     .Include(m => m.MakeModel)
                     .ThenInclude(mm => mm.Utility)
                     .FirstOrDefaultAsync(m => m.Id == id);
@@ -161,8 +165,7 @@ namespace ClientPortal.Data.Repositories
                 AMRMeterResponseList respList = new();
                 var meters = await _dbContext.AMRMeters
                     .Include(a => a.MakeModel)
-                    .Include(a => a.Building)
-                    .Where(a => (a.Active && a.Building.Users.Contains(user)))
+                    .Where(a => (a.Active && a.UserId == userId))
                     .ToListAsync();
                 if (meters != null && meters.Count > 0)
                 {
@@ -208,8 +211,7 @@ namespace ClientPortal.Data.Repositories
                 AMRMeterResponseList respList = new();
                 var meters = await _dbContext.AMRMeters
                     .Include(a => a.MakeModel)
-                    .Include(a => a.Building)
-                    .Where(a => (a.Active && a.MakeModel.UtilityId == meterMakeModelId && a.Building.Users.Contains(user)))
+                    .Where(a => (a.Active && a.MakeModel.UtilityId == meterMakeModelId && a.UserId == userId))
                     .ToListAsync();
                 if (meters != null && meters.Count > 0)
                 {

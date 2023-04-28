@@ -9,3 +9,5 @@ export * from './meter.service';
 export * from './building.service';
 export * from './amr.data.service';
 export * from './dx-report-service';
+export * from './meter-mapping.service';
+export * from './notification.service';

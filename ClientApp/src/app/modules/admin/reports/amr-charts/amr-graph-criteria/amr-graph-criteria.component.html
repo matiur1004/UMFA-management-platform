@@ -116,7 +116,7 @@
           <div class="flex flex-col w-full">
             <dx-date-box id="sDateId" class="form-control" placeholder="Date From" type="date" label="Start date"
               labelMode="static" name="sdp" [(ngModel)]="sdtModel" required #sDt="ngModel"
-              (onValueChanged)="valueChangedDemand($event, frmReportWaterParams)"
+              (onValueChanged)="valueChangedWater($event, frmReportWaterParams)"
               [ngClass]="{'is-invalid': (sDt.touched && (sDt.invalid)) }" displayFormat="yyyy-MM-dd"> </dx-date-box>
             <!-- <span class="invalid-feedback">
               <span *ngIf="sDt.errors?.required">
@@ -127,7 +127,7 @@
           <div class="flex w-full flex-col">
             <dx-date-box id="eDateId" class="form-control" placeholder="Date To" type="date" label="End date"
               labelMode="static" name="edp" [(ngModel)]="edtModel" required #eDtP="ngModel"
-              (onValueChanged)="valueChangedDemand($event, frmReportWaterParams)"
+              (onValueChanged)="valueChangedWater($event, frmReportWaterParams)"
               [ngClass]="{'is-invalid': (eDtP.touched && (eDtP.invalid)) }" displayFormat="yyyy-MM-dd"> </dx-date-box>
             <!-- <span class="invalid-feedback">
               <span *ngIf="eDtP.errors?.required">
@@ -142,7 +142,7 @@
           <div class="flex flex-col w-full">
             <dx-date-box type="time" placeholder="Time" displayFormat="HH:mm" [(ngModel)]="sTime" label="Start time"
               labelMode="static" #sDtT="ngModel" name="sdT" required class="form-control"
-              (onValueChanged)="valueChangedDemand($event, frmReportWaterParams)"
+              (onValueChanged)="valueChangedWater($event, frmReportWaterParams)"
               [ngClass]="{'is-invalid': (sDtT.touched && (sDtT.invalid)) }"> </dx-date-box>
               <!-- <span class="invalid-feedback">
                 <span *ngIf="sDtT.errors?.required">
@@ -153,7 +153,7 @@
           <div class="flex flex-col w-full">
             <dx-date-box type="time" placeholder="Time" displayFormat="HH:mm" [(ngModel)]="eTime" label="End time"
               labelMode="static" #eDtT="ngModel" name="edT" required class="form-control"
-              (onValueChanged)="valueChangedDemand($event, frmReportWaterParams)"
+              (onValueChanged)="valueChangedWater($event, frmReportWaterParams)"
               [ngClass]="{'is-invalid': (eDtT.touched && (eDtT.invalid)) }"> </dx-date-box>
             <!-- <span class="invalid-feedback">
               <span *ngIf="eDtT.errors?.required">

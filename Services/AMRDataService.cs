@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
-using ClientPortal.Data.Entities;
+using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Data.Repositories;
 using ClientPortal.DtOs;
-using ClientPortal.Models;
+using ClientPortal.Models.RequestModels;
+using ClientPortal.Models.ResponseModels;
 
 namespace ClientPortal.Services
 {
@@ -15,6 +16,7 @@ namespace ClientPortal.Services
         Task<bool> DetailQueueStatusChange(int detailId, int status);
         Task<AmrJob> ProcessProfileJob(AmrJobToRun job);
         Task<AmrJob> ProcessReadingsJob(AmrJobToRun job);
+        Task<AMRGraphProfileResponse> GetGraphProfile(AMRGraphProfileRequest request);
     }
 
     public class AMRDataService : IAMRDataService
@@ -47,17 +49,17 @@ namespace ClientPortal.Services
 
         public async Task<AmrJob> ProcessReadingsJob(AmrJobToRun job)
         {
-            _logger.LogInformation("Retrieving Reading Data from Scada for: {commsid}", job.CommsId);
+            _logger.LogInformation("Retrieving Reading Data from Scada for: {key1}", job.Key1);
             //get tracked item for updates
             ScadaRequestHeader trackedHeader = await _repo.GetTrackedScadaHeader(job.HeaderId, job.DetailId);
             try
             {
                 DateTime runStart = DateTime.UtcNow;
-                AmrJob ret = new() { CommsIs = job.CommsId, RunDate = runStart, Success = false };
+                AmrJob ret = new() { CommsIs = job.CommsId, Key1 = job.Key1, RunDate = runStart, Success = false };
 
                 //update the current run date and status (2: running) for header and detail
                 trackedHeader.ScadaRequestDetails[0].CurrentRunDTM = runStart;
-                trackedHeader.ScadaRequestDetails[0].Status = 2;
+                trackedHeader.ScadaRequestDetails[0].Status = 3;
 
                 if (!await _repo.SaveTrackedItems())
                 {
@@ -71,7 +73,7 @@ namespace ClientPortal.Services
                     throw new ApplicationException($"Scada call returned failure: {readings?.Result ?? "Empty Object"}");
                 }
 
-                trackedHeader.ScadaRequestDetails[0].Status = 3;
+                trackedHeader.ScadaRequestDetails[0].Status = 4;
 
                 //insert the data into the database
                 if (!await _repo.InsertScadaReadingData(readings))
@@ -79,7 +81,7 @@ namespace ClientPortal.Services
                     throw new ApplicationException($"Failed to insert reading data");
                 }
 
-                trackedHeader.ScadaRequestDetails[0].Status = 4;
+                trackedHeader.ScadaRequestDetails[0].Status = 5;
                 if (!await _repo.SaveTrackedItems())
                 {
                     throw new ApplicationException("Could not save tracked items form service");
@@ -87,7 +89,7 @@ namespace ClientPortal.Services
 
                 //update the detail 
                 trackedHeader.LastRunDTM = runStart;
-                trackedHeader.ScadaRequestDetails[0].Status = 0;
+                trackedHeader.ScadaRequestDetails[0].Status = 1;
                 trackedHeader.ScadaRequestDetails[0].LastRunDTM = runStart;
                 DateTime lastDate = (DateTime.Parse(readings.Meter.EndTotal.ReadingDate) < job.FromDate.AddHours(24)) ?
                     job.FromDate.AddHours(24) :
@@ -105,8 +107,8 @@ namespace ClientPortal.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error while retrieving scada data for {commsid}: {msg}", job.CommsId, ex.Message);
-                trackedHeader.ScadaRequestDetails[0].Status = 6;
+                _logger.LogError("Error while retrieving scada data for {key1}: {msg}", job.Key1, ex.Message);
+                trackedHeader.ScadaRequestDetails[0].Status = 7;
                 await _repo.SaveTrackedItems();
                 throw;
             }
@@ -114,17 +116,17 @@ namespace ClientPortal.Services
 
         public async Task<AmrJob> ProcessProfileJob(AmrJobToRun job)
         {
-            _logger.LogInformation("Retrieving Data from Scada for: {commsid}", job.CommsId);
+            _logger.LogInformation("Retrieving Data from Scada for: {key1}", job.Key1);
             //get tracked item for updates
             ScadaRequestHeader trackedHeader = await _repo.GetTrackedScadaHeader(job.HeaderId, job.DetailId);
             try
             {
                 DateTime runStart = DateTime.UtcNow;
-                AmrJob ret = new() { CommsIs = job.CommsId, RunDate = runStart, Success = false };
+                AmrJob ret = new() { CommsIs = job.CommsId, Key1 = job.Key1, RunDate = runStart, Success = false };
 
                 //update the current run date and status (2: running) for header and detail
                 trackedHeader.ScadaRequestDetails[0].CurrentRunDTM = runStart;
-                trackedHeader.ScadaRequestDetails[0].Status = 2;
+                trackedHeader.ScadaRequestDetails[0].Status = 3;
 
                 if (!await _repo.SaveTrackedItems())
                 {
@@ -138,7 +140,7 @@ namespace ClientPortal.Services
                     throw new ApplicationException($"Scada call returned failure: {profile.Result ?? "Empty Object"}");
                 }
 
-                trackedHeader.ScadaRequestDetails[0].Status = 3;
+                trackedHeader.ScadaRequestDetails[0].Status = 4;
 
                 if (!await _repo.SaveTrackedItems())
                 {
@@ -151,7 +153,7 @@ namespace ClientPortal.Services
                     throw new ApplicationException($"Failed to insert profile data");
                 }
 
-                trackedHeader.ScadaRequestDetails[0].Status = 4;
+                trackedHeader.ScadaRequestDetails[0].Status = 5;
                 if (!await _repo.SaveTrackedItems())
                 {
                     throw new ApplicationException("Could not save tracked items form service");
@@ -161,7 +163,7 @@ namespace ClientPortal.Services
 
                 //update the detail 
                 trackedHeader.LastRunDTM = runStart;
-                trackedHeader.ScadaRequestDetails[0].Status = 0;
+                trackedHeader.ScadaRequestDetails[0].Status = 1;
                 trackedHeader.ScadaRequestDetails[0].LastRunDTM = runStart;
                 if (profile.Meter.ProfileSamples.Length > 0)
                     trackedHeader.ScadaRequestDetails[0].LastDataDate = DateTime.Parse(profile.Meter.ProfileSamples[profile.Meter.ProfileSamples.Length - 1].Date);
@@ -177,8 +179,8 @@ namespace ClientPortal.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error while retrieving scada data for {commsid}: {msg}", job.CommsId, ex.Message);
-                trackedHeader.ScadaRequestDetails[0].Status = 6;
+                _logger.LogError("Error while retrieving scada data for {key1}: {msg}", job.Key1, ex.Message);
+                trackedHeader.ScadaRequestDetails[0].Status = 7;
                 await _repo.SaveTrackedItems();
                 throw;
             }
@@ -195,12 +197,12 @@ namespace ClientPortal.Services
 
                 if (headers != null && headers.Count > 0)
                 {
-                    bool statusChanged = await _repo.UpdateAmrJobStatus(headers, 1); //update status to running = 1
+                    bool statusChanged = await _repo.UpdateAmrJobStatus(headers, 2); //update status to running = 2
                     if (statusChanged)
                     {
                         foreach (var header in headers)
                         {
-                            if (header.JobType == 1)
+                            if (header.JobType == 1) //Profile Job
                             {
                                 foreach (var detail in header.ScadaRequestDetails)
                                 {
@@ -219,6 +221,7 @@ namespace ClientPortal.Services
                                                 HeaderId = header.Id,
                                                 DetailId = detail.Id,
                                                 CommsId = detail.AmrMeter.CommsId,
+                                                Key1 = detail.AmrMeter.MeterSerial,
                                                 SqdUrl = detail.AmrScadaUser.SgdUrl,
                                                 ProfileName = detail.AmrScadaUser.ProfileName,
                                                 ScadaUserName = detail.AmrScadaUser.ScadaUserName,
@@ -233,7 +236,7 @@ namespace ClientPortal.Services
                                     }
                                 }
                             }
-                            else if (header.JobType == 2)
+                            else if (header.JobType == 2) //Readings
                             {
                                 foreach (var detail in header.ScadaRequestDetails)
                                 {
@@ -252,6 +255,7 @@ namespace ClientPortal.Services
                                                 HeaderId = header.Id,
                                                 DetailId = detail.Id,
                                                 CommsId = detail.AmrMeter.CommsId,
+                                                Key1 = detail.AmrMeter.MeterSerial,
                                                 SqdUrl = detail.AmrScadaUser.SgdUrl,
                                                 ProfileName = detail.AmrScadaUser.ProfileName,
                                                 ScadaUserName = detail.AmrScadaUser.ScadaUserName,
@@ -267,7 +271,7 @@ namespace ClientPortal.Services
                                 }
                             }
                         }
-                        await _repo.UpdateAmrJobStatus(headers, 0);
+                        await _repo.UpdateAmrJobStatus(headers, 1);
                     }
                 }
 
@@ -286,16 +290,16 @@ namespace ClientPortal.Services
             AMRWaterProfileResponse result = new();
             try
             {
-                var res = await _repo.GetWaterProfile(request.MeterId, request.StartDate, request.EndDate, request.NightFlowStart, request.NightFlowEnd);
+                var res = await _repo.GetWaterProfile(request.MeterId, request.StartDate, request.EndDate, request.NightFlowStart, request.NightFlowEnd, request.ApplyNightFlow);
                 result.Header = _mapper.Map<AMRWaterProfileResponseHeader>(res);
                 result.Detail = _mapper.Map<List<WaterProfileResponseDetail>>(res.Profile);
                 return result;
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error retreiving water profile data for meter {meterId}: {Message}", request.MeterId, ex.Message);
+                _logger.LogError("Error retrieving water profile data for meter {meterId}: {Message}", request.MeterId, ex.Message);
                 result.Status = "Error";
-                result.ErrorMessage = $"Error retreiving water profile data for meter {request.MeterId}: {ex.Message}";
+                result.ErrorMessage = $"Error retrieving water profile data for meter {request.MeterId}: {ex.Message}";
                 return result;
             }
         }
@@ -313,9 +317,29 @@ namespace ClientPortal.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error retreiving demand profile data for meter {meterId}: {Message}", request.MeterId, ex.Message);
+                _logger.LogError("Error retrieving demand profile data for meter {meterId}: {Message}", request.MeterId, ex.Message);
                 result.Status = "Error";
-                result.ErrorMessage = $"Error retreiving demand profile data for meter {request.MeterId}: {ex.Message}";
+                result.ErrorMessage = $"Error retrieving demand profile data for meter {request.MeterId}: {ex.Message}";
+                return result;
+            }
+        }
+
+        public async Task<AMRGraphProfileResponse> GetGraphProfile(AMRGraphProfileRequest request)
+        {
+            _logger.LogInformation($"Attempting to retrieve graph profile data for meter {request.MeterId}");
+            AMRGraphProfileResponse result = new();
+            try
+            {
+                var res = await _repo.GetGraphProfile(request.MeterId, request.StartDate, request.EndDate, request.NightFlowStart, request.NightFlowEnd, request.ApplyNightFlow);
+                result.Header = _mapper.Map<AMRGraphProfileResponseHeader>(res);
+                result.Detail = _mapper.Map<List<GraphProfileResponseDetail>>(res.Profile);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error retrieving graph profile data for meter {meterId}: {Message}", request.MeterId, ex.Message);
+                result.Status = "Error";
+                result.ErrorMessage = $"Error retrieving graph profile data for meter {request.MeterId}: {ex.Message}";
                 return result;
             }
         }

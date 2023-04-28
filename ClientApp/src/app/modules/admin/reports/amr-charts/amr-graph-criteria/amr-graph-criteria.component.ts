@@ -116,7 +116,7 @@ export class AmrGraphCriteriaComponent implements OnInit, OnDestroy {
         dt.setHours(0, 0, 0);
         this.edtModel = dt;
         this.eTime = dt;
-      }
+        }
       this.setCriteriaWater(frm);
     }
   }

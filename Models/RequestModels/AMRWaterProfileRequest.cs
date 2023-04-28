@@ -1,5 +1,5 @@
 ﻿
-namespace ClientPortal.Models
+namespace ClientPortal.Models.RequestModels
 {
     public class AMRWaterProfileRequest
     {
@@ -8,5 +8,6 @@ namespace ClientPortal.Models
         public DateTime EndDate { get; set; }
         public TimeOnly NightFlowStart { get; set; }
         public TimeOnly NightFlowEnd { get; set; }
+        public bool ApplyNightFlow { get; set; }
     }
 }

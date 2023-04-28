@@ -1,6 +1,6 @@
-﻿using ClientPortal.Data.Entities;
+﻿using ClientPortal.Data.Entities.UMFAEntities;
 
-namespace ClientPortal.Models
+namespace ClientPortal.Models.ResponseModels
 {
     public class UMFABuildingResponse
     {

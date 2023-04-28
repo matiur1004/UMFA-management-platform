@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using ClientPortal.Data.Entities;
 using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.DtOs;
 using System.Globalization;
@@ -10,7 +9,7 @@ namespace ClientPortal.Data.Repositories
     {
         Task<List<TOUHeader>> GetTOUHeaders();
         Task<DemandProfileHeader> GetDemandProfile(int meterId, DateTime startDate, DateTime endDate, int touHeaderId);
-        Task<AMRWaterProfileHeader> GetWaterProfile(int meterId, DateTime startDate, DateTime endDate, TimeOnly nightFlowStart, TimeOnly nightFlowEnd);
+        Task<AMRWaterProfileHeader> GetWaterProfile(int meterId, DateTime startDate, DateTime endDate, TimeOnly nightFlowStart, TimeOnly nightFlowEnd, bool ApplyNightFlow);
         Task<List<ScadaRequestHeader>> GetJobsToRunAsync();
         Task<bool> UpdateAmrJobStatus(List<ScadaRequestHeader> headers, int status);
         Task<ScadaRequestHeader> GetTrackedScadaHeader(int headerId, int detailId);
@@ -18,6 +17,7 @@ namespace ClientPortal.Data.Repositories
         Task<bool> InsertScadaProfileData(ScadaMeterProfile profile);
         Task<bool> InsertScadaReadingData(ScadaMeterReading readings);
         Task<bool> UpdateDetailStatus(int detailId, int status);
+        Task<AMRGraphProfileHeader> GetGraphProfile(int meterId, DateTime startDate, DateTime endDate, TimeOnly nightFlowStart, TimeOnly nightFlowEnd, bool ApplyNightFlow);
     }
 
     public class AMRDataRepository : IAMRDataRepository
@@ -51,15 +51,55 @@ namespace ClientPortal.Data.Repositories
         {
             try
             {
-                List<ScadaReadingData> existing = await _context.scadaReadingData
-                    .Where(r => r.SerialNumber == readings.Meter.SerialNumber && r.ReadingDate.ToString().Substring(0, 16) == 
-                        readings.Meter.EndTotal.ReadingDate.ToString().Substring(0, 16))
-                    .ToListAsync();
+                List<ScadaReadingData> existing = new();
+
+                int cntRetry = 0;
+                while (cntRetry < 3)
+                {
+                    try
+                    {
+                        existing = await _context.scadaReadingData
+                            .Where(r => r.SerialNumber == readings.Meter.SerialNumber && r.ReadingDate.ToString().Substring(0, 16) ==
+                                readings.Meter.EndTotal.ReadingDate.ToString().Substring(0, 16))
+                            .ToListAsync();
+                        break;
+                    }
+                    catch
+                    {
+                        cntRetry++;
+                        if (cntRetry == 3)
+                            throw new Exception($"Cant connect to db to get existing readings for 3 retries");
+                        else
+                        {
+                            Thread.Sleep(1000);
+                            continue;
+                        }
+                    }
+                }
 
                 if (existing != null && existing.Count > 0) //first disable existing records
                 {
                     foreach (ScadaReadingData p in existing) p.IsActive = false;
-                    await _context.SaveChangesAsync();
+                    cntRetry = 0;
+                    while (cntRetry < 3)
+                    {
+                        try
+                        {
+                            await _context.SaveChangesAsync();
+                            break;
+                        }
+                        catch
+                        {
+                            cntRetry++;
+                            if (cntRetry == 3)
+                                throw new Exception($"Cant connect to db to update existing profiles for 3 retries");
+                            else
+                            {
+                                Thread.Sleep(1000);
+                                continue;
+                            }
+                        }
+                    }
                 }
 
                 ScadaReadingData newItem = new()
@@ -85,7 +125,26 @@ namespace ClientPortal.Data.Repositories
                 await _context.scadaReadingData.AddAsync(newItem);
 
                 _context.Database.SetCommandTimeout(120);
-                await _context.SaveChangesAsync();
+                cntRetry = 0;
+                while (cntRetry < 3)
+                {
+                    try
+                    {
+                        await _context.SaveChangesAsync();
+                        break;
+                    }
+                    catch
+                    {
+                        cntRetry++;
+                        if (cntRetry == 3)
+                            throw new Exception($"Cant connect to db to update existing profiles for 3 retries");
+                        else
+                        {
+                            Thread.Sleep(1000);
+                            continue;
+                        }
+                    }
+                }
 
                 return true;
             }
@@ -103,13 +162,52 @@ namespace ClientPortal.Data.Repositories
                 _context.Database.SetCommandTimeout(120);
 
                 List<string> readingDates = profile.Meter.ProfileSamples.Select(p => p.Date.Substring(0, 19)).ToList();
-                List<ScadaProfileData> existing = await _context.ScadaProfileData
-                    .Where(p => p.SerialNumber == profile.Meter.SerialNumber && readingDates.Contains(p.ReadingDate.ToString().Substring(0, 19))).ToListAsync();
+                List<ScadaProfileData> existing = new();
+                int cntRetry = 0;
+                while (cntRetry < 3)
+                {
+                    try
+                    {
+                        existing = await _context.ScadaProfileData
+                            .Where(p => p.SerialNumber == profile.Meter.SerialNumber && readingDates.Contains(p.ReadingDate.ToString().Substring(0, 19))).ToListAsync();
+                        break;
+                    }
+                    catch
+                    {
+                        cntRetry++;
+                        if (cntRetry == 3)
+                            throw new Exception($"Cant connect to db to get existing profiles for 3 retries");
+                        else
+                        {
+                            Thread.Sleep(1000);
+                            continue;
+                        }
+                    }
+                }
 
                 if (existing != null && existing.Count > 0) //first disable existing records
                 {
                     foreach (ScadaProfileData p in existing) p.IsActive = false;
-                    await _context.SaveChangesAsync();
+                    cntRetry = 0;
+                    while (cntRetry < 3)
+                    {
+                        try
+                        {
+                            await _context.SaveChangesAsync();
+                            break;
+                        }
+                        catch
+                        {
+                            cntRetry++;
+                            if (cntRetry == 3)
+                                throw new Exception($"Cant connect to db to update existing profiles for 3 retries");
+                            else
+                            {
+                                Thread.Sleep(1000);
+                                continue;
+                            }
+                        }
+                    }
                 }
 
                 List<ScadaProfileData> newItems = new();
@@ -137,7 +235,26 @@ namespace ClientPortal.Data.Repositories
 
                 await _context.ScadaProfileData.AddRangeAsync(newItems);
 
-                await _context.SaveChangesAsync();
+                cntRetry = 0;
+                while (cntRetry < 3)
+                {
+                    try
+                    {
+                        await _context.SaveChangesAsync();
+                        break;
+                    }
+                    catch
+                    {
+                        cntRetry++;
+                        if (cntRetry == 3)
+                            throw new Exception($"Cant connect to db to update existing profiles for 3 retries");
+                        else
+                        {
+                            Thread.Sleep(1000);
+                            continue;
+                        }
+                    }
+                }
 
                 return true;
             }
@@ -206,8 +323,9 @@ namespace ClientPortal.Data.Repositories
             try
             {
                 var header = await _context.ScadaRequestHeaders.AsNoTracking()
-                    .Where(h => h.Active == true && h.Status == 0 && h.StartRunDTM <= DateTime.UtcNow && (h.LastRunDTM == null || h.LastRunDTM < DateTime.UtcNow))
-                    .Include(h => h.ScadaRequestDetails.Where(d => d.Active && d.Status == 0))
+                    .Where(h => h.Active == true && h.Status == 1 && h.StartRunDTM <= DateTime.UtcNow &&
+                        (h.LastRunDTM == null || h.LastRunDTM < DateTime.UtcNow.AddMinutes(-h.Interval)))
+                    .Include(h => h.ScadaRequestDetails.Where(d => d.Active && d.Status == 1))
                         .ThenInclude(d => d.AmrScadaUser)
                     .Include(h => h.ScadaRequestDetails)
                         .ThenInclude(d => d.AmrMeter)
@@ -222,7 +340,7 @@ namespace ClientPortal.Data.Repositories
             }
         }
 
-        public async Task<AMRWaterProfileHeader> GetWaterProfile(int meterId, DateTime startDate, DateTime endDate, TimeOnly nightFlowStart, TimeOnly nightFlowEnd)
+        public async Task<AMRWaterProfileHeader> GetWaterProfile(int meterId, DateTime startDate, DateTime endDate, TimeOnly nightFlowStart, TimeOnly nightFlowEnd, bool applyNightFlow)
         {
             try
             {
@@ -230,7 +348,8 @@ namespace ClientPortal.Data.Repositories
                 string eDate = endDate.ToString("yyyy/MM/dd HH:mm");
                 string nfsTime = nightFlowStart.ToString("HH:mm");
                 string nfeTime = nightFlowEnd.ToString("HH:mm");
-                var CommandText = $"exec spGetWaterProfile {meterId}, '{sDate}', '{eDate}', '{nfsTime}', '{nfeTime}'";
+                bool applyNF = applyNightFlow;
+                var CommandText = $"exec spGetWaterProfile {meterId}, '{sDate}', '{eDate}', '{nfsTime}', '{nfeTime}', {applyNF}";
                 AMRWaterProfileHeader header = new();
                 var connection = _context.Database.GetDbConnection();
                 await connection.OpenAsync();
@@ -269,6 +388,36 @@ namespace ClientPortal.Data.Repositories
             {
                 _logger.LogError("Error while retrieving demand profile data for meterId {meterId}: {message}", meterId, ex.Message);
                 throw new ApplicationException($"Error while retrieving demand profile data for meterId {meterId}: {ex.Message}");
+            }
+            finally
+            {
+                await _context.Database.CloseConnectionAsync();
+            }
+        }
+
+
+        public async Task<AMRGraphProfileHeader> GetGraphProfile(int meterId, DateTime startDate, DateTime endDate, TimeOnly nightFlowStart, TimeOnly nightFlowEnd, bool applyNightFlow)
+        {
+            try
+            {
+                string sDate = startDate.ToString("yyyy/MM/dd HH:mm");
+                string eDate = endDate.ToString("yyyy/MM/dd HH:mm");
+                string nfsTime = nightFlowStart.ToString("HH:mm");
+                string nfeTime = nightFlowEnd.ToString("HH:mm");
+                bool applyNF = applyNightFlow;
+                var CommandText = $"exec spGetWaterProfile {meterId}, '{sDate}', '{eDate}', '{nfsTime}', '{nfeTime}', {applyNF}";
+                AMRGraphProfileHeader header = new();
+                var connection = _context.Database.GetDbConnection();
+                await connection.OpenAsync();
+                var results = await connection.QueryMultipleAsync(CommandText);
+                header = results.Read<AMRGraphProfileHeader>().ToList()[0];
+                header.Profile = results.Read<GraphProfile>().ToList();
+                return header;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error while retrieving water profile data for meterId {meterId}: {message}", meterId, ex.Message);
+                throw new ApplicationException($"Error while retrieving water profile data for meterId {meterId}: {ex.Message}");
             }
             finally
             {

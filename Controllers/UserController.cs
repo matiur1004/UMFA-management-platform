@@ -1,10 +1,12 @@
-﻿using ClientPortal.Services;
-using ClientPortal.Controllers.Authorization;
-using ClientPortal.Models;
-using Microsoft.Extensions.Options;
+﻿using ClientPortal.Controllers.Authorization;
+using ClientPortal.Data;
+using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Helpers;
+using ClientPortal.Models.RequestModels;
+using ClientPortal.Models.ResponseModels;
+using ClientPortal.Services;
+using Microsoft.Extensions.Options;
 using System.Text.Json;
-using Microsoft.AspNetCore.Cors;
 
 namespace ClientPortal.Controllers
 {
@@ -13,13 +15,17 @@ namespace ClientPortal.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
+        private readonly PortalDBContext _context;
         private readonly IUserService _userService;
         private readonly AppSettings _options;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(IUserService userService, IOptions<AppSettings> options)
+        public UserController(ILogger<UserController> logger, IUserService userService, IOptions<AppSettings> options, PortalDBContext context)
         {
+            _logger = logger;   
             _userService = userService;
             _options = options.Value;
+            _context = context;
         }
 
         #region Authentication methods
@@ -120,6 +126,12 @@ namespace ClientPortal.Controllers
             }
         }
 
+        [HttpGet("GetAllUsers")]
+        public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
+        {
+            return await _context.Users.ToListAsync();
+        }
+
         [HttpPost("UpdateUser")]
         public IActionResult UpdateUserAMRUsers(AMRScadaUserUpdateRequest user)
         {
@@ -130,9 +142,36 @@ namespace ClientPortal.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest($"Server error while updaying user: {ex.Message}");
+                return BadRequest($"Server error while updating user: {ex.Message}");
             }
         }
+
+        [HttpPost("UpdatePortalUserRole")]
+        public IActionResult UpdatePortalUserRole([FromBody]RoleUpdateModel roleUpdateModel)
+        {
+            try
+            {
+                _logger.LogInformation($"update User with Id: {roleUpdateModel.UserId}");
+                var response = _context.Database.ExecuteSqlRaw($"UPDATE [dbo].[Users] SET " +
+                    $"[RoleId] = {roleUpdateModel.RoleId}, " +
+                    $"[NotificationEmailAddress] = '{roleUpdateModel.NotificationEmailAddress}', " +
+                    $"[NotificationMobileNumber] = '{roleUpdateModel.NotificationMobileNumber}' " +
+                    $" WHERE Id = {roleUpdateModel.UserId}");
+
+                if (response != 0)
+                {
+                    _logger.LogInformation($"Successfully updated user: {roleUpdateModel.UserId}");
+                    return Ok(response);
+                }
+                else throw new Exception($"Failed to User With Id: {roleUpdateModel.UserId}");
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError($"Failed to update User Roles: {ex.Message}");
+                return BadRequest(new ApplicationException($"Failed to update User Roles and Notification Settings: {ex.Message}"));
+            }
+        }
+
 
         #region Private methods
         private string IpAddress()

@@ -1,4 +1,4 @@
-﻿namespace ClientPortal.Data.Entities
+﻿namespace ClientPortal.Data.Entities.PortalEntities
 {
     using System.Text.Json.Serialization;
 
@@ -10,6 +10,11 @@
         public string LastName { get; set; }
         public string UserName { get; set; }
         public bool IsAdmin { get; set; } = false;
+        public int RoleId { get; set; }
+        public string NotificationEmailAddress { get; set; }
+        public string NotificationMobileNumber { get; set; }
+
+
         [JsonIgnore]
         public string PasswordHash { get; set; }
         public List<RefreshToken> RefreshTokens { get; set; }

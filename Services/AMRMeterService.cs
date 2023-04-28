@@ -1,5 +1,6 @@
 ﻿using ClientPortal.Data.Repositories;
-using ClientPortal.Models;
+using ClientPortal.Models.RequestModels;
+using ClientPortal.Models.ResponseModels;
 
 namespace ClientPortal.Services
 {
@@ -26,7 +27,7 @@ namespace ClientPortal.Services
 
         public async Task<AMRMeterResponse> EditMeterAsync(AMRMeterUpdateRequest updMeter)
         {
-            if (updMeter.Meter == null) throw new ApplicationException($"Empty meter object recived to update");
+            if (updMeter.Meter == null) throw new ApplicationException($"Empty meter object received to update");
             _logger.LogInformation("Attempt to edit meter: {MeterNo}", updMeter.Meter.MeterNo);
             try
             {
@@ -36,7 +37,7 @@ namespace ClientPortal.Services
                     _logger.LogInformation("Meter updated with id: {Id}", result.Id);
                     return result;
                 }
-                else throw new Exception("Meter not updated succesfully.");
+                else throw new Exception("Meter not updated successfully.");
             }
             catch (Exception ex)
             {
@@ -56,7 +57,7 @@ namespace ClientPortal.Services
                     _logger.LogInformation("New meter added with id: {Id}", result.Id);
                     return result;
                 }
-                else throw new Exception("New meter not added succesfully.");
+                else throw new Exception("New meter not added successfully.");
             }
             catch (Exception ex)
             {

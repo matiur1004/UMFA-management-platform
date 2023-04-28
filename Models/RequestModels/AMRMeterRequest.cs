@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ClientPortal.Models
+namespace ClientPortal.Models.RequestModels
 {
     public class AMRMeterRequest
     {

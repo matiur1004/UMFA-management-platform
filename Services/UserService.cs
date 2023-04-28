@@ -1,14 +1,18 @@
 ﻿using Microsoft.Extensions.Options;
 using ClientPortal.Data;
-using ClientPortal.Data.Entities;
+using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.DtOs;
 using ClientPortal.Helpers;
+using ClientPortal.Models.RequestModels;
+using ClientPortal.Models.ResponseModels;
+using ClientPortal.Data.Entities;
 using ClientPortal.Models;
 
 namespace ClientPortal.Services
 {
     public interface IUserService
     {
+        User UpdatePortalUsers(User user);
         AuthResponse Authenticate(AuthRequest model, string ipAddress);
         AuthResponse RefreshToken(string token, string ipAddress);
         void RevokeToken(string token, string ipAddress);
@@ -48,6 +52,7 @@ namespace ClientPortal.Services
             try
             {
                 if (!_dbContext.Database.CanConnect()) throw new Exception("Database not available");
+                else _logger.LogInformation($"Using connection string: {_dbContext.Database.GetConnectionString()}");
                 var user = _dbContext.Users.SingleOrDefault(u => u.UserName == model.UserName);
 
                 //if user exist validate, else fetch from UMFAWeb
@@ -67,7 +72,8 @@ namespace ClientPortal.Services
                         LastName = aspUser.Surname,
                         UserName = model.UserName,
                         IsAdmin = (bool)aspUser.IsSiteAdmin,
-                        PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password)
+                        PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password),
+                        RoleId = 2
                     };
                 }
                 else //validate the user within local db
@@ -90,7 +96,8 @@ namespace ClientPortal.Services
                             FirstName = aspUser.Name,
                             LastName = aspUser.Surname,
                             UserName = model.UserName,
-                            PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password)
+                            PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password),
+                            RoleId = 2
                         };
                     }
                 }
@@ -362,7 +369,7 @@ namespace ClientPortal.Services
                 throw new AppException(ex.Message);
             }
         }
-
+        
         public User UpdateScadaUsers(AMRScadaUserUpdateRequest user)
         {
             _logger.LogInformation("Updating user {UserId}", user.UserId);
@@ -395,6 +402,26 @@ namespace ClientPortal.Services
             {
                 _logger.LogError("Error while updating user {UserId}", user.UserId);
                 throw new ApplicationException($"Error while updating user {user.UserId}: {ex.Message}");
+            }
+        }
+
+        public User UpdatePortalUsers(User user)
+        {
+            _logger.LogInformation("Updating user {UserId}", user.Id);
+            try
+            {
+                var usr = _dbContext.Users.FirstOrDefault<User>(u => u.Id == user.Id);
+                if (usr == null) throw new ApplicationException($"User with id {user.Id} not found");
+                
+                _dbContext.Users.Update(usr);
+                int res = _dbContext.SaveChanges();
+                //if (res != 2) throw new ApplicationException($"Unexpected number of rows updated: {res}");
+                return usr;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error while updating user {UserId}", user.Id);
+                throw new ApplicationException($"Error while updating user {user.Id}: {ex.Message}");
             }
         }
     }

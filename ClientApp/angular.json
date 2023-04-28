@@ -9,7 +9,7 @@
     },
     "newProjectRoot": "projects",
     "projects": {
-        "fuse": {
+        "umfa-client-portal": {
             "projectType": "application",
             "schematics": {
                 "@schematics/angular:component": {
@@ -23,7 +23,7 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
-                        "outputPath": "dist/fuse",
+                        "outputPath": "dist",
                         "index": "src/index.html",
                         "main": "src/main.ts",
                         "polyfills": "src/polyfills.ts",
@@ -38,7 +38,13 @@
                             "flat",
                             "moment",
                             "quill",
-                            "virtual-dom"
+                            "virtual-dom",
+                            "ace-builds",
+                            "jquery",
+                            "jszip",
+                            "devexpress-diagram",
+                            "devexpress-gantt",
+                            "devextreme-quill"
                         ],
                         "assets": [
                             "src/favicon-16x16.png",
@@ -62,6 +68,7 @@
                             "src/@fuse/styles/main.scss",
                             "src/styles/styles.scss",
                             "src/styles/tailwind.scss",
+                            "node_modules/ngx-toastr/toastr.css",
                             "node_modules/devextreme/dist/css/dx.light.css"
                         ],
                         "scripts": []
@@ -103,10 +110,10 @@
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "configurations": {
                         "production": {
-                            "browserTarget": "fuse:build:production"
+                            "browserTarget": "umfa-client-portal:build:production"
                         },
                         "development": {
-                            "browserTarget": "fuse:build:development",
+                            "browserTarget": "umfa-client-portal:build:development",
                             "proxyConfig": "proxy.conf.js"
                         }
                     },
@@ -115,7 +122,7 @@
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
-                        "browserTarget": "fuse:build"
+                        "browserTarget": "umfa-client-portal:build"
                     }
                 },
                 "test": {

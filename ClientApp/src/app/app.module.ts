@@ -16,6 +16,9 @@ import { appInitializer } from './core/helpers';
 import { AuthService } from './core/auth/auth.service';
 import { DXReportService } from './shared/services/dx-report-service';
 import { SnackBarService } from './shared/services';
+import { UmfaAdministratorAuthGuard } from '@shared/infrastructures/umfa-administrator.auth.guard';
+import { UmfaOperatorAuthGuard } from '@shared/infrastructures/umfa-operator.auth.guard';
+import {ToastrModule} from 'ngx-toastr';
 
 const routerConfig: ExtraOptions = {
     preloadingStrategy       : PreloadAllModules,
@@ -43,12 +46,18 @@ const routerConfig: ExtraOptions = {
         LayoutModule,
 
         // 3rd party modules that require global configuration via forRoot
-        MarkdownModule.forRoot({})
+        MarkdownModule.forRoot({}),
+        ToastrModule.forRoot({
+            closeButton: true,
+            preventDuplicates: true,
+        }),
     ],
     providers: [
         { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AuthService] },
         DXReportService,
         SnackBarService,
+        UmfaOperatorAuthGuard,
+        UmfaAdministratorAuthGuard
     ],
     bootstrap   : [
         AppComponent

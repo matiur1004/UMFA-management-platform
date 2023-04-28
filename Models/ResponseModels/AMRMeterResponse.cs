@@ -1,6 +1,6 @@
-﻿using ClientPortal.Data.Entities;
+﻿using ClientPortal.Data.Entities.PortalEntities;
 
-namespace ClientPortal.Models
+namespace ClientPortal.Models.ResponseModels
 {
     public class AMRMeterResponseList
     {
@@ -41,8 +41,7 @@ namespace ClientPortal.Models
             Description = meter.Description;
             UserId = meter.UserId;
             BuildingId = meter.BuildingId;
-            BuildingName = meter.Building.Name;
-            UmfaId = meter.Building.UmfaId;
+            UmfaId = meter.BuildingId;
             MakeModelId = meter.MakeModelId;
             Make = meter.MakeModel.Make;
             Model = meter.MakeModel.Model;

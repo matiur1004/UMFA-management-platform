@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
-using ClientPortal.Data.Entities;
-using ClientPortal.Models;
+using ClientPortal.Data.Entities.UMFAEntities;
+using ClientPortal.Models.ResponseModels;
+using Dapper;
+using System.Data;
 
 namespace ClientPortal.Data.Repositories
 {
@@ -8,6 +10,7 @@ namespace ClientPortal.Data.Repositories
     {
         Task<PortalStatsResponse> GetStatsAsync();
         Task<DashboardMainResponse> GetDashboardMainAsync(int umfaUserId);
+        Task<DashboardMainResponse> GetDashboardBuildingAsync(int buildingId);
     }
     public class PortalStatsRepository : IPortalStatsRepository
     {
@@ -52,6 +55,58 @@ namespace ClientPortal.Data.Repositories
                 _logger.LogError($"Error while retrieving stats from database: {ex.Message}");
                 stats.Response = $"Error while retrieving stats from database: {ex.Message}";
                 return stats;
+            }
+        }
+
+        public async Task<DashboardMainResponse> GetDashboardBuildingAsync(int buildingId)
+        {
+            var stats = new DashboardMainResponse();
+            try
+            {
+                var CommandText = $"exec upPortal_BuildingDashboard {buildingId}";
+                var connection = _context.Database.GetDbConnection();
+                await connection.OpenAsync();
+                var results = await connection.QueryAsync<BuildingDashboard>(CommandText);
+
+                if (results == null || results.Count() == 0)
+                    return stats;
+
+                var BuildingDB = results.ToList();
+
+                var first = BuildingDB.FirstOrDefault();
+                stats.Response = "Success";
+                stats.BuildingStats = new() { NumberOfBuildings = 0, TotalGLA = first.TotalGLA, TotalNumberOfMeters = first.TotalNumberOfMeters };
+                stats.ShopStats = new() { NumberOfShops = first.NumberOfShops, OccupiedPercentage = first.ShopOccPerc, TotalArea = first.TotalArea };
+                stats.TenantStats = new() { NumberOfTenants = first.NumberOfTenants, OccupiedPercentage = first.TenOccPerc, RecoverablePercentage = first.RecoverablePercentage };
+                stats.SmartStats = new()
+                {
+                    TotalSmart = first.TotalSmart,
+                    SolarCount = first.SolarCount,
+                    GeneratorCount = first.GeneratorCount,
+                    ConsumerElectricityCount = first.ConsumerElectricityCount,
+                    ConsumerWaterCount = first.ConsumerWaterCount,
+                    BulkCount = first.BulkCount,
+                    CouncilChkCount = first.CouncilChkCount
+                };
+
+                stats.GraphStats = new();
+                foreach (var buildingStat in BuildingDB ) 
+                {
+                    stats.GraphStats.Add(new() { PeriodName = buildingStat.PeriodName, TotalSales = buildingStat.TotalSales, 
+                        TotalElectricityUsage = buildingStat.TotalElectricityUsage, TotalWaterUsage = buildingStat.TotalWaterUsage });
+                }
+
+                return stats;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while retrieving stats from database: {ex.Message}");
+                stats.Response = $"Error while retrieving stats from database: {ex.Message}";
+                return stats;
+            }
+            finally
+            {
+                await _context.Database.CloseConnectionAsync();
             }
         }
 

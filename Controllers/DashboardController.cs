@@ -1,6 +1,5 @@
 ﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Services;
-using Microsoft.AspNetCore.DataProtection;
 
 namespace ClientPortal.Controllers
 {
@@ -18,7 +17,7 @@ namespace ClientPortal.Controllers
             _logger = logger;
         }
 
-        [HttpGet("getDBStats/{umfauserid}")]
+        [HttpGet("getDBStats/{umfaUserId}")]
         public IActionResult GetDBStats(int umfaUserId)
         {
             try
@@ -33,12 +32,12 @@ namespace ClientPortal.Controllers
             }
         }
 
-        [HttpGet("getDBBuildingStats/{umfabuildingid}")]
+        [HttpGet("getDBBuildingStats/{umfaBuildingId}")]
         public IActionResult GetDBBuildingStats(int umfaBuildingId)
         {
             try
             {
-                var response = _dbService.GetMainDashboard(337);
+                var response = _dbService.GetBuildingDashboard(umfaBuildingId);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -48,7 +47,7 @@ namespace ClientPortal.Controllers
             }
         }
 
-        [HttpGet("getBuildingList/{umfauserid}")]
+        [HttpGet("getBuildingList/{umfaUserId}")]
         public IActionResult GetBuildingList(int umfaUserId)
         {
             try

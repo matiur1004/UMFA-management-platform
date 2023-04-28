@@ -1,7 +1,5 @@
-﻿using ClientPortal.Data.Entities;
-using ClientPortal.Data.Entities.PortalEntities;
+﻿using ClientPortal.Data.Entities.PortalEntities;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Security.Policy;
 
 namespace ClientPortal.Data
 {
@@ -25,6 +23,8 @@ namespace ClientPortal.Data
         public DbSet<AMRWaterProfileHeader> AmrWaterProfiles { get; set; }
         [NotMapped]
         public DbSet<WaterProfile> WaterProfiles { get; set; }
+        [NotMapped]
+        public DbSet<AMRMetersNotScheduled> AMRMetersNotScheduled { get; set; }
 
         //Mapped entities
         public DbSet<User> Users { get; set; }
@@ -52,19 +52,34 @@ namespace ClientPortal.Data
         public DbSet<TOUDayOfWeekDayType> TOUDayOfWeekDayTypes { get; set; }
         public DbSet<ScadaProfileData> ScadaProfileData { get; set; }
         public DbSet<ScadaReadingData> scadaReadingData { get; set; }
+        public DbSet<RegisterType> RegisterTypes { get; set; }
+        public DbSet<MappedMeter> MappedMeters { get; set; }
+        public DbSet<SupplyType> SupplyTypes { get; set; }
+        public DbSet<MeterLocation> MeterLocations { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<NotificationType> NotificationTypes { get; set; }
+        public DbSet<UserNotifications> UserNotifications { get; set; }
+        public DbSet<UserNotificationSchedule> UserNotificationSchedules { get; set; }
+        public DbSet<UserNotificationSummaryType> UserNotificationSummaryTypes { get; set; }
+        public DbSet<NotificationSendType> NotificationSendTypes { get; set; }
+        public DbSet<ScheduleStatus> ScheduleStatus { get; set; }
+        public DbSet<JobStatus> JobStatus { get; set; }
+        public DbSet<AlarmType> AlarmTypes { get; set; }
+        public DbSet<AlarmTriggerMethod> AlarmTriggerMethods { get; set; }
+        public DbSet<AMRMeterAlarm> AMRMeterAlarms { get; set; }
+        public DbSet<UserAMRMeterActiveNotification> UserAMRMeterActiveNotifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //not mapped entites
+            //not mapped entities
             modelBuilder.Entity<DemandProfileHeader>().ToTable("DemandProfileHeaders", t => t.ExcludeFromMigrations());
             modelBuilder.Entity<DemandProfile>().ToTable("DemandProfiles", t => t.ExcludeFromMigrations());
             modelBuilder.Entity<AMRWaterProfileHeader>().ToTable("AMRWaterProfileHeaders", t => t.ExcludeFromMigrations());
             modelBuilder.Entity<WaterProfile>().ToTable("WaterProfiles", t => t.ExcludeFromMigrations());
-
+            modelBuilder.Entity<AMRMetersNotScheduled>().HasNoKey().ToTable("AMRMetersNotScheduled", t => t.ExcludeFromMigrations());
             //mapped entities
             modelBuilder.Entity<RefreshToken>().HasOne(r => r.User).WithMany(r => r.RefreshTokens).OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<AMRMeter>().HasOne(a => a.Building).WithMany(r => r.AMRMeters).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<AMRMeter>().HasOne(a => a.User).WithMany(r => r.AmrMeters).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<AMRMeter>().HasOne(a => a.MakeModel).WithMany(r => r.AMRMeters).OnDelete(DeleteBehavior.Restrict);
 
@@ -114,5 +129,6 @@ namespace ClientPortal.Data
             var connectionString = _configuration.GetConnectionString("APIDb");
             optionsBuilder.UseSqlServer(connectionString);
         }
+
     }
 }

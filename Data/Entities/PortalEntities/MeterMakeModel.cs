@@ -1,6 +1,5 @@
-﻿using ClientPortal.Models;
-
-namespace ClientPortal.Data.Entities
+﻿
+namespace ClientPortal.Data.Entities.PortalEntities
 {
     [Serializable]
     public class MeterMakeModel

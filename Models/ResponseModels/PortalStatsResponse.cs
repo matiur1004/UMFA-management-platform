@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace ClientPortal.Models
+namespace ClientPortal.Models.ResponseModels
 {
     public class PortalStatsResponse
     {
