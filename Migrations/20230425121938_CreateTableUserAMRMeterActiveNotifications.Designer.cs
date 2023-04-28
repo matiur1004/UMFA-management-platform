@@ -4,6 +4,7 @@ using ClientPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClientPortal.Migrations
 {
     [DbContext(typeof(PortalDBContext))]
-    partial class DataDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230425121938_CreateTableUserAMRMeterActiveNotifications")]
+    partial class CreateTableUserAMRMeterActiveNotifications
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1390,12 +1392,9 @@ namespace ClientPortal.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserNotificationId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.ToTable("UserAMRMeterActiveNotifications");
+                    b.ToTable("userAMRMeterActiveNotifications");
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.UserNotifications", b =>
