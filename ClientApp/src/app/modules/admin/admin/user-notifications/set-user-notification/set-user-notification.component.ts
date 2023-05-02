@@ -28,6 +28,7 @@ export class SetUserNotificationComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) data
   ) { 
     this.data = data;
+    console.log('sdfsdfsdf', data);
   }
 
   ngOnInit(): void {

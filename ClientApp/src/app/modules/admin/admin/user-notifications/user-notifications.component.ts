@@ -49,12 +49,12 @@ export class UserNotificationsComponent implements OnInit {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: any) => {
         this.userNotifications = data.map(item => {
-          item['Night Flow'] = item['Night Flow'] == 1 ? true : false;
-          item['Burst Pipe'] = item['Burst Pipe'] == 1 ? true : false;
-          item['Leak'] = item['Leak'] == 1 ? true : false;
-          item['Daily Usage'] = item['Daily Usage'] == 1 ? true : false;
-          item['Peak'] = item['Peak'] == 1 ? true : false;
-          item['Average'] = item['Average'] == 1 ? true : false;
+          // item['Night Flow'] = item['Night Flow'] == 1 ? true : false;
+          // item['Burst Pipe'] = item['Burst Pipe'] == 1 ? true : false;
+          // item['Leak'] = item['Leak'] == 1 ? true : false;
+          // item['Daily Usage'] = item['Daily Usage'] == 1 ? true : false;
+          // item['Peak'] = item['Peak'] == 1 ? true : false;
+          // item['Average'] = item['Average'] == 1 ? true : false;
 
           return item;
         });
