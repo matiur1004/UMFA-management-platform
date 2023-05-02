@@ -28,7 +28,6 @@ export class SetUserNotificationComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) data
   ) { 
     this.data = data;
-    console.log('sdfsdfsdf', data);
   }
 
   ngOnInit(): void {
@@ -62,9 +61,9 @@ export class SetUserNotificationComponent implements OnInit {
   }
 
   onAlarmClick(event, type) {
-    if(this.form.get(type).value == 1) {
-      event.preventDefault();
-    }    
+    // if(this.data.detail[type] == 1) {
+    //   event.preventDefault();
+    // }    
   }
 
   close() {
