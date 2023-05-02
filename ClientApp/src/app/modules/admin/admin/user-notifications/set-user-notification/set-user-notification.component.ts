@@ -43,7 +43,9 @@ export class SetUserNotificationComponent implements OnInit {
     this.form.patchValue(this.data.detail);
     this.alarmTypes.forEach(alarm => {
       let name = alarm['name'];
-      if(this.data.detail[name] == 0) this.form.get(name).disable();  
+      if(this.data.detail[name] == 0) this.form.get(name).disable();
+      if(this.data.detail[name] == 1) this.form.get(name).setValue(false);
+      if(this.data.detail[name] == 2) this.form.get(name).setValue(true);
     })
   }
 
@@ -59,9 +61,9 @@ export class SetUserNotificationComponent implements OnInit {
   }
 
   onAlarmClick(event, type) {
-    if(this.form.get(type).value == 1) {
-      event.preventDefault();
-    }    
+    // if(this.data.detail[type] == 1) {
+    //   event.preventDefault();
+    // }    
   }
 
   close() {

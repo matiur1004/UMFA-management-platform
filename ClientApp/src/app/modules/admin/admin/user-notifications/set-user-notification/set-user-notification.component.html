@@ -19,27 +19,27 @@
         <div class="row grid grid-cols-3 gap-4">
             <div class="col-span-1 flex gap-x-2">
                 <div class="text-lg min-w-28">Night Flow:</div>
-                <mat-checkbox [color]="'primary'" [formControlName]="'Night Flow'" (click)="onAlarmClick($event, 'Night Flow')" (change)="onAlarmChange($event, 'Night Flow')"></mat-checkbox>
+                <mat-checkbox [color]="'primary'" [formControlName]="'Night Flow'" (click)="onAlarmClick($event, 'Night Flow')" (change)="onAlarmChange($event, 'Night Flow')" *ngIf="data.detail['Night Flow'] != 0"></mat-checkbox>
             </div>
             <div class="col-span-1 flex gap-x-2">
                 <div class="text-lg min-w-28">Burst Pipe:</div>
-                <mat-checkbox [color]="'primary'" [formControlName]="'Burst Pipe'" (click)="onAlarmClick($event, 'Burst Pipe')" (change)="onAlarmChange($event, 'Burst Pipe')"></mat-checkbox>
+                <mat-checkbox [color]="'primary'" [formControlName]="'Burst Pipe'" (click)="onAlarmClick($event, 'Burst Pipe')" (change)="onAlarmChange($event, 'Burst Pipe')" *ngIf="data.detail['Burst Pipe'] != 0"></mat-checkbox>
             </div>
             <div class="col-span-1 flex gap-x-2">
                 <div class="text-lg min-w-28">Leak:</div>
-                <mat-checkbox [color]="'primary'" [formControlName]="'Leak'" (click)="onAlarmClick($event, 'Leak')" (change)="onAlarmChange($event, 'Leak')"></mat-checkbox>
+                <mat-checkbox [color]="'primary'" [formControlName]="'Leak'" (click)="onAlarmClick($event, 'Leak')" (change)="onAlarmChange($event, 'Leak')" *ngIf="data.detail['Leak'] != 0"></mat-checkbox>
             </div>
             <div class="col-span-1 flex gap-x-2">
                 <div class="text-lg min-w-28">Daily Usage:</div>
-                <mat-checkbox [color]="'primary'" [formControlName]="'Daily Usage'" (click)="onAlarmClick($event, 'Daily Usage')" (change)="onAlarmChange($event, 'Daily Usage')"></mat-checkbox>
+                <mat-checkbox [color]="'primary'" [formControlName]="'Daily Usage'" (click)="onAlarmClick($event, 'Daily Usage')" (change)="onAlarmChange($event, 'Daily Usage')" *ngIf="data.detail['Daily Usage'] != 0"></mat-checkbox>
             </div>
             <div class="col-span-1 flex gap-x-2">
                 <div class="text-lg min-w-28">Peak:</div>
-                <mat-checkbox [color]="'primary'" [formControlName]="'Peak'" (click)="onAlarmClick($event, 'Peak')" (change)="onAlarmChange($event, 'Peak')"></mat-checkbox>
+                <mat-checkbox [color]="'primary'" [formControlName]="'Peak'" (click)="onAlarmClick($event, 'Peak')" (change)="onAlarmChange($event, 'Peak')" *ngIf="data.detail['Peak'] != 0"></mat-checkbox>
             </div>
             <div class="col-span-1 flex gap-x-2">
                 <div class="text-lg min-w-28">Average:</div>
-                <mat-checkbox [color]="'primary'" [formControlName]="'Average'" (click)="onAlarmClick($event, 'Average')" (change)="onAlarmChange($event, 'Average')"></mat-checkbox>
+                <mat-checkbox [color]="'primary'" [formControlName]="'Average'" (click)="onAlarmClick($event, 'Average')" (change)="onAlarmChange($event, 'Average')" *ngIf="data.detail['Average'] != 0"></mat-checkbox>
             </div>
         </div>
     </form>
