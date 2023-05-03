@@ -14,6 +14,7 @@ export class AMRScheduleService {
     private _scadaRequestDetails: BehaviorSubject<any> = new BehaviorSubject([]);
     private _scheduleStatus: BehaviorSubject<any> = new BehaviorSubject([]);
     private _jobStatus: BehaviorSubject<any> = new BehaviorSubject([]);
+    private _meters: BehaviorSubject<any> = new BehaviorSubject([]);
 
     constructor(private http: HttpClient, private notificationService: NotificationService,) { }
 
@@ -35,6 +36,10 @@ export class AMRScheduleService {
 
     get jobStatus$(): Observable<any> {
       return this._jobStatus.asObservable();
+    }
+
+    get meters$(): Observable<any> {
+      return this._meters.asObservable();
     }
 
     getScadaRequestHeaders() {
@@ -165,6 +170,17 @@ export class AMRScheduleService {
           catchError(err => this.catchErrors(err)),
           tap(res => {
             this._jobStatus.next(res);
+          })
+        );
+    }
+
+    getAmrMetersForBuilding(buildingId) {
+      const url = `${CONFIG.apiURL}/ScadaRequestDetails/getAmrMetersForBuilding/${buildingId}`;
+      return this.http.get<any>(url, { withCredentials: true })
+        .pipe(
+          catchError(err => this.catchErrors(err)),
+          tap(res => {
+            this._meters.next(res);
           })
         );
     }

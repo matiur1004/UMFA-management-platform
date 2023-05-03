@@ -1,13 +1,13 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CONFIRM_MODAL_CONFIG } from '@core/config/modal.config';
-import { IAmrMeter, IScadaRequestDetail, IScadaScheduleStatus } from '@core/models';
+import { IAmrMeter, IScadaRequestDetail, IScadaScheduleStatus, IUmfaBuilding } from '@core/models';
 import { UmfaUtils } from '@core/utils/umfa.utils';
 import { MeterService } from '@shared/services';
 import { AMRScheduleService } from '@shared/services/amr-schedule.service';
 import moment from 'moment';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-amr-meter-assignment-edit',
@@ -18,6 +18,7 @@ export class AmrMeterAssignmentEditComponent implements OnInit {
 
   data: any;
   amrMeterItems: any[] = [];
+  buildings: IUmfaBuilding[] = [];
   meters: IAmrMeter[] = [];
   meterAssignmentDetail: IScadaRequestDetail;
   scheduleStatus: IScadaScheduleStatus[] = [];
@@ -25,22 +26,24 @@ export class AmrMeterAssignmentEditComponent implements OnInit {
   form: UntypedFormGroup;
   selectedMeter: IAmrMeter;
 
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
+
   constructor(
     @Inject(MAT_DIALOG_DATA) data,
     public matDialogRef: MatDialogRef<AmrMeterAssignmentEditComponent>,
     private _formBuilder: UntypedFormBuilder,
-    private meterService: MeterService,
     private amrScheduleService: AMRScheduleService,
     private _ufUtils: UmfaUtils,
+    private _cdr: ChangeDetectorRef
   ) { 
     this.data = data;
   }
 
   ngOnInit(): void {
-    this.meterService.getMetersForUser(this.data.userId).subscribe(res => this.meters = res);
     // Prepare the card form
     this.form = this._formBuilder.group({
       Id: [0],
+      BuildingId: [],
       HeaderId: [this.data.headerId],
       AmrScadaUserId: [this.data.userId],
       AmrMeterId: [null, [Validators.required]],
@@ -53,18 +56,31 @@ export class AmrMeterAssignmentEditComponent implements OnInit {
     })
     
     this.scheduleStatus = this.data.scheduleStatus;
-    this.meters = this.data.meters;
+    this.buildings = this.data.buildings;
     if(this.data.detail) {
       this.meterAssignmentDetail = this.data.detail;
       
       this.form.patchValue(this.meterAssignmentDetail);
       this.form.get('LastRunDTM').setValue(moment(this.meterAssignmentDetail.LastRunDTM).format('YYYY-MM-DD'));
       this.form.get('LastDataDate').setValue(moment(this.meterAssignmentDetail.LastDataDate).format('YYYY-MM-DD'));
-      this.selectedMeter = this.meters.find(meter => meter.Id == this.meterAssignmentDetail.AmrMeterId);
+      this.selectedMeter = this.meterAssignmentDetail.AmrMeter;
+      this.meters = [this.selectedMeter];
+      this._cdr.detectChanges();
       if(this.selectedMeter) {
+        this.form.get('AmrMeterId').setValue(this.selectedMeter.Id);
         this.form.get('AmrDescription').setValue(this.selectedMeter.Description);
       }
     }
+
+    this.amrScheduleService.meters$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((data: any) => {
+        this.meters = data;
+      })
+  }
+
+  onChangeBuilding(event) {
+    this.amrScheduleService.getAmrMetersForBuilding(event.BuildingId).subscribe();
   }
 
   onChangeAMRMeter(event) {
@@ -80,6 +96,11 @@ export class AmrMeterAssignmentEditComponent implements OnInit {
     let filter = list.find(obj => obj.Id == id);
     if(filter) return filter['Name'];
     return '';
+  }
+
+  customSearch(term: string, item: any) {
+    term = term.toLowerCase();
+    return item.Name.toLowerCase().indexOf(term) > -1;
   }
 
   submit() {
@@ -112,7 +133,11 @@ export class AmrMeterAssignmentEditComponent implements OnInit {
           .subscribe(() => {})
       } else {
       }
-    });
-    
+    });    
+  }
+
+  ngOnDestroy() {
+    this._unsubscribeAll.next(null);
+    this._unsubscribeAll.complete();
   }
 }

@@ -3,9 +3,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CONFIRM_MODAL_CONFIG } from '@core/config/modal.config';
 import { AllowedPageSizes } from '@core/helpers';
-import { IAmrMeter, IopUser, IScadaRequestDetail, IScadaScheduleStatus } from '@core/models';
+import { IAmrMeter, IopUser, IScadaRequestDetail, IScadaScheduleStatus, IUmfaBuilding } from '@core/models';
 import { UmfaUtils } from '@core/utils/umfa.utils';
-import { MeterService, UserService } from '@shared/services';
+import { BuildingService, MeterService, UserService } from '@shared/services';
 import { AMRScheduleService } from '@shared/services/amr-schedule.service';
 import moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
@@ -22,7 +22,7 @@ export class AmrMeterAssignmentsComponent implements OnInit {
   headerId: number;
   user: IopUser;
   scheduleStatus: IScadaScheduleStatus[] = [];
-  meters: IAmrMeter[] = [];
+  buildings: IUmfaBuilding[] = [];
   readonly allowedPageSizes = AllowedPageSizes;
   
   private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -33,6 +33,7 @@ export class AmrMeterAssignmentsComponent implements OnInit {
     private actRoute: ActivatedRoute, 
     private _matDialog: MatDialog,
     private userService: UserService,
+    private _buildingService: BuildingService,
     private meterService: MeterService,
     private _ufUtils: UmfaUtils
   ) {
@@ -52,10 +53,16 @@ export class AmrMeterAssignmentsComponent implements OnInit {
         this.scheduleStatus = data;
       })
 
-    this.meterService.meters$
+    // this.meterService.meters$
+    //   .pipe(takeUntil(this._unsubscribeAll))
+    //   .subscribe((data: any) => {
+    //     this.meters = data;
+    //   })
+    
+    this._buildingService.buildings$
       .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((data: any) => {
-        this.meters = data;
+      .subscribe((data: IUmfaBuilding[]) => {
+        this.buildings = data;
       })
 
     this._amrScheduleService.scadaRequestDetails$
@@ -76,7 +83,7 @@ export class AmrMeterAssignmentsComponent implements OnInit {
         userId: this.user.Id,
         detail: e.row.data,
         scheduleStatus: this.scheduleStatus,
-        meters: this.meters,
+        buildings: this.buildings,
         headerId: this.headerId
       }})
       .afterClosed()
@@ -101,7 +108,7 @@ export class AmrMeterAssignmentsComponent implements OnInit {
         userId: this.user.Id,
         detail: null,
         scheduleStatus: this.scheduleStatus,
-        meters: this.meters,
+        buildings: this.buildings,
         headerId: this.headerId
       }})
       .afterClosed()

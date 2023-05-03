@@ -18,6 +18,25 @@
         [formGroup]="form">
         <div class="row grid grid-cols-1 gap-4">
             <div class="col-span-1">
+                <mat-label class="form-label"> Building ID </mat-label>
+                <ng-select
+                    [items]="buildings"
+                    bindLabel="Name"
+                    bindValue="BuildingId"
+                    class="w-50"
+                    [placeholder]="'Buildings'"
+                    [formControlName]="'BuildingId'"
+                    [searchable]="true"
+                    [closeOnSelect]="true"
+                    [clearable]="false"
+                    [multiple]="false"
+                    [searchFn]="customSearch"
+                    (change)="onChangeBuilding($event)"
+                    [readonly]="meterAssignmentDetail? true : false"
+                    >
+                </ng-select>
+            </div>
+            <div class="col-span-1">
                 <mat-label class="form-label"> Meter No </mat-label>
                 <ng-select
                     [items]="meters"
