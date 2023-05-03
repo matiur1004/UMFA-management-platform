@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
+using ClientPortal.Data.Entities.DunamisEntities;
 using ClientPortal.Data.Entities.PortalEntities;
+using ClientPortal.Models.ResponseModels;
 using ClientPortal.Models.ScadaRequestsForTableUpdate;
 using ClientPortal.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClientPortal.Controllers
 {
@@ -302,22 +305,10 @@ namespace ClientPortal.Controllers
 
         // GET: getAmrMetersForBuilding/5
         [HttpGet("getAmrMetersForBuilding/{buildingId}")]
-        public async Task<ActionResult<IEnumerable<AMRMeter>>> GetAmrMetersForBuilding(int buildingId)
+        public async Task<List<AMRMeterList>> GetAmrMetersForBuilding(int buildingId)
         {
-            if (_context.AMRMeters == null)
-            {
-                _logger.LogError($"AMRMeters Entries Not Found in Table!");
-                return NotFound();
-            }
-            var amrMeters = await _context.AMRMeters.Where(b => b.BuildingId == buildingId).ToListAsync(); 
-
-            if (amrMeters == null)
-            {
-                _logger.LogError($"AMRMeters with BuildingId: {buildingId} Not Found!");
-                return NotFound();
-            }
-            _logger.LogInformation($"AMRMeters with BuildingId: {buildingId} Found and Returned!");
-            return amrMeters;
+                var amrMeters = await _context.AMRMeterList.FromSqlRaw($"SELECT Id, MeterNo, Description FROM AMRMeters WHERE  (BuildingId = {buildingId})").ToListAsync();
+                return amrMeters;
         }
 
         private bool ScadaRequestDetailExists(int id)
