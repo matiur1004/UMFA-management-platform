@@ -300,7 +300,25 @@ namespace ClientPortal.Controllers
             return NoContent();
         }
 
+        // GET: getAmrMetersForBuilding/5
+        [HttpGet("getAmrMetersForBuilding/{buildingId}")]
+        public async Task<ActionResult<IEnumerable<AMRMeter>>> GetAmrMetersForBuilding(int buildingId)
+        {
+            if (_context.AMRMeters == null)
+            {
+                _logger.LogError($"AMRMeters Entries Not Found in Table!");
+                return NotFound();
+            }
+            var amrMeters = await _context.AMRMeters.Where(b => b.BuildingId == buildingId).ToListAsync(); 
 
+            if (amrMeters == null)
+            {
+                _logger.LogError($"AMRMeters with BuildingId: {buildingId} Not Found!");
+                return NotFound();
+            }
+            _logger.LogInformation($"AMRMeters with BuildingId: {buildingId} Found and Returned!");
+            return amrMeters;
+        }
 
         private bool ScadaRequestDetailExists(int id)
         {
