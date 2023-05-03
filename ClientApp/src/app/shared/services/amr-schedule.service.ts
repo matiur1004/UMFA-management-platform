@@ -119,6 +119,17 @@ export class AMRScheduleService {
         );
     }
 
+    addScadaRequestDetailItem(formData) {
+      const url = `${CONFIG.apiURL}/ScadaRequestDetails/addScadaRequestDetailItem`;
+      return this.http.post<any>(url, formData, { withCredentials: true })
+        .pipe(
+          catchError(err => this.catchErrors(err)),
+          tap(bl => {
+            this.notificationService.message('Created successfully');
+          })
+        );
+    }
+
     updateRequestHeaderStatus(detailId) {
       const url = `${CONFIG.apiURL}/ScadaRequestHeaders/updateRequestHeaderStatus/${detailId}`;
       return this.http.post<any>(url, {}, { withCredentials: true })

@@ -114,14 +114,16 @@ export class AmrMeterAssignmentsComponent implements OnInit {
       .afterClosed()
       .subscribe((res) => {
         if(res) {
-          res['LastDataDate'] = new Date(res['LastDataDate']).toISOString();
-          res['LastRunDTM'] = new Date().toISOString();
-          res['CurrentRunDTM'] = new Date().toISOString();  
-          res['Active'] = 1;
-          this._amrScheduleService.createOrUpdateRequestDetailTable(res)
+          let formData = {
+            LastDataDate: new Date(res['LastDataDate']).toISOString(),
+            HeaderId: this.headerId,
+            AmrMeterId: res['AmrMeterId'],
+            UpdateFrequency: res['UpdateFrequency']
+          };
+          this._amrScheduleService.addScadaRequestDetailItem(formData)
             .subscribe(() => {
               this._amrScheduleService.getScadaRequestDetails(this.headerId).subscribe();
-            });  
+            });          
         }
       });
   }
