@@ -5,7 +5,6 @@ using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 using ClientPortal.Services;
-using DevExpress.DataAccess.Native.Web;
 using System.Dynamic;
 
 namespace ClientPortal.Controllers
