@@ -1,4 +1,6 @@
-﻿namespace ClientPortal.Data.Entities.PortalEntities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace ClientPortal.Data.Entities.PortalEntities
 {
     public class AMRMeterAlarm
     {
@@ -11,6 +13,10 @@
         public string StartTime { get; set; }
         public string EndTime { get; set; }
         public bool Active { get; set; }
-
+        [Column(TypeName = "smalldatetime")]
+        public DateTime? LastRunDTM { get; set; }
+        [Column(TypeName = "smalldatetime")]
+        public DateTime? LastDataDTM { get; set; }
+        public IEnumerable<AMRMeterTriggeredAlarm> AMRMeterTriggeredAlarms { get; set; }
     }
 }

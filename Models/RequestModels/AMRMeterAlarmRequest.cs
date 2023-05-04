@@ -11,6 +11,8 @@
         public string StartTime { get; set; }
         public string EndTime { get; set; }
         public bool Active { get; set; }
+        public DateTime? LastRunDTM { get; set; }
+        public DateTime? LastDataDTM { get; set; }
 
     }
 }
