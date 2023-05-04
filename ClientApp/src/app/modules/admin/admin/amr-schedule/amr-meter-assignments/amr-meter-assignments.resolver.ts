@@ -4,7 +4,7 @@ import {
   RouterStateSnapshot,
   ActivatedRouteSnapshot
 } from '@angular/router';
-import { MeterService, UserService } from '@shared/services';
+import { BuildingService, MeterService, UserService } from '@shared/services';
 import { AMRScheduleService } from '@shared/services/amr-schedule.service';
 import { forkJoin, Observable, of } from 'rxjs';
 
@@ -14,6 +14,7 @@ import { forkJoin, Observable, of } from 'rxjs';
 export class AmrMeterAssignmentsResolver implements Resolve<boolean> {
   constructor(
     private _amrService: AMRScheduleService,
+    private _buildingService: BuildingService,
     private _meterService: MeterService,
     private userService: UserService,
   ){}
@@ -21,8 +22,9 @@ export class AmrMeterAssignmentsResolver implements Resolve<boolean> {
     let id = route.params['id'];
     return forkJoin([
       this._amrService.getScheduleStatus(),
-      this._meterService.getMetersForUser(this.userService.userValue.Id),
+      //this._meterService.getMetersForUser(this.userService.userValue.Id),
       this._amrService.getScadaRequestDetails(id),
+      this._buildingService.getBuildingsForUser(this.userService.userValue.UmfaId),
     ]);
   }
 }

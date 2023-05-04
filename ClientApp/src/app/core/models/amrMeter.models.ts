@@ -62,6 +62,7 @@ export interface IScadaJobStatus{
 }
 export interface IScadaRequestDetail {
   Id: number;
+  AmrMeter?: any;
   HeaderId: number;
   AmrMeterId: number;
   Status: number;
