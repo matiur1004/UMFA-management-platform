@@ -14,6 +14,7 @@ export class AlarmConfigurationService {
     selectedPartner: number;
     
     private _alarmMeterDetail: BehaviorSubject<any> = new BehaviorSubject(null);
+    private _metersWithAlarms: BehaviorSubject<any> = new BehaviorSubject([]);
 
     constructor(
         private http: HttpClient,
@@ -25,6 +26,10 @@ export class AlarmConfigurationService {
         return this._alarmMeterDetail.asObservable();
     }
 
+    get metersWithAlarms$(): Observable<any> {
+        return this._metersWithAlarms.asObservable();
+    }
+    
     // AlarmNightFlow/getAlarmConfigNightFlow
     getAlarmConfigNightFlow(formData): Observable<any> {
         const url = `${CONFIG.apiURL}/AlarmNightFlow/getAlarmConfigNightFlow`;
@@ -177,6 +182,17 @@ export class AlarmConfigurationService {
                 catchError(err => this.catchErrors(err)),
                 tap(m => {
                     this._notificationService.message(formData['AMRMeterAlarmId'] ? 'Updated successfully' : 'Created successfully');
+                }),
+            );
+    }
+
+    getAlarmsByBuilding(buildingId) : Observable<any> {
+        const url = `${CONFIG.apiURL}/AlarmsPerBuilding/getAlarmsByBuilding/${buildingId}`;
+        return this.http.get<any>(url, { withCredentials: true })
+            .pipe(
+                catchError(err => this.catchErrors(err)),
+                tap(m => {
+                    this._metersWithAlarms.next(m);
                 }),
             );
     }

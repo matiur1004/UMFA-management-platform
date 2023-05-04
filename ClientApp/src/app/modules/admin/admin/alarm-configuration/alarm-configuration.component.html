@@ -65,11 +65,11 @@
             <dxi-column dataField="MeterNo" caption="Meter No" [minWidth]="100"></dxi-column>
             <dxi-column dataField="Description" [minWidth]="160"></dxi-column>
             <dxi-column caption="Alarms Configuration" dataField="alarmConfig" [minWidth]="190" cellTemplate="alarmConfigTemplate"></dxi-column>
-            <dxi-column dataField="AlarmsTriggered" [minWidth]="140"></dxi-column>            
+            <dxi-column caption="Alarms Triggered" dataField="alarmTriggered" [minWidth]="190" cellTemplate="alarmConfigTemplate"></dxi-column>            
             <dxi-column dataField="Make" [minWidth]="100"></dxi-column>
             <dxi-column dataField="Model" [minWidth]="100"></dxi-column>
             <div *dxTemplate="let data of 'alarmConfigTemplate'">
-                <div class="flex gap-x-1 justify-center items-center">
+                <div class="flex gap-x-1 justify-center items-center" *ngIf="data.value">
                     <img src="/assets/images/alarms/Night Flow.svg" class="w-6" [matTooltip]="'Night Flow'" *ngIf="data.value['Night Flow']"/>
                     <img src="/assets/images/alarms/Burst Pipe.svg" class="w-6" [matTooltip]="'Burst Pipe'" *ngIf="data.value['Burst Pipe']"/>
                     <img src="/assets/images/alarms/Leak Detection.svg" class="w-6" [matTooltip]="'Leak Detection'" *ngIf="data.value['Leak']"/>
