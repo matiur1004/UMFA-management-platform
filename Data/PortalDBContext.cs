@@ -70,6 +70,7 @@ namespace ClientPortal.Data
         public DbSet<AlarmTriggerMethod> AlarmTriggerMethods { get; set; }
         public DbSet<AMRMeterAlarm> AMRMeterAlarms { get; set; }
         public DbSet<UserAMRMeterActiveNotification> UserAMRMeterActiveNotifications { get; set; }
+        public DbSet<AMRMeterTriggeredAlarm> AMRMeterTriggeredAlarms { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -126,6 +127,8 @@ namespace ClientPortal.Data
             modelBuilder.Entity<TOUDayOfWeekDayType>().HasOne(dt => dt.TOUDaysOfWeek).WithMany(r => r.TOUDayOfWeekDayTypes).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<TOUDayOfWeekDayType>().HasOne(dt => dt.TOUDayType).WithMany(r => r.TOUDayOfWeekDayTypes).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<TOUDayOfWeekDayType>().HasOne(dt => dt.TOUHeader).WithMany(r => r.TOUDayOfWeekDayTypes).OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<AMRMeterTriggeredAlarm>().HasOne(at => at.AMRMeterAlarm).WithMany(a => a.AMRMeterTriggeredAlarms).OnDelete(DeleteBehavior.NoAction);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
