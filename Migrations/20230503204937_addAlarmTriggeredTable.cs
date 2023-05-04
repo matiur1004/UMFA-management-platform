@@ -46,12 +46,12 @@ namespace ClientPortal.Migrations
             migrationBuilder.Sql("DELETE FROM AMRMeterTriggeredAlarms", true);
 
             migrationBuilder.InsertData("AMRMeterTriggeredAlarms",
-               new[] { "AMRMeterAlarmId", "OccStartDTM", "OccEndDTM", "Threshold", "Duration", "AverageObserved", "MaximumObserved", "CreatedDTM", "UpdatedDTM", "Acknowledged", "Active" },
+               new[] { "AMRMeterTriggeredAlarmId", "AMRMeterAlarmId", "OccStartDTM", "OccEndDTM", "Threshold", "Duration", "AverageObserved", "MaximumObserved", "CreatedDTM", "UpdatedDTM", "Acknowledged", "Active" },
             new object[,]
             {
-                    { 1, "2023-02-11 20:00:00.0000000", "2023-02-11 22:00:00.0000000", 0.010000, 60, 0.200000, 0.038000, "2023-05-03 21:51:00.0000000", "2023-05-03 21:51:00.0000000", false, true },
-                    { 1, "2023-02-18 20:00:00.0000000", "2023-02-18 21:30:00.0000000", 0.010000, 60, 0.011000, 0.014000, "2023-05-03 21:54:00.0000000", "2023-05-03 21:54:00.0000000", false, true },
-                    { 4, "2023-02-12 09:30:00.0000000", "2023-02-12 10:30:00.0000000", 0.040000, 2, 0.044000, 0.046000, "2023-05-03 21:58:00.0000000", "2023-05-03 21:58:00.0000000", false, true }
+                    { 1, 1, "2023-02-11 20:00:00.0000000", "2023-02-11 22:00:00.0000000", 0.010000, 60, 0.200000, 0.038000, "2023-05-03 21:51:00.0000000", "2023-05-03 21:51:00.0000000", false, true },
+                    { 2, 1, "2023-02-18 20:00:00.0000000", "2023-02-18 21:30:00.0000000", 0.010000, 60, 0.011000, 0.014000, "2023-05-03 21:54:00.0000000", "2023-05-03 21:54:00.0000000", false, true },
+                    { 3, 4, "2023-02-12 09:30:00.0000000", "2023-02-12 10:30:00.0000000", 0.040000, 2, 0.044000, 0.046000, "2023-05-03 21:58:00.0000000", "2023-05-03 21:58:00.0000000", false, true }
                });
 
         }
