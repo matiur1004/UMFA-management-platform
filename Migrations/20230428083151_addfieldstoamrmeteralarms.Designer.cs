@@ -4,18 +4,18 @@ using ClientPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-
-
 
 #nullable disable
 
 namespace ClientPortal.Migrations
 {
     [DbContext(typeof(PortalDBContext))]
-    partial class DataDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230428083151_addfieldstoamrmeteralarms")]
+    partial class addfieldstoamrmeteralarms
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -201,27 +201,6 @@ namespace ClientPortal.Migrations
                     b.ToTable("AMRMeterAlarms");
                 });
 
-            modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AMRMeterList", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MeterNo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AMRMeterList", null, t => t.ExcludeFromMigrations());
-                });
-
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AMRMetersNotScheduled", b =>
                 {
                     b.Property<int>("AMRMeterId")
@@ -240,54 +219,6 @@ namespace ClientPortal.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.ToTable("AMRMetersNotScheduled", null, t => t.ExcludeFromMigrations());
-                });
-
-            modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AMRMeterTriggeredAlarm", b =>
-                {
-                    b.Property<int>("AMRMeterTriggeredAlarmId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AMRMeterTriggeredAlarmId"), 1L, 1);
-
-                    b.Property<int>("AMRMeterAlarmId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Acknowledged")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit");
-
-                    b.Property<decimal>("AverageObserved")
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<DateTime>("CreatedDTM")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Duration")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("MaximumObserved")
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<DateTime>("OccEndDTM")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("OccStartDTM")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("Threshold")
-                        .HasColumnType("decimal(18,6)");
-
-                    b.Property<DateTime>("UpdatedDTM")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("AMRMeterTriggeredAlarmId");
-
-                    b.HasIndex("AMRMeterAlarmId");
-
-                    b.ToTable("AMRMeterTriggeredAlarms");
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AMRScadaUser", b =>
@@ -1673,17 +1604,6 @@ namespace ClientPortal.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AMRMeterTriggeredAlarm", b =>
-                {
-                    b.HasOne("ClientPortal.Data.Entities.PortalEntities.AMRMeterAlarm", "AMRMeterAlarm")
-                        .WithMany("AMRMeterTriggeredAlarms")
-                        .HasForeignKey("AMRMeterAlarmId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("AMRMeterAlarm");
-                });
-
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AMRScadaUser", b =>
                 {
                     b.HasOne("ClientPortal.Data.Entities.PortalEntities.User", "User")
@@ -1960,11 +1880,6 @@ namespace ClientPortal.Migrations
                     b.Navigation("ProfileData");
 
                     b.Navigation("ScadaRequestDetails");
-                });
-
-            modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AMRMeterAlarm", b =>
-                {
-                    b.Navigation("AMRMeterTriggeredAlarms");
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AMRScadaUser", b =>

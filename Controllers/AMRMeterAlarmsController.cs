@@ -86,6 +86,8 @@ namespace ClientPortal.Controllers
             alarmTypeResponse.StartTime = alarmType.StartTime;
             alarmTypeResponse.EndTime = alarmType.EndTime;
             alarmTypeResponse.Active = alarmType.Active;
+            alarmTypeResponse.LastRunDTM = alarmType.LastRunDTM;
+            alarmTypeResponse.LastDataDTM = alarmType.LastDataDTM;
 
             ////Check If Alarms Exists With All Required Parameters And Set AMRMeterAlarmId To Saved One -- Update
             //try
