@@ -48,7 +48,7 @@ namespace ClientPortal.Data.Repositories
                 }
                 DateTime lastAlarmData = alarm.LastDataDTM?? lastProfileData?.AddHours(-24) ?? DateTime.Now.AddHours(-24);
 
-                alarm.LastDataDTM = lastAlarmData;
+                alarm.LastDataDTM = lastProfileData;
 
                 _context.Update<AMRMeterAlarm>(alarm);
                 if ((await _context.SaveChangesAsync()) == 0)
