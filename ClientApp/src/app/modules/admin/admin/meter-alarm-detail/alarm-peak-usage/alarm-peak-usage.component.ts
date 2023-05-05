@@ -33,7 +33,8 @@ export class AlarmPeakUsageComponent implements OnInit {
     // form 
     this.form = this._formBuilder.group({
       PeakStartTime: [],
-      PeakEndTime: []
+      PeakEndTime: [],
+      NoOfPeaks: [5]
     })
 
     this.analyzeForm = this._formBuilder.group({
@@ -80,7 +81,8 @@ export class AlarmPeakUsageComponent implements OnInit {
         ProfileEndDTM: formatDateString(this._alarmConfigService.profileInfo.EndDate), 
         PeakStartTime: formatTimeString(nStartTime), 
         PeakEndTime: formatTimeString(nEndTime),
-        MeterSerialNo: this._alarmConfigService.profileInfo.MeterSerialNo
+        MeterSerialNo: this._alarmConfigService.profileInfo.MeterSerialNo,
+        NoOfPeaks: formData['NoOfPeaks']
       };
       this._alarmConfigService.getAlarmConfigPeakUsage(data).subscribe(res => {
         if(res && res['MeterPeaks']) this.configInfo = res['MeterPeaks'];

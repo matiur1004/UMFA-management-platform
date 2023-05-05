@@ -1366,6 +1366,40 @@ namespace ClientPortal.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.UserAMRMeterActiveNotification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("AMRMeterAlarmId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Enabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastRunDataDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("LastRunDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserNotificationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserAMRMeterActiveNotifications");
+                });
+
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.UserNotifications", b =>
                 {
                     b.Property<int>("Id")

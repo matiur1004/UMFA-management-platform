@@ -18,7 +18,7 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { ReportsRoutingModule } from '../reports/reports-routing.module';
 import { SharedModule } from 'app/shared/shared.module';
 import { MatTabsModule } from '@angular/material/tabs';
-import { DxButtonModule, DxChartModule, DxDataGridModule, DxDateBoxModule, DxSelectBoxModule } from 'devextreme-angular';
+import { DxButtonModule, DxChartModule, DxDataGridModule, DxDateBoxModule, DxSelectBoxModule, DxTreeListModule } from 'devextreme-angular';
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -42,6 +42,8 @@ import { AlarmLeakDetectionComponent } from './meter-alarm-detail/alarm-leak-det
 import { AlarmPeakUsageComponent } from './meter-alarm-detail/alarm-peak-usage/alarm-peak-usage.component';
 import { AlarmDailyUsageComponent } from './meter-alarm-detail/alarm-daily-usage/alarm-daily-usage.component';
 import { AlarmAverageUsageComponent } from './meter-alarm-detail/alarm-average-usage/alarm-average-usage.component';
+import { UserNotificationsComponent } from './user-notifications/user-notifications.component';
+import { SetUserNotificationComponent } from './user-notifications/set-user-notification/set-user-notification.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +70,9 @@ import { AlarmAverageUsageComponent } from './meter-alarm-detail/alarm-average-u
     AlarmLeakDetectionComponent,
     AlarmPeakUsageComponent,
     AlarmDailyUsageComponent,
-    AlarmAverageUsageComponent
+    AlarmAverageUsageComponent,
+    UserNotificationsComponent,
+    SetUserNotificationComponent
   ],
   imports: [
     FormsModule,
@@ -87,6 +91,7 @@ import { AlarmAverageUsageComponent } from './meter-alarm-detail/alarm-average-u
     MatInputModule,
     NgSelectModule,
     DxDataGridModule,
+    DxTreeListModule,
     DxDateBoxModule,
     DxChartModule,
     DxSelectBoxModule,

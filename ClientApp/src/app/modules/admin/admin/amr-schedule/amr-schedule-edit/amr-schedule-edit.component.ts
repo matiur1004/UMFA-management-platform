@@ -122,6 +122,8 @@ export class AmrScheduleEditComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if(result == 'confirmed') {
         this._amrScheduleService.updateRequestHeaderStatus(this.scheduleHeaderDetail.Id).subscribe(() => {
+          this.form.get('Status').setValue(1);
+          this.scheduleHeaderDetail.Status = 1;
           //this._router.navigate([`/admin/amrSchedule`]);
         });
       } else {

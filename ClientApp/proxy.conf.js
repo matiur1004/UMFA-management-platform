@@ -35,7 +35,8 @@ const PROXY_CONFIG = [
       "/AlarmLeakDetection",
       "/AlarmAverageUsage",
       "/AlarmDailyUsage",
-      "/AlarmPeakUsage"
+      "/AlarmPeakUsage",
+      "/UserAlarmNotificationsConfig"
    ],
     target: target,
     secure: false,

@@ -63,8 +63,9 @@ export class MeterAlarmDetailComponent implements OnInit {
     //   "Average": 8
     // }
     //114
+    console.log('sdfsdf', this.meter);
     this.profileForm = this._formBuilder.group({
-      MeterId: [this.meter.AMRMEterId, [Validators.required]],
+      MeterId: [this.meter.AMRMeterId, [Validators.required]],
       sdp: [null, [Validators.required]],
       sdT: [null, [Validators.required]],
       edp: [null, [Validators.required]],
@@ -88,18 +89,20 @@ export class MeterAlarmDetailComponent implements OnInit {
         var sDate = new Date(formData['sdp'].getFullYear(), formData['sdp'].getMonth(), formData['sdp'].getDate(), formData['sdT'].getHours(), formData['sdT'].getMinutes());
         var eDate = new Date(formData['edp'].getFullYear(), formData['edp'].getMonth(), formData['edp'].getDate(), formData['edT'].getHours(), formData['edT'].getMinutes());
 
-        this._alarmConfigService.profileInfo = {StartDate: sDate, EndDate: eDate, NightFlowStart: formData['NightFlowStart'], NightFlowEnd: formData['NightFlowEnd'], MeterSerialNo: '13138213'};
+        this._alarmConfigService.profileInfo = {StartDate: sDate, EndDate: eDate, NightFlowStart: formData['NightFlowStart'], NightFlowEnd: formData['NightFlowEnd'], MeterSerialNo: this.meter.ScadaMeterNo};
       }
     })
   }
 
-  onShowMeterGraph() {
+  onShowMeterGraph(isProfile: boolean = false) {
+    //console.log('sdfsdf', this.profileForm.value);
     if(this.profileForm.valid) {
+      if(isProfile) this.applyNightFlow = false;
       let formData = this.profileForm.value;
       let data = {...this._alarmConfigService.profileInfo, MeterId: formData['MeterId'], nightFlowStart: formData['NightFlowStart'], NightFlowEnd: formData['NightFlowEnd']};
-      this._amrDataService.getMeterProfileForGraph(70, data['StartDate'], data['EndDate'], formData['NightFlowStart'], formData['NightFlowEnd'], this.applyNightFlow).subscribe(res => {
+      this._amrDataService.getMeterProfileForGraph(this.meter.AMRMeterId, data['StartDate'], data['EndDate'], formData['NightFlowStart'], formData['NightFlowEnd'], this.applyNightFlow).subscribe(res => {
         this.setDataSource(res);
-        this.applyNightFlow = true;
+        //this.applyNightFlow = true;
       })
     }
   }
@@ -111,7 +114,7 @@ export class MeterAlarmDetailComponent implements OnInit {
       this.profileDataSource = ds;
       if (ds) {
         var flowDate = pipe.transform(ds.Header.MaxFlowDate, "HH:mm on dd MMM yyyy");
-        this.chartTitleWater = `Water Profile for Meter: ${ds.Header.Description} (${ds.Header.MeterNo})`;
+        this.chartTitleWater = `Alarm Configuration for Meter: ${this.meter.Description} (${this.meter.MeterNo})`;
         this.chartSubTitleWater = `Usages for period: ${ds.Header.PeriodUsage.toFixed(2)}kL, Maximun flow: ${ds.Header.MaxFlow.toFixed(2)}kL at ${flowDate}`;
       } else {
         this.chartTitleWater = 'Water Profile';

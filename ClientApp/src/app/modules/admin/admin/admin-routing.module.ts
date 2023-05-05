@@ -23,6 +23,8 @@ import { AmrMeterAssignmentsComponent } from './amr-schedule/amr-meter-assignmen
 import { AmrMeterAssignmentsResolver } from './amr-schedule/amr-meter-assignments/amr-meter-assignments.resolver';
 import { AlarmConfigurationComponent } from './alarm-configuration/alarm-configuration.component';
 import { AlarmConfigurationResolver } from './alarm-configuration/alarm-configuration.resolver';
+import { UserNotificationsResolver } from './user-notifications/user-notifications.resolver';
+import { UserNotificationsComponent } from './user-notifications/user-notifications.component';
 const routes: Routes = [
   {
     path: '', component: AdminComponent, //redirectTo: 'amrUser', pathMatch: 'full'
@@ -96,6 +98,13 @@ const routes: Routes = [
           data: AlarmConfigurationResolver
         }
       },
+      {
+        path: 'user-notifications', component: UserNotificationsComponent,
+        canActivate: [UmfaOperatorAuthGuard],
+        resolve  : {
+          data: UserNotificationsResolver
+        }
+      }
     ]
   }
 ];

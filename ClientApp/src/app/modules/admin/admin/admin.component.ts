@@ -26,6 +26,7 @@ export class AdminComponent implements OnInit {
     if(location.pathname.includes('amrMeter')) this.selectedTab = 3;
     if(location.pathname.includes('amrSchedule')) this.selectedTab = 4;
     if(location.pathname.includes('alarm-configuration')) this.selectedTab = 5;
+    if(location.pathname.includes('user-notifications')) this.selectedTab = 6;
 
     //this.selectedTab = 6;
     this.roleId = this._userService.userValue.RoleId;
@@ -35,7 +36,7 @@ export class AdminComponent implements OnInit {
       .subscribe((data: any) => {
         if(data) {
           this.detailsList.push(data);          
-          this.selectedTab = this.detailsList.length - 1 + 6;
+          this.selectedTab = this.detailsList.length - 1 + 7;
         }
 
       });
@@ -60,6 +61,9 @@ export class AdminComponent implements OnInit {
     }
     if(event.index == 5) {
       this.router.navigate(['/admin/alarm-configuration']);
+    }
+    if(event.index == 6) {
+      this.router.navigate(['/admin/user-notifications']);
     }
   }
 

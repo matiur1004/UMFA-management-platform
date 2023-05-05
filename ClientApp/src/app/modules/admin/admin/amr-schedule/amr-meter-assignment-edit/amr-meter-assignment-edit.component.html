@@ -18,6 +18,25 @@
         [formGroup]="form">
         <div class="row grid grid-cols-1 gap-4">
             <div class="col-span-1">
+                <mat-label class="form-label"> Building ID </mat-label>
+                <ng-select
+                    [items]="buildings"
+                    bindLabel="Name"
+                    bindValue="BuildingId"
+                    class="w-50"
+                    [placeholder]="'Buildings'"
+                    [formControlName]="'BuildingId'"
+                    [searchable]="true"
+                    [closeOnSelect]="true"
+                    [clearable]="false"
+                    [multiple]="false"
+                    [searchFn]="customSearch"
+                    (change)="onChangeBuilding($event)"
+                    [readonly]="meterAssignmentDetail? true : false"
+                    >
+                </ng-select>
+            </div>
+            <div class="col-span-1">
                 <mat-label class="form-label"> Meter No </mat-label>
                 <ng-select
                     [items]="meters"
@@ -58,7 +77,7 @@
                         <mat-label class="form-label">Status</mat-label>
                         <input matInput value="{{getNameFromList(meterAssignmentDetail.Status, scheduleStatus)}}" readonly />   
                     </mat-form-field>
-                    <button mat-icon-button *ngIf="meterAssignmentDetail.Status == 6"><mat-icon [svgIcon]="'feather:repeat'" [matTooltip]="'Reset Status'" (click)="onResetStatus()"></mat-icon></button>
+                    <button mat-icon-button *ngIf="meterAssignmentDetail.Status == 7"><mat-icon [svgIcon]="'feather:repeat'" [matTooltip]="'Reset Status'" (click)="onResetStatus()"></mat-icon></button>
                 </div>
             </div>
         </div>

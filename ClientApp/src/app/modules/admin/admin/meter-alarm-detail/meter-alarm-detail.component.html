@@ -1,7 +1,7 @@
 
 <div class="flex bg-card flex-col mt-4 py-6 px-4 gap-y-4">
     <div class="flex">
-        <span class="text-lg font-semibold">Alarm Mapping for AMR Meter {{meter.ScadaMeterNo}} - Charlesville Bulk Meter</span>
+        <span class="text-lg font-semibold">Alarm Mapping for AMR Meter {{meter.ScadaMeterNo}} - {{meter.MeterNo}}</span>
     </div>
     <div class="flex items-center" [formGroup]="profileForm">
         <span class="text-lg font-semibold min-w-40">Show Profile for:</span>
@@ -25,7 +25,7 @@
                     labelMode="static" name="edT" required class="form-control" [formControlName]="'edT'"> </dx-date-box>
             </div>
             <div class="col-span-1 flex items-end justify-center">
-                <button mat-raised-button color="primary" class="apply-btn dnm-btn dnm-btn-primary min-w-20" (click)="onShowMeterGraph()">Show</button>
+                <button mat-raised-button color="primary" class="apply-btn dnm-btn dnm-btn-primary min-w-20" (click)="onShowMeterGraph(true)">Show</button>
             </div>
         </div>
     </div>
@@ -54,7 +54,8 @@
         
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-6 gap-4 w-full">
-        <div class="bg-gradient-to-r from-indigo-800 to-indigo-500 col-span-1 lg:col-span-1 flex flex-col flex-auto px-3 py-2 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100">
+        <div class="bg-gradient-to-r col-span-1 lg:col-span-1 flex flex-col flex-auto px-3 py-2 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100"
+            [ngClass]="{'from-indigo-800 to-indigo-500': meter['Night Flow'], 'from-gray-800 to-gray-500': !meter['Night Flow']}">
             <div class="flex flex-col w-full gap-y-1 justify-between h-full"> 
                 <span class="text-md text-white font-semibold">Night Flow Analysis For Period:</span>
                 <div class="flex flex-col gap-y-1">
@@ -65,7 +66,8 @@
                 </div>                
             </div>
         </div>
-        <div class="bg-gradient-to-r from-blue-500 to-blue-800 col-span-1 lg:col-span-1 flex flex-col flex-auto px-3 py-2 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100">
+        <div class="bg-gradient-to-r col-span-1 lg:col-span-1 flex flex-col flex-auto px-3 py-2 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100"
+            [ngClass]="{'from-blue-500 to-blue-800': meter['Burst Pipe'], 'from-gray-800 to-gray-500': !meter['Burst Pipe']}">
             <div class="flex flex-col w-full gap-y-1 justify-between h-full"> 
                 <span class="text-md text-white font-semibold">Burst Pipe Analysis For Period:</span>
                 <div class="flex flex-col gap-y-1">
@@ -76,7 +78,8 @@
                 </div>                
             </div>
         </div>
-        <div class="bg-gradient-to-r from-green-700 to-green-500 col-span-1 lg:col-span-1 flex flex-col flex-auto px-3 py-2 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100">
+        <div class="bg-gradient-to-r col-span-1 lg:col-span-1 flex flex-col flex-auto px-3 py-2 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100"
+            [ngClass]="{'from-green-700 to-green-500': meter['Leak'], 'from-gray-800 to-gray-500': !meter['Leak']}">
             <div class="flex flex-col w-full gap-y-1 justify-between h-full"> 
                 <span class="text-md text-white font-semibold">Leak Analysis For Period:</span>
                 <div class="flex flex-col gap-y-1">
@@ -87,7 +90,8 @@
                 </div>                
             </div>
         </div>
-        <div class="bg-gradient-to-r from-yellow-600 to-yellow-400 col-span-1 lg:col-span-1 flex flex-col flex-auto px-3 py-2 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100">
+        <div class="bg-gradient-to-r col-span-1 lg:col-span-1 flex flex-col flex-auto px-3 py-2 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100"
+            [ngClass]="{'from-yellow-600 to-yellow-400': meter['Daily Usage'], 'from-gray-800 to-gray-500': !meter['Daily Usage']}">
             <div class="flex flex-col w-full gap-y-1 justify-between h-full">
                 <span class="text-md text-white font-semibold">Daily Usage Analysis For Period:</span>
                 <div class="flex flex-col gap-y-1">
@@ -98,7 +102,8 @@
                 </div>
             </div>
         </div>
-        <div class="bg-gradient-to-r from-purple-700 to-purple-500 col-span-1 lg:col-span-1 flex flex-col flex-auto px-3 py-2 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100">
+        <div class="bg-gradient-to-r col-span-1 lg:col-span-1 flex flex-col flex-auto px-3 py-2 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100"
+            [ngClass]="{'from-purple-700 to-purple-500': meter['Peak'], 'from-gray-800 to-gray-500': !meter['Peak']}">
             <div class="flex flex-col w-full gap-y-1 justify-between h-full">
                 <span class="text-md text-white font-semibold">Peak Analysis For Period:</span>
                 <div class="flex flex-col gap-y-1">
@@ -109,7 +114,8 @@
                 </div>                
             </div>
         </div>
-        <div class="bg-gradient-to-r from-orange-700 to-orange-500 col-span-1 lg:col-span-1 flex flex-col flex-auto px-3 py-2 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100">
+        <div class="bg-gradient-to-r col-span-1 lg:col-span-1 flex flex-col flex-auto px-3 py-2 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100"
+            [ngClass]="{'from-orange-700 to-orange-500': meter['Average'], 'from-gray-800 to-gray-500': !meter['Average']}">
             <div class="flex flex-col w-full gap-y-1 justify-between h-full"> 
                 <span class="text-md text-white font-semibold">Average Analysis For Period:</span>
                 <div class="flex flex-col gap-y-1">
@@ -142,7 +148,7 @@
             The Alarm will trigger if the usage do not fall below the threshold for a set duration during the selected time range.    
         </ng-container>
         <ng-container *ngIf="selectedAlarmType == 'Daily Usage'">
-            TThe Alarm will trigger if the daily (24Hr Cycle) usage exceeds the threshold.
+            The Alarm will trigger if the daily (24Hr Cycle) usage exceeds the threshold.
         </ng-container>
         <ng-container *ngIf="selectedAlarmType == 'Peak Usage'">
             The Alarm will trigger if the usage exceeds the threshold for the set number of consecutive profiles during the time range

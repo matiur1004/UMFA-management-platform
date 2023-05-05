@@ -1,11 +1,12 @@
-﻿using ClientPortal.Controllers.Authorization;
+﻿using AutoMapper;
+using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
+using ClientPortal.Data.Entities.DunamisEntities;
 using ClientPortal.Data.Entities.PortalEntities;
-using ClientPortal.Migrations;
+using ClientPortal.Models.ResponseModels;
 using ClientPortal.Models.ScadaRequestsForTableUpdate;
-using DevExpress.Charts.Native;
+using ClientPortal.Services;
 using Microsoft.EntityFrameworkCore;
-using MimeKit;
 
 namespace ClientPortal.Controllers
 {
@@ -15,12 +16,16 @@ namespace ClientPortal.Controllers
     public class ScadaRequestDetailsController : ControllerBase
     {
         private readonly PortalDBContext _context;
+        private readonly IAMRMeterService _meterService;
         private readonly ILogger<ScadaRequestDetailsController> _logger;
+        private readonly IMapper _mapper;
 
-        public ScadaRequestDetailsController(PortalDBContext context, ILogger<ScadaRequestDetailsController> logger)
+        public ScadaRequestDetailsController(PortalDBContext context, IAMRMeterService meterService, ILogger<ScadaRequestDetailsController> logger, IMapper mapper)
         {
             _context = context;
             _logger = logger;
+            _meterService = meterService;
+            _mapper = mapper;
         }
 
         // GET: ScadaRequestDetails
@@ -72,8 +77,23 @@ namespace ClientPortal.Controllers
                 _logger.LogError($"ScadaRequestDetails with Id: {headerId} Not Found!");
                 return new List<ScadaRequestDetail> { };
             }
-            _logger.LogInformation($"ScadaRequestDetails with Id: {headerId} Found and Returned!");
-            return scadaRequestDetail;
+            _logger.LogInformation($"ScadaRequestDetails with Id: {headerId} Found!");
+            //UpdateMetersInRequest
+            foreach (var detailItem in scadaRequestDetail)
+            {
+                try
+                {
+                    var meter = _meterService.GetMeterAsync(detailItem.AmrMeterId).Result;
+                    _logger.LogInformation($"Adding AMRMeter {meter.MeterNo} To ScadaRequestDetails with Id: {headerId}!");
+                    var mappedMeter = _mapper.Map<AMRMeter>(meter);
+                    detailItem.AmrMeter = mappedMeter;
+                }
+                catch (Exception)
+                {
+                    detailItem.AmrMeter = new AMRMeter();
+                }
+            }
+           return scadaRequestDetail;
         }
 
         // PUT: ScadaRequestDetails/5
@@ -283,7 +303,56 @@ namespace ClientPortal.Controllers
             return NoContent();
         }
 
+        // GET: getAmrMetersForBuilding/5
+        [HttpGet("getAmrMetersForBuilding/{buildingId}")]
+        public async Task<List<AMRMeterList>> GetAmrMetersForBuilding(int buildingId)
+        {
+                var amrMeters = await _context.AMRMeterList.FromSqlRaw($"SELECT Id, MeterNo, Description FROM AMRMeters WHERE  (BuildingId = {buildingId})").ToListAsync();
+                return amrMeters;
+        }
 
+        //POST: updateRequestDetailStatus
+        [HttpPost("AddScadaRequestDetailItem")]
+        public IActionResult AddRequestDetail([FromBody] ScadaRequestDetailItem model)
+        {
+            var defInt = 1;
+            
+            if (!int.TryParse(model.HeaderId.ToString(), out int hdrId)) return BadRequest(new ApplicationException($"Invalid HeaderId: '{model.HeaderId}'"));
+            if (!int.TryParse(model.AmrMeterId.ToString(), out int mtrId)) return BadRequest(new ApplicationException($"Invalid AmrMeterId: '{model.AmrMeterId}'"));
+            if (!int.TryParse(model.UpdateFrequency.ToString(), out int updFrq)) return BadRequest(new ApplicationException($"Invalid UpdateFrequency: '{model.UpdateFrequency}'"));
+            if (updFrq == 0) { updFrq = 720; };
+
+            try
+            {
+                var sql = "INSERT INTO [dbo].[ScadaRequestDetails] " + 
+                    "([HeaderId],[AmrMeterId],[AmrScadaUserId],[Status],[Active],[LastRunDTM],[CurrentRunDTM],[UpdateFrequency],[LastDataDate]) "  +
+                    "VALUES " + 
+                    $"({hdrId}, " +
+                    $"{mtrId}, " +
+                    $"{defInt}, " +
+                    $"{defInt}, " +
+                    $"{defInt}, " +
+                    $"null, " +
+                    $"null, " +
+                    $"{updFrq}," +
+                    $"'{model.LastDataDate}')";
+
+                var response = _context.Database.ExecuteSqlRaw(sql);
+
+                if (response != 0)
+                {
+                    _logger.LogInformation($"Successfully Created ScadaRequestDetail for HeaderId: {hdrId}");
+                    return Ok("{\"Data\": { \"Code\": 1, \"Message\": \"Success\"}}");
+                }
+                else throw new Exception($"Failed to Create ScadaRequestDetail for HeaderId: {hdrId}");
+
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError($"Failed to Create Or Update ScadaRequestDetail: {ex.Message}");
+                return BadRequest(new ApplicationException($"Failed to Create Or Update ScadaRequestDetail: {ex.Message}"));
+            }
+        }
 
         private bool ScadaRequestDetailExists(int id)
         {

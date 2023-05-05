@@ -3,6 +3,7 @@ using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Data.Entities.UMFAEntities;
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
+using static DevExpress.Xpo.Helpers.AssociatedCollectionCriteriaHelper;
 
 namespace ClientPortal.Data.Repositories
 {
@@ -96,6 +97,7 @@ namespace ClientPortal.Data.Repositories
                     if (result.MeterSerial != meter.MeterSerial) result.MeterSerial = meter.MeterSerial;
                     if (result.UserId != meter.UserId) result.UserId = meter.UserId;
                     retMeter = _mapper.Map<AMRMeterResponse>(result);
+
                     var ret = await SaveChangesAsync();
                     if (!ret) throw new ApplicationException("Error saving meter");
                 }

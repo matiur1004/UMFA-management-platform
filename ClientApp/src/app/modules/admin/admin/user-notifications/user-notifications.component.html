@@ -1,0 +1,110 @@
+<div class="flex flex-col relative">
+    <div class="flex w-full">
+      <div class="flex flex-col bg-card p-2">
+        <div class="flex gap-x-4 flex-wrap" [formGroup]="searchForm">
+            <div class="flex flex-col">
+                <mat-label class="form-label"> Partners </mat-label>
+                <ng-select
+                    [items]="partners"
+                    bindLabel="Name"
+                    bindValue="Id"
+                    class="w-50"
+                    [placeholder]="'Partner'"
+                    [formControlName]="'partnerId'"
+                    [searchable]="true"
+                    [closeOnSelect]="true"
+                    [clearable]="false"
+                    [multiple]="false"
+                    [searchFn]="customSearch"
+                    (change)="onPartnerChanged($event)"
+                    >
+                </ng-select>
+            </div>
+            <div class="flex flex-col">
+                <mat-label class="form-label"> Buildings </mat-label>
+                <ng-select
+                    [items]="buildings"
+                    bindLabel="Name"
+                    bindValue="BuildingId"
+                    class="w-50"
+                    [placeholder]="'Buildings'"
+                    [formControlName]="'buildingId'"
+                    [searchable]="true"
+                    [closeOnSelect]="true"
+                    [clearable]="false"
+                    [multiple]="false"
+                    [searchFn]="customSearch"
+                    >
+                </ng-select>
+            </div>
+            <div class="flex flex-col">
+                <mat-label class="form-label"> Users </mat-label>
+                <ng-select
+                    [items]="users"
+                    bindLabel="UserName"
+                    bindValue="Id"
+                    class="w-50"
+                    [placeholder]="'Users'"
+                    [formControlName]="'userId'"
+                    [searchable]="true"
+                    [closeOnSelect]="true"
+                    [clearable]="false"
+                    [multiple]="false"
+                    >
+                </ng-select>
+            </div>
+        </div>
+        <dx-data-grid
+            [dataSource]="userNotifications"
+            [showBorders]="true"
+            class="grid-container"
+            [hoverStateEnabled]="true"
+        >
+            <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+            <dxo-paging [pageSize]="10"> </dxo-paging>
+            <dxo-pager
+                [visible]="true"
+                [allowedPageSizes]="allowedPageSizes"
+                [displayMode]="'compact'"
+                [showPageSizeSelector]="true"
+                [showInfo]="true"
+                [showNavigationButtons]="true"
+            >
+            </dxo-pager>
+            <dxo-search-panel
+                [visible]="true"
+                [width]="200"
+                placeholder="Search..."
+            ></dxo-search-panel>
+            <dxi-column dataField="MeterNo" caption="Meter No" [minWidth]="120"></dxi-column>
+            <dxi-column dataField="Description" [minWidth]="200"></dxi-column>
+            <dxi-column dataField="Night Flow" [minWidth]="80" cellTemplate="cellTemplate"></dxi-column>
+            <dxi-column dataField="Burst Pipe" [minWidth]="80" cellTemplate="cellTemplate"></dxi-column>
+            <dxi-column dataField="Leak" caption="Leak Detected" [minWidth]="80" cellTemplate="cellTemplate"></dxi-column>
+            <dxi-column dataField="Daily Usage" [minWidth]="80" cellTemplate="cellTemplate"></dxi-column>
+            <dxi-column dataField="Peak" caption="Peak Excedeed" [minWidth]="80" cellTemplate="cellTemplate"></dxi-column>
+            <dxi-column dataField="Average" caption="Avg Excedeed" [minWidth]="80" cellTemplate="cellTemplate"></dxi-column>
+            <dxi-column type="buttons" [minWidth]="80">
+                <dxi-button
+                  hint="Edit"
+                  icon="edit"
+                  [onClick]="onEdit"
+                ></dxi-button>
+            </dxi-column>
+            <div *dxTemplate="let data of 'cellTemplate'">
+                <div class="flex gap-x-1 justify-center items-center">
+                    <ng-container *ngIf="data.value == 1">
+                        <mat-checkbox (click)="$event.preventDefault()"></mat-checkbox>
+                    </ng-container>
+                    <ng-container *ngIf="data.value == 2">
+                        <mat-checkbox [checked]="true" (click)="$event.preventDefault()"></mat-checkbox>
+                    </ng-container>
+                    
+                </div>
+                
+            </div>
+        </dx-data-grid>
+      </div>
+    </div>
+</div>
+  

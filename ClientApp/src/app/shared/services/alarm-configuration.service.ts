@@ -10,6 +10,8 @@ import { NotificationService } from "./notification.service";
 export class AlarmConfigurationService {
 
     profileInfo: any;
+    selectedBuilding: number;
+    selectedPartner: number;
     
     private _alarmMeterDetail: BehaviorSubject<any> = new BehaviorSubject(null);
 
