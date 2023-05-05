@@ -144,7 +144,7 @@ namespace ClientPortal.Data.Repositories
 
         public async Task<UMFABuildingResponse> GetBuildings(int umfaUserId)
         {
-            _logger.LogInformation($"Using connectionstring: {_context.Database.GetConnectionString()}");
+            //_logger.LogInformation($"Using connectionstring: {_context.Database.GetConnectionString()}");
             var ret = new UMFABuildingResponse(umfaUserId);
             try
             {
