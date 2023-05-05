@@ -15,7 +15,7 @@ namespace ClientPortal.Services
             _settings = settings.Value;
         }
 
-        public async Task<string> SendAsync(TelegramData tData, CancellationToken ct = default)
+        public async Task<bool> SendAsync(TelegramData tData, CancellationToken ct = default)
         {
 
             try
@@ -34,11 +34,11 @@ namespace ClientPortal.Services
                 var jsonData = JsonConvert.SerializeObject(data);
                 var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
                 var response = await httpClient.PostAsync(endpoint, content);
-                return response.IsSuccessStatusCode.ToString();
+                return response.IsSuccessStatusCode;
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                return false;
             }
         }
     }
