@@ -36,12 +36,6 @@ namespace ClientPortal.Data.Repositories
             try
             {
                 alarm.LastRunDTM = DateTime.Now;
-                _context.Update<AMRMeterAlarm>(alarm);
-                if ((await _context.SaveChangesAsync()) == 0 )
-                {
-                    _logger.LogError($"Update of alarm run date failed for alarm : {alarm.AMRMeterAlarmId}");
-                    return false;
-                }
                 
                 var meterSerial = (await _context.AMRMeters.FindAsync(alarm.AMRMeterId)).MeterSerial;
                 DateTime? lastProfileData = (await _context.ScadaProfileData.Where(p => p.SerialNumber == meterSerial)
@@ -52,7 +46,17 @@ namespace ClientPortal.Data.Repositories
                     _logger.LogError($"No Profile data for meter {meterSerial}");
                     return false; 
                 }
-                DateTime lastAlarmData = alarm.LastDataDTM?? DateTime.Now.AddHours(-24);
+                DateTime lastAlarmData = alarm.LastDataDTM?? lastProfileData?.AddHours(-24) ?? DateTime.Now.AddHours(-24);
+
+                alarm.LastDataDTM = lastAlarmData;
+
+                _context.Update<AMRMeterAlarm>(alarm);
+                if ((await _context.SaveChangesAsync()) == 0)
+                {
+                    _logger.LogError($"Update of alarm run date failed for alarm : {alarm.AMRMeterAlarmId}");
+                    return false;
+                }
+
                 return true;
             }
             catch (Exception ex)
