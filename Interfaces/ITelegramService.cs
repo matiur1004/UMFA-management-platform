@@ -4,6 +4,6 @@ namespace ClientPortal.Interfaces
 {
     public interface ITelegramService
     {        
-        Task<bool> SendAsync(TelegramData tData, CancellationToken ct);
+        Task<string> SendAsync(TelegramData tData, CancellationToken ct);
     }
 }

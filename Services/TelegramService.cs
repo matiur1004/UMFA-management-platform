@@ -15,23 +15,31 @@ namespace ClientPortal.Services
             _settings = settings.Value;
         }
 
-        public async Task<bool> SendAsync(TelegramData tData, CancellationToken ct = default)
+        public async Task<string> SendAsync(TelegramData tData, CancellationToken ct = default)
         {
-            var botToken = _settings.TelegramBotToken;
-            var baseUrl = $"https://api.telegram.org/bot{botToken}/";
-            var httpClient = new HttpClient();
 
-            var endpoint = $"{baseUrl}sendMessage";
-            var data = new
+            try
             {
-                chat_id = tData.PhoneNumber,
-                text = tData.Message
-            };
+                var botToken = _settings.TelegramBotToken;
+                var baseUrl = _settings.TelegramCloudApiBaseUrl + _settings.TelegramApiEndPoint + $"{botToken}/";
+                var endpoint = $"{baseUrl}sendMessage";
+                var httpClient = new HttpClient();
 
-            var jsonData = JsonConvert.SerializeObject(data);
-            var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var response = await httpClient.PostAsync(endpoint, content);
-            return response.IsSuccessStatusCode;
+                var data = new
+                {
+                    chat_id = tData.PhoneNumber,
+                    text = tData.Message
+                };
+
+                var jsonData = JsonConvert.SerializeObject(data);
+                var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+                var response = await httpClient.PostAsync(endpoint, content);
+                return response.IsSuccessStatusCode.ToString();
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
     }
 }

@@ -20,13 +20,13 @@ namespace ClientPortal.Services
             using var client = new HttpClient();
 
             //LIVE
-            //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
-            //    "Bearer",
-            //    _whatsAppSettings.WhatsAppLiveToken);
-            //TEST
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
-              "Bearer",
-              _settings.WhatsAppTestToken);
+                "Bearer",
+                _settings.WhatsAppLiveToken);
+            //TEST
+            //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+            //  "Bearer",
+            //  _settings.WhatsAppTestToken);
 
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -43,16 +43,16 @@ namespace ClientPortal.Services
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             //LIVE
-            //var whatsAppApiUrl = _whatsAppSettings.WhatsAppCloudApiBaseUrl +
-            //    _whatsAppSettings.WhatsAppApiVersion +
-            //    _whatsAppSettings.WhatsAppLivePhoneId +
-            //    _whatsAppSettings.WhatsAppApiEndpoint;
+            var whatsAppApiUrl = _settings.WhatsAppCloudApiBaseUrl +
+                _settings.WhatsAppApiVersion +
+                _settings.WhatsAppLivePhoneId +
+                _settings.WhatsAppApiEndpoint;
 
             //TEST
-            var whatsAppApiUrl = _settings.WhatsAppCloudApiBaseUrl +
-            _settings.WhatsAppApiVersion +
-            _settings.WhatsAppTestPhoneId +
-            _settings.WhatsAppApiEndpoint;
+            //var whatsAppApiUrl = _settings.WhatsAppCloudApiBaseUrl +
+            //_settings.WhatsAppApiVersion +
+            //_settings.WhatsAppTestPhoneId +
+            //_settings.WhatsAppApiEndpoint;
 
             var responseString = "";
 
