@@ -1,7 +1,10 @@
 ﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.PortalEntities;
+using ClientPortal.Models.ResponseModels;
 using ClientPortal.Models.ScadaRequestsForTableUpdate;
+using Microsoft.EntityFrameworkCore;
+using static DevExpress.DataProcessing.InMemoryDataProcessor.AddSurrogateOperationAlgorithm;
 
 namespace ClientPortal.Controllers
 {

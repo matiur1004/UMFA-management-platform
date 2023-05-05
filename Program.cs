@@ -38,8 +38,11 @@ IConfiguration? configuration = builder.Configuration;
 
     //strongly typed configuration settings
     services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+
     services.Configure<MailSettings>(builder.Configuration.GetSection(nameof(MailSettings)));
-    services.AddTransient<IMailService, MailService>();
+    services.Configure<WhatsAppSettings>(builder.Configuration.GetSection(nameof(WhatsAppSettings)));
+    services.Configure<TelegramSettings>(builder.Configuration.GetSection(nameof(TelegramSettings)));
+
     services.AddMvcCore();
     services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
@@ -119,7 +122,9 @@ IConfiguration? configuration = builder.Configuration;
     services.AddTransient<IScadaCalls, ScadaCalls>();
     services.AddScoped<DashboardService, DashboardService>();
     services.AddScoped<MappedMetersService, MappedMetersService>();
-
+    services.AddTransient<IMailService, MailService>();
+    services.AddTransient<IWhatsAppService, WhatsAppService>();
+    services.AddTransient<ITelegramService, TelegramService>();
     //Data components
     services.AddScoped<IPortalStatsRepository, PortalStatsRepository>();
     services.AddScoped<IAMRMeterRepository, AMRMeterRepository>();
