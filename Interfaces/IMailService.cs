@@ -1,12 +1,9 @@
-﻿using ClientPortal.Models.MailModels;
+﻿using ClientPortal.Models.MessagingModels;
 
 namespace ClientPortal.Interfaces
 {
     public interface IMailService
     {
-        Task<bool> SendAsync(MailData mailData, CancellationToken ct);
-
-        Task<bool> SendWithAttachmentsAsync(MailDataWithAttachments mailData, CancellationToken ct);
-       
+        Task<bool> SendAsync(MailData mData, CancellationToken ct);
     }
 }
