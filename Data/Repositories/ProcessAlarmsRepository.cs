@@ -108,7 +108,7 @@ namespace ClientPortal.Data.Repositories
                 _context.Update<AMRMeterAlarm>(alarm);
                 if ((await _context.SaveChangesAsync()) == 0)
                 {
-                    _logger.LogError($"Update of alarm run date failed for alarm : {alarm.AMRMeterAlarmId}");
+                    _logger.LogError($"Applying Processing changes failed for alarm : {alarm.AMRMeterAlarmId}");
                     return false;
                 }
 
