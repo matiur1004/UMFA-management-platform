@@ -35,11 +35,34 @@ export class AlarmConfigurationComponent implements OnInit {
       partnerId: [],
       buildingId: []
     });
-    this._meterService.metersWithAlarms$
+    this._alarmConfigurationService.metersWithAlarms$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: any) => {
         this.metersWithAlarms = data.map(item => {
-          item = {...item, alarmConfig: {'Night Flow': item['Night Flow'], 'Burst Pipe': item['Burst Pipe'], 'Leak': item['Leak'], 'Daily Usage': item['Daily Usage'], 'Peak': item['Peak'], 'Average': item['Average']}};
+          let configured = item['Configured'];
+          let triggered = item['Triggered'];
+          if(configured) {
+            configured = configured.split(', ').map(num => Number(num));
+            let configured_val = {};
+            if(configured.indexOf(1) > -1) configured_val = {...configured_val, 'Night Flow': 1} ;
+            if(configured.indexOf(2) > -1) configured_val = {...configured_val, 'Burst Pipe': 1} ;
+            if(configured.indexOf(3) > -1) configured_val = {...configured_val, 'Leak': 1} ;
+            if(configured.indexOf(4) > -1) configured_val = {...configured_val, 'Daily Usage': 1} ;
+            if(configured.indexOf(5) > -1) configured_val = {...configured_val, 'Peak': 1} ;
+            if(configured.indexOf(6) > -1) configured_val = {...configured_val, 'Average': 1} ;
+            item = {...item, alarmConfig: configured_val};
+          }
+          if(triggered) {
+            triggered = triggered.split(', ').map(num => Number(num));
+            let triggered_val = {};
+            if(triggered.indexOf(1) > -1) triggered_val = {...triggered_val, 'Night Flow': 1} ;
+            if(triggered.indexOf(2) > -1) triggered_val = {...triggered_val, 'Burst Pipe': 1} ;
+            if(triggered.indexOf(3) > -1) triggered_val = {...triggered_val, 'Leak': 1} ;
+            if(triggered.indexOf(4) > -1) triggered_val = {...triggered_val, 'Daily Usage': 1} ;
+            if(triggered.indexOf(5) > -1) triggered_val = {...triggered_val, 'Peak': 1} ;
+            if(triggered.indexOf(6) > -1) triggered_val = {...triggered_val, 'Average': 1} ;
+            item = {...item, alarmTriggered: triggered_val};
+          }
           return item;
         });
       })
@@ -65,7 +88,7 @@ export class AlarmConfigurationComponent implements OnInit {
     })
 
     if(this._alarmConfigurationService.selectedBuilding) {
-      this._meterService.getAMRMetersWithAlarms(this._alarmConfigurationService.selectedBuilding).subscribe();
+      this._alarmConfigurationService.getAlarmsByBuilding(this._alarmConfigurationService.selectedBuilding).subscribe();
     }
     //
       
@@ -76,7 +99,7 @@ export class AlarmConfigurationComponent implements OnInit {
   }
 
   onBuildingChanged(event) {
-    this._meterService.getAMRMetersWithAlarms(event.BuildingId).subscribe();
+    this._alarmConfigurationService.getAlarmsByBuilding(event.BuildingId).subscribe();
   }
 
   onSelectRow(e) {
