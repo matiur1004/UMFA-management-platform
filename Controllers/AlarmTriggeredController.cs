@@ -1,5 +1,6 @@
 ﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
+using ClientPortal.Models.ResponseModels;
 using Dapper;
 
 namespace ClientPortal.Controllers
@@ -59,6 +60,29 @@ namespace ClientPortal.Controllers
             return Ok(returnResult);
         }
 
+        [HttpPost("updateAcknowledged")]
+        public IActionResult UpdateAcknowledged([FromBody] AlarmTriggeredModel model)
+        {
+            try
+            {
+                _logger.LogInformation($"Update AlarmTriggered Acknowledged With Id: {model.AMRMeterTriggeredAlarmId}");
+                var response = _context.Database.ExecuteSqlRaw($"UPDATE [dbo].[AMRMeterTriggeredAlarms] SET " +
+                    $"[Acknowledged] = 1 " +
+                    $"WHERE AMRMeterTriggeredAlarmId = {model.AMRMeterTriggeredAlarmId}");
+
+                if (response != 0)
+                {
+                    _logger.LogInformation($"Successfully updated user: {model.AMRMeterTriggeredAlarmId}");
+                    return Ok("Success " + response);
+                }
+                else throw new Exception($"Failed to Update AlarmTriggered Acknowledged With Id: {model.AMRMeterTriggeredAlarmId}");
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError($"Failed to update User Roles: {ex.Message}");
+                return BadRequest(new ApplicationException($"Failed to update User Roles and Notification Settings: {ex.Message}"));
+            }
+        }
     }
 
     //Config
