@@ -34,7 +34,7 @@ namespace ClientPortal.Controllers
                 var connection = _context.Database.GetDbConnection();
                 await connection.OpenAsync();
                 var results = await connection.QueryMultipleAsync(CommandText);
-                                
+
                 AlarmTriggeredResultInfoModel alarmInfo = results.Read<AlarmTriggeredResultInfoModel>().First();
                 List<AlarmTriggeredResultDataModel> alarmData = results.Read<AlarmTriggeredResultDataModel>().ToList();
 
@@ -72,8 +72,10 @@ namespace ClientPortal.Controllers
 
                 if (response != 0)
                 {
+                    var result = new SuccessModel();
+                    result.Status = "Success";
                     _logger.LogInformation($"Successfully updated user: {model.AMRMeterTriggeredAlarmId}");
-                    return Ok("Success " + response);
+                    return Ok(result);
                 }
                 else throw new Exception($"Failed to Update AlarmTriggered Acknowledged With Id: {model.AMRMeterTriggeredAlarmId}");
             }
@@ -123,5 +125,10 @@ namespace ClientPortal.Controllers
     {
         public AlarmTriggeredResultInfoModel AlarmInfo { get; set; }
         public List<AlarmTriggeredResultDataModel> AlarmData { get; set; }
+    }
+
+    public class SuccessModel
+    {
+        public string Status { get; set; }
     }
 }
