@@ -63,7 +63,6 @@ export class MeterAlarmDetailComponent implements OnInit {
     //   "Average": 8
     // }
     //114
-    console.log('sdfsdf', this.meter);
     this.profileForm = this._formBuilder.group({
       MeterId: [this.meter.AMRMeterId, [Validators.required]],
       sdp: [null, [Validators.required]],

@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
+import { NotificationService } from "@shared/services";
 import { CONFIG } from "app/core/helpers";
 import { IHomePageStats } from "app/core/models";
 import { Observable, throwError } from "rxjs";
@@ -15,8 +16,14 @@ export class DashboardService {
   private _data: BehaviorSubject<any> = new BehaviorSubject(null);
 
   public stats$: Observable<IHomePageStats>;
+  public alarmTriggeredId: any;
 
-  constructor(private router: Router, private http: HttpClient) {
+  private _alarmTriggerDetail: BehaviorSubject<any> = new BehaviorSubject(null);
+
+  constructor(
+    private router: Router, 
+    private http: HttpClient,
+    private _notificationService: NotificationService){
     this.statsSubject = new BehaviorSubject<IHomePageStats>(null);
     this.stats$ = this.statsSubject.asObservable();
   }
@@ -33,6 +40,10 @@ export class DashboardService {
       return this._data.asObservable();
   }
   
+  get alarmTriggerDetail$(): Observable<any>{
+      return this._alarmTriggerDetail.asObservable();
+  }
+
   getStats(userId) {
     const url = `${CONFIG.apiURL}${CONFIG.dashboardStats}/${userId}`;
     return this.http.get<any>(url, { withCredentials: true })
@@ -54,6 +65,30 @@ export class DashboardService {
       .pipe(
         catchError(err => this.catchAuthErrors(err)),
         tap(bl => {
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        })
+      );
+  }
+
+  getAlarmTriggered(alarmTriggeredId) {
+    const url = `${CONFIG.apiURL}/AlarmTriggered/getAlarmTriggered`;
+    return this.http.post<any>(url, {AMRMeterTriggeredAlarmId: alarmTriggeredId}, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(bl => {
+          this._alarmTriggerDetail.next(bl);
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        })
+      );
+  }
+
+  updateAcknowledged(alarmTriggeredId) {
+    const url = `${CONFIG.apiURL}/AlarmTriggered/updateAcknowledged`;
+    return this.http.post<any>(url, {AMRMeterTriggeredAlarmId: alarmTriggeredId}, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(bl => {
+          this._notificationService.message('Acknowledged successfully!');
           //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
         })
       );

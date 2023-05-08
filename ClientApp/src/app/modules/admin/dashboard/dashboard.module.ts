@@ -13,10 +13,12 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'app/shared/shared.module';
 import { DashboardComponent } from './dashboard.component';
 import { dashboardRoutes } from './dashboard.routing';
-import { DxDataGridModule } from 'devextreme-angular';
+import { DxChartModule, DxDataGridModule, DxSelectBoxModule } from 'devextreme-angular';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { BuildingDetailComponent } from './building-detail/building-detail.component';
 import { CommonModule } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
     declarations: [
@@ -33,11 +35,15 @@ import { CommonModule } from '@angular/common';
         MatMenuModule,
         MatProgressBarModule,
         MatSortModule,
+        MatFormFieldModule,
+        MatInputModule,
         MatTableModule,
         MatTooltipModule,
         MatTableModule,
         NgApexchartsModule,
         DxDataGridModule,
+        DxChartModule,
+        DxSelectBoxModule,
         MatTabsModule,
         SharedModule
     ]
