@@ -28,6 +28,9 @@ export class RoleAddEditPopupComponent implements OnInit {
 
   dayOfWeeks = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   selectedNotificationTab = 0;
+  userSettingUpdated: boolean = false;
+  userNotificationUpdated: boolean = false;
+
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
@@ -160,11 +163,12 @@ export class RoleAddEditPopupComponent implements OnInit {
         `Are you sure you need to ${this.data.detail ? 'update' : 'create'}?`);
       // Subscribe to afterClosed from the dialog reference
       dialogRef.afterClosed().subscribe((result) => {
-        if(result == 'confirmed') {
-          this.matDialogRef.close(this.form.value);    
-        } else {
-          this.matDialogRef.close();
-        }
+        let data = {...this.form.value, UserId: this.data.detail.Id};
+        this._userService.onUpdatePortalUserRole(data)
+          .subscribe(() => {
+            //this.notificationService.message('Updated successfuly!');
+            this.userSettingUpdated = true;
+          });
       });
     }    
   }
@@ -184,7 +188,8 @@ export class RoleAddEditPopupComponent implements OnInit {
     .subscribe((res: any) => {
       this.getUserNotificationSchedules();
       this.form.get('Additional')['controls'][index].get("Id").setValue(res['Id']);
-      this.notificationService.message('Updated successfuly!');
+      //this.notificationService.message('Updated successfuly!');
+      this.userNotificationUpdated = true;
     })
   }
 
