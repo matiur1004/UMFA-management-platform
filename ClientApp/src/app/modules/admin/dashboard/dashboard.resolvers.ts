@@ -28,6 +28,9 @@ export class DashboardResolver implements Resolve<any>
      */
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any>
     {
+        if (route.params['id']) {
+            this._dashboardService.alarmTriggeredId = route.params['id'];
+        }
         return this._dashboardService.getStats(this._authService.userValue.Id);
     }
 }

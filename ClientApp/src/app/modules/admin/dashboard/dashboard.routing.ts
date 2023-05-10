@@ -9,5 +9,12 @@ export const dashboardRoutes: Route[] = [
         resolve  : {
             data: DashboardResolver
         }
+    },
+    {
+        path     : 'alarm-triggered/:id',
+        component: DashboardComponent,
+        resolve  : {
+            data: DashboardResolver
+        }
     }
 ];
