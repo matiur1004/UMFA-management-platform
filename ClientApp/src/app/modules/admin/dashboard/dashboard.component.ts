@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AuthService } from 'app/core/auth/auth.service';
-import { EHomeTabType, IHomeTab, CHomeTabTypeText } from 'app/core/models';
+import { EHomeTabType, IHomeTab, CHomeTabTypeText, IWaterProfileResponse, IWaterProfileDetail } from 'app/core/models';
 import { BuildingService } from 'app/shared/services/building.service';
 import { ApexOptions } from 'ng-apexcharts';
 import { catchError, EMPTY, map, of, Subject, takeUntil, tap } from 'rxjs';
@@ -20,6 +20,8 @@ import {
     ApexTooltip
   } from "ng-apexcharts";
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
+import { DatePipe } from '@angular/common';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 export type ChartOptions = {
     series: ApexAxisChartSeries;
@@ -108,6 +110,11 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
 
     isMobileScreen: boolean = false;
 
+    alarmTriggeredDataSource: IWaterProfileDetail[];
+    alarmTrigerInfo: any;
+    minutues = [];
+    form: FormGroup;
+    
     readonly allowedPageSizes = [10, 15, 20, 'All'];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     
@@ -120,6 +127,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
         private _usrService: AuthService,
         private _cdr: ChangeDetectorRef,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
+        private _formBuilder: FormBuilder
     ) {
         this.chartElectricityUsage = {
             series: [
@@ -220,6 +228,17 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     ngOnInit(): void {
+        for(let i = 1; i <= 10; i++) {
+            this.minutues.push({Value: i * 30});
+        }
+
+        this.form = this._formBuilder.group({
+            Duration: ['', [Validators.required]],
+            Threshold: ['', [Validators.required]],
+            AverageObserved: [''],
+            MaximumObserved: [''],
+        });
+
         // Subscribe to media changes
         this._fuseMediaWatcherService.onMediaChange$
         .pipe(takeUntil(this._unsubscribeAll))
@@ -227,6 +246,35 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             // Check if the screen is small
             this.isMobileScreen = !matchingAliases.includes('md');
         });
+
+        this._dbService.alarmTriggerDetail$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((data) => {
+                // Check if the screen is small
+                if(data) {
+                    this.setDataSource(data['AlarmData']);
+                    this.alarmTrigerInfo = data['AlarmInfo'];
+                    this.form.patchValue({
+                        Duration: this.alarmTrigerInfo.Duration,
+                        Threshold: this.alarmTrigerInfo.Threshold,
+                        AverageObserved: this.alarmTrigerInfo.AverageObserved,
+                        MaximumObserved: this.alarmTrigerInfo.MaximumObserved
+                    });
+                    this._cdr.detectChanges();
+                }
+            });
+
+        if(this._dbService.alarmTriggeredId) {
+            let newTab: IHomeTab = {
+                id: 0,
+                title: 'Alarm Trigger',
+            };
+            this.tabsList.push(newTab);
+            this.selectedTab = 1;
+            setTimeout(() => {
+                this._dbService.getAlarmTriggered(this._dbService.alarmTriggeredId).subscribe();
+            }, 500);
+        }        
     }
 
     onDetail(type: EHomeTabType) {
@@ -282,6 +330,33 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                 this.selectedTab = this.tabsList.length;
                 this._cdr.detectChanges();                
             })
+    }
+
+    setDataSource(ds: any): void {
+        var pipe = new DatePipe('en_ZA');
+        if (ds) {
+            ds.forEach((det) => { det.ReadingDateString = pipe.transform(det.ReadingDate, "yyyy-MM-dd HH:mm") });
+            this.alarmTriggeredDataSource = ds;
+            if (ds) {
+            }
+        }
+    }
+    customizePoint = (arg: any) => {
+        return { color: arg.data.Color }
+    };
+    
+    customizeTooltip(arg: any) {
+        var ret = { text: `Selected Value<br>${arg.valueText}` };
+        return ret;
+    }
+
+    pointClick(e: any) {
+        const point = e.target;
+        point.showTooltip();
+    }
+    
+    onAcknowledge() {
+        this._dbService.updateAcknowledged(this._dbService.alarmTriggeredId).subscribe();
     }
 
     ngAfterViewInit() {

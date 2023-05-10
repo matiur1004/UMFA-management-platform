@@ -164,3 +164,9 @@ body {
     background-color: #00aeef !important;
     color: white !important;
 }
+ .mat-form-field.mat-form-field-appearance-fill .mat-form-field-wrapper {
+    margin-bottom: 0px;
+}
+.alarmTrigger-detail .dx-editor-outlined.dx-texteditor-with-label {
+    margin-top: 0px;
+}

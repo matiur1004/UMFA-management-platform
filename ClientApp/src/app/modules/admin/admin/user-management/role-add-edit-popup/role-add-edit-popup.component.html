@@ -16,6 +16,9 @@
     <form
         class="flex flex-col flex-0 w-full p-4 gap-y-4 user-form"
         [formGroup]="form">
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded relative" role="alert" *ngIf="userSettingUpdated">
+            <span class="block sm:inline">Updated successfully!</span>
+        </div>
         <div class="row grid grid-cols-2 gap-4">
             <div class="col-span-1">
                 <mat-label class="form-label"> Role </mat-label>
@@ -53,73 +56,8 @@
                 </mat-form-field>
             </div>
         </div>
-        <div class="row grid grid-cols-2 gap-4">
-            <div class="col-span-1">
-                <mat-label> Select Building </mat-label>
-                <ng-select [items]="buildings" bindLabel="Name" bindValue="BuildingId" [placeholder]="'Select Building'"
-                           [formControlName]="'BuildingId'" [searchable]="true" [clearable]="false" [searchFn]="customBuildingSearch"
-                           (change)="selectionChanged($event)">
-                </ng-select>
-            </div>
-        </div>
-        <div class="flex flex-col bg-card p-2 rounded-md" formArrayName="Additional" *ngIf="selectedBuildingId">
-            <span class="text-lg">Notification Configuration</span>
-            <mat-tab-group
-                [animationDuration]="'500ms'"
-                [selectedIndex]="selectedNotificationTab"
-                (selectedIndexChange)="selectedNotificationTab = $event">
-                <ng-container *ngFor="let notificationType of additionalNotifications.controls; let i = index">
-                    <mat-tab label="{{senderTypes[i].Name}}">
-                        <ng-container [formGroupName]="i">
-                            <div class="flex flex-col gap-y-1">
-                                <div class="flex flex-col" [formGroupName]="'DayOfWeek'">
-                                    <div class="text-md font-semibold">Day Of Week</div>
-                                    <div class="row grid grid-cols-7 gap-x-2 pl-4 justify-between">
-                                        <div class="flex flex-col items-center" *ngFor="let day of dayOfWeeks">
-                                            <span class="text-md">{{day}}</span>
-                                            <mat-checkbox [color]="'primary'" [formControl]="getDayOfWeekControl(i, day)"></mat-checkbox>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex flex-col">
-                                    <div class="text-md font-semibold">Hours</div>
-                                    <div class="row grid grid-cols-2 gap-x-2 pl-4 justify-between" [formGroupName]="'Hours'">
-                                        <div class="col-span-1">
-                                            <div class="flex flex-col w-full">
-                                                <dx-date-box type="time" placeholder="Time" displayFormat="HH:mm" [formControlName]="'Start'" label="Start time"
-                                                    labelMode="static" required class="form-control"> </dx-date-box>
-                                            </div>
-                                        </div>
-                                        <div class="col-span-1">
-                                            <div class="flex flex-col w-full">
-                                                <dx-date-box type="time" placeholder="Time" displayFormat="HH:mm" [formControlName]="'End'" label="End time"
-                                                    labelMode="static" required class="form-control"></dx-date-box>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex flex-col">
-                                    <div class="text-md font-semibold">Summary</div>
-                                    <div class="row grid grid-cols-4 gap-x-2 pl-4 justify-between" [formGroupName]="'Summary'">
-                                        <ng-container *ngFor="let summaryType of summaryTypes;">
-                                            <div class="flex flex-col items-center">
-                                                <span class="text-md">{{summaryType.Name}}</span>
-                                                <mat-checkbox [color]="'primary'" [formControl]="getSummaryTypeControl(i, summaryType.Id)" (change)="onChangeBuildingNotificationScheduleFromSummaryType(i, summaryType.Id)"></mat-checkbox>
-                                            </div>
-                                        </ng-container>
-                                    </div>
-                                </div>
-                            </div>
-                        </ng-container>
-                    </mat-tab>
-                    
-                </ng-container>
-            </mat-tab-group>
-            <div class="flex justify-end border-t pt-2">
-                <button mat-raised-button color="primary" class="w-30 text-white" type="button" (click)="submitNotificationSchedule()">Update</button>
-            </div>
-        </div>
         <div class="flex flex-col bg-card p-2 rounded-md">
+            <span class="text-xl font-semibold mb-2">Notification types allowed</span>
             <div
                 class="table-grid z-10 sticky top-0 grid gap-4 py-2 px-2 md:px-4 shadow text-base font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5"
                 >
@@ -143,8 +81,80 @@
         </div>
         <div class="row flex gap-y-2 justify-end flex">
             <div class="col-span-1">
-                <button mat-stroked-button color="primary" class="w-30 mr-4" type="button" (click)="close()">Cancel</button>
+                <!-- <button mat-stroked-button color="primary" class="w-30 mr-4" type="button" (click)="close()">Cancel</button> -->
                 <button mat-raised-button color="primary" class="w-30 text-white" type="button" [disabled]="!form.valid" (click)="submit()">{{data.detail ? 'Update' : 'Create'}}</button>
+            </div>
+        </div>
+        <div class="flex flex-col bg-card p-2 rounded-md gap-y-2">
+            <span class="text-xl font-semibold">Notification Schedule</span>
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded relative" role="alert" *ngIf="userNotificationUpdated">
+                <span class="block sm:inline">Updated successfully!</span>
+            </div>
+            <div class="row grid grid-cols-2 gap-4">
+                <div class="col-span-1">
+                    <mat-label> Select Building </mat-label>
+                    <ng-select [items]="buildings" bindLabel="Name" bindValue="BuildingId" [placeholder]="'Select Building'"
+                               [formControlName]="'BuildingId'" [searchable]="true" [clearable]="false" [searchFn]="customBuildingSearch"
+                               (change)="selectionChanged($event)">
+                    </ng-select>
+                </div>
+            </div>
+            <div class="flex flex-col" formArrayName="Additional" *ngIf="selectedBuildingId">
+                <span class="text-lg">Notification Configuration</span>
+                <mat-tab-group
+                    [animationDuration]="'500ms'"
+                    [selectedIndex]="selectedNotificationTab"
+                    (selectedIndexChange)="selectedNotificationTab = $event">
+                    <ng-container *ngFor="let notificationType of additionalNotifications.controls; let i = index">
+                        <mat-tab label="{{senderTypes[i].Name}}">
+                            <ng-container [formGroupName]="i">
+                                <div class="flex flex-col gap-y-1">
+                                    <div class="flex flex-col" [formGroupName]="'DayOfWeek'">
+                                        <div class="text-md font-semibold">Day Of Week</div>
+                                        <div class="row grid grid-cols-7 gap-x-2 pl-4 justify-between">
+                                            <div class="flex flex-col items-center" *ngFor="let day of dayOfWeeks">
+                                                <span class="text-md">{{day}}</span>
+                                                <mat-checkbox [color]="'primary'" [formControl]="getDayOfWeekControl(i, day)"></mat-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col">
+                                        <div class="text-md font-semibold">Hours</div>
+                                        <div class="row grid grid-cols-2 gap-x-2 pl-4 justify-between" [formGroupName]="'Hours'">
+                                            <div class="col-span-1">
+                                                <div class="flex flex-col w-full">
+                                                    <dx-date-box type="time" placeholder="Time" displayFormat="HH:mm" [formControlName]="'Start'" label="Start time"
+                                                        labelMode="static" required class="form-control"> </dx-date-box>
+                                                </div>
+                                            </div>
+                                            <div class="col-span-1">
+                                                <div class="flex flex-col w-full">
+                                                    <dx-date-box type="time" placeholder="Time" displayFormat="HH:mm" [formControlName]="'End'" label="End time"
+                                                        labelMode="static" required class="form-control"></dx-date-box>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col">
+                                        <div class="text-md font-semibold">Summary</div>
+                                        <div class="row grid grid-cols-4 gap-x-2 pl-4 justify-between" [formGroupName]="'Summary'">
+                                            <ng-container *ngFor="let summaryType of summaryTypes;">
+                                                <div class="flex flex-col items-center">
+                                                    <span class="text-md">{{summaryType.Name}}</span>
+                                                    <mat-checkbox [color]="'primary'" [formControl]="getSummaryTypeControl(i, summaryType.Id)" (change)="onChangeBuildingNotificationScheduleFromSummaryType(i, summaryType.Id)"></mat-checkbox>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </mat-tab>
+                        
+                    </ng-container>
+                </mat-tab-group>
+                <div class="flex justify-end border-t pt-2">
+                    <button mat-raised-button color="primary" class="w-30 text-white" type="button" (click)="submitNotificationSchedule()">Update</button>
+                </div>
             </div>
         </div>
     </form>

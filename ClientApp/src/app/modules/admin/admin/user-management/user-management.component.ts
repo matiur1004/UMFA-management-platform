@@ -94,13 +94,7 @@ export class UserManagementComponent implements OnInit {
         }})
         .afterClosed()
         .subscribe((res) => {
-          if(res) {
-            let data = {...res, UserId: item.Id};
-            this._userService.onUpdatePortalUserRole(data)
-              .subscribe(() => {
-                this._userService.getAllUsers().subscribe();
-              })
-          }
+          this._userService.getAllUsers().subscribe();
         });
     }
   }
