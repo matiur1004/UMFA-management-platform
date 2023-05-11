@@ -12,7 +12,7 @@ namespace ClientPortal.Data.Entities.PortalEntities
         [Required]
         public int AMRMeterTriggeredAlarmId { get; set; }
         [Required]
-        public int NotiicationSendTypeId { get; set; }
+        public int NotificationSendTypeId { get; set; }
         [Required]
         public int Status { get; set; }
         [Required]
