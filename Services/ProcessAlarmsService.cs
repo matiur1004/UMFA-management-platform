@@ -28,9 +28,10 @@ namespace ClientPortal.Services
                 }
                 else
                 {
-                    var nightFlow = alarms.Where(a => a.AlarmTypeId == 1).ToList();
-                    if (nightFlow != null && nightFlow.Count > 0)
-                        ret = ProcessNightFlowAlarms(nightFlow);
+                    //var nightFlow = alarms.Where(a => a.AlarmTypeId == 1).ToList();
+                    //if (nightFlow != null && nightFlow.Count > 0)
+                    //    ret = ProcessNightFlowAlarms(nightFlow);
+                    ret = ProcessAlarms(alarms.ToList());
                 }
 
                 return ret;
@@ -42,14 +43,14 @@ namespace ClientPortal.Services
             }
         }
 
-        private bool ProcessNightFlowAlarms(List<AMRMeterAlarm> alarms)
+        private bool ProcessAlarms(List<AMRMeterAlarm> alarms)
         {
             try
             {
-                _logger.LogInformation("Now processing nightflow alarms...");
+                _logger.LogInformation("Now processing alarms...");
                 foreach (var alarm in alarms)
                 {
-                    _ = _repo.ProcessNightFlow(alarm).GetAwaiter().GetResult();
+                    _ = _repo.ProcessAlarm(alarm).GetAwaiter().GetResult();
                 }
 
                 return true;

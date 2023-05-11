@@ -34,12 +34,12 @@ namespace ClientPortal.Data.Repositories
             }
         }
 
-        public async Task<bool> ProcessNightFlow(AMRMeterAlarm alarm)
+        public async Task<bool> ProcessAlarm(AMRMeterAlarm alarm)
         {
             try
             {
                 alarm.LastRunDTM = DateTime.Now;
-                
+
                 var meterSerial = (await _context.AMRMeters.FindAsync(alarm.AMRMeterId)).MeterSerial;
                 DateTime? lastProfileData = (await _context.ScadaProfileData.Where(p => p.SerialNumber == meterSerial)
                     .Select(p => p.ReadingDate)
@@ -47,10 +47,10 @@ namespace ClientPortal.Data.Repositories
                 if (!lastProfileData.HasValue)
                 {
                     _logger.LogError($"No Profile data for meter {meterSerial}");
-                    return false; 
+                    return false;
                 }
 
-                DateTime lastAlarmData = alarm.LastDataDTM?? lastProfileData?.AddHours(-24) ?? DateTime.Now.AddHours(-24);
+                DateTime lastAlarmData = alarm.LastDataDTM ?? lastProfileData?.AddHours(-24) ?? DateTime.Now.AddHours(-24);
 
                 if (lastAlarmData >= lastProfileData?.AddHours(-1))
                 {
@@ -58,17 +58,67 @@ namespace ClientPortal.Data.Repositories
                     return false;
                 }
 
-                lastAlarmData = DateTime.Parse("2023-03-05 00:00:00");
-                lastProfileData = DateTime.Parse("2023-03-06 00:00:00");
+                //lastAlarmData = DateTime.Parse("2023-03-05 00:00:00");
+                //lastProfileData = DateTime.Parse("2023-03-06 00:00:00");
 
-                var CommandText = $"exec spAlarmAnalyzeNightFlow '{meterSerial}', '{lastAlarmData.ToString("yyyy-MM-dd HH:mm")}', '{lastProfileData?.ToString("yyyy-MM-dd HH:mm")}'";
-                CommandText += $", '{alarm.StartTime}', '{alarm.EndTime}', {alarm.Threshold}, {alarm.Duration}";
+                var commandText = "";
+                switch (alarm.AlarmTypeId)
+                {
+                    case 1:
+                        {
+                            commandText = $"exec spAlarmAnalyzeNightFlow '{meterSerial}', '{lastAlarmData.ToString("yyyy-MM-dd HH:mm")}', '{lastProfileData?.ToString("yyyy-MM-dd HH:mm")}'";
+                            commandText += $", '{alarm.StartTime}', '{alarm.EndTime}', {alarm.Threshold}, {alarm.Duration}";
+                            break;
+                        }
+                    case 2:
+                        {
+                            commandText = $"exec spAlarmAnalyzeBurstPipe '{meterSerial}', '{lastAlarmData.ToString("yyyy-MM-dd HH:mm")}', '{lastProfileData?.ToString("yyyy-MM-dd HH:mm")}'";
+                            commandText += $", {alarm.Threshold}, {alarm.Duration}";
+                            break;
+                        }
+                    case 3:
+                        {
+                            commandText = $"exec spAlarmAnalyzeLeakDetection '{meterSerial}', '{lastAlarmData.ToString("yyyy-MM-dd HH:mm")}', '{lastProfileData?.ToString("yyyy-MM-dd HH:mm")}'";
+                            commandText += $", '{alarm.StartTime}', '{alarm.EndTime}', {alarm.Threshold}, {alarm.Duration}";
+                            break;
+                        }
+                    case 4:
+                        {
+                            commandText = $"exec spAlarmAnalyzeDailyUsage '{meterSerial}', '{lastAlarmData.ToString("yyyy-MM-dd HH:mm")}', '{lastProfileData?.ToString("yyyy-MM-dd HH:mm")}'";
+                            commandText += $", {alarm.Threshold}";
+                            break;
+                        }
+                    case 5:
+                        {
+                            commandText = $"exec spAlarmAnalyzePeakUsage '{meterSerial}', '{lastAlarmData.ToString("yyyy-MM-dd HH:mm")}', '{lastProfileData?.ToString("yyyy-MM-dd HH:mm")}'";
+                            commandText += $", '{alarm.StartTime}', '{alarm.EndTime}', {alarm.Threshold}, {alarm.Duration}";
+                            break;
+                        }
+                    case 6:
+                        {
+                            commandText = $"exec spAlarmAnalyzeAvgUsage '{meterSerial}', '{lastAlarmData.ToString("yyyy-MM-dd HH:mm")}', '{lastProfileData?.ToString("yyyy-MM-dd HH:mm")}'";
+                            commandText += $", '{alarm.StartTime}', '{alarm.EndTime}', {alarm.Threshold}, 0";
+                            break;
+                        }
+                    default:
+                        {
+                            break;
+                        }
+                }
+                if (commandText == "")
+                {
+                    _logger.LogError($"Alarm type could not be resolved : {alarm.AMRMeterAlarmId}");
+                    return false;
+                }
+
+
                 var connection = _context.Database.GetDbConnection();
-                await connection.OpenAsync();
+                if (connection.State == System.Data.ConnectionState.Closed)
+                    await connection.OpenAsync();
                 List<ProcessAlarmsProfile> profile = new();
                 ProcessAlarmsTriggered triggered = new() { NoOfAlarms = 0 };
 
-                using (var results = await connection.QueryMultipleAsync(CommandText))
+                using (var results = await connection.QueryMultipleAsync(commandText))
                 {
                     if (results == null)
                     {
@@ -101,7 +151,7 @@ namespace ClientPortal.Data.Repositories
                         Active = true
                     };
 
-                    _context.Add( trigAlarm );
+                    _context.Add(trigAlarm);
                 }
 
                 alarm.LastDataDTM = lastProfileData;
