@@ -1,8 +1,12 @@
 ﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.PortalEntities;
+using ClientPortal.Services;
 using Dapper;
+using NuGet.Common;
+using ServiceStack;
 using System.Dynamic;
+using System.Linq.Expressions;
 
 namespace ClientPortal.Controllers
 {
@@ -12,20 +16,22 @@ namespace ClientPortal.Controllers
     public class TriggeredAlarmNotificationsController : ControllerBase
     {
         private readonly PortalDBContext _context;
+        private readonly IUserService _userService;
 
-        public TriggeredAlarmNotificationsController(PortalDBContext context)
+        public TriggeredAlarmNotificationsController(PortalDBContext context, IUserService userService)
         {
             _context = context;
+            _userService = userService;
         }
 
         // GET: TriggeredAlarmNotifications
         [HttpGet("getTriggeredAlarmNotifications")]
         public async Task<ActionResult<IEnumerable<TriggeredAlarmNotification>>> GetTriggeredAlarmNotifications()
         {
-          if (_context.TriggeredAlarmNotifications == null)
-          {
-              return NotFound();
-          }
+            if (_context.TriggeredAlarmNotifications == null)
+            {
+                return NotFound();
+            }
             return await _context.TriggeredAlarmNotifications.ToListAsync();
         }
 
@@ -49,15 +55,35 @@ namespace ClientPortal.Controllers
 
         // GET: ActiveTriggeredAlarmNotificationsForUser
         [HttpGet("getActiveTriggeredAlarmNotificationsForUser/{userId}")]
-        public async Task<ActionResult<IEnumerable<TriggeredAlarmNotification>>> GetActiveTriggeredAlarmNotificationsForUser(int userId)
+        public async Task<ActionResult<IEnumerable<TriggeredAlarmNotificationResult>>> GetActiveTriggeredAlarmNotificationsForUser(int userId)
         {
             if (_context.TriggeredAlarmNotifications == null)
             {
                 return NotFound();
             }
-            return await _context.TriggeredAlarmNotifications
+            var results = await _context.TriggeredAlarmNotifications
                 .Where(a => (a.Active && a.UserId == userId))
                 .ToListAsync();
+
+            var userResults = new List<TriggeredAlarmNotificationResult>();
+
+            foreach (var result in results)
+            {
+                var userResult = new TriggeredAlarmNotificationResult();
+
+                //Get User
+                var user = _userService.GetUserById(result.UserId);
+                //Get Status
+                var status = GetStatus(result.Status);
+                userResult.FirstName = user.FirstName;
+                userResult.LastName = user.LastName;
+                userResult.NotificationEmailAddress = user.NotificationEmailAddress;
+                userResult.Status = status;
+                userResult.SendDate = result.SendDateTime.ToShortDateString();
+                userResult.SendStatusMessage = result.SendStatusMessage;
+                userResults.Add(userResult);
+            }
+            return userResults;
         }
 
         // GET: AllTriggeredAlarmNotificationsForUser
@@ -77,13 +103,13 @@ namespace ClientPortal.Controllers
         [HttpPost("createOrUpdateTriggeredAlarmNotification")]
         public async Task<ActionResult<TriggeredAlarmNotification>> CreateOrUpdateTriggeredAlarmNotification(TriggeredAlarmNotification triggeredAlarmNotification)
         {
-          if (_context.TriggeredAlarmNotifications == null)
-          {
-              return Problem("Entity set 'PortalDBContext.TriggeredAlarmNotifications'  is null.");
-          }
+            if (_context.TriggeredAlarmNotifications == null)
+            {
+                return Problem("Entity set 'PortalDBContext.TriggeredAlarmNotifications'  is null.");
+            }
 
-          if(triggeredAlarmNotification.TriggeredAlarmNotificationId > 0) 
-            {   
+            if (triggeredAlarmNotification.TriggeredAlarmNotificationId > 0)
+            {
                 // UPDATE
                 _context.Entry(triggeredAlarmNotification).State = EntityState.Modified;
 
@@ -104,7 +130,7 @@ namespace ClientPortal.Controllers
                 }
                 return NoContent();
             }
-            else                                                         
+            else
             {
                 // ADD
                 _context.TriggeredAlarmNotifications.Add(triggeredAlarmNotification);
@@ -172,6 +198,35 @@ namespace ClientPortal.Controllers
         private bool TriggeredAlarmNotificationExists(int id)
         {
             return (_context.TriggeredAlarmNotifications?.Any(e => e.TriggeredAlarmNotificationId == id)).GetValueOrDefault();
+        }
+
+        public class TriggeredAlarmNotificationResult
+        {
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public string NotificationEmailAddress { get; set; }
+            public string Status { get; set; }
+            public string SendDate { get; set; }
+            public string SendStatusMessage { get; set; }
+
+        }
+
+        private static string GetStatus(int id)
+        {
+            var status = "";
+            switch (id)
+            {
+                case 1:
+                    status = "Not Sent";
+                    break;
+                case 2:
+                    status = "Sent Successfully";
+                    break;
+                case 3:
+                    status = "Error";
+                    break;
+            }
+            return status;
         }
     }
 }
