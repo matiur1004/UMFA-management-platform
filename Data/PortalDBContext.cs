@@ -71,6 +71,7 @@ namespace ClientPortal.Data
         public DbSet<AMRMeterAlarm> AMRMeterAlarms { get; set; }
         public DbSet<UserAMRMeterActiveNotification> UserAMRMeterActiveNotifications { get; set; }
         public DbSet<AMRMeterTriggeredAlarm> AMRMeterTriggeredAlarms { get; set; }
+        public DbSet<TriggeredAlarmNotification> TriggeredAlarmNotifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
