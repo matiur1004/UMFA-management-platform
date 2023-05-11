@@ -105,7 +105,7 @@ export class UserManagementComponent implements OnInit {
           this._userService.getAllUsers().subscribe();
         });
     } else if(actionType == 'UserNotification') {
-      this._matDialog.open(NotificationsPopupComponent, {autoFocus: false})
+      this._matDialog.open(NotificationsPopupComponent, {autoFocus: false, data: {detail: item}})
         .afterClosed()
         .subscribe((res) => {
         });
