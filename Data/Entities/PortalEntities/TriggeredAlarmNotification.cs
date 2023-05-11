@@ -14,7 +14,7 @@ namespace ClientPortal.Data.Entities.PortalEntities
         [Required]
         public int NotificationSendTypeId { get; set; }
         [Required]
-        public int Status { get; set; }
+        public Int16 Status { get; set; }
         [Required]
         public DateTime CreatedDateTime { get; set; }
         [Required]
