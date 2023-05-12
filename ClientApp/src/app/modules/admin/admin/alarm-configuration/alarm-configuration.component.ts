@@ -20,6 +20,7 @@ export class AlarmConfigurationComponent implements OnInit {
   partners: IUmfaPartner[] = [];
   allBuildings: IUmfaBuilding[] = [];
   buildings: IUmfaBuilding[] = [];
+  isSelectedAlarm: boolean = false;
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
@@ -86,7 +87,6 @@ export class AlarmConfigurationComponent implements OnInit {
       this._alarmConfigurationService.selectedBuilding = formValue['buildingId'];
       this._alarmConfigurationService.selectedPartner = formValue['partnerId'];
     })
-
     if(this._alarmConfigurationService.selectedBuilding) {
       this._alarmConfigurationService.getAlarmsByBuilding(this._alarmConfigurationService.selectedBuilding).subscribe();
     }
@@ -103,6 +103,7 @@ export class AlarmConfigurationComponent implements OnInit {
   }
 
   onSelectRow(e) {
+    this.isSelectedAlarm = true;
     this._meterService.onSelectMeterAlarm(e.data);
   }
 
@@ -116,6 +117,11 @@ export class AlarmConfigurationComponent implements OnInit {
   }
 
   ngOnDestroy() {
+    if(!this.isSelectedAlarm) {
+      this._alarmConfigurationService.selectedBuilding = null;
+      this._alarmConfigurationService.selectedPartner = null;
+      this._alarmConfigurationService.destroy();
+    }
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }
