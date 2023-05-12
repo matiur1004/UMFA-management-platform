@@ -22,6 +22,22 @@ namespace ClientPortal.Controllers
             _opuService = opuService;
         }
         // GET: AMRScadaUserController
+        [HttpGet("getAll")]
+        public IActionResult GetAllScadaUsers()
+        {
+            _logger.LogInformation($"Retrieving All AMR Scada Users");
+            try
+            {
+                var response = _asuService.GetAll().Result;
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while retrieving amr scada users: {ex.Message}");
+                return BadRequest($"Error while retrieving amr scada users: {ex.Message}");
+            }
+        }
+
         // GET: AMRScadaUserController/Details/5
         [HttpGet("{id}")]
         public IActionResult Details(int id)
