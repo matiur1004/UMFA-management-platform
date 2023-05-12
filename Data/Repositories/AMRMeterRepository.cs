@@ -208,10 +208,13 @@ namespace ClientPortal.Data.Repositories
                         }
                 }
                 User? user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+                var resp = await _buildingRepo.GetBuildings(userId);
+                var buildings = resp.UmfaBuildings.ToList();
+                List<int> ids = buildings.Select(b => b.BuildingId).ToList();
                 AMRMeterResponseList respList = new();
                 var meters = await _dbContext.AMRMeters
                     .Include(a => a.MakeModel)
-                    .Where(a => (a.Active && a.MakeModel.UtilityId == meterMakeModelId && a.UserId == userId))
+                    .Where(a => (a.Active && a.MakeModel.UtilityId == meterMakeModelId && ids.Contains(a.BuildingId)))
                     .ToListAsync();
                 if (meters != null && meters.Count > 0)
                 {
