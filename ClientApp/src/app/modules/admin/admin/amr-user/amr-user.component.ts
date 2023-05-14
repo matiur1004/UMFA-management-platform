@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { AllowedPageSizes } from 'app/core/helpers';
 import { IopUser } from 'app/core/models';
 import { UserService } from 'app/shared/services/user.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
   templateUrl: './amr-user.component.html',
@@ -13,6 +13,8 @@ export class AmrUserComponent implements OnInit {
 
   user = this.userService.userValue;
   user$: Observable<IopUser>;
+  scadaUsers: any[];
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
   readonly allowedPageSizes = AllowedPageSizes;
 
   constructor(private userService: UserService, private _router: Router) {
@@ -20,8 +22,15 @@ export class AmrUserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.user$ = this.userService.user$;
-    this.userService.getUser(this.user.Id).subscribe();
+    this.userService.scadaUsers$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((data: []) => {
+        this.scadaUsers = data;
+        console.log(this.scadaUsers);
+      })
+
+    this.userService.getAllScadaUsers().subscribe();
+    
   }
 
   onEdit(e) {
@@ -29,4 +38,8 @@ export class AmrUserComponent implements OnInit {
     this._router.navigate([`/admin/amrUser/edit/${this.user.Id}/${e.row.data.Id}`]);
   }
 
+  ngOnDestroy() {
+    this._unsubscribeAll.next(null);
+    this._unsubscribeAll.complete();
+  }
 }
