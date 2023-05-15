@@ -217,6 +217,7 @@ export class AlarmConfigurationService {
 
     destroy() {
         this._alarmMeterDetail.next(null);
+        this._metersWithAlarms.next([]);
     }
 
     //catches errors
