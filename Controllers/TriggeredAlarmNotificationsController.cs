@@ -2,11 +2,8 @@
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Services;
-using Dapper;
-using NuGet.Common;
 using ServiceStack;
 using System.Dynamic;
-using System.Linq.Expressions;
 
 namespace ClientPortal.Controllers
 {
@@ -163,7 +160,9 @@ namespace ClientPortal.Controllers
         public ActionResult<IEnumerable<NotificationsSPResult>> GetNotificationsToSend()
         {
             var notifications = new List<NotificationsSPResult>();
+
             List<dynamic> resultList = new List<dynamic>();
+            
             try
             {
                 using (var command = _context.Database.GetDbConnection().CreateCommand())

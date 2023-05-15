@@ -3,6 +3,5 @@
     public class NotificationSettings
     {
         public string ReturnBaseUrl { get; set; }
-        
     }
 }
