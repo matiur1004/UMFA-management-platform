@@ -78,6 +78,8 @@ namespace ClientPortal.Controllers
                 userResult.Status = status;
                 userResult.SendDate = result.SendDateTime;
                 userResult.SendStatusMessage = result.SendStatusMessage;
+                userResult.MessageBody = result.MessageBody;
+
                 userResults.Add(userResult);
             }
             return userResults;
@@ -238,8 +240,9 @@ namespace ClientPortal.Controllers
             public string Status { get; set; }
             public DateTime? SendDate { get; set; }
             public string? SendStatusMessage { get; set; }
-
+            public string? MessageBody { get; set; }
         }
+
 
         public class NotificationsSPResult
         {
