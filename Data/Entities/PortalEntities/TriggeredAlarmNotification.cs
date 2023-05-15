@@ -19,9 +19,9 @@ namespace ClientPortal.Data.Entities.PortalEntities
         public DateTime CreatedDateTime { get; set; }
         [Required]
         public DateTime LastUdateDateTime { get; set;}
-        public DateTime SendDateTime { get; set; }
+        public DateTime? SendDateTime { get; set; }
         [Required]
         public bool Active { get; set; }
-        public string SendStatusMessage { get; set; }
+        public string? SendStatusMessage { get; set; }
     }
 }
