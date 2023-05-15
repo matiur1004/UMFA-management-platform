@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AllowedPageSizes } from '@core/helpers';
 import { UserNotificationScheduleService } from '@shared/services/user-notification-schedule.service';
+import moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -34,6 +35,10 @@ export class NotificationsPopupComponent implements OnInit {
       });
 
     this._userNotificationScheduleService.getActiveTriggeredAlarmNotificationsForUser(userId).subscribe();
+  }
+
+  onCustomizeDateTime(cellInfo) {
+    return moment(new Date(cellInfo.value)).format('YYYY-MM-DD mm:hh:ss');
   }
 
   ngOnDestroy() {

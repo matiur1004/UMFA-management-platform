@@ -26,7 +26,6 @@ export class AmrUserComponent implements OnInit {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: []) => {
         this.scadaUsers = data;
-        console.log(this.scadaUsers);
       })
 
     this.userService.getAllScadaUsers().subscribe();
