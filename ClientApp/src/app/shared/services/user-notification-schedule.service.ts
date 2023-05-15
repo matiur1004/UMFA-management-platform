@@ -10,6 +10,7 @@ export class UserNotificationScheduleService {
 
   private _senderTypes: BehaviorSubject<any> = new BehaviorSubject([]);
   private _summaryTypes: BehaviorSubject<any> = new BehaviorSubject([]);
+  private _triggeredNotifications: BehaviorSubject<any> = new BehaviorSubject([]);
   
   constructor(private http: HttpClient) { }
 
@@ -19,6 +20,10 @@ export class UserNotificationScheduleService {
 
   get summaryTypes$(): Observable<any> {
     return this._summaryTypes.asObservable();
+  }
+
+  get triggeredNotifications$(): Observable<any> {
+    return this._triggeredNotifications.asObservable();
   }
 
   getAllNotificationSendTypes() {
@@ -59,6 +64,17 @@ export class UserNotificationScheduleService {
       .pipe(
         catchError(err => this.catchErrors(err)),
         tap(bl => {
+        })
+      );
+  }
+
+  getActiveTriggeredAlarmNotificationsForUser(userId) {
+    const url = `${CONFIG.apiURL}/TriggeredAlarmNotifications/getActiveTriggeredAlarmNotificationsForUser/${userId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchErrors(err)),
+        tap(bl => {
+          this._triggeredNotifications.next(bl);
         })
       );
   }

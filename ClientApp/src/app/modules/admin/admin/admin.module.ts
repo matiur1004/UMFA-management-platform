@@ -44,6 +44,7 @@ import { AlarmDailyUsageComponent } from './meter-alarm-detail/alarm-daily-usage
 import { AlarmAverageUsageComponent } from './meter-alarm-detail/alarm-average-usage/alarm-average-usage.component';
 import { UserNotificationsComponent } from './user-notifications/user-notifications.component';
 import { SetUserNotificationComponent } from './user-notifications/set-user-notification/set-user-notification.component';
+import { NotificationsPopupComponent } from './user-management/notifications-popup/notifications-popup.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import { SetUserNotificationComponent } from './user-notifications/set-user-noti
     AlarmDailyUsageComponent,
     AlarmAverageUsageComponent,
     UserNotificationsComponent,
-    SetUserNotificationComponent
+    SetUserNotificationComponent,
+    NotificationsPopupComponent
   ],
   imports: [
     FormsModule,

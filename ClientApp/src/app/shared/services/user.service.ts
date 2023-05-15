@@ -11,6 +11,7 @@ export class UserService {
   private userSubject: BehaviorSubject<IopUser>;
   private _roles: BehaviorSubject<Role[]> = new BehaviorSubject([]);
   private _users: BehaviorSubject<IopUser[]> = new BehaviorSubject([]);
+  private _scadaUsers: BehaviorSubject<[]> = new BehaviorSubject([]);
   private _notificationTypes: BehaviorSubject<NotificationType[]> = new BehaviorSubject([]);
 
   public user$: Observable<IopUser>;
@@ -41,6 +42,10 @@ export class UserService {
     return this._users.asObservable();
   }
 
+  public get scadaUsers$(): Observable<[]> {
+    return this._scadaUsers.asObservable();
+  }
+  
   public get notificationTypes$(): Observable<NotificationType[]> {
     return this._notificationTypes.asObservable();
   }
@@ -86,6 +91,20 @@ export class UserService {
       )
   }
 
+  getAllScadaUsers(): Observable<[]> {
+    const url = `${CONFIG.apiURL}/AMRScadaUser/getAll`;
+    console.log(url);
+    return this.http.get<[]>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchErrors('getAllScadaUsers', err)),
+        //tap(u => console.log(`Http response from getUser: ${JSON.stringify(u)}`)),
+        map((u: []) => {
+          this._scadaUsers.next(u);
+          return u;
+        }),
+        take(1)
+      )
+  }
   getNotificationTypes(): Observable<NotificationType[]> {
     const url = `${CONFIG.apiURL}${CONFIG.getAllNotificationTypes}`;
     return this.http.get<NotificationType[]>(url, { withCredentials: true })

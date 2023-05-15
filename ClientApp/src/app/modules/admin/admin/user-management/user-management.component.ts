@@ -6,6 +6,7 @@ import { BuildingService, UserService } from '@shared/services';
 import { UserNotificationScheduleService } from '@shared/services/user-notification-schedule.service';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { RoleAddEditPopupComponent } from './role-add-edit-popup/role-add-edit-popup.component';
+import { NotificationsPopupComponent } from './notifications-popup/notifications-popup.component';
 
 @Component({
   selector: 'app-user-management',
@@ -31,6 +32,8 @@ export class UserManagementComponent implements OnInit {
     private _userNotificationScheduleService: UserNotificationScheduleService
   ) {
     this.onEdit = this.onEdit.bind(this);
+    this.onGetUserNotifications = this.onGetUserNotifications.bind(this);
+
    }
 
   ngOnInit(): void {
@@ -82,6 +85,11 @@ export class UserManagementComponent implements OnInit {
     this.onAction('Edit', e.row.data);
   }
 
+  onGetUserNotifications(e) {
+    e.event.preventDefault();
+    this.onAction('UserNotification', e.row.data);
+  }
+
   onAction(actionType: string, item = null) {
     if(actionType == 'New' || actionType == 'Edit') {
       this._matDialog.open(RoleAddEditPopupComponent, {autoFocus: false, data: 
@@ -95,6 +103,11 @@ export class UserManagementComponent implements OnInit {
         .afterClosed()
         .subscribe((res) => {
           this._userService.getAllUsers().subscribe();
+        });
+    } else if(actionType == 'UserNotification') {
+      this._matDialog.open(NotificationsPopupComponent, {autoFocus: false, data: {detail: item}})
+        .afterClosed()
+        .subscribe((res) => {
         });
     }
   }

@@ -1,0 +1,50 @@
+<div class="flex flex-col flex-auto min-w-200 max-w-200 max-h-screen -m-6 ">
+
+    <!-- Header -->
+    <div class="flex flex-0 items-center justify-between h-12 px-4 bg-primary text-white">
+        <div class="text-lg font-medium">Notifications</div>
+        <button
+            mat-icon-button
+            (click)="matDialogRef.close()"
+            [tabIndex]="-1">
+            <mat-icon
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+
+    <div class="flex flex-col flex-0 w-full p-4 gap-y-4">
+        <dx-data-grid
+            [dataSource]="(notifications)"
+            [showBorders]="true"
+            class="grid-container"
+        >
+            <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+            <dxo-paging [pageSize]="10"> </dxo-paging>
+            <dxo-pager
+                [visible]="true"
+                [allowedPageSizes]="allowedPageSizes"
+                [displayMode]="'compact'"
+                [showPageSizeSelector]="true"
+                [showInfo]="true"
+                [showNavigationButtons]="true"
+            >
+            </dxo-pager>
+            <dxo-search-panel
+                [visible]="true"
+                [width]="200"
+                placeholder="Search..."
+            ></dxo-search-panel>
+            <dxi-column dataField="FirstName" [minWidth]="80"></dxi-column>
+            <dxi-column dataField="LastName" [minWidth]="80"></dxi-column>
+            <dxi-column dataField="NotificationEmailAddress" caption="User Notification Email" [minWidth]="80"></dxi-column>
+            <dxi-column dataField="Status" [minWidth]="60"></dxi-column>
+            <dxi-column dataField="SendDate" [minWidth]="50"></dxi-column>
+            <dxi-column dataField="SendStatusMessage" [minWidth]="100"></dxi-column>
+        </dx-data-grid>
+        <div class="flex justify-end border-t pt-2">
+            <button mat-raised-button color="primary" class="w-30 text-white" type="button" (click)="cancel()">Cancel</button>
+        </div>
+    </div>
+    
+</div>

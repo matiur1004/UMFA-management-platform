@@ -9,6 +9,7 @@ namespace ClientPortal.Services
 {
     public interface IAMRScadaUserService
     {
+        Task<IEnumerable<AMRScadaUserResponse>> GetAll();
         Task<AMRScadaUserResponse> GetById(int id);
         Task<IEnumerable<AMRScadaUserResponse>> GetAllforUser(int userId);
         Task<AMRScadaUserResponse> Update(AMRScadaUserRequest user, int userId);
@@ -29,6 +30,23 @@ namespace ClientPortal.Services
             _asuRepo = repo;
             _mapper = mapper;
         }
+
+        public async Task<IEnumerable<AMRScadaUserResponse>> GetAll()
+        {
+            try
+            {
+                _logger.LogInformation($"Fetching amr scada users");
+                var result = await _asuRepo.GetAll();
+                var ret = _mapper.Map<List<AMRScadaUserResponse>>(result);
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while getting amr scda users: {ex.Message}");
+                throw new ApplicationException($"Error while getting amr scda users: {ex.Message}");
+            }
+        }
+
         public async Task<AMRScadaUserResponse> GetById(int id)
         {
             try
