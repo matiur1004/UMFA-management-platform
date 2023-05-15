@@ -107,7 +107,7 @@ namespace ClientPortal.Controllers
         {
             if (_context.TriggeredAlarmNotifications == null)
             {
-                return Problem("Entity set 'PortalDBContext.TriggeredAlarmNotifications'  is null.");
+                return Problem("Entity set 'PortalDBContext.TriggeredAlarmNotifications' is null.");
             }
 
             if (triggeredAlarmNotification.TriggeredAlarmNotificationId > 0)
