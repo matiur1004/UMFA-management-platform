@@ -1,6 +1,7 @@
 ﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.PortalEntities;
+using ClientPortal.Interfaces;
 using ClientPortal.Services;
 using ServiceStack;
 using System.Dynamic;
@@ -14,11 +15,13 @@ namespace ClientPortal.Controllers
     {
         private readonly PortalDBContext _context;
         private readonly IUserService _userService;
+        private readonly INotificationService _notificationService;
 
-        public TriggeredAlarmNotificationsController(PortalDBContext context, IUserService userService)
+        public TriggeredAlarmNotificationsController(PortalDBContext context, IUserService userService, INotificationService notificationService)
         {
             _context = context;
             _userService = userService;
+            _notificationService = notificationService;
         }
 
         // GET: TriggeredAlarmNotifications
@@ -187,12 +190,25 @@ namespace ClientPortal.Controllers
                         }
                     }
                 }
+                
             }
             catch (Exception)
             {
                 return Problem($"Failed to get NotificationsToSend");
             }
             return Ok(resultList);
+        }
+
+        // TEST: TestSendNotifications
+        [HttpGet]
+        public async Task<IActionResult> TestSendNotifications()
+        {
+            var testSendNotifications = await _notificationService.ProcessNotifications();
+            if (testSendNotifications == false)
+            {
+                return NoContent();
+            }
+            return Ok("Success");
         }
 
         private bool TriggeredAlarmNotificationExists(int id)
@@ -209,27 +225,6 @@ namespace ClientPortal.Controllers
             public DateTime? SendDate { get; set; }
             public string? SendStatusMessage { get; set; }
             public string? MessageBody { get; set; }
-        }
-
-
-        public class NotificationsSPResult
-        {
-            public int AMRMeterTriggeredAlarmId { get; set; }
-            public int AMRMeterAlarmId { get; set; }
-            public int UserId { get; set; }
-            public User User { get; set; }
-            public int BuildingId { get; set; }
-            public int UmfaId { get; set; }
-            public string BuildingName { get; set; }
-            public int AMRMeterId { get; set; }
-            public string MeterNo { get; set; }
-            public string MeterSerial { get; set; }
-            public string Description { get; set; }
-            public string AlarmName { get; set; }
-            public string AlarmDescription { get; set; }
-            public DateTime OccStartDTM { get; set; }
-            public int NotificationSendTypeId { get; set; }
-            public string Name { get; set; }
         }
 
         private static string GetStatus(int id)

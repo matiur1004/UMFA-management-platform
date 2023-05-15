@@ -5,7 +5,7 @@ namespace ClientPortal.Interfaces
 {
     public interface INotificationService
     {
-        Task<bool> SendAsync(NotificationData nData, CancellationToken ct);
+        Task<bool> ProcessNotifications();
     }
 }
 
