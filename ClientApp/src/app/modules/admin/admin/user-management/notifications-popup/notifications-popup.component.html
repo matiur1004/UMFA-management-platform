@@ -43,7 +43,7 @@
             <dxi-column dataField="SendStatusMessage" [minWidth]="100"></dxi-column>
             <dxi-column dataField="MessageBody" [minWidth]="100" cellTemplate="messageTemplate"></dxi-column>
             <div *dxTemplate="let cellInfo of 'messageTemplate'">
-                <div class="messageBodyTemplate">{{cellInfo.value.trim()}}</div>  
+                <div class="messageBodyTemplate">{{cellInfo.value}}</div>  
             </div>
             
         </dx-data-grid>
