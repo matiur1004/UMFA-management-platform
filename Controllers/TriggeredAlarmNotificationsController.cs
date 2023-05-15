@@ -79,7 +79,7 @@ namespace ClientPortal.Controllers
                 userResult.LastName = user.LastName;
                 userResult.NotificationEmailAddress = user.NotificationEmailAddress;
                 userResult.Status = status;
-                userResult.SendDate = result.SendDateTime.ToShortDateString();
+                userResult.SendDate = result.SendDateTime;
                 userResult.SendStatusMessage = result.SendStatusMessage;
                 userResults.Add(userResult);
             }
@@ -237,8 +237,8 @@ namespace ClientPortal.Controllers
             public string LastName { get; set; }
             public string NotificationEmailAddress { get; set; }
             public string Status { get; set; }
-            public string SendDate { get; set; }
-            public string SendStatusMessage { get; set; }
+            public DateTime? SendDate { get; set; }
+            public string? SendStatusMessage { get; set; }
 
         }
 
