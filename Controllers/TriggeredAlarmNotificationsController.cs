@@ -1,12 +1,10 @@
 ﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.PortalEntities;
+using ClientPortal.Interfaces;
 using ClientPortal.Services;
-using Dapper;
-using NuGet.Common;
 using ServiceStack;
 using System.Dynamic;
-using System.Linq.Expressions;
 
 namespace ClientPortal.Controllers
 {
@@ -17,11 +15,13 @@ namespace ClientPortal.Controllers
     {
         private readonly PortalDBContext _context;
         private readonly IUserService _userService;
+        private readonly INotificationService _notificationService;
 
-        public TriggeredAlarmNotificationsController(PortalDBContext context, IUserService userService)
+        public TriggeredAlarmNotificationsController(PortalDBContext context, IUserService userService, INotificationService notificationService)
         {
             _context = context;
             _userService = userService;
+            _notificationService = notificationService;
         }
 
         // GET: TriggeredAlarmNotifications
@@ -81,6 +81,8 @@ namespace ClientPortal.Controllers
                 userResult.Status = status;
                 userResult.SendDate = result.SendDateTime;
                 userResult.SendStatusMessage = result.SendStatusMessage;
+                userResult.MessageBody = result.MessageBody;
+
                 userResults.Add(userResult);
             }
             return userResults;
@@ -105,7 +107,7 @@ namespace ClientPortal.Controllers
         {
             if (_context.TriggeredAlarmNotifications == null)
             {
-                return Problem("Entity set 'PortalDBContext.TriggeredAlarmNotifications'  is null.");
+                return Problem("Entity set 'PortalDBContext.TriggeredAlarmNotifications' is null.");
             }
 
             if (triggeredAlarmNotification.TriggeredAlarmNotificationId > 0)
@@ -160,10 +162,10 @@ namespace ClientPortal.Controllers
         }
 
         [HttpGet("getNotificationsToSend")]
-        public ActionResult<IEnumerable<NotificationsSPResult>> GetNotificationsToSend()
+        public ActionResult<IEnumerable<dynamic>> GetNotificationsToSend()
         {
-            var notifications = new List<NotificationsSPResult>();
             List<dynamic> resultList = new List<dynamic>();
+            
             try
             {
                 using (var command = _context.Database.GetDbConnection().CreateCommand())
@@ -188,42 +190,25 @@ namespace ClientPortal.Controllers
                         }
                     }
                 }
-
-                foreach (var result in resultList)
-                {
-                    var notification = new NotificationsSPResult();
-
-                    //Get User
-                    var user = _userService.GetUserById(result.UserId);
-                    //var aMRMeterTriggeredAlarmId = result.AMRMeterTriggeredAlarmId;
-                    //var amrMeterTriggeredAlarm = _context.AMRMeterTriggeredAlarms
-                    //    .Where(a => a.AMRMeterTriggeredAlarmId == aMRMeterTriggeredAlarmId)
-                    //    .FirstOrDefaultAsync();
-                    notification.User = user;
-                    notification.AlarmDescription = result.AlarmDescription;
-                    notification.AlarmName = result.NotificationEmailAddress;
-                    notification.AMRMeterAlarmId = result.AMRMeterAlarmId;
-                    notification.AMRMeterId = result.AMRMeterId;
-                    notification.AMRMeterTriggeredAlarmId = result.AMRMeterTriggeredAlarmId;
-                    notification.BuildingId = result.BuildingId;
-                    notification.BuildingName = result.BuildingName;
-                    notification.Description = result.Description;
-                    notification.MeterNo = result.MeterNo;
-                    notification.MeterSerial = result.MeterSerial;
-                    notification.Name = result.Name;
-                    notification.NotificationSendTypeId = result.NotificationSendTypeId;
-                    notification.OccStartDTM = result.OccStartDTM;
-                    notification.UmfaId = result.UmfaId;
-                    notification.UserId = result.UserId;
-
-                    notifications.Add(notification);
-                }
+                
             }
             catch (Exception)
             {
                 return Problem($"Failed to get NotificationsToSend");
             }
-            return Ok(notifications);
+            return Ok(resultList);
+        }
+
+        // TEST: TestSendNotifications
+        [HttpGet]
+        public async Task<IActionResult> TestSendNotifications()
+        {
+            var testSendNotifications = await _notificationService.ProcessNotifications();
+            if (testSendNotifications == false)
+            {
+                return NoContent();
+            }
+            return Ok("Success");
         }
 
         private bool TriggeredAlarmNotificationExists(int id)
@@ -239,27 +224,7 @@ namespace ClientPortal.Controllers
             public string Status { get; set; }
             public DateTime? SendDate { get; set; }
             public string? SendStatusMessage { get; set; }
-
-        }
-
-        public class NotificationsSPResult
-        {
-            public int AMRMeterTriggeredAlarmId { get; set; }
-            public int AMRMeterAlarmId { get; set; }
-            public int UserId { get; set; }
-            public User User { get; set; }
-            public int BuildingId { get; set; }
-            public int UmfaId { get; set; }
-            public string BuildingName { get; set; }
-            public int AMRMeterId { get; set; }
-            public string MeterNo { get; set; }
-            public string MeterSerial { get; set; }
-            public string Description { get; set; }
-            public string AlarmName { get; set; }
-            public string AlarmDescription { get; set; }
-            public DateTime OccStartDTM { get; set; }
-            public int NotificationSendTypeId { get; set; }
-            public string Name { get; set; }
+            public string? MessageBody { get; set; }
         }
 
         private static string GetStatus(int id)

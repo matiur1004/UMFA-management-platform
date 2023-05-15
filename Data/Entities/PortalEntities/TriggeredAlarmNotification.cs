@@ -23,5 +23,6 @@ namespace ClientPortal.Data.Entities.PortalEntities
         [Required]
         public bool Active { get; set; }
         public string? SendStatusMessage { get; set; }
+        public string? MessageBody { get; set; }
     }
 }

@@ -1,12 +1,9 @@
 ﻿using AutoMapper;
 using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
-using ClientPortal.Data.Entities.DunamisEntities;
 using ClientPortal.Data.Entities.PortalEntities;
-using ClientPortal.Models.ResponseModels;
 using ClientPortal.Models.ScadaRequestsForTableUpdate;
 using ClientPortal.Services;
-using Microsoft.EntityFrameworkCore;
 
 namespace ClientPortal.Controllers
 {
@@ -32,11 +29,11 @@ namespace ClientPortal.Controllers
         [HttpGet("getScadaRequestDetails")]
         public async Task<ActionResult<IEnumerable<ScadaRequestDetail>>> GetScadaRequestDetails()
         {
-          if (_context.ScadaRequestDetails == null)
-          {
+            if (_context.ScadaRequestDetails == null)
+            {
                 _logger.LogError("ScadaRequestDetails Not Found!");
                 return NotFound();
-          }
+            }
             _logger.LogInformation("ScadaRequestDetails Found!");
             return await _context.ScadaRequestDetails.ToListAsync();
         }
@@ -45,11 +42,11 @@ namespace ClientPortal.Controllers
         [HttpGet("getScadaRequestDetail/{id}")]
         public async Task<ActionResult<ScadaRequestDetail>> GetScadaRequestDetail(int id)
         {
-          if (_context.ScadaRequestDetails == null)
-          {
+            if (_context.ScadaRequestDetails == null)
+            {
                 _logger.LogError($"ScadaRequestDetails Entries Not Found in Table!");
                 return NotFound();
-          }
+            }
             var scadaRequestDetail = await _context.ScadaRequestDetails.FindAsync(id);
 
             if (scadaRequestDetail == null)
@@ -93,7 +90,7 @@ namespace ClientPortal.Controllers
                     detailItem.AmrMeter = new AMRMeter();
                 }
             }
-           return scadaRequestDetail;
+            return scadaRequestDetail;
         }
 
         // PUT: ScadaRequestDetails/5
@@ -133,11 +130,11 @@ namespace ClientPortal.Controllers
         [HttpPost("addScadaRequestDetail")]
         public async Task<ActionResult<ScadaRequestDetail>> PostScadaRequestDetail(ScadaRequestDetail scadaRequestDetail)
         {
-          if (_context.ScadaRequestDetails == null)
-          {
+            if (_context.ScadaRequestDetails == null)
+            {
                 _logger.LogError($"ScadaRequestDetails Table is Not Found");
                 return Problem("Entity set 'PortalDBContext.ScadaRequestDetails'  is null.");
-          }
+            }
             _context.ScadaRequestDetails.Add(scadaRequestDetail);
             await _context.SaveChangesAsync();
             _logger.LogInformation($"ScadaRequestDetail Saved Successfully!");
@@ -187,7 +184,7 @@ namespace ClientPortal.Controllers
                         $"[LastRunDTM] = '{scadaRequestDetailEntity.LastRunDTM}', " +
                         $"[CurrentRunDTM] = '{scadaRequestDetail.CurrentRunDTM}', " +
                         $"[UpdateFrequency] = {scadaRequestDetail.UpdateFrequency}, " +
-                        $"[LastDataDate] = '{scadaRequestDetail.LastDataDate}' " + 
+                        $"[LastDataDate] = '{scadaRequestDetail.LastDataDate}' " +
                         $"WHERE [Id] = {scadaRequestDetail.Id}";
 
                     var response = _context.Database.ExecuteSqlRaw(sql);
@@ -299,7 +296,7 @@ namespace ClientPortal.Controllers
                 _logger.LogInformation($"Error Deleting ScadaRequestDetail with ID: {id}!");
                 return Problem($"Error Deleting Entry ScadaRequestDetail With Id: {id} - Detail: {ex.Message}");
             }
-            
+
             return NoContent();
         }
 
@@ -307,8 +304,8 @@ namespace ClientPortal.Controllers
         [HttpGet("getAmrMetersForBuilding/{buildingId}")]
         public async Task<List<AMRMeterList>> GetAmrMetersForBuilding(int buildingId)
         {
-                var amrMeters = await _context.AMRMeterList.FromSqlRaw($"SELECT Id, MeterNo, Description FROM AMRMeters WHERE  (BuildingId = {buildingId})").ToListAsync();
-                return amrMeters;
+            var amrMeters = await _context.AMRMeterList.FromSqlRaw($"SELECT Id, MeterNo, Description FROM AMRMeters WHERE  (BuildingId = {buildingId})").ToListAsync();
+            return amrMeters;
         }
 
         //POST: updateRequestDetailStatus
@@ -316,7 +313,7 @@ namespace ClientPortal.Controllers
         public IActionResult AddRequestDetail([FromBody] ScadaRequestDetailItem model)
         {
             var defInt = 1;
-            
+
             if (!int.TryParse(model.HeaderId.ToString(), out int hdrId)) return BadRequest(new ApplicationException($"Invalid HeaderId: '{model.HeaderId}'"));
             if (!int.TryParse(model.AmrMeterId.ToString(), out int mtrId)) return BadRequest(new ApplicationException($"Invalid AmrMeterId: '{model.AmrMeterId}'"));
             if (!int.TryParse(model.UpdateFrequency.ToString(), out int updFrq)) return BadRequest(new ApplicationException($"Invalid UpdateFrequency: '{model.UpdateFrequency}'"));
@@ -324,9 +321,9 @@ namespace ClientPortal.Controllers
 
             try
             {
-                var sql = "INSERT INTO [dbo].[ScadaRequestDetails] " + 
-                    "([HeaderId],[AmrMeterId],[AmrScadaUserId],[Status],[Active],[LastRunDTM],[CurrentRunDTM],[UpdateFrequency],[LastDataDate]) "  +
-                    "VALUES " + 
+                var sql = "INSERT INTO [dbo].[ScadaRequestDetails] " +
+                    "([HeaderId],[AmrMeterId],[AmrScadaUserId],[Status],[Active],[LastRunDTM],[CurrentRunDTM],[UpdateFrequency],[LastDataDate]) " +
+                    "VALUES " +
                     $"({hdrId}, " +
                     $"{mtrId}, " +
                     $"{defInt}, " +
