@@ -198,7 +198,7 @@ export class MeterMappingComponent implements OnInit {
 
     customBuildingSearch(term: string, item: any) {
         term = term.toLocaleLowerCase();
-        return item.Name.toLocaleLowerCase().startsWith(term);
+        return item.Name.toLocaleLowerCase().indexOf(term) > -1;
     }
 
     getScadaUserDetails(userId) {
