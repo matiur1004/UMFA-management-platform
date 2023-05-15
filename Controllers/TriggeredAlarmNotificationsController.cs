@@ -80,8 +80,8 @@ namespace ClientPortal.Controllers
                 userResult.NotificationEmailAddress = user.NotificationEmailAddress;
                 userResult.Status = status;
                 userResult.SendDate = result.SendDateTime;
-                userResult.SendStatusMessage = result.SendStatusMessage;
-                userResult.MessageBody = result.MessageBody;
+                userResult.SendStatusMessage = string.IsNullOrEmpty(result.SendStatusMessage) ? string.Empty : result.SendStatusMessage;
+                userResult.MessageBody = string.IsNullOrEmpty(result.MessageBody) ? string.Empty : result.MessageBody;
 
                 userResults.Add(userResult);
             }
