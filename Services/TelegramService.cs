@@ -36,7 +36,7 @@ namespace ClientPortal.Services
                 var response = await httpClient.PostAsync(endpoint, content);
                 return response.IsSuccessStatusCode;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
