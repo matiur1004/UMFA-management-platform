@@ -1,6 +1,5 @@
 ﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
-using ClientPortal.Models.ResponseModels;
 using Dapper;
 
 namespace ClientPortal.Controllers

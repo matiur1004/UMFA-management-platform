@@ -42,6 +42,7 @@ IConfiguration? configuration = builder.Configuration;
     services.Configure<MailSettings>(builder.Configuration.GetSection(nameof(MailSettings)));
     services.Configure<WhatsAppSettings>(builder.Configuration.GetSection(nameof(WhatsAppSettings)));
     services.Configure<TelegramSettings>(builder.Configuration.GetSection(nameof(TelegramSettings)));
+    services.Configure<NotificationSettings>(builder.Configuration.GetSection(nameof(NotificationSettings)));
 
     services.AddMvcCore();
     services.AddControllers().AddJsonOptions(x =>
@@ -125,6 +126,8 @@ IConfiguration? configuration = builder.Configuration;
     services.AddTransient<IMailService, MailService>();
     services.AddTransient<IWhatsAppService, WhatsAppService>();
     services.AddTransient<ITelegramService, TelegramService>();
+    services.AddTransient<INotificationService, NotificationService>();
+
     //Data components
     services.AddScoped<IPortalStatsRepository, PortalStatsRepository>();
     services.AddScoped<IAMRMeterRepository, AMRMeterRepository>();

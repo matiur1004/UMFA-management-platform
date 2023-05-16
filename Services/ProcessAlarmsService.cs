@@ -1,5 +1,4 @@
-﻿using ClientPortal.Data;
-using ClientPortal.Data.Entities.PortalEntities;
+﻿using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Data.Repositories;
 
 namespace ClientPortal.Services
@@ -57,7 +56,7 @@ namespace ClientPortal.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error while processing nightflow alarms: {ex.Message}");
+                _logger.LogError($"Error while processing alarms: {ex.Message}");
                 return false;
             }
         }

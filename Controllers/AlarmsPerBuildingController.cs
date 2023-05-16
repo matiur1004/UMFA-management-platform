@@ -1,6 +1,5 @@
 ﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
-using Dapper;
 using System.Dynamic;
 
 namespace ClientPortal.Controllers
