@@ -200,7 +200,7 @@ namespace ClientPortal.Controllers
         }
 
         // TEST: TestSendNotifications
-        [HttpGet]
+        [HttpGet("testSendNotifications")]
         public async Task<IActionResult> TestSendNotifications()
         {
             var testSendNotifications = await _notificationService.ProcessNotifications();
