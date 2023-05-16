@@ -1,14 +1,11 @@
-﻿using ClientPortal.Controllers;
-using ClientPortal.Data;
+﻿using ClientPortal.Data;
 using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Interfaces;
+using ClientPortal.Models.MessagingModels;
 using ClientPortal.Settings;
 using Dapper;
 using Microsoft.Extensions.Options;
-using System.Dynamic;
-using Newtonsoft;
 using ServiceStack.Text;
-using ClientPortal.Models.MessagingModels;
 
 namespace ClientPortal.Services
 {
@@ -78,7 +75,7 @@ namespace ClientPortal.Services
                     var sendTypeId = not.NotificationSendTypeId;
                     var sendEmail = not.NotificationEmailAddress;
                     var sendSocial = not.NotificationMobileNumber;
-
+                    returnUrl += "ClientPortal/alarm_triggered/" + not.AMRMeterTriggeredAlarmId;
                     //Build Message To Send
                     var msg = $"Dear {not.FirstName},\r\n" +
                         $"UMFA ClientPortal Alarm\r\n" +
