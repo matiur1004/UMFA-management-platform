@@ -18,10 +18,14 @@ export class DxReportViewerComponent implements OnInit, OnDestroy {
     )
     .subscribe();
   
-  reportList$ = this.reportService.dxReportList$.pipe(tap(rl => { console.log('Report list: ' + JSON.stringify(rl)) }));
+  reportList$ = this.reportService.dxReportList$.pipe(tap(rl => { }));
   
   get frmsValid(): boolean {
     return this.reportService.IsFrmsValid();
+  }
+
+  get reportId(): number {
+    return this.reportService.SelectedReportId;
   }
 
   get params(): any {
@@ -38,7 +42,13 @@ export class DxReportViewerComponent implements OnInit, OnDestroy {
   }
 
   showReport(e: any) {
-    this.reportService.ShowResults(true);
+    if(this.reportService.SelectedReportId == 1) this.reportService.ShowResults(true); // Building Recovery Report
+    if(this.reportService.SelectedReportId == 1) {   // Shop Usage Variance Report
+      this.reportService.getReportDataForShop()
+        .subscribe(res => {
+          
+        })
+    }
   }
 
 }

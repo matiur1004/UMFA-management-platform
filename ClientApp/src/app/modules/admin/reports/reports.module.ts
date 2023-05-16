@@ -27,6 +27,7 @@ import { AmrGraphResultComponent } from './amr-charts/amr-graph-result/amr-graph
 import { MatButtonModule } from '@angular/material/button';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { ReportCriteriaShopComponent } from './dx-report-viewer/report-criteria-shop/report-criteria-shop.component';
 @NgModule({
   declarations: [
     DxReportViewerComponent,
@@ -37,6 +38,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     AmrGraphSelectionComponent,
     AmrGraphCriteriaComponent,
     AmrGraphResultComponent,
+    ReportCriteriaShopComponent,
   ],
   imports: [
     CommonModule,

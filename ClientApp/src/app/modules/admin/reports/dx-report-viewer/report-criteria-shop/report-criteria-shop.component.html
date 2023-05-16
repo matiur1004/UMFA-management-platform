@@ -1,0 +1,120 @@
+<div id="top">
+    <!--This section for Building Recovery Report-->
+    <form novalidate #frmReportParams="ngForm" [formGroup]="form">
+      <div class="grid grid-cols-7 gap-2">
+        <div class="col-span-2">
+          <mat-label class="form-label"> Partner </mat-label>
+          <ng-select
+            [items]="partnerList$ | async"
+            bindLabel="Name"
+            bindValue="Id"
+            [searchFn]="customSearch"
+            [placeholder]="'Select partner'"
+            [formControlName]="'partnerId'"
+            [searchable]="true"
+            [clearable]="false"
+            id="partner"
+            (change)="valueChanged($event, 'Partner')"
+          >
+          </ng-select>
+        </div>
+        <div class="col-span-2">
+          <mat-label class="form-label"> Building </mat-label>
+          <ng-select
+            [items]="buildingList$ | async"
+            [searchFn]="customSearch"
+            bindLabel="Name"
+            bindValue="BuildingId"
+            [placeholder]="'Select Building'"
+            [formControlName]="'buildingId'"
+            [searchable]="true"
+            [clearable]="false"
+            (change)="valueChanged($event, 'Building')"
+          >
+          </ng-select>
+        </div>
+        <div class="col-span-3">
+          <div class="flex w-full gap-x-2">
+            <div class="flex flex-col w-1/2">
+              <mat-label class="form-label"> Start Period </mat-label>
+              <ng-select
+                [items]="periodList$ | async"
+                bindLabel="PeriodName"
+                bindValue="PeriodId"
+                [placeholder]="'Select Start Period'"
+                [formControlName]="'startPeriodId'"
+                [searchable]="true"
+                [clearable]="false"
+                (change)="valueChanged($event, 'StartPeriod')"
+              >
+              </ng-select>
+            </div>
+            <div class="flex flex-col w-1/2">
+              <mat-label class="form-label"> End Period </mat-label>
+              <ng-select
+                [items]="endPeriodList$ | async"
+                bindLabel="PeriodName"
+                bindValue="PeriodId"
+                [placeholder]="'Select End Period'"
+                [formControlName]="'endPeriodId'"
+                [searchable]="true"
+                [clearable]="false"
+                (change)="valueChanged($event, 'EndPeriod')"
+              >
+              </ng-select>
+            </div>
+        </div>
+            
+              <!--Start Period-->
+              <!-- <div class="col-6" style="vertical-align: central; margin: auto; padding-right: 5px">
+                <div *ngIf="periodList$ | async as periods">
+                  <dx-select-box [items]="periods" displayExpr="PeriodName" valueExpr="PeriodId" class="form-control" label="Start Period"
+                                 [itemTemplate]="custPeriodTemplate" required placeholder="Select Start Period" lableMode="static" id="startPeriod"
+                                 [(ngModel)]="startPeriodId" name="StartPeriod" #sPeriodVar="ngModel" (onValueChanged)="valueChanged($event, frmReportParams)"
+                                 [ngClass]="{'is-invalid': (sPeriodVar.touched && (sPeriodVar.invalid || sPeriodVar.value == 0)) }"
+                                 [searchEnabled]="true">
+                  </dx-select-box>
+                  <span class="invalid-feedback">
+                    <span *ngIf="sPeriodVar.errors?.required">
+                      Start Period is required.
+                    </span>
+                  </span>
+                </div>
+              </div> -->
+            <!--End Period-->
+            <!-- <div class="col-6" style="vertical-align: central; margin: auto;">
+              <div *ngIf="endPeriodList$ | async as periods">
+                <dx-select-box [items]="periods" displayExpr="PeriodName" valueExpr="PeriodId" class="form-control" label="End Period"
+                               [itemTemplate]="custPeriodTemplate" required placeholder="Select End Period" lableMode="static" id="endPeriod"
+                               [(ngModel)]="endPeriodId" name="endPeriod" #ePeriodVar="ngModel" (onValueChanged)="valueChanged($event, frmReportParams)"
+                               [ngClass]="{'is-invalid': (ePeriodVar.touched && (ePeriodVar.invalid || ePeriodVar.value == 0)) }"
+                               [searchEnabled]="true">
+                </dx-select-box>
+                <span class="invalid-feedback">
+                  <span *ngIf="ePeriodVar.errors?.required">
+                    End Period is required.
+                  </span>
+                </span>
+              </div>
+            </div> -->
+        </div>
+        <div class="col-span-2">
+            <mat-label class="form-label"> Display Tenants </mat-label>
+            <ng-select
+              [items]="tenantOptions$ | async"
+              bindLabel="Name"
+              bindValue="Id"
+              [placeholder]="'Select option'"
+              [formControlName]="'allTenants'"
+              [searchable]="true"
+              [clearable]="false"
+              (change)="valueChanged($event, 'TenantOptions')"
+            >
+            </ng-select>
+          </div>
+      </div>
+      
+    </form>
+  
+  </div>
+  
