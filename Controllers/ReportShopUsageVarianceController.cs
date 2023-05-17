@@ -89,8 +89,8 @@ namespace ClientPortal.Controllers
                             if (average > 0) { averageString = average.ToString(); }
                             if (variance > 0) { variancePercString = variance.ToString("0.00") + "%"; }
                             
-                            dictionary.Add("Average", average > 0 ? average : averageString);
-                            dictionary.Add("Variance", variancePercString);
+                            dictionary.Add("Average", average > 0 ? Math.Round(average, 2) : null);
+                            dictionary.Add("Variance", variance > 0 ? variancePercString : null);
 
                             resultList.Add(result);
                         }
