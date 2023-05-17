@@ -56,12 +56,17 @@ namespace ClientPortal.Controllers
                     {
                         // Dictionary to store the sums for each item in reader[8]
                         Dictionary<object, decimal> totals = new Dictionary<object, decimal>();
+                        int fieldCount = 0;
+                        // Get field names from the reader's schema
+                        var fieldNames = Enumerable.Range(0, reader.FieldCount)
+                            .Select(i => reader.GetName(i))
+                            .ToList();
 
                         while (reader.Read())
                         {
                             dynamic result = new ExpandoObject();
                             var dictionary = result as IDictionary<string, object>;
-                            int fieldCount = reader.FieldCount; // Store the field count in a variable for performance optimization
+                            fieldCount = reader.FieldCount; // Store the field count in a variable for performance optimization
 
                             for (int i = 0; i < fieldCount; i++)
                             {
@@ -78,8 +83,20 @@ namespace ClientPortal.Controllers
                             {
                                 if (!reader.IsDBNull(i))
                                 {
-                                    sum += reader.GetDecimal(i);
+                                    decimal fieldValue = reader.GetDecimal(i);
+                                    sum += fieldValue;
                                     count++;
+
+                                    // Add running total to the dictionary
+                                    string fieldName = fieldNames[i];
+                                    if (!totals.ContainsKey(fieldName))
+                                    {
+                                        totals[fieldName] = fieldValue;
+                                    }
+                                    else
+                                    {
+                                        totals[fieldName] += fieldValue;
+                                    }
                                 }
                             }
                             decimal average = count > 0 ? sum / count : 0;
@@ -113,6 +130,16 @@ namespace ClientPortal.Controllers
                             var totalDictionary = totalResult as IDictionary<string, object>;
                             totalDictionary.Add(reader.GetName(8), item.Key); // Assuming the item to group by is in reader[8]
                             totalDictionary.Add("Total", item.Value);
+
+                            // Add running totals
+                            for (int i = 9; i < fieldCount - 1; i++) // Use < instead of <= to exclude the last field
+                            {
+                                string fieldName = fieldNames[i];
+                                if (totals.ContainsKey(fieldName))
+                                {
+                                    totalDictionary.Add(fieldName + " Total", totals[fieldName]);
+                                }
+                            }
                             resultList.Add(totalResult);
                         }
                     }
