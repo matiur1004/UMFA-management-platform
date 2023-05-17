@@ -66,7 +66,7 @@ namespace ClientPortal.Controllers
                             }
 
                             // Calculate Average
-                            double sum = 0;
+                            decimal sum = 0;
                             int count = 0;
                             string averageString = string.Empty;
                             string variancePercString = string.Empty;
@@ -75,21 +75,21 @@ namespace ClientPortal.Controllers
                             {
                                 if (!reader.IsDBNull(i))
                                 {
-                                    sum += reader.GetDouble(i);
+                                    sum += reader.GetDecimal(i);
                                     count++;
                                 }
                             }
-                            double average = count > 0 ? sum / count : 0;
+                            decimal average = count > 0 ? sum / count : 0;
                             
                             // Calculate Variance
-                            double lastValue = reader.IsDBNull(fieldCount - 1) ? 0 : reader.GetDouble(fieldCount - 1); // Get the last value directly
-                            double variance = (average - lastValue) / lastValue * 100.0;
+                            decimal lastValue = reader.IsDBNull(fieldCount - 1) ? 0 : reader.GetDecimal(fieldCount - 1); // Get the last value directly
+                            decimal variance = lastValue > 0 ? (average - lastValue) / lastValue * 100: 0;
                             
                             //Add Last Two Columns
                             if (average > 0) { averageString = average.ToString(); }
                             if (variance > 0) { variancePercString = variance.ToString("0.00") + "%"; }
                             
-                            dictionary.Add("Average", averageString);
+                            dictionary.Add("Average", average > 0 ? average : averageString);
                             dictionary.Add("Variance", variancePercString);
 
                             resultList.Add(result);
