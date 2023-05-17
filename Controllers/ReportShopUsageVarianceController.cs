@@ -58,11 +58,40 @@ namespace ClientPortal.Controllers
                         {
                             dynamic result = new ExpandoObject();
                             var dictionary = result as IDictionary<string, object>;
+                            int fieldCount = reader.FieldCount; // Store the field count in a variable for performance optimization
 
-                            for (int i = 0; i < reader.FieldCount; i++)
+                            for (int i = 0; i < fieldCount; i++)
                             {
                                 dictionary.Add(reader.GetName(i), reader.IsDBNull(i) ? null : reader[i]);
                             }
+
+                            // Calculate Average
+                            double sum = 0;
+                            int count = 0;
+                            string averageString = string.Empty;
+                            string variancePercString = string.Empty;
+                            
+                            for (int i = 9; i < fieldCount; i++) // Use < instead of <= to exclude the last field
+                            {
+                                if (!reader.IsDBNull(i))
+                                {
+                                    sum += reader.GetDouble(i);
+                                    count++;
+                                }
+                            }
+                            double average = count > 0 ? sum / count : 0;
+                            
+                            // Calculate Variance
+                            double lastValue = reader.IsDBNull(fieldCount - 1) ? 0 : reader.GetDouble(fieldCount - 1); // Get the last value directly
+                            double variance = (average - lastValue) / lastValue * 100.0;
+                            
+                            //Add Last Two Columns
+                            if (average > 0) { averageString = average.ToString(); }
+                            if (variance > 0) { variancePercString = variance.ToString("0.00") + "%"; }
+                            
+                            dictionary.Add("Average", averageString);
+                            dictionary.Add("Variance", variancePercString);
+
                             resultList.Add(result);
                         }
                     }
