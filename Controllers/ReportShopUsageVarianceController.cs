@@ -29,7 +29,7 @@ namespace ClientPortal.Controllers
                 {
                     command.CommandText = "upPortal_RepBuildingShopUsage";
                     command.CommandType = System.Data.CommandType.StoredProcedure;
-                    
+
                     var parameter1 = command.CreateParameter();
                     parameter1.ParameterName = "@BuildingId";
                     parameter1.Value = model.BuildingId;
@@ -54,6 +54,9 @@ namespace ClientPortal.Controllers
 
                     using (var reader = command.ExecuteReader())
                     {
+                        // Dictionary to store the sums for each item in reader[8]
+                        Dictionary<object, decimal> totals = new Dictionary<object, decimal>();
+
                         while (reader.Read())
                         {
                             dynamic result = new ExpandoObject();
@@ -70,8 +73,8 @@ namespace ClientPortal.Controllers
                             int count = 0;
                             string averageString = string.Empty;
                             string variancePercString = string.Empty;
-                            
-                            for (int i = 9; i < fieldCount; i++) // Use < instead of <= to exclude the last field
+
+                            for (int i = 9; i < fieldCount - 1; i++) // Use < instead of <= to exclude the last field
                             {
                                 if (!reader.IsDBNull(i))
                                 {
@@ -80,19 +83,37 @@ namespace ClientPortal.Controllers
                                 }
                             }
                             decimal average = count > 0 ? sum / count : 0;
-                            
+
                             // Calculate Variance
                             decimal lastValue = reader.IsDBNull(fieldCount - 1) ? 0 : reader.GetDecimal(fieldCount - 1); // Get the last value directly
-                            decimal variance = lastValue > 0 ? (average - lastValue) / lastValue * 100: 0;
-                            
-                            //Add Last Two Columns
+                            decimal variance = lastValue > 0 ? (average - lastValue) / lastValue * 100 : 0;
+
+                            // Add Last Two Columns
                             if (average > 0) { averageString = average.ToString(); }
                             if (variance > 0) { variancePercString = variance.ToString("0.00") + "%"; }
-                            
+
                             dictionary.Add("Average", average > 0 ? Math.Round(average, 2) : null);
                             dictionary.Add("Variance", variance > 0 ? variancePercString : null);
 
+                            // Calculate Totals
+                            object key = reader[8]; // Assuming the item to group by is in reader[8]
+                            if (!totals.ContainsKey(key))
+                            {
+                                totals[key] = 0;
+                            }
+                            totals[key] += sum;
+
                             resultList.Add(result);
+                        }
+
+                        // Add total lines for each item in reader[8]
+                        foreach (var item in totals)
+                        {
+                            dynamic totalResult = new ExpandoObject();
+                            var totalDictionary = totalResult as IDictionary<string, object>;
+                            totalDictionary.Add(reader.GetName(8), item.Key); // Assuming the item to group by is in reader[8]
+                            totalDictionary.Add("Total", item.Value);
+                            resultList.Add(totalResult);
                         }
                     }
                 }
