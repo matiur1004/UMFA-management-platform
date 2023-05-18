@@ -82,7 +82,7 @@ namespace ClientPortal.Controllers
                                 string columnName = reader.GetName(i);
                                 dictionary.Add(columnName, reader.IsDBNull(i) ? null : reader[i]);
 
-                                if (i >= 9 && i <= fieldCount -1)
+                                if (i >= 9 && i <= fieldCount - 1)
                                 {
                                     decimal columnValue = reader.IsDBNull(i) ? 0 : reader.GetDecimal(i);
 
@@ -138,7 +138,7 @@ namespace ClientPortal.Controllers
                             totalsDictionary.Add(fieldNames[6], "");
                             totalsDictionary.Add(fieldNames[7], "");
                             // Add the group name to the totals row
-                            totalsDictionary.Add("InvGroup", "Totals For Group: " + group.Key);
+                            totalsDictionary.Add("InvGroup", "Totals for: " + group.Key);
 
                             foreach (var kvp in group.Value)
                             {
@@ -161,34 +161,6 @@ namespace ClientPortal.Controllers
                     }
                 }
             }
-
-            //            foreach (var group in groupTotals)
-            //            {
-            //                dynamic groupTotalsRow = new ExpandoObject();
-            //                var groupTotalsDictionary = groupTotalsRow as IDictionary<string, object>;
-
-            //                groupTotalsDictionary.Add(fieldNames[0], "Totals");
-            //                groupTotalsDictionary.Add(fieldNames[1], "");
-            //                groupTotalsDictionary.Add(fieldNames[2], "");
-            //                groupTotalsDictionary.Add(fieldNames[3], "");
-            //                groupTotalsDictionary.Add(fieldNames[4], "");
-            //                groupTotalsDictionary.Add(fieldNames[5], "");
-            //                groupTotalsDictionary.Add(fieldNames[6], "");
-            //                groupTotalsDictionary.Add(fieldNames[7], "");
-            //                groupTotalsDictionary.Add(fieldNames[8], "");
-            //                foreach (var kvp in group)
-            //                {
-            //                    groupTotalsDictionary.Add(kvp.Key, kvp.Value);
-            //                }
-
-            //                groupTotalsDictionary.Add("Average", averageTotals > 0 ? Math.Round(averageTotals, 2) : null);
-            //                groupTotalsDictionary.Add("Variance", varianceTotals > 0 ? varianceTotals.ToString("0.00") + "%" : null);
-
-            //                resultList.Add(groupTotalsRow);
-            //            }
-            //        }
-            //    }
-            //}
             catch (Exception)
             {
                 _logger?.LogError($"Failed to get Report Shop Usage Variance for BuildingId {model.BuildingId}");
