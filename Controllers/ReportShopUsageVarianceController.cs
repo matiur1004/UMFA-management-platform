@@ -58,7 +58,6 @@ namespace ClientPortal.Controllers
                         Dictionary<string, Dictionary<string, decimal>> groupTotals = new Dictionary<string, Dictionary<string, decimal>>();
                         int fieldCount = 0;
                         int groupIndex = 8;
-                        int totalCount = 0;
                         // Get field names from the reader's schema
                         var fieldNames = Enumerable.Range(0, reader.FieldCount)
                             .Select(i => reader.GetName(i))
@@ -119,7 +118,7 @@ namespace ClientPortal.Controllers
 
                             // Add Average and Variance Columns
                             dictionary.Add("Average", average > 0 ? Math.Round(average, 2) : null);
-                            dictionary.Add("Variance", variance > 0 ? variance.ToString("0.00") + "%" : null);
+                            dictionary.Add("Variance", variance > 0 ? Math.Round(variance, 2) + "%" : null);
 
                             resultList.Add(result);
                         }
@@ -130,7 +129,7 @@ namespace ClientPortal.Controllers
                             dynamic totalsRow = new ExpandoObject();
                             var totalsDictionary = totalsRow as IDictionary<string, object>;
 
-                            totalsDictionary.Add(fieldNames[0], "TOTALS FOR GROUP:");
+                            totalsDictionary.Add(fieldNames[0], "TOTALS");
                             totalsDictionary.Add(fieldNames[1], "");
                             totalsDictionary.Add(fieldNames[2], false);
                             totalsDictionary.Add(fieldNames[3], null);
@@ -139,7 +138,7 @@ namespace ClientPortal.Controllers
                             totalsDictionary.Add(fieldNames[6], "");
                             totalsDictionary.Add(fieldNames[7], "");
                             // Add the group name to the totals row
-                            totalsDictionary.Add("InvGroup", group.Key);
+                            totalsDictionary.Add("InvGroup", "Totals For Group: " + group.Key);
 
                             foreach (var kvp in group.Value)
                             {
@@ -155,7 +154,7 @@ namespace ClientPortal.Controllers
                             decimal varianceTotals = lastValueTotals > 0 ? (averageTotals - lastValueTotals) / lastValueTotals * 100 : 0;
 
                             totalsDictionary.Add("Average", averageTotals > 0 ? Math.Round(averageTotals, 2) : null);
-                            totalsDictionary.Add("Variance", varianceTotals > 0 ? varianceTotals.ToString("0.00") + "%" : null);
+                            totalsDictionary.Add("Variance", varianceTotals > 0 ? Math.Round(varianceTotals, 2) + "%" : null);
 
                             resultList.Add(totalsRow);
                         }
