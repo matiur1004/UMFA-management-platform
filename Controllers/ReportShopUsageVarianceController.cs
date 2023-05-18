@@ -131,9 +131,9 @@ namespace ClientPortal.Controllers
                             var totalsDictionary = totalsRow as IDictionary<string, object>;
 
                             totalsDictionary.Add(fieldNames[0], "TOTALS FOR GROUP:");
-                            totalsDictionary.Add(fieldNames[1], false);
-                            totalsDictionary.Add(fieldNames[2], null);
-                            totalsDictionary.Add(fieldNames[3], "");
+                            totalsDictionary.Add(fieldNames[1], "");
+                            totalsDictionary.Add(fieldNames[2], false);
+                            totalsDictionary.Add(fieldNames[3], null);
                             totalsDictionary.Add(fieldNames[4], "");
                             totalsDictionary.Add(fieldNames[5], "");
                             totalsDictionary.Add(fieldNames[6], "");
