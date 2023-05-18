@@ -54,9 +54,11 @@ namespace ClientPortal.Controllers
 
                     using (var reader = command.ExecuteReader())
                     {
-                        // Dictionary to store the sums for each item in reader[8]
-                        Dictionary<object, decimal> totals = new Dictionary<object, decimal>();
+                        // Dictionary to store the totals for each group
+                        Dictionary<string, Dictionary<string, decimal>> groupTotals = new Dictionary<string, Dictionary<string, decimal>>();
                         int fieldCount = 0;
+                        int groupIndex = 8;
+                        int totalCount = 0;
                         // Get field names from the reader's schema
                         var fieldNames = Enumerable.Range(0, reader.FieldCount)
                             .Select(i => reader.GetName(i))
@@ -64,20 +66,41 @@ namespace ClientPortal.Controllers
 
                         while (reader.Read())
                         {
+                            string groupName = reader.GetString(groupIndex);
+
+                            if (!groupTotals.ContainsKey(groupName))
+                            {
+                                groupTotals[groupName] = new Dictionary<string, decimal>();
+                            }
+
                             dynamic result = new ExpandoObject();
                             var dictionary = result as IDictionary<string, object>;
                             fieldCount = reader.FieldCount; // Store the field count in a variable for performance optimization
 
+                            // Add LineItems
                             for (int i = 0; i < fieldCount; i++)
                             {
-                                dictionary.Add(reader.GetName(i), reader.IsDBNull(i) ? null : reader[i]);
+                                string columnName = reader.GetName(i);
+                                dictionary.Add(columnName, reader.IsDBNull(i) ? null : reader[i]);
+
+                                if (i >= 9 && i <= fieldCount -1)
+                                {
+                                    decimal columnValue = reader.IsDBNull(i) ? 0 : reader.GetDecimal(i);
+
+                                    if (groupTotals[groupName].ContainsKey(columnName))
+                                    {
+                                        groupTotals[groupName][columnName] += columnValue;
+                                    }
+                                    else
+                                    {
+                                        groupTotals[groupName][columnName] = columnValue;
+                                    }
+                                }
                             }
 
                             // Calculate Average
                             decimal sum = 0;
                             int count = 0;
-                            string averageString = string.Empty;
-                            string variancePercString = string.Empty;
 
                             for (int i = 9; i < fieldCount - 1; i++) // Use < instead of <= to exclude the last field
                             {
@@ -86,17 +109,6 @@ namespace ClientPortal.Controllers
                                     decimal fieldValue = reader.GetDecimal(i);
                                     sum += fieldValue;
                                     count++;
-
-                                    // Add running total to the dictionary
-                                    string fieldName = fieldNames[i];
-                                    if (!totals.ContainsKey(fieldName))
-                                    {
-                                        totals[fieldName] = fieldValue;
-                                    }
-                                    else
-                                    {
-                                        totals[fieldName] += fieldValue;
-                                    }
                                 }
                             }
                             decimal average = count > 0 ? sum / count : 0;
@@ -105,46 +117,79 @@ namespace ClientPortal.Controllers
                             decimal lastValue = reader.IsDBNull(fieldCount - 1) ? 0 : reader.GetDecimal(fieldCount - 1); // Get the last value directly
                             decimal variance = lastValue > 0 ? (average - lastValue) / lastValue * 100 : 0;
 
-                            // Add Last Two Columns
-                            if (average > 0) { averageString = average.ToString(); }
-                            if (variance > 0) { variancePercString = variance.ToString("0.00") + "%"; }
-
+                            // Add Average and Variance Columns
                             dictionary.Add("Average", average > 0 ? Math.Round(average, 2) : null);
-                            dictionary.Add("Variance", variance > 0 ? variancePercString : null);
-
-                            // Calculate Totals
-                            object key = reader[8]; // Assuming the item to group by is in reader[8]
-                            if (!totals.ContainsKey(key))
-                            {
-                                totals[key] = 0;
-                            }
-                            totals[key] += sum;
+                            dictionary.Add("Variance", variance > 0 ? variance.ToString("0.00") + "%" : null);
 
                             resultList.Add(result);
                         }
 
-                        // Add total lines for each item in reader[8]
-                        foreach (var item in totals)
+                        // Add Totals Row for each group
+                        foreach (var group in groupTotals)
                         {
-                            dynamic totalResult = new ExpandoObject();
-                            var totalDictionary = totalResult as IDictionary<string, object>;
-                            totalDictionary.Add(reader.GetName(8), item.Key); // Assuming the item to group by is in reader[8]
-                            totalDictionary.Add("Total", item.Value);
+                            dynamic totalsRow = new ExpandoObject();
+                            var totalsDictionary = totalsRow as IDictionary<string, object>;
 
-                            // Add running totals
-                            for (int i = 9; i < fieldCount - 1; i++) // Use < instead of <= to exclude the last field
+                            totalsDictionary.Add(fieldNames[0], "TOTALS");
+                            totalsDictionary.Add(fieldNames[1], "FOR");
+                            totalsDictionary.Add(fieldNames[2], "GROUP:");
+                            totalsDictionary.Add(fieldNames[3], "");
+                            totalsDictionary.Add(fieldNames[4], "");
+                            totalsDictionary.Add(fieldNames[5], "");
+                            totalsDictionary.Add(fieldNames[6], "");
+                            totalsDictionary.Add(fieldNames[7], "");
+                            // Add the group name to the totals row
+                            totalsDictionary.Add("InvGroup", group.Key);
+
+                            foreach (var kvp in group.Value)
                             {
-                                string fieldName = fieldNames[i];
-                                if (totals.ContainsKey(fieldName))
-                                {
-                                    totalDictionary.Add(fieldName + " Total", totals[fieldName]);
-                                }
+                                totalsDictionary.Add(kvp.Key, kvp.Value);
                             }
-                            resultList.Add(totalResult);
+
+                            // Calculate Totals Average
+                            decimal sumTotals = group.Value.Values.Sum();
+                            decimal averageTotals = group.Value.Count > 0 ? sumTotals / group.Value.Count : 0;
+
+                            // Calculate Totals Variance
+                            decimal lastValueTotals = group.Value.ContainsKey(fieldCount.ToString()) ? group.Value[fieldCount.ToString()] : 0;
+                            decimal varianceTotals = lastValueTotals > 0 ? (averageTotals - lastValueTotals) / lastValueTotals * 100 : 0;
+
+                            totalsDictionary.Add("Average", averageTotals > 0 ? Math.Round(averageTotals, 2) : null);
+                            totalsDictionary.Add("Variance", varianceTotals > 0 ? varianceTotals.ToString("0.00") + "%" : null);
+
+                            resultList.Add(totalsRow);
                         }
                     }
                 }
             }
+
+            //            foreach (var group in groupTotals)
+            //            {
+            //                dynamic groupTotalsRow = new ExpandoObject();
+            //                var groupTotalsDictionary = groupTotalsRow as IDictionary<string, object>;
+
+            //                groupTotalsDictionary.Add(fieldNames[0], "Totals");
+            //                groupTotalsDictionary.Add(fieldNames[1], "");
+            //                groupTotalsDictionary.Add(fieldNames[2], "");
+            //                groupTotalsDictionary.Add(fieldNames[3], "");
+            //                groupTotalsDictionary.Add(fieldNames[4], "");
+            //                groupTotalsDictionary.Add(fieldNames[5], "");
+            //                groupTotalsDictionary.Add(fieldNames[6], "");
+            //                groupTotalsDictionary.Add(fieldNames[7], "");
+            //                groupTotalsDictionary.Add(fieldNames[8], "");
+            //                foreach (var kvp in group)
+            //                {
+            //                    groupTotalsDictionary.Add(kvp.Key, kvp.Value);
+            //                }
+
+            //                groupTotalsDictionary.Add("Average", averageTotals > 0 ? Math.Round(averageTotals, 2) : null);
+            //                groupTotalsDictionary.Add("Variance", varianceTotals > 0 ? varianceTotals.ToString("0.00") + "%" : null);
+
+            //                resultList.Add(groupTotalsRow);
+            //            }
+            //        }
+            //    }
+            //}
             catch (Exception)
             {
                 _logger?.LogError($"Failed to get Report Shop Usage Variance for BuildingId {model.BuildingId}");
