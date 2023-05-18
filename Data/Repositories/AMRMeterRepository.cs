@@ -208,7 +208,7 @@ namespace ClientPortal.Data.Repositories
                         }
                 }
                 User? user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
-                var resp = await _buildingRepo.GetBuildings(userId);
+                var resp = await _buildingRepo.GetBuildings(user.UmfaId);
                 var buildings = resp.UmfaBuildings.ToList();
                 List<int> ids = buildings.Select(b => b.BuildingId).ToList();
                 AMRMeterResponseList respList = new();
