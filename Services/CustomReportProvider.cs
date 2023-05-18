@@ -26,9 +26,10 @@ namespace ClientPortal.Services
             {
                 string[] parms = parametersQueryString.Split(',');
                 report = await Task.Run(() => { return _brService.BuildReport(parms[0], parms[1]); });
-            }
-            else
-            {
+            } else if (reportName == "ShopUsageVariance") {
+                string[] parms = parametersQueryString.Split(',');
+                report = await Task.Run(() => { return _brService.ShopUsageVarianceReport(parms[0], parms[1], parms[2], parms[3]); });
+            } else {
                 throw new DevExpress.XtraReports.Web.ClientControls.FaultException(
                     string.Format("Could not find report '{0}'.", reportName)
                 );

@@ -83,7 +83,7 @@ export class ReportCriteriaShopComponent implements OnInit {
       this.reportService.ShopUsageVarianceParams = { 
         BuildingId: this.form.get('buildingId').value, 
         StartPeriodId: this.form.get('startPeriodId').value, 
-        EndPeriodId: this.form.get('endPeriodId').value,
+        ToPeriodId: this.form.get('endPeriodId').value,
         AllTenants: this.form.get('allTenants').value,
       }
       this.reportService.setFrmValid(2, true);

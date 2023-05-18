@@ -156,7 +156,7 @@ export class DXReportService {
   }
 
   public ShowShopResults(value: boolean) {
-    if (value) this.bsLoadReport.next(this.selectedReport);
+    if (value) this.bsShopLoadReport.next(this.selectedReport);
   }
 
   public ShowResultsPage(): boolean {
@@ -196,9 +196,9 @@ export class DXReportService {
     this.SUVParams = value;
    if (this.selectedReport && this.selectedReport.Id != 0) {
      switch (this.selectedReport.Id) {
-       case 1: {
-         if (this.BRParams)
-           this.selectedReport.DXReportName = `BuildingRecovery?${this.BRParams.StartPeriodId},${this.BRParams.EndPeriodId}`;
+       case 2: {
+         if (this.SUVParams)
+           this.selectedReport.DXReportName = `ShopUsageVariance?${this.SUVParams.BuildingId},${this.SUVParams.StartPeriodId},${this.SUVParams.ToPeriodId},${this.SUVParams.AllTenants}`;
          break;
        }
        default: {
@@ -242,6 +242,12 @@ export class DXReportService {
   }
 
   getReportDataForShop() {
+    // this.SUVParams = {
+    //   BuildingId: 1808,
+    //   StartPeriodId: 164387,
+    //   ToPeriodId: 174137,
+    //   AllTenants: 1
+    // }
     const url = `${CONFIG.apiURL}/ReportShopUsageVariance/getReportData`;
     return this.http.post<any>(url, this.SUVParams, { withCredentials: true })
         .pipe(

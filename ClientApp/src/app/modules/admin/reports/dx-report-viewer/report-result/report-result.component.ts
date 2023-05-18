@@ -37,6 +37,16 @@ export class ReportResultComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   })).subscribe();
 
+  obsShowShopIt = this.reportService.obsShopLoadReport.pipe(tap(rep => {
+    if (rep && rep.Id != 0) {
+      this.loading = false;
+      this.reportUrl = rep.DXReportName;
+    }
+    else {
+      this.loading = true;
+    }
+  })).subscribe();
+
   ngOnInit(): void {
   }
 
@@ -109,7 +119,8 @@ export class ReportResultComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   get ShowPage(): boolean {
-    return this.reportService.ShowResultsPage();
+    return true;
+    //return this.reportService.ShowResultsPage();
   }
 
   constructor(private reportService: DXReportService) { }

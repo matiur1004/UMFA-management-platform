@@ -14,6 +14,6 @@ export interface IDXReport {
   export interface IShopUsageVarianceParams {
     BuildingId: number;
     StartPeriodId: number;
-    EndPeriodId: number;
+    ToPeriodId: number;
     AllTenants: number;
   }
