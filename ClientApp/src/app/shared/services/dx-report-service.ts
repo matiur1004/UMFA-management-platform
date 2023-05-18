@@ -40,8 +40,8 @@ export class DXReportService {
 
   private tenantOptions: any[] = [
     {Id: 1, Name: 'Show Latest'},
-    {Id: 1, Name: 'Show All'},
-    {Id: 1, Name: 'Show Each'},
+    {Id: 2, Name: 'Show All'},
+    {Id: 3, Name: 'Show Each'},
   ];
   public tenantOptions$ = of(this.tenantOptions);
 
