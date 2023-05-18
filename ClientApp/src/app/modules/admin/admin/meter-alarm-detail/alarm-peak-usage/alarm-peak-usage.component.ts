@@ -34,7 +34,7 @@ export class AlarmPeakUsageComponent implements OnInit {
     this.form = this._formBuilder.group({
       PeakStartTime: [],
       PeakEndTime: [],
-      NoOfPeaks: [5]
+      NoOfPeaks: []
     })
 
     this.analyzeForm = this._formBuilder.group({
