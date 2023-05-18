@@ -130,9 +130,9 @@ namespace ClientPortal.Controllers
                             dynamic totalsRow = new ExpandoObject();
                             var totalsDictionary = totalsRow as IDictionary<string, object>;
 
-                            totalsDictionary.Add(fieldNames[0], "TOTALS");
-                            totalsDictionary.Add(fieldNames[1], "FOR");
-                            totalsDictionary.Add(fieldNames[2], "GROUP:");
+                            totalsDictionary.Add(fieldNames[0], "TOTALS FOR GROUP:");
+                            totalsDictionary.Add(fieldNames[1], false);
+                            totalsDictionary.Add(fieldNames[2], null);
                             totalsDictionary.Add(fieldNames[3], "");
                             totalsDictionary.Add(fieldNames[4], "");
                             totalsDictionary.Add(fieldNames[5], "");
