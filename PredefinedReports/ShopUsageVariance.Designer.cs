@@ -86,8 +86,30 @@
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode55 = new DevExpress.DataAccess.Json.JsonSchemaNode("May 2023 (Open)", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode56 = new DevExpress.DataAccess.Json.JsonSchemaNode("Average", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
             DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode57 = new DevExpress.DataAccess.Json.JsonSchemaNode("Variance", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.CustomJsonSource customJsonSource1 = new DevExpress.DataAccess.Json.CustomJsonSource();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ShopUsageVariance));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode58 = new DevExpress.DataAccess.Json.JsonSchemaNode("root", true, DevExpress.DataAccess.Json.JsonNodeType.Array);
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode59 = new DevExpress.DataAccess.Json.JsonSchemaNode("Periods", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode60 = new DevExpress.DataAccess.Json.JsonSchemaNode("Comment", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode61 = new DevExpress.DataAccess.Json.JsonSchemaNode("Printed", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<bool>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode62 = new DevExpress.DataAccess.Json.JsonSchemaNode("PeriodId", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<long>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode63 = new DevExpress.DataAccess.Json.JsonSchemaNode("ShopId", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode64 = new DevExpress.DataAccess.Json.JsonSchemaNode("Tenants", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode65 = new DevExpress.DataAccess.Json.JsonSchemaNode("OccDTM", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<System.DateTime>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode66 = new DevExpress.DataAccess.Json.JsonSchemaNode("Shop", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode67 = new DevExpress.DataAccess.Json.JsonSchemaNode("InvGroup", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode68 = new DevExpress.DataAccess.Json.JsonSchemaNode("November 2022", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode69 = new DevExpress.DataAccess.Json.JsonSchemaNode("December 2022", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode70 = new DevExpress.DataAccess.Json.JsonSchemaNode("January 2023", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode71 = new DevExpress.DataAccess.Json.JsonSchemaNode("February 2023", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode72 = new DevExpress.DataAccess.Json.JsonSchemaNode("March 2023", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode73 = new DevExpress.DataAccess.Json.JsonSchemaNode("April 2023", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode74 = new DevExpress.DataAccess.Json.JsonSchemaNode("May 2023 (Open)", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode75 = new DevExpress.DataAccess.Json.JsonSchemaNode("Average", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(System.Nullable<double>));
+            DevExpress.DataAccess.Json.JsonSchemaNode jsonSchemaNode76 = new DevExpress.DataAccess.Json.JsonSchemaNode("Variance", true, DevExpress.DataAccess.Json.JsonNodeType.Property, typeof(string));
             this.jsonDataSource1 = new DevExpress.DataAccess.Json.JsonDataSource(this.components);
             this.jsonDataSource2 = new DevExpress.DataAccess.Json.JsonDataSource(this.components);
+            this.jsonDataSource3 = new DevExpress.DataAccess.Json.JsonDataSource(this.components);
             this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
             this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.ReportHeader = new DevExpress.XtraReports.UI.ReportHeaderBand();
@@ -126,7 +148,7 @@
             this.tableCell24 = new DevExpress.XtraReports.UI.XRTableCell();
             this.tableCell25 = new DevExpress.XtraReports.UI.XRTableCell();
             this.tableCell26 = new DevExpress.XtraReports.UI.XRTableCell();
-            this.jsonDataSource3 = new DevExpress.DataAccess.Json.JsonDataSource(this.components);
+            this.jsonDataSource4 = new DevExpress.DataAccess.Json.JsonDataSource(this.components);
             this.Title = new DevExpress.XtraReports.UI.XRControlStyle();
             this.DetailCaption1 = new DevExpress.XtraReports.UI.XRControlStyle();
             this.DetailData1 = new DevExpress.XtraReports.UI.XRControlStyle();
@@ -183,6 +205,30 @@
             jsonSchemaNode20.Nodes.Add(jsonSchemaNode37);
             jsonSchemaNode20.Nodes.Add(jsonSchemaNode38);
             this.jsonDataSource2.Schema = jsonSchemaNode20;
+            // 
+            // jsonDataSource3
+            // 
+            this.jsonDataSource3.ConnectionName = "ShopUsageReportData";
+            this.jsonDataSource3.Name = "jsonDataSource3";
+            jsonSchemaNode39.Nodes.Add(jsonSchemaNode40);
+            jsonSchemaNode39.Nodes.Add(jsonSchemaNode41);
+            jsonSchemaNode39.Nodes.Add(jsonSchemaNode42);
+            jsonSchemaNode39.Nodes.Add(jsonSchemaNode43);
+            jsonSchemaNode39.Nodes.Add(jsonSchemaNode44);
+            jsonSchemaNode39.Nodes.Add(jsonSchemaNode45);
+            jsonSchemaNode39.Nodes.Add(jsonSchemaNode46);
+            jsonSchemaNode39.Nodes.Add(jsonSchemaNode47);
+            jsonSchemaNode39.Nodes.Add(jsonSchemaNode48);
+            jsonSchemaNode39.Nodes.Add(jsonSchemaNode49);
+            jsonSchemaNode39.Nodes.Add(jsonSchemaNode50);
+            jsonSchemaNode39.Nodes.Add(jsonSchemaNode51);
+            jsonSchemaNode39.Nodes.Add(jsonSchemaNode52);
+            jsonSchemaNode39.Nodes.Add(jsonSchemaNode53);
+            jsonSchemaNode39.Nodes.Add(jsonSchemaNode54);
+            jsonSchemaNode39.Nodes.Add(jsonSchemaNode55);
+            jsonSchemaNode39.Nodes.Add(jsonSchemaNode56);
+            jsonSchemaNode39.Nodes.Add(jsonSchemaNode57);
+            this.jsonDataSource3.Schema = jsonSchemaNode39;
             // 
             // TopMargin
             // 
@@ -251,7 +297,7 @@
             this.label1.Name = "label1";
             this.label1.SizeF = new System.Drawing.SizeF(2950F, 61.45361F);
             this.label1.StyleName = "Title";
-            this.label1.Text = "Shop Usage and Variance Report";
+            this.label1.Text = "Shop Usage Variance Report";
             // 
             // table1
             // 
@@ -569,29 +615,30 @@
             this.tableCell26.StyleName = "DetailData1";
             this.tableCell26.Weight = 0.06309826867055085D;
             // 
-            // jsonDataSource3
+            // jsonDataSource4
             // 
-            this.jsonDataSource3.ConnectionName = "ShopUsageReportData";
-            this.jsonDataSource3.Name = "jsonDataSource3";
-            jsonSchemaNode39.Nodes.Add(jsonSchemaNode40);
-            jsonSchemaNode39.Nodes.Add(jsonSchemaNode41);
-            jsonSchemaNode39.Nodes.Add(jsonSchemaNode42);
-            jsonSchemaNode39.Nodes.Add(jsonSchemaNode43);
-            jsonSchemaNode39.Nodes.Add(jsonSchemaNode44);
-            jsonSchemaNode39.Nodes.Add(jsonSchemaNode45);
-            jsonSchemaNode39.Nodes.Add(jsonSchemaNode46);
-            jsonSchemaNode39.Nodes.Add(jsonSchemaNode47);
-            jsonSchemaNode39.Nodes.Add(jsonSchemaNode48);
-            jsonSchemaNode39.Nodes.Add(jsonSchemaNode49);
-            jsonSchemaNode39.Nodes.Add(jsonSchemaNode50);
-            jsonSchemaNode39.Nodes.Add(jsonSchemaNode51);
-            jsonSchemaNode39.Nodes.Add(jsonSchemaNode52);
-            jsonSchemaNode39.Nodes.Add(jsonSchemaNode53);
-            jsonSchemaNode39.Nodes.Add(jsonSchemaNode54);
-            jsonSchemaNode39.Nodes.Add(jsonSchemaNode55);
-            jsonSchemaNode39.Nodes.Add(jsonSchemaNode56);
-            jsonSchemaNode39.Nodes.Add(jsonSchemaNode57);
-            this.jsonDataSource3.Schema = jsonSchemaNode39;
+            customJsonSource1.Json = resources.GetString("customJsonSource1.Json");
+            this.jsonDataSource4.JsonSource = customJsonSource1;
+            this.jsonDataSource4.Name = "jsonDataSource4";
+            jsonSchemaNode58.Nodes.Add(jsonSchemaNode59);
+            jsonSchemaNode58.Nodes.Add(jsonSchemaNode60);
+            jsonSchemaNode58.Nodes.Add(jsonSchemaNode61);
+            jsonSchemaNode58.Nodes.Add(jsonSchemaNode62);
+            jsonSchemaNode58.Nodes.Add(jsonSchemaNode63);
+            jsonSchemaNode58.Nodes.Add(jsonSchemaNode64);
+            jsonSchemaNode58.Nodes.Add(jsonSchemaNode65);
+            jsonSchemaNode58.Nodes.Add(jsonSchemaNode66);
+            jsonSchemaNode58.Nodes.Add(jsonSchemaNode67);
+            jsonSchemaNode58.Nodes.Add(jsonSchemaNode68);
+            jsonSchemaNode58.Nodes.Add(jsonSchemaNode69);
+            jsonSchemaNode58.Nodes.Add(jsonSchemaNode70);
+            jsonSchemaNode58.Nodes.Add(jsonSchemaNode71);
+            jsonSchemaNode58.Nodes.Add(jsonSchemaNode72);
+            jsonSchemaNode58.Nodes.Add(jsonSchemaNode73);
+            jsonSchemaNode58.Nodes.Add(jsonSchemaNode74);
+            jsonSchemaNode58.Nodes.Add(jsonSchemaNode75);
+            jsonSchemaNode58.Nodes.Add(jsonSchemaNode76);
+            this.jsonDataSource4.Schema = jsonSchemaNode58;
             // 
             // Title
             // 
@@ -657,8 +704,9 @@
             this.ComponentStorage.AddRange(new System.ComponentModel.IComponent[] {
             this.jsonDataSource1,
             this.jsonDataSource2,
-            this.jsonDataSource3});
-            this.DataSource = this.jsonDataSource3;
+            this.jsonDataSource3,
+            this.jsonDataSource4});
+            this.DataSource = this.jsonDataSource4;
             this.Dpi = 254F;
             this.Font = new DevExpress.Drawing.DXFont("Arial", 9.75F);
             this.Landscape = true;
@@ -684,6 +732,7 @@
         #endregion
         private DevExpress.DataAccess.Json.JsonDataSource jsonDataSource1;
         private DevExpress.DataAccess.Json.JsonDataSource jsonDataSource2;
+        private DevExpress.DataAccess.Json.JsonDataSource jsonDataSource3;
         private DevExpress.XtraReports.UI.TopMarginBand TopMargin;
         private DevExpress.XtraReports.UI.BottomMarginBand BottomMargin;
         private DevExpress.XtraReports.UI.XRPageInfo pageInfo1;
@@ -722,7 +771,7 @@
         private DevExpress.XtraReports.UI.XRTableCell tableCell24;
         private DevExpress.XtraReports.UI.XRTableCell tableCell25;
         private DevExpress.XtraReports.UI.XRTableCell tableCell26;
-        private DevExpress.DataAccess.Json.JsonDataSource jsonDataSource3;
+        private DevExpress.DataAccess.Json.JsonDataSource jsonDataSource4;
         private DevExpress.XtraReports.UI.XRControlStyle Title;
         private DevExpress.XtraReports.UI.XRControlStyle DetailCaption1;
         private DevExpress.XtraReports.UI.XRControlStyle DetailData1;
