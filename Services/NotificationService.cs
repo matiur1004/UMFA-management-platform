@@ -1,14 +1,11 @@
-﻿using ClientPortal.Controllers;
-using ClientPortal.Data;
+﻿using ClientPortal.Data;
 using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Interfaces;
+using ClientPortal.Models.MessagingModels;
 using ClientPortal.Settings;
 using Dapper;
 using Microsoft.Extensions.Options;
-using System.Dynamic;
-using Newtonsoft;
 using ServiceStack.Text;
-using ClientPortal.Models.MessagingModels;
 
 namespace ClientPortal.Services
 {
@@ -50,10 +47,35 @@ namespace ClientPortal.Services
                 
                 foreach (var not in resultList)
                 {
+                    //Get If Entry Exists In Update Table
+                    var checkTriggeredAlarmNotification = await _dbContext.TriggeredAlarmNotifications
+                        .Where(rec => rec.AMRMeterTriggeredAlarmId == not.AMRMeterTriggeredAlarmId)
+                        .FirstOrDefaultAsync();
+
+                    if (checkTriggeredAlarmNotification == null)
+                    {
+                        //Add New 
+                        var newTAN = new TriggeredAlarmNotification();
+                        newTAN.TriggeredAlarmNotificationId = 0;
+                        newTAN.UserId = not.UserId;
+                        newTAN.AMRMeterTriggeredAlarmId = not.AMRMeterTriggeredAlarmId;
+                        newTAN.NotificationSendTypeId = not.NotificationSendTypeId;
+                        newTAN.Status = 1;
+                        newTAN.CreatedDateTime = DateTime.Now;
+                        newTAN.LastUdateDateTime = DateTime.Now;
+                        newTAN.SendDateTime = null;
+                        newTAN.Active = true;
+                        newTAN.SendStatusMessage = null;
+                        newTAN.MessageBody = null;
+                        //Save
+                        var saveRecord = _dbContext.TriggeredAlarmNotifications.Add(newTAN);
+                        await _dbContext.SaveChangesAsync();
+                    }
+
                     var sendTypeId = not.NotificationSendTypeId;
                     var sendEmail = not.NotificationEmailAddress;
                     var sendSocial = not.NotificationMobileNumber;
-                    var triggeredId = not.AMRMeterTriggeredAlarmId;
+                    returnUrl += "ClientPortal/alarm_triggered/" + not.AMRMeterTriggeredAlarmId;
                     //Build Message To Send
                     var msg = $"Dear {not.FirstName},\r\n" +
                         $"UMFA ClientPortal Alarm\r\n" +
@@ -90,20 +112,21 @@ namespace ClientPortal.Services
                             break;
                     }
 
-                    //Update Table
-                    var triggeredAlarmNotification = _dbContext.TriggeredAlarmNotifications
-                        .Where(rec => rec.AMRMeterTriggeredAlarmId == triggeredId)
+                    //UPDATE RECORD
+                    var triggeredAlarmNotification = await _dbContext.TriggeredAlarmNotifications
+                        .Where(rec => rec.AMRMeterTriggeredAlarmId == not.AMRMeterTriggeredAlarmId)
                         .FirstOrDefaultAsync();
-                    if(sendResult == true) 
+
+                    if (sendResult == true) 
                     {
-                        triggeredAlarmNotification.Result.SendStatusMessage = "Success";
+                        triggeredAlarmNotification.SendStatusMessage = "Success";
                     }
                     else
                     {
-                        triggeredAlarmNotification.Result.SendStatusMessage = "Failure";
+                        triggeredAlarmNotification.SendStatusMessage = "Failure";
                     }
-                    triggeredAlarmNotification.Result.MessageBody = msg;
-                    triggeredAlarmNotification.Result.SendDateTime = DateTime.Now;
+                    triggeredAlarmNotification.MessageBody = msg;
+                    triggeredAlarmNotification.SendDateTime = DateTime.Now;
                     _dbContext.Entry(triggeredAlarmNotification).State = EntityState.Modified;
                     await _dbContext.SaveChangesAsync();
                 }
