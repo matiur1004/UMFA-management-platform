@@ -16,7 +16,7 @@
                 <div class="flex items-center gap-x-4">
                     <div class="text-lg font-semibold whitespace-nowrap">Show the </div>
                     <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
-                        <input matInput type="number"/> 
+                        <input matInput type="number" [formControlName]="'NoOfPeaks'"/> 
                     </mat-form-field>
                     <span class="text-lg font-semibold whitespace-nowrap">highest usages</span>
                 </div>
