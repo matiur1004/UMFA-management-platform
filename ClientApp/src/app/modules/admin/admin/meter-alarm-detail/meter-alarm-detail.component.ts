@@ -79,7 +79,7 @@ export class MeterAlarmDetailComponent implements OnInit {
       let sdpDate = new Date(sdp);
       this.profileForm.get('sdT').setValue(new Date(sdpDate.setHours(0, 0, 0)));
       this.profileForm.get('edp').setValue(new Date(sdpDate.setDate(sdp.getDate() + 7)));
-      this.profileForm.get('edT').setValue(new Date(sdpDate.setHours(0, 0, 0)));
+      this.profileForm.get('edT').setValue(new Date(sdpDate.setHours(23, 59, 0)));
     })
 
     this.profileForm.valueChanges.subscribe(formData => {
