@@ -2,6 +2,7 @@
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Models.RequestModels;
+using static ClientPortal.Controllers.TriggeredAlarmNotificationsController;
 
 namespace ClientPortal.Controllers
 {
@@ -32,7 +33,7 @@ namespace ClientPortal.Controllers
             return await _context.AMRMeterAlarms.ToListAsync();
         }
 
-        // GET: AMRMeterAlarms/5
+        // GET: AMRMeterAlarms/getSingle/5
         [HttpGet("getSingle/{id}")]
         public async Task<ActionResult<AMRMeterAlarm>> GetAMRMeterAlarm(int id)
         {
@@ -52,6 +53,26 @@ namespace ClientPortal.Controllers
             return alarmType;
         }
 
+        // GET: GetByMeterId/5
+        [HttpGet("getByMeterId/{meterId}")]
+        public async Task<ActionResult<IEnumerable<AMRMeterAlarm>>> GetByMeterId(int meterId)
+        {
+            if (_context.AMRMeterAlarms == null)
+            {
+                return Problem("Entity set 'PortalDBContext.AMRMeterAlarms' is null.");
+            }
+            var results = await _context.AMRMeterAlarms
+                .Where(a => (a.AMRMeterId == meterId))
+                .ToListAsync();
+            if (results == null)
+            {
+                _logger.LogError($"AMRMeterAlarms With MeterId: {meterId} does not exist!");
+                return NotFound();
+            }
+            _logger.LogInformation($"Successfully Retrieved AMRMeterAlarms with MeterId: {meterId}");
+            return Ok(results);
+        }
+        
         // POST: AMRMeterAlarms
         [HttpPost("createOrUpdateAMRMeterAlarmByAlarmTypeName")]
         public async Task<ActionResult<AMRMeterAlarm>> CreateOrUpdateAMRMeterAlarm(AMRMeterAlarmRequest alarmType)
@@ -88,30 +109,6 @@ namespace ClientPortal.Controllers
             alarmTypeResponse.Active = alarmType.Active;
             alarmTypeResponse.LastRunDTM = alarmType.LastRunDTM;
             alarmTypeResponse.LastDataDTM = alarmType.LastDataDTM;
-
-            ////Check If Alarms Exists With All Required Parameters And Set AMRMeterAlarmId To Saved One -- Update
-            //try
-            //{
-            //    var aMRMeterAlarm = await _context.AMRMeterAlarms.FirstOrDefaultAsync(c =>
-            //    c.AlarmTypeId == alarmTypeResponse.AlarmTypeId &&
-            //    c.AMRMeterId == alarmTypeResponse.AMRMeterId &&
-            //    c.AlarmTriggerMethodId == alarmTypeResponse.AlarmTriggerMethodId &&
-            //    c.StartTime == alarmTypeResponse.StartTime &&
-            //    c.EndTime == alarmTypeResponse.EndTime &&
-            //    c.Active == alarmTypeResponse.Active &&
-            //    c.Duration == alarmTypeResponse.Duration &&
-            //    c.Threshold == alarmTypeResponse.Threshold
-            //    );
-
-            //    if (aMRMeterAlarm != null)
-            //    {
-            //        alarmTypeResponse.AMRMeterAlarmId = aMRMeterAlarm.AMRMeterAlarmId;
-            //    }
-            //}
-            //catch (Exception)
-            //{
-            //    return Problem("Entity set 'PortalDBContext.AMRMeterAlarms' returned an error. -- Check If Alarms Exists With All Required Parameters");
-            //}
 
             if (alarmTypeResponse.AMRMeterAlarmId == 0) //Create
             {
