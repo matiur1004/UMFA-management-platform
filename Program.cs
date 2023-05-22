@@ -6,6 +6,7 @@ using ClientPortal.Services;
 using ClientPortal.Settings;
 using DevExpress.AspNetCore;
 using DevExpress.AspNetCore.Reporting;
+using DevExpress.AspNetCore.Reporting.Logging;
 using DevExpress.Security.Resources;
 using DevExpress.XtraReports.Services;
 using Microsoft.Extensions.FileProviders;
@@ -35,6 +36,15 @@ IConfiguration? configuration = builder.Configuration;
       .CreateLogger();
     builder.Logging.ClearProviders();
     builder.Logging.AddSerilog(logger);
+
+    //this for devexpress logging
+    services.Configure<LoggerOptions>(logOptions =>
+    {
+        logOptions.LogMachineName = true;
+        logOptions.Prefix = "START: ";
+        logOptions.LogTimeStamp = true;
+        logOptions.Suffix = " :END";
+    });
 
     //strongly typed configuration settings
     services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
