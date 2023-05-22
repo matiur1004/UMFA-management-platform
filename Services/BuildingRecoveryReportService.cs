@@ -91,7 +91,7 @@ namespace ClientPortal.Services
             XRTableCell cell11 = new();
 
             //Cell 1
-            cell11.BorderColor = Color.LightGray;
+            cell11.BorderColor = System.Drawing.Color.LightGray;
             cell11.Borders = ((BorderSide.Left | BorderSide.Top) | BorderSide.Right);
             cell11.Font = new DXFont("Arial", 8F);
             cell11.Text = "Total GLA";
