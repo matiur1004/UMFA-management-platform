@@ -165,7 +165,7 @@ export class AlarmConfigurationService {
     }
 
     getAlarmMeterDetail(id) {
-        const url = `${CONFIG.apiURL}/AMRMeterAlarms/getSingle/${id}`;
+        const url = `${CONFIG.apiURL}/AMRMeterAlarms/getByMeterId/${id}`;
         return this.http.get<any>(url, { withCredentials: true })
             .pipe(
                 catchError(err => this.catchErrors(err)),
@@ -216,7 +216,7 @@ export class AlarmConfigurationService {
     }
 
     destroy() {
-        this._alarmMeterDetail.next(null);
+        //this._alarmMeterDetail.next(null);
         this._metersWithAlarms.next([]);
     }
 

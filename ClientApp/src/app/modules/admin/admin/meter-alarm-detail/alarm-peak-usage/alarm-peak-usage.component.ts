@@ -45,7 +45,8 @@ export class AlarmPeakUsageComponent implements OnInit {
     this._alarmConfigService.alarmMeterDetail$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: any) => {
-        this.alarmMeterDetail = data;
+        console.log('sdfsdfsdf', data);
+        this.alarmMeterDetail = data.find(obj => obj.AlarmTypeId == 5);
         if(this.alarmMeterDetail) {
           let startDate = new Date();
           let endDate = new Date();

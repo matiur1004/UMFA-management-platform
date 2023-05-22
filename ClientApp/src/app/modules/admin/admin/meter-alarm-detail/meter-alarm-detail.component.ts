@@ -48,29 +48,12 @@ export class MeterAlarmDetailComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.meter = {
-    //   "AMRMEterId": 116,
-    //   "MeterNo": "220005315(W)",
-    //   "Description": "asdfff",
-    //   "Make": "Elster",
-    //   "Model": "A1400",
-    //   "ScadaMeterNo": "13138213",
-    //   "Night Flow": 2,
-    //   "Burst Pipe": 4,
-    //   "Leak": 5,
-    //   "Daily Usage": 6,
-    //   "Peak": 7,
-    //   "Average": 8
-    // }
-    //114
     this.profileForm = this._formBuilder.group({
       MeterId: [this.meter.AMRMeterId, [Validators.required]],
       sdp: [null, [Validators.required]],
       sdT: [null, [Validators.required]],
       edp: [null, [Validators.required]],
       edT: [null, [Validators.required]],
-      // StartDate: ['', [Validators.required]],
-      // EndDate: ['', [Validators.required]],
       NightFlowStart: [{hours: 22, minutes: 0}],
       NightFlowEnd: [{ hours: 6, minutes: 0}]
     });
@@ -83,7 +66,6 @@ export class MeterAlarmDetailComponent implements OnInit {
     })
 
     this.profileForm.valueChanges.subscribe(formData => {
-      
       if(formData && formData['sdp'] && formData['edp'] && formData['sdT'] && formData['edT']) {
         var sDate = new Date(formData['sdp'].getFullYear(), formData['sdp'].getMonth(), formData['sdp'].getDate(), formData['sdT'].getHours(), formData['sdT'].getMinutes());
         var eDate = new Date(formData['edp'].getFullYear(), formData['edp'].getMonth(), formData['edp'].getDate(), formData['edT'].getHours(), formData['edT'].getMinutes());
@@ -91,17 +73,34 @@ export class MeterAlarmDetailComponent implements OnInit {
         this._alarmConfigService.profileInfo = {StartDate: sDate, EndDate: eDate, NightFlowStart: formData['NightFlowStart'], NightFlowEnd: formData['NightFlowEnd'], MeterSerialNo: this.meter.ScadaMeterNo};
       }
     })
+
+    this.getAlarmMeterDetail(this.meter.AMRMeterId);
+
+    this.onShowConfigStatus();
+  }
+
+  onShowConfigStatus() {
+    let configured = this.meter['Configured'];
+    if(configured) {
+      configured = configured.split(', ').map(num => Number(num));
+      let configured_val = {};
+      if(configured.indexOf(1) > -1) configured_val = {...configured_val, 'Night Flow': 1} ;
+      if(configured.indexOf(2) > -1) configured_val = {...configured_val, 'Burst Pipe': 1} ;
+      if(configured.indexOf(3) > -1) configured_val = {...configured_val, 'Leak': 1} ;
+      if(configured.indexOf(4) > -1) configured_val = {...configured_val, 'Daily Usage': 1} ;
+      if(configured.indexOf(5) > -1) configured_val = {...configured_val, 'Peak': 1} ;
+      if(configured.indexOf(6) > -1) configured_val = {...configured_val, 'Average': 1} ;
+      this.meter = {...this.meter, alarmConfig: configured_val};
+    }
   }
 
   onShowMeterGraph(isProfile: boolean = false) {
-    //console.log('sdfsdf', this.profileForm.value);
     if(this.profileForm.valid) {
       if(isProfile) this.applyNightFlow = false;
       let formData = this.profileForm.value;
       let data = {...this._alarmConfigService.profileInfo, MeterId: formData['MeterId'], nightFlowStart: formData['NightFlowStart'], NightFlowEnd: formData['NightFlowEnd']};
       this._amrDataService.getMeterProfileForGraph(this.meter.AMRMeterId, data['StartDate'], data['EndDate'], formData['NightFlowStart'], formData['NightFlowEnd'], this.applyNightFlow).subscribe(res => {
         this.setDataSource(res);
-        //this.applyNightFlow = true;
       })
     }
   }
@@ -145,14 +144,10 @@ export class MeterAlarmDetailComponent implements OnInit {
       if(this.selectedAlarmType == type) return;
       this.applyNightFlow = false;
       this.onShowMeterGraph();
-      if(this.meter[this.getAlarmTypeName(type)]) {
-        this.getAlarmMeterDetail(this.meter[this.getAlarmTypeName(type)]);
-      }
       this.selectedAlarmType = type;
     } else {
       this._alarmConfigService.showAlert('You should set profile option first!');
     }
-    
   }
 
   getAlarmMeterDetail(id) {
@@ -168,14 +163,13 @@ export class MeterAlarmDetailComponent implements OnInit {
   onSave($event) {
     let alarmData = {
       ...$event,
-      AMRMeterAlarmId: this.meter[this.getAlarmTypeName(this.selectedAlarmType)],
       AlarmTypeName: this.getAlarmTypeName(this.selectedAlarmType),
       AMRMeterId: this.profileForm.get('MeterId').value,
       AlarmTriggerMethodId: 1
     };
     this._alarmConfigService.createOrUpdateAMRMeterAlarm(alarmData).subscribe((res) => {
       if(res['Value']['Active']) {
-        this.meter[this.getAlarmTypeName(this.selectedAlarmType)] = res['Value']['AMRMeterAlarmId'];
+        this.meter['alarmConfig'][this.getAlarmTypeName(this.selectedAlarmType)] = 1;
       }
     });
   }
