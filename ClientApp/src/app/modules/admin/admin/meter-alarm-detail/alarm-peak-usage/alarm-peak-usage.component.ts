@@ -20,7 +20,7 @@ export class AlarmPeakUsageComponent implements OnInit {
   configInfo: any[] = [];
   analyzeInfo: any;
   alarmMeterDetail: any;
-  active: boolean = false;
+  active: boolean = true;
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
@@ -34,7 +34,7 @@ export class AlarmPeakUsageComponent implements OnInit {
     this.form = this._formBuilder.group({
       PeakStartTime: [],
       PeakEndTime: [],
-      NoOfPeaks: [5]
+      NoOfPeaks: []
     })
 
     this.analyzeForm = this._formBuilder.group({

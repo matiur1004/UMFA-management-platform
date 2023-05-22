@@ -22,7 +22,7 @@ export class AlarmNightFlowComponent implements OnInit {
   configInfo: any;
   analyzeInfo: any;
   alarmMeterDetail: any;
-  active: boolean = false;
+  active: boolean = true;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
