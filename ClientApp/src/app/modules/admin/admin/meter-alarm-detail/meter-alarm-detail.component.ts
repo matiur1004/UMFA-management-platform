@@ -131,7 +131,7 @@ export class MeterAlarmDetailComponent implements OnInit {
   };
 
   customizeTooltip(arg: any) {
-    var ret = { text: `Selected Value<br>${arg.valueText}` };
+    var ret = { text: `<strong>Selected Value:</strong> ${arg.valueText} <br> <strong>Date and Time:</strong> ${arg.argument}` };
     return ret;
   }
 

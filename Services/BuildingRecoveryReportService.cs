@@ -6,6 +6,7 @@ using ClientPortal.Models.ResponseModels;
 using ClientPortal.PredefinedReports;
 using ServiceStack;
 using System.Drawing;
+using DevExpress.Drawing;
 using System.Globalization;
 
 namespace ClientPortal.Services
@@ -24,16 +25,18 @@ namespace ClientPortal.Services
 
             XtraReport report = new BuildingRecovery(); // XtraReport();
             report.Landscape = true;
-            report.Margins = new System.Drawing.Printing.Margins(10, 10, 100, 34);
+            report.Margins = new DevExpress.Drawing.DXMargins(10, 10, 100, 34);
 
             TopMarginBand topMarginBand = (TopMarginBand)report.Bands[BandKind.TopMargin];
             topMarginBand.Controls.Add(new XRLabel()
             {
                 LocationFloat = new PointFloat(185F, 22F),
                 Text = reportData.Title,
-                SizeF = new SizeF(720F, 42.79167F),
+                WidthF = 720F,
+                HeightF = 42.79167F,
+                //SizeF = new SizeF(720F, 42.79167F),
                 TextAlignment = TextAlignment.MiddleCenter,
-                Font = new Font("Arial", 16F, FontStyle.Bold)
+                Font = new DXFont("Arial", 16F, DXFontStyle.Bold)
             });
 
             DetailBand detailBand = (DetailBand)report.Bands[BandKind.Detail];
@@ -70,7 +73,9 @@ namespace ClientPortal.Services
             // specify table specifics.
             table.LocationFloat = new PointFloat(0F, startPoint);
             table.Padding = new PaddingInfo(2, 2, 0, 0, 96F);
-            table.SizeF = new SizeF((float)(185F + (220F * reportData.TenantReportData.Data.Count)), 100F);
+            table.WidthF = 185F + (220F * reportData.TenantReportData.Data.Count);
+            table.HeightF = 100F;
+            //table.SizeF = new SizeF((float)(185F + (220F * reportData.TenantReportData.Data.Count)), 100F);
             table.StylePriority.UseFont = false;
 
             // Create first fixed table rows.
@@ -86,9 +91,9 @@ namespace ClientPortal.Services
             XRTableCell cell11 = new();
 
             //Cell 1
-            cell11.BorderColor = Color.LightGray;
+            cell11.BorderColor = System.Drawing.Color.LightGray;
             cell11.Borders = ((BorderSide.Left | BorderSide.Top) | BorderSide.Right);
-            cell11.Font = new Font("Arial", 8F);
+            cell11.Font = new DXFont("Arial", 8F);
             cell11.Text = "Total GLA";
             cell11.TextAlignment = TextAlignment.MiddleCenter;
             cell11.WidthF = 185F;
@@ -98,7 +103,7 @@ namespace ClientPortal.Services
             XRTableCell cell21 = new();
             cell21.BorderColor = Color.LightGray;
             cell21.Borders = (BorderSide.Left | BorderSide.Right);
-            cell21.Font = new Font("Arial1", 8F, FontStyle.Bold);
+            cell21.Font = new DXFont("Arial1", 8F, DXFontStyle.Bold);
             cell21.Text = reportData.BuildingArea.ToString();
             cell21.TextAlignment = TextAlignment.TopCenter;
             cell21.WidthF = 185F;
@@ -109,7 +114,7 @@ namespace ClientPortal.Services
             cell31.BackColor = Color.LightGray;
             cell31.BorderColor = Color.LightGray;
             cell31.Borders = (BorderSide.All);
-            cell31.Font = new Font("Arial1", 8F, FontStyle.Bold);
+            cell31.Font = new DXFont("Arial1", 8F, DXFontStyle.Bold);
             cell31.Text = "Electricity Recovery";
             cell31.TextAlignment = TextAlignment.MiddleCenter;
             cell31.WidthF = 185F;
@@ -137,7 +142,7 @@ namespace ClientPortal.Services
                 cellSum11.BackColor = Color.WhiteSmoke;
                 cellSum11.BorderColor = Color.LightGray;
                 cellSum11.Borders = (BorderSide.All);
-                cellSum11.Font = new Font("Arial1", 8F, FontStyle.Bold);
+                cellSum11.Font = new DXFont("Arial1", 8F, DXFontStyle.Bold);
                 cellSum11.Text = "Total Non Recoverable";
                 cellSum11.TextAlignment = TextAlignment.MiddleLeft;
                 cellSum11.WidthF = 185F;
@@ -147,7 +152,7 @@ namespace ClientPortal.Services
                 cellSum21.BackColor = Color.WhiteSmoke;
                 cellSum21.BorderColor = Color.LightGray;
                 cellSum21.Borders = (BorderSide.All);
-                cellSum21.Font = new Font("Arial1", 8F, FontStyle.Bold);
+                cellSum21.Font = new DXFont("Arial1", 8F, DXFontStyle.Bold);
                 cellSum21.Text = "Total Recoverable";
                 cellSum21.TextAlignment = TextAlignment.MiddleLeft;
                 cellSum21.WidthF = 185F;
@@ -157,7 +162,7 @@ namespace ClientPortal.Services
                 cellSum31.BackColor = Color.WhiteSmoke;
                 cellSum31.BorderColor = Color.LightGray;
                 cellSum31.Borders = (BorderSide.All);
-                cellSum31.Font = new Font("Arial1", 8F, FontStyle.Bold);
+                cellSum31.Font = new DXFont("Arial1", 8F, DXFontStyle.Bold);
                 cellSum31.Text = "Total Potential Recoverable";
                 cellSum31.TextAlignment = TextAlignment.MiddleLeft;
                 cellSum31.WidthF = 185F;
@@ -167,7 +172,7 @@ namespace ClientPortal.Services
                 cellSum41.BackColor = Color.WhiteSmoke;
                 cellSum41.BorderColor = Color.LightGray;
                 cellSum41.Borders = (BorderSide.All);
-                cellSum41.Font = new Font("Arial1", 8F, FontStyle.Bold);
+                cellSum41.Font = new DXFont("Arial1", 8F, DXFontStyle.Bold);
                 cellSum41.Text = "Recoverable per m²";
                 cellSum41.TextAlignment = TextAlignment.MiddleLeft;
                 cellSum41.WidthF = 185F;
@@ -200,7 +205,7 @@ namespace ClientPortal.Services
                 cell12.BackColor = (ph.Month == "Total") ? Color.DimGray : Color.FromArgb(71, 174, 227);
                 cell12.BorderColor = Color.LightGray;
                 cell12.Borders = (((BorderSide.Left | BorderSide.Top) | BorderSide.Right) | BorderSide.Bottom);
-                cell12.Font = new Font("Arial", 8F, FontStyle.Bold);
+                cell12.Font = new DXFont("Arial", 8F, DXFontStyle.Bold);
                 cell12.ForeColor = Color.White;
                 cell12.Text = ph.Month;
                 cell12.TextAlignment = TextAlignment.MiddleCenter;
@@ -212,7 +217,7 @@ namespace ClientPortal.Services
                 XRTableCell cell22 = new();
                 cell22.BorderColor = Color.LightGray;
                 cell22.Borders = BorderSide.All;
-                cell22.Font = new Font("Arial", 8F);
+                cell22.Font = new DXFont("Arial", 8F);
                 cell22.Text = "kWh";
                 cell22.TextAlignment = TextAlignment.MiddleCenter;
                 cell22.WidthF = 60F;
@@ -222,7 +227,7 @@ namespace ClientPortal.Services
                 XRTableCell cell23 = new();
                 cell23.BorderColor = Color.LightGray;
                 cell23.Borders = BorderSide.All;
-                cell23.Font = new Font("Arial", 8F);
+                cell23.Font = new DXFont("Arial", 8F);
                 cell23.Text = "kVA";
                 cell23.TextAlignment = TextAlignment.MiddleCenter;
                 cell23.WidthF = 60F;
@@ -232,7 +237,7 @@ namespace ClientPortal.Services
                 XRTableCell cell24 = new();
                 cell24.BorderColor = Color.LightGray;
                 cell24.Borders = BorderSide.All;
-                cell24.Font = new Font("Arial", 8F);
+                cell24.Font = new DXFont("Arial", 8F);
                 cell24.Text = "Total R/C";
                 cell24.TextAlignment = TextAlignment.MiddleCenter;
                 cell24.WidthF = 100F;
@@ -244,7 +249,7 @@ namespace ClientPortal.Services
                 cell32.BackColor = Color.Gainsboro;
                 cell32.BorderColor = Color.LightGray;
                 cell32.Borders = BorderSide.All;
-                cell32.Font = new Font("Arial", 8F);
+                cell32.Font = new DXFont("Arial", 8F);
                 cell32.Text = ph.StartDate;
                 cell32.TextAlignment = TextAlignment.MiddleCenter;
                 cell32.WidthF = 60F;
@@ -255,7 +260,7 @@ namespace ClientPortal.Services
                 cell33.BackColor = Color.Gainsboro;
                 cell33.BorderColor = Color.LightGray;
                 cell33.Borders = BorderSide.All;
-                cell33.Font = new Font("Arial", 8F);
+                cell33.Font = new DXFont("Arial", 8F);
                 cell33.Text = ph.EndDate;
                 cell33.TextAlignment = TextAlignment.MiddleCenter;
                 cell33.WidthF = 60F;
@@ -266,7 +271,7 @@ namespace ClientPortal.Services
                 cell34.BackColor = Color.Gainsboro;
                 cell34.BorderColor = Color.LightGray;
                 cell34.Borders = BorderSide.All;
-                cell34.Font = new Font("Arial", 8F);
+                cell34.Font = new DXFont("Arial", 8F);
                 cell34.Text = ph.PeriodDays;
                 cell34.TextAlignment = TextAlignment.MiddleCenter;
                 cell34.WidthF = 100F;
@@ -285,7 +290,7 @@ namespace ClientPortal.Services
                 cellSum12.BackColor = Color.WhiteSmoke;
                 cellSum12.BorderColor = Color.LightGray;
                 cellSum12.Borders = BorderSide.All;
-                cellSum12.Font = new Font("Arial", 8F);
+                cellSum12.Font = new DXFont("Arial", 8F);
                 cellSum12.Text = summaryVars["totNonReckWh"].ToString("### ### ##0");
                 cellSum12.TextAlignment = TextAlignment.MiddleRight;
                 cellSum12.WidthF = 60F;
@@ -296,7 +301,7 @@ namespace ClientPortal.Services
                 cellSum13.BackColor = Color.WhiteSmoke;
                 cellSum13.BorderColor = Color.LightGray;
                 cellSum13.Borders = BorderSide.All;
-                cellSum13.Font = new Font("Arial", 8F);
+                cellSum13.Font = new DXFont("Arial", 8F);
                 cellSum13.Text = summaryVars["totNonReckVA"].ToString("### ### ##0");
                 cellSum13.TextAlignment = TextAlignment.MiddleRight;
                 cellSum13.WidthF = 60F;
@@ -307,7 +312,7 @@ namespace ClientPortal.Services
                 cellSum14.BackColor = Color.WhiteSmoke;
                 cellSum14.BorderColor = Color.LightGray;
                 cellSum14.Borders = BorderSide.All;
-                cellSum14.Font = new Font("Arial", 8F);
+                cellSum14.Font = new DXFont("Arial", 8F);
                 cellSum14.Text = summaryVars["totNonRecRC"].ToString("C", CultureInfo.CurrentCulture);
                 cellSum14.TextAlignment = TextAlignment.MiddleRight;
                 cellSum14.WidthF = 100F;
@@ -319,7 +324,7 @@ namespace ClientPortal.Services
                 cellSum22.BackColor = Color.WhiteSmoke;
                 cellSum22.BorderColor = Color.LightGray;
                 cellSum22.Borders = BorderSide.All;
-                cellSum22.Font = new Font("Arial", 8F);
+                cellSum22.Font = new DXFont("Arial", 8F);
                 cellSum22.Text = summaryVars["totReckWh"].ToString("### ### ##0");
                 cellSum22.TextAlignment = TextAlignment.MiddleRight;
                 cellSum22.WidthF = 60F;
@@ -330,7 +335,7 @@ namespace ClientPortal.Services
                 cellSum23.BackColor = Color.WhiteSmoke;
                 cellSum23.BorderColor = Color.LightGray;
                 cellSum23.Borders = BorderSide.All;
-                cellSum23.Font = new Font("Arial", 8F);
+                cellSum23.Font = new DXFont("Arial", 8F);
                 cellSum23.Text = summaryVars["totReckVA"].ToString("### ### ##0");
                 cellSum23.TextAlignment = TextAlignment.MiddleRight;
                 cellSum23.WidthF = 60F;
@@ -341,7 +346,7 @@ namespace ClientPortal.Services
                 cellSum24.BackColor = Color.WhiteSmoke;
                 cellSum24.BorderColor = Color.LightGray;
                 cellSum24.Borders = BorderSide.All;
-                cellSum24.Font = new Font("Arial", 8F);
+                cellSum24.Font = new DXFont("Arial", 8F);
                 cellSum24.Text = summaryVars["totRecRC"].ToString("C", CultureInfo.CurrentCulture);
                 cellSum24.TextAlignment = TextAlignment.MiddleRight;
                 cellSum24.WidthF = 100F;
@@ -353,7 +358,7 @@ namespace ClientPortal.Services
                 cellSum32.BackColor = Color.WhiteSmoke;
                 cellSum32.BorderColor = Color.LightGray;
                 cellSum32.Borders = BorderSide.All;
-                cellSum32.Font = new Font("Arial", 8F);
+                cellSum32.Font = new DXFont("Arial", 8F);
                 cellSum32.Text = summaryVars["totPotkWh"].ToString("### ### ##0");
                 cellSum32.TextAlignment = TextAlignment.MiddleRight;
                 cellSum32.WidthF = 60F;
@@ -364,7 +369,7 @@ namespace ClientPortal.Services
                 cellSum33.BackColor = Color.WhiteSmoke;
                 cellSum33.BorderColor = Color.LightGray;
                 cellSum33.Borders = BorderSide.All;
-                cellSum33.Font = new Font("Arial", 8F);
+                cellSum33.Font = new DXFont("Arial", 8F);
                 cellSum33.Text = summaryVars["totPotkVA"].ToString("### ### ##0");
                 cellSum33.TextAlignment = TextAlignment.MiddleRight;
                 cellSum33.WidthF = 60F;
@@ -375,7 +380,7 @@ namespace ClientPortal.Services
                 cellSum34.BackColor = Color.WhiteSmoke;
                 cellSum34.BorderColor = Color.LightGray;
                 cellSum34.Borders = BorderSide.All;
-                cellSum34.Font = new Font("Arial", 8F);
+                cellSum34.Font = new DXFont("Arial", 8F);
                 cellSum34.Text = summaryVars["totPotRC"].ToString("C", CultureInfo.CurrentCulture);
                 cellSum34.TextAlignment = TextAlignment.MiddleRight;
                 cellSum34.WidthF = 100F;
@@ -387,7 +392,7 @@ namespace ClientPortal.Services
                 cellSum42.BackColor = Color.WhiteSmoke;
                 cellSum42.BorderColor = Color.LightGray;
                 cellSum42.Borders = BorderSide.All;
-                cellSum42.Font = new Font("Arial", 8F);
+                cellSum42.Font = new DXFont("Arial", 8F);
                 cellSum42.Text = summaryVars["totPMkWh"].ToString("##0.00");
                 cellSum42.TextAlignment = TextAlignment.MiddleRight;
                 cellSum42.WidthF = 60F;
@@ -398,7 +403,7 @@ namespace ClientPortal.Services
                 cellSum43.BackColor = Color.WhiteSmoke;
                 cellSum43.BorderColor = Color.LightGray;
                 cellSum43.Borders = BorderSide.All;
-                cellSum43.Font = new Font("Arial", 8F);
+                cellSum43.Font = new DXFont("Arial", 8F);
                 cellSum43.Text = summaryVars["totPMkVA"].ToString("##0.00");
                 cellSum43.TextAlignment = TextAlignment.MiddleRight;
                 cellSum43.WidthF = 60F;
@@ -409,7 +414,7 @@ namespace ClientPortal.Services
                 cellSum44.BackColor = Color.WhiteSmoke;
                 cellSum44.BorderColor = Color.LightGray;
                 cellSum44.Borders = BorderSide.All;
-                cellSum44.Font = new Font("Arial", 8F);
+                cellSum44.Font = new DXFont("Arial", 8F);
                 cellSum44.Text = summaryVars["totPMRC"].ToString("C", CultureInfo.CurrentCulture);
                 cellSum44.TextAlignment = TextAlignment.MiddleRight;
                 cellSum44.WidthF = 100F;
@@ -443,7 +448,7 @@ namespace ClientPortal.Services
                     XRTableCell cellDet1 = new();
                     cellDet1.BorderColor = Color.LightGray;
                     cellDet1.Borders = BorderSide.All;
-                    cellDet1.Font = new Font("Arial", 8F, FontStyle.Bold);
+                    cellDet1.Font = new DXFont("Arial", 8F, DXFontStyle.Bold);
                     cellDet1.Text = dt.ItemName;
                     cellDet1.TextAlignment = TextAlignment.MiddleLeft;
                     cellDet1.WidthF = 185F;
@@ -455,7 +460,7 @@ namespace ClientPortal.Services
                 XRTableCell cellDet2 = new();
                 cellDet2.BorderColor = Color.LightGray;
                 cellDet2.Borders = BorderSide.All;
-                cellDet2.Font = new Font("Arial", 8F);
+                cellDet2.Font = new DXFont("Arial", 8F);
                 cellDet2.Text = dt.kWhUsage.ToString("### ### ##0");
                 cellDet2.TextAlignment = TextAlignment.MiddleRight;
                 cellDet2.WidthF = 60F;
@@ -465,7 +470,7 @@ namespace ClientPortal.Services
                 XRTableCell cellDet3 = new();
                 cellDet3.BorderColor = Color.LightGray;
                 cellDet3.Borders = BorderSide.All;
-                cellDet3.Font = new Font("Arial", 8F);
+                cellDet3.Font = new DXFont("Arial", 8F);
                 cellDet3.Text = dt.kVAUsage.ToString("### ### ##0");
                 cellDet3.TextAlignment = TextAlignment.MiddleRight;
                 cellDet3.WidthF = 60F;
@@ -475,7 +480,7 @@ namespace ClientPortal.Services
                 XRTableCell cellDet4 = new();
                 cellDet4.BorderColor = Color.LightGray;
                 cellDet4.Borders = BorderSide.All;
-                cellDet4.Font = new Font("Arial", 8F);
+                cellDet4.Font = new DXFont("Arial", 8F);
                 cellDet4.Text = dt.TotalAmount.ToString("C", CultureInfo.CurrentCulture);
                 cellDet4.TextAlignment = TextAlignment.MiddleRight;
                 cellDet4.WidthF = 100F;
@@ -527,7 +532,9 @@ namespace ClientPortal.Services
             // specify table specifics.
             table.LocationFloat = new PointFloat(0F, startPoint);
             table.Padding = new PaddingInfo(2, 2, 0, 0, 96F);
-            table.SizeF = new SizeF((float)(185F + (220F * reportData.BulkReportData.Data.Count)), 100F);
+            table.WidthF = 185F + (220F * reportData.BulkReportData.Data.Count);
+            table.HeightF = 100F;
+            //table.SizeF = new SizeF((float)(185F + (220F * reportData.BulkReportData.Data.Count)), 100F);
             table.StylePriority.UseFont = false;
 
             // Create first fixed table rows.
@@ -544,7 +551,7 @@ namespace ClientPortal.Services
             cell11.BackColor = Color.LightGray;
             cell11.BorderColor = Color.LightGray;
             cell11.Borders = BorderSide.All;
-            cell11.Font = new Font("Arial", 8F, FontStyle.Bold);
+            cell11.Font = new DXFont("Arial", 8F, DXFontStyle.Bold);
             cell11.Text = "Electricity Bulk";
             cell11.TextAlignment = TextAlignment.MiddleLeft;
             cell11.WidthF = 185F;
@@ -566,7 +573,7 @@ namespace ClientPortal.Services
                 cellSum11.BackColor = Color.WhiteSmoke;
                 cellSum11.BorderColor = Color.LightGray;
                 cellSum11.Borders = (BorderSide.All);
-                cellSum11.Font = new Font("Arial1", 8F, FontStyle.Bold);
+                cellSum11.Font = new DXFont("Arial1", 8F, DXFontStyle.Bold);
                 cellSum11.Text = "Benchmark Expense per m²";
                 cellSum11.TextAlignment = TextAlignment.MiddleLeft;
                 cellSum11.WidthF = 185F;
@@ -590,7 +597,7 @@ namespace ClientPortal.Services
                 cell12.BackColor = Color.Gainsboro;
                 cell12.BorderColor = Color.LightGray;
                 cell12.Borders = BorderSide.All;
-                cell12.Font = new Font("Arial", 8F);
+                cell12.Font = new DXFont("Arial", 8F);
                 cell12.Text = ph.StartDate;
                 cell12.TextAlignment = TextAlignment.MiddleCenter;
                 cell12.WidthF = 60F;
@@ -601,7 +608,7 @@ namespace ClientPortal.Services
                 cell13.BackColor = Color.Gainsboro;
                 cell13.BorderColor = Color.LightGray;
                 cell13.Borders = BorderSide.All;
-                cell13.Font = new Font("Arial", 8F);
+                cell13.Font = new DXFont("Arial", 8F);
                 cell13.Text = ph.EndDate;
                 cell13.TextAlignment = TextAlignment.MiddleCenter;
                 cell13.WidthF = 60F;
@@ -612,7 +619,7 @@ namespace ClientPortal.Services
                 cell14.BackColor = Color.Gainsboro;
                 cell14.BorderColor = Color.LightGray;
                 cell14.Borders = BorderSide.All;
-                cell14.Font = new Font("Arial", 8F);
+                cell14.Font = new DXFont("Arial", 8F);
                 cell14.Text = ph.PeriodDays;
                 cell14.TextAlignment = TextAlignment.MiddleCenter;
                 cell14.WidthF = 100F;
@@ -627,7 +634,7 @@ namespace ClientPortal.Services
                 cellSum12.BackColor = Color.WhiteSmoke;
                 cellSum12.BorderColor = Color.LightGray;
                 cellSum12.Borders = BorderSide.All;
-                cellSum12.Font = new Font("Arial", 8F);
+                cellSum12.Font = new DXFont("Arial", 8F);
                 cellSum12.Text = (summaryVars["sumRow1kWh"] / reportData.BuildingArea).ToString("##0.00");
                 cellSum12.TextAlignment = TextAlignment.MiddleRight;
                 cellSum12.WidthF = 60F;
@@ -638,7 +645,7 @@ namespace ClientPortal.Services
                 cellSum13.BackColor = Color.WhiteSmoke;
                 cellSum13.BorderColor = Color.LightGray;
                 cellSum13.Borders = BorderSide.All;
-                cellSum13.Font = new Font("Arial", 8F);
+                cellSum13.Font = new DXFont("Arial", 8F);
                 cellSum13.Text = (summaryVars["sumRow1kVA"] / reportData.BuildingArea).ToString("##0.00"); ;
                 cellSum13.TextAlignment = TextAlignment.MiddleRight;
                 cellSum13.WidthF = 60F;
@@ -649,7 +656,7 @@ namespace ClientPortal.Services
                 cellSum14.BackColor = Color.WhiteSmoke;
                 cellSum14.BorderColor = Color.LightGray;
                 cellSum14.Borders = BorderSide.All;
-                cellSum14.Font = new Font("Arial", 8F);
+                cellSum14.Font = new DXFont("Arial", 8F);
                 cellSum14.Text = (summaryVars["sumRow1RC"] / reportData.BuildingArea).ToString("C", CultureInfo.CurrentCulture);
                 cellSum14.TextAlignment = TextAlignment.MiddleRight;
                 cellSum14.WidthF = 100F;
@@ -683,7 +690,7 @@ namespace ClientPortal.Services
                     XRTableCell cellDet1 = new();
                     cellDet1.BorderColor = Color.LightGray;
                     cellDet1.Borders = BorderSide.All;
-                    cellDet1.Font = new Font("Arial", 8F, FontStyle.Bold);
+                    cellDet1.Font = new DXFont("Arial", 8F, DXFontStyle.Bold);
                     cellDet1.Text = dt.ItemName;
                     cellDet1.TextAlignment = TextAlignment.MiddleLeft;
                     cellDet1.WidthF = 185F;
@@ -695,7 +702,7 @@ namespace ClientPortal.Services
                 XRTableCell cellDet2 = new();
                 cellDet2.BorderColor = Color.LightGray;
                 cellDet2.Borders = BorderSide.All;
-                cellDet2.Font = new Font("Arial", 8F);
+                cellDet2.Font = new DXFont("Arial", 8F);
                 cellDet2.Text = (dt.ItemName.Contains("%")) ? (dt.kWhUsage).ToString("##0.00") : dt.kWhUsage.ToString("### ### ##0");
                 cellDet2.TextAlignment = TextAlignment.MiddleRight;
                 cellDet2.WidthF = 60F;
@@ -705,7 +712,7 @@ namespace ClientPortal.Services
                 XRTableCell cellDet3 = new();
                 cellDet3.BorderColor = Color.LightGray;
                 cellDet3.Borders = BorderSide.All;
-                cellDet3.Font = new Font("Arial", 8F);
+                cellDet3.Font = new DXFont("Arial", 8F);
                 cellDet3.Text = (dt.ItemName.Contains("%")) ? dt.kVAUsage.ToString("### ##0.00") : dt.kVAUsage.ToString("### ### ##0");
                 cellDet3.TextAlignment = TextAlignment.MiddleRight;
                 cellDet3.WidthF = 60F;
@@ -715,7 +722,7 @@ namespace ClientPortal.Services
                 XRTableCell cellDet4 = new();
                 cellDet4.BorderColor = Color.LightGray;
                 cellDet4.Borders = BorderSide.All;
-                cellDet4.Font = new Font("Arial", 8F);
+                cellDet4.Font = new DXFont("Arial", 8F);
                 cellDet4.Text = dt.TotalAmount.ToString("C", CultureInfo.CurrentCulture);
                 cellDet4.TextAlignment = TextAlignment.MiddleRight;
                 cellDet4.WidthF = 100F;
@@ -759,7 +766,9 @@ namespace ClientPortal.Services
             // specify table specifics.
             table.LocationFloat = new PointFloat(0F, startPoint);
             table.Padding = new PaddingInfo(2, 2, 0, 0, 96F);
-            table.SizeF = new SizeF((float)(185F + (220F * reportData.CouncilReportData.Data.Count)), 100F);
+            table.WidthF = 185F + (220F * reportData.CouncilReportData.Data.Count);
+            table.HeightF = 100F;
+            //table.SizeF = new SizeF((float)(185F + (220F * reportData.CouncilReportData.Data.Count)), 100F);
             table.StylePriority.UseFont = false;
 
             // Create first fixed table rows.
@@ -776,7 +785,7 @@ namespace ClientPortal.Services
             cell11.BackColor = Color.LightGray;
             cell11.BorderColor = Color.LightGray;
             cell11.Borders = BorderSide.All;
-            cell11.Font = new Font("Arial", 8F, FontStyle.Bold);
+            cell11.Font = new DXFont("Arial", 8F, DXFontStyle.Bold);
             cell11.Text = "Electricity Council Acc";
             cell11.TextAlignment = TextAlignment.MiddleLeft;
             cell11.WidthF = 185F;
@@ -798,7 +807,7 @@ namespace ClientPortal.Services
                 cellSum11.BackColor = Color.WhiteSmoke;
                 cellSum11.BorderColor = Color.LightGray;
                 cellSum11.Borders = (BorderSide.All);
-                cellSum11.Font = new Font("Arial1", 8F, FontStyle.Bold);
+                cellSum11.Font = new DXFont("Arial1", 8F, DXFontStyle.Bold);
                 cellSum11.Text = "Expense per m²";
                 cellSum11.TextAlignment = TextAlignment.MiddleLeft;
                 cellSum11.WidthF = 185F;
@@ -822,7 +831,7 @@ namespace ClientPortal.Services
                 cell12.BackColor = Color.Gainsboro;
                 cell12.BorderColor = Color.LightGray;
                 cell12.Borders = BorderSide.All;
-                cell12.Font = new Font("Arial", 8F);
+                cell12.Font = new DXFont("Arial", 8F);
                 cell12.Text = ph.StartDate;
                 cell12.TextAlignment = TextAlignment.MiddleCenter;
                 cell12.WidthF = 60F;
@@ -833,7 +842,7 @@ namespace ClientPortal.Services
                 cell13.BackColor = Color.Gainsboro;
                 cell13.BorderColor = Color.LightGray;
                 cell13.Borders = BorderSide.All;
-                cell13.Font = new Font("Arial", 8F);
+                cell13.Font = new DXFont("Arial", 8F);
                 cell13.Text = ph.EndDate;
                 cell13.TextAlignment = TextAlignment.MiddleCenter;
                 cell13.WidthF = 60F;
@@ -844,7 +853,7 @@ namespace ClientPortal.Services
                 cell14.BackColor = Color.Gainsboro;
                 cell14.BorderColor = Color.LightGray;
                 cell14.Borders = BorderSide.All;
-                cell14.Font = new Font("Arial", 8F);
+                cell14.Font = new DXFont("Arial", 8F);
                 cell14.Text = ph.PeriodDays;
                 cell14.TextAlignment = TextAlignment.MiddleCenter;
                 cell14.WidthF = 100F;
@@ -859,7 +868,7 @@ namespace ClientPortal.Services
                 cellSum12.BackColor = Color.WhiteSmoke;
                 cellSum12.BorderColor = Color.LightGray;
                 cellSum12.Borders = BorderSide.All;
-                cellSum12.Font = new Font("Arial", 8F);
+                cellSum12.Font = new DXFont("Arial", 8F);
                 cellSum12.Text = (summaryVars["sumRow1kWh"] / reportData.BuildingArea).ToString("##0.00");
                 cellSum12.TextAlignment = TextAlignment.MiddleRight;
                 cellSum12.WidthF = 60F;
@@ -870,7 +879,7 @@ namespace ClientPortal.Services
                 cellSum13.BackColor = Color.WhiteSmoke;
                 cellSum13.BorderColor = Color.LightGray;
                 cellSum13.Borders = BorderSide.All;
-                cellSum13.Font = new Font("Arial", 8F);
+                cellSum13.Font = new DXFont("Arial", 8F);
                 cellSum13.Text = (summaryVars["sumRow1kVA"] / reportData.BuildingArea).ToString("##0.00"); ;
                 cellSum13.TextAlignment = TextAlignment.MiddleRight;
                 cellSum13.WidthF = 60F;
@@ -881,7 +890,7 @@ namespace ClientPortal.Services
                 cellSum14.BackColor = Color.WhiteSmoke;
                 cellSum14.BorderColor = Color.LightGray;
                 cellSum14.Borders = BorderSide.All;
-                cellSum14.Font = new Font("Arial", 8F);
+                cellSum14.Font = new DXFont("Arial", 8F);
                 cellSum14.Text = (summaryVars["sumRow1RC"] / reportData.BuildingArea).ToString("C", CultureInfo.CurrentCulture);
                 cellSum14.TextAlignment = TextAlignment.MiddleRight;
                 cellSum14.WidthF = 100F;
@@ -915,7 +924,7 @@ namespace ClientPortal.Services
                     XRTableCell cellDet1 = new();
                     cellDet1.BorderColor = Color.LightGray;
                     cellDet1.Borders = BorderSide.All;
-                    cellDet1.Font = new Font("Arial", 8F, FontStyle.Bold);
+                    cellDet1.Font = new DXFont("Arial", 8F, DXFontStyle.Bold);
                     cellDet1.Text = dt.ItemName;
                     cellDet1.TextAlignment = TextAlignment.MiddleLeft;
                     cellDet1.WidthF = 185F;
@@ -927,7 +936,7 @@ namespace ClientPortal.Services
                 XRTableCell cellDet2 = new();
                 cellDet2.BorderColor = Color.LightGray;
                 cellDet2.Borders = BorderSide.All;
-                cellDet2.Font = new Font("Arial", 8F);
+                cellDet2.Font = new DXFont("Arial", 8F);
                 cellDet2.Text = (dt.ItemName.Contains("%")) ? (dt.kWhUsage).ToString("##0.00") : dt.kWhUsage.ToString("### ### ##0");
                 cellDet2.TextAlignment = TextAlignment.MiddleRight;
                 cellDet2.WidthF = 60F;
@@ -937,7 +946,7 @@ namespace ClientPortal.Services
                 XRTableCell cellDet3 = new();
                 cellDet3.BorderColor = Color.LightGray;
                 cellDet3.Borders = BorderSide.All;
-                cellDet3.Font = new Font("Arial", 8F);
+                cellDet3.Font = new DXFont("Arial", 8F);
                 cellDet3.Text = (dt.ItemName.Contains("%")) ? dt.kVAUsage.ToString("### ##0.00") : dt.kVAUsage.ToString("### ### ##0");
                 cellDet3.TextAlignment = TextAlignment.MiddleRight;
                 cellDet3.WidthF = 60F;
@@ -947,7 +956,7 @@ namespace ClientPortal.Services
                 XRTableCell cellDet4 = new();
                 cellDet4.BorderColor = Color.LightGray;
                 cellDet4.Borders = BorderSide.All;
-                cellDet4.Font = new Font("Arial", 8F);
+                cellDet4.Font = new DXFont("Arial", 8F);
                 cellDet4.Text = dt.TotalAmount.ToString("C", CultureInfo.CurrentCulture);
                 cellDet4.TextAlignment = TextAlignment.MiddleRight;
                 cellDet4.WidthF = 100F;
