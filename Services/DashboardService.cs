@@ -9,10 +9,13 @@ namespace ClientPortal.Services
         private readonly IPortalStatsRepository _portalStats;
         private readonly ILogger<DashboardService> _logger;
         readonly IBuildingService _buildingService;
+        private readonly IUserService _userService;
 
-        public DashboardService(IPortalStatsRepository portalStats, ILogger<DashboardService> logger, IBuildingService buildingService)
+        public DashboardService(IPortalStatsRepository portalStats, ILogger<DashboardService> logger, IBuildingService buildingService,
+            IUserService userService)
         {
             _buildingService = buildingService;
+            _userService = userService;
             _portalStats = portalStats;
             _logger = logger;
         }
@@ -54,9 +57,11 @@ namespace ClientPortal.Services
             _logger.LogInformation("Getting the buildings for buildings dashboard page...");
             try
             {
+                var user = _userService.GetUserById(umfaUserId);
+                //needs to replace this when we have a method to determine AMR buildings
                 List<int> bldgs = new() { 2403, 518 };
                 List<DashboardBuilding> ret = new();
-                var response = _buildingService.GetUmfaBuildingsAsync(umfaUserId).Result;
+                var response = _buildingService.GetUmfaBuildingsAsync(user.UmfaId).Result;
                 if (response != null && response.Response.Contains("Success"))
                 { 
                     foreach (UMFABuilding bld in response.UmfaBuildings)
