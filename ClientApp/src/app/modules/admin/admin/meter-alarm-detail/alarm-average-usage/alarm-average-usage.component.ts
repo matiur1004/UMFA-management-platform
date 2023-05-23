@@ -42,7 +42,7 @@ export class AlarmAverageUsageComponent implements OnInit {
     this._alarmConfigService.alarmMeterDetail$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: any) => {
-        this.alarmMeterDetail = data;
+        this.alarmMeterDetail = data.find(obj => obj.AlarmTypeId == 6);
         if(this.alarmMeterDetail) {
           let startDate = new Date();
           let endDate = new Date();

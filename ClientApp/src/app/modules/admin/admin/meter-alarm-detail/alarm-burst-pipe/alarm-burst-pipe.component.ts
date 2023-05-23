@@ -44,7 +44,7 @@ export class AlarmBurstPipeComponent implements OnInit {
     this._alarmConfigService.alarmMeterDetail$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: any) => {
-        this.alarmMeterDetail = data;
+        this.alarmMeterDetail = data.find(obj => obj.AlarmTypeId == 2);
         if(this.alarmMeterDetail) {
 
           this.analyzeForm.patchValue({
