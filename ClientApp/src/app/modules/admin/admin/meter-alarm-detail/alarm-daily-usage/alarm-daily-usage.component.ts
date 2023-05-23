@@ -36,7 +36,7 @@ export class AlarmDailyUsageComponent implements OnInit {
     this._alarmConfigService.alarmMeterDetail$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: any) => {
-        this.alarmMeterDetail = data;
+        this.alarmMeterDetail = data.find(obj => obj.AlarmTypeId == 4);
         if(this.alarmMeterDetail) {
 
           this.analyzeForm.patchValue({

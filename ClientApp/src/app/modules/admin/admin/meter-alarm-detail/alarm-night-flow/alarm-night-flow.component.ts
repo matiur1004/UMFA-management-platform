@@ -49,7 +49,7 @@ export class AlarmNightFlowComponent implements OnInit {
     this._alarmConfigService.alarmMeterDetail$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: any) => {
-        this.alarmMeterDetail = data;
+        this.alarmMeterDetail = data.find(obj => obj.AlarmTypeId == 1);
         if(this.alarmMeterDetail) {
           let startDate = new Date();
           let endDate = new Date();
@@ -134,6 +134,7 @@ export class AlarmNightFlowComponent implements OnInit {
       EndTime: formatTimeString(nEndTime),
       Active: this.active
     };
+    console.log('before data', data);
     this.save.emit(data);
   }
 
