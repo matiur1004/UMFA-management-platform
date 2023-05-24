@@ -1,0 +1,32 @@
+<ng-container *ngIf="results.length > 0">
+    <div class="flex w-full p-6">
+        <dx-pivot-grid
+            id="sales"
+            [allowSortingBySummary]="true"
+            [allowSorting]="false"
+            [allowFiltering]="true"
+            [allowExpandAll]="true"
+            [showColumnTotals]="false"
+            [showRowGrandTotals]="false"
+            [showRowTotals]="false"
+            [height]="600"
+            [showBorders]="true"
+            [dataSource]="dataSource"
+            (onExporting)="exportGrid($event)"
+        >
+            <dxo-field-chooser [enabled]="false"></dxo-field-chooser>
+            <dxo-field-panel
+                [showDataFields]="true"
+                [showRowFields]="true"
+                [showColumnFields]="true"
+                [showFilterFields]="true"
+                [allowFieldDragging]="false"
+                [visible]="true"
+            >
+            </dxo-field-panel>
+            <dxo-export [enabled]="true"></dxo-export>
+        </dx-pivot-grid>
+    </div>
+    
+
+</ng-container>

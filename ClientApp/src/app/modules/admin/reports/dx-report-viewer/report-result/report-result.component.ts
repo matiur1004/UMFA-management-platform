@@ -119,8 +119,7 @@ export class ReportResultComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   get ShowPage(): boolean {
-    return true;
-    //return this.reportService.ShowResultsPage();
+    return this.reportService.ShowResultsPage();
   }
 
   constructor(private reportService: DXReportService) { }

@@ -7,6 +7,7 @@ import { HttpClient } from "@angular/common/http";
 
 @Injectable({ providedIn: 'root' })
 export class DXReportService {
+  private _shopUsageVariance: BehaviorSubject<any> = new BehaviorSubject([]);
 
   constructor(
     private buildingService: BuildingService,
@@ -26,6 +27,10 @@ export class DXReportService {
     this.obsLoadReport = this.bsLoadReport.asObservable();
     this.bsShopLoadReport = new BehaviorSubject<IDXReport>(null);
     this.obsShopLoadReport = this.bsShopLoadReport.asObservable();
+  }
+
+  get shopUsageVariance$(): Observable<any> {
+    return this._shopUsageVariance.asObservable();
   }
 
   private ErrorSubject: BehaviorSubject<string>;
@@ -243,19 +248,21 @@ export class DXReportService {
 
   getReportDataForShop() {
     // this.SUVParams = {
-    //   BuildingId: 1808,
-    //   StartPeriodId: 164387,
-    //   ToPeriodId: 174137,
-    //   AllTenants: 1
+    //   "BuildingId": 2983,
+    //   "StartPeriodId": 172047,
+    //   "ToPeriodId": 172047,
+    //   "AllTenants": 1
     // }
-    const url = `${CONFIG.apiURL}/ReportShopUsageVariance/getReportData`;
+    const url = `${CONFIG.apiURL}/ReportShopUsageVariance/getReportDataNoPivot`;
     return this.http.post<any>(url, this.SUVParams, { withCredentials: true })
-        .pipe(
-            catchError(err => this.catchErrors(err)),
-            tap(m => {
-            //console.log(`getMetersForUser observable returned ${m}`);
-            }),
-        );
+      .pipe(
+          catchError(err => this.catchErrors(err)),
+          tap(m => {
+            console.log('sdfsdfsdf', m);
+            this._shopUsageVariance.next(m);
+          //console.log(`getMetersForUser observable returned ${m}`);
+          }),
+      );
   }
 
   catchErrors(error: { error: { message: any; }; message: any; }): Observable<Response> {

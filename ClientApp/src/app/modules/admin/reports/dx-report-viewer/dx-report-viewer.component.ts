@@ -44,10 +44,8 @@ export class DxReportViewerComponent implements OnInit, OnDestroy {
   showReport(e: any) {
     if(this.reportService.SelectedReportId == 1) this.reportService.ShowResults(true); // Building Recovery Report
     if(this.reportService.SelectedReportId == 2) {
-      // this.reportService.getReportDataForShop().subscribe(res => {
-      //   console.log(res);
-      // })
-      this.reportService.ShowShopResults(true); // Shop Usage Variance Report
+      this.reportService.getReportDataForShop().subscribe();
+      //this.reportService.ShowShopResults(true); // Shop Usage Variance Report
     }
   }
 
