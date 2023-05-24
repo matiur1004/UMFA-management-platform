@@ -13,6 +13,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using System.Globalization;
 using System.Reflection;
 using System.Text.Json.Serialization;
 
@@ -161,6 +162,15 @@ var app = builder.Build();
     else
     {
     }
+
+    app.Use(async (context, next) =>
+    {
+        CultureInfo cultureInfo = new CultureInfo("en-ZA");
+        CultureInfo.CurrentCulture = cultureInfo;
+        CultureInfo.CurrentUICulture = cultureInfo;
+
+        await next();
+    });
 
     app.UseHttpsRedirection();
     app.UseStaticFiles();
