@@ -1,6 +1,5 @@
-﻿using DevExpress.XtraReports.UI;
-using System.Drawing;
-using System.Drawing.Printing;
+﻿using DevExpress.Drawing;
+using DevExpress.XtraReports.UI;
 
 namespace ClientPortal.PredefinedReports
 {
@@ -76,9 +75,9 @@ namespace ClientPortal.PredefinedReports
             this.TopMargin,
             this.BottomMargin,
             this.Detail});
-            this.Font = new System.Drawing.Font("Arial", 8F);
+            this.Font = new DXFont("Arial", 8F);
             this.Landscape = true;
-            this.Margins = new System.Drawing.Printing.Margins(34, 36, 99, 100);
+            this.Margins = new DXMargins(34, 36, 99, 100);
             this.PageHeight = 850;
             this.PageWidth = 1100;
             this.Version = "22.1";
