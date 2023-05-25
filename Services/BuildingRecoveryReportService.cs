@@ -25,7 +25,7 @@ namespace ClientPortal.Services
 
             XtraReport report = new BuildingRecovery(); // XtraReport();
             report.Landscape = true;
-            report.Margins = new DevExpress.Drawing.DXMargins(10, 10, 100, 34);
+            report.Margins = new DXMargins(10, 10, 100, 34);
 
             TopMarginBand topMarginBand = (TopMarginBand)report.Bands[BandKind.TopMargin];
             topMarginBand.Controls.Add(new XRLabel()

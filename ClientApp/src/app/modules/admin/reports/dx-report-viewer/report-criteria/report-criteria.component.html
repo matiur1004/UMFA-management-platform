@@ -10,9 +10,10 @@
           bindValue="Id"
           [placeholder]="'Select partner'"
           [formControlName]="'partnerId'"
-          [searchable]="false"
+          [searchable]="true"
           [clearable]="false"
           id="partner"
+          [searchFn]="customSearch"
           (change)="valueChanged($event, 'Partner')"
         >
         </ng-select>
@@ -34,6 +35,7 @@
           [formControlName]="'buildingId'"
           [searchable]="true"
           [clearable]="false"
+          [searchFn]="customSearch"
           (change)="valueChanged($event, 'Building')"
         >
         </ng-select>
