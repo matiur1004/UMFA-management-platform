@@ -112,4 +112,8 @@ export class ReportCriteriaComponent implements OnInit, OnDestroy {
     }
   }
 
+  customSearch(term: string, item: any) {
+    term = term.toLocaleLowerCase();
+    return item.Name.toLocaleLowerCase().indexOf(term) > -1;
+  }
 }
