@@ -91,6 +91,15 @@ export class MeterAlarmDetailComponent implements OnInit {
       if(configured.indexOf(5) > -1) configured_val = {...configured_val, 'Peak': 1} ;
       if(configured.indexOf(6) > -1) configured_val = {...configured_val, 'Average': 1} ;
       this.meter = {...this.meter, alarmConfig: configured_val};
+    } else {
+      this.meter = {...this.meter, alarmConfig: {
+        'Night Flow': 0,
+        'Burst Pipe': 0,
+        'Leak': 0,
+        'Daily Usage': 0,
+        'Peak': 0,
+        'Average': 0
+      }};
     }
   }
 
