@@ -81,6 +81,14 @@ export class MeterAlarmDetailComponent implements OnInit {
 
   onShowConfigStatus() {
     let configured = this.meter['Configured'];
+    this.meter = {...this.meter, alarmConfig: {
+      'Night Flow': 0,
+      'Burst Pipe': 0,
+      'Leak': 0,
+      'Daily Usage': 0,
+      'Peak': 0,
+      'Average': 0
+    }};
     if(configured) {
       configured = configured.split(', ').map(num => Number(num));
       let configured_val = {};
