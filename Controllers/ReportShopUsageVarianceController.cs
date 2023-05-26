@@ -296,8 +296,6 @@ namespace ClientPortal.Controllers
                         var periodIdIndex = reader.GetOrdinal("PeriodID");
                         var periodNameIndex = reader.GetOrdinal("PeriodName");
 
-                        
-
                         while (reader.Read())
                         {
                             dynamic result = new ExpandoObject();
@@ -339,9 +337,11 @@ namespace ClientPortal.Controllers
                         var sum = sumDict[key];
                         var count = countDict[key];
                         var average = sum / count;
+                        var usageValue = decimal.TryParse(dictionary["UsageValue"].ToString(), out decimal usageVal);
+                        var variance = usageVal > 0 ? (average - usageVal) / usageVal * 100 : 0; // Calculate variance as a percentage
 
-                        dictionary.Add("Average", Math.Round(average,2));
-                        dictionary.Add("Variance", varianceDict[key]);
+                        dictionary.Add("Average", Math.Round(average, 2));
+                        dictionary.Add("Variance", Math.Round(variance, 2) + "%"); // Add variance as a percentage
                     }
 
                 }
