@@ -207,7 +207,7 @@ namespace ClientPortal.Services
                                 foreach (var detail in header.ScadaRequestDetails)
                                 {
                                     DateTime dtLastRun = (detail.LastRunDTM == null || detail.LastRunDTM == DateTime.MinValue) ? DateTime.MinValue : DateTime.Parse(detail.LastRunDTM.ToString());
-                                    DateTime dtLastData = (detail.LastDataDate == null || detail.LastDataDate == DateTime.MinValue) ? new DateTime(2021, 1, 1, 0, 0, 0) : DateTime.Parse(detail.LastDataDate.ToString());
+                                    DateTime dtLastData = (detail.LastDataDate == null || detail.LastDataDate == DateTime.MinValue) ? header.StartRunDTM : DateTime.Parse(detail.LastDataDate.ToString());
                                     if (dtLastData < DateTime.Parse(DateTime.UtcNow.ToString("yyyy-MM-dd 00:00:00")).AddMinutes(-detail.UpdateFrequency)
                                         || (dtLastRun == DateTime.MinValue || dtLastRun.AddMinutes(detail.UpdateFrequency) <= DateTime.UtcNow))
                                     {
