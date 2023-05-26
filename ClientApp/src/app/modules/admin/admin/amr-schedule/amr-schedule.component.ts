@@ -46,7 +46,6 @@ export class AmrScheduleComponent implements OnInit {
             let jobItem = this.jobStatus.find(job => job.Id == item.JobType);
             return {...item, StatusLabel: statusItem.Name, JobLabel: jobItem.Name};
           })
-          console.log(this.scheduleHeaderStatus);
       })
 
     
@@ -56,10 +55,6 @@ export class AmrScheduleComponent implements OnInit {
     if (event.rowType === "data") {
       let statusItem = this.scheduleHeaderStatus.find(obj => obj.Id == event.data.Status);
       event.statusLabel = statusItem.Name;
-      // if (this.mappedMeters.find(mm => mm.BuildingServiceId == meterId)) {
-      //     event.rowElement.style.background = '#4ade80'; //#212c4f
-      //     //event.rowElement.style.color = 'white';
-      // }
     }
   }
 
