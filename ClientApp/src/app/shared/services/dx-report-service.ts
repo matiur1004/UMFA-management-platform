@@ -253,7 +253,7 @@ export class DXReportService {
     //   "ToPeriodId": 172047,
     //   "AllTenants": 1
     // }
-    const url = `${CONFIG.apiURL}/ReportShopUsageVariance/getReportDataNoPivot`;
+    const url = `${CONFIG.apiURL}/ReportShopUsageVariance/getReportDataNoPivotWithAverageAndVariance`;
     return this.http.post<any>(url, this.SUVParams, { withCredentials: true })
       .pipe(
           catchError(err => this.catchErrors(err)),
