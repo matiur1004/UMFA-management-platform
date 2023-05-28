@@ -58,10 +58,11 @@ export class ReportResultShopComponent implements OnInit {
           format: { type: 'fixedPoint', precision: 0 }
         },
         {
-          dataField: 'UsageValue',
+          dataField: 'Variance',
           area: 'data',
-          dataType: 'number',
+          dataType: 'percent',
           caption: 'Variance',
+          summaryType: 'avg',
           showValues: false,
           format: { type: 'fixedPoint', precision: 2 },
         }
@@ -78,6 +79,9 @@ export class ReportResultShopComponent implements OnInit {
         if(data.length > 0)
           this.dataSource['store'] = data.map(item => {
             item.PeriodDate = new Date(item.PeriodName);
+            item.Variance = item.Variance.replace('%', '');
+            item.Variance = Number(item.Variance.replace(',', '.'));
+
             return item;
           });
           console.log(this.dataSource['store']);
