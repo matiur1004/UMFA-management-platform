@@ -19,7 +19,7 @@ namespace ClientPortal.Controllers
         }
 
         [HttpPost("getReportData")]
-        public ActionResult<IEnumerable<dynamic>> GetReportData([FromBody] ShopUsageVarianceRequestModel model)
+        public ActionResult<IEnumerable<dynamic>> GetReportData([FromBody] ReportsShopVarianceRequestModel model)
         {
             List<dynamic> resultList = new List<dynamic>();
             _logger.LogInformation(1, $"Get Report Shop Usage Variance for building id: {model.BuildingId} from database");
@@ -179,7 +179,7 @@ namespace ClientPortal.Controllers
         }
 
         [HttpPost("getReportDataNoPivot")]
-        public ActionResult<IEnumerable<dynamic>> GetReportDataNoPivot([FromBody] ShopUsageVarianceRequestModel model)
+        public ActionResult<IEnumerable<dynamic>> GetReportDataNoPivot([FromBody] ReportsShopVarianceRequestModel model)
         {
             List<dynamic> resultList = new List<dynamic>();
             _logger.LogInformation(1, $"Get Report Shop Usage Variance for building id: {model.BuildingId} from database");
@@ -246,7 +246,7 @@ namespace ClientPortal.Controllers
         }
 
         [HttpPost("getReportDataNoPivotWithAverageAndVariance")]
-        public ActionResult<IEnumerable<dynamic>> GetReportDataNoPivotWithAverageAndVariance([FromBody] ShopUsageVarianceRequestModel model)
+        public ActionResult<IEnumerable<dynamic>> GetReportDataNoPivotWithAverageAndVariance([FromBody] ReportsShopVarianceRequestModel model)
         {
             List<dynamic> resultList = new List<dynamic>();
             _logger.LogInformation(1, $"Get Report Shop Usage Variance for building id: {model.BuildingId} from database");
@@ -370,7 +370,7 @@ namespace ClientPortal.Controllers
     //@FromPeriodId INT
     //@ToPeriodId INT
     //@AllTenants smallint
-    public class ShopUsageVarianceRequestModel
+    public class ReportsShopVarianceRequestModel
         {
             public int BuildingId { get; set; }
             public int FromPeriodId { get; set; }
