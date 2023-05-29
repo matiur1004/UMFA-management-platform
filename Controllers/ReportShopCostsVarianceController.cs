@@ -101,7 +101,7 @@ namespace ClientPortal.Controllers
                             decimal sum = 0;
                             int count = 0;
 
-                            for (int i = 8; i < fieldCount - 1; i++) // Use < instead of <= to exclude the last field
+                            for (int i = 8; i < fieldCount; i++) // Use < instead of <= to exclude the last field
                             {
                                 if (!reader.IsDBNull(i))
                                 {
@@ -119,7 +119,7 @@ namespace ClientPortal.Controllers
 
                             // Add Average and Variance Columns
                             dictionary.Add("Average", average > 0 ? Math.Round(average, 2) : null);
-                            dictionary.Add("Variance", variance > 0 ? Math.Round(variance, 2) + "%" : null);
+                            dictionary.Add("Variance", variance > 0 ? Math.Round(variance, 2) + "%" : "0%");
 
                             resultList.Add(result);
                         }
@@ -153,7 +153,7 @@ namespace ClientPortal.Controllers
                             decimal varianceTotals = lastValueTotals > 0 ? (averageTotals - lastValueTotals) / lastValueTotals * 100 : 0;
 
                             totalsDictionary.Add("Average", averageTotals > 0 ? Math.Round(averageTotals, 2) : null);
-                            totalsDictionary.Add("Variance", varianceTotals > 0 ? Math.Round(varianceTotals, 2) + "%" : null);
+                            totalsDictionary.Add("Variance", varianceTotals > 0 ? Math.Round(varianceTotals, 2) + "%" : "0%");
 
                             resultList.Add(totalsRow);
                         }
