@@ -48,6 +48,18 @@ namespace ClientPortal.Services
             return report;
         }
 
+        public async Task<XtraReport> ShopUsageVarianceReport(string buildingId, string strtPeriodId, string endPeriodId, string allTenantType)
+        {
+            //BuildingRecoveryReport reportData = await Task.Run(() => { return _repo.GetBuildingRecoveryReport(strtPeriodId.ToInt(), endPeriodId.ToInt()); });
+
+            XtraReport report = new ShopUsageVariance(); // XtraReport();
+            //report.Parameters[@]
+            report.Landscape = true;
+            report.Margins = new System.Drawing.Printing.Margins(10, 10, 60, 34);
+
+            return report;
+        }
+
         #region Tenant Table
         private static XRTable CreateTenantTable(BuildingRecoveryReport reportData)
         {

@@ -9,7 +9,7 @@ import { ReportsRoutingModule } from './reports-routing.module';
 // import { AmrGraphResultComponent } from './amr-charts/amr-graph-result/amr-graph-result.component';
 
 //import DevExtreme components
-import { DxDateBoxModule, DxChartModule, DxSelectBoxModule, DxFormModule, DxValidatorModule, DxButtonModule } from 'devextreme-angular';
+import { DxDateBoxModule, DxChartModule, DxSelectBoxModule, DxFormModule, DxValidatorModule, DxButtonModule, DxPivotGridModule } from 'devextreme-angular';
 // import { DxReportViewerComponent } from './dx-report-viewer/dx-report-viewer.component';
 
 // import { ReportSelectionComponent } from './dx-report-viewer/report-selection/report-selection.component';
@@ -27,6 +27,8 @@ import { AmrGraphResultComponent } from './amr-charts/amr-graph-result/amr-graph
 import { MatButtonModule } from '@angular/material/button';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { ReportCriteriaShopComponent } from './dx-report-viewer/report-criteria-shop/report-criteria-shop.component';
+import { ReportResultShopComponent } from './dx-report-viewer/report-result-shop/report-result-shop.component';
 @NgModule({
   declarations: [
     DxReportViewerComponent,
@@ -37,6 +39,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     AmrGraphSelectionComponent,
     AmrGraphCriteriaComponent,
     AmrGraphResultComponent,
+    ReportCriteriaShopComponent,
+    ReportResultShopComponent
   ],
   imports: [
     CommonModule,
@@ -47,6 +51,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     DxButtonModule,
     DxReportViewerModule,
     DxChartModule,
+    DxPivotGridModule,
     DxFormModule,
     DxDateBoxModule,
     MatButtonModule,

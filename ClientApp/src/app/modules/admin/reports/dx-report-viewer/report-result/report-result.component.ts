@@ -28,11 +28,19 @@ export class ReportResultComponent implements OnInit, AfterViewInit, OnDestroy {
   invokeAction: string = 'DXXRDV';
   loading = true;
   obsShowIt = this.reportService.obsLoadReport.pipe(tap(rep => {
-    console.log('rererer', rep);
     if (rep && rep.Id != 0) {
       this.loading = false;
       this.reportUrl = rep.DXReportName;
-      console.log('report url', this.reportUrl);
+    }
+    else {
+      this.loading = true;
+    }
+  })).subscribe();
+
+  obsShowShopIt = this.reportService.obsShopLoadReport.pipe(tap(rep => {
+    if (rep && rep.Id != 0) {
+      this.loading = false;
+      this.reportUrl = rep.DXReportName;
     }
     else {
       this.loading = true;
