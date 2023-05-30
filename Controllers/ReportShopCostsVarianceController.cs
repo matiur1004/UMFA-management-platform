@@ -103,7 +103,7 @@ namespace ClientPortal.Controllers
 
                             for (int i = 8; i < fieldCount; i++) // Use < instead of <= to exclude the last field
                             {
-                                if (!reader.IsDBNull(i))
+                                if (!reader.IsDBNull(i) && reader.GetDecimal(i) > 0) // Check if the value is greater than 0
                                 {
                                     decimal fieldValue = reader.GetDecimal(i);
                                     sum += fieldValue;
@@ -114,12 +114,12 @@ namespace ClientPortal.Controllers
                             decimal average = count > 0 ? sum / count : 0;
 
                             // Calculate Variance
-                            decimal lastValue = reader.IsDBNull(fieldCount - 1) ? 0 : reader.GetDecimal(fieldCount - 1); // Get the last value directly
-                            decimal variance = lastValue > 0 ? (average - lastValue) / lastValue * 100 : 0;
+                            decimal previousPeriodValue = reader.IsDBNull(fieldCount - 1) ? 0 : reader.GetDecimal(fieldCount - 1); // Get the previous period value directly
+                            decimal variance = previousPeriodValue > 0 ? (previousPeriodValue / average) * 100 : 0;
 
                             // Add Average and Variance Columns
-                            dictionary.Add("Average", average > 0 ? Math.Round(average, 2) : null);
-                            dictionary.Add("Variance", variance > 0 ? Math.Round(variance, 2) + "%" : "0%");
+                            dictionary.Add("Average", average > 0 ? Math.Round(average, 2) : (decimal?)null);
+                            dictionary.Add("Variance", variance > 0 ? Math.Round(variance, 2) + "%" : (string)null);
 
                             resultList.Add(result);
                         }
@@ -149,15 +149,16 @@ namespace ClientPortal.Controllers
                             decimal averageTotals = group.Value.Count > 0 ? sumTotals / group.Value.Count : 0;
 
                             // Calculate Totals Variance
-                            decimal lastValueTotals = group.Value.ContainsKey(fieldCount.ToString()) ? group.Value[fieldCount.ToString()] : 0;
-                            decimal varianceTotals = lastValueTotals > 0 ? (averageTotals - lastValueTotals) / lastValueTotals * 100 : 0;
+                            decimal previousPeriodValueTotals = group.Value.ContainsKey((fieldCount - 1).ToString()) ? group.Value[(fieldCount - 1).ToString()] : 0;
+                            decimal varianceTotals = previousPeriodValueTotals > 0 ? (previousPeriodValueTotals / averageTotals) * 100 : 0;
 
-                            totalsDictionary.Add("Average", averageTotals > 0 ? Math.Round(averageTotals, 2) : null);
-                            totalsDictionary.Add("Variance", varianceTotals > 0 ? Math.Round(varianceTotals, 2) + "%" : "0%");
+                            totalsDictionary.Add("Average", averageTotals > 0 ? Math.Round(averageTotals, 2) : (decimal?)null);
+                            totalsDictionary.Add("Variance", varianceTotals > 0 ? Math.Round(varianceTotals, 2) + "%" : (string)null);
 
                             resultList.Add(totalsRow);
                         }
                     }
+
                 }
             }
             catch (Exception)
