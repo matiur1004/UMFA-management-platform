@@ -29,6 +29,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReportCriteriaShopComponent } from './dx-report-viewer/report-criteria-shop/report-criteria-shop.component';
 import { ReportResultShopComponent } from './dx-report-viewer/report-result-shop/report-result-shop.component';
+import { ReportResultShopCostComponent } from './dx-report-viewer/report-result-shop-cost/report-result-shop-cost.component';
 @NgModule({
   declarations: [
     DxReportViewerComponent,
@@ -40,7 +41,8 @@ import { ReportResultShopComponent } from './dx-report-viewer/report-result-shop
     AmrGraphCriteriaComponent,
     AmrGraphResultComponent,
     ReportCriteriaShopComponent,
-    ReportResultShopComponent
+    ReportResultShopComponent,
+    ReportResultShopCostComponent
   ],
   imports: [
     CommonModule,

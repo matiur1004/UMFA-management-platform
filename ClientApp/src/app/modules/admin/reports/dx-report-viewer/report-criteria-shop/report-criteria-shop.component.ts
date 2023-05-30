@@ -80,12 +80,22 @@ export class ReportCriteriaShopComponent implements OnInit {
 
   setCriteria() {
     if (this.form.valid ) {
-      this.reportService.ShopUsageVarianceParams = { 
-        BuildingId: this.form.get('buildingId').value, 
-        StartPeriodId: this.form.get('startPeriodId').value, 
-        ToPeriodId: this.form.get('endPeriodId').value,
-        AllTenants: this.form.get('allTenants').value,
+      if(this.reportService.SelectedReportId == 2) {
+        this.reportService.ShopUsageVarianceParams = { 
+          BuildingId: this.form.get('buildingId').value, 
+          StartPeriodId: this.form.get('startPeriodId').value, 
+          ToPeriodId: this.form.get('endPeriodId').value,
+          AllTenants: this.form.get('allTenants').value,
+        }
+      } else {
+        this.reportService.ShopCostVarianceParams = { 
+          BuildingId: this.form.get('buildingId').value, 
+          StartPeriodId: this.form.get('startPeriodId').value, 
+          ToPeriodId: this.form.get('endPeriodId').value,
+          AllTenants: this.form.get('allTenants').value,
+        }
       }
+      
       this.reportService.setFrmValid(2, true);
     } else {
       this.reportService.ShopUsageVarianceParams = null;

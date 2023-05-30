@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, catchError, of, tap, throwError } from "rxjs";
-import { IBuildingRecoveryParams, IDXReport, IShopUsageVarianceParams, IUmfaBuilding, IUmfaPartner, IUmfaPeriod } from "../../core/models";
+import { IBuildingRecoveryParams, IDXReport, IShopCostVarianceParams, IShopUsageVarianceParams, IUmfaBuilding, IUmfaPartner, IUmfaPeriod } from "../../core/models";
 import { BuildingService } from "./building.service";
 import { CONFIG } from "@core/helpers";
 import { HttpClient } from "@angular/common/http";
@@ -8,6 +8,7 @@ import { HttpClient } from "@angular/common/http";
 @Injectable({ providedIn: 'root' })
 export class DXReportService {
   private _shopUsageVariance: BehaviorSubject<any> = new BehaviorSubject([]);
+  private _shopCostVariance: BehaviorSubject<any> = new BehaviorSubject([]);
 
   constructor(
     private buildingService: BuildingService,
@@ -33,13 +34,18 @@ export class DXReportService {
     return this._shopUsageVariance.asObservable();
   }
 
+  get shopCostVariance$(): Observable<any> {
+    return this._shopCostVariance.asObservable();
+  }
+
   private ErrorSubject: BehaviorSubject<string>;
   public Error$: Observable<string>;
 
   //reports
   private dxReportList: IDXReport[] = [
     { Id: 1, Name: 'Building Recovery', Description: 'Building Recovery Report', DXReportName: 'BuildingRecovery' },
-    { Id: 2, Name: 'Shop Usage Variance', Description: 'Shop Usage Variance Report', DXReportName: 'ShopUsageVariance' }
+    { Id: 2, Name: 'Shop Usage Variance', Description: 'Shop Usage Variance Report', DXReportName: 'ShopUsageVariance' },
+    { Id: 3, Name: 'Shop Costs Variances', Description: 'Shop Costs Variances Report', DXReportName: 'ShopCostsVariances' },
   ];
   public dxReportList$ = of(this.dxReportList);
 
@@ -172,6 +178,7 @@ export class DXReportService {
   //Report Params
   private BRParams: IBuildingRecoveryParams;
   private SUVParams: IShopUsageVarianceParams;
+  private SCVParams: IShopCostVarianceParams;
 
   get BuildingRecoveryParams(): IBuildingRecoveryParams {
     return this.BRParams;
@@ -203,6 +210,26 @@ export class DXReportService {
      switch (this.selectedReport.Id) {
        case 2: {
          if (this.SUVParams)
+           this.selectedReport.DXReportName = `ShopUsageVariance?${this.SUVParams.BuildingId},${this.SUVParams.StartPeriodId},${this.SUVParams.ToPeriodId},${this.SUVParams.AllTenants}`;
+         break;
+       }
+       default: {
+         break;
+       }
+     }
+   }
+  }
+
+  get ShopCostVarianceParams(): IShopCostVarianceParams {
+    return this.SCVParams;
+  }
+
+  set ShopCostVarianceParams(value: IShopCostVarianceParams) {
+    this.SCVParams = value;
+   if (this.selectedReport && this.selectedReport.Id != 0) {
+     switch (this.selectedReport.Id) {
+       case 2: {
+         if (this.SCVParams)
            this.selectedReport.DXReportName = `ShopUsageVariance?${this.SUVParams.BuildingId},${this.SUVParams.StartPeriodId},${this.SUVParams.ToPeriodId},${this.SUVParams.AllTenants}`;
          break;
        }
@@ -258,9 +285,19 @@ export class DXReportService {
       .pipe(
           catchError(err => this.catchErrors(err)),
           tap(m => {
-            console.log('sdfsdfsdf', m);
             this._shopUsageVariance.next(m);
           //console.log(`getMetersForUser observable returned ${m}`);
+          }),
+      );
+  }
+
+  getReportDataForShopCosts() {
+    const url = `${CONFIG.apiURL}/ReportShopCostsVariance/getReportData`;
+    return this.http.post<any>(url, this.SCVParams, { withCredentials: true })
+      .pipe(
+          catchError(err => this.catchErrors(err)),
+          tap(m => {
+            this._shopCostVariance.next(m);
           }),
       );
   }

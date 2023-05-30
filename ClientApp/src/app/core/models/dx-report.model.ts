@@ -17,3 +17,11 @@ export interface IDXReport {
     ToPeriodId: number;
     AllTenants: number;
   }
+
+  export interface IShopCostVarianceParams {
+    BuildingId: number;
+    StartPeriodId: number;
+    ToPeriodId: number;
+    AllTenants: number;
+  }
+  
