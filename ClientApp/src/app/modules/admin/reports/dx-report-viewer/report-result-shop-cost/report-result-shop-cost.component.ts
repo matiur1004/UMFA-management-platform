@@ -4,6 +4,7 @@ import { exportPivotGrid } from 'devextreme/excel_exporter';
 import { Workbook } from 'exceljs';
 import { Subject, takeUntil } from 'rxjs';
 import saveAs from 'file-saver';
+import PivotGridDataSource from 'devextreme/ui/pivot_grid/data_source';
 
 @Component({
   selector: 'report-result-shop-cost',
@@ -24,21 +25,24 @@ export class ReportResultShopCostComponent implements OnInit {
           area: 'row',
           caption: 'Tenants',
           expanded: true,
-          width: 120
+          width: 120,
+          showTotals: false
         },
         {
           dataField: 'Shop',
           area: 'row',
           caption: 'Shop',
           expanded: true,
-          width: 120
+          width: 120,
+          showTotals: false
         },
         {
           dataField: 'GroupName',
           area: 'row',
           caption: 'Group Name',
           expanded: true,
-          width: 120
+          width: 120,
+          showTotals: false
         },
         {
           dataField: 'PeriodDate',
@@ -54,7 +58,8 @@ export class ReportResultShopCostComponent implements OnInit {
           area: 'data',
           dataType: 'number',
           summaryType: 'avg',
-          format: { type: 'fixedPoint', precision: 0 }
+          format: { type: 'fixedPoint', precision: 0 },
+          filterValues: [null]
         },
         {
           dataField: 'Variance',
@@ -66,6 +71,14 @@ export class ReportResultShopCostComponent implements OnInit {
           format: { type: 'fixedPoint', precision: 2 },
         }
       ],
+      fieldPanel: {
+        showColumnFields: true,
+        showDataFields: true,
+        showFilterFields: true,
+        showRowFields: true,
+        allowFieldDragging: true,
+        visible: true,
+      },
       store: []
     }
   }
@@ -76,14 +89,14 @@ export class ReportResultShopCostComponent implements OnInit {
       .subscribe((data: any[]) => {
         this.results = data;
         if(data.length > 0)
-          this.dataSource['store'] = data.map(item => {
+          this.dataSource['store'] = data.filter(item => item.RandValue != null).map(item => {
             item.PeriodDate = new Date(item.PeriodName);
-            item.Variance = item.Variance.replace('%', '');
-            item.Variance = Number(item.Variance.replace(',', '.'));
-
+            if(item.Variance) {
+              item.Variance = item.Variance.replace('%', '');
+              item.Variance = Number(item.Variance.replace(',', '.'));
+            }
             return item;
           });
-          console.log(this.dataSource['store']);
       })
   }
 
