@@ -77,7 +77,7 @@ namespace ClientPortal.Controllers
                 var status = GetStatus(result.Status);
                 userResult.FirstName = user.FirstName;
                 userResult.LastName = user.LastName;
-                userResult.NotificationEmailAddress = user.NotificationEmailAddress;
+                userResult.NotificationEmailAddress = string.IsNullOrEmpty(user.NotificationEmailAddress) ? string.Empty : user.NotificationEmailAddress;
                 userResult.Status = status;
                 userResult.SendDate = result.SendDateTime;
                 userResult.SendStatusMessage = string.IsNullOrEmpty(result.SendStatusMessage) ? string.Empty : result.SendStatusMessage;
