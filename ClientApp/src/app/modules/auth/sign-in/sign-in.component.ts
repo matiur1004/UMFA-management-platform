@@ -51,6 +51,8 @@ export class AuthSignInComponent implements OnInit
             password: [(environment.production) ? '' : 'Nici12#', Validators.required],
             rememberMe: ['']
         });
+
+        // UMFA OPERATOR levi@umfa.co.za / Lev@234
     }
 
     // -----------------------------------------------------------------------------------------------------
