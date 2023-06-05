@@ -12,7 +12,6 @@ export class UmfaOperatorAuthGuard implements CanActivate {
 
   canActivate(): boolean {
     let roleId = this.userService.userValue ?  this.userService.userValue.RoleId : JSON.parse(localStorage.getItem('user')).RoleId;
-
     if(roleId <= RoleType.UMFAOperator ) {
         return true;
     }
