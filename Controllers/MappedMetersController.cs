@@ -2,8 +2,10 @@
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.DunamisEntities;
 using ClientPortal.Data.Entities.PortalEntities;
+using ClientPortal.Migrations;
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Services;
+using DevExpress.CodeParser;
 
 namespace ClientPortal.Controllers
 {
@@ -31,15 +33,36 @@ namespace ClientPortal.Controllers
         [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<MappedMeter>>> GetMappedMeters()
         {
-            return await _context.MappedMeters.ToListAsync();
+            var response = await _mappedMetersService.GetAllMappedMeters();
+
+            if (response.Response.Equals("Error"))
+            {
+                return StatusCode(500);
+            }
+            else if (!response.MappedMeters.Any())
+            {
+                return BadRequest($"No Mapped meters found");
+            }
+
+            return response.MappedMeters;
         }
 
         //GET: MappedMeters/GetAllMappedMetersForBuilding/
         [HttpGet("GetAllMappedMetersForBuilding/{buildingId}")]
         public async Task<ActionResult<IEnumerable<MappedMeter>>> GetAllMappedMetersForBuilding(int buildingId)
         {
-            var selectedMeters = await _mappedMetersService.GetAllMappedMetersForBuilding(buildingId);
-            return selectedMeters;
+            var response = await _mappedMetersService.GetAllMappedMetersForBuilding(buildingId);
+            
+            if(response.Response.Equals("Error"))
+            {
+                return StatusCode(500);
+            }
+            else if(!response.MappedMeters.Any())
+            {
+                return BadRequest($"No Mapped meters found for buildingId {buildingId}");
+            }
+            
+            return response.MappedMeters;
         }
 
         // GET: MappedMeters/GetMappedMeter/5

@@ -1,73 +1,58 @@
 ﻿using ClientPortal.Data;
-using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Data.Repositories;
-using Microsoft.EntityFrameworkCore;
+using ClientPortal.Models.ResponseModels;
 
 namespace ClientPortal.Services
 {
     public class MappedMetersService
     {
         private readonly ILogger<MappedMetersService> _logger;
-        private readonly PortalDBContext _context;
+        private readonly IMappedMeterRepository _repo;
 
-        public MappedMetersService(PortalDBContext context, ILogger<MappedMetersService> logger)
+        public MappedMetersService(IMappedMeterRepository repo, ILogger<MappedMetersService> logger)
         {
-            _context = context;
+            _repo = repo;
             _logger = logger;
         }
 
-        public async Task<List<MappedMeter>> GetAllMappedMetersForBuilding(int buildingId)
+        public async Task<MappedMeterResponse> GetAllMappedMetersForBuilding(int buildingId)
         {
-            _logger.LogInformation($"Getting meters for Building: {buildingId}", buildingId);
-            var selectedMeters = new List<MappedMeter>();
+            _logger.LogInformation($"Getting meters for Building: {buildingId}");
+
+            var response = new MappedMeterResponse(buildingId);
+
             try
             {
-                var meters = await _context.MappedMeters.ToListAsync();
-                foreach (var meter in meters)
-                {
-                    if (meter.BuildingId == buildingId)
-                    {
-                        selectedMeters.Add(meter);
-                    }
-                }
-                return selectedMeters;
+                response = await _repo.GetMappedMeters(buildingId);
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error while getting meters for Building: {buildingId}: {Message}", buildingId, ex.Message);
-                throw new ApplicationException($"Error while getting meters for Building: {buildingId}: {ex.Message}");
+                _logger.LogError(ex, response.ErrorMessage);
+                response.ErrorMessage = ex.Message;
+                response.Response = "Error";
             }
+
+            return response;
         }
 
-
-        public async Task RemoveMappedMeterAsync(int meterId)
+        public async Task<MappedMeterResponse> GetAllMappedMeters()
         {
-            _logger.LogInformation($"Deleting meter {meterId} for Building", meterId);
+            _logger.LogInformation($"Getting all MappedMeters");
+
+            var response = new MappedMeterResponse();
+
             try
             {
-                var meter = await _context.MappedMeters.FirstOrDefaultAsync(m => m.MappedMeterId == meterId);
-                _context.MappedMeters.Remove(meter);
+                response = await _repo.GetMappedMeters();
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error while getting meters for Building: {buildingId}: {Message}", meterId, ex.Message);
-                throw new ApplicationException($"Error while deleting meters for Building: {meterId}: {ex.Message}");
+                _logger.LogError(ex, response.ErrorMessage);
+                response.ErrorMessage = ex.Message;
+                response.Response = "Error";
             }
-        }
 
-
-        public async Task<bool> SaveChangesAsync()
-        {
-            try
-            {
-                var ret = await _context.SaveChangesAsync();
-                return ret > 0;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Error while saving meter: {Message}", ex.Message);
-                throw new ApplicationException($"Error while saving meter: {ex.Message}");
-            }
+            return response;
         }
     }
 }
