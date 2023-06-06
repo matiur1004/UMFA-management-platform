@@ -57,12 +57,21 @@
                             <span class="text-lg font-semibold">KL</span>
                         </div>
                     </div>
-                    <div class="flex gap-x-2 items-center">
+                    <div class="flex items-center gap-x-2">
+                        <div class="text-lg font-semibold">For:</div>
+                        <div class="flex items-center gap-x-1">
+                            <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
+                                <input matInput type="number" [formControlName]="'Duration'"/> 
+                            </mat-form-field>
+                            <span class="text-lg font-semibold whitespace-nowrap">Consecutive Profiles</span>
+                        </div>
+                    </div>
+                    <!-- <div class="flex gap-x-2 items-center">
                         <span class="text-lg font-semibold">For Duration</span>
                         <dx-select-box [items]="minutues" displayExpr="Value" valueExpr="Value" class="form-control" label="Duration"
                             required placeholder="In Minutes" lableMode="static" name="meter" [searchEnabled]="true" [formControlName]="'Duration'">
                             </dx-select-box>
-                    </div>
+                    </div> -->
                 </div>            
                 <div class="flex h-full items-end ml-2">
                     <button mat-raised-button color="primary" class="apply-btn dnm-btn dnm-btn-primary min-w-30" (click)="getAlarmAnalyzeLeakDetection()">Apply</button>
