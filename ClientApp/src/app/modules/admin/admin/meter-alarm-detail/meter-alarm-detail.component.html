@@ -9,7 +9,7 @@
             <div class="col-span-2">
                 <div class="flex flex-col w-full">
                     <dx-date-box id="sDateId" class="form-control" placeholder="Date From" type="date" label="Start date"
-                      labelMode="static" name="sdp" displayFormat="yyyy-MM-dd" [formControlName]="'sdp'"> </dx-date-box>
+                      labelMode="static" name="sdp" [max]="todayDate" displayFormat="yyyy-MM-dd" [formControlName]="'sdp'"> </dx-date-box>
                   </div>
             </div>
             <div class="col-span-2">
@@ -18,7 +18,7 @@
             </div>
             <div class="col-span-2">
                 <dx-date-box id="eDateId" class="form-control" placeholder="Date To" type="date" label="End date"
-                    labelMode="static" name="edp" required  displayFormat="yyyy-MM-dd" [formControlName]="'edp'"> </dx-date-box>
+                    labelMode="static" name="edp" required  [max]="todayDate" displayFormat="yyyy-MM-dd" [formControlName]="'edp'"> </dx-date-box>
             </div>
             <div class="col-span-2">
                 <dx-date-box type="time" placeholder="Time" displayFormat="HH:mm" label="End time"
