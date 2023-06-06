@@ -9,7 +9,7 @@ namespace ClientPortal.Data.Repositories
         public Task<MappedMeterResponse<List<MappedMeter>>> GetMappedMetersByBuildingAsync(int buildingId);
         public Task<MappedMeterResponse<MappedMeter>> GetMappedMeterAsync(int id);
         public Task UpdateMappedMeterAsync(MappedMeter mm);
-        public Task DeleteMappedMeterAsync(int id);
+        public Task DeleteMappedMeterAsync(MappedMeter mm);
     }
 
 
@@ -25,9 +25,9 @@ namespace ClientPortal.Data.Repositories
             _portalDBContext = portalDBContext;
         }
 
-        public async Task DeleteMappedMeterAsync(int id)
+        public async Task DeleteMappedMeterAsync(MappedMeter mm)
         {
-            _portalDBContext.Remove(id);
+            _portalDBContext.Remove(mm);
 
             await _portalDBContext.SaveChangesAsync();
         }
@@ -66,6 +66,7 @@ namespace ClientPortal.Data.Repositories
         public async Task<MappedMeterResponse<List<MappedMeter>>> GetMappedMetersAsync()
         {
             var ret = new MappedMeterResponse<List<MappedMeter>>();
+            ret.Body = new List<MappedMeter>();
             try
             {
                 var result = await _portalDBContext.MappedMeters.ToListAsync();
@@ -97,7 +98,7 @@ namespace ClientPortal.Data.Repositories
         public async Task<MappedMeterResponse<List<MappedMeter>>> GetMappedMetersByBuildingAsync(int buildingId)
         {
             var ret = new MappedMeterResponse<List<MappedMeter>>();
-
+            ret.Body = new List<MappedMeter> ();
             try
             {
                 var result = await _portalDBContext.MappedMeters.Where(mm => mm.BuildingId.Equals(buildingId)).ToListAsync();

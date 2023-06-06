@@ -10,7 +10,7 @@ namespace ClientPortal.Services
         public Task<MappedMeterResponse<List<MappedMeter>>> GetMappedMetersAsync();
         public Task<MappedMeterResponse<MappedMeter>> GetMappedMeterAsync(int id);
         public Task UpdateMappedMeterAsync(MappedMeter mm);
-        public Task DeleteMappedMeterAsync(int id);
+        public Task DeleteMappedMeterAsync(MappedMeter mm);
     }
     public class MappedMetersService : IMappedMeterService
     {
@@ -90,9 +90,9 @@ namespace ClientPortal.Services
             await _repo.UpdateMappedMeterAsync(mm);
         }
 
-        public async Task DeleteMappedMeterAsync(int id)
+        public async Task DeleteMappedMeterAsync(MappedMeter mm)
         {
-            await _repo.DeleteMappedMeterAsync(id);
+            await _repo.DeleteMappedMeterAsync(mm);
         }
     }
 }

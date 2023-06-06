@@ -89,13 +89,22 @@ namespace ClientPortal.Controllers
             {
                 return BadRequest();
             }
-            
-            if(!await MappedMeterExists(id))
+
+            var response = await _mappedMetersService.GetMappedMeterAsync(id);
+
+            if (response.ResponseMessage.Equals("Error"))
             {
-                return NotFound();
+                return StatusCode(500);
+            }
+            else if (response.Body is null)
+            {
+                return NotFound($"MappedMeter with Id {id} does not exist");
             }
 
-            await _mappedMetersService.UpdateMappedMeterAsync(mappedMeter);
+            var updatedMappedMeter = response.Body;
+            updatedMappedMeter.Map(mappedMeter);
+            
+            await _mappedMetersService.UpdateMappedMeterAsync(updatedMappedMeter);
 
             return NoContent();
         }
@@ -185,14 +194,14 @@ namespace ClientPortal.Controllers
                 return BadRequest($"MappedMeter with Id {id} does not exist.");
             }
 
-            await _mappedMetersService.DeleteMappedMeterAsync(id);
+            await _mappedMetersService.DeleteMappedMeterAsync(response.Body);
 
             return NoContent();
         }
 
         private async Task<bool> MappedMeterExists(int id)
         {
-            return (await _mappedMetersService.GetMappedMetersAsync()).Body.Any(e => e.MappedMeterId == id);
+            return (await _mappedMetersService.GetMappedMeterAsync(id)).Body is not null;
         }
 
         // MappedMeters Dropdowns
