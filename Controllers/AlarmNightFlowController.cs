@@ -1,6 +1,7 @@
 ﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
 using Dapper;
+using System.Globalization;
 
 namespace ClientPortal.Controllers
 {
@@ -75,7 +76,7 @@ namespace ClientPortal.Controllers
             _logger.LogInformation(1, "Get AlarmAnalyzeNightFlow Details for Meter: {MeterSerialNo}", model.MeterSerialNo);
             try
             {
-                var CommandText = $"execute spAlarmAnalyzeNightFlow '{model.MeterSerialNo}','{model.ProfileStartDTM}','{model.ProfileEndDTM}','{model.NFStartTime}','{model.NFEndTime}',{model.Threshold},{model.Duration}";
+                var CommandText = $"execute spAlarmAnalyzeNightFlow '{model.MeterSerialNo}','{model.ProfileStartDTM}','{model.ProfileEndDTM}','{model.NFStartTime}','{model.NFEndTime}',{model.Threshold.ToString(CultureInfo.InvariantCulture)},{model.Duration}";
                 var connection = _context.Database.GetDbConnection();
                 await connection.OpenAsync();
                 var results = await connection.QueryMultipleAsync(CommandText);
