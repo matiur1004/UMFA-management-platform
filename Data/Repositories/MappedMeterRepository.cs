@@ -9,6 +9,8 @@ namespace ClientPortal.Data.Repositories
         public Task<MappedMeterResponse<List<MappedMeter>>> GetMappedMetersByBuilding(int buildingId);
 
         public Task<MappedMeterResponse<MappedMeter>> GetMappedMeter(int id);
+
+        public Task UpdateMappedMeter(MappedMeter mm);
     }
 
 
@@ -116,6 +118,13 @@ namespace ClientPortal.Data.Repositories
 
                 return ret;
             }
+        }
+
+        public async Task UpdateMappedMeter(MappedMeter mm)
+        {
+            _portalDBContext.MappedMeters.Update(mm);
+
+            await _portalDBContext.SaveChangesAsync();
         }
     }
 }

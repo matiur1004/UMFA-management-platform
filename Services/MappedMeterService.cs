@@ -10,6 +10,8 @@ namespace ClientPortal.Services
         public Task<MappedMeterResponse<List<MappedMeter>>> GetMappedMetersByBuilding(int buildingId);
         public Task<MappedMeterResponse<List<MappedMeter>>> GetMappedMeters();
         public Task<MappedMeterResponse<MappedMeter>> GetMappedMeter(int id);
+
+        public Task UpdateMappedMeter(MappedMeter mm);
     }
     public class MappedMetersService : IMappedMeterService
     {
@@ -80,6 +82,13 @@ namespace ClientPortal.Services
             }
 
             return response;
+        }
+
+        public async Task UpdateMappedMeter(MappedMeter mm)
+        {
+            _logger.LogInformation($"Updating meter {mm.MappedMeterId}");
+            
+            await _repo.UpdateMappedMeter(mm);
         }
     }
 }

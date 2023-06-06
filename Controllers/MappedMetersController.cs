@@ -92,24 +92,13 @@ namespace ClientPortal.Controllers
             {
                 return BadRequest();
             }
-
-            _context.Entry(mappedMeter).State = EntityState.Modified;
-
-            try
+            
+            if(!MappedMeterExists(id))
             {
-                await _context.SaveChangesAsync();
+                return NotFound();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MappedMeterExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+
+            await _mappedMetersService.UpdateMappedMeter(mappedMeter);
 
             return NoContent();
         }
