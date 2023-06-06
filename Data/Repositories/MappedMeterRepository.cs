@@ -5,12 +5,11 @@ namespace ClientPortal.Data.Repositories
 {
     public interface IMappedMeterRepository
     {
-        public Task<MappedMeterResponse<List<MappedMeter>>> GetMappedMeters();
-        public Task<MappedMeterResponse<List<MappedMeter>>> GetMappedMetersByBuilding(int buildingId);
-
-        public Task<MappedMeterResponse<MappedMeter>> GetMappedMeter(int id);
-
-        public Task UpdateMappedMeter(MappedMeter mm);
+        public Task<MappedMeterResponse<List<MappedMeter>>> GetMappedMetersAsync();
+        public Task<MappedMeterResponse<List<MappedMeter>>> GetMappedMetersByBuildingAsync(int buildingId);
+        public Task<MappedMeterResponse<MappedMeter>> GetMappedMeterAsync(int id);
+        public Task UpdateMappedMeterAsync(MappedMeter mm);
+        public Task DeleteMappedMeterAsync(int id);
     }
 
 
@@ -26,7 +25,14 @@ namespace ClientPortal.Data.Repositories
             _portalDBContext = portalDBContext;
         }
 
-        public async Task<MappedMeterResponse<MappedMeter>> GetMappedMeter(int id)
+        public async Task DeleteMappedMeterAsync(int id)
+        {
+            _portalDBContext.Remove(id);
+
+            await _portalDBContext.SaveChangesAsync();
+        }
+
+        public async Task<MappedMeterResponse<MappedMeter>> GetMappedMeterAsync(int id)
         {
             var ret = new MappedMeterResponse<MappedMeter>();
             try
@@ -57,7 +63,7 @@ namespace ClientPortal.Data.Repositories
             }
         }
 
-        public async Task<MappedMeterResponse<List<MappedMeter>>> GetMappedMeters()
+        public async Task<MappedMeterResponse<List<MappedMeter>>> GetMappedMetersAsync()
         {
             var ret = new MappedMeterResponse<List<MappedMeter>>();
             try
@@ -88,7 +94,7 @@ namespace ClientPortal.Data.Repositories
             }
         }
 
-        public async Task<MappedMeterResponse<List<MappedMeter>>> GetMappedMetersByBuilding(int buildingId)
+        public async Task<MappedMeterResponse<List<MappedMeter>>> GetMappedMetersByBuildingAsync(int buildingId)
         {
             var ret = new MappedMeterResponse<List<MappedMeter>>();
 
@@ -120,7 +126,7 @@ namespace ClientPortal.Data.Repositories
             }
         }
 
-        public async Task UpdateMappedMeter(MappedMeter mm)
+        public async Task UpdateMappedMeterAsync(MappedMeter mm)
         {
             _portalDBContext.MappedMeters.Update(mm);
 

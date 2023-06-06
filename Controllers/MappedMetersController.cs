@@ -34,7 +34,7 @@ namespace ClientPortal.Controllers
         [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<MappedMeter>>> GetMappedMeters()
         {
-            var response = await _mappedMetersService.GetMappedMeters();
+            var response = await _mappedMetersService.GetMappedMetersAsync();
 
             if (response.ResponseMessage.Equals("Error"))
             {
@@ -52,7 +52,7 @@ namespace ClientPortal.Controllers
         [HttpGet("GetAllMappedMetersForBuilding/{buildingId}")]
         public async Task<ActionResult<IEnumerable<MappedMeter>>> GetAllMappedMetersForBuilding(int buildingId)
         {
-            var response = await _mappedMetersService.GetMappedMetersByBuilding(buildingId);
+            var response = await _mappedMetersService.GetMappedMetersByBuildingAsync(buildingId);
             
             if(response.ResponseMessage.Equals("Error"))
             {
@@ -70,7 +70,7 @@ namespace ClientPortal.Controllers
         [HttpGet("GetMappedMeter/{id}")]
         public async Task<ActionResult<MappedMeter>> GetMappedMeter(int id)
         {
-            var response = await _mappedMetersService.GetMappedMeter(id);
+            var response = await _mappedMetersService.GetMappedMeterAsync(id);
 
             if (response.ResponseMessage.Equals("Error"))
             {
@@ -93,12 +93,12 @@ namespace ClientPortal.Controllers
                 return BadRequest();
             }
             
-            if(!MappedMeterExists(id))
+            if(!await MappedMeterExists(id))
             {
                 return NotFound();
             }
 
-            await _mappedMetersService.UpdateMappedMeter(mappedMeter);
+            await _mappedMetersService.UpdateMappedMeterAsync(mappedMeter);
 
             return NoContent();
         }
@@ -108,6 +108,7 @@ namespace ClientPortal.Controllers
         public async Task<ActionResult<MappedMeter>> PostMappedMeter(MappedMeter mappedMeter)
         {
             //add building if not exist
+            // TODO add building server
             var bldng = await _context.Buildings.Where(b => b.UmfaId == mappedMeter.BuildingId).FirstOrDefaultAsync();
             if (bldng == null)
             {
@@ -174,21 +175,27 @@ namespace ClientPortal.Controllers
         [HttpDelete("RemoveMappedMeter/{id}")]
         public async Task<IActionResult> DeleteMappedMeter(int id)
         {
-            var mappedMeter = await _context.MappedMeters.FindAsync(id);
-            if (mappedMeter == null)
+            var response = await _mappedMetersService.GetMappedMeterAsync(id);
+            
+            if (response is null || response.ErrorMessage is not null)
             {
-                return NotFound();
+                _logger.LogError($"Could not get MappedMeter to be deleted. Message: {response?.ErrorMessage}");
+                return StatusCode(500);
+            }
+            
+            if(response.Body is null)
+            {
+                return BadRequest($"MappedMeter with Id {id} does not exist.");
             }
 
-            _context.MappedMeters.Remove(mappedMeter);
-            await _context.SaveChangesAsync();
+            await _mappedMetersService.DeleteMappedMeterAsync(id);
 
             return NoContent();
         }
 
-        private bool MappedMeterExists(int id)
+        private async Task<bool> MappedMeterExists(int id)
         {
-            return _context.MappedMeters.Any(e => e.MappedMeterId == id);
+            return (await _mappedMetersService.GetMappedMetersAsync()).Body.Any(e => e.MappedMeterId == id);
         }
 
         // MappedMeters Dropdowns
