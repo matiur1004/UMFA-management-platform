@@ -1,6 +1,7 @@
 ﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
 using Dapper;
+using System.Globalization;
 
 namespace ClientPortal.Controllers
 {
@@ -82,7 +83,7 @@ namespace ClientPortal.Controllers
 
             try
             {
-                var CommandText = $"execute spAlarmAnalyzePeakUsage '{model.MeterSerialNo}','{model.ProfileStartDTM}','{model.ProfileEndDTM}','{model.PeakStartTime}','{model.PeakEndTime}',{model.Threshold},{model.Duration}";
+                var CommandText = $"execute spAlarmAnalyzePeakUsage '{model.MeterSerialNo}','{model.ProfileStartDTM}','{model.ProfileEndDTM}','{model.PeakStartTime}','{model.PeakEndTime}',{model.Threshold.ToString(CultureInfo.InvariantCulture)},{model.Duration}";
                 var connection = _context.Database.GetDbConnection();
                 await connection.OpenAsync();
                 var results = await connection.QueryMultipleAsync(CommandText);
