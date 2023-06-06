@@ -2,11 +2,8 @@
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.DunamisEntities;
 using ClientPortal.Data.Entities.PortalEntities;
-using ClientPortal.Migrations;
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Services;
-using DevExpress.CodeParser;
-using System.Diagnostics.CodeAnalysis;
 
 namespace ClientPortal.Controllers
 {

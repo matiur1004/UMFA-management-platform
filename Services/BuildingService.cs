@@ -1,6 +1,5 @@
 ﻿using ClientPortal.Data.Repositories;
 using ClientPortal.Models.ResponseModels;
-using System.Linq.Expressions;
 
 namespace ClientPortal.Services
 {

@@ -1,7 +1,6 @@
 ﻿using ClientPortal.Data.Entities.UMFAEntities;
 using ClientPortal.Data.Repositories;
 using ClientPortal.Models.ResponseModels;
-using DevExpress.DataAccess.Native.Web;
 
 namespace ClientPortal.Services
 {
@@ -67,7 +66,7 @@ namespace ClientPortal.Services
                 return new List<DashboardBuilding>();
             }
 
-            var buildings = mappedMetersResponse.Body.Select(mm => mappedMetersResponse.BuildingId).Distinct().ToList();
+            var buildings = mappedMetersResponse.Body.Select(mm => mm.BuildingId).Distinct().ToList();
 
             List<DashboardBuilding> ret = new();
 
