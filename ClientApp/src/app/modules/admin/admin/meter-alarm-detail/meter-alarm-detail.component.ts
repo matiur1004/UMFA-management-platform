@@ -21,7 +21,7 @@ export class MeterAlarmDetailComponent implements OnInit {
   chartTitleWater = `Water Profile for Meter:`;
   selectedAlarmType: string;
   applyNightFlow: boolean = false;
-
+  todayDate = new Date();
   obsWaterProfile$ = this._amrDataService.obsWaterProfile$
     .pipe(
       tap(p => {
