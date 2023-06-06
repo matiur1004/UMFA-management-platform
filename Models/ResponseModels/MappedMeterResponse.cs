@@ -2,25 +2,23 @@
 
 namespace ClientPortal.Models.ResponseModels
 {
-    public class MappedMeterResponse
+    public class MappedMeterResponse<T>
     {
         public int BuildingId { get; set; }
-        public string Response { get; set; }
+        public string ResponseMessage { get; set; }
         public string ErrorMessage { get; set; }
-        public List<MappedMeter> MappedMeters { get; set; }
+        public T Body { get; set; }
 
         public MappedMeterResponse() 
         {
             BuildingId = 0;
-            Response = "Initiated";
-            MappedMeters = new List<MappedMeter>();
+            ResponseMessage = "Initiated";
         }
 
         public MappedMeterResponse(int buildingId)
         {
             BuildingId = buildingId;
-            Response = $"Initiated for building {buildingId}";
-            MappedMeters = new List<MappedMeter>();
+            ResponseMessage = $"Initiated for building {buildingId}";
         }
     }
 }

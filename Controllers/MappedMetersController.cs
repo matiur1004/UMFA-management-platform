@@ -6,6 +6,7 @@ using ClientPortal.Migrations;
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Services;
 using DevExpress.CodeParser;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ClientPortal.Controllers
 {
@@ -16,11 +17,11 @@ namespace ClientPortal.Controllers
     {
         private readonly PortalDBContext _context;
         private readonly DunamisDBContext _dbContext;
-        private readonly MappedMetersService _mappedMetersService;
+        private readonly IMappedMeterService _mappedMetersService;
         private readonly IAMRMeterService _amRMeterService;
         private readonly ILogger<MappedMetersController> _logger;
 
-        public MappedMetersController(PortalDBContext context, DunamisDBContext dBContext, MappedMetersService mappedMetersService, IAMRMeterService amRMeterService, ILogger<MappedMetersController> logger)
+        public MappedMetersController(PortalDBContext context, DunamisDBContext dBContext, IMappedMeterService mappedMetersService, IAMRMeterService amRMeterService, ILogger<MappedMetersController> logger)
         {
             _context = context;
             _dbContext = dBContext;
@@ -33,50 +34,54 @@ namespace ClientPortal.Controllers
         [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<MappedMeter>>> GetMappedMeters()
         {
-            var response = await _mappedMetersService.GetAllMappedMeters();
+            var response = await _mappedMetersService.GetMappedMeters();
 
-            if (response.Response.Equals("Error"))
+            if (response.ResponseMessage.Equals("Error"))
             {
                 return StatusCode(500);
             }
-            else if (!response.MappedMeters.Any())
+            else if (!response.Body.Any())
             {
                 return BadRequest($"No Mapped meters found");
             }
 
-            return response.MappedMeters;
+            return response.Body;
         }
 
         //GET: MappedMeters/GetAllMappedMetersForBuilding/
         [HttpGet("GetAllMappedMetersForBuilding/{buildingId}")]
         public async Task<ActionResult<IEnumerable<MappedMeter>>> GetAllMappedMetersForBuilding(int buildingId)
         {
-            var response = await _mappedMetersService.GetAllMappedMetersForBuilding(buildingId);
+            var response = await _mappedMetersService.GetMappedMetersByBuilding(buildingId);
             
-            if(response.Response.Equals("Error"))
+            if(response.ResponseMessage.Equals("Error"))
             {
                 return StatusCode(500);
             }
-            else if(!response.MappedMeters.Any())
+            else if(!response.Body.Any())
             {
                 return BadRequest($"No Mapped meters found for buildingId {buildingId}");
             }
             
-            return response.MappedMeters;
+            return response.Body;
         }
 
         // GET: MappedMeters/GetMappedMeter/5
         [HttpGet("GetMappedMeter/{id}")]
         public async Task<ActionResult<MappedMeter>> GetMappedMeter(int id)
         {
-            var mappedMeter = await _context.MappedMeters.FindAsync(id);
+            var response = await _mappedMetersService.GetMappedMeter(id);
 
-            if (mappedMeter == null)
+            if (response.ResponseMessage.Equals("Error"))
             {
-                return NotFound();
+                return StatusCode(500);
+            }
+            else if (response.Body is null)
+            {
+                return NotFound($"MappedMeter with Id {id} does not exist");
             }
 
-            return mappedMeter;
+            return response.Body;
         }
 
         // PUT: MappedMeters/UpdateMappedMeter/5

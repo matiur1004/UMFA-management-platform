@@ -1,10 +1,17 @@
 ﻿using ClientPortal.Data;
+using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Data.Repositories;
 using ClientPortal.Models.ResponseModels;
 
 namespace ClientPortal.Services
 {
-    public class MappedMetersService
+    public interface IMappedMeterService
+    {
+        public Task<MappedMeterResponse<List<MappedMeter>>> GetMappedMetersByBuilding(int buildingId);
+        public Task<MappedMeterResponse<List<MappedMeter>>> GetMappedMeters();
+        public Task<MappedMeterResponse<MappedMeter>> GetMappedMeter(int id);
+    }
+    public class MappedMetersService : IMappedMeterService
     {
         private readonly ILogger<MappedMetersService> _logger;
         private readonly IMappedMeterRepository _repo;
@@ -15,31 +22,31 @@ namespace ClientPortal.Services
             _logger = logger;
         }
 
-        public async Task<MappedMeterResponse> GetAllMappedMetersForBuilding(int buildingId)
+        public async Task<MappedMeterResponse<List<MappedMeter>>> GetMappedMetersByBuilding(int buildingId)
         {
             _logger.LogInformation($"Getting meters for Building: {buildingId}");
 
-            var response = new MappedMeterResponse(buildingId);
+            var response = new MappedMeterResponse<List<MappedMeter>>(buildingId);
 
             try
             {
-                response = await _repo.GetMappedMeters(buildingId);
+                response = await _repo.GetMappedMetersByBuilding(buildingId);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, response.ErrorMessage);
                 response.ErrorMessage = ex.Message;
-                response.Response = "Error";
+                response.ResponseMessage = "Error";
             }
 
             return response;
         }
 
-        public async Task<MappedMeterResponse> GetAllMappedMeters()
+        public async Task<MappedMeterResponse<List<MappedMeter>>> GetMappedMeters()
         {
             _logger.LogInformation($"Getting all MappedMeters");
 
-            var response = new MappedMeterResponse();
+            var response = new MappedMeterResponse<List<MappedMeter>>();
 
             try
             {
@@ -49,7 +56,27 @@ namespace ClientPortal.Services
             {
                 _logger.LogError(ex, response.ErrorMessage);
                 response.ErrorMessage = ex.Message;
-                response.Response = "Error";
+                response.ResponseMessage = "Error";
+            }
+
+            return response;
+        }
+
+        public async Task<MappedMeterResponse<MappedMeter>> GetMappedMeter(int id)
+        {
+            _logger.LogInformation($"Getting MappedMeter {id}");
+
+            var response = new MappedMeterResponse<MappedMeter>();
+
+            try
+            {
+                response = await _repo.GetMappedMeter(id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, response.ErrorMessage);
+                response.ErrorMessage = ex.Message;
+                response.ResponseMessage = "Error";
             }
 
             return response;
