@@ -6,6 +6,7 @@ namespace ClientPortal.Models.ResponseModels
     {
         public int BuildingId { get; set; }
         public string Response { get; set; }
+        public string ErrorMessage { get; set; }
         public List<MappedMeter> MappedMeters { get; set; }
 
         public MappedMeterResponse() 
