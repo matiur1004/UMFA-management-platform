@@ -1,5 +1,6 @@
 ﻿using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Data.Repositories;
+using ClientPortal.Helpers;
 using ClientPortal.Models.RequestModels;
 
 namespace ClientPortal.Services
@@ -11,9 +12,13 @@ namespace ClientPortal.Services
         public Task<ScadaRequestHeader> UpdateScadaRequestHeaderAsync(ScadaRequestHeaderUpdateRequest scadaRequestHeader);
         public Task<ScadaRequestHeader> AddScadaRequestHeaderAsync(ScadaRequestHeaderRequest scadaRequestHeader);
         public Task<ScadaRequestHeader> RemoveScadaRequestHeaderAsync(int id);
+        public Task<ScadaRequestHeader> GetScadaRequestHeaderByJobTypeAndDescriptionAsync(int jobType, string description);
+        public Task<ScadaRequestHeader> GetOrCreateScadaRequestHeaderDefaultAsync(int jobType, DateTime now);
+        public Task HandleNewMappedMeterAsync(MappedMeter meter, int meterId);
 
         public Task<List<ScadaRequestDetail>> GetScadaRequestDetailsAsync();
         public Task<ScadaRequestDetail> GetScadaRequestDetailAsync(int id);
+        public Task<ScadaRequestDetail> GetScadaRequestDetailAsyncByJobTypeAndAmrMeterIdAsync(int jobType, int amrMeterId);
         public Task<ScadaRequestDetail> UpdateScadaRequestDetailAsync(ScadaRequestDetailUpdateRequest scadaRequestDetail);
         public Task<ScadaRequestDetail> AddScadaRequestDetailAsync(ScadaRequestDetailRequest scadaRequestDetail);
         public Task<ScadaRequestDetail> RemoveScadaRequestDetailAsync(int id);
@@ -65,6 +70,78 @@ namespace ClientPortal.Services
         {
             return await _scadaRequestHeaderRepo.RemoveAsync(id);
         }
+
+        public async Task<ScadaRequestHeader> GetScadaRequestHeaderByJobTypeAndDescriptionAsync(int jobType, string description)
+        {
+            return await _scadaRequestHeaderRepo.GetAsync(x => x.JobType == jobType && x.Description.Equals(description));
+        }
+        public async Task<ScadaRequestHeader> GetOrCreateScadaRequestHeaderDefaultAsync(int jobType, DateTime now)
+        {
+            var header = await GetScadaRequestHeaderByJobTypeAndDescriptionAsync(jobType, "Default for new meters");
+
+            if (header is null)
+            {
+                header = await AddScadaRequestHeaderAsync(new ScadaRequestHeaderRequest
+                {
+                    Status = 1,
+                    Active = true,
+                    CreatedDTM = now,
+                    StartRunDTM = now,
+                    LastRunDTM = null,
+                    CurrentRunDTM = null,
+                    JobType = jobType,
+                    Description = "Deafult for new meters",
+                    Interval = 0,
+                });
+            }
+
+            return header;
+        }
+        public async Task HandleNewMappedMeterAsync(MappedMeter meter, int amrMeterId)
+        {
+            var now = DateTime.UtcNow;
+
+            var profileDetail1 = await GetScadaRequestDetailAsyncByJobTypeAndAmrMeterIdAsync(1, amrMeterId);
+
+            if (profileDetail1 is null)
+            {
+                var header = await GetOrCreateScadaRequestHeaderDefaultAsync(1, now);
+
+                await AddScadaRequestDetailAsync(new ScadaRequestDetailRequest
+                {
+                    HeaderId = header.Id,
+                    AmrMeterId = amrMeterId,
+                    AmrScadaUserId = 1,
+                    Status = 1,
+                    Active = true,
+                    LastRunDTM = null,
+                    CurrentRunDTM = null,
+                    UpdateFrequency = meter.SupplyType.Equals("Water") ? 120 : 720,
+                    LastDataDate = DateOperations.FirstDayOfPreviousMonth(now)
+                });
+            }
+
+
+            var profileDetail2 = await GetScadaRequestDetailAsyncByJobTypeAndAmrMeterIdAsync(2, amrMeterId);
+
+            if (profileDetail2 is null)
+            {
+                var header = await GetOrCreateScadaRequestHeaderDefaultAsync(2, now);
+
+                await AddScadaRequestDetailAsync(new ScadaRequestDetailRequest
+                {
+                    HeaderId = header.Id,
+                    AmrMeterId = amrMeterId,
+                    AmrScadaUserId = 1,
+                    Status = 1,
+                    Active = true,
+                    LastRunDTM = null,
+                    CurrentRunDTM = null,
+                    UpdateFrequency = meter.SupplyType.Equals("Water") ? 120 : 720,
+                    LastDataDate = DateOperations.FirstDayOfPreviousMonth(now)
+                });
+            }
+        }
         #endregion
 
         #region Details
@@ -99,6 +176,14 @@ namespace ClientPortal.Services
         {
             return await _scadaRequestDetailRepo.RemoveAsync(id);
         }
+
+        
+        public async Task<ScadaRequestDetail> GetScadaRequestDetailAsyncByJobTypeAndAmrMeterIdAsync(int jobType, int amrMeterId)
+        {
+            return await _scadaRequestDetailRepo.GetAsync(x => x.AmrMeterId.Equals(amrMeterId) && x.Header.JobType.Equals(jobType), x => x.Header);
+        }
+
+        
         #endregion
     }
 }

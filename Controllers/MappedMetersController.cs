@@ -17,14 +17,16 @@ namespace ClientPortal.Controllers
         private readonly IMappedMeterService _mappedMetersService;
         private readonly IAMRMeterService _amRMeterService;
         private readonly ILogger<MappedMetersController> _logger;
+        private readonly IScadaRequestService _scadaRequestService;
 
-        public MappedMetersController(PortalDBContext context, DunamisDBContext dBContext, IMappedMeterService mappedMetersService, IAMRMeterService amRMeterService, ILogger<MappedMetersController> logger)
+        public MappedMetersController(PortalDBContext context, DunamisDBContext dBContext, IMappedMeterService mappedMetersService, IAMRMeterService amRMeterService, ILogger<MappedMetersController> logger, IScadaRequestService scadaRequestService)
         {
             _context = context;
             _dbContext = dBContext;
             _mappedMetersService = mappedMetersService;
             _amRMeterService = amRMeterService;
             _logger = logger;
+            _scadaRequestService = scadaRequestService;
         }
 
         // GET: MappedMeters/GetAll
@@ -128,6 +130,7 @@ namespace ClientPortal.Controllers
             //Add AMRMeter
             var aMrMeterNo = mappedMeter.MeterNo;
             var mter = await _context.AMRMeters.Where(b => b.MeterNo == aMrMeterNo).FirstOrDefaultAsync();
+            var amrMeterId = mter?.Id;
             if (mter == null)
             {
                 try
@@ -150,7 +153,6 @@ namespace ClientPortal.Controllers
                         CtSizeSec = 5,
                         Description = mappedMeter.Description,
                         Digits = 7,
-                        Id = 0,
                         MakeModelId = makeModelId,
                         MeterNo = mappedMeter.MeterNo,
                         MeterSerial = mappedMeter.ScadaSerial,
@@ -161,7 +163,10 @@ namespace ClientPortal.Controllers
 
                     var meterUpdateRequest = new AMRMeterUpdateRequest { UserId = mappedMeter.UserId, Meter = amrMeter };
                     await _amRMeterService.AddMeterAsync(meterUpdateRequest);
+
+                    amrMeterId = amrMeter.Id;
                     _logger?.LogInformation($"Added AMRMeter {amrMeter.Id}");
+
                 }
                 catch (Exception ex)
                 {
@@ -174,6 +179,12 @@ namespace ClientPortal.Controllers
             }
             // End Add AMRMeter
 
+            // add scada request headers & details for new meter
+            if(amrMeterId is not null)
+            {
+                await _scadaRequestService.HandleNewMappedMeterAsync(mappedMeter, (int)amrMeterId);
+            }
+            
             return CreatedAtAction("PostMappedMeter", new { id = mappedMeter.MappedMeterId }, mappedMeter);
         }
 
