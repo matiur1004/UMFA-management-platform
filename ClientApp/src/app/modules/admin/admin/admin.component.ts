@@ -15,6 +15,8 @@ export class AdminComponent implements OnInit {
   roleType = RoleType;
   
   detailsList: any[] = [];
+  minimalTabLength = 6;
+
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
   constructor(private router: Router, private _userService: UserService, private _meterService: MeterService) { }
@@ -28,15 +30,20 @@ export class AdminComponent implements OnInit {
     if(location.pathname.includes('alarm-configuration')) this.selectedTab = 5;
     if(location.pathname.includes('user-notifications')) this.selectedTab = 6;
 
+    console.log('ngOninit', this.selectedTab);
     //this.selectedTab = 6;
     this.roleId = this._userService.userValue.RoleId;
 
+    if(this.roleId == this.roleType.UMFAOperator) {
+      this.selectedTab = this.selectedTab - 2;
+      this.minimalTabLength = 4;
+    }
     this._meterService.detailMeterAlarm$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: any) => {
         if(data) {
           this.detailsList.push(data);          
-          this.selectedTab = this.detailsList.length - 1 + 7;
+          this.selectedTab = this.detailsList.length - 1 + ( this.roleId == this.roleType.UMFAOperator ? 5 : 7 ) ;
         }
 
       });
@@ -44,32 +51,50 @@ export class AdminComponent implements OnInit {
 
   onChange(event) {    
     this.selectedTab = event.index;
-    if(event.index == 0) {
-      this.router.navigate(['/admin/amrUser']);
-    }
-    if(event.index == 1) {
-      this.router.navigate(['/admin/user-management']);
-    }
-    if(event.index == 2) {
-      this.router.navigate(['/admin/meterMapping']);
-    }
-    if(event.index == 3) {
-      this.router.navigate(['/admin/amrMeter']);
-    }
-    if(event.index == 4) {
-      this.router.navigate(['/admin/amrSchedule']);
-    }
-    if(event.index == 5) {
-      this.router.navigate(['/admin/alarm-configuration']);
-    }
-    if(event.index == 6) {
-      this.router.navigate(['/admin/user-notifications']);
+    if(this.roleId == this.roleType.UMFAOperator) {
+      if(event.index == 0) {
+        this.router.navigate(['/admin/meterMapping']);
+      }
+      if(event.index == 1) {
+        this.router.navigate(['/admin/amrMeter']);
+      }
+      if(event.index == 2) {
+        this.router.navigate(['/admin/amrSchedule']);
+      }
+      if(event.index == 3) {
+        this.router.navigate(['/admin/alarm-configuration']);
+      }
+      if(event.index == 4) {
+        this.router.navigate(['/admin/user-notifications']);
+      }  
+    } else {
+      if(event.index == 0) {
+        this.router.navigate(['/admin/amrUser']);
+      }
+      if(event.index == 1) {
+        this.router.navigate(['/admin/user-management']);
+      }
+      if(event.index == 2) {
+        this.router.navigate(['/admin/meterMapping']);
+      }
+      if(event.index == 3) {
+        this.router.navigate(['/admin/amrMeter']);
+      }
+      if(event.index == 4) {
+        this.router.navigate(['/admin/amrSchedule']);
+      }
+      if(event.index == 5) {
+        this.router.navigate(['/admin/alarm-configuration']);
+      }
+      if(event.index == 6) {
+        this.router.navigate(['/admin/user-notifications']);
+      }
     }
   }
 
   removeTab(index) {
     this.detailsList.splice(index, 1);
-    this.selectedTab = 5;
+    this.selectedTab = this.roleId == this.roleType.UMFAOperator ? 3 : 5;
     //this._cdr.markForCheck();
   }
 

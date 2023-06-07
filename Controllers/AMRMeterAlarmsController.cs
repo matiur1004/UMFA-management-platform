@@ -62,7 +62,7 @@ namespace ClientPortal.Controllers
                 return Problem("Entity set 'PortalDBContext.AMRMeterAlarms' is null.");
             }
             var results = await _context.AMRMeterAlarms
-                .Where(a => (a.AMRMeterId == meterId))
+                .Where(a => (a.AMRMeterId == meterId && a.Active == true))
                 .ToListAsync();
             if (results == null)
             {
