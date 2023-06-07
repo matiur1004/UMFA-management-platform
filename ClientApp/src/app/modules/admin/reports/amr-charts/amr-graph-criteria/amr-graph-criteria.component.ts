@@ -33,7 +33,7 @@ export class AmrGraphCriteriaComponent implements OnInit, OnDestroy {
   buildingList$ = this.reportService.obsBuildings;
 
   custMtrTemplate = (arg: any) => {
-    var ret = "<div class='custom-item' title='" + arg.Description + "'>" + arg.MeterNo + "</div>";
+    var ret = "<div class='custom-item' title='" + arg.Description + "'>" + arg.MeterNo + '-' + arg.Description + "</div>";
     return ret;
   }
 
