@@ -1,12 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, NgForm } from '@angular/forms';
-import { Observable, observable, Subscription } from 'rxjs';
-import { Time } from "@angular/common";
-import { DxSelectBoxComponent } from 'devextreme-angular/ui/select-box';
+import { NgForm } from '@angular/forms';
+import { Observable, Subscription } from 'rxjs';
 import { IAmrChart, IAmrMeter, ITouHeader } from 'app/core/models';
 import { AmrDataService } from 'app/shared/services/amr.data.service';
 import { MeterService } from 'app/shared/services/meter.service';
 import { UserService } from 'app/shared/services/user.service';
+import { DXReportService } from '@shared/services';
 
 
 @Component({
@@ -28,6 +27,10 @@ export class AmrGraphCriteriaComponent implements OnInit, OnDestroy {
 
   meterId: number = null;
   touHeaderId?: number = null;
+  partnerId: number = null;
+  buildingId: number = null;
+  partnerList$ = this.reportService.obsPartners;
+  buildingList$ = this.reportService.obsBuildings;
 
   custMtrTemplate = (arg: any) => {
     var ret = "<div class='custom-item' title='" + arg.Description + "'>" + arg.MeterNo + "</div>";
@@ -39,13 +42,15 @@ export class AmrGraphCriteriaComponent implements OnInit, OnDestroy {
     return ret;
   }
 
-  meters$: Observable<IAmrMeter[]>; //this.meterService.getMetersForUserChart(this.userService.userValue.Id, this.amrChart.Id);
+  meters: IAmrMeter[]; //this.meterService.getMetersForUserChart(this.userService.userValue.Id, this.amrChart.Id);
+  allMeters: IAmrMeter[];
 
   touHeaders$: Observable<ITouHeader[]>; //this.amrService.getTouHeaders();
 
   constructor(private amrService: AmrDataService,
     private userService: UserService,
-    private meterService: MeterService) { }
+    private meterService: MeterService,
+    private reportService: DXReportService) { }
 
   ngOnInit(): void {
     this.subSelectedChart = this.amrService.obsSelectedChart.subscribe({
@@ -61,11 +66,19 @@ export class AmrGraphCriteriaComponent implements OnInit, OnDestroy {
           this.amrService.setFrmValid(2, false);
         } else {
           if (c.Id == 1) {
-            this.meters$ = this.meterService.getMetersForUserChart(this.userService.userValue.Id, c.Id);
+            this.meterService.getMetersForUserChart(this.userService.userValue.Id, c.Id)
+              .subscribe(res => {
+                this.allMeters = res;
+                this.meters = res;
+              })
             this.touHeaders$ = this.amrService.getTouHeaders();
           }
           else if (c.Id == 2) {
-            this.meters$ = this.meterService.getMetersForUserChart(this.userService.userValue.Id, c.Id);
+            this.meterService.getMetersForUserChart(this.userService.userValue.Id, c.Id)
+              .subscribe(res => {
+                this.allMeters = res;
+                this.meters = res;
+              })
             this.touHeaders$ = null;
           }
         }
@@ -131,4 +144,19 @@ export class AmrGraphCriteriaComponent implements OnInit, OnDestroy {
     }
   }
 
+  valueChanged(e: any, method: string) {
+    if(method == 'Partner') {
+      this.reportService.selectPartner(this.partnerId);
+    } else if(method == 'Building') {
+      this.meters = this.allMeters.filter(item => {
+        if(item.BuildingId == this.buildingId) return true;
+        return false;
+      })
+    }
+  }
+
+  customSearch(term: string, item: any) {
+    term = term.toLocaleLowerCase();
+    return item.Name.toLocaleLowerCase().indexOf(term) > -1;
+  }
 }
