@@ -147,6 +147,7 @@ export class AmrGraphCriteriaComponent implements OnInit, OnDestroy {
   valueChanged(e: any, method: string) {
     if(method == 'Partner') {
       this.reportService.selectPartner(this.partnerId);
+      this.buildingId = null;
     } else if(method == 'Building') {
       this.meters = this.allMeters.filter(item => {
         if(item.BuildingId == this.buildingId) return true;

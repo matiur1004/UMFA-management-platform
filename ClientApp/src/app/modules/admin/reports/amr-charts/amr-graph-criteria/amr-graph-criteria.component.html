@@ -3,39 +3,24 @@
     <form novalidate #frmReportParams="ngForm">
       <div class="grid grid-cols-4 gap-x-2">
         <div class="col-span-1">
-          <div class="flex flex-col pt-1">
+          <div class="flex flex-col">
             <div>
-              <!-- <mat-label class="form-label"> Partner </mat-label> -->
-              <ng-select
-                [items]="partnerList$ | async"
-                bindLabel="Name"
-                bindValue="Id"
-                [placeholder]="'Select partner'"
-                [(ngModel)]="partnerId"
-                [searchable]="true"
-                [clearable]="false"
-                name="partner"
-                id="partner"
-                [searchFn]="customSearch"
-                (change)="valueChanged($event, 'Partner')"
-              >
-              </ng-select>
+              <dx-select-box [items]="partnerList$ | async" displayExpr="Name" valueExpr="Id" class="form-control" label="Partner"
+                required placeholder="Select Partner" lableMode="static"
+                [(ngModel)]="partnerId" name="partner" #partnerVar="ngModel"
+                (onValueChanged)="valueChanged($event, 'Partner')"
+                [ngClass]="{'is-invalid': (partnerVar.touched && (partnerVar.invalid || partnerVar.value == 0)) }"
+                [searchEnabled]="true" searchExpr="Name" searchMode="contains" [searchTimeout]="400">
+              </dx-select-box>
             </div>
             <div>
-              <!-- <mat-label class="form-label"> Building </mat-label> -->
-              <ng-select
-                [items]="buildingList$ | async"
-                name="building"
-                bindLabel="Name"
-                bindValue="BuildingId"
-                [(ngModel)]="buildingId"
-                [placeholder]="'Select Building'"
-                [searchable]="true"
-                [clearable]="false"
-                [searchFn]="customSearch"
-                (change)="valueChanged($event, 'Building')"
-              >
-              </ng-select>
+              <dx-select-box [items]="buildingList$ | async" displayExpr="Name" valueExpr="BuildingId" class="form-control" label="Building"
+                required placeholder="Select Building" lableMode="static"
+                [(ngModel)]="buildingId" name="building" #buildingVar="ngModel"
+                (onValueChanged)="valueChanged($event, 'Building')"
+                [ngClass]="{'is-invalid': (buildingVar.touched && (buildingVar.invalid || buildingVar.value == 0)) }"
+                [searchEnabled]="true" searchExpr="Name" searchMode="contains" [searchTimeout]="400">
+              </dx-select-box>
             </div>
           </div>
         </div>
@@ -131,37 +116,22 @@
       <div class="col-span-1">
         <div class="flex flex-col pt-1">
           <div>
-            <!-- <mat-label class="form-label"> Partner </mat-label> -->
-            <ng-select
-              [items]="partnerList$ | async"
-              bindLabel="Name"
-              bindValue="Id"
-              [placeholder]="'Select partner'"
-              [(ngModel)]="partnerId"
-              [searchable]="true"
-              [clearable]="false"
-              name="partner"
-              id="partner"
-              [searchFn]="customSearch"
-              (change)="valueChanged($event, 'Partner')"
-            >
-            </ng-select>
+            <dx-select-box [items]="partnerList$ | async" displayExpr="Name" valueExpr="Id" class="form-control" label="Partner"
+              required placeholder="Select Partner" lableMode="static"
+              [(ngModel)]="partnerId" name="partner" #partnerVar="ngModel"
+              (onValueChanged)="valueChanged($event, 'Partner')"
+              [ngClass]="{'is-invalid': (partnerVar.touched && (partnerVar.invalid || partnerVar.value == 0)) }"
+              [searchEnabled]="true" searchExpr="Name" searchMode="contains" [searchTimeout]="400">
+            </dx-select-box>
           </div>
           <div>
-            <!-- <mat-label class="form-label"> Building </mat-label> -->
-            <ng-select
-              [items]="buildingList$ | async"
-              name="building"
-              bindLabel="Name"
-              bindValue="BuildingId"
-              [(ngModel)]="buildingId"
-              [placeholder]="'Select Building'"
-              [searchable]="true"
-              [clearable]="false"
-              [searchFn]="customSearch"
-              (change)="valueChanged($event, 'Building')"
-            >
-            </ng-select>
+            <dx-select-box [items]="buildingList$ | async" displayExpr="Name" valueExpr="BuildingId" class="form-control" label="Building"
+              required placeholder="Select Building" lableMode="static"
+              [(ngModel)]="buildingId" name="building" #buildingVar="ngModel"
+              (onValueChanged)="valueChanged($event, 'Building')"
+              [ngClass]="{'is-invalid': (buildingVar.touched && (buildingVar.invalid || buildingVar.value == 0)) }"
+              [searchEnabled]="true" searchExpr="Name" searchMode="contains" [searchTimeout]="400">
+            </dx-select-box>
           </div>
         </div>
       </div>
