@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NgForm, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { DXReportService, UserService } from '@shared/services';
 import { IAmrChart } from 'app/core/models';
 import { AmrDataService } from 'app/shared/services/amr.data.service';
 import { map, tap } from 'rxjs';
@@ -34,7 +35,9 @@ export class AmrGraphSelectionComponent implements OnInit, OnDestroy {
 
   constructor(
     private amrService: AmrDataService,
-    private _formBuilder: UntypedFormBuilder
+    private _formBuilder: UntypedFormBuilder,
+    private reportService: DXReportService,
+    private userService: UserService,
   ) { }
 
   ngOnInit(): void {
@@ -47,8 +50,6 @@ export class AmrGraphSelectionComponent implements OnInit, OnDestroy {
     this.amrService.SelectedChart = null;
     this.amrService.setFrmValid(1, false);
   }
-
-  
 
   selectChart() {
     //this.errorMessageSubject.next(null)
@@ -79,4 +80,8 @@ export class AmrGraphSelectionComponent implements OnInit, OnDestroy {
 
   }
 
+  ngAfterViewInit() {
+    this.reportService.loadPartners(this.userService.userValue.UmfaId);
+    this.reportService.loadBuildings(this.userService.userValue.UmfaId);
+  }
 }
