@@ -57,10 +57,10 @@ namespace ClientPortal.Controllers
             {
                 return StatusCode(500);
             }
-            else if(!response.Body.Any())
-            {
-                return BadRequest($"No Mapped meters found for buildingId {buildingId}");
-            }
+            //else if(!response.Body.Any())
+            //{
+            //    return BadRequest($"No Mapped meters found for buildingId {buildingId}");
+            //}
             
             return response.Body;
         }
