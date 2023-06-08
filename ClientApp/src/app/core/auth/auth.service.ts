@@ -112,6 +112,7 @@ export class AuthService
             }),
             map(user => {
               //console.log(`refreshtoken: ${user}`);
+              this.accessToken = user.JwtToken;
               this.userSubject.next(user);
               localStorage.setItem('user', JSON.stringify(user));
               this.startRefreshTokenTimer();
