@@ -10,14 +10,16 @@ namespace ClientPortal.Services
         private readonly ILogger<DashboardService> _logger;
         readonly IBuildingService _buildingService;
         private readonly IUserService _userService;
+        private readonly IMappedMeterService _mappedMeterService;
 
         public DashboardService(IPortalStatsRepository portalStats, ILogger<DashboardService> logger, IBuildingService buildingService,
-            IUserService userService)
+            IUserService userService, IMappedMeterService mappedMeterService)
         {
             _buildingService = buildingService;
             _userService = userService;
             _portalStats = portalStats;
             _logger = logger;
+            _mappedMeterService = mappedMeterService;
         }
 
         public DashboardMainResponse GetMainDashboard(int umfaUserId)
@@ -55,28 +57,41 @@ namespace ClientPortal.Services
         public List<DashboardBuilding> GetBuildingList(int umfaUserId)
         {
             _logger.LogInformation("Getting the buildings for buildings dashboard page...");
-            try
+
+            var mappedMetersResponse = _mappedMeterService.GetMappedMetersAsync().Result;
+
+            if (mappedMetersResponse is null || mappedMetersResponse.ErrorMessage is not null)
             {
-                var user = _userService.GetUserById(umfaUserId);
-                //needs to replace this when we have a method to determine AMR buildings
-                List<int> bldgs = new() { 2403, 518 };
-                List<DashboardBuilding> ret = new();
-                var response = _buildingService.GetUmfaBuildingsAsync(user.UmfaId).Result;
-                if (response != null && response.Response.Contains("Success"))
-                { 
-                    foreach (UMFABuilding bld in response.UmfaBuildings)
-                    {
-                        ret.Add(new() { UmfaBuildingId = bld.BuildingId, BuildingName = bld.Name, PartnerId = bld.PartnerId,
-                        PartnerName = bld.Partner, IsSmart = (bldgs.Contains(bld.BuildingId))? true: false });
-                    }
-                    return ret;
-                }
-                else throw new Exception($"Stats not return correctly: {response?.Response}");
+                _logger.LogError($"Mapped Metersnot returned correctly: {mappedMetersResponse?.ErrorMessage}");
+                return new List<DashboardBuilding>();
             }
-            catch (Exception ex)
+
+            var buildings = mappedMetersResponse.Body.Select(mm => mm.BuildingId).Distinct().ToList();
+
+            List<DashboardBuilding> ret = new();
+
+            var user = _userService.GetUserById(umfaUserId);
+            var response = _buildingService.GetUmfaBuildingsAsync(user.UmfaId).Result;
+            
+            if (response != null && response.Response.Contains("Success"))
             {
-                _logger.LogError($"Error while getting the stats: {ex.Message}");
-                return null;
+                foreach (UMFABuilding bld in response.UmfaBuildings)
+                {
+                    ret.Add(new()
+                    {
+                        UmfaBuildingId = bld.BuildingId,
+                        BuildingName = bld.Name,
+                        PartnerId = bld.PartnerId,
+                        PartnerName = bld.Partner,
+                        IsSmart = (buildings.Contains(bld.BuildingId))
+                    });
+                }
+                return ret;
+            }
+            else
+            {
+                _logger.LogError($"Stats not return correctly: {response?.Response}");
+                return new List<DashboardBuilding>();
             }
         }
     }

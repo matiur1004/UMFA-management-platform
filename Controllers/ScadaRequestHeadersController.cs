@@ -1,7 +1,9 @@
 ﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.PortalEntities;
+using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ScadaRequestsForTableUpdate;
+using ClientPortal.Services;
 
 namespace ClientPortal.Controllers
 {
@@ -12,49 +14,44 @@ namespace ClientPortal.Controllers
     {
         private readonly PortalDBContext _context;
         private readonly ILogger<ScadaRequestHeadersController> _logger;
+        private readonly IScadaRequestService _requestService;
 
-        public ScadaRequestHeadersController(PortalDBContext context, ILogger<ScadaRequestHeadersController> logger)
+        public ScadaRequestHeadersController(PortalDBContext context, ILogger<ScadaRequestHeadersController> logger, IScadaRequestService scadaRequestService)
         {
             _context = context;
             _logger = logger;
+            _requestService = scadaRequestService;
         }
 
         // GET: getScadaRequestHeaders
         [HttpGet("getScadaRequestHeaders")]
         public async Task<ActionResult<IEnumerable<ScadaRequestHeader>>> GetScadaRequestHeaders()
         {
-            if (_context.ScadaRequestHeaders == null)
+            var result = await _requestService.GetScadaRequestHeadersAsync();
+            if (result == null)
             {
-                _logger.LogError("ScadaRequestHeaders Not Found!");
-                return NotFound();
+                return Problem();
             }
-            _logger.LogInformation("ScadaRequestHeaders Found!");
-            return await _context.ScadaRequestHeaders.ToListAsync();
+
+            return result;
         }
 
         // GET: getScadaRequestHeader/5
         [HttpGet("getScadaRequestHeader/{id}")]
         public async Task<ActionResult<ScadaRequestHeader>> GetScadaRequestHeader(int id)
         {
-            if (_context.ScadaRequestHeaders == null)
+            var result = await _requestService.GetScadaRequestHeaderAsync(id);
+            if (result == null)
             {
-                _logger.LogError($"ScadaRequestHeaders Entries Not Found in Table!");
                 return NotFound();
             }
-            var scadaRequestHeader = await _context.ScadaRequestHeaders.FindAsync(id);
 
-            if (scadaRequestHeader == null)
-            {
-                _logger.LogError($"ScadaRequestHeader with Id: {id} Not Found!");
-                return NotFound();
-            }
-            _logger.LogInformation($"ScadaRequestHeader with Id: {id} Found and Returned!");
-            return scadaRequestHeader;
+            return result;
         }
 
         // PUT: updateScadaRequestHeader/5
         [HttpPut("updateScadaRequestHeader/{id}")]
-        public async Task<IActionResult> PutScadaRequestHeader(int id, ScadaRequestHeader scadaRequestHeader)
+        public async Task<IActionResult> PutScadaRequestHeader(int id, ScadaRequestHeaderUpdateRequest scadaRequestHeader)
         {
             if (id != scadaRequestHeader.Id)
             {
@@ -62,41 +59,28 @@ namespace ClientPortal.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(scadaRequestHeader).State = EntityState.Modified;
+            var result = await _requestService.UpdateScadaRequestHeaderAsync(scadaRequestHeader);
+            
+            if (result == null)
+            {
+                return BadRequest();
+            }
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ScadaRequestHeaderExists(id))
-                {
-                    _logger.LogError($"ScadaRequestHeader with Id: {id} Not Found!");
-                    return NotFound();
-                }
-                else
-                {
-                    _logger.LogError($"ScadaRequestHeader with Id: {id} Could Not Be Updated!");
-                    return Problem($"ScadaRequestHeader with Id: {id} Could Not Be Updated!");
-                }
-            }
             return NoContent();
         }
 
         // POST: addScadaRequestHeaders
         [HttpPost("addScadaRequestHeader")]
-        public async Task<ActionResult<ScadaRequestHeader>> PostScadaRequestHeader(ScadaRequestHeader scadaRequestHeader)
+        public async Task<ActionResult<ScadaRequestHeader>> PostScadaRequestHeader(ScadaRequestHeaderRequest scadaRequestHeader)
         {
-            if (_context.ScadaRequestHeaders == null)
+            var result = await _requestService.AddScadaRequestHeaderAsync(scadaRequestHeader);
+
+            if (result == null)
             {
-                _logger.LogError($"ScadaRequestHeaders Table is Not Found");
-                return Problem("Entity set 'PortalDBContext.ScadaRequestHeaders' is null.");
+                return BadRequest("Could add scadaRequestHeader");
             }
-            _context.ScadaRequestHeaders.Add(scadaRequestHeader);
-            await _context.SaveChangesAsync();
-            _logger.LogInformation($"ScadaRequestHeader Saved Successfully!");
-            return CreatedAtAction("GetScadaRequestHeader", new { id = scadaRequestHeader.Id }, scadaRequestHeader);
+
+            return CreatedAtAction("GetScadaRequestHeader", new { id = result.Id }, result);
         }
 
         //POST: createOrUpdateRequestHeader
@@ -277,28 +261,14 @@ namespace ClientPortal.Controllers
         [HttpDelete("deleteScadaRequestHeader/{id}")]
         public async Task<IActionResult> DeleteScadaRequestHeader(int id)
         {
-            if (_context.ScadaRequestHeaders == null)
+
+            var result = await _requestService.RemoveScadaRequestHeaderAsync(id);
+
+            if (result == null)
             {
-                _logger.LogError($"ScadaRequestHeader with Id: {id} Not Found!");
-                return NotFound();
+                return BadRequest("Could not delete Scada Request Header");
             }
-            var scadaRequestHeader = await _context.ScadaRequestHeaders.FindAsync(id);
-            if (scadaRequestHeader == null)
-            {
-                _logger.LogError($"ScadaRequestHeader with Id: {id} Not Found!");
-                return NotFound();
-            }
-            try
-            {
-                _context.ScadaRequestHeaders.Remove(scadaRequestHeader);
-                await _context.SaveChangesAsync();
-                _logger.LogInformation($"ScadaRequestHeader with ID: {id} Deleted Successfully!");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogInformation($"Error Deleting ScadaRequestHeader with ID: {id}!");
-                return Problem($"Error Deleting Entry ScadaRequestHeader With Id: {id} - Detail: {ex.Message}");
-            }
+
             return NoContent();
         }
 

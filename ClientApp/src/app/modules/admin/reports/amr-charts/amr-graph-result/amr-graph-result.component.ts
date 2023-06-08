@@ -27,7 +27,6 @@ export class AmrGraphResultComponent implements OnInit, OnDestroy {
         return throwError(err);
       }),
       map((b) => {
-        console.log('sdfsdfsdfrttt', b);
         if (b) {
           this.Runit();
         } else this.showReport = false;
@@ -136,7 +135,6 @@ export class AmrGraphResultComponent implements OnInit, OnDestroy {
   constructor(private dataService: AmrDataService) { }
 
   ngOnInit(): void {
-    console.log('gsgsgsgs');
     this.subDem = this.obsDemProfile$.subscribe();
     this.subWater = this.obsWaterProfile$.subscribe();
     this.subRunit = this.obsRunit$.subscribe();
