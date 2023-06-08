@@ -133,7 +133,7 @@ IConfiguration? configuration = builder.Configuration;
     services.AddScoped<BuildingRecoveryReportService>();
     services.AddTransient<IScadaCalls, ScadaCalls>();
     services.AddScoped<DashboardService, DashboardService>();
-    services.AddScoped<MappedMetersService, MappedMetersService>();
+    services.AddScoped<IMappedMeterService, MappedMetersService>();
     services.AddTransient<IMailService, MailService>();
     services.AddTransient<IWhatsAppService, WhatsAppService>();
     services.AddTransient<ITelegramService, TelegramService>();
@@ -146,7 +146,7 @@ IConfiguration? configuration = builder.Configuration;
     services.AddScoped<IAMRScadaUserRepository, AMRScadaUserRepository>();
     services.AddScoped<IAMRDataRepository, AMRDataRepository>();
     services.AddScoped<IReportRepository, ReportRepository>();
-
+    services.AddScoped<IMappedMeterRepository, MappedMeterRepository>();
 }
 
 var app = builder.Build();

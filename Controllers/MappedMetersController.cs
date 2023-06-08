@@ -14,11 +14,11 @@ namespace ClientPortal.Controllers
     {
         private readonly PortalDBContext _context;
         private readonly DunamisDBContext _dbContext;
-        private readonly MappedMetersService _mappedMetersService;
+        private readonly IMappedMeterService _mappedMetersService;
         private readonly IAMRMeterService _amRMeterService;
         private readonly ILogger<MappedMetersController> _logger;
 
-        public MappedMetersController(PortalDBContext context, DunamisDBContext dBContext, MappedMetersService mappedMetersService, IAMRMeterService amRMeterService, ILogger<MappedMetersController> logger)
+        public MappedMetersController(PortalDBContext context, DunamisDBContext dBContext, IMappedMeterService mappedMetersService, IAMRMeterService amRMeterService, ILogger<MappedMetersController> logger)
         {
             _context = context;
             _dbContext = dBContext;
@@ -31,29 +31,54 @@ namespace ClientPortal.Controllers
         [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<MappedMeter>>> GetMappedMeters()
         {
-            return await _context.MappedMeters.ToListAsync();
+            var response = await _mappedMetersService.GetMappedMetersAsync();
+
+            if (response.ResponseMessage.Equals("Error"))
+            {
+                return StatusCode(500);
+            }
+            else if (!response.Body.Any())
+            {
+                return BadRequest($"No Mapped meters found");
+            }
+
+            return response.Body;
         }
 
         //GET: MappedMeters/GetAllMappedMetersForBuilding/
         [HttpGet("GetAllMappedMetersForBuilding/{buildingId}")]
         public async Task<ActionResult<IEnumerable<MappedMeter>>> GetAllMappedMetersForBuilding(int buildingId)
         {
-            var selectedMeters = await _mappedMetersService.GetAllMappedMetersForBuilding(buildingId);
-            return selectedMeters;
+            var response = await _mappedMetersService.GetMappedMetersByBuildingAsync(buildingId);
+            
+            if(response.ResponseMessage.Equals("Error"))
+            {
+                return StatusCode(500);
+            }
+            else if(!response.Body.Any())
+            {
+                return BadRequest($"No Mapped meters found for buildingId {buildingId}");
+            }
+            
+            return response.Body;
         }
 
         // GET: MappedMeters/GetMappedMeter/5
         [HttpGet("GetMappedMeter/{id}")]
         public async Task<ActionResult<MappedMeter>> GetMappedMeter(int id)
         {
-            var mappedMeter = await _context.MappedMeters.FindAsync(id);
+            var response = await _mappedMetersService.GetMappedMeterAsync(id);
 
-            if (mappedMeter == null)
+            if (response.ResponseMessage.Equals("Error"))
             {
-                return NotFound();
+                return StatusCode(500);
+            }
+            else if (response.Body is null)
+            {
+                return NotFound($"MappedMeter with Id {id} does not exist");
             }
 
-            return mappedMeter;
+            return response.Body;
         }
 
         // PUT: MappedMeters/UpdateMappedMeter/5
@@ -65,23 +90,21 @@ namespace ClientPortal.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(mappedMeter).State = EntityState.Modified;
+            var response = await _mappedMetersService.GetMappedMeterAsync(id);
 
-            try
+            if (response.ResponseMessage.Equals("Error"))
             {
-                await _context.SaveChangesAsync();
+                return StatusCode(500);
             }
-            catch (DbUpdateConcurrencyException)
+            else if (response.Body is null)
             {
-                if (!MappedMeterExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound($"MappedMeter with Id {id} does not exist");
             }
+
+            var updatedMappedMeter = response.Body;
+            updatedMappedMeter.Map(mappedMeter);
+            
+            await _mappedMetersService.UpdateMappedMeterAsync(updatedMappedMeter);
 
             return NoContent();
         }
@@ -91,6 +114,7 @@ namespace ClientPortal.Controllers
         public async Task<ActionResult<MappedMeter>> PostMappedMeter(MappedMeter mappedMeter)
         {
             //add building if not exist
+            // TODO add building server
             var bldng = await _context.Buildings.Where(b => b.UmfaId == mappedMeter.BuildingId).FirstOrDefaultAsync();
             if (bldng == null)
             {
@@ -157,21 +181,27 @@ namespace ClientPortal.Controllers
         [HttpDelete("RemoveMappedMeter/{id}")]
         public async Task<IActionResult> DeleteMappedMeter(int id)
         {
-            var mappedMeter = await _context.MappedMeters.FindAsync(id);
-            if (mappedMeter == null)
+            var response = await _mappedMetersService.GetMappedMeterAsync(id);
+            
+            if (response is null || response.ErrorMessage is not null)
             {
-                return NotFound();
+                _logger.LogError($"Could not get MappedMeter to be deleted. Message: {response?.ErrorMessage}");
+                return StatusCode(500);
+            }
+            
+            if(response.Body is null)
+            {
+                return BadRequest($"MappedMeter with Id {id} does not exist.");
             }
 
-            _context.MappedMeters.Remove(mappedMeter);
-            await _context.SaveChangesAsync();
+            await _mappedMetersService.DeleteMappedMeterAsync(response.Body);
 
             return NoContent();
         }
 
-        private bool MappedMeterExists(int id)
+        private async Task<bool> MappedMeterExists(int id)
         {
-            return _context.MappedMeters.Any(e => e.MappedMeterId == id);
+            return (await _mappedMetersService.GetMappedMeterAsync(id)).Body is not null;
         }
 
         // MappedMeters Dropdowns
