@@ -1,11 +1,9 @@
-﻿using ClientPortal.Models.RequestModels;
+﻿using ClientPortal.Data.Entities.PortalEntities;
 
-namespace ClientPortal.Data.Entities.PortalEntities
+namespace ClientPortal.Models.RequestModels
 {
-    [Serializable]
-    public class ScadaRequestHeader
+    public class ScadaRequestHeaderRequest
     {
-        public int Id { get; set; }
         /// <summary>
         /// 0: not busy
         /// 1: scheduled to run
@@ -21,7 +19,7 @@ namespace ClientPortal.Data.Entities.PortalEntities
         public DateTime StartRunDTM { get; set; }
         public DateTime? LastRunDTM { get; set; }
         public DateTime? CurrentRunDTM { get; set; }
-        public List<ScadaRequestDetail> ScadaRequestDetails { get; set; }
+
         /// <summary>
         /// 1: Retreive Profile Data
         /// 2: Retreive Reading Data
@@ -34,18 +32,5 @@ namespace ClientPortal.Data.Entities.PortalEntities
         /// In minutes
         /// </summary>
         public int Interval { get; set; } //time to execute after previous run in minutes
-
-        public void Map(ScadaRequestHeaderRequest request)
-        {
-                Status = request.Status;
-                Active = request.Active;
-                CreatedDTM = request.CreatedDTM;
-                StartRunDTM = request.StartRunDTM;
-                LastRunDTM = request.LastRunDTM;
-                CurrentRunDTM = request.CurrentRunDTM;
-                JobType = request.JobType;
-                Description = request.Description;
-                Interval = request.Interval;
-        }
     }
 }

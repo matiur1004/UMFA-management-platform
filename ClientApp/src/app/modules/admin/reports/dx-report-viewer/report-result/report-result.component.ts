@@ -14,7 +14,7 @@ import { CONFIG } from 'app/core/helpers';
   styleUrls: [ 
     "./report-result.component.scss",
     "../../../../../../../node_modules/devextreme/dist/css/dx.common.css",
-    "../../../../../../../node_modules/devextreme/dist/css/dx.material.blue.light.css",
+    "../../../../../../../node_modules/devextreme/dist/css/dx.light.css",
     "../../../../../../../node_modules/@devexpress/analytics-core/dist/css/dx-analytics.common.css",
     "../../../../../../../node_modules/@devexpress/analytics-core/dist/css/dx-analytics.material.blue.light.css",
     "../../../../../../../node_modules/devexpress-reporting/dist/css/dx-webdocumentviewer.css"

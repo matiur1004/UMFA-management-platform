@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { IAmrChartDemProfParams } from 'app/core/models';
 import { AmrDataService } from 'app/shared/services/amr.data.service';
 import { Subject, Subscription } from 'rxjs';
@@ -6,7 +6,11 @@ import { Subject, Subscription } from 'rxjs';
 @Component({
   selector: 'app-amr-charts',
   templateUrl: './amr-charts.component.html',
-  styleUrls: ['./amr-charts.component.scss']
+  encapsulation: ViewEncapsulation.None,
+  styleUrls: [
+    './amr-charts.component.scss',
+    "../../../../../../node_modules/devextreme/dist/css/dx.light.css"
+  ]
 })
 export class AmrChartsComponent implements OnInit, OnDestroy {
 

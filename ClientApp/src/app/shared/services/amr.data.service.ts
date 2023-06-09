@@ -52,7 +52,6 @@ export class AmrDataService {
   }
 
   public displayChart(show: boolean): void {
-    console.log("fdfdfsstyyy");
     this.bsProfChart.next(show);
   }
 

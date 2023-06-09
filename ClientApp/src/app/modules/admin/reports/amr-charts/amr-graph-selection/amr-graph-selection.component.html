@@ -21,7 +21,11 @@
 
 </div> -->
 <form novalidate [formGroup]="form">
-  <mat-label class="form-label"> Graph type to show </mat-label>
+  <dx-select-box [items]="chartList$ | async" displayExpr="Name" valueExpr="Id" class="form-control" label="Graph type to show"
+                  required placeholder="Select chart" labelMode="static"
+                   [formControlName]="'selectedChartId'" name="report" (onValueChanged)="selectionChanged($event)">
+  </dx-select-box>
+  <!-- <mat-label class="form-label"> Graph type to show </mat-label>
   <ng-select
       [items]="chartList$ | async"
       bindLabel="Name"
@@ -32,6 +36,6 @@
       [clearable]="false"
       (change)="selectionChanged($event)"
       >
-  </ng-select>
+  </ng-select> -->
 </form>
 

@@ -1,4 +1,5 @@
 using ClientPortal.Data;
+using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Data.Repositories;
 using ClientPortal.Helpers;
 using ClientPortal.Interfaces;
@@ -133,11 +134,12 @@ IConfiguration? configuration = builder.Configuration;
     services.AddScoped<BuildingRecoveryReportService>();
     services.AddTransient<IScadaCalls, ScadaCalls>();
     services.AddScoped<DashboardService, DashboardService>();
-    services.AddScoped<MappedMetersService, MappedMetersService>();
+    services.AddScoped<IMappedMeterService, MappedMetersService>();
     services.AddTransient<IMailService, MailService>();
     services.AddTransient<IWhatsAppService, WhatsAppService>();
     services.AddTransient<ITelegramService, TelegramService>();
     services.AddTransient<INotificationService, NotificationService>();
+    services.AddScoped<IScadaRequestService, ScadaRequestService>();
 
     //Data components
     services.AddScoped<IPortalStatsRepository, PortalStatsRepository>();
@@ -146,7 +148,9 @@ IConfiguration? configuration = builder.Configuration;
     services.AddScoped<IAMRScadaUserRepository, AMRScadaUserRepository>();
     services.AddScoped<IAMRDataRepository, AMRDataRepository>();
     services.AddScoped<IReportRepository, ReportRepository>();
-
+    services.AddScoped<IMappedMeterRepository, MappedMeterRepository>();
+    services.AddScoped<IScadaRequestRepository<ScadaRequestHeader>, ScadaRequestHeaderRepository>();
+    services.AddScoped<IScadaRequestRepository<ScadaRequestDetail>, ScadaRequestDetailRepository>();
 }
 
 var app = builder.Build();

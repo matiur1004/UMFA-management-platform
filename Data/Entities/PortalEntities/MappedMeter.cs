@@ -22,5 +22,25 @@ namespace ClientPortal.Data.Entities.PortalEntities
         public string SupplyTo { get; set; }
         public string LocationType { get; set;}
         public int UserId { get; set; }
+
+        public void Map(MappedMeter source)
+        {
+            BuildingId = source.BuildingId;
+            BuildingName = source.BuildingName;
+            PartnerId = source.PartnerId;
+            PartnerName = source.PartnerName;
+            BuildingServiceId = source.BuildingServiceId;
+            MeterNo = source.MeterNo;
+            Description = source.Description;
+            UmfaDescription = source.UmfaDescription;
+            ScadaSerial = source.ScadaSerial;
+            ScadaDescription = source.ScadaDescription;
+            RegisterType = source.RegisterType;
+            TOUHeader = source.TOUHeader;
+            SupplyType = source.SupplyType;
+            SupplyTo = source.SupplyTo;
+            LocationType = source.LocationType;
+            UserId = source.UserId;
+        }
     }
 }
