@@ -68,8 +68,18 @@ export class ReportCriteriaShopComponent implements OnInit {
   valueChanged(e: any, method: string) {
     if(method == 'Partner') {
       this.reportService.selectPartner(this.form.get('partnerId').value);
+      this.form.get('buildingId').setValue(null);
+      this.form.get('startPeriodId').setValue(0);
+      this.form.get('endPeriodId').setValue(0);
+      this.reportService.loadPeriods(this.form.get('buildingId').value);
+      this.reportService.selectStartPeriod(this.form.get('startPeriodId').value);
+      this.reportService.setShopUsageVariance([]);
     } else if(method == 'Building') {
       this.reportService.loadPeriods(this.form.get('buildingId').value);
+      this.form.get('startPeriodId').setValue(0);
+      this.form.get('endPeriodId').setValue(0);
+      this.reportService.selectStartPeriod(this.form.get('startPeriodId').value);
+      this.reportService.setShopUsageVariance([]);
     } else if (method == 'StartPeriod') {
       this.reportService.selectStartPeriod(this.form.get('startPeriodId').value);
     } else if (method == 'EndPeriod') {
@@ -83,14 +93,14 @@ export class ReportCriteriaShopComponent implements OnInit {
       if(this.reportService.SelectedReportId == 2) {
         this.reportService.ShopUsageVarianceParams = { 
           BuildingId: this.form.get('buildingId').value, 
-          StartPeriodId: this.form.get('startPeriodId').value, 
+          FromPeriodId: this.form.get('startPeriodId').value, 
           ToPeriodId: this.form.get('endPeriodId').value,
           AllTenants: this.form.get('allTenants').value,
         }
       } else {
         this.reportService.ShopCostVarianceParams = { 
           BuildingId: this.form.get('buildingId').value, 
-          StartPeriodId: this.form.get('startPeriodId').value, 
+          FromPeriodId: this.form.get('startPeriodId').value, 
           ToPeriodId: this.form.get('endPeriodId').value,
           AllTenants: this.form.get('allTenants').value,
         }
