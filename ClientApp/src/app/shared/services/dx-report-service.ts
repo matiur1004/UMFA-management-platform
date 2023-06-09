@@ -100,14 +100,18 @@ export class DXReportService {
   public obsEndPeriods: Observable<IUmfaPeriod[]>;
 
   public loadPeriods(umfaBuildingId: number) {
-    this.buildingService.getPeriodsForBuilding(umfaBuildingId).subscribe({
-      next: bps => {
-        this.periods = bps;
-        this.bsPeriods.next(bps);
-      },
-      error: err => { this.catchErrors(err); },
-      complete: () => { }
-    });
+    if(umfaBuildingId == 0 || umfaBuildingId == null) { this.periods = []; this.bsPeriods.next([]);}
+    else {
+      this.buildingService.getPeriodsForBuilding(umfaBuildingId).subscribe({
+        next: bps => {
+          this.periods = bps;
+          this.bsPeriods.next(bps);
+        },
+        error: err => { this.catchErrors(err); },
+        complete: () => { }
+      });
+    }
+    
   }
 
   public selectStartPeriod(periodId: number) {
@@ -203,7 +207,7 @@ export class DXReportService {
      switch (this.selectedReport.Id) {
        case 2: {
          if (this.SUVParams)
-           this.selectedReport.DXReportName = `ShopUsageVariance?${this.SUVParams.BuildingId},${this.SUVParams.StartPeriodId},${this.SUVParams.ToPeriodId},${this.SUVParams.AllTenants}`;
+           this.selectedReport.DXReportName = `ShopUsageVariance?${this.SUVParams.BuildingId},${this.SUVParams.FromPeriodId},${this.SUVParams.ToPeriodId},${this.SUVParams.AllTenants}`;
          break;
        }
        default: {
@@ -265,6 +269,10 @@ export class DXReportService {
       );
   }
 
+  setShopUsageVariance(data) {
+    this._shopUsageVariance.next(data);
+  }
+  
   catchErrors(error: { error: { message: any; }; message: any; }): Observable<Response> {
     if (error && error.error && error.error.message) { //clientside error
       console.log(`Client side error: ${error.error.message}`);

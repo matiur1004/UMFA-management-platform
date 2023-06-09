@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { DXReportService } from '@shared/services';
 import { Subject, takeUntil } from 'rxjs';
 import { Workbook } from 'exceljs';
 import saveAs from 'file-saver';
 import { exportPivotGrid } from 'devextreme/excel_exporter';
-import PivotGridDataSource from 'devextreme/ui/pivot_grid/data_source';
+import { DxPivotGridComponent } from 'devextreme-angular';
 
 @Component({
   selector: 'report-result-shop',
@@ -16,8 +16,9 @@ export class ReportResultShopComponent implements OnInit {
   dataSource: any;
   results = [];
   private _unsubscribeAll: Subject<any> = new Subject<any>();
+  @ViewChild('pivotGrid', { static: false }) pivotGrid: DxPivotGridComponent;
   
-  constructor(private reportService: DXReportService) {
+  constructor(private reportService: DXReportService, private cdr: ChangeDetectorRef) {
     this.dataSource = {
       fields: [
         {
@@ -55,16 +56,18 @@ export class ReportResultShopComponent implements OnInit {
           area: 'data',
           dataType: 'number',
           summaryType: 'avg',
-          format: { type: 'fixedPoint', precision: 0 }
+          format: { type: 'fixedPoint', precision: 0 },
+          caption: 'Average'
         },
         {
           dataField: 'Variance',
           area: 'data',
-          dataType: 'percent',
+          dataType: 'number',
           caption: 'Variance',
           summaryType: 'avg',
           showValues: false,
-          format: { type: 'fixedPoint', precision: 2 },
+          format: { type: 'percent', precision: 2},
+          // format: { type: 'fixedPoint', precision: 2},
         }
       ],
       store: []
@@ -80,11 +83,13 @@ export class ReportResultShopComponent implements OnInit {
           this.dataSource['store'] = data.map(item => {
             item.PeriodDate = new Date(item.PeriodName);
             item.Variance = item.Variance.replace('%', '');
-            item.Variance = Number(item.Variance.replace(',', '.'));
+            item.Variance = Number(item.Variance.replace(',', '.')) / 100;
 
             return item;
           });
-          console.log(this.dataSource['store']);
+          if(this.pivotGrid) {
+            this.pivotGrid.instance.option('dataSource', this.dataSource);
+          }
       })
   }
 
