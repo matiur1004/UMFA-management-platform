@@ -67,7 +67,6 @@ export class ReportResultShopComponent implements OnInit {
           summaryType: 'avg',
           showValues: false,
           format: { type: 'percent', precision: 2},
-          // format: { type: 'fixedPoint', precision: 2},
         }
       ],
       store: []
