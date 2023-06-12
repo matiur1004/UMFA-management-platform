@@ -31,6 +31,7 @@ import { ReportCriteriaShopComponent } from './dx-report-viewer/report-criteria-
 import { ReportResultShopComponent } from './dx-report-viewer/report-result-shop/report-result-shop.component';
 import { ReportResultShopCostComponent } from './dx-report-viewer/report-result-shop-cost/report-result-shop-cost.component';
 import { ReportCriteriaUtilityComponent } from './dx-report-viewer/report-criteria-utility/report-criteria-utility.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 @NgModule({
   declarations: [
     DxReportViewerComponent,
@@ -58,6 +59,7 @@ import { ReportCriteriaUtilityComponent } from './dx-report-viewer/report-criter
     DxPivotGridModule,
     DxFormModule,
     DxDateBoxModule,
+    MatCheckboxModule,
     MatButtonModule,
     NgSelectModule,
     MatFormFieldModule,

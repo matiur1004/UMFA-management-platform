@@ -30,7 +30,18 @@ export class ReportCriteriaUtilityComponent implements OnInit {
   startPeriodId: number;
   endPeriodId: number;
 
-  recoveriesItems: any[] = [{id: 1, name: 'Client Recoveries'}, {id: 2, name: 'UMFA Recoveries'}]
+  recoveriesItems: any[] = [{id: 1, name: 'Client Recoveries'}, {id: 2, name: 'UMFA Recoveries'}];
+  expenseItems: any[] = [{id: 0, name: 'Client Expense'}, {id: 1, name: 'UMFA Bulk Readings'}, {id: 2, name: 'Council Account'}];
+  serviceTypeItems: any[] = [
+    {id: 1, name: 'Electricity'},
+    {id: 2, name: 'Water'},
+    {id: 3, name: 'Sewerage'},
+    {id: 4, name: 'Rates'},
+    {id: 5, name: 'Refuse'},
+    {id: 6, name: 'Gas'},
+    {id: 7, name: 'Diesel'}
+  ];
+  visibleItems = ['Client Expense', 'Client Recovery', 'Council Account', 'UMFA Bulk Reading', 'UMFA Recovery', 'Potential Recovery', 'Non Recoverable', 'UMFA Reading Dates', 'Council Reading Dates'];
   custPartnerTemplate = (arg: any) => {
     var ret = "<div class='custom-item' title='" + arg.Name + "'>" + arg.Name + "</div>";
     return ret;
@@ -47,13 +58,24 @@ export class ReportCriteriaUtilityComponent implements OnInit {
     return ret;
   }
 
+  getVisibleControl(index, name) {
+    return this.form.get('visible')['controls'][name];
+  }
+
   ngOnInit(): void {
+    let visibleItemsControls = {};
+    this.visibleItems.forEach(item => {
+      visibleItemsControls[item] = [true];
+    })
     this.form = this._formBuilder.group({
       partnerId: [null],
       buildingId: [null, Validators.required],
       startPeriodId: [null, Validators.required],
       endPeriodId: [null, Validators.required],
-      Recoveries: [2, Validators.required]
+      Recoveries: [2, Validators.required],
+      Expense: [1, Validators.required],
+      serviceType: [null, Validators.required],
+      visible: this._formBuilder.group(visibleItemsControls)
     });
   }
   
