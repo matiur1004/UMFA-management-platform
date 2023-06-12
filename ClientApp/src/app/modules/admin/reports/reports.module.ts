@@ -30,6 +30,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReportCriteriaShopComponent } from './dx-report-viewer/report-criteria-shop/report-criteria-shop.component';
 import { ReportResultShopComponent } from './dx-report-viewer/report-result-shop/report-result-shop.component';
 import { ReportResultShopCostComponent } from './dx-report-viewer/report-result-shop-cost/report-result-shop-cost.component';
+import { ReportCriteriaUtilityComponent } from './dx-report-viewer/report-criteria-utility/report-criteria-utility.component';
 @NgModule({
   declarations: [
     DxReportViewerComponent,
@@ -42,7 +43,8 @@ import { ReportResultShopCostComponent } from './dx-report-viewer/report-result-
     AmrGraphResultComponent,
     ReportCriteriaShopComponent,
     ReportResultShopComponent,
-    ReportResultShopCostComponent
+    ReportResultShopCostComponent,
+    ReportCriteriaUtilityComponent
   ],
   imports: [
     CommonModule,
