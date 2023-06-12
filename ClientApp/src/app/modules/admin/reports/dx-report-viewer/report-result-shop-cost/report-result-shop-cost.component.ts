@@ -34,7 +34,10 @@ export class ReportResultShopCostComponent implements OnInit {
           caption: 'Shop',
           expanded: true,
           width: 120,
-          showTotals: false
+          showTotals: false,
+          allowSorting: true,
+          sortBy: 'ShopId',
+          sortOrder: 'asc'
         },
         {
           dataField: 'GroupName',
@@ -48,7 +51,7 @@ export class ReportResultShopCostComponent implements OnInit {
           dataField: 'PeriodDate',
           area: 'column',
           dataType: "date",
-          allowSorting: true,
+          allowSorting: false,
         },
         { groupName: "PeriodDate", groupInterval: "month", groupIndex: 0 },
         { groupName: "PeriodDate", groupInterval: "year", visible: false },
@@ -57,6 +60,7 @@ export class ReportResultShopCostComponent implements OnInit {
           dataField: 'Average',
           area: 'data',
           dataType: 'number',
+          caption: 'Average',
           summaryType: 'avg',
           format: { type: 'fixedPoint', precision: 0 },
           filterValues: [null]
@@ -64,11 +68,11 @@ export class ReportResultShopCostComponent implements OnInit {
         {
           dataField: 'Variance',
           area: 'data',
-          dataType: 'percent',
+          dataType: 'number',
           caption: 'Variance',
           summaryType: 'avg',
           showValues: false,
-          format: { type: 'fixedPoint', precision: 2 },
+          format: { type: 'percent', precision: 2 },
         }
       ],
       fieldPanel: {
@@ -89,12 +93,13 @@ export class ReportResultShopCostComponent implements OnInit {
       .subscribe((data: any[]) => {
         this.results = data;
         if(data.length > 0)
-          this.dataSource['store'] = data.filter(item => item.RandValue != null).map(item => {
+          this.dataSource['store'] = data.filter(item => item.RandValue != null && item['ShopId'] != 'TOTALS').map(item => {
             item.PeriodDate = new Date(item.PeriodName);
             if(item.Variance) {
               item.Variance = item.Variance.replace('%', '');
-              item.Variance = Number(item.Variance.replace(',', '.'));
+              item.Variance = Number(item.Variance.replace(',', '.')) / 100;
             }
+            //if(item['ShopId'] == "TOTALS") item['Tenants'] = '';
             return item;
           });
       })

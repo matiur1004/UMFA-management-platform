@@ -13,14 +13,14 @@ export interface IDXReport {
   
   export interface IShopUsageVarianceParams {
     BuildingId: number;
-    StartPeriodId: number;
+    FromPeriodId: number;
     ToPeriodId: number;
     AllTenants: number;
   }
 
   export interface IShopCostVarianceParams {
     BuildingId: number;
-    StartPeriodId: number;
+    FromPeriodId: number;
     ToPeriodId: number;
     AllTenants: number;
   }
