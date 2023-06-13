@@ -1,30 +1,36 @@
-<ng-container *ngIf="results.length > 0">
-    <div class="flex w-full p-6">
-        <dx-pivot-grid
-            id="sales"
-            [allowSortingBySummary]="true"
-            [allowSorting]="false"
-            [allowFiltering]="true"
-            [allowExpandAll]="true"
-            [showColumnTotals]="false"
-            [showRowGrandTotals]="false"
-            [showRowTotals]="true"
-            [height]="700"
-            [showBorders]="true"
+<ng-container *ngIf="results">
+    <div class="p-2">
+        <dx-data-grid
             [dataSource]="dataSource"
-            (onExporting)="exportGrid($event)"
+            [showBorders]="true"
+            (onExporting)="onExporting($event)"
+            id="gridContainer"
+            [remoteOperations]="true"
+            [wordWrapEnabled]="true"
+            [hoverStateEnabled]="true"
         >
-            <dxo-field-chooser [enabled]="false"></dxo-field-chooser>
-            <dxo-field-panel
-                [showDataFields]="true"
-                [showRowFields]="true"
-                [showColumnFields]="true"
-                [showFilterFields]="true"
-                [allowFieldDragging]="false"
+            <!-- <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling> -->
+            <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
+            <dxo-paging [pageSize]="100"></dxo-paging>
+            <dxo-search-panel
                 [visible]="true"
-            >
-            </dxo-field-panel>
-            <dxo-export [enabled]="true"></dxo-export>
-        </dx-pivot-grid>
+                [width]="200"
+                placeholder="Search..."
+            ></dxo-search-panel>
+            <dxi-column dataField="Tenants" [minWidth]="120"></dxi-column>
+            <dxi-column dataField="Shop" [minWidth]="120"></dxi-column>
+            <dxi-column dataField="Group" caption="Group Name" [minWidth]="120"></dxi-column>
+            <ng-container *ngFor="let period of periodList">
+                <dxi-column [dataField]="period" [caption]="period" [minWidth]="80">
+                    <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+                </dxi-column>
+            </ng-container>
+            <dxi-column dataField="Average" [minWidth]="100">
+                <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+            </dxi-column>
+            <dxi-column dataField="Variance" [minWidth]="100"></dxi-column>
+            <dxo-export [enabled]="true" [allowExportSelectedData]="false"></dxo-export>
+        </dx-data-grid>
     </div>
+    
 </ng-container>

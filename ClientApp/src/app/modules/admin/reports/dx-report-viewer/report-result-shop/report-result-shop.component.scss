@@ -1,10 +1,8 @@
-::ng-deep .dx-pivotgrid-fields-area-head .dx-area-field .dx-area-field-content{
-    font-size: 18px;
-    color: black;
-    font-weight: bold;
+::ng-deep #gridContainer {
+    min-height: 100px;
+    max-height: calc(100vh - 250px);
 }
-::ng-deep .dx-pivotgrid-horizontal-headers .dx-row-total.dx-grandtotal {
-    font-size: 18px;
-    color: black;
+::ng-deep .dx-datagrid-headers table tbody tr {
     font-weight: bold;
+    color: black;
 }
