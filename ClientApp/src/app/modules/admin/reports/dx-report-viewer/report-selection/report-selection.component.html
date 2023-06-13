@@ -25,16 +25,4 @@
                    [itemTemplate]="custReportTemplate" required placeholder="Select Report" labelMode="static"
                    [formControlName]="'selectedReportId'" name="report" (onValueChanged)="selectionChanged($event)">
     </dx-select-box>
-  <!-- <mat-label class="form-label"> Select Report to View </mat-label>
-  <ng-select
-      [items]="reportList"
-      bindLabel="Name"
-      bindValue="Id"
-      [placeholder]="'Select report'"
-      [formControlName]="'selectedReportId'"
-      [searchable]="false"
-      [clearable]="false"
-      (change)="selectionChanged($event)"
-      >
-  </ng-select> -->
 </form>

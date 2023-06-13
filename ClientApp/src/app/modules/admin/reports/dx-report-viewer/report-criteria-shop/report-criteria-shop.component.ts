@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { IUmfaBuilding } from '@core/models';
 import { DXReportService } from '@shared/services';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'report-criteria-shop',
@@ -13,10 +14,14 @@ export class ReportCriteriaShopComponent implements OnInit {
 
   form: UntypedFormGroup;
   buildings: IUmfaBuilding[] = [];
+
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
+  
   constructor(private reportService: DXReportService, private _formBuilder: UntypedFormBuilder) { }
 
 
   get showPage(): boolean {
+    console.log("sdfdf");
     return this.reportService.ShowCrit();
   }
 
@@ -54,6 +59,20 @@ export class ReportCriteriaShopComponent implements OnInit {
       endPeriodId: [null, Validators.required],
       allTenants: [1, Validators.required]
     });
+
+    this.reportService.reportChanged$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((res: boolean) => {
+        if(res) {
+          this.form.patchValue({
+            partnerId: null,
+            buildingId: null,
+            startPeriodId: null,
+            endPeriodId: null,
+            allTenants: 1
+          })
+        }
+      });
   }
   
   customSearch(term: string, item: any) {
@@ -63,6 +82,8 @@ export class ReportCriteriaShopComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.reportService.resetAll();
+    this._unsubscribeAll.next(null);
+    this._unsubscribeAll.complete();
   }
 
   valueChanged(e: any, method: string) {
@@ -114,5 +135,4 @@ export class ReportCriteriaShopComponent implements OnInit {
       this.reportService.setFrmValid(2, false);
     }
   }
-
 }
