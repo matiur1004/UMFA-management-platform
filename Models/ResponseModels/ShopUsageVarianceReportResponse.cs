@@ -2,11 +2,11 @@
 {
     public class ShopUsageVarianceReportResponse
     {
-        public List<TenantShopInvoiceGrouping> TenantShopInvoiceGroupings { get; set; } = new List<TenantShopInvoiceGrouping>();
-        public List<PeriodTotalDetails> Totals { get; set; } = new List<PeriodTotalDetails>();
+        public List<TenantShopInvoiceUsageGrouping> TenantShopInvoiceGroupings { get; set; } = new List<TenantShopInvoiceUsageGrouping>();
+        public List<PeriodTotalUsageDetails> Totals { get; set; } = new List<PeriodTotalUsageDetails>();
     }
 
-    public class TenantShopInvoiceGrouping
+    public class TenantShopInvoiceUsageGrouping
     {
         public string InvGroup { get; set; }
         public string ShopId { get; set; }
@@ -18,7 +18,7 @@
         public List<PeriodUsageDetail> PeriodUsageDetails { get; set; } = new List<PeriodUsageDetail>();
     }
 
-    public class PeriodTotalDetails
+    public class PeriodTotalUsageDetails
     {
         public string? InvGroup { get; set; }
         public List<PeriodUsageDetail> PeriodUsageDetails { get; set; } = new List<PeriodUsageDetail>();
