@@ -24,7 +24,7 @@ export class ReportResultUtilityComponent implements OnInit {
           area: 'row',
           caption: 'Service Type',
           expanded: true,
-          width: 120,
+          width: 160,
           showTotals: false
         },
         {
@@ -65,7 +65,7 @@ export class ReportResultUtilityComponent implements OnInit {
         if(data) {
           this.results = data['GridValues'];
           if(data['GridValues'].length > 0) {
-            this.dataSource['store'] = data['GridValues'].filter(item => item.ColValue != 0).map(item => {
+            this.dataSource['store'] = data['GridValues'].filter(item => item.ColValue != 0 && item.PeriodId != 99999999 && item.ColValue != '').map(item => {
               item.PeriodDate = new Date(item.PeriodName);
               item.ColValue = Number(item.ColValue.replaceAll(' ', ''));
               return item;
