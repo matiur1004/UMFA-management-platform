@@ -4,7 +4,6 @@ import { Subject, takeUntil } from 'rxjs';
 import { Workbook } from 'exceljs';
 import saveAs from 'file-saver';
 import { exportDataGrid } from 'devextreme/excel_exporter';
-import { DxPivotGridComponent } from 'devextreme-angular';
 import { AllowedPageSizes } from '@core/helpers';
 
 @Component({
@@ -20,7 +19,6 @@ export class ReportResultShopComponent implements OnInit {
   results = [];
   periodList = [];
   private _unsubscribeAll: Subject<any> = new Subject<any>();
-  @ViewChild('pivotGrid', { static: false }) pivotGrid: DxPivotGridComponent;
   
   constructor(private reportService: DXReportService, private cdr: ChangeDetectorRef) {
   }

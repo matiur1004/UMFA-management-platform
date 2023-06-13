@@ -7,7 +7,7 @@ import { HttpClient } from "@angular/common/http";
 
 @Injectable({ providedIn: 'root' })
 export class DXReportService {
-  private _shopCostVariance: BehaviorSubject<any> = new BehaviorSubject([]);
+  private _shopCostVariance: BehaviorSubject<any> = new BehaviorSubject(null);
   private _reportChanged: BehaviorSubject<boolean> = new BehaviorSubject(false);
   private _shopUsageVariance: BehaviorSubject<any> = new BehaviorSubject(null);
 
@@ -302,8 +302,14 @@ export class DXReportService {
   }
 
   getReportDataForShopCosts() {
-    const url = `${CONFIG.apiURL}/ReportShopCostsVariance/getReportData`;
-    return this.http.post<any>(url, this.SCVParams, { withCredentials: true })
+    const url = `${CONFIG.apiURL}/Reports/ShopCostVarianceReport`;
+    const queryParams = '?' +
+      Object.keys(this.SCVParams)
+        .map(key => {
+          return `${key}=${encodeURIComponent(this.SCVParams[key])}`;
+        })
+        .join('&');
+    return this.http.get<any>(url + queryParams, { withCredentials: true })
       .pipe(
           catchError(err => this.catchErrors(err)),
           tap(m => {
