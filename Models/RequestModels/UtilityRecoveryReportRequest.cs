@@ -35,7 +35,7 @@ namespace ClientPortal.Models.RequestModels
         [Required]
         public bool? UmfaReadingDatesVisible { get; set; }
         [Required]
-        public bool? CouncilReadingDatesVisibit { get; set; }
+        public bool? CouncilReadingDatesVisible { get; set; }
         [Required]
         public bool? UmfaRecoveryVisible { get; set; }
         [Required]
