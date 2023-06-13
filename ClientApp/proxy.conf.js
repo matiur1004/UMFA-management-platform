@@ -41,6 +41,7 @@ const PROXY_CONFIG = [
       "/AlarmTriggered",
       "/TriggeredAlarmNotifications",
       "/Reports",
+      "/ReportShopUsageVariance"
    ],
     target: target,
     secure: false,
