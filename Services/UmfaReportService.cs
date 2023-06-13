@@ -65,8 +65,8 @@ namespace ClientPortal.Services
 
                 if (lastPeriodUsage != null && tenantShopInvoiceGrouping.Average != 0)
                 {
-                    var variance = lastPeriodUsage.Usage!.Value / tenantShopInvoiceGrouping.Average -1;
-                    tenantShopInvoiceGrouping.Variance = $"{variance}%";
+                    var variance = (lastPeriodUsage.Usage!.Value / tenantShopInvoiceGrouping.Average -1) * 100;
+                    tenantShopInvoiceGrouping.Variance = $"{Math.Round((decimal)variance, 2)}%";
                 }
 
                 response.TenantShopInvoiceGroupings.Add(tenantShopInvoiceGrouping);
@@ -103,8 +103,8 @@ namespace ClientPortal.Services
 
                 if (lastPeriodUsage != null && periodTotalDetails.Average != 0)
                 {
-                    var variance = lastPeriodUsage.Usage!.Value / periodTotalDetails.Average - 1;
-                    periodTotalDetails.Variance = $"{variance}%";
+                    var variance = (lastPeriodUsage.Usage!.Value / periodTotalDetails.Average - 1) * 100;
+                    periodTotalDetails.Variance = $"{Math.Round((decimal)variance,2)}%";
                 }
 
                 periodTotalDetails.InvGroup = invGroup.First().InvGroup;
