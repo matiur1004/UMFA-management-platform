@@ -9,6 +9,7 @@ import { HttpClient } from "@angular/common/http";
 export class DXReportService {
   private _shopUsageVariance: BehaviorSubject<any> = new BehaviorSubject([]);
   private _shopCostVariance: BehaviorSubject<any> = new BehaviorSubject([]);
+  private _reportChanged: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(
     private buildingService: BuildingService,
@@ -38,6 +39,10 @@ export class DXReportService {
     return this._shopCostVariance.asObservable();
   }
 
+  get reportChanged$(): Observable<boolean> {
+    return this._reportChanged.asObservable();
+  }
+  
   private ErrorSubject: BehaviorSubject<string>;
   public Error$: Observable<string>;
 
@@ -276,6 +281,7 @@ export class DXReportService {
     this.SelectedReportId = 0;
     this.showResults = false;
     this.BRParams = null;
+    this._reportChanged.next(true);
   }
 
   getReportDataForShop() {

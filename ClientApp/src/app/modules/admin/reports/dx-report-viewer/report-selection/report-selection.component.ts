@@ -43,7 +43,6 @@ export class ReportSelectionComponent implements OnInit, OnDestroy, AfterViewIni
     this.reportService.sendError(null);
     try {
       if (this.form.valid) {
-        console.log(this.form.get('selectedReportId').value);
         this.reportService.setFrmValid(1, true);
         this.reportService.SelectedReportId = this.form.get('selectedReportId').value;
         this.reportService.loadPartners(this.userService.userValue.UmfaId);
