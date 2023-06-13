@@ -52,7 +52,7 @@ namespace ClientPortal.Services
         {
             //BuildingRecoveryReport reportData = await Task.Run(() => { return _repo.GetBuildingRecoveryReport(strtPeriodId.ToInt(), endPeriodId.ToInt()); });
 
-            XtraReport report = new ShopUsageVariance(); // XtraReport();
+            XtraReport report = new PredefinedReports.ShopUsageVariance(); // XtraReport();
             //report.Parameters[@]
             report.Landscape = true;
             report.Margins = new System.Drawing.Printing.Margins(10, 10, 60, 34);
