@@ -140,6 +140,7 @@ IConfiguration? configuration = builder.Configuration;
     services.AddTransient<ITelegramService, TelegramService>();
     services.AddTransient<INotificationService, NotificationService>();
     services.AddScoped<IScadaRequestService, ScadaRequestService>();
+    services.AddScoped<IUmfaReportService, UmfaReportService>();
 
     //Data components
     services.AddScoped<IPortalStatsRepository, PortalStatsRepository>();
@@ -151,6 +152,7 @@ IConfiguration? configuration = builder.Configuration;
     services.AddScoped<IMappedMeterRepository, MappedMeterRepository>();
     services.AddScoped<IScadaRequestRepository<ScadaRequestHeader>, ScadaRequestHeaderRepository>();
     services.AddScoped<IScadaRequestRepository<ScadaRequestDetail>, ScadaRequestDetailRepository>();
+    services.AddScoped<IUmfaRepository, UmfaRepository>();
 }
 
 var app = builder.Build();
