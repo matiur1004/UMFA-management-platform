@@ -48,8 +48,8 @@ export class ReportResultShopComponent implements OnInit {
           dataType: "date",
           allowSorting: true,
         },
-        { groupName: "PeriodDate", groupInterval: "month", groupIndex: 0 },
-        { groupName: "PeriodDate", groupInterval: "year", visible: false },
+        { groupName: "PeriodDate", groupInterval: "year", expanded: true},
+        { groupName: "PeriodDate", groupInterval: "month"},
         { groupName: "PeriodDate", groupInterval: "quarter", visible: false },
         {
           dataField: 'UsageValue',
