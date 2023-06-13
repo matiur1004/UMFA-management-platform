@@ -9,7 +9,7 @@ import { ReportsRoutingModule } from './reports-routing.module';
 // import { AmrGraphResultComponent } from './amr-charts/amr-graph-result/amr-graph-result.component';
 
 //import DevExtreme components
-import { DxDateBoxModule, DxChartModule, DxSelectBoxModule, DxFormModule, DxValidatorModule, DxButtonModule, DxPivotGridModule } from 'devextreme-angular';
+import { DxDateBoxModule, DxChartModule, DxSelectBoxModule, DxFormModule, DxValidatorModule, DxButtonModule, DxPivotGridModule, DxDataGridModule } from 'devextreme-angular';
 // import { DxReportViewerComponent } from './dx-report-viewer/dx-report-viewer.component';
 
 // import { ReportSelectionComponent } from './dx-report-viewer/report-selection/report-selection.component';
@@ -53,6 +53,7 @@ import { ReportResultShopCostComponent } from './dx-report-viewer/report-result-
     DxButtonModule,
     DxReportViewerModule,
     DxChartModule,
+    DxDataGridModule,
     DxPivotGridModule,
     DxFormModule,
     DxDateBoxModule,
