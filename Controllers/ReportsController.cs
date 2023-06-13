@@ -25,5 +25,12 @@ namespace ClientPortal.Controllers
             var response = await _umfaReportService.GetUtilityRecoveryReportAsync(request);
             return response;
         }
+
+        [HttpGet("ShopUsageVarianceReport")]
+        public async Task<ActionResult<ShopUsageVarianceReportResponse>> Get([FromQuery] ShopUsageVarianceRequest request)
+        {
+            var response = await _umfaReportService.GetShopUsageVarianceReportAsync(request);
+            return response;
+        }
     }
 }
