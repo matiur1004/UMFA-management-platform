@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, catchError, of, tap, throwError } from "rxjs";
-import { IBuildingRecoveryParams, IDXReport, IShopCostVarianceParams, IShopUsageVarianceParams, IUmfaBuilding, IUmfaPartner, IUmfaPeriod } from "../../core/models";
+import { IBuildingRecoveryParams, IDXReport, IShopCostVarianceParams, IShopUsageVarianceParams, IUmfaBuilding, IUmfaPartner, IUmfaPeriod, IUtilityReportParams } from "../../core/models";
 import { BuildingService } from "./building.service";
 import { CONFIG } from "@core/helpers";
 import { HttpClient } from "@angular/common/http";
@@ -9,6 +9,8 @@ import { HttpClient } from "@angular/common/http";
 export class DXReportService {
   private _shopUsageVariance: BehaviorSubject<any> = new BehaviorSubject([]);
   private _shopCostVariance: BehaviorSubject<any> = new BehaviorSubject([]);
+  private _utilityRecoveryExpense: BehaviorSubject<any> = new BehaviorSubject(null);
+  
   private _reportChanged: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(
@@ -37,6 +39,10 @@ export class DXReportService {
 
   get shopCostVariance$(): Observable<any> {
     return this._shopCostVariance.asObservable();
+  }
+
+  get utilityRecoveryExpense$(): Observable<any> {
+    return this._utilityRecoveryExpense.asObservable();
   }
 
   get reportChanged$(): Observable<boolean> {
@@ -189,6 +195,7 @@ export class DXReportService {
   private BRParams: IBuildingRecoveryParams;
   private SUVParams: IShopUsageVarianceParams;
   private SCVParams: IShopCostVarianceParams;
+  private UREParams: IUtilityReportParams;
 
   get BuildingRecoveryParams(): IBuildingRecoveryParams {
     return this.BRParams;
@@ -240,6 +247,26 @@ export class DXReportService {
      switch (this.selectedReport.Id) {
        case 2: {
          if (this.SCVParams)
+           this.selectedReport.DXReportName = `ShopUsageVariance?${this.SUVParams.BuildingId},${this.SUVParams.FromPeriodId},${this.SUVParams.ToPeriodId},${this.SUVParams.AllTenants}`;
+         break;
+       }
+       default: {
+         break;
+       }
+     }
+   }
+  }
+
+  get UtilityReportParams(): IUtilityReportParams {
+    return this.UREParams;
+  }
+
+  set UtilityReportParams(value: IUtilityReportParams) {
+    this.UREParams = value;
+   if (this.selectedReport && this.selectedReport.Id != 0) {
+     switch (this.selectedReport.Id) {
+       case 3: {
+         if (this.UREParams)
            this.selectedReport.DXReportName = `ShopUsageVariance?${this.SUVParams.BuildingId},${this.SUVParams.FromPeriodId},${this.SUVParams.ToPeriodId},${this.SUVParams.AllTenants}`;
          break;
        }
@@ -309,6 +336,24 @@ export class DXReportService {
           catchError(err => this.catchErrors(err)),
           tap(m => {
             this._shopCostVariance.next(m);
+          }),
+      );
+  }
+
+  getReportDataForUtility() {
+    const url = `${CONFIG.apiURL}/Reports/UtilityRecoveryReport`;
+    const queryParams =
+      '?' +
+      Object.keys(this.UREParams)
+        .map(key => {
+          return `${key}=${encodeURIComponent(this.UREParams[key])}`;
+        })
+        .join('&');
+    return this.http.get<any>(url + queryParams, { withCredentials: true })
+      .pipe(
+          catchError(err => this.catchErrors(err)),
+          tap(m => {
+            this._utilityRecoveryExpense.next(m);
           }),
       );
   }

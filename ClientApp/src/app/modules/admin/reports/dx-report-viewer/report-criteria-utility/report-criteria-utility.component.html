@@ -44,7 +44,7 @@
             <div class="col-span-2">
                 <dx-select-box [items]="expenseItems" displayExpr="name" valueExpr="id" class="form-control" label="Expense"
                     required placeholder="Select option" lableMode="static" id="expense"
-                    [formControlName]="'Expense'" (onValueChanged)="valueChanged($event, 'TenantOptions')"
+                    [formControlName]="'Expenses'" (onValueChanged)="valueChanged($event, 'TenantOptions')"
                     [searchEnabled]="true">
                 </dx-select-box>
             </div>
@@ -53,7 +53,7 @@
                     <div class="flex flex-col w-1/2">
                         <dx-select-box [items]="serviceTypeItems" displayExpr="name" valueExpr="id" class="form-control" label="Service Type"
                             required placeholder="Select option" lableMode="static" id="allTenants"
-                            [formControlName]="'serviceType'" (onValueChanged)="valueChanged($event, 'TenantOptions')"
+                            [formControlName]="'ServiceType'" (onValueChanged)="valueChanged($event, 'TenantOptions')"
                             [searchEnabled]="true">
                         </dx-select-box>
                     </div>
@@ -63,8 +63,8 @@
         <div class="flex gap-2 flex-wrap mt-2" [formGroupName]="'visible'">
             <ng-container *ngFor="let item of visibleItems; let i = index;">
                 <div class="flex items-center min-w-44">                    
-                    <mat-checkbox [color]="'primary'" [formControl]="getVisibleControl(i, item)"></mat-checkbox>
-                    <span class="text-md">{{item}}</span>
+                    <mat-checkbox [color]="'primary'" [formControl]="getVisibleControl(i, item.key)"></mat-checkbox>
+                    <span class="text-md">{{item.name}}</span>
                 </div>
             </ng-container>
             

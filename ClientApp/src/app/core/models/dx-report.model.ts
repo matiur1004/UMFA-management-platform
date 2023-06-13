@@ -24,4 +24,24 @@ export interface IDXReport {
     ToPeriodId: number;
     AllTenants: number;
   }
+  export interface IUtilityReportParams {
+    BuildingId: number;
+    FromPeriodId: number;
+    ToPeriodId: number;
+    Recoveries: number;
+    Expenses: number;
+    ReconType: number;
+    NoteType: number;
+    ServiceType: number;
+    ViewClientExpense: number;
+    ClientExpenseVisible: boolean;
+    CouncilAccountVisible: boolean;
+    BulkReadingVisible: boolean;
+    PotentialRecVisible: boolean;
+    NonRecVisible: boolean;
+    UmfaReadingDatesVisible: boolean;
+    CouncilReadingDatesVisible: boolean;
+    UmfaRecoveryVisible: boolean;
+    ClientRecoverableVisible: boolean;
+  }
   

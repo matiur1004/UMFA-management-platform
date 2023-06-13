@@ -1,0 +1,23 @@
+::ng-deep .dx-pivotgrid .dx-pivotgrid-horizontal-headers tr:first-child td:last-child span{
+    display: none;
+}
+::ng-deep .dx-pivotgrid .dx-pivotgrid-horizontal-headers tr:first-child td {
+    font-size: 18px;
+    color: black;
+    font-weight: bold;
+}
+::ng-deep .dx-pivotgrid .dx-pivotgrid-horizontal-headers:last-child {
+    font-size: 18px;
+    font-weight: bold;
+    color: black;
+}
+::ng-deep .dx-pivotgrid-fields-area-head .dx-area-field .dx-area-field-content{
+    font-size: 18px;
+    color: black;
+    font-weight: bold;
+}
+::ng-deep .dx-pivotgrid-horizontal-headers .dx-row-total.dx-grandtotal {
+    font-size: 18px;
+    color: black;
+    font-weight: bold;
+}

@@ -41,7 +41,17 @@ export class ReportCriteriaUtilityComponent implements OnInit {
     {id: 6, name: 'Gas'},
     {id: 7, name: 'Diesel'}
   ];
-  visibleItems = ['Client Expense', 'Client Recovery', 'Council Account', 'UMFA Bulk Reading', 'UMFA Recovery', 'Potential Recovery', 'Non Recoverable', 'UMFA Reading Dates', 'Council Reading Dates'];
+  visibleItems = [
+    {name: 'Client Expense', key: 'ClientExpenseVisible'}, 
+    {name: 'Client Recovery', key: 'ClientRecoverableVisible'}, 
+    {name: 'Council Account', key: 'CouncilAccountVisible'}, 
+    {name: 'UMFA Bulk Reading', key: 'BulkReadingVisible'}, 
+    {name: 'UMFA Recovery', key: 'UmfaRecoveryVisible'}, 
+    {name: 'Potential Recovery', key: 'PotentialRecVisible'}, 
+    {name: 'Non Recoverable', key: 'NonRecVisible'}, 
+    {name: 'UMFA Reading Dates', key: 'UmfaReadingDatesVisible'}, 
+    {name: 'Council Reading Dates', key: 'CouncilReadingDatesVisible'}
+  ];
   custPartnerTemplate = (arg: any) => {
     var ret = "<div class='custom-item' title='" + arg.Name + "'>" + arg.Name + "</div>";
     return ret;
@@ -65,7 +75,7 @@ export class ReportCriteriaUtilityComponent implements OnInit {
   ngOnInit(): void {
     let visibleItemsControls = {};
     this.visibleItems.forEach(item => {
-      visibleItemsControls[item] = [true];
+      visibleItemsControls[item.key] = [true];
     })
     this.form = this._formBuilder.group({
       partnerId: [null],
@@ -73,8 +83,8 @@ export class ReportCriteriaUtilityComponent implements OnInit {
       startPeriodId: [null, Validators.required],
       endPeriodId: [null, Validators.required],
       Recoveries: [2, Validators.required],
-      Expense: [1, Validators.required],
-      serviceType: [null, Validators.required],
+      Expenses: [1, Validators.required],
+      ServiceType: [null, Validators.required],
       visible: this._formBuilder.group(visibleItemsControls)
     });
   }
@@ -96,15 +106,11 @@ export class ReportCriteriaUtilityComponent implements OnInit {
       this.form.get('endPeriodId').setValue(0);
       this.reportService.loadPeriods(this.form.get('buildingId').value);
       this.reportService.selectStartPeriod(this.form.get('startPeriodId').value);
-      this.reportService.setShopUsageVariance([]);
-      this.reportService.setShopCostVariance([]);
     } else if(method == 'Building') {
       this.reportService.loadPeriods(this.form.get('buildingId').value);
       this.form.get('startPeriodId').setValue(0);
       this.form.get('endPeriodId').setValue(0);
       this.reportService.selectStartPeriod(this.form.get('startPeriodId').value);
-      this.reportService.setShopUsageVariance([]);
-      this.reportService.setShopCostVariance([]);
     } else if (method == 'StartPeriod') {
       this.reportService.selectStartPeriod(this.form.get('startPeriodId').value);
     } else if (method == 'EndPeriod') {
@@ -116,11 +122,26 @@ export class ReportCriteriaUtilityComponent implements OnInit {
   setCriteria() {
     if (this.form.valid ) {
       if(this.reportService.SelectedReportId == 4) {
-        this.reportService.ShopUsageVarianceParams = { 
+        let visibleVal = this.form.get('visible').value;
+        this.reportService.UtilityReportParams = { 
           BuildingId: this.form.get('buildingId').value, 
           FromPeriodId: this.form.get('startPeriodId').value, 
           ToPeriodId: this.form.get('endPeriodId').value,
-          AllTenants: this.form.get('allTenants').value,
+          Recoveries: this.form.get('Recoveries').value,
+          Expenses: this.form.get('Expenses').value,
+          ServiceType: this.form.get('ServiceType').value,
+          ReconType: 1,
+          NoteType: 1,
+          ViewClientExpense: 1,
+          ClientExpenseVisible: visibleVal['ClientExpenseVisible'],
+          CouncilAccountVisible: visibleVal['CouncilAccountVisible'],
+          BulkReadingVisible: visibleVal['BulkReadingVisible'],
+          PotentialRecVisible: visibleVal['PotentialRecVisible'],
+          NonRecVisible: visibleVal['NonRecVisible'],
+          UmfaReadingDatesVisible: visibleVal['UmfaReadingDatesVisible'],
+          CouncilReadingDatesVisible: visibleVal['CouncilReadingDatesVisible'],
+          UmfaRecoveryVisible: visibleVal['UmfaRecoveryVisible'],
+          ClientRecoverableVisible: visibleVal['ClientRecoverableVisible'],
         }
       }
       
