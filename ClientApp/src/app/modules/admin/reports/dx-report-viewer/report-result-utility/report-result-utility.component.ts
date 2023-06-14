@@ -1,9 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DXReportService } from '@shared/services';
-import { exportPivotGrid } from 'devextreme/excel_exporter';
+import { exportDataGrid, exportPivotGrid } from 'devextreme/excel_exporter';
 import { Workbook } from 'exceljs';
 import { Subject, takeUntil } from 'rxjs';
 import saveAs from 'file-saver';
+import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexFill, ApexPlotOptions, ApexStroke, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
+
+export type ChartOptions = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  title: ApexTitleSubtitle;
+  plotOptions: any;
+  dataLabels: ApexDataLabels;
+  stroke: ApexStroke;
+  yaxis: ApexYAxis;
+  fill: ApexFill;
+  tooltip: ApexTooltip;
+};
 
 @Component({
   selector: 'report-result-utility',
@@ -12,49 +26,67 @@ import saveAs from 'file-saver';
 })
 export class ReportResultUtilityComponent implements OnInit {
 
+  @ViewChild("chart") chart: ChartComponent;
   dataSource: any;
-  results = [];
+  results;
+  periodList: [] = [];
+  
+  public chartOptions: Partial<ChartOptions>;
+
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(private reportService: DXReportService) { 
-    this.dataSource = {
-      fields: [
+    this.chartOptions = {
+      series: [
         {
-          dataField: 'RowHeader',
-          area: 'row',
-          caption: 'Service Type',
-          expanded: true,
-          width: 160,
-          showTotals: false
-        },
-        {
-          dataField: 'PeriodDate',
-          area: 'column',
-          dataType: "date",
-          allowSorting: false,
-        },
-        { groupName: "PeriodDate", groupInterval: "month" },
-        { groupName: "PeriodDate", groupInterval: "year", expanded: true},
-        { groupName: "PeriodDate", groupInterval: "quarter", visible: false },
-        {
-          dataField: 'ColValue',
-          area: 'data',
-          dataType: 'number',
-          caption: 'Total',
-          summaryType: 'sum',
-          filterValues: [null]
+          name: 'Net Profit',
+          data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
+        }, {
+          name: 'Revenue',
+          data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
+        }, {
+          name: 'Free Cash Flow',
+          data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
         }
       ],
-      fieldPanel: {
-        showColumnFields: true,
-        showDataFields: true,
-        showFilterFields: true,
-        showRowFields: true,
-        allowFieldDragging: true,
-        visible: true,
+      chart: { 
+        type: 'bar',
+        height: 350
       },
-      store: []
-    }
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: '55%',
+          endingShape: 'rounded'
+        },
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ['transparent']
+      },
+      xaxis: {
+        categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+      },
+      yaxis: {
+        title: {
+          text: '$ (thousands)'
+        }
+      },
+      fill: {
+        opacity: 1
+      },
+      tooltip: {
+        y: {
+          formatter: function (val) {
+            return "$ " + val + " thousands"
+          }
+        }
+      }
+    }  
   }
 
   ngOnInit(): void {
@@ -64,30 +96,25 @@ export class ReportResultUtilityComponent implements OnInit {
         console.log('data', data);
         if(data) {
           this.results = data['GridValues'];
-          if(data['GridValues'].length > 0) {
-            this.dataSource['store'] = data['GridValues'].filter(item => item.ColValue != 0 && item.PeriodId != 99999999 && item.ColValue != '').map(item => {
-              item.PeriodDate = new Date(item.PeriodName);
-              item.ColValue = Number(item.ColValue.replaceAll(' ', ''));
-              return item;
-            });
-          }            
         }
         
       })
   }
 
-  exportGrid(e) {
-    const workbook = new Workbook(); 
-        const worksheet = workbook.addWorksheet('Utility Recovery And Expense'); 
-        exportPivotGrid({ 
-            worksheet: worksheet, 
-            component: e.component
-        }).then(function() {
-            workbook.xlsx.writeBuffer().then(function(buffer: BlobPart) { 
-                saveAs(new Blob([buffer], { type: "application/octet-stream" }), "Utility Recovery And Expense.xlsx"); 
-            }); 
-        }); 
-        e.cancel = true; 
+  onExporting(e) {
+    const workbook = new Workbook();
+    const worksheet = workbook.addWorksheet('ShopCostVariance');
+
+    exportDataGrid({
+      component: e.component,
+      worksheet,
+      autoFilterEnabled: true,
+    }).then(() => {
+      workbook.xlsx.writeBuffer().then((buffer) => {
+        saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'ShopCostVariance.xlsx');
+      });
+    });
+    e.cancel = true;
   }
 
   ngOnDestroy(): void {

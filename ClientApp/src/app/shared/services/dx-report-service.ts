@@ -10,7 +10,8 @@ export class DXReportService {
   private _shopCostVariance: BehaviorSubject<any> = new BehaviorSubject(null);
   private _reportChanged: BehaviorSubject<boolean> = new BehaviorSubject(false);
   private _shopUsageVariance: BehaviorSubject<any> = new BehaviorSubject(null);
-
+  private _utilityRecoveryExpense: BehaviorSubject<any> = new BehaviorSubject(null);
+  
   constructor(
     private buildingService: BuildingService,
     private http: HttpClient
