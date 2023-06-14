@@ -57,14 +57,14 @@ export class ReportResultUtilityComponent implements OnInit {
       stroke: {
         show: true,
         width: 2,
-        colors: ['transparent']
+        colors: ['white']
       },
       xaxis: {
         categories: [],
       },
       yaxis: {
         title: {
-          text: '$ (thousands)'
+          text: ''
         }
       },
       fill: {
