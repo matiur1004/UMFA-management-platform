@@ -28,7 +28,8 @@ export class ReportResultUtilityComponent implements OnInit {
 
   @ViewChild("chart") chart: ChartComponent;
   dataSource: any;
-  results;
+  resultsForGrid: any[] = [];
+  resultsForGraph: any[] = [];
   periodList: [] = [];
   
   public chartOptions: Partial<ChartOptions>;
@@ -38,20 +39,10 @@ export class ReportResultUtilityComponent implements OnInit {
   constructor(private reportService: DXReportService) { 
     this.chartOptions = {
       series: [
-        {
-          name: 'Net Profit',
-          data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
-        }, {
-          name: 'Revenue',
-          data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-        }, {
-          name: 'Free Cash Flow',
-          data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
-        }
       ],
       chart: { 
         type: 'bar',
-        height: 350
+        height: 400
       },
       plotOptions: {
         bar: {
@@ -69,7 +60,7 @@ export class ReportResultUtilityComponent implements OnInit {
         colors: ['transparent']
       },
       xaxis: {
-        categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+        categories: [],
       },
       yaxis: {
         title: {
@@ -93,9 +84,33 @@ export class ReportResultUtilityComponent implements OnInit {
     this.reportService.utilityRecoveryExpense$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: any) => {
-        console.log('data', data);
         if(data) {
-          this.results = data['GridValues'];
+          this.periodList = data['PeriodList'];
+          this.resultsForGrid = data['GridValues'];
+          this.dataSource = data['GridValues'].map(item => {
+            this.periodList.forEach((period, idx) => {
+              let filteredPeriod = item['PeriodDetails'].find(obj => period == obj.PeriodName);
+              if(filteredPeriod) item[period] = filteredPeriod['ColValue'];
+              else item[period] = 0;
+            })
+            return item;
+          });
+          this.resultsForGraph = data['GraphValues'];
+          this.chartOptions.xaxis.categories = this.periodList;
+          let seriesData = [];
+          this.resultsForGraph.forEach(item => {
+            let rowData = {name: item['RowHeader'], data: []};
+            this.periodList.forEach(period => {
+              if(period != 'Total') {
+                let filteredPeriod = item['PeriodDetails'].find(obj => obj.PeriodName == period);
+                if(filteredPeriod) rowData.data.push(filteredPeriod['ColValue']);
+                else rowData.data.push(0);
+              }
+            })
+            seriesData.push(rowData);
+          });
+          console.log('rrrrrr', this.resultsForGraph);
+          this.chartOptions.series = seriesData;
         }
         
       })

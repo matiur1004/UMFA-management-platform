@@ -26,9 +26,7 @@ export class ReportResultShopCostComponent implements OnInit {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: any[]) => {
         if(data) {
-          this.periodList = data['TenantShopInvoiceGroupings'][0]['PeriodCostDetails'].map(item => {
-            return item.PeriodName;
-          })
+          this.periodList = data['PeriodList'];
           this.dataSource = data['TenantShopInvoiceGroupings'].filter(item => item['Average'] && item['Variance']).map(item => {
             this.periodList.forEach((period, idx) => {
               let filteredPeriod = item['PeriodCostDetails'].find(obj => period == obj.PeriodName);

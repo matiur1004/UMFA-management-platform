@@ -18,29 +18,23 @@
                     [width]="200"
                     placeholder="Search..."
                 ></dxo-search-panel>
-                <dxi-column dataField="Tenants" [minWidth]="120"></dxi-column>
-                <dxi-column dataField="Shop" [minWidth]="120"></dxi-column>
-                <dxi-column dataField="Group" caption="Group Name" [minWidth]="120"></dxi-column>
+                <dxi-column dataField="RowHeader" caption="Type" [minWidth]="150"></dxi-column>
                 <ng-container *ngFor="let period of periodList">
-                    <dxi-column [dataField]="period" [caption]="period" [minWidth]="80">
+                    <dxi-column [dataField]="period" [caption]="period" [minWidth]="120">
                         <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
                     </dxi-column>
                 </ng-container>
-                <dxi-column dataField="Average" [minWidth]="100">
-                    <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
-                </dxi-column>
-                <dxi-column dataField="Variance" [minWidth]="100"></dxi-column>
                 <dxo-export [enabled]="true" [allowExportSelectedData]="false"></dxo-export>
             </dx-data-grid>
         </div>
-        <div style="text-align:center">
+        <div style="width: 100%;" style="text-align:center" *ngIf="resultsForGraph.length > 0">
             <apx-chart
               [series]="chartOptions.series"
               [chart]="chartOptions.chart"
               [xaxis]="chartOptions.xaxis"
               [title]="chartOptions.title"
             ></apx-chart>
-          </div>
+        </div>
     </div>
     
 </ng-container>
