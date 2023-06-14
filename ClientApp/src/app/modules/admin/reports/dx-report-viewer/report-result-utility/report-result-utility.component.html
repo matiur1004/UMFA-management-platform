@@ -1,6 +1,6 @@
 <ng-container>
     <div class="flex flex-col gap-y-2">        
-        <div class="flex w-full p-2">
+        <div class="flex w-full p-2" *ngIf="resultsForGrid.length > 0">
             <dx-data-grid
                 [dataSource]="dataSource"
                 [showBorders]="true"

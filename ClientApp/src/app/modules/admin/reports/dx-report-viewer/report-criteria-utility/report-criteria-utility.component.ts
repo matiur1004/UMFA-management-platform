@@ -106,15 +106,21 @@ export class ReportCriteriaUtilityComponent implements OnInit {
       this.form.get('endPeriodId').setValue(0);
       this.reportService.loadPeriods(this.form.get('buildingId').value);
       this.reportService.selectStartPeriod(this.form.get('startPeriodId').value);
+      this.reportService.setUtility(null);
     } else if(method == 'Building') {
       this.reportService.loadPeriods(this.form.get('buildingId').value);
       this.form.get('startPeriodId').setValue(0);
       this.form.get('endPeriodId').setValue(0);
       this.reportService.selectStartPeriod(this.form.get('startPeriodId').value);
+      this.reportService.setUtility(null);
     } else if (method == 'StartPeriod') {
       this.reportService.selectStartPeriod(this.form.get('startPeriodId').value);
+      this.reportService.setUtility(null);
     } else if (method == 'EndPeriod') {
       this.reportService.ShowResults(false);
+      this.reportService.setUtility(null);
+    } else {
+      this.reportService.setUtility(null);
     }
     this.setCriteria();
   }

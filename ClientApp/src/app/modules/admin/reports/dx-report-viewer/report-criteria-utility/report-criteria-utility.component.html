@@ -37,14 +37,14 @@
             <div class="col-span-2">
             <dx-select-box [items]="recoveriesItems" displayExpr="name" valueExpr="id" class="form-control" label="Recoveries"
                 required placeholder="Select option" lableMode="static" id="recoveries"
-                [formControlName]="'Recoveries'" (onValueChanged)="valueChanged($event, 'TenantOptions')"
+                [formControlName]="'Recoveries'" (onValueChanged)="valueChanged($event, 'Recoveries')"
                 [searchEnabled]="true">
             </dx-select-box>
             </div>
             <div class="col-span-2">
                 <dx-select-box [items]="expenseItems" displayExpr="name" valueExpr="id" class="form-control" label="Expense"
                     required placeholder="Select option" lableMode="static" id="expense"
-                    [formControlName]="'Expenses'" (onValueChanged)="valueChanged($event, 'TenantOptions')"
+                    [formControlName]="'Expenses'" (onValueChanged)="valueChanged($event, 'Expenses')"
                     [searchEnabled]="true">
                 </dx-select-box>
             </div>
@@ -53,7 +53,7 @@
                     <div class="flex flex-col w-1/2">
                         <dx-select-box [items]="serviceTypeItems" displayExpr="name" valueExpr="id" class="form-control" label="Service Type"
                             required placeholder="Select option" lableMode="static" id="allTenants"
-                            [formControlName]="'ServiceType'" (onValueChanged)="valueChanged($event, 'TenantOptions')"
+                            [formControlName]="'ServiceType'" (onValueChanged)="valueChanged($event, 'ServiceType')"
                             [searchEnabled]="true">
                         </dx-select-box>
                     </div>

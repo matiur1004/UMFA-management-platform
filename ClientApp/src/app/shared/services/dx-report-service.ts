@@ -371,6 +371,10 @@ export class DXReportService {
     this._shopCostVariance.next(data);
   }
 
+  setUtility(data) {
+    this._utilityRecoveryExpense.next(data);
+  }
+
   catchErrors(error: { error: { message: any; }; message: any; }): Observable<Response> {
     if (error && error.error && error.error.message) { //clientside error
       console.log(`Client side error: ${error.error.message}`);

@@ -110,6 +110,10 @@ export class ReportResultUtilityComponent implements OnInit {
             seriesData.push(rowData);
           });
           this.chartOptions.series = seriesData;
+        } else {
+          this.periodList = [];
+          this.resultsForGrid = [];
+          this.resultsForGraph = [];
         }
         
       })
