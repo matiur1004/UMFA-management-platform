@@ -4,6 +4,8 @@
     {
         public List<TenantShopInvoiceUsageGrouping> TenantShopInvoiceGroupings { get; set; } = new List<TenantShopInvoiceUsageGrouping>();
         public List<PeriodTotalUsageDetails> Totals { get; set; } = new List<PeriodTotalUsageDetails>();
+
+        public List<string> PeriodList { get; set; }
     }
 
     public class TenantShopInvoiceUsageGrouping

@@ -5,7 +5,32 @@ namespace ClientPortal.Models.ResponseModels
     public class UtilityRecoveryReportResponse
     {
         public List<UtilityRecoveryHeader> HeaderValues { get; set; }
-        public List<UtilityRecoveryGrid> GridValues { get; set; }
-        public List<UtilityRecoveryGraph> GraphValues { get; set; }
+        public List<UtilityRecoveryGridReport> GridValues { get; set; } = new List<UtilityRecoveryGridReport>();
+        public List<UtilityRecoveryGraphReport> GraphValues { get; set; } = new List<UtilityRecoveryGraphReport>();
+
+        public List<string> PeriodList { get; set; }
+    }
+
+    public class UtilityRecoveryGridReport
+    {
+        public string RowHeader { get; set; }
+        public string RepType { get; set; }
+
+        public List<UtilityRecoveryPeriodDetail> PeriodDetails { get; set; }
+    }
+
+    public class UtilityRecoveryGraphReport
+    {
+        public string RowHeader { get; set; }
+
+        public List<UtilityRecoveryPeriodDetail> PeriodDetails { get; set; }
+    }
+
+    public class UtilityRecoveryPeriodDetail
+    {
+        public string PeriodId { get; set; }
+        public string PeriodName { get; set; }
+        public string ColValue { get; set; }
     }
 }
+
