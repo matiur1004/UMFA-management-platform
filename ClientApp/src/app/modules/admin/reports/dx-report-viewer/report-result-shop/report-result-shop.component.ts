@@ -16,7 +16,6 @@ export class ReportResultShopComponent implements OnInit {
   readonly allowedPageSizes = AllowedPageSizes;
 
   dataSource: any;
-  results = [];
   periodList = [];
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
@@ -46,7 +45,7 @@ export class ReportResultShopComponent implements OnInit {
             return item;
           })
           this.dataSource = this.dataSource.concat(totalRows);
-        }
+        } else {this.dataSource = null;}
       })
   }
 

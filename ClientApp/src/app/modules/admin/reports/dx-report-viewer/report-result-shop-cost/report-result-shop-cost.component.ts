@@ -14,7 +14,6 @@ import PivotGridDataSource from 'devextreme/ui/pivot_grid/data_source';
 export class ReportResultShopCostComponent implements OnInit {
 
   dataSource: any;
-  results = [];
   periodList = [];
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   

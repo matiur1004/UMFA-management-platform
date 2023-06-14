@@ -109,7 +109,6 @@ export class ReportResultUtilityComponent implements OnInit {
             })
             seriesData.push(rowData);
           });
-          console.log('rrrrrr', this.resultsForGraph);
           this.chartOptions.series = seriesData;
         }
         
@@ -118,7 +117,7 @@ export class ReportResultUtilityComponent implements OnInit {
 
   onExporting(e) {
     const workbook = new Workbook();
-    const worksheet = workbook.addWorksheet('ShopCostVariance');
+    const worksheet = workbook.addWorksheet('UtilityRecoveryExpense');
 
     exportDataGrid({
       component: e.component,
@@ -126,7 +125,7 @@ export class ReportResultUtilityComponent implements OnInit {
       autoFilterEnabled: true,
     }).then(() => {
       workbook.xlsx.writeBuffer().then((buffer) => {
-        saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'ShopCostVariance.xlsx');
+        saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'UtilityRecoveryExpense.xlsx');
       });
     });
     e.cancel = true;

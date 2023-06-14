@@ -1,4 +1,4 @@
-<ng-container *ngIf="results">
+<ng-container *ngIf="dataSource && dataSource.length > 0">
     <div class="p-2">
         <dx-data-grid
             [dataSource]="dataSource"
