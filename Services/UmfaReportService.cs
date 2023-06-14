@@ -20,9 +20,11 @@ namespace ClientPortal.Services
             _logger = logger;
             _repository = repository;
         }
+
         public async Task<UtilityRecoveryReportResponse> GetUtilityRecoveryReportAsync(UtilityRecoveryReportRequest request)
         {
-            return await _repository.GetUtilityRecoveryReportAsync(request);
+            var spResponse = await _repository.GetUtilityRecoveryReportAsync(request);
+            return CreateUtilityRecoveryReportResponse(spResponse);
         }
 
         public async Task<ShopUsageVarianceReportResponse> GetShopUsageVarianceReportAsync(ShopUsageVarianceRequest request)
@@ -35,6 +37,69 @@ namespace ClientPortal.Services
         {
             var spResponse = await _repository.GetShopCostVarianceReportAsync(request);
             return CreateShopCostVarianceReport(spResponse);
+        }
+
+        private UtilityRecoveryReportResponse CreateUtilityRecoveryReportResponse(UtilityRecoveryReportSpResponse source)
+        {
+            var response = new UtilityRecoveryReportResponse();
+
+            response.HeaderValues = source.HeaderValues;
+
+            //Grid values
+            var gridGroups = source.GridValues.GroupBy(gv => new { gv.RepType, gv.RowHeader });
+            foreach( var group in gridGroups )
+            {
+                var reportGridValues = new UtilityRecoveryGridReport
+                {
+                    RepType = group.Key.RepType,
+                    RowHeader = group.Key.RowHeader,
+                    PeriodDetails = new List<UtilityRecoveryPeriodDetail>(),
+                };
+
+                foreach(var period in group)
+                {
+                    var periodDetails = new UtilityRecoveryPeriodDetail
+                    {
+                        ColValue = period.ColValue,
+                        PeriodId = period.PeriodId,
+                        PeriodName = period.PeriodName,
+                    };
+
+                    reportGridValues.PeriodDetails.Add(periodDetails);
+                }
+
+                response.GridValues.Add(reportGridValues);
+            }
+
+            //Graph Values
+            var graphGroups = source.GraphValues.GroupBy(gv => new { gv.RowHeader });
+            foreach (var group in graphGroups)
+            {
+                var reportGraphValues = new UtilityRecoveryGraphReport
+                {
+                    RowHeader = group.Key.RowHeader,
+                    PeriodDetails = new List<UtilityRecoveryPeriodDetail>(),
+                };
+
+                foreach (var period in group)
+                {
+                    var periodDetails = new UtilityRecoveryPeriodDetail
+                    {
+                        ColValue = period.ColValue,
+                        PeriodId = period.PeriodId,
+                        PeriodName = period.PeriodName,
+                    };
+
+                    reportGraphValues.PeriodDetails.Add(periodDetails);
+                }
+
+                response.GraphValues.Add(reportGraphValues);
+            }
+
+            //Period List
+            response.PeriodList = source.GridValues.DistinctBy(gv => gv.PeriodId).OrderBy(gv => gv.PeriodId).Select(gv => gv.PeriodName).ToList();
+
+            return response;
         }
 
         private ShopCostVarianceReportResponse CreateShopCostVarianceReport(ShopCostVarianceSpResponse source)

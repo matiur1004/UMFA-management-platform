@@ -8,7 +8,7 @@ namespace ClientPortal.Data.Repositories
 {
     public interface IUmfaRepository
     {
-        public Task<UtilityRecoveryReportResponse> GetUtilityRecoveryReportAsync(UtilityRecoveryReportRequest request);
+        public Task<UtilityRecoveryReportSpResponse> GetUtilityRecoveryReportAsync(UtilityRecoveryReportRequest request);
         public Task<ShopUsageVarianceSpResponse> GetShopUsageVarianceReportAsync(ShopUsageVarianceRequest request);
         public Task<ShopCostVarianceSpResponse> GetShopCostVarianceReportAsync(ShopUsageVarianceRequest request);
     }
@@ -78,10 +78,10 @@ namespace ClientPortal.Data.Repositories
             }
         }
 
-        public async Task<UtilityRecoveryReportResponse> GetUtilityRecoveryReportAsync(UtilityRecoveryReportRequest request)
+        public async Task<UtilityRecoveryReportSpResponse> GetUtilityRecoveryReportAsync(UtilityRecoveryReportRequest request)
         {
 
-            var result = await RunStoredProcedure<UtilityRecoveryReportResponse, UtilityRecoveryReportRequest>("upPortal_UtilityRecoveryReport", request);
+            var result = await RunStoredProcedure<UtilityRecoveryReportSpResponse, UtilityRecoveryReportRequest>("upPortal_UtilityRecoveryReport", request);
 
             return result;
         }
