@@ -1,6 +1,7 @@
 ﻿using ClientPortal.Data.Repositories;
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
+using ServiceStack;
 
 namespace ClientPortal.Services
 {
@@ -122,6 +123,10 @@ namespace ClientPortal.Services
 
             response.Totals = totals;
 
+            //Period List
+            response.PeriodList = source.ShopCostVariances.DistinctBy(s => s.PeriodID).OrderBy(s => s.PeriodID).Select(s => s.PeriodName).ToList();
+
+
             return response;
         }
 
@@ -209,6 +214,9 @@ namespace ClientPortal.Services
             }
 
             response.Totals = totals;
+
+            //Period List
+            response.PeriodList = source.ShopUsageVariances.DistinctBy(s => s.PeriodID).OrderBy(s => s.PeriodID).Select(s => s.PeriodName).ToList();
 
             return response;
         }
