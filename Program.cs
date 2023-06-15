@@ -153,6 +153,7 @@ IConfiguration? configuration = builder.Configuration;
     services.AddScoped<IScadaRequestRepository<ScadaRequestHeader>, ScadaRequestHeaderRepository>();
     services.AddScoped<IScadaRequestRepository<ScadaRequestDetail>, ScadaRequestDetailRepository>();
     services.AddScoped<IUmfaRepository, UmfaRepository>();
+    services.AddScoped<INotificationRepository, NotificationRepository>();
 }
 
 var app = builder.Build();

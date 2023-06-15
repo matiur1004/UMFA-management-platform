@@ -56,17 +56,12 @@ namespace ClientPortal.Services
 
             var responseString = "";
 
-            try
-            {
-                var response = await client.PostAsync(whatsAppApiUrl, content);
-                //response.EnsureSuccessStatusCode();
-                responseString = await response.Content.ReadAsStringAsync();
-                return response.IsSuccessStatusCode;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+
+            var response = await client.PostAsync(whatsAppApiUrl, content);
+            //response.EnsureSuccessStatusCode();
+            responseString = await response.Content.ReadAsStringAsync();
+            return response.IsSuccessStatusCode;
+
         }
     }
 }

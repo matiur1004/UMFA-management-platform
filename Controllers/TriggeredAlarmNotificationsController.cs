@@ -2,6 +2,7 @@
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Interfaces;
+using ClientPortal.Models.ResponseModels;
 using ClientPortal.Services;
 using ServiceStack;
 using System.Dynamic;
@@ -162,53 +163,25 @@ namespace ClientPortal.Controllers
         }
 
         [HttpGet("getNotificationsToSend")]
-        public ActionResult<IEnumerable<dynamic>> GetNotificationsToSend()
+        public async Task<ActionResult<IEnumerable<NotificationToSend>>> GetNotificationsToSend()
         {
-            List<dynamic> resultList = new List<dynamic>();
-            
             try
             {
-                using (var command = _context.Database.GetDbConnection().CreateCommand())
-                {
-                    command.CommandText = "spGetNotificationsToSend";
-                    command.CommandType = System.Data.CommandType.StoredProcedure;
-
-                    _context.Database.OpenConnection();
-
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            dynamic result = new ExpandoObject();
-                            var dictionary = result as IDictionary<string, object>;
-
-                            for (int i = 0; i < reader.FieldCount; i++)
-                            {
-                                dictionary.Add(reader.GetName(i), reader.IsDBNull(i) ? null : reader[i]);
-                            }
-                            resultList.Add(result);
-                        }
-                    }
-                }
-                
+                return (await _notificationService.GetNotificationsToSendAsync()).NotificationsToSend;
             }
             catch (Exception)
             {
                 return Problem($"Failed to get NotificationsToSend");
             }
-            return Ok(resultList);
         }
 
         // TEST: TestSendNotifications
         [HttpGet("testSendNotifications")]
         public async Task<IActionResult> TestSendNotifications()
         {
-            var testSendNotifications = await _notificationService.ProcessNotifications();
-            if (testSendNotifications == false)
-            {
-                return NoContent();
-            }
-            return Ok("Success");
+            await _notificationService.SendPendingNotifications();
+            
+            return Accepted();
         }
 
         private bool TriggeredAlarmNotificationExists(int id)
