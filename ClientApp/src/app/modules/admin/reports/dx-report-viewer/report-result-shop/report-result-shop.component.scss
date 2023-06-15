@@ -1,0 +1,8 @@
+::ng-deep #gridContainer {
+    min-height: 100px;
+    max-height: calc(100vh - 250px);
+}
+::ng-deep .dx-datagrid-headers table tbody tr {
+    font-weight: bold;
+    color: black;
+}

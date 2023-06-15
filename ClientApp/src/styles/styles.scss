@@ -170,3 +170,27 @@ body {
 .alarmTrigger-detail .dx-editor-outlined.dx-texteditor-with-label {
     margin-top: 0px;
 }
+.dx-pivotgrid-fields-container .dx-area-field.dx-area-box {
+    background-color: unset !important;
+    border: unset !important;
+}
+.dx-pivotgrid-fields-container .dx-column-indicators {
+    display: none !important;
+}
+.dx-pivotgrid .dx-pivotgrid-container > table > tr:nth-child(2) {
+    display: none;
+}
+thead.dx-pivotgrid-horizontal-headers tr:nth-child(3) {
+    td:not(.dx-row-total) span {
+        display: none;
+    }
+}
+.dx-pivotgrid .dx-filter-header .dx-pivotgrid-toolbar .dx-button {
+    margin-top: 4px !important;
+}
+.dx-pivotgrid .dx-filter-header .dx-pivotgrid-toolbar {
+    margin-bottom: 4px;
+}
+.dx-empty-area-text {
+    display: none;
+}

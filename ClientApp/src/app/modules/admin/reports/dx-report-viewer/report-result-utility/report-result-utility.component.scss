@@ -1,0 +1,14 @@
+::ng-deep #gridContainer {
+    min-height: 100px;
+    max-height: 500px;
+}
+::ng-deep .dx-datagrid-headers table tbody tr {
+    font-weight: bold;
+    color: black;
+}
+::ng-deep .apexcharts-canvas{
+    width: 100% !important;
+}
+::ng-deep .apexcharts-canvas svg {
+    width: 100% !important;
+}
