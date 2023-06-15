@@ -41,9 +41,11 @@ namespace ClientPortal.Data.Repositories
                 alarm.LastRunDTM = DateTime.Now;
 
                 var meterSerial = (await _context.AMRMeters.FindAsync(alarm.AMRMeterId)).MeterSerial;
+                
                 DateTime? lastProfileData = (await _context.ScadaProfileData.Where(p => p.SerialNumber == meterSerial)
                     .Select(p => p.ReadingDate)
                     .MaxAsync());
+                
                 if (!lastProfileData.HasValue)
                 {
                     _logger.LogError($"No Profile data for meter {meterSerial}");

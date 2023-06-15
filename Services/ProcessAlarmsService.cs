@@ -42,14 +42,14 @@ namespace ClientPortal.Services
             }
         }
 
-        private bool ProcessAlarms(List<AMRMeterAlarm> alarms)
+        private async Task<bool> ProcessAlarms(List<AMRMeterAlarm> alarms)
         {
             try
             {
                 _logger.LogInformation("Now processing alarms...");
                 foreach (var alarm in alarms)
                 {
-                    _ = _repo.ProcessAlarm(alarm).GetAwaiter().GetResult();
+                    await _repo.ProcessAlarm(alarm);
                 }
 
                 return true;
