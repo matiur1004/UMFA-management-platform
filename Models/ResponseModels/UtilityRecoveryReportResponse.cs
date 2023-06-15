@@ -13,6 +13,7 @@ namespace ClientPortal.Models.ResponseModels
 
     public class UtilityRecoveryGridReport
     {
+        public int RowNumber { get; set; }
         public string RowHeader { get; set; }
         public string RepType { get; set; }
 
@@ -21,6 +22,7 @@ namespace ClientPortal.Models.ResponseModels
 
     public class UtilityRecoveryGraphReport
     {
+        public int RowNumber { get; set; }
         public string RowHeader { get; set; }
 
         public List<UtilityRecoveryPeriodDetail> PeriodDetails { get; set; }
