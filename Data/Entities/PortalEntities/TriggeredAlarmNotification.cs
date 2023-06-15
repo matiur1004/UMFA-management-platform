@@ -24,5 +24,7 @@ namespace ClientPortal.Data.Entities.PortalEntities
         public bool Active { get; set; }
         public string? SendStatusMessage { get; set; }
         public string? MessageBody { get; set; }
+        public string? MessageAddress { get; set; }
+        public int RetryCount { get; set; }
     }
 }

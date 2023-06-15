@@ -1,7 +1,9 @@
 ﻿using ClientPortal.Data;
 using ClientPortal.Data.Entities.PortalEntities;
+using ClientPortal.Data.Repositories;
 using ClientPortal.Interfaces;
 using ClientPortal.Models.MessagingModels;
+using ClientPortal.Models.ResponseModels;
 using ClientPortal.Settings;
 using Dapper;
 using Microsoft.Extensions.Options;
@@ -16,168 +18,152 @@ namespace ClientPortal.Services
         private readonly IMailService _mailService;
         private readonly IWhatsAppService _whatsAppService;
         private readonly ITelegramService _telegramService;
+        private readonly INotificationRepository _notificationRepository;
+        private readonly ILogger<NotificationService> _logger;
 
-        public NotificationService(IOptions<NotificationSettings> settings, PortalDBContext dBContext, IMailService mailService, IWhatsAppService whatsAppService, ITelegramService telegramService)
+        public NotificationService(IOptions<NotificationSettings> settings, PortalDBContext dBContext, IMailService mailService, IWhatsAppService whatsAppService, ITelegramService telegramService, INotificationRepository notificationRepository, ILogger<NotificationService> logger)
         {
             _settings = settings.Value;
             _dbContext = dBContext;
             _mailService = mailService;
             _whatsAppService = whatsAppService;
             _telegramService = telegramService;
+            _notificationRepository = notificationRepository;
+            _logger = logger;
         }
 
-        public async Task<bool> ProcessNotifications()
+        private string BuildNotificationMessage(NotificationToSend notification)
         {
-            var returnUrl = _settings.ReturnBaseUrl;
-            var resultList = new List<NotificationsToSendResult>();
+            var returnUrl = $"{_settings.ReturnBaseUrl}ClientPortal/alarm_triggered/{notification.AMRMeterTriggeredAlarmId}";
 
+            var msg = $"Dear {notification.FirstName},\r\n" +
+                $"UMFA ClientPortal Alarm\r\n" +
+                $"Building: {notification.BuildingName}\r\n" +
+                $"MeterNo: {notification.MeterNo}\r\n" +
+                $"Description: {notification.Description}\r\n" +
+                $"Alarm: {notification.AlarmName}\r\n" +
+                $"Alarm Description: {notification.AlarmDescription}\r\n\r\n" +
+                $"Please Follow this link to Acknowledge Alarm: {returnUrl}\r\n\r\n";
+
+            return msg;
+        }
+        
+        public async Task SendPendingNotifications()
+        {
             try
             {
-                //GetNotigicationsToSendFromSP
-                using (var command = _dbContext.Database.GetDbConnection().CreateCommand())
+                var notifications = await _notificationRepository.GetAllAsync(n => n.Status.Equals(1) || n.Status.Equals(3));
+
+                if(notifications is null)
                 {
-                    var CommandText = $"EXEC spGetNotificationsToSend";
-                    var connection = _dbContext.Database.GetDbConnection();
-                    await connection.OpenAsync();
-                    var results = await connection.QueryMultipleAsync(CommandText);
-                    resultList = results.Read<NotificationsToSendResult>().ToList();
+                    return;
                 }
 
-                if (resultList.Count == 0) return true;
-                
-                foreach (var not in resultList)
+                foreach (var notification in notifications.Where(n => !string.IsNullOrWhiteSpace(n.MessageAddress) && !string.IsNullOrWhiteSpace(n.MessageBody)))
                 {
-                    //Get If Entry Exists In Update Table
-                    var checkTriggeredAlarmNotification = await _dbContext.TriggeredAlarmNotifications
-                        .Where(rec => rec.AMRMeterTriggeredAlarmId == not.AMRMeterTriggeredAlarmId)
-                        .FirstOrDefaultAsync();
-
-                    if (checkTriggeredAlarmNotification == null)
+                    try
                     {
-                        //Add New 
-                        var newTAN = new TriggeredAlarmNotification();
-                        newTAN.TriggeredAlarmNotificationId = 0;
-                        newTAN.UserId = not.UserId;
-                        newTAN.AMRMeterTriggeredAlarmId = not.AMRMeterTriggeredAlarmId;
-                        newTAN.NotificationSendTypeId = not.NotificationSendTypeId;
-                        newTAN.Status = 1;
-                        newTAN.CreatedDateTime = DateTime.Now;
-                        newTAN.LastUdateDateTime = DateTime.Now;
-                        newTAN.SendDateTime = null;
-                        newTAN.Active = true;
-                        newTAN.SendStatusMessage = null;
-                        newTAN.MessageBody = null;
-                        //Save
-                        var saveRecord = _dbContext.TriggeredAlarmNotifications.Add(newTAN);
-                        await _dbContext.SaveChangesAsync();
+                        bool sendResult = false;
+
+                        try
+                        {
+                            //Send Notification
+                            switch (notification.NotificationSendTypeId)
+                            {
+                                case 1: //EMAIL
+                                    var mData = new MailData();
+                                    mData.To = notification.MessageAddress!;
+                                    mData.Message = notification.MessageBody!;
+                                    sendResult = await _mailService.SendAsync(mData, default);
+                                    break;
+                                case 2: //WhatsApp
+                                    var wData = new WhatsAppData();
+                                    wData.PhoneNumber = notification.MessageAddress!;
+                                    wData.Message = notification.MessageBody!;
+                                    sendResult = await _whatsAppService.SendAsync(wData, default);
+                                    break;
+                                case 3: //Telegram
+                                    var tData = new TelegramData();
+                                    tData.PhoneNumber = notification.MessageAddress!;
+                                    tData.Message = notification.MessageBody!;
+                                    sendResult = await _telegramService.SendAsync(tData, default);
+                                    break;
+                            }
+
+                            notification.RetryCount += notification.Status == 3 ? 1 : 0;
+
+                            if (sendResult)
+                            {
+                                notification.Status = 2;
+                                notification.SendStatusMessage = "Success";
+                                notification.SendDateTime = DateTime.UtcNow;
+                            }
+                            else
+                            {
+                                notification.Status = 3;
+                                notification.SendStatusMessage = "Failure";
+                            }
+                        }
+                        catch(Exception e)
+                        {
+                            _logger.LogError(e, "Could not send notification message");
+                            notification.SendStatusMessage = e.Message;
+                            notification.RetryCount += notification.Status == 3 ? 1 : 0;
+                            notification.Status = 3;
+                            
+                        }
+                        
+                        notification.LastUdateDateTime = DateTime.UtcNow;
+
+                        await _notificationRepository.UpdateAsync(notification);
                     }
-
-                    var sendTypeId = not.NotificationSendTypeId;
-                    var sendEmail = not.NotificationEmailAddress;
-                    var sendSocial = not.NotificationMobileNumber;
-                    returnUrl += "ClientPortal/alarm_triggered/" + not.AMRMeterTriggeredAlarmId;
-                    //Build Message To Send
-                    var msg = $"Dear {not.FirstName},\r\n" +
-                        $"UMFA ClientPortal Alarm\r\n" +
-                        $"Building: {not.BuildingName}\r\n" +
-                        $"MeterNo: {not.MeterNo}\r\n" +
-                        $"Description: {not.Description}\r\n" +
-                        $"Alarm: {not.AlarmName}\r\n" +
-                        $"Alarm Description: {not.AlarmDescription}\r\n\r\n" +
-                        $"Please Follow this link to Acknowledge Alarm: {returnUrl}\r\n\r\n" +
-                        $"Internal Diagnostics: {JsonSerializer.SerializeToString(not)}";
-
-                    bool sendResult = false;
-
-                    //Send Notification
-                    switch (sendTypeId)
+                    catch (Exception e)
                     {
-                        case 1: //EMAIL
-                            var mData = new MailData();
-                            mData.To = sendEmail;
-                            mData.Message = msg;
-                            sendResult = await _mailService.SendAsync(mData, default);
-                            break;
-                        case 2: //WhatsApp
-                            var wData = new WhatsAppData();
-                            wData.PhoneNumber = sendSocial;
-                            wData.Message = msg;
-                            sendResult = await _whatsAppService.SendAsync(wData, default);
-                            break;
-                        case 3: //Telegram
-                            var tData = new TelegramData();
-                            tData.PhoneNumber = sendSocial;
-                            tData.Message = msg;
-                            sendResult = await _telegramService.SendAsync(tData, default);
-                            break;
+                        _logger.LogError(e, $"Error while Updating database for notification {notification.TriggeredAlarmNotificationId}");
                     }
-
-                    //UPDATE RECORD
-                    var triggeredAlarmNotification = await _dbContext.TriggeredAlarmNotifications
-                        .Where(rec => rec.AMRMeterTriggeredAlarmId == not.AMRMeterTriggeredAlarmId)
-                        .FirstOrDefaultAsync();
-
-                    if (sendResult == true) 
-                    {
-                        triggeredAlarmNotification.SendStatusMessage = "Success";
-                    }
-                    else
-                    {
-                        triggeredAlarmNotification.SendStatusMessage = "Failure";
-                    }
-                    triggeredAlarmNotification.MessageBody = msg;
-                    triggeredAlarmNotification.SendDateTime = DateTime.Now;
-                    _dbContext.Entry(triggeredAlarmNotification).State = EntityState.Modified;
-                    await _dbContext.SaveChangesAsync();
                 }
             }
             catch (Exception)
             {
-                return false;
+                _logger.LogError("Could not retrieve Notifications to send");
             }
 
-            return true;
+            return;
         }
 
-        public string GetSendType(int sendTypeId)
+        public async Task<NotificationsToSendSpResponse> GetNotificationsToSendAsync()
         {
-            switch (sendTypeId)
+            var notifications = await _notificationRepository.GetNotificationsToSendAsync();
+
+            foreach(var notification in notifications.NotificationsToSend)
             {
-                case 1:
-                    return "Email";
-                case 2:
-                    return "Whatsapp";
-                case 3:
-                    return "Telegram";
-                    
+                try
+                {
+                    var newNotification = new TriggeredAlarmNotification
+                    {
+                        UserId = (int)notification.UserId!,
+                        AMRMeterTriggeredAlarmId = (int)notification.AMRMeterTriggeredAlarmId!,
+                        NotificationSendTypeId = notification.NotificationSendTypeId,
+                        Status = 1,
+                        CreatedDateTime = DateTime.UtcNow,
+                        LastUdateDateTime = DateTime.UtcNow,
+                        Active = true,
+                        SendStatusMessage = "Pending",
+                        MessageBody = BuildNotificationMessage(notification),
+                        MessageAddress = notification.NotificationSendTypeId == 1 ? notification.NotificationEmailAddress : notification.NotificationMobileNumber,
+                        RetryCount = 0,
+                    };
+
+                    await _notificationRepository.AddAsync(newNotification);
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, "Error while saving new notification to DB");
+                }
             }
-            return "Email";
+
+            return notifications;
         }
     }
-
-    public class NotificationsToSendResult
-    {
-        public int AMRMeterTriggeredAlarmId { get; set; }
-        public int AMRMeterAlarmId { get; set; }
-        public int UserId { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string NotificationEmailAddress { get; set; }
-        public string NotificationMobileNumber { get; set; }
-        public int BuildingId { get; set; }
-        public int UmfaId { get; set; }
-        public string BuildingName { get; set; }
-        public int AMRMeterId { get; set; }
-        public string MeterNo { get; set; }
-        public string MeterSerial { get; set; }
-        public string Description { get; set; }
-        public string AlarmName { get; set; }
-        public string AlarmDescription { get; set; }
-        public DateTime OccStartDTM { get; set; }
-        public int NotificationSendTypeId { get; set; }
-        public string NotificationSendTypeName { get; set; }
-    }
-
-    
 }
 
