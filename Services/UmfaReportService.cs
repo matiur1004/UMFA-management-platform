@@ -46,13 +46,14 @@ namespace ClientPortal.Services
             response.HeaderValues = source.HeaderValues;
 
             //Grid values
-            var gridGroups = source.GridValues.GroupBy(gv => new { gv.RepType, gv.RowHeader });
+            var gridGroups = source.GridValues.GroupBy(gv => new { gv.RepType, gv.RowHeader, gv.RowNr });
             foreach( var group in gridGroups )
             {
                 var reportGridValues = new UtilityRecoveryGridReport
                 {
                     RepType = group.Key.RepType,
                     RowHeader = group.Key.RowHeader,
+                    RowNumber = group.Key.RowNr,
                     PeriodDetails = new List<UtilityRecoveryPeriodDetail>(),
                 };
 
@@ -72,12 +73,13 @@ namespace ClientPortal.Services
             }
 
             //Graph Values
-            var graphGroups = source.GraphValues.GroupBy(gv => new { gv.RowHeader });
+            var graphGroups = source.GraphValues.GroupBy(gv => new { gv.RowHeader, gv.RowNr });
             foreach (var group in graphGroups)
             {
                 var reportGraphValues = new UtilityRecoveryGraphReport
                 {
                     RowHeader = group.Key.RowHeader,
+                    RowNumber = group.Key.RowNr,
                     PeriodDetails = new List<UtilityRecoveryPeriodDetail>(),
                 };
 
