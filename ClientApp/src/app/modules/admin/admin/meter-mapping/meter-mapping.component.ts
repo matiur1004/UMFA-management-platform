@@ -260,6 +260,8 @@ export class MeterMappingComponent implements OnInit {
         let building = this.buildings.find(bld => bld.BuildingId == formData['UmfaId']);
         let umfaMeter = this.umfaMeters.find(ufM => ufM.MeterId == formData['UmfaMeterId']);
         let scadaMeter = this.scadaMeters.find(scm => scm.Serial == formData['ScadaMeterId']);
+        let touItem = this.timeOfUses.find(tou => tou.Id == formData['TimeOfUse']);
+        let registerTypeItem = this.registerTypes.find(rt => rt.RegisterTypeId == formData['RegisterType']);
         let data: any = {};
         data = {
             ...data,
@@ -274,8 +276,10 @@ export class MeterMappingComponent implements OnInit {
             'Description': formData['Description'],
             'ScadaSerial': scadaMeter['Serial'],
             'ScadaDescription': scadaMeter['Name'],
-            'RegisterType': formData['RegisterType'],
-            'TOUHeader': formData['TimeOfUse'],
+            'RegisterType': registerTypeItem.RegisterTypeName,
+            'RegisterTypeId': registerTypeItem.RegisterTypeId,
+            'TOUHeader': touItem.Name,
+            'TOUId': touItem.Id,
             'SupplyType': formData['SupplyType'],
             'SupplyTo': formData['SupplyTo'],
             'LocationType': formData['LocationType']
