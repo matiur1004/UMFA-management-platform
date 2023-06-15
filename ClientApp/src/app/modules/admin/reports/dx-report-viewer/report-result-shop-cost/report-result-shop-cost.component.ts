@@ -44,7 +44,7 @@ export class ReportResultShopCostComponent implements OnInit {
             return item;
           })
           this.dataSource = this.dataSource.concat(totalRows);
-        }
+        } else {this.dataSource = null;}
       })
   }
 
