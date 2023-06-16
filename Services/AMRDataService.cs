@@ -12,7 +12,7 @@ namespace ClientPortal.Services
         Task<List<AMRTOUHeaderResponse>> GetTouHeaders();
         Task<DemandProfileResponse> GetDemandProfile(AMRDemandProfileRequest request);
         Task<AMRWaterProfileResponse> GetWaterProfile(AMRWaterProfileRequest request);
-        Task<List<AmrJobToRun>> GetAmrJobsAsync(int profileDays);
+        Task<List<AmrJobToRun>> GetAmrJobsAsync(int profileDay, int maxDetailCount);
         Task<bool> DetailQueueStatusChange(int detailId, int status);
         Task<AmrJob> ProcessProfileJob(AmrJobToRun job);
         Task<AmrJob> ProcessReadingsJob(AmrJobToRun job);
@@ -186,7 +186,7 @@ namespace ClientPortal.Services
             }
         }
 
-        public async Task<List<AmrJobToRun>> GetAmrJobsAsync(int profileDays)
+        public async Task<List<AmrJobToRun>> GetAmrJobsAsync(int profileDays, int maxDetailCount)
         {
             _logger.LogInformation("Getting the AMR Jobs to process...");
             try
@@ -201,7 +201,7 @@ namespace ClientPortal.Services
                 {
                     detailCnt = header.ScadaRequestDetails.Count;
                     headers2Proccess.Add(header);
-                    if (detailCnt >= 100) break;
+                    if (detailCnt >= maxDetailCount) break;
                 }
 
                 if (headers2Proccess != null && headers2Proccess.Count > 0)
