@@ -13,17 +13,15 @@ namespace ClientPortal.Services
     public class NotificationService : INotificationService
     {
         private readonly NotificationSettings _settings;
-        private readonly PortalDBContext _dbContext;
         private readonly IMailService _mailService;
         private readonly IWhatsAppService _whatsAppService;
         private readonly ITelegramService _telegramService;
         private readonly INotificationRepository _notificationRepository;
         private readonly ILogger<NotificationService> _logger;
 
-        public NotificationService(IOptions<NotificationSettings> settings, PortalDBContext dBContext, IMailService mailService, IWhatsAppService whatsAppService, ITelegramService telegramService, INotificationRepository notificationRepository, ILogger<NotificationService> logger)
+        public NotificationService(IOptions<NotificationSettings> settings, IMailService mailService, IWhatsAppService whatsAppService, ITelegramService telegramService, INotificationRepository notificationRepository, ILogger<NotificationService> logger)
         {
             _settings = settings.Value;
-            _dbContext = dBContext;
             _mailService = mailService;
             _whatsAppService = whatsAppService;
             _telegramService = telegramService;
@@ -51,7 +49,7 @@ namespace ClientPortal.Services
         {
             try
             {
-                var notifications = await _notificationRepository.GetAllAsync(n => n.Status.Equals(1) || n.Status.Equals(3));
+                var notifications = await _notificationRepository.GetAllAsync(n => n.Status.Equals(1) || n.Status.Equals(3) && n.RetryCount < 4);
 
                 if(notifications is null)
                 {
@@ -72,7 +70,7 @@ namespace ClientPortal.Services
                                 case 1: //EMAIL
                                     var mData = new MailData();
                                     mData.To = notification.MessageAddress!;
-                                    mData.Message = notification.MessageBody!;
+                                    mData.Message = BuildNotificationMessage(JsonSerializer.Deserialize<NotificationToSend>(notification.MessageBody));
                                     sendResult = await _mailService.SendAsync(mData, default);
                                     break;
                                 case 2: //WhatsApp
@@ -82,7 +80,7 @@ namespace ClientPortal.Services
                                 case 3: //Telegram
                                     var tData = new TelegramData();
                                     tData.PhoneNumber = notification.MessageAddress!;
-                                    tData.Message = notification.MessageBody!;
+                                    tData.Message = BuildNotificationMessage(JsonSerializer.Deserialize<NotificationToSend>(notification.MessageBody));
                                     sendResult = await _telegramService.SendAsync(tData, default);
                                     break;
                             }

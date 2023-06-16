@@ -1,8 +1,10 @@
-﻿using ClientPortal.Interfaces;
+﻿using ClientPortal.Controllers.Authorization;
+using ClientPortal.Interfaces;
 using ClientPortal.Models.MessagingModels;
 
 namespace ClientPortal.Controllers
 {
+    [Authorize]
     [Route("[controller]")]
     [ApiController]
     public class MessagingController : ControllerBase

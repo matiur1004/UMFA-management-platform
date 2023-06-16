@@ -31,7 +31,46 @@ namespace ClientPortal.Services
                 recipient_type = "individual",
                 to = tData.PhoneNumber,
                 type = "template",
-                template = new { name = _settings.TemplateName, language = new { code = "en_US" } }
+                template = new 
+                {
+                    name = _settings.TemplateName,
+                    language = new { code = "en_US" },
+                    components = new List<object>
+                    {
+                        new
+                        {
+                            type = "body",
+                            parameters = new List<object>
+                            {
+                                new
+                                {
+                                    type = "text",
+                                    text = tData.MeterNumber
+                                },
+                                new
+                                {
+                                    type = "text",
+                                    text = tData.MeterName
+                                },
+                                new
+                                {
+                                    type = "text",
+                                    text = tData.BuildingName
+                                },
+                                new
+                                {
+                                    type = "text",
+                                    text = tData.AlarmName
+                                },
+                                new
+                                {
+                                    type = "text",
+                                    text = tData.AlarmDescription
+                                },
+                            }
+                        }
+                    }
+                }
             };
 
             var json = JsonConvert.SerializeObject(request);

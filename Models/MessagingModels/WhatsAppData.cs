@@ -11,6 +11,7 @@ namespace ClientPortal.Models.MessagingModels
         public string AlarmName { get; set; }
         public string AlarmDescription { get; set; }
 
+        public WhatsAppData() { }
         public WhatsAppData(NotificationToSend notification) 
         {
             PhoneNumber = notification.NotificationMobileNumber;
