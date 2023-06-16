@@ -188,7 +188,7 @@ namespace ClientPortal.Services
 
         public async Task<List<AmrJobToRun>> GetAmrJobsAsync(int profileDays, int maxDetailCount)
         {
-            _logger.LogInformation("Getting the AMR Jobs to process...");
+            _logger.LogInformation($"Getting the AMR Jobs to process with profileDays = {profileDays} and max details {maxDetailCount}...");
             try
             {
                 List<AmrJobToRun> jobs = new();
