@@ -195,12 +195,21 @@ namespace ClientPortal.Services
 
                 var headers = await _repo.GetJobsToRunAsync();
 
-                if (headers != null && headers.Count > 0)
+                var headers2Proccess = new List<ScadaRequestHeader>();
+                int detailCnt = 0;
+                foreach(var header in headers)
                 {
-                    bool statusChanged = await _repo.UpdateAmrJobStatus(headers, 2); //update status to running = 2
+                    detailCnt = header.ScadaRequestDetails.Count;
+                    headers2Proccess.Add(header);
+                    if (detailCnt >= 100) break;
+                }
+
+                if (headers2Proccess != null && headers2Proccess.Count > 0)
+                {
+                    bool statusChanged = await _repo.UpdateAmrJobStatus(headers2Proccess, 2); //update status to running = 2
                     if (statusChanged)
                     {
-                        foreach (var header in headers)
+                        foreach (var header in headers2Proccess)
                         {
                             if (header.JobType == 1) //Profile Job
                             {
@@ -271,7 +280,7 @@ namespace ClientPortal.Services
                                 }
                             }
                         }
-                        await _repo.UpdateAmrJobStatus(headers, 1);
+                        await _repo.UpdateAmrJobStatus(headers2Proccess, 1);
                     }
                 }
 
