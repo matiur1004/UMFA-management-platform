@@ -14,4 +14,6 @@ export interface IMappedMeter {
     TOUHeader: string;
     SupplyType: string;
     Location: string;
+    TOUId: number;
+    RegisterTypeId: number;
 }

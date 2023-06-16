@@ -329,6 +329,7 @@ namespace ClientPortal.Data.Repositories
                         .ThenInclude(d => d.AmrScadaUser)
                     .Include(h => h.ScadaRequestDetails)
                         .ThenInclude(d => d.AmrMeter)
+                    .OrderBy(h => h.LastRunDTM)
                     .ToListAsync();
 
                 return header;

@@ -11,6 +11,7 @@ namespace ClientPortal.Data.Repositories
         public Task<UtilityRecoveryReportSpResponse> GetUtilityRecoveryReportAsync(UtilityRecoveryReportRequest request);
         public Task<ShopUsageVarianceSpResponse> GetShopUsageVarianceReportAsync(ShopUsageVarianceRequest request);
         public Task<ShopCostVarianceSpResponse> GetShopCostVarianceReportAsync(ShopUsageVarianceRequest request);
+        public Task AddMappedMeterAsync(MappedMeterSpRequest request);
     }
     public class UmfaRepository : IUmfaRepository
     {
@@ -78,6 +79,48 @@ namespace ClientPortal.Data.Repositories
             }
         }
 
+        private async Task RunStoredProcedure<TArgumentClass>(string procedure, TArgumentClass? args = default)
+        {
+            var connection = _context.Database.GetDbConnection();
+            if (connection.State == System.Data.ConnectionState.Closed)
+                await connection.OpenAsync();
+
+            string commandText = $"exec {procedure}";
+
+            // add arguments
+            if (args is not null)
+            {
+                var argumentProperties = typeof(TArgumentClass).GetProperties();
+
+                var arguments = string.Join(", ", argumentProperties.Select(property =>
+                {
+                    var value = property.GetValue(args);
+                    if (value is int || value is bool)
+                    {
+                        int intValue = (value is bool bit) ? (bit ? 1 : 0) : Convert.ToInt32(value);
+                        return $"@{property.Name} = {intValue}";
+                    }
+                    else
+                    {
+                        return $"@{property.Name} = '{value}'";
+                    }
+                }));
+
+                commandText += $" {arguments}";
+            }
+
+            using (var results = await connection.QueryMultipleAsync(commandText))
+            {
+                if (results == null)
+                {
+                    _logger.LogError($"Not time to run yet...");
+                    return;
+                }
+                
+                return;
+            }
+        }
+
         public async Task<UtilityRecoveryReportSpResponse> GetUtilityRecoveryReportAsync(UtilityRecoveryReportRequest request)
         {
 
@@ -100,6 +143,11 @@ namespace ClientPortal.Data.Repositories
             var result = await RunStoredProcedure<ShopCostVarianceSpResponse, ShopUsageVarianceRequest>("upPortal_ShopCostVariance", request);
 
             return result;
+        }
+
+        public async Task AddMappedMeterAsync(MappedMeterSpRequest request)
+        {
+            await RunStoredProcedure("upInsertMappedItems", request);
         }
     }
 }

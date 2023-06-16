@@ -2,6 +2,7 @@
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.DunamisEntities;
 using ClientPortal.Data.Entities.PortalEntities;
+using ClientPortal.Data.Repositories;
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Services;
 
@@ -18,7 +19,6 @@ namespace ClientPortal.Controllers
         private readonly IAMRMeterService _amRMeterService;
         private readonly ILogger<MappedMetersController> _logger;
         private readonly IScadaRequestService _scadaRequestService;
-
         public MappedMetersController(PortalDBContext context, DunamisDBContext dBContext, IMappedMeterService mappedMetersService, IAMRMeterService amRMeterService, ILogger<MappedMetersController> logger, IScadaRequestService scadaRequestService)
         {
             _context = context;
@@ -27,6 +27,7 @@ namespace ClientPortal.Controllers
             _amRMeterService = amRMeterService;
             _logger = logger;
             _scadaRequestService = scadaRequestService;
+            
         }
 
         // GET: MappedMeters/GetAll
@@ -184,7 +185,17 @@ namespace ClientPortal.Controllers
             {
                 await _scadaRequestService.HandleNewMappedMeterAsync(mappedMeter, (int)amrMeterId);
             }
-            
+
+            // sync umfa db
+            try 
+            { 
+                await _mappedMetersService.AddUmfaMappedMeterAsync(mappedMeter);
+            }
+            catch(Exception e)
+            {
+                _logger.LogError(e, "Could not sync Umfa Db");
+            }
+
             return CreatedAtAction("PostMappedMeter", new { id = mappedMeter.MappedMeterId }, mappedMeter);
         }
 

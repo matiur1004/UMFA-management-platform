@@ -1,0 +1,40 @@
+<ng-container>
+    <div class="flex flex-col gap-y-2">        
+        <div class="flex w-full p-2" *ngIf="resultsForGrid.length > 0">
+            <dx-data-grid
+                [dataSource]="dataSource"
+                [showBorders]="true"
+                (onExporting)="onExporting($event)"
+                id="gridContainer"
+                [remoteOperations]="true"
+                [wordWrapEnabled]="true"
+                [hoverStateEnabled]="true"
+            >
+                <!-- <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling> -->
+                <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
+                <dxo-paging [pageSize]="100"></dxo-paging>
+                <dxo-search-panel
+                    [visible]="true"
+                    [width]="200"
+                    placeholder="Search..."
+                ></dxo-search-panel>
+                <dxi-column dataField="RowHeader" caption="Type" [minWidth]="150"></dxi-column>
+                <ng-container *ngFor="let period of periodList">
+                    <dxi-column [dataField]="period" [caption]="period" [minWidth]="120">
+                        <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+                    </dxi-column>
+                </ng-container>
+                <dxo-export [enabled]="true" [allowExportSelectedData]="false"></dxo-export>
+            </dx-data-grid>
+        </div>
+        <div style="width: 100%;" style="text-align:center" *ngIf="resultsForGraph.length > 0">
+            <apx-chart
+              [series]="chartOptions.series"
+              [chart]="chartOptions.chart"
+              [xaxis]="chartOptions.xaxis"
+              [title]="chartOptions.title"
+            ></apx-chart>
+        </div>
+    </div>
+    
+</ng-container>

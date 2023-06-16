@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClientPortal.Data.Entities.PortalEntities
 {
@@ -16,7 +17,13 @@ namespace ClientPortal.Data.Entities.PortalEntities
         public string UmfaDescription { get; set; }
         public string ScadaSerial { get; set; }
         public string ScadaDescription { get; set; }
+        
+        [NotMapped, Required]
+        public int? RegisterTypeId { get; set; }
         public string RegisterType { get; set; }
+
+        [NotMapped, Required]
+        public int? TOUId { get; set; }
         public string TOUHeader { get; set; }
         public string SupplyType { get; set; }
         public string SupplyTo { get; set; }
@@ -36,7 +43,9 @@ namespace ClientPortal.Data.Entities.PortalEntities
             ScadaSerial = source.ScadaSerial;
             ScadaDescription = source.ScadaDescription;
             RegisterType = source.RegisterType;
+            RegisterTypeId = source.RegisterTypeId;
             TOUHeader = source.TOUHeader;
+            TOUId = source.TOUId;
             SupplyType = source.SupplyType;
             SupplyTo = source.SupplyTo;
             LocationType = source.LocationType;

@@ -22,13 +22,15 @@
     </div>
 </div> -->
 <div class="flex flex-col flex-auto min-w-0">
-    <div class="flex flex-col w-full mx-auto py-2 px-6 sm:px-8 bg-card border-b">
-        <div class="flex grid grid-cols-9 gap-2">
+    <div class="flex flex-col w-full mx-auto py-2 px-4 sm:px-4 bg-card border-b">
+        <div class="flex grid grid-cols-10 gap-2">
             <div class="col-span-2">
                 <report-selection [reportList]="(reportList$ | async)"></report-selection>
             </div>
-            <div class="col-span-6">
-                <report-criteria></report-criteria>
+            <div class="col-span-7">
+                <report-criteria *ngIf="reportId == 1"></report-criteria>
+                <report-criteria-shop *ngIf="reportId == 2 || reportId == 3"></report-criteria-shop>
+                <report-criteria-utility *ngIf="reportId == 4"></report-criteria-utility>
             </div>
             <div class="col-span-1 flex items-end">
                 <button mat-raised-button [color]="'primary'" type="button"
@@ -39,7 +41,10 @@
             </div>
         </div>
     </div>
-    <div class="flex w-full">
-        <report-result class="w-full"></report-result>
+    <div class="flex w-full h-full">
+        <report-result class="w-full" *ngIf="reportId == 1"></report-result>
+        <report-result-shop *ngIf="reportId == 2" class="w-full"></report-result-shop>
+        <report-result-shop-cost *ngIf="reportId == 3" class="w-full"></report-result-shop-cost>
+        <report-result-utility *ngIf="reportId == 4" class="w-full"></report-result-utility>
     </div>
 </div>

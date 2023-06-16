@@ -1,5 +1,6 @@
 ﻿using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Data.Repositories;
+using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 
 namespace ClientPortal.Services
@@ -11,16 +12,20 @@ namespace ClientPortal.Services
         public Task<MappedMeterResponse<MappedMeter>> GetMappedMeterAsync(int id);
         public Task UpdateMappedMeterAsync(MappedMeter mm);
         public Task DeleteMappedMeterAsync(MappedMeter mm);
+
+        public Task AddUmfaMappedMeterAsync(MappedMeter meter);
     }
     public class MappedMetersService : IMappedMeterService
     {
         private readonly ILogger<MappedMetersService> _logger;
         private readonly IMappedMeterRepository _repo;
+        private readonly IUmfaRepository _umfaRepository;
 
-        public MappedMetersService(IMappedMeterRepository repo, ILogger<MappedMetersService> logger)
+        public MappedMetersService(IMappedMeterRepository repo, ILogger<MappedMetersService> logger, IUmfaRepository umfaRepository)
         {
             _repo = repo;
             _logger = logger;
+            _umfaRepository = umfaRepository;
         }
 
         public async Task<MappedMeterResponse<List<MappedMeter>>> GetMappedMetersByBuildingAsync(int buildingId)
@@ -93,6 +98,11 @@ namespace ClientPortal.Services
         public async Task DeleteMappedMeterAsync(MappedMeter mm)
         {
             await _repo.DeleteMappedMeterAsync(mm);
+        }
+
+        public async Task AddUmfaMappedMeterAsync(MappedMeter meter)
+        {
+            await _umfaRepository.AddMappedMeterAsync(new MappedMeterSpRequest(meter));
         }
     }
 }

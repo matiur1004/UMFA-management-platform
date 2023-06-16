@@ -12,7 +12,7 @@ namespace ClientPortal.Services
         Task<List<AMRTOUHeaderResponse>> GetTouHeaders();
         Task<DemandProfileResponse> GetDemandProfile(AMRDemandProfileRequest request);
         Task<AMRWaterProfileResponse> GetWaterProfile(AMRWaterProfileRequest request);
-        Task<List<AmrJobToRun>> GetAmrJobsAsync(int profileDays);
+        Task<List<AmrJobToRun>> GetAmrJobsAsync(int profileDay, int maxDetailCount);
         Task<bool> DetailQueueStatusChange(int detailId, int status);
         Task<AmrJob> ProcessProfileJob(AmrJobToRun job);
         Task<AmrJob> ProcessReadingsJob(AmrJobToRun job);
@@ -108,7 +108,7 @@ namespace ClientPortal.Services
             catch (Exception ex)
             {
                 _logger.LogError("Error while retrieving scada data for {key1}: {msg}", job.Key1, ex.Message);
-                trackedHeader.ScadaRequestDetails[0].Status = 7;
+                trackedHeader.ScadaRequestDetails[0].Status = 1;
                 await _repo.SaveTrackedItems();
                 throw;
             }
@@ -180,27 +180,36 @@ namespace ClientPortal.Services
             catch (Exception ex)
             {
                 _logger.LogError("Error while retrieving scada data for {key1}: {msg}", job.Key1, ex.Message);
-                trackedHeader.ScadaRequestDetails[0].Status = 7;
+                trackedHeader.ScadaRequestDetails[0].Status = 1;
                 await _repo.SaveTrackedItems();
                 throw;
             }
         }
 
-        public async Task<List<AmrJobToRun>> GetAmrJobsAsync(int profileDays)
+        public async Task<List<AmrJobToRun>> GetAmrJobsAsync(int profileDays, int maxDetailCount)
         {
-            _logger.LogInformation("Getting the AMR Jobs to process...");
+            _logger.LogInformation($"Getting the AMR Jobs to process with profileDays = {profileDays} and max details {maxDetailCount}...");
             try
             {
                 List<AmrJobToRun> jobs = new();
 
                 var headers = await _repo.GetJobsToRunAsync();
 
-                if (headers != null && headers.Count > 0)
+                var headers2Proccess = new List<ScadaRequestHeader>();
+                int detailCnt = 0;
+                foreach(var header in headers)
                 {
-                    bool statusChanged = await _repo.UpdateAmrJobStatus(headers, 2); //update status to running = 2
+                    detailCnt = header.ScadaRequestDetails.Count;
+                    headers2Proccess.Add(header);
+                    if (detailCnt >= maxDetailCount) break;
+                }
+
+                if (headers2Proccess != null && headers2Proccess.Count > 0)
+                {
+                    bool statusChanged = await _repo.UpdateAmrJobStatus(headers2Proccess, 2); //update status to running = 2
                     if (statusChanged)
                     {
-                        foreach (var header in headers)
+                        foreach (var header in headers2Proccess)
                         {
                             if (header.JobType == 1) //Profile Job
                             {
@@ -271,7 +280,7 @@ namespace ClientPortal.Services
                                 }
                             }
                         }
-                        await _repo.UpdateAmrJobStatus(headers, 1);
+                        await _repo.UpdateAmrJobStatus(headers2Proccess, 1);
                     }
                 }
 

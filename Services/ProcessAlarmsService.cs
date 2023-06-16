@@ -30,7 +30,7 @@ namespace ClientPortal.Services
                     //var nightFlow = alarms.Where(a => a.AlarmTypeId == 1).ToList();
                     //if (nightFlow != null && nightFlow.Count > 0)
                     //    ret = ProcessNightFlowAlarms(nightFlow);
-                    ret = ProcessAlarms(alarms.ToList());
+                    ret = await ProcessAlarms(alarms.ToList());
                 }
 
                 return ret;

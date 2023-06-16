@@ -1,12 +1,21 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable, of, throwError } from "rxjs";
-import { IBuildingRecoveryParams, IDXReport, IUmfaBuilding, IUmfaPartner, IUmfaPeriod } from "../../core/models";
+import { BehaviorSubject, Observable, catchError, of, tap, throwError } from "rxjs";
+import { IBuildingRecoveryParams, IDXReport, IShopCostVarianceParams, IShopUsageVarianceParams, IUmfaBuilding, IUmfaPartner, IUmfaPeriod, IUtilityReportParams } from "../../core/models";
 import { BuildingService } from "./building.service";
+import { CONFIG } from "@core/helpers";
+import { HttpClient } from "@angular/common/http";
 
 @Injectable({ providedIn: 'root' })
 export class DXReportService {
-
-  constructor(private buildingService: BuildingService) {
+  private _shopCostVariance: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _reportChanged: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  private _shopUsageVariance: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _utilityRecoveryExpense: BehaviorSubject<any> = new BehaviorSubject(null);
+  
+  constructor(
+    private buildingService: BuildingService,
+    private http: HttpClient
+  ) {
     this.ErrorSubject = new BehaviorSubject<string>(null);
     this.Error$ = this.ErrorSubject.asObservable();
     this.bsBuildings = new BehaviorSubject<IUmfaBuilding[]>(null);
@@ -19,21 +28,52 @@ export class DXReportService {
     this.obsEndPeriods = this.bsEndPeriods.asObservable();
     this.bsLoadReport = new BehaviorSubject<IDXReport>(null);
     this.obsLoadReport = this.bsLoadReport.asObservable();
+    this.bsShopLoadReport = new BehaviorSubject<IDXReport>(null);
+    this.obsShopLoadReport = this.bsShopLoadReport.asObservable();
   }
 
+  get shopUsageVariance$(): Observable<any> {
+    return this._shopUsageVariance.asObservable();
+  }
+
+  get shopCostVariance$(): Observable<any> {
+    return this._shopCostVariance.asObservable();
+  }
+
+  get utilityRecoveryExpense$(): Observable<any> {
+    return this._utilityRecoveryExpense.asObservable();
+  }
+
+  get reportChanged$(): Observable<boolean> {
+    return this._reportChanged.asObservable();
+  }
+  
   private ErrorSubject: BehaviorSubject<string>;
   public Error$: Observable<string>;
 
   //reports
-  private dxReportList: IDXReport[] = [{ Id: 1, Name: 'Building Recovery', Description: 'Building Recovery Report', DXReportName: 'BuildingRecovery' }];
+  private dxReportList: IDXReport[] = [
+    { Id: 1, Name: 'Building Recovery', Description: 'Building Recovery Report', DXReportName: 'BuildingRecovery' },
+    { Id: 2, Name: 'Shop Usage Variance', Description: 'Shop Usage Variance Report', DXReportName: 'ShopUsageVariance' },
+    { Id: 3, Name: 'Shop Costs Variances', Description: 'Shop Costs Variances Report', DXReportName: 'ShopCostsVariances' },
+    { Id: 4, Name: 'Utility Recovery and Expense', Description: 'Utility Recovery and Expense Report', DXReportName: 'UtilityRecoveryExpense' },
+  ];
   public dxReportList$ = of(this.dxReportList);
+
+  private tenantOptions: any[] = [
+    {Id: 1, Name: 'Show Latest'},
+    {Id: 2, Name: 'Show All'},
+    {Id: 3, Name: 'Show Each'},
+  ];
+  public tenantOptions$ = of(this.tenantOptions);
+
   private selectedReport: IDXReport;
 
   //Buildings
   public buildings: IUmfaBuilding[];
   private bsBuildings: BehaviorSubject<IUmfaBuilding[]>;
   public obsBuildings: Observable<IUmfaBuilding[]>;
-
+  
   public loadBuildings(userId: number): void {
     this.buildingService.getBuildingsForUser(userId).subscribe({
       next: bldgs => {
@@ -64,7 +104,7 @@ export class DXReportService {
     });
   }
 
-  public selectPartner(partnerId: number) {
+  public selectPartner(partnerId: number) {    
     const filteredBuildings = this.buildings.filter(bld => bld.PartnerId == partnerId);
     this.bsBuildings.next(filteredBuildings);
   }
@@ -77,14 +117,18 @@ export class DXReportService {
   public obsEndPeriods: Observable<IUmfaPeriod[]>;
 
   public loadPeriods(umfaBuildingId: number) {
-    this.buildingService.getPeriodsForBuilding(umfaBuildingId).subscribe({
-      next: bps => {
-        this.periods = bps;
-        this.bsPeriods.next(bps);
-      },
-      error: err => { this.catchErrors(err); },
-      complete: () => { }
-    });
+    if(umfaBuildingId == 0 || umfaBuildingId == null) { this.periods = []; this.bsPeriods.next([]);}
+    else {
+      this.buildingService.getPeriodsForBuilding(umfaBuildingId).subscribe({
+        next: bps => {
+          this.periods = bps;
+          this.bsPeriods.next(bps);
+        },
+        error: err => { this.catchErrors(err); },
+        complete: () => { }
+      });
+    }
+    
   }
 
   public selectStartPeriod(periodId: number) {
@@ -103,6 +147,9 @@ export class DXReportService {
   private showResults = false;
   private bsLoadReport: BehaviorSubject<IDXReport>;
   public obsLoadReport: Observable<IDXReport>;
+
+  private bsShopLoadReport: BehaviorSubject<IDXReport>;
+  public obsShopLoadReport: Observable<IDXReport>;
 
   public IsFrmsValid(): boolean {
     return this.frmCriteriaValid && this.frmSelectValid;
@@ -134,6 +181,10 @@ export class DXReportService {
     this.showResults = value;
   }
 
+  public ShowShopResults(value: boolean) {
+    if (value) this.bsShopLoadReport.next(this.selectedReport);
+  }
+
   public ShowResultsPage(): boolean {
     if (this.frmSelectValid && this.frmCriteriaValid && this.BRParams && this.showResults) return true;
     else return false;
@@ -141,6 +192,10 @@ export class DXReportService {
 
   //Report Params
   private BRParams: IBuildingRecoveryParams;
+  private SUVParams: IShopUsageVarianceParams;
+  private SCVParams: IShopCostVarianceParams;
+  private UREParams: IUtilityReportParams;
+
   get BuildingRecoveryParams(): IBuildingRecoveryParams {
     return this.BRParams;
   }
@@ -161,8 +216,68 @@ export class DXReportService {
    }
   }
 
+  get ShopUsageVarianceParams(): IShopUsageVarianceParams {
+    return this.SUVParams;
+  }
+
+  set ShopUsageVarianceParams(value: IShopUsageVarianceParams) {
+    this.SUVParams = value;
+   if (this.selectedReport && this.selectedReport.Id != 0) {
+     switch (this.selectedReport.Id) {
+       case 2: {
+         if (this.SUVParams)
+           this.selectedReport.DXReportName = `ShopUsageVariance?${this.SUVParams.BuildingId},${this.SUVParams.FromPeriodId},${this.SUVParams.ToPeriodId},${this.SUVParams.AllTenants}`;
+         break;
+       }
+       default: {
+         break;
+       }
+     }
+   }
+  }
+
+  get ShopCostVarianceParams(): IShopCostVarianceParams {
+    return this.SCVParams;
+  }
+
+  set ShopCostVarianceParams(value: IShopCostVarianceParams) {
+    this.SCVParams = value;
+   if (this.selectedReport && this.selectedReport.Id != 0) {
+     switch (this.selectedReport.Id) {
+       case 2: {
+         if (this.SCVParams)
+           this.selectedReport.DXReportName = `ShopUsageVariance?${this.SUVParams.BuildingId},${this.SUVParams.FromPeriodId},${this.SUVParams.ToPeriodId},${this.SUVParams.AllTenants}`;
+         break;
+       }
+       default: {
+         break;
+       }
+     }
+   }
+  }
+
+  get UtilityReportParams(): IUtilityReportParams {
+    return this.UREParams;
+  }
+
+  set UtilityReportParams(value: IUtilityReportParams) {
+    this.UREParams = value;
+   if (this.selectedReport && this.selectedReport.Id != 0) {
+     switch (this.selectedReport.Id) {
+       case 3: {
+         if (this.UREParams)
+           this.selectedReport.DXReportName = `ShopUsageVariance?${this.SUVParams.BuildingId},${this.SUVParams.FromPeriodId},${this.SUVParams.ToPeriodId},${this.SUVParams.AllTenants}`;
+         break;
+       }
+       default: {
+         break;
+       }
+     }
+   }
+  }
+
   get SelectedReportId(): number {
-    return this.selectedReport.Id;
+    return this.selectedReport ? this.selectedReport.Id : null;
   }
 
   set SelectedReportId(id: number) {
@@ -192,6 +307,72 @@ export class DXReportService {
     this.SelectedReportId = 0;
     this.showResults = false;
     this.BRParams = null;
+    this._reportChanged.next(true);
+  }
+
+  getReportDataForShop() {
+    const url = `${CONFIG.apiURL}/Reports/ShopUsageVarianceReport`;
+    const queryParams = '?' +
+      Object.keys(this.SUVParams)
+        .map(key => {
+          return `${key}=${encodeURIComponent(this.SUVParams[key])}`;
+        })
+        .join('&');
+    return this.http.get<any>(url + queryParams, { withCredentials: true })
+      .pipe(
+          catchError(err => this.catchErrors(err)),
+          tap(m => {
+            this._shopUsageVariance.next(m);
+          //console.log(`getMetersForUser observable returned ${m}`);
+          }),
+      );
+  }
+
+  getReportDataForShopCosts() {
+    const url = `${CONFIG.apiURL}/Reports/ShopCostVarianceReport`;
+    const queryParams = '?' +
+      Object.keys(this.SCVParams)
+        .map(key => {
+          return `${key}=${encodeURIComponent(this.SCVParams[key])}`;
+        })
+        .join('&');
+    return this.http.get<any>(url + queryParams, { withCredentials: true })
+      .pipe(
+          catchError(err => this.catchErrors(err)),
+          tap(m => {
+            this._shopCostVariance.next(m);
+          }),
+      );
+  }
+
+  getReportDataForUtility() {
+    const url = `${CONFIG.apiURL}/Reports/UtilityRecoveryReport`;
+    const queryParams =
+      '?' +
+      Object.keys(this.UREParams)
+        .map(key => {
+          return `${key}=${encodeURIComponent(this.UREParams[key])}`;
+        })
+        .join('&');
+    return this.http.get<any>(url + queryParams, { withCredentials: true })
+      .pipe(
+          catchError(err => this.catchErrors(err)),
+          tap(m => {
+            this._utilityRecoveryExpense.next(m);
+          }),
+      );
+  }
+
+  setShopUsageVariance(data) {
+    this._shopUsageVariance.next(data);
+  }
+  
+  setShopCostVariance(data) {
+    this._shopCostVariance.next(data);
+  }
+
+  setUtility(data) {
+    this._utilityRecoveryExpense.next(data);
   }
 
   catchErrors(error: { error: { message: any; }; message: any; }): Observable<Response> {

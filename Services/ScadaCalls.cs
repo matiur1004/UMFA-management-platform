@@ -38,7 +38,8 @@ namespace ClientPortal.Services
             catch (Exception ex)
             {
                 _logger.LogError("Error while retrieving amr data from scada: {Message}", ex.Message);
-                throw new ApplicationException($"Error in process GetAmrProfileFromScada: {ex.Message}");
+                //throw new ApplicationException($"Error in process GetAmrProfileFromScada: {ex.Message}");
+                return null;
             }
         }
 
@@ -64,7 +65,8 @@ namespace ClientPortal.Services
             catch (Exception ex)
             {
                 _logger.LogError("Error while retrieving amr data from scada: {Message}", ex.Message);
-                throw new ApplicationException($"Error in process GetAmrProfileFromScada: {ex.Message}");
+                //throw new ApplicationException($"Error in process GetAmrProfileFromScada: {ex.Message}");
+                return null;
             }
         }
     }
