@@ -2,6 +2,7 @@
 using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.DtOs;
 using System.Globalization;
+using ServiceStack;
 
 namespace ClientPortal.Data.Repositories
 {
@@ -294,7 +295,7 @@ namespace ClientPortal.Data.Repositories
                 foreach (var header in headers)
                 {
                     var updHeader = await _context.ScadaRequestHeaders
-                        .Include(h => h.ScadaRequestDetails)
+                        //.Include(h => h.ScadaRequestDetails)
                         .FirstOrDefaultAsync(h => h.Id == header.Id);
 
                     if (updHeader != null)
@@ -302,7 +303,8 @@ namespace ClientPortal.Data.Repositories
                         updHeader.Status = status;
                         foreach (var detail in header.ScadaRequestDetails)
                         {
-                            detail.Status = status;
+                            var updDetail = await _context.ScadaRequestDetails.FirstOrDefaultAsync(d => d.Id == detail.Id);
+                            updDetail.Status = status;
                         }
                     }
                 }

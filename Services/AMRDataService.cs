@@ -4,6 +4,7 @@ using ClientPortal.Data.Repositories;
 using ClientPortal.DtOs;
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
+using Microsoft.Azure.WebJobs;
 
 namespace ClientPortal.Services
 {
@@ -12,10 +13,11 @@ namespace ClientPortal.Services
         Task<List<AMRTOUHeaderResponse>> GetTouHeaders();
         Task<DemandProfileResponse> GetDemandProfile(AMRDemandProfileRequest request);
         Task<AMRWaterProfileResponse> GetWaterProfile(AMRWaterProfileRequest request);
-        Task<List<AmrJobToRun>> GetAmrJobsAsync(int profileDay, int maxDetailCount);
+        Task<List<AmrJobToRun>> GetAmrJobsAsync(int profileDays);
         Task<bool> DetailQueueStatusChange(int detailId, int status);
         Task<AmrJob> ProcessProfileJob(AmrJobToRun job);
         Task<AmrJob> ProcessReadingsJob(AmrJobToRun job);
+        Task<ScadaMeterReading> ProcessReadingsJobQueue(AmrJobToRun job);
         Task<AMRGraphProfileResponse> GetGraphProfile(AMRGraphProfileRequest request);
     }
 
@@ -75,6 +77,8 @@ namespace ClientPortal.Services
 
                 trackedHeader.ScadaRequestDetails[0].Status = 4;
 
+                //At this point lets add the data to be inserted onto a new msg queue to be processed by new function
+
                 //insert the data into the database
                 if (!await _repo.InsertScadaReadingData(readings))
                 {
@@ -103,6 +107,44 @@ namespace ClientPortal.Services
                 _logger.LogInformation("Successfully processed readings for meter {meter}", readings.Meter.SerialNumber);
                 ret.Success = true;
                 return ret;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error while retrieving scada data for {key1}: {msg}", job.Key1, ex.Message);
+                trackedHeader.ScadaRequestDetails[0].Status = 1;
+                await _repo.SaveTrackedItems();
+                throw;
+            }
+        }
+
+        public async Task<ScadaMeterReading> ProcessReadingsJobQueue(AmrJobToRun job)
+        {
+            _logger.LogInformation("Retrieving Reading Data from Scada for: {key1}", job.Key1);
+            //get tracked item for updates
+            ScadaRequestHeader trackedHeader = await _repo.GetTrackedScadaHeader(job.HeaderId, job.DetailId);
+            try
+            {
+                DateTime runStart = DateTime.UtcNow;
+                AmrJob ret = new() { CommsIs = job.CommsId, Key1 = job.Key1, RunDate = runStart, Success = false };
+
+                //update the current run date and status (2: running) for header and detail
+                trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == job.DetailId).CurrentRunDTM = runStart;
+                trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == job.DetailId).Status = 3;
+
+                if (!await _repo.SaveTrackedItems())
+                {
+                    throw new ApplicationException("Could not save tracked items from service");
+                }
+
+                //get the scada reading data from scada server
+                ScadaMeterReading readings = await _scadaCalls.GetAmrReadingsFromScada(job);
+                if (readings == null || readings.Result != "SUCCESS")
+                {
+                    throw new ApplicationException($"Scada call returned failure: {readings?.Result ?? "Empty Object"}");
+                }
+
+                return readings;
 
             }
             catch (Exception ex)
@@ -186,9 +228,9 @@ namespace ClientPortal.Services
             }
         }
 
-        public async Task<List<AmrJobToRun>> GetAmrJobsAsync(int profileDays, int maxDetailCount)
+        public async Task<List<AmrJobToRun>> GetAmrJobsAsync(int profileDays)
         {
-            _logger.LogInformation($"Getting the AMR Jobs to process with profileDays = {profileDays} and max details {maxDetailCount}...");
+            _logger.LogInformation($"Getting the AMR Jobs to process with profileDays = {profileDays}...");
             try
             {
                 List<AmrJobToRun> jobs = new();
@@ -201,7 +243,7 @@ namespace ClientPortal.Services
                 {
                     detailCnt = header.ScadaRequestDetails.Count;
                     headers2Proccess.Add(header);
-                    if (detailCnt >= maxDetailCount) break;
+                    //if (detailCnt >= maxDetailCount) break;
                 }
 
                 if (headers2Proccess != null && headers2Proccess.Count > 0)
