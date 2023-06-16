@@ -5,9 +5,8 @@ using ClientPortal.Interfaces;
 using ClientPortal.Models.MessagingModels;
 using ClientPortal.Models.ResponseModels;
 using ClientPortal.Settings;
-using Dapper;
 using Microsoft.Extensions.Options;
-using ServiceStack.Text;
+using System.Text.Json;
 
 namespace ClientPortal.Services
 {
@@ -77,10 +76,8 @@ namespace ClientPortal.Services
                                     sendResult = await _mailService.SendAsync(mData, default);
                                     break;
                                 case 2: //WhatsApp
-                                    var wData = new WhatsAppData();
-                                    wData.PhoneNumber = notification.MessageAddress!;
-                                    wData.Message = notification.MessageBody!;
-                                    sendResult = await _whatsAppService.SendAsync(wData, default);
+                                    var wData = new WhatsAppData(JsonSerializer.Deserialize<NotificationToSend>(notification.MessageBody));
+                                    sendResult = await _whatsAppService.SendPortalAlarmAsync(wData, default);
                                     break;
                                 case 3: //Telegram
                                     var tData = new TelegramData();
@@ -149,7 +146,7 @@ namespace ClientPortal.Services
                         LastUdateDateTime = DateTime.UtcNow,
                         Active = true,
                         SendStatusMessage = "Pending",
-                        MessageBody = BuildNotificationMessage(notification),
+                        MessageBody = JsonSerializer.Serialize(notification),
                         MessageAddress = notification.NotificationSendTypeId == 1 ? notification.NotificationEmailAddress : notification.NotificationMobileNumber,
                         RetryCount = 0,
                     };

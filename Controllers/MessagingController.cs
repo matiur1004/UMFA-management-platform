@@ -36,7 +36,7 @@ namespace ClientPortal.Controllers
         [HttpPost("sendWhatsApp")]
         public async Task<IActionResult> SendWhatsAppAsync(WhatsAppData wData)
         {
-            bool result = await _whis.SendAsync(wData, new CancellationToken());
+            bool result = await _whis.SendPortalAlarmAsync(wData, new CancellationToken());
 
             if (result)
             {
