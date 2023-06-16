@@ -108,7 +108,7 @@ namespace ClientPortal.Services
             catch (Exception ex)
             {
                 _logger.LogError("Error while retrieving scada data for {key1}: {msg}", job.Key1, ex.Message);
-                trackedHeader.ScadaRequestDetails[0].Status = 7;
+                trackedHeader.ScadaRequestDetails[0].Status = 1;
                 await _repo.SaveTrackedItems();
                 throw;
             }
@@ -180,7 +180,7 @@ namespace ClientPortal.Services
             catch (Exception ex)
             {
                 _logger.LogError("Error while retrieving scada data for {key1}: {msg}", job.Key1, ex.Message);
-                trackedHeader.ScadaRequestDetails[0].Status = 7;
+                trackedHeader.ScadaRequestDetails[0].Status = 1;
                 await _repo.SaveTrackedItems();
                 throw;
             }
