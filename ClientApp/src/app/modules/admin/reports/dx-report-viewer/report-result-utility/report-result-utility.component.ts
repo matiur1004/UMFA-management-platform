@@ -1,10 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { DXReportService } from '@shared/services';
 import { exportDataGrid, exportPivotGrid } from 'devextreme/excel_exporter';
+import { exportDataGrid as exportDataGridToPdf } from 'devextreme/pdf_exporter';
 import { Workbook } from 'exceljs';
+import { jsPDF } from 'jspdf';
 import { Subject, takeUntil } from 'rxjs';
 import saveAs from 'file-saver';
-import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexFill, ApexPlotOptions, ApexStroke, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
+import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexFill, ApexLegend, ApexStroke, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
+import { DxDataGridComponent } from 'devextreme-angular';
+import html2canvas from 'html2canvas';
+import { Buffer } from 'buffer';
+import 'svg2pdf.js';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -17,6 +23,7 @@ export type ChartOptions = {
   yaxis: ApexYAxis;
   fill: ApexFill;
   tooltip: ApexTooltip;
+  legend: ApexLegend;
 };
 
 @Component({
@@ -27,16 +34,19 @@ export type ChartOptions = {
 export class ReportResultUtilityComponent implements OnInit {
 
   @ViewChild("chart") chart: ChartComponent;
+  @ViewChild('dataGrid') dataGrid: DxDataGridComponent;
+
   dataSource: any;
   resultsForGrid: any[] = [];
   resultsForGraph: any[] = [];
   periodList: [] = [];
-  
+  headerInfo: any;
+
   public chartOptions: Partial<ChartOptions>;
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
-  constructor(private reportService: DXReportService) { 
+  constructor(private reportService: DXReportService, private renderer: Renderer2) { 
     this.chartOptions = {
       series: [
       ],
@@ -73,7 +83,7 @@ export class ReportResultUtilityComponent implements OnInit {
       tooltip: {
         y: {
           formatter: function (val) {
-            return "$ " + val + " thousands"
+            return val + ''
           }
         }
       }
@@ -86,7 +96,11 @@ export class ReportResultUtilityComponent implements OnInit {
       .subscribe((data: any) => {
         if(data) {
           this.periodList = data['PeriodList'];
-          this.resultsForGrid = data['GridValues'];
+          this.headerInfo = data['HeaderValues'][0];
+          this.resultsForGrid = data['GridValues'].sort((a, b) => {
+            if(Number(a.RowNumber) > Number(b.RowNumber)) return 1;
+            return -1;
+          });
           this.dataSource = data['GridValues'].map(item => {
             this.periodList.forEach((period, idx) => {
               let filteredPeriod = item['PeriodDetails'].find(obj => period == obj.PeriodName);
@@ -119,20 +133,115 @@ export class ReportResultUtilityComponent implements OnInit {
       })
   }
 
-  onExporting(e) {
-    const workbook = new Workbook();
-    const worksheet = workbook.addWorksheet('UtilityRecoveryExpense');
+  onExport($event) {
+    if($event.format == 'pdf') this.onExportPdf();
+    else this.onExportExcel();
+  }
 
-    exportDataGrid({
-      component: e.component,
-      worksheet,
-      autoFilterEnabled: true,
-    }).then(() => {
-      workbook.xlsx.writeBuffer().then((buffer) => {
-        saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'UtilityRecoveryExpense.xlsx');
-      });
-    });
-    e.cancel = true;
+  onExportExcel() {
+    const workbook = new Workbook();
+    const worksheet = workbook.addWorksheet('report', {views: [{showGridLines: false}]});
+
+    worksheet.mergeCells('A1:B4');
+
+    var logoUrl = '/assets/images/logo/logo.png';
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', logoUrl, true);
+    xhr.responseType = 'blob';
+
+    var headerInfo = this.headerInfo;
+    var _this = this;
+    xhr.onload = function (e) {
+      if (this.status === 200) {
+        var blob = this.response;
+        
+        // Create a new Image element
+        var img = new Image();
+
+        img.onload = function () {
+          const image = workbook.addImage({
+            buffer: blob.arrayBuffer(),
+            extension: "png",
+            
+          });
+          worksheet.addImage(image, {
+            tl: { col: 0, row: 0 },
+            ext: { width: 200, height: 100 },
+          });  
+
+          worksheet.mergeCells('C2:L2');
+          worksheet.mergeCells('C3:L3');
+          worksheet.mergeCells('C4:L4');
+          worksheet.getCell('C2').value = headerInfo['RepType'];
+          worksheet.getCell('C2:L2').font = {bold: true, size: 16};
+          worksheet.getCell('C2').alignment  = {vertical: 'middle', horizontal: 'center'};
+
+          worksheet.getCell('C3').value = headerInfo['BuildingName'];
+          worksheet.getCell('C3:L3').font = {bold: true, size: 14};
+          worksheet.getCell('C3').alignment  = {vertical: 'middle', horizontal: 'center'};
+
+          worksheet.getCell('C4').value = headerInfo['ReconReadingInfo'];
+          worksheet.getCell('C4:L4').font = {bold: false, size: 12};
+          worksheet.getCell('C4').alignment  = {vertical: 'middle', horizontal: 'center'};
+          
+          exportDataGrid({
+            component: _this.dataGrid.instance,
+            worksheet,
+            topLeftCell: { row: 7, column: 1 },
+            autoFilterEnabled: true,
+            customizeCell({ gridCell, excelCell }) {
+              if (gridCell.rowType === 'data' && 
+                (gridCell.data['RowHeader'] === 'UMFA Bulk Reading' || 
+                gridCell.data['RowHeader'] === 'UMFA Recovery' ||
+                gridCell.data['RowHeader'].indexOf('Actual Recovery') > -1) ) {
+                excelCell.fill = {
+                  type: 'pattern',
+                  pattern: 'solid',
+                  fgColor: { argb: 'FFBEDFE6' }, 
+                };
+              }
+            }
+          }).then(async (cellRange) => {
+            var svg = document.getElementsByClassName('apexcharts-canvas')[0].children[0].outerHTML;
+            const iframe = document.createElement("iframe");
+            
+            document.body.appendChild(iframe); //
+            iframe.contentWindow.document.open();
+            iframe.contentWindow.document.write(svg);
+            iframe.contentWindow.document.close();
+            // Convert the HTML element to a canvas
+            let canvas = await html2canvas(iframe.contentWindow.document.body);
+            
+            //Convert the canvas to a base64 image string
+            const imageData = canvas.toDataURL('image/png');
+            
+            const image = workbook.addImage({
+              base64: imageData,
+              extension: "png",
+            });
+
+            const footerRowIndex = cellRange.to.row + 2;
+
+            worksheet.addImage(image, {
+              tl: { col: 0, row: footerRowIndex },
+              ext: { width: 1000, height: 350 },
+            });
+
+            iframe.style.cssText = 'display: none';
+          }).then(() => {
+            workbook.xlsx.writeBuffer().then((buffer) => {
+              saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'Utility Recovery and Expense Report.xlsx');
+            });
+          })
+        }
+        img.src = URL.createObjectURL(blob);
+      }      
+    };
+    xhr.send();
+  }
+
+  onExportPdf() {
+    
   }
 
   ngOnDestroy(): void {
