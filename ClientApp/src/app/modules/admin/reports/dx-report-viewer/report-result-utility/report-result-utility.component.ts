@@ -9,8 +9,6 @@ import saveAs from 'file-saver';
 import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexFill, ApexLegend, ApexStroke, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
 import { DxDataGridComponent } from 'devextreme-angular';
 import html2canvas from 'html2canvas';
-import { Buffer } from 'buffer';
-import 'svg2pdf.js';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -46,7 +44,7 @@ export class ReportResultUtilityComponent implements OnInit {
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
-  constructor(private reportService: DXReportService, private renderer: Renderer2) { 
+  constructor(private reportService: DXReportService, private renderer: Renderer2) {
     this.chartOptions = {
       series: [
       ],
@@ -241,7 +239,87 @@ export class ReportResultUtilityComponent implements OnInit {
   }
 
   onExportPdf() {
-    
+    const pdfDoc = new jsPDF('landscape', 'px', [800, 768]);
+    const options = {
+      jsPDFDocument: pdfDoc,
+      topLeft: { x: 10, y: 100 },
+      component: this.dataGrid.instance,
+      customizeCell({ gridCell, pdfCell }) {
+        if (gridCell.rowType === 'data' && 
+          (gridCell.data['RowHeader'] === 'UMFA Bulk Reading' || 
+          gridCell.data['RowHeader'] === 'UMFA Recovery' ||
+          gridCell.data['RowHeader'].indexOf('Actual Recovery') > -1) ) {
+          pdfCell.backgroundColor = '#BEDFE6';
+        }
+        if(gridCell.rowType == 'data') {
+          pdfCell.font.size = 12;
+          pdfCell.font.style = 'normal';
+        } else if(gridCell.rowType === 'header') {
+          pdfCell.textColor = '#000';
+          pdfCell.font.size = 18;
+          pdfCell.font.style = 'bold';
+        }
+      }
+    };
+
+    var logoUrl = '/assets/images/logo/logo.png';
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', logoUrl, true);
+    xhr.responseType = 'blob';
+
+    var headerInfo = this.headerInfo;
+    xhr.onload = function (e) {
+      if (this.status === 200) {
+        var blob = this.response;
+
+        // Create a new Image element
+        var img = new Image();
+
+        img.onload = function () {
+          // Calculate the desired width and height of the image in the PDF
+          // Add the image to the PDF
+          pdfDoc.addImage(img, 'PNG', 10, 20, 150, 70);
+
+          pdfDoc.setTextColor(0, 0, 0);
+          pdfDoc.setFontSize(16);
+          pdfDoc.text(headerInfo['RepType'], 180, 40);
+
+          pdfDoc.setFontSize(14);
+          pdfDoc.text(headerInfo['BuildingName'], 320, 60);
+
+          pdfDoc.setFontSize(12);
+          pdfDoc.text(headerInfo['ReconReadingInfo'], 320, 80);
+          
+          // Save or display the PDF
+          exportDataGridToPdf(options).then(async () => {
+            var svg = document.getElementsByClassName('apexcharts-canvas')[0].children[0].outerHTML;
+            const iframe = document.createElement("iframe");
+            
+            document.body.appendChild(iframe); // 👈 still required
+            iframe.contentWindow.document.open();
+            iframe.contentWindow.document.write(svg);
+            iframe.contentWindow.document.close();
+            // Convert the HTML element to a canvas
+            let canvas = await html2canvas(iframe.contentWindow.document.body);
+            
+            // Convert the canvas to a base64 image string
+            const imageData = canvas.toDataURL('image/png');
+
+            pdfDoc.text('Recovery Chart', 270, 425);
+            // Add the image to the PDF
+            pdfDoc.addImage(imageData, 'PNG', 20, 430, 700, 240);
+            
+            iframe.style.cssText = 'display: none';
+            
+          }).then(() => {
+            pdfDoc.save('Utility Recovery and Expense Report.pdf');
+          })
+        };
+
+        img.src = URL.createObjectURL(blob);
+      }
+    };
+    xhr.send();
   }
 
   ngOnDestroy(): void {
