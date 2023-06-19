@@ -3,6 +3,7 @@ using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.DtOs;
 using System.Globalization;
 using ServiceStack;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClientPortal.Data.Repositories
 {
@@ -18,6 +19,7 @@ namespace ClientPortal.Data.Repositories
         Task<bool> InsertScadaProfileData(ScadaMeterProfile profile);
         Task<bool> InsertScadaReadingData(ScadaMeterReading readings);
         Task<bool> UpdateDetailStatus(int detailId, int status);
+        Task<ScadaRequestHeader> GetRequest(int Id);
         Task<AMRGraphProfileHeader> GetGraphProfile(int meterId, DateTime startDate, DateTime endDate, TimeOnly nightFlowStart, TimeOnly nightFlowEnd, bool ApplyNightFlow);
     }
 
@@ -30,6 +32,24 @@ namespace ClientPortal.Data.Repositories
         {
             _logger = logger;
             _context = context;
+        }
+
+        public async Task<ScadaRequestHeader> GetRequest(int Id)
+        {
+            try
+            {
+                var request = await _context.ScadaRequestHeaders
+                    .Include(h => h.ScadaRequestDetails)
+                    .Where(h => h.Id == Id)
+                    .FirstOrDefaultAsync();
+
+                return request;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Could not retrieve job with id {Id}: {ex.Message}");
+                return null;
+            }
         }
 
         public async Task<bool> UpdateDetailStatus(int detailId, int status)

@@ -2,6 +2,7 @@
 using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Data.Repositories;
 using ClientPortal.DtOs;
+using ClientPortal.Models.FunctionModels;
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 using Microsoft.Azure.WebJobs;
@@ -18,6 +19,7 @@ namespace ClientPortal.Services
         Task<AmrJob> ProcessProfileJob(AmrJobToRun job);
         Task<AmrJob> ProcessReadingsJob(AmrJobToRun job);
         Task<ScadaMeterReading> ProcessReadingsJobQueue(AmrJobToRun job);
+        Task<bool> ProcessReadingsFromQueue(ReadingDataMsg msg);
         Task<AMRGraphProfileResponse> GetGraphProfile(AMRGraphProfileRequest request);
     }
 
@@ -49,6 +51,58 @@ namespace ClientPortal.Services
             }
         }
 
+        public async Task<bool> ProcessReadingsFromQueue(ReadingDataMsg msg)
+        {
+            _logger.LogInformation($"Start new add reading data job...");
+            if(msg != null && msg.Data != null && msg.Data.Count > 0)
+            {
+                try
+                {
+                    foreach(var readingDetail in msg.Data)
+                    {
+                        int headerId = readingDetail.JobHeaderId;
+                        int detailId = readingDetail.JobDetailId;
+                        _logger.LogInformation($"Now adding reading data for job {headerId} and detail {detailId}...");
+                        ScadaRequestHeader trackedHeader = await _repo.GetTrackedScadaHeader(headerId, detailId);
+
+                        trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == detailId).CurrentRunDTM = DateTime.UtcNow;
+                        trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == detailId).Status = 4;
+
+                        if (!await _repo.SaveTrackedItems())
+                        {
+                            throw new ApplicationException("Could not save tracked items from service");
+                        }
+
+                        //insert the data into the database
+                        if (!await _repo.InsertScadaReadingData(readingDetail.ReadingData))
+                        {
+                            throw new ApplicationException($"Failed to insert reading data");
+                        }
+
+                        //update the detail 
+                        trackedHeader.LastRunDTM = DateTime.UtcNow;
+                        trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == detailId).Status = 1;
+                        trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == detailId).LastRunDTM = DateTime.UtcNow;
+                        DateTime lastDate = DateTime.Parse(readingDetail.ReadingData.Meter.EndTotal.ReadingDate);
+                        trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == detailId).LastDataDate = lastDate;
+                        if (!await _repo.SaveTrackedItems())
+                        {
+                            throw new ApplicationException("Could not save tracked items form service");
+                        }
+
+                        _logger.LogInformation("Successfully processed readings for meter {meter}", readingDetail.ReadingData.Meter.SerialNumber);
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"Error while saving data: {ex.Message}");
+                    return false;
+                }
+            }
+            return true;
+        }
+
         public async Task<AmrJob> ProcessReadingsJob(AmrJobToRun job)
         {
             _logger.LogInformation("Retrieving Reading Data from Scada for: {key1}", job.Key1);
@@ -57,7 +111,7 @@ namespace ClientPortal.Services
             try
             {
                 DateTime runStart = DateTime.UtcNow;
-                AmrJob ret = new() { CommsIs = job.CommsId, Key1 = job.Key1, RunDate = runStart, Success = false };
+                AmrJob ret = new() { CommsId = job.CommsId, Key1 = job.Key1, RunDate = runStart, Success = false };
 
                 //update the current run date and status (2: running) for header and detail
                 trackedHeader.ScadaRequestDetails[0].CurrentRunDTM = runStart;
@@ -126,7 +180,7 @@ namespace ClientPortal.Services
             try
             {
                 DateTime runStart = DateTime.UtcNow;
-                AmrJob ret = new() { CommsIs = job.CommsId, Key1 = job.Key1, RunDate = runStart, Success = false };
+                AmrJob ret = new() { CommsId = job.CommsId, Key1 = job.Key1, RunDate = runStart, Success = false };
 
                 //update the current run date and status (2: running) for header and detail
                 trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == job.DetailId).CurrentRunDTM = runStart;
@@ -164,7 +218,7 @@ namespace ClientPortal.Services
             try
             {
                 DateTime runStart = DateTime.UtcNow;
-                AmrJob ret = new() { CommsIs = job.CommsId, Key1 = job.Key1, RunDate = runStart, Success = false };
+                AmrJob ret = new() { CommsId = job.CommsId, Key1 = job.Key1, RunDate = runStart, Success = false };
 
                 //update the current run date and status (2: running) for header and detail
                 trackedHeader.ScadaRequestDetails[0].CurrentRunDTM = runStart;
