@@ -222,7 +222,7 @@ export class ReportResultUtilityComponent implements OnInit {
 
             worksheet.addImage(image, {
               tl: { col: 0, row: footerRowIndex },
-              ext: { width: 1000, height: 350 },
+              ext: { width: 1000, height: 300 },
             });
 
             iframe.style.cssText = 'display: none';
@@ -307,7 +307,7 @@ export class ReportResultUtilityComponent implements OnInit {
 
             pdfDoc.text('Recovery Chart', 270, 425);
             // Add the image to the PDF
-            pdfDoc.addImage(imageData, 'PNG', 20, 430, 700, 240);
+            pdfDoc.addImage(imageData, 'PNG', 20, 430, 700, 200);
             
             iframe.style.cssText = 'display: none';
             
