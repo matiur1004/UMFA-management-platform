@@ -6,6 +6,9 @@ using ClientPortal.Models.FunctionModels;
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 using Microsoft.Azure.WebJobs;
+using System.Globalization;
+using System.IO.Compression;
+using System.Text.Json;
 
 namespace ClientPortal.Services
 {
@@ -17,7 +20,7 @@ namespace ClientPortal.Services
         Task<List<AmrJobToRun>> GetAmrJobsAsync(int profileDays);
         Task<bool> DetailQueueStatusChange(int detailId, int status);
         Task<AmrJob> ProcessProfileJob(AmrJobToRun job);
-        Task<AmrJob> ProcessProfileJobQueue(AmrJobToRun job);
+        Task<List<string>> ProcessProfileJobQueue(List<AmrJobToRun> job);
         Task<AmrJob> ProcessReadingsJob(AmrJobToRun job);
         Task<ScadaMeterReading> ProcessReadingsJobQueue(AmrJobToRun job);
         Task<bool> ProcessReadingsFromQueue(ReadingDataMsg msg);
@@ -211,9 +214,147 @@ namespace ClientPortal.Services
             }
         }
 
-        public async Task<bool> ProcessProfileJobQueue(List<AmrJobToRun> jobs)
+        public async Task<List<string>> ProcessProfileJobQueue(List<AmrJobToRun> jobs)
         {
-            return true;
+            List<ProfileDataMsg> profiles = new();
+
+            foreach(AmrJobToRun job in jobs)
+            {
+                ProfileDataMsg profileDataMsg = new() { DequeueCount = 0, Data = new() };
+                _logger.LogInformation("Retrieving Data from Scada for: {key1}", job.Key1);
+                //get tracked item for updates
+                ScadaRequestHeader trackedHeader = await _repo.GetTrackedScadaHeader(job.HeaderId, job.DetailId);
+                try
+                {
+                    DateTime runStart = DateTime.UtcNow;
+                    //AmrJob ret = new() { CommsId = job.CommsId, Key1 = job.Key1, RunDate = runStart, Success = false };
+
+                    //update the current run date and status (2: running) for header and detail
+                    trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == job.DetailId).CurrentRunDTM = runStart;
+                    trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == job.DetailId).Status = 3;
+
+                    if (!await _repo.SaveTrackedItems())
+                    {
+                        throw new ApplicationException("Could not save tracked items form service");
+                    }
+
+                    //get the scada profile data from scada server
+                    ScadaMeterProfile profile = await _scadaCalls.GetAmrProfileFromScada(job);
+                    if (profile == null || profile.Result != "SUCCESS")
+                    {
+                        throw new ApplicationException($"Scada call returned failure: {profile.Result ?? "Empty Object"}");
+                    } else
+                    {
+                        ProfileDataDetail profDetail = new ProfileDataDetail() { JobHeaderId = job.HeaderId, JobDetailId = job.DetailId, ProfileData = new()};
+                        foreach (Sample s in profile.Meter.ProfileSamples)
+                        {
+                            profDetail.ProfileData.Add(new ScadaProfileData()
+                            {
+                                ProcessedStatus = 0, //not processed yet
+                                SerialNumber = profile.Meter.SerialNumber,
+                                Description = profile.Meter.Description,
+                                Result = s.Result,
+                                Status = int.Parse(s.Status),
+                                ReadingDate = DateTime.Parse(s.Date),
+                                kVA = float.Parse(s.KVA, CultureInfo.InvariantCulture.NumberFormat),
+                                P1 = float.Parse(s.P1, CultureInfo.InvariantCulture.NumberFormat),
+                                P2 = float.Parse(s.P2, CultureInfo.InvariantCulture.NumberFormat),
+                                Q1 = float.Parse(s.Q1, CultureInfo.InvariantCulture.NumberFormat),
+                                Q2 = float.Parse(s.Q2, CultureInfo.InvariantCulture.NumberFormat),
+                                Q3 = float.Parse(s.Q3, CultureInfo.InvariantCulture.NumberFormat),
+                                Q4 = float.Parse(s.Q4, CultureInfo.InvariantCulture.NumberFormat),
+                                IsActive = true
+                            });
+                        }
+                        profileDataMsg.Data = profDetail;
+                    }
+
+                    trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == job.DetailId).Status = 4;
+
+                    if (!await _repo.SaveTrackedItems())
+                    {
+                        throw new ApplicationException("Could not save tracked items form service");
+                    }
+
+                    _logger.LogInformation("Successfully processed {records} for meter {meter}", profile.Meter.ProfileSamples.Length, profile.Meter.SerialNumber);
+
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError("Error while retrieving scada data for {key1}: {msg}", job.Key1, ex.Message);
+                    trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == job.DetailId).Status = 1;
+                    await _repo.SaveTrackedItems();
+                }
+
+                profiles.Add(profileDataMsg);
+            }
+
+            List<string> ret = new();
+
+            foreach (ProfileDataMsg profile in profiles)
+            {
+                _logger.LogInformation($"Size before compression: {CalcSize(profile)}");
+                string str = JsonSerializer.Serialize(profile);
+                byte[] bytes = Encoding.UTF8.GetBytes(str);
+                using (var outputStream = new MemoryStream())
+                {
+                    using (var compressionStream = new GZipStream(outputStream, CompressionMode.Compress))
+                    {
+                        compressionStream.Write(bytes, 0, bytes.Length);
+                    }
+                    byte[] compressedBytes = outputStream.ToArray();
+                    string msg = Convert.ToBase64String(compressedBytes);
+                    _logger.LogInformation($"New byte array with length {CalcSize(msg)}");
+                    ret.Add(msg);
+                }
+            }
+
+            //if(CalcSize(profileMsg) < 60000)
+            //{
+            //    ret.Add(profileMsg);
+            //    return ret;
+            //}
+
+            //while (CalcSize(profileMsg) > 60000)
+            //{
+            //    var newMsg = new ProfileDataMsg
+            //    {
+            //        DequeueCount = 0,
+            //        Data = new List<ProfileDataDetail>()
+            //    };
+
+            //    while(CalcSize(newMsg) < 60000 && profileMsg.Data.Any())
+            //    {
+            //        newMsg.Data.Add(profileMsg.Data.First());
+            //        profileMsg.Data.Remove(profileMsg.Data.First());
+            //    }
+
+            //    profileMsg.Data.Add(newMsg.Data.Last());
+            //    newMsg.Data.Remove(newMsg.Data.Last());
+                
+            //    ret.Add(newMsg);
+            //}
+
+            //if(profileMsg.Data.Any())
+            //{
+            //    ret.Add(profileMsg);
+            //}
+
+            return ret;
+        }
+
+        private int CalcSize(ProfileDataMsg message)
+        {
+            string jsonString = JsonSerializer.Serialize(message);
+            int byteSize = Encoding.UTF8.GetByteCount(jsonString);
+            return byteSize;
+        }
+
+        private int CalcSize(string message)
+        {
+            //string jsonString = JsonSerializer.Serialize(message);
+            int byteSize = Encoding.UTF8.GetByteCount(message);
+            return byteSize;
         }
 
         public async Task<AmrJob> ProcessProfileJob(AmrJobToRun job)
