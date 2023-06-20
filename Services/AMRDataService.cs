@@ -17,6 +17,7 @@ namespace ClientPortal.Services
         Task<List<AmrJobToRun>> GetAmrJobsAsync(int profileDays);
         Task<bool> DetailQueueStatusChange(int detailId, int status);
         Task<AmrJob> ProcessProfileJob(AmrJobToRun job);
+        Task<AmrJob> ProcessProfileJobQueue(AmrJobToRun job);
         Task<AmrJob> ProcessReadingsJob(AmrJobToRun job);
         Task<ScadaMeterReading> ProcessReadingsJobQueue(AmrJobToRun job);
         Task<bool> ProcessReadingsFromQueue(ReadingDataMsg msg);
@@ -208,6 +209,11 @@ namespace ClientPortal.Services
                 await _repo.SaveTrackedItems();
                 throw;
             }
+        }
+
+        public async Task<bool> ProcessProfileJobQueue(List<AmrJobToRun> jobs)
+        {
+            return true;
         }
 
         public async Task<AmrJob> ProcessProfileJob(AmrJobToRun job)
