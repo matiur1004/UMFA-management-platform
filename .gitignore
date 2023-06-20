@@ -235,3 +235,4 @@ _Pvt_Extensions
 appsettings.json
 /wwwroot
 /appsettings.Development.json
+/ClientApp/package-lock.json
