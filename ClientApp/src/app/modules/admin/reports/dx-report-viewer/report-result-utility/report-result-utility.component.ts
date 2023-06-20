@@ -222,7 +222,7 @@ export class ReportResultUtilityComponent implements OnInit {
 
             worksheet.addImage(image, {
               tl: { col: 0, row: footerRowIndex },
-              ext: { width: 1000, height: 300 },
+              ext: { width: 1400, height: 320 },
             });
 
             iframe.style.cssText = 'display: none';
