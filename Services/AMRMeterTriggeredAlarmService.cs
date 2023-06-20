@@ -9,19 +9,20 @@ namespace ClientPortal.Services
     {
         Task<AMRMeterTriggeredAlarm> AcknowledgeAlarmAsync(AMRMeterTriggeredAlarmAcknowledgeRequest acknowledgement, int id);
         Task<AlarmTriggeredSpResponse> GetTriggeredAlarms(int amrMeterTriggeredAlarmId);
+        public int? GetNotAcknowledgedTriggeredAlarmsCount(int amrMeterId);
     }
     public class AMRMeterTriggeredAlarmService : IAMRMeterTriggeredAlarmService
     {
         private readonly ILogger<AMRMeterTriggeredAlarmService> _logger;
         private readonly IAMRMeterTriggeredAlarmRepository _repository;
-        
-        public AMRMeterTriggeredAlarmService(ILogger<AMRMeterTriggeredAlarmService> logger, IAMRMeterTriggeredAlarmRepository repository) 
+
+        public AMRMeterTriggeredAlarmService(ILogger<AMRMeterTriggeredAlarmService> logger, IAMRMeterTriggeredAlarmRepository repository)
         {
             _logger = logger;
             _repository = repository;
         }
 
-        public async Task<AMRMeterTriggeredAlarm> AcknowledgeAlarmAsync(AMRMeterTriggeredAlarmAcknowledgeRequest acknowledgement, int id) 
+        public async Task<AMRMeterTriggeredAlarm> AcknowledgeAlarmAsync(AMRMeterTriggeredAlarmAcknowledgeRequest acknowledgement, int id)
         {
             var alarm = await _repository.GetAsync(id);
             alarm.Acknowledged = (bool)acknowledgement.Acknowledged!;
@@ -33,8 +34,13 @@ namespace ClientPortal.Services
 
         public async Task<AlarmTriggeredSpResponse> GetTriggeredAlarms(int amrMeterTriggeredAlarmId)
         {
-            return await _repository.RunStoredProcedureAsync<AlarmTriggeredSpResponse, AMRMeterTriggeredAlarmSpRequest>("spGetTriggeredAlarm", new AMRMeterTriggeredAlarmSpRequest { AlarmTriggerId = amrMeterTriggeredAlarmId});
+            return await _repository.RunStoredProcedureAsync<AlarmTriggeredSpResponse, AMRMeterTriggeredAlarmSpRequest>("spGetTriggeredAlarm", new AMRMeterTriggeredAlarmSpRequest { AlarmTriggerId = amrMeterTriggeredAlarmId });
         }
 
+
+        public int? GetNotAcknowledgedTriggeredAlarmsCount(int amrMeterId)
+        {
+            return _repository.Count(x => x.AMRMeterAlarmId.Equals(amrMeterId) && !x.Acknowledged && x.Active);
+        }
     }
 }

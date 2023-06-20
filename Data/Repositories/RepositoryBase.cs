@@ -18,6 +18,7 @@ namespace ClientPortal.Data.Repositories
         public Task<TTable> RemoveAsync(int id);
         public Task<T> RunStoredProcedureAsync<T, TArgumentClass>(string procedure, TArgumentClass? args = default) where T : new();
         public Task RunStoredProcedureAsync<TArgumentClass>(string procedure, TArgumentClass? args = default);
+        public int? Count(Expression<Func<TTable, bool>> conditions, params Expression<Func<TTable, object>>[] includes);
     }
 
     public abstract class RepositoryBase<TTable, TContext> : IRepository<TTable> where TContext : DbContext where TTable : class // TODO a model base class would be better
@@ -246,6 +247,33 @@ namespace ClientPortal.Data.Repositories
 
             _logger.LogInformation($"Returning entity matching conditions from {typeof(TTable).Name} entities matched the conditions.");
             return entity;
+        }
+
+        public int? Count(Expression<Func<TTable, bool>> conditions, params Expression<Func<TTable, object>>[] includes)
+        {
+            var tableExists = _dbContext.Model.FindEntityType(typeof(TTable)) != null;
+
+            if (!tableExists)
+            {
+                _logger.LogError($"{typeof(TTable).Name} Table is Not Found");
+                return null;
+            }
+
+            var query = _dbContext.Set<TTable>().AsQueryable();
+
+            // Apply includes to the query if any are specified
+            if (includes != null && includes.Length > 0)
+            {
+                foreach (var include in includes)
+                {
+                    query = query.Include(include);
+                }
+            }
+
+            var count = query.Where(conditions).Count();
+
+            _logger.LogInformation($"Returning count matching conditions from {typeof(TTable).Name}. {count} entities matched the conditions.");
+            return count;
         }
 
         public async Task<List<TTable>> GetAllAsync()

@@ -1,10 +1,7 @@
 ﻿using ClientPortal.Controllers.Authorization;
-using ClientPortal.Data;
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 using ClientPortal.Services;
-using Dapper;
-using Microsoft.Data.SqlClient;
 
 namespace ClientPortal.Controllers
 {
@@ -80,6 +77,19 @@ namespace ClientPortal.Controllers
                 _logger?.LogError($"Failed to update User Roles: {ex.Message}");
                 return BadRequest(new ApplicationException($"Failed to update User Roles and Notification Settings: {ex.Message}"));
             }
+        }
+
+        [HttpGet("{amrMeterAlarmId:int}/not-acknowledged/count")]
+        public ActionResult<int> GetNotAcknowledgedTriggeredAlarm(int amrMeterAlarmId)
+        {
+            var count = _amrMeterTriggeredAlarmService.GetNotAcknowledgedTriggeredAlarmsCount(amrMeterAlarmId);
+
+            if(count is null)
+            {
+                return Problem("Could not get triggered alarm count");
+            }
+
+            return count;
         }
     }
 
