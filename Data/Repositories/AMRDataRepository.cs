@@ -4,6 +4,7 @@ using ClientPortal.DtOs;
 using System.Globalization;
 using ServiceStack;
 using Microsoft.EntityFrameworkCore;
+using ClientPortal.Models.FunctionModels;
 
 namespace ClientPortal.Data.Repositories
 {
@@ -17,6 +18,7 @@ namespace ClientPortal.Data.Repositories
         Task<ScadaRequestHeader> GetTrackedScadaHeader(int headerId, int detailId);
         Task<bool> SaveTrackedItems();
         Task<bool> InsertScadaProfileData(ScadaMeterProfile profile);
+        Task<bool> InsertScadaProfileData(ProfileDataMsg profile);
         Task<bool> InsertScadaReadingData(ScadaMeterReading readings);
         Task<bool> UpdateDetailStatus(int detailId, int status);
         Task<ScadaRequestHeader> GetRequest(int Id);
@@ -174,6 +176,43 @@ namespace ClientPortal.Data.Repositories
                 _logger.LogError("Error while inserting Scada Reading Data: {msg}", ex.Message);
                 return false;
             }
+        }
+
+        public async Task<bool> InsertScadaProfileData(ProfileDataMsg profile)
+        {
+            if (profile != null)
+            {
+                try
+                {
+                    foreach (var profileData in profile.Data.ProfileData)
+                    {
+                        List<ScadaProfileData> existing = await _context.ScadaProfileData
+                            .Where(p => p.SerialNumber == profileData.SerialNumber && p.ReadingDate == profileData.ReadingDate && p.IsActive)
+                            .ToListAsync();
+
+                        if (existing != null && existing.Count > 0)
+                        {
+                            foreach (var data in existing)
+                            {
+                                data.IsActive = false;
+                            }
+                            _context.UpdateRange(existing);
+                        }
+
+                        await _context.ScadaProfileData.AddAsync(profileData);
+                    }
+
+                    await _context.SaveChangesAsync();
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError("Error while inserting Scada Profile Data: {msg}", ex.Message);
+                    return false;
+                }
+            } else
+                return true;
         }
 
         public async Task<bool> InsertScadaProfileData(ScadaMeterProfile profile)
@@ -344,7 +383,7 @@ namespace ClientPortal.Data.Repositories
         {
             try
             {
-                var header = await _context.ScadaRequestHeaders.AsNoTracking()
+                var headers = await _context.ScadaRequestHeaders.AsNoTracking()
                     .Where(h => h.Active == true && h.Status == 1 && h.StartRunDTM <= DateTime.UtcNow &&
                         (h.LastRunDTM == null || h.LastRunDTM < DateTime.UtcNow.AddMinutes(-h.Interval)))
                     .Include(h => h.ScadaRequestDetails.Where(d => d.Active && d.Status == 1))
@@ -354,7 +393,15 @@ namespace ClientPortal.Data.Repositories
                     .OrderBy(h => h.LastRunDTM)
                     .ToListAsync();
 
-                return header;
+                for (int i = 0; i < headers.Count; i++)
+                {
+                    if (_context.ScadaRequestDetails.Where(d => d.HeaderId == headers[i].Id).Any(d => d.Status != 1))
+                    {
+                        headers.RemoveAt(i);
+                    }
+                }
+
+                return headers;
             }
             catch (Exception ex)
             {

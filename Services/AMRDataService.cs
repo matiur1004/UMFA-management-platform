@@ -5,6 +5,7 @@ using ClientPortal.DtOs;
 using ClientPortal.Models.FunctionModels;
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
+using DevExpress.XtraPrinting;
 using Microsoft.Azure.WebJobs;
 using System.Globalization;
 using System.IO.Compression;
@@ -24,7 +25,9 @@ namespace ClientPortal.Services
         Task<AmrJob> ProcessReadingsJob(AmrJobToRun job);
         Task<ScadaMeterReading> ProcessReadingsJobQueue(AmrJobToRun job);
         Task<bool> ProcessReadingsFromQueue(ReadingDataMsg msg);
+        Task<bool> ProcessProfilesFromQueue(ProfileDataMsg msg);
         Task<AMRGraphProfileResponse> GetGraphProfile(AMRGraphProfileRequest request);
+        public string CompressMessage(string message);
     }
 
     public class AMRDataService : IAMRDataService
@@ -214,6 +217,53 @@ namespace ClientPortal.Services
             }
         }
 
+        public async Task<bool> ProcessProfilesFromQueue(ProfileDataMsg msg)
+        {
+            if (msg != null && msg.Data != null && msg.Data.ProfileData != null && msg.Data.ProfileData.Count > 0)
+            {
+                ScadaRequestHeader trackedHeader = await _repo.GetTrackedScadaHeader(msg.Data.JobHeaderId, msg.Data.JobDetailId);
+                try
+                {
+                    if (!await _repo.InsertScadaProfileData(msg))
+                    {
+                        throw new ApplicationException($"Failed to insert profile data");
+                    }
+
+                    trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == msg.Data.JobDetailId).Status = 5;
+                    if (!await _repo.SaveTrackedItems())
+                    {
+                        throw new ApplicationException("Could not save tracked items form service");
+                    }
+
+                    //update the detail 
+                    trackedHeader.LastRunDTM = DateTime.UtcNow;
+                    trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == msg.Data.JobDetailId).Status = 1;
+                    trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == msg.Data.JobDetailId).LastRunDTM = DateTime.UtcNow;
+                    if (msg.Data.ProfileData.Count > 0)
+                        trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == msg.Data.JobDetailId).LastDataDate = DateTime.Parse(msg.Data.ProfileData[msg.Data.ProfileData.Count - 1].ReadingDate.ToString());
+                    if (!await _repo.SaveTrackedItems())
+                    {
+                        throw new ApplicationException("Could not save tracked items form service");
+                    }
+
+                    _logger.LogInformation("Successfully processed {records} for meter {meter}", msg.Data.ProfileData.Count, msg.Data.ProfileData.FirstOrDefault().SerialNumber);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"Error while saving scada data for {msg.Data.JobHeaderId} with detail {msg.Data.JobDetailId}: {ex.Message}");
+                    trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == msg.Data.JobDetailId).Status = 1;
+                    await _repo.SaveTrackedItems();
+                    return false;
+                }
+            } else
+            {
+                _logger.LogInformation($"No information to process for job {msg.Data.JobHeaderId} with detail {msg.Data.JobDetailId}");
+                return true;
+            }
+
+        }
+
         public async Task<List<string>> ProcessProfileJobQueue(List<AmrJobToRun> jobs)
         {
             List<ProfileDataMsg> profiles = new();
@@ -293,68 +343,13 @@ namespace ClientPortal.Services
 
             foreach (ProfileDataMsg profile in profiles)
             {
-                _logger.LogInformation($"Size before compression: {CalcSize(profile)}");
+                //_logger.LogInformation($"Size before compression: {CalcSize(profile)}");
                 string str = JsonSerializer.Serialize(profile);
-                byte[] bytes = Encoding.UTF8.GetBytes(str);
-                using (var outputStream = new MemoryStream())
-                {
-                    using (var compressionStream = new GZipStream(outputStream, CompressionMode.Compress))
-                    {
-                        compressionStream.Write(bytes, 0, bytes.Length);
-                    }
-                    byte[] compressedBytes = outputStream.ToArray();
-                    string msg = Convert.ToBase64String(compressedBytes);
-                    _logger.LogInformation($"New byte array with length {CalcSize(msg)}");
-                    ret.Add(msg);
-                }
+                string msgStr = CompressMessage(str);
+                ret.Add(msgStr);
             }
 
-            //if(CalcSize(profileMsg) < 60000)
-            //{
-            //    ret.Add(profileMsg);
-            //    return ret;
-            //}
-
-            //while (CalcSize(profileMsg) > 60000)
-            //{
-            //    var newMsg = new ProfileDataMsg
-            //    {
-            //        DequeueCount = 0,
-            //        Data = new List<ProfileDataDetail>()
-            //    };
-
-            //    while(CalcSize(newMsg) < 60000 && profileMsg.Data.Any())
-            //    {
-            //        newMsg.Data.Add(profileMsg.Data.First());
-            //        profileMsg.Data.Remove(profileMsg.Data.First());
-            //    }
-
-            //    profileMsg.Data.Add(newMsg.Data.Last());
-            //    newMsg.Data.Remove(newMsg.Data.Last());
-                
-            //    ret.Add(newMsg);
-            //}
-
-            //if(profileMsg.Data.Any())
-            //{
-            //    ret.Add(profileMsg);
-            //}
-
             return ret;
-        }
-
-        private int CalcSize(ProfileDataMsg message)
-        {
-            string jsonString = JsonSerializer.Serialize(message);
-            int byteSize = Encoding.UTF8.GetByteCount(jsonString);
-            return byteSize;
-        }
-
-        private int CalcSize(string message)
-        {
-            //string jsonString = JsonSerializer.Serialize(message);
-            int byteSize = Encoding.UTF8.GetByteCount(message);
-            return byteSize;
         }
 
         public async Task<AmrJob> ProcessProfileJob(AmrJobToRun job)
@@ -610,6 +605,54 @@ namespace ClientPortal.Services
                 _logger.LogError("Error retrieving TOU Headers: {Message}", ex.Message);
                 throw new ApplicationException($"Error retrieving TOU Headers: {ex.Message}");
             }
+        }
+
+        public bool TestCompression(string message)
+        {
+            try
+            {
+                byte[] compressedBytesFromMessage = Convert.FromBase64String(message);
+
+                // Decompress the compressedBytes
+                string decompressedStr;
+                using (var inputStream = new MemoryStream(compressedBytesFromMessage))
+                using (var decompressionStream = new GZipStream(inputStream, CompressionMode.Decompress))
+                using (var reader = new StreamReader(decompressionStream, Encoding.UTF8))
+                {
+                    decompressedStr = reader.ReadToEnd();
+                }
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public string CompressMessage(string message)
+        {
+            string retMsg = "";
+            byte[] bytes = Encoding.UTF8.GetBytes(message);
+            using (var outputStream = new MemoryStream())
+            {
+                using (var compressionStream = new GZipStream(outputStream, CompressionMode.Compress))
+                {
+                    compressionStream.Write(bytes, 0, bytes.Length);
+                }
+                byte[] compressedBytes = outputStream.ToArray();
+                string msg = Convert.ToBase64String(compressedBytes);
+                retMsg = msg;
+            }
+
+            return retMsg;
+        }
+
+        private int CalcSize(string message)
+        {
+            //string jsonString = JsonSerializer.Serialize(message);
+            int byteSize = Encoding.UTF8.GetByteCount(message);
+            return byteSize;
         }
     }
 }
