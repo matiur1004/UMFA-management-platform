@@ -230,7 +230,7 @@ namespace ClientPortal.Services
 
         private User GetUserByRefreshToken(string token)
         {
-            _logger.LogInformation("Finding uer based on token initiated...");
+            _logger.LogInformation("Finding user based on token initiated...");
             try
             {
                 var user = _dbContext.Users.Include(u => u.RefreshTokens).SingleOrDefault(u => u.RefreshTokens.Any(rt => rt.Token == token));

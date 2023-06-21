@@ -141,6 +141,7 @@ IConfiguration? configuration = builder.Configuration;
     services.AddTransient<INotificationService, NotificationService>();
     services.AddScoped<IScadaRequestService, ScadaRequestService>();
     services.AddScoped<IUmfaReportService, UmfaReportService>();
+    services.AddScoped<IAMRMeterTriggeredAlarmService, AMRMeterTriggeredAlarmService>();
 
     //Data components
     services.AddScoped<IPortalStatsRepository, PortalStatsRepository>();
@@ -154,6 +155,7 @@ IConfiguration? configuration = builder.Configuration;
     services.AddScoped<IScadaRequestRepository<ScadaRequestDetail>, ScadaRequestDetailRepository>();
     services.AddScoped<IUmfaRepository, UmfaRepository>();
     services.AddScoped<INotificationRepository, NotificationRepository>();
+    services.AddScoped<IAMRMeterTriggeredAlarmRepository, AMRMeterTriggeredAlarmRepository>();
 }
 
 var app = builder.Build();

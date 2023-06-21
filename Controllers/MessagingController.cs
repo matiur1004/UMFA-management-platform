@@ -1,8 +1,10 @@
-﻿using ClientPortal.Interfaces;
+﻿using ClientPortal.Controllers.Authorization;
+using ClientPortal.Interfaces;
 using ClientPortal.Models.MessagingModels;
 
 namespace ClientPortal.Controllers
 {
+    [Authorize]
     [Route("[controller]")]
     [ApiController]
     public class MessagingController : ControllerBase
@@ -36,7 +38,7 @@ namespace ClientPortal.Controllers
         [HttpPost("sendWhatsApp")]
         public async Task<IActionResult> SendWhatsAppAsync(WhatsAppData wData)
         {
-            bool result = await _whis.SendAsync(wData, new CancellationToken());
+            bool result = await _whis.SendPortalAlarmAsync(wData, new CancellationToken());
 
             if (result)
             {

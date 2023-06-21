@@ -1,6 +1,7 @@
 ﻿using ClientPortal.Controllers.Authorization;
-using ClientPortal.Data;
-using Dapper;
+using ClientPortal.Models.RequestModels;
+using ClientPortal.Models.ResponseModels;
+using ClientPortal.Services;
 
 namespace ClientPortal.Controllers
 {
@@ -10,12 +11,12 @@ namespace ClientPortal.Controllers
     public class AlarmTriggeredController : ControllerBase
     {
         private readonly ILogger<AlarmTriggeredController> _logger;
-        private readonly PortalDBContext _context;
+        private readonly IAMRMeterTriggeredAlarmService _amrMeterTriggeredAlarmService;
 
-        public AlarmTriggeredController(ILogger<AlarmTriggeredController> logger, PortalDBContext portalDBContext)
+        public AlarmTriggeredController(ILogger<AlarmTriggeredController> logger, IAMRMeterTriggeredAlarmService amrMeterTriggeredAlarmService)
         {
             _logger = logger;
-            _context = portalDBContext;
+            _amrMeterTriggeredAlarmService = amrMeterTriggeredAlarmService;
         }
 
         [HttpPost("getAlarmTriggered")]
@@ -29,16 +30,10 @@ namespace ClientPortal.Controllers
 
             try
             {
-                var CommandText = $"execute spGetTriggeredAlarm {model.AMRMeterTriggeredAlarmId}";
-                var connection = _context.Database.GetDbConnection();
-                await connection.OpenAsync();
-                var results = await connection.QueryMultipleAsync(CommandText);
-
-                AlarmTriggeredResultInfoModel alarmInfo = results.Read<AlarmTriggeredResultInfoModel>().First();
-                List<AlarmTriggeredResultDataModel> alarmData = results.Read<AlarmTriggeredResultDataModel>().ToList();
-
-                returnResult.AlarmInfo = alarmInfo;
-                returnResult.AlarmData = alarmData;
+                var triggeredAlarmDetails = await _amrMeterTriggeredAlarmService.GetTriggeredAlarms(model.AMRMeterTriggeredAlarmId);
+                
+                returnResult.AlarmData = triggeredAlarmDetails.AlarmTriggeredResultDataModels;
+                returnResult.AlarmInfo = triggeredAlarmDetails.AlarmTriggeredResultInfoModels.First();
 
             }
             catch (Exception ex)
@@ -60,16 +55,15 @@ namespace ClientPortal.Controllers
         }
 
         [HttpPost("updateAcknowledged")]
-        public IActionResult UpdateAcknowledged([FromBody] AlarmTriggeredModel model)
+        public async Task<IActionResult> UpdateAcknowledged([FromBody] AlarmTriggeredModel model)
         {
             try
             {
                 _logger.LogInformation($"Update AlarmTriggered Acknowledged With Id: {model.AMRMeterTriggeredAlarmId}");
-                var response = _context.Database.ExecuteSqlRaw($"UPDATE [dbo].[AMRMeterTriggeredAlarms] SET " +
-                    $"[Acknowledged] = 1 " +
-                    $"WHERE AMRMeterTriggeredAlarmId = {model.AMRMeterTriggeredAlarmId}");
 
-                if (response != 0)
+                var updatedAlarm = await _amrMeterTriggeredAlarmService.AcknowledgeAlarmAsync(new AMRMeterTriggeredAlarmAcknowledgeRequest { Acknowledged = true }, model.AMRMeterTriggeredAlarmId);
+
+                if (updatedAlarm is not null)
                 {
                     var result = new SuccessModel();
                     result.Status = "Success";
@@ -84,6 +78,19 @@ namespace ClientPortal.Controllers
                 return BadRequest(new ApplicationException($"Failed to update User Roles and Notification Settings: {ex.Message}"));
             }
         }
+
+        [HttpGet("{amrMeterAlarmId:int}/not-acknowledged/count")]
+        public ActionResult<int> GetNotAcknowledgedTriggeredAlarm(int amrMeterAlarmId)
+        {
+            var count = _amrMeterTriggeredAlarmService.GetNotAcknowledgedTriggeredAlarmsCount(amrMeterAlarmId);
+
+            if(count is null)
+            {
+                return Problem("Could not get triggered alarm count");
+            }
+
+            return count;
+        }
     }
 
     //Config
@@ -93,32 +100,7 @@ namespace ClientPortal.Controllers
 
     }
 
-    public class AlarmTriggeredResultInfoModel
-    {
-        public int AMRMeterTriggeredAlarmId { get; set; }
-        public bool Acknowledged { get; set; }
-        public string AlarmName { get; set; }
-        public string AlarmDescription { get; set; }
-        public string MeterSerial { get; set; }
-        public string UMFAMeterNo { get; set; }
-        public string MeterDescription { get; set; }
-        public string Partner { get; set; }
-        public string Building { get; set; }
-        public decimal Threshold { get; set; }
-        public int Duration { get; set; }
-        public decimal AverageObserved { get; set; }
-        public decimal MaximumObserved { get; set; }
-
-    }
-
-    public class AlarmTriggeredResultDataModel
-    {
-        public string ReadingDate { get; set; }
-        public decimal ActFlow { get; set; }
-        public bool Calculated { get; set; }
-        public string Color { get; set; }
-    }
-
+   
 
     public class AlarmTriggeredResultModel
     {

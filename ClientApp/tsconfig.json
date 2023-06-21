@@ -31,7 +31,10 @@
             "@layout/*": ["app/layout/*"],
             "@modules/*": ["app/modules/*"],
             "@shared/*": ["app/shared/*"]
-        }
+        },
+        "types": [
+            "node"
+        ]
     },
     "angularCompilerOptions": {
         "enableI18nLegacyMessageIdFormat": false,
