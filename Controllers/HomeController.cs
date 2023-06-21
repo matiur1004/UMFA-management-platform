@@ -1,5 +1,8 @@
 ﻿using ClientPortal.Controllers.Authorization;
+using ClientPortal.Helpers;
 using ClientPortal.Services;
+using ClientPortal.Settings;
+using Microsoft.Extensions.Options;
 
 namespace ClientPortal.Controllers
 {
@@ -10,11 +13,13 @@ namespace ClientPortal.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IHomeService _dashboardService;
+        private readonly AppSettings _config;
 
-        public HomeController(ILogger<HomeController> logger, IHomeService dashboardService)
+        public HomeController(ILogger<HomeController> logger, IHomeService dashboardService, IOptions<AppSettings> config)
         {
             _logger = logger;
             _dashboardService = dashboardService;
+            _config = config.Value;
         }
 
         [HttpGet("get-stats")]
@@ -32,5 +37,13 @@ namespace ClientPortal.Controllers
             }
         }
 
+        [HttpGet("getAppVersion")]
+        public IActionResult GetAppVersion()
+        {
+            string version = _config.AppVersion;
+            if (!String.IsNullOrEmpty(version))
+                return Ok(version);
+            else return Ok("NotSet");
+        }
     }
 }
