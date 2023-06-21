@@ -24,7 +24,7 @@ namespace ClientPortal.Data.Repositories
             _context = context;
         }
 
-        private async Task<T> RunStoredProcedure<T, TArgumentClass>(string procedure, TArgumentClass? args = default) where T : new()
+        private async Task<T> RunStoredProcedureAsync<T, TArgumentClass>(string procedure, TArgumentClass? args = default) where T : new()
         {
             var connection = _context.Database.GetDbConnection();
             if (connection.State == System.Data.ConnectionState.Closed)
@@ -79,7 +79,7 @@ namespace ClientPortal.Data.Repositories
             }
         }
 
-        private async Task RunStoredProcedure<TArgumentClass>(string procedure, TArgumentClass? args = default)
+        private async Task RunStoredProcedureAsync<TArgumentClass>(string procedure, TArgumentClass? args = default)
         {
             var connection = _context.Database.GetDbConnection();
             if (connection.State == System.Data.ConnectionState.Closed)
@@ -124,7 +124,7 @@ namespace ClientPortal.Data.Repositories
         public async Task<UtilityRecoveryReportSpResponse> GetUtilityRecoveryReportAsync(UtilityRecoveryReportRequest request)
         {
 
-            var result = await RunStoredProcedure<UtilityRecoveryReportSpResponse, UtilityRecoveryReportRequest>("upPortal_UtilityRecoveryReport", request);
+            var result = await RunStoredProcedureAsync<UtilityRecoveryReportSpResponse, UtilityRecoveryReportRequest>("upPortal_UtilityRecoveryReport", request);
 
             return result;
         }
@@ -132,7 +132,7 @@ namespace ClientPortal.Data.Repositories
         public async Task<ShopUsageVarianceSpResponse> GetShopUsageVarianceReportAsync(ShopUsageVarianceRequest request)
         {
 
-            var result = await RunStoredProcedure<ShopUsageVarianceSpResponse, ShopUsageVarianceRequest>("upPortal_RepBuildingShopUsageNoPivot", request);
+            var result = await RunStoredProcedureAsync<ShopUsageVarianceSpResponse, ShopUsageVarianceRequest>("upPortal_RepBuildingShopUsageNoPivot", request);
 
             return result;
         }
@@ -140,14 +140,14 @@ namespace ClientPortal.Data.Repositories
         public async Task<ShopCostVarianceSpResponse> GetShopCostVarianceReportAsync(ShopUsageVarianceRequest request)
         {
 
-            var result = await RunStoredProcedure<ShopCostVarianceSpResponse, ShopUsageVarianceRequest>("upPortal_ShopCostVariance", request);
+            var result = await RunStoredProcedureAsync<ShopCostVarianceSpResponse, ShopUsageVarianceRequest>("upPortal_ShopCostVariance", request);
 
             return result;
         }
 
         public async Task AddMappedMeterAsync(MappedMeterSpRequest request)
         {
-            await RunStoredProcedure("upInsertMappedItems", request);
+            await RunStoredProcedureAsync("upInsertMappedItems", request);
         }
     }
 }
