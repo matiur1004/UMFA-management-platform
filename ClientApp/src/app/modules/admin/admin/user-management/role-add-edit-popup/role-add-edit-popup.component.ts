@@ -68,8 +68,7 @@ export class RoleAddEditPopupComponent implements OnInit {
         NotificationTypeId: [type.Id],
         UserId: this.data.detail.Id,
         Email: [false],
-        WhatsApp: [false],
-        Telegram: [false]
+        WhatsApp: [false]
       }));
     });
 
