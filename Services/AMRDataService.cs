@@ -219,43 +219,62 @@ namespace ClientPortal.Services
 
         public async Task<bool> ProcessProfilesFromQueue(ProfileDataMsg msg)
         {
-            if (msg != null && msg.Data != null && msg.Data.ProfileData != null && msg.Data.ProfileData.Count > 0)
+            if (msg != null && msg.Data != null && msg.Data.ProfileData != null)
             {
                 ScadaRequestHeader trackedHeader = await _repo.GetTrackedScadaHeader(msg.Data.JobHeaderId, msg.Data.JobDetailId);
-                try
+                if (msg.Data.ProfileData.Count > 0)
                 {
-                    if (!await _repo.InsertScadaProfileData(msg))
+                    try
                     {
-                        throw new ApplicationException($"Failed to insert profile data");
-                    }
+                        if (!await _repo.InsertScadaProfileData(msg))
+                        {
+                            throw new ApplicationException($"Failed to insert profile data");
+                        }
 
-                    trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == msg.Data.JobDetailId).Status = 5;
-                    if (!await _repo.SaveTrackedItems())
+                        trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == msg.Data.JobDetailId).Status = 5;
+                        if (!await _repo.SaveTrackedItems())
+                        {
+                            throw new ApplicationException("Could not save tracked items form service");
+                        }
+
+                        //update the detail 
+                        trackedHeader.LastRunDTM = DateTime.UtcNow;
+                        trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == msg.Data.JobDetailId).Status = 1;
+                        trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == msg.Data.JobDetailId).LastRunDTM = DateTime.UtcNow;
+                        if (msg.Data.ProfileData.Count > 0)
+                            trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == msg.Data.JobDetailId).LastDataDate = DateTime.Parse(msg.Data.ProfileData[msg.Data.ProfileData.Count - 1].ReadingDate.ToString());
+                        if (!await _repo.SaveTrackedItems())
+                        {
+                            throw new ApplicationException("Could not save tracked items form service");
+                        }
+
+                        _logger.LogInformation("Successfully processed {records} for meter {meter}", msg.Data.ProfileData.Count, msg.Data.ProfileData.FirstOrDefault().SerialNumber);
+                        return true;
+                    }
+                    catch (Exception ex)
                     {
-                        throw new ApplicationException("Could not save tracked items form service");
+                        _logger.LogError($"Error while saving scada data for {msg.Data.JobHeaderId} with detail {msg.Data.JobDetailId}: {ex.Message}");
+                        trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == msg.Data.JobDetailId).Status = 1;
+                        await _repo.SaveTrackedItems();
+                        return false;
                     }
-
+                } else
+                {
                     //update the detail 
                     trackedHeader.LastRunDTM = DateTime.UtcNow;
                     trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == msg.Data.JobDetailId).Status = 1;
                     trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == msg.Data.JobDetailId).LastRunDTM = DateTime.UtcNow;
-                    if (msg.Data.ProfileData.Count > 0)
-                        trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == msg.Data.JobDetailId).LastDataDate = DateTime.Parse(msg.Data.ProfileData[msg.Data.ProfileData.Count - 1].ReadingDate.ToString());
+                    DateTime lastDate = trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == msg.Data.JobDetailId).LastDataDate?? DateTime.UtcNow;
+                    trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == msg.Data.JobDetailId).LastDataDate = lastDate;
                     if (!await _repo.SaveTrackedItems())
                     {
                         throw new ApplicationException("Could not save tracked items form service");
                     }
 
-                    _logger.LogInformation("Successfully processed {records} for meter {meter}", msg.Data.ProfileData.Count, msg.Data.ProfileData.FirstOrDefault().SerialNumber);
+                    _logger.LogInformation($"No Scada data found job detail {msg.Data.JobDetailId}");
                     return true;
                 }
-                catch (Exception ex)
-                {
-                    _logger.LogError($"Error while saving scada data for {msg.Data.JobHeaderId} with detail {msg.Data.JobDetailId}: {ex.Message}");
-                    trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == msg.Data.JobDetailId).Status = 1;
-                    await _repo.SaveTrackedItems();
-                    return false;
-                }
+
             } else
             {
                 _logger.LogInformation($"No information to process for job {msg.Data.JobHeaderId} with detail {msg.Data.JobDetailId}");
