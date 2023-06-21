@@ -15,18 +15,13 @@ namespace ClientPortal.Services
             _settings = settings.Value;
         }
 
-        public async Task<bool> SendAsync(WhatsAppData tData, CancellationToken ct = default)
+        public async Task<bool> SendPortalAlarmAsync(WhatsAppData tData, CancellationToken ct = default)
         {
             using var client = new HttpClient();
 
-            //LIVE
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
                 "Bearer",
-                _settings.WhatsAppLiveToken);
-            //TEST
-            //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
-            //  "Bearer",
-            //  _settings.WhatsAppTestToken);
+                _settings.AuthToken);
 
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -35,33 +30,66 @@ namespace ClientPortal.Services
                 messaging_product = "whatsapp",
                 recipient_type = "individual",
                 to = tData.PhoneNumber,
-                type = "text",
-                text = new { preview_url = false, body = tData.Message }
+                type = "template",
+                template = new 
+                {
+                    name = _settings.TemplateName,
+                    language = new { code = "en_US" },
+                    components = new List<object>
+                    {
+                        new
+                        {
+                            type = "body",
+                            parameters = new List<object>
+                            {
+                                new
+                                {
+                                    type = "text",
+                                    text = tData.MeterNumber
+                                },
+                                new
+                                {
+                                    type = "text",
+                                    text = tData.MeterName
+                                },
+                                new
+                                {
+                                    type = "text",
+                                    text = tData.BuildingName
+                                },
+                                new
+                                {
+                                    type = "text",
+                                    text = tData.AlarmName
+                                },
+                                new
+                                {
+                                    type = "text",
+                                    text = tData.AlarmDescription
+                                },
+                            }
+                        }
+                    }
+                }
             };
 
             var json = JsonConvert.SerializeObject(request);
+            
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            //LIVE
             var whatsAppApiUrl = _settings.WhatsAppCloudApiBaseUrl +
                 _settings.WhatsAppApiVersion +
-                _settings.WhatsAppLivePhoneId +
+                _settings.PhoneId +
                 _settings.WhatsAppApiEndpoint;
-
-            //TEST
-            //var whatsAppApiUrl = _settings.WhatsAppCloudApiBaseUrl +
-            //_settings.WhatsAppApiVersion +
-            //_settings.WhatsAppTestPhoneId +
-            //_settings.WhatsAppApiEndpoint;
 
             var responseString = "";
 
 
             var response = await client.PostAsync(whatsAppApiUrl, content);
-            //response.EnsureSuccessStatusCode();
-            responseString = await response.Content.ReadAsStringAsync();
-            return response.IsSuccessStatusCode;
 
+            responseString = await response.Content.ReadAsStringAsync();
+
+            return response.IsSuccessStatusCode;
         }
     }
 }
