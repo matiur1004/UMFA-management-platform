@@ -70,18 +70,18 @@ namespace ClientPortal.Services
                                 case 1: //EMAIL
                                     var mData = new MailData();
                                     mData.To = notification.MessageAddress!;
-                                    mData.Message = ""; //BuildNotificationMessage(JsonSerializer.Deserialize<NotificationToSend>(notification.MessageBody));
-                                    sendResult = true; // await _mailService.SendAsync(mData, default);
+                                    mData.Message = BuildNotificationMessage(JsonSerializer.Deserialize<NotificationToSend>(notification.MessageBody));
+                                    sendResult = await _mailService.SendAsync(mData, default);
                                     break;
                                 case 2: //WhatsApp
-                                    var wData = ""; // new WhatsAppData(JsonSerializer.Deserialize<NotificationToSend>(notification.MessageBody));
-                                    sendResult = true; // await _whatsAppService.SendPortalAlarmAsync(wData, default);
+                                    var wData = new WhatsAppData(JsonSerializer.Deserialize<NotificationToSend>(notification.MessageBody));
+                                    sendResult = await _whatsAppService.SendPortalAlarmAsync(wData, default);
                                     break;
                                 case 3: //Telegram
                                     var tData = new TelegramData();
                                     tData.PhoneNumber = notification.MessageAddress!;
-                                    tData.Message = ""; // BuildNotificationMessage(JsonSerializer.Deserialize<NotificationToSend>(notification.MessageBody));
-                                    sendResult = true; // await _telegramService.SendAsync(tData, default);
+                                    tData.Message = BuildNotificationMessage(JsonSerializer.Deserialize<NotificationToSend>(notification.MessageBody));
+                                    sendResult = await _telegramService.SendAsync(tData, default);
                                     break;
                             }
 

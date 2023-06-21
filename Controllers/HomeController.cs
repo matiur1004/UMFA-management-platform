@@ -10,11 +10,13 @@ namespace ClientPortal.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IHomeService _dashboardService;
+        private readonly IConfiguration _config;
 
-        public HomeController(ILogger<HomeController> logger, IHomeService dashboardService)
+        public HomeController(ILogger<HomeController> logger, IHomeService dashboardService, IConfiguration config)
         {
             _logger = logger;
             _dashboardService = dashboardService;
+            _config = config;
         }
 
         [HttpGet("get-stats")]
@@ -32,5 +34,13 @@ namespace ClientPortal.Controllers
             }
         }
 
+        [HttpGet("getAppVersion")]
+        public IActionResult GetAppVersion()
+        {
+            string version = _config["AppVersion"];
+            if (!String.IsNullOrEmpty(version))
+                return Ok(version);
+            else return Ok("NotSet");
+        }
     }
 }

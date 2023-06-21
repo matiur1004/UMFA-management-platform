@@ -9,5 +9,6 @@
         public int RefreshTokenTTL { get; set; }
         public string UmfaWebAPIURL { get; set; }
         public string EncryptionKey { get; set; }
+        public string AppVersion { get; set; }
     }
 }
