@@ -36,7 +36,7 @@ namespace ClientPortal.Controllers
                 return BadRequest($"Error while retrieving stats from service: {ex.Message}");
             }
         }
-
+        [AllowAnonymous]
         [HttpGet("getAppVersion")]
         public IActionResult GetAppVersion()
         {
