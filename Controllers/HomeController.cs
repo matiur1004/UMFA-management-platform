@@ -3,6 +3,7 @@ using ClientPortal.Helpers;
 using ClientPortal.Services;
 using ClientPortal.Settings;
 using Microsoft.Extensions.Options;
+using System.Dynamic;
 
 namespace ClientPortal.Controllers
 {
@@ -40,10 +41,12 @@ namespace ClientPortal.Controllers
         [HttpGet("getAppVersion")]
         public IActionResult GetAppVersion()
         {
-            string version = _config.AppVersion;
-            if (!String.IsNullOrEmpty(version))
-                return Ok(version);
-            else return Ok("NotSet");
+            string ver = (_config == null || _config.AppVersion == null) ? "NotSet" : _config.AppVersion.ToString();
+            dynamic version = new ExpandoObject();
+            version.Name = "AppVersion";
+            version.Value = ver;
+
+            return Ok(version);
         }
     }
 }
