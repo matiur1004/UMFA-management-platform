@@ -142,6 +142,7 @@ IConfiguration? configuration = builder.Configuration;
     services.AddScoped<IScadaRequestService, ScadaRequestService>();
     services.AddScoped<IUmfaReportService, UmfaReportService>();
     services.AddScoped<IAMRMeterTriggeredAlarmService, AMRMeterTriggeredAlarmService>();
+    services.AddScoped<IUmfaService, UmfaService>();
 
     //Data components
     services.AddScoped<IPortalStatsRepository, PortalStatsRepository>();

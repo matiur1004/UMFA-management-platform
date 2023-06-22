@@ -22,22 +22,25 @@ namespace ClientPortal.Controllers
         [HttpGet("UtilityRecoveryReport")]
         public async Task<ActionResult<UtilityRecoveryReportResponse>> Get([FromQuery] UtilityRecoveryReportRequest request)
         {
-            var response = await _umfaReportService.GetUtilityRecoveryReportAsync(request);
-            return response;
+            return await _umfaReportService.GetUtilityRecoveryReportAsync(request);
         }
 
         [HttpGet("ShopUsageVarianceReport")]
         public async Task<ActionResult<ShopUsageVarianceReportResponse>> Get([FromQuery] ShopUsageVarianceRequest request)
         {
-            var response = await _umfaReportService.GetShopUsageVarianceReportAsync(request);
-            return response;
+            return await _umfaReportService.GetShopUsageVarianceReportAsync(request);
         }
 
         [HttpGet("ShopCostVarianceReport")]
         public async Task<ActionResult<ShopCostVarianceReportResponse>> GetCostVariance([FromQuery] ShopUsageVarianceRequest request)
         {
-            var response = await _umfaReportService.GetShopCostVarianceReportAsync(request);
-            return response;
+            return await _umfaReportService.GetShopCostVarianceReportAsync(request);
+        }
+
+        [HttpGet("ConsumptionSummaryReport")]
+        public async Task<ActionResult<ConsumptionSummarySpResponse>> GetConsumptionSummary([FromQuery] ConsumptionSummarySpRequest request)
+        {
+            return await _umfaReportService.GetConsumptionSummaryReport(request);
         }
     }
 }
