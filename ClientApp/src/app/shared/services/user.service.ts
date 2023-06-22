@@ -244,6 +244,15 @@ export class UserService {
       );
   }
 
+  getAppVersion(): Observable<any> {
+    const url = `${CONFIG.apiURL}/home/getAppVersion`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchErrors('app version', err)),
+        //tap(data => console.log('createAmrScadaUser response: ' + JSON.stringify(data))),
+        tap(data => {})
+      );
+  }
   /*
   updateProduct(product: Product): Observable<Product> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });

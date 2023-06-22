@@ -3,8 +3,10 @@ import { UntypedFormBuilder, UntypedFormGroup, NgForm, Validators } from '@angul
 import { ActivatedRoute, Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertType } from '@fuse/components/alert';
+import { UserService } from '@shared/services';
 import { AuthService } from 'app/core/auth/auth.service';
 import { environment } from 'environments/environment';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector     : 'auth-sign-in',
@@ -23,7 +25,8 @@ export class AuthSignInComponent implements OnInit
     };
     signInForm: UntypedFormGroup;
     showAlert: boolean = false;
-
+    appVersion: string;
+    private _unsubscribeAll: Subject<any> = new Subject<any>();
     /**
      * Constructor
      */
@@ -31,7 +34,8 @@ export class AuthSignInComponent implements OnInit
         private _activatedRoute: ActivatedRoute,
         private _authService: AuthService,
         private _formBuilder: UntypedFormBuilder,
-        private _router: Router
+        private _router: Router,
+        private _userService: UserService
     )
     {
     }
@@ -52,6 +56,11 @@ export class AuthSignInComponent implements OnInit
             rememberMe: ['']
         });
 
+        this._userService.getAppVersion()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(res => {
+                this.appVersion = res['Value'];
+            })
         // UMFA OPERATOR levi@umfa.co.za / Lev@234
     }
 
@@ -109,5 +118,10 @@ export class AuthSignInComponent implements OnInit
                     this.showAlert = true;
                 }
             );
+    }
+
+    ngOnDestroy() {
+        this._unsubscribeAll.next(null);
+        this._unsubscribeAll.complete();
     }
 }
