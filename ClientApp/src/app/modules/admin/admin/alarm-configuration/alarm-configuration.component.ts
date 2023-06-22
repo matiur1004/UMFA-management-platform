@@ -67,7 +67,7 @@ export class AlarmConfigurationComponent implements OnInit {
           return item;
         });
       })
-
+      
     this._buildingService.buildings$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: IUmfaBuilding[]) => {

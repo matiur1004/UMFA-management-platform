@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IWaterProfileResponse } from '@core/models';
 import { AmrDataService } from '@shared/services';
 import { AlarmConfigurationService } from '@shared/services/alarm-configuration.service';
-import { catchError, map, tap, throwError } from 'rxjs';
+import { Subject, catchError, forkJoin, map, takeUntil, tap, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-meter-alarm-detail',
@@ -19,9 +19,11 @@ export class MeterAlarmDetailComponent implements OnInit {
   profileDataSource: IWaterProfileResponse;
   chartSubTitleWater: string = '';
   chartTitleWater = `Water Profile for Meter:`;
-  selectedAlarmType: string;
+  selectedAlarmType: any;
   applyNightFlow: boolean = false;
   todayDate = new Date();
+
+  notAcknowledgedConfig: any;
   obsWaterProfile$ = this._amrDataService.obsWaterProfile$
     .pipe(
       tap(p => {
@@ -41,6 +43,8 @@ export class MeterAlarmDetailComponent implements OnInit {
       })
     );
 
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
+  
   constructor(
     private _formBuilder: FormBuilder,
     private _amrDataService: AmrDataService,
@@ -74,9 +78,55 @@ export class MeterAlarmDetailComponent implements OnInit {
       }
     })
 
-    this.getAlarmMeterDetail(this.meter.AMRMeterId);
-
     this.onShowConfigStatus();
+
+    this.getAlarmMeterDetail(this.meter.AMRMeterId);
+    
+    //this.getAlarmMeterNotAcknowledgedCount(1011);
+
+    this._alarmConfigService.alarmMeterDetail$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((data: any) => {
+        if(data && data.length > 0) {
+          let alarmConfigs = [];
+          data.forEach(alarmDetail => {
+            if(alarmDetail.AlarmTypeId == 1) this.meter = {...this.meter, alarmConfig: {...this.meter['alarmConfig'], 'Night Flow Detail': alarmDetail}};
+            if(alarmDetail.AlarmTypeId == 2) this.meter = {...this.meter, alarmConfig: {...this.meter['alarmConfig'], 'Burst Pipe Detail': alarmDetail}};
+            if(alarmDetail.AlarmTypeId == 3) this.meter = {...this.meter, alarmConfig: {...this.meter['alarmConfig'], 'Leak Detail': alarmDetail}};
+            if(alarmDetail.AlarmTypeId == 4) this.meter = {...this.meter, alarmConfig: {...this.meter['alarmConfig'], 'Daily Usage Detail': alarmDetail}};
+            if(alarmDetail.AlarmTypeId == 5) this.meter = {...this.meter, alarmConfig: {...this.meter['alarmConfig'], 'Peak Detail': alarmDetail}};
+            if(alarmDetail.AlarmTypeId == 6) this.meter = {...this.meter, alarmConfig: {...this.meter['alarmConfig'], 'Average Detail': alarmDetail}};
+            alarmConfigs.push(alarmDetail);
+          })
+          this.getAlarmMeterNotAcknowledgedCount(alarmConfigs);
+        }
+      });
+  }
+
+  getAlarmMeterNotAcknowledgedCount(alarmConfigs: any[]) {
+    let calls = alarmConfigs.map(config => {
+      return this._alarmConfigService.getAlarmMeterNotAcknowledgedCount(config.AMRMeterAlarmId);  
+    })
+    this.notAcknowledgedConfig = {
+      'Night Flow': 0,
+      'Burst Pipe': 0,
+      'Leak': 0,
+      'Daily Usage': 0,
+      'Peak': 0,
+      'Average': 0
+    };
+    forkJoin(calls)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((data: any) => {
+        data.forEach((val, index) => {
+          if(alarmConfigs[index].AlarmTypeId == 1) this.notAcknowledgedConfig = {...this.notAcknowledgedConfig, 'Night Flow': val};
+          if(alarmConfigs[index].AlarmTypeId == 2) this.notAcknowledgedConfig = {...this.notAcknowledgedConfig, 'Burst Pipe': val};
+          if(alarmConfigs[index].AlarmTypeId == 3) this.notAcknowledgedConfig = {...this.notAcknowledgedConfig, 'Leak': val};
+          if(alarmConfigs[index].AlarmTypeId == 4) this.notAcknowledgedConfig = {...this.notAcknowledgedConfig, 'Daily Usage': val};
+          if(alarmConfigs[index].AlarmTypeId == 5) this.notAcknowledgedConfig = {...this.notAcknowledgedConfig, 'Peak': val};
+          if(alarmConfigs[index].AlarmTypeId == 6) this.notAcknowledgedConfig = {...this.notAcknowledgedConfig, 'Average': val};
+        })
+      });
   }
 
   onShowConfigStatus() {
@@ -159,7 +209,7 @@ export class MeterAlarmDetailComponent implements OnInit {
   }
 
   getAlarmMeterDetail(id) {
-    this._alarmConfigService.getAlarmMeterDetail(id).subscribe();
+    this._alarmConfigService.getAlarmMeterDetail(id).subscribe(res => {});
   }
 
   onChangeGraph(data) {
@@ -178,6 +228,7 @@ export class MeterAlarmDetailComponent implements OnInit {
     this._alarmConfigService.createOrUpdateAMRMeterAlarm(alarmData).subscribe((res) => {
       if(res['Value']['Active']) {
         this.meter['alarmConfig'][this.getAlarmTypeName(this.selectedAlarmType)] = 1;
+        this.meter['alarmConfig'][`${this.getAlarmTypeName(this.selectedAlarmType)} Detail`] = res['Value'];
       }
     });
   }

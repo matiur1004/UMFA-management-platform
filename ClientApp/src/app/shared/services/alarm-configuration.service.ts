@@ -175,6 +175,16 @@ export class AlarmConfigurationService {
             );
     }
 
+    getAlarmMeterNotAcknowledgedCount(id) {
+        const url = `${CONFIG.apiURL}/AlarmTriggered/${id}/not-acknowledged/count`;
+        return this.http.get<any>(url, { withCredentials: true })
+            .pipe(
+                catchError(err => this.catchErrors(err)),
+                tap(m => {
+                }),
+            );
+    }
+
     createOrUpdateAMRMeterAlarm(formData): Observable<any> {
         const url = `${CONFIG.apiURL}/AMRMeterAlarms/createOrUpdateAMRMeterAlarmByAlarmTypeName`;
         return this.http.post<any>(url, formData, { withCredentials: true })
