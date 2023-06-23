@@ -1,5 +1,4 @@
-﻿using ClientPortal.Data.Entities.PortalEntities;
-using ClientPortal.Models.RequestModels;
+﻿using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 using Dapper;
 using Newtonsoft.Json;
@@ -12,6 +11,8 @@ namespace ClientPortal.Data.Repositories
         public Task<ShopUsageVarianceSpResponse> GetShopUsageVarianceReportAsync(ShopUsageVarianceRequest request);
         public Task<ShopCostVarianceSpResponse> GetShopCostVarianceReportAsync(ShopUsageVarianceRequest request);
         public Task AddMappedMeterAsync(MappedMeterSpRequest request);
+        public Task<UMFAShopsSpResponse> GetShopsASync(UmfaShopsRequest request);
+        public Task<ConsumptionSummarySpResponse> GetConsumptionSummaryReport(ConsumptionSummarySpRequest request);
     }
     public class UmfaRepository : IUmfaRepository
     {
@@ -148,6 +149,16 @@ namespace ClientPortal.Data.Repositories
         public async Task AddMappedMeterAsync(MappedMeterSpRequest request)
         {
             await RunStoredProcedureAsync("upInsertMappedItems", request);
+        }
+
+        public async Task<UMFAShopsSpResponse> GetShopsASync(UmfaShopsRequest request)
+        {
+            return await RunStoredProcedureAsync<UMFAShopsSpResponse, UmfaShopsRequest>("upPortal_GetShopsBuildingPeriod", request);
+        }
+
+        public async Task<ConsumptionSummarySpResponse> GetConsumptionSummaryReport(ConsumptionSummarySpRequest request)
+        {
+            return await RunStoredProcedureAsync<ConsumptionSummarySpResponse, ConsumptionSummarySpRequest>("upPortal_ConsumptionSummary", request);
         }
     }
 }

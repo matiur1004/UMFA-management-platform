@@ -22,22 +22,30 @@ namespace ClientPortal.Controllers
         [HttpGet("UtilityRecoveryReport")]
         public async Task<ActionResult<UtilityRecoveryReportResponse>> Get([FromQuery] UtilityRecoveryReportRequest request)
         {
-            var response = await _umfaReportService.GetUtilityRecoveryReportAsync(request);
-            return response;
+            return await _umfaReportService.GetUtilityRecoveryReportAsync(request);
         }
 
         [HttpGet("ShopUsageVarianceReport")]
         public async Task<ActionResult<ShopUsageVarianceReportResponse>> Get([FromQuery] ShopUsageVarianceRequest request)
         {
-            var response = await _umfaReportService.GetShopUsageVarianceReportAsync(request);
-            return response;
+            return await _umfaReportService.GetShopUsageVarianceReportAsync(request);
         }
 
         [HttpGet("ShopCostVarianceReport")]
         public async Task<ActionResult<ShopCostVarianceReportResponse>> GetCostVariance([FromQuery] ShopUsageVarianceRequest request)
         {
-            var response = await _umfaReportService.GetShopCostVarianceReportAsync(request);
-            return response;
+            return await _umfaReportService.GetShopCostVarianceReportAsync(request);
+        }
+
+        [HttpPut("ConsumptionSummaryReport")]
+        public async Task<ActionResult<ConsumptionSummarySpResponse>> GetConsumptionSummary([FromBody] ConsumptionSummaryRequest request)
+        {
+            if(request.Shops is null || !request.Shops.Any())
+            {
+                request.Shops = new List<int> { 0 };
+            }
+
+            return await _umfaReportService.GetConsumptionSummaryReport(new ConsumptionSummarySpRequest(request));
         }
     }
 }
