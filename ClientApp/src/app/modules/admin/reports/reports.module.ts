@@ -34,6 +34,8 @@ import { ReportCriteriaUtilityComponent } from './dx-report-viewer/report-criter
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ReportResultUtilityComponent } from './dx-report-viewer/report-result-utility/report-result-utility.component';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { ReportCriteriaConsumptionComponent } from './dx-report-viewer/report-criteria-consumption/report-criteria-consumption.component';
+import { ReportResultConsumptionComponent } from './dx-report-viewer/report-result-consumption/report-result-consumption.component';
 @NgModule({
   declarations: [
     DxReportViewerComponent,
@@ -48,7 +50,9 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     ReportResultShopComponent,
     ReportResultShopCostComponent,
     ReportCriteriaUtilityComponent,
-    ReportResultUtilityComponent
+    ReportResultUtilityComponent,
+    ReportCriteriaConsumptionComponent,
+    ReportResultConsumptionComponent
   ],
   imports: [
     CommonModule,

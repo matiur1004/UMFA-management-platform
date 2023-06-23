@@ -57,6 +57,7 @@ export class DXReportService {
     { Id: 2, Name: 'Shop Usage Variance', Description: 'Shop Usage Variance Report', DXReportName: 'ShopUsageVariance' },
     { Id: 3, Name: 'Shop Costs Variances', Description: 'Shop Costs Variances Report', DXReportName: 'ShopCostsVariances' },
     { Id: 4, Name: 'Utility Recovery and Expense', Description: 'Utility Recovery and Expense Report', DXReportName: 'UtilityRecoveryExpense' },
+    { Id: 5, Name: 'Consumption Summary', Description: 'Consumption Summary Report', DXReportName: 'ConsumptionSummary' },
   ];
   public dxReportList$ = of(this.dxReportList);
 
