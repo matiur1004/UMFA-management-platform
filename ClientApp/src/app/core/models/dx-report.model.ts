@@ -45,3 +45,6 @@ export interface IDXReport {
     ClientRecoverableVisible: boolean;
   }
   
+  export interface IConsumptionSummaryReportParams {
+    
+  }

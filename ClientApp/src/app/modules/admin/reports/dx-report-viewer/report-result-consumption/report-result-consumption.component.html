@@ -1,1 +1,41 @@
-<p>report-result-consumption works!</p>
+<div class="flex flex-col gap-y-2 relative">
+    <div class="flex w-full p-2" *ngIf="resultsForGrid.length > 0">
+        <!-- <div class="flex absolute left-2 top-2 z-20">
+            <button mat-raised-button [color]="'primary'" type="button" class="dnm-btn dnm-btn-primary" (click)="export()">Export</button>
+        </div> -->
+        <dx-data-grid
+            #dataGrid
+            [dataSource]="dataSource"
+            [showBorders]="true"
+            (onExporting)="onExport($event)"
+            id="gridContainer"
+            [remoteOperations]="true"
+            [wordWrapEnabled]="true"
+            [hoverStateEnabled]="true"
+        >
+            <!-- <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling> -->
+            <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
+            <dxo-paging [pageSize]="100"></dxo-paging>
+            <dxo-search-panel
+                [visible]="true"
+                [width]="200"
+                placeholder="Search..."
+            ></dxo-search-panel>
+            <dxi-column dataField="MeterNo" caption="Meter Nr" [minWidth]="140"></dxi-column>
+            <dxi-column dataField="Factor" caption="Fct" [minWidth]="50"></dxi-column>
+            <dxi-column dataField="TotalArea" caption="Area" [minWidth]="80"></dxi-column>
+            <dxi-column dataField="AssArea" caption="Portion" [minWidth]="80"></dxi-column>
+            <dxi-column dataField="PreviousReading" caption="Prev.Reading" [minWidth]="130"></dxi-column>
+            <dxi-column dataField="CurrentReading" caption="Current Reading" [minWidth]="130"></dxi-column>
+            <dxi-column dataField="Usage" caption="Usage" [minWidth]="80"></dxi-column>
+            <dxi-column dataField="TotCons" caption="Total(R)" [minWidth]="80"></dxi-column>
+            <dxi-column dataField="ShopCons" caption="Unit(R)" [minWidth]="80"></dxi-column>
+            <dxi-column dataField="TotBC" caption="Total(BC)" [minWidth]="80"></dxi-column>
+            <dxi-column dataField="ShopBC" caption="Unit(BC)" [minWidth]="80"></dxi-column>
+            <dxi-column dataField="Excl" caption="Excl" [minWidth]="80"></dxi-column>
+            <dxi-column dataField="Vat" caption="Vat" [minWidth]="80"></dxi-column>
+            <dxi-column dataField="Incl" caption="Incl" [minWidth]="80"></dxi-column>
+            <dxo-export [enabled]="true" [allowExportSelectedData]="false" [formats]="['pdf', 'excel']"></dxo-export>
+        </dx-data-grid>
+    </div>
+</div>

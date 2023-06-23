@@ -1,8 +1,11 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { IUmfaBuilding } from '@core/models';
 import { DXReportService } from '@shared/services';
+import { UmfaService } from '@shared/services/umfa.service';
+import { DxTreeViewComponent } from 'devextreme-angular';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'report-criteria-consumption',
@@ -11,9 +14,18 @@ import { DXReportService } from '@shared/services';
 })
 export class ReportCriteriaConsumptionComponent implements OnInit {
 
+  @ViewChild(DxTreeViewComponent, { static: false }) treeView;
+  
   form: UntypedFormGroup;
   buildings: IUmfaBuilding[] = [];
-  constructor(private reportService: DXReportService, private _formBuilder: UntypedFormBuilder) { }
+  
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
+  
+  constructor(
+    private reportService: DXReportService, 
+    private _formBuilder: UntypedFormBuilder, 
+    private umfaService: UmfaService,
+    private _cdr: ChangeDetectorRef) { }
 
 
   get showPage(): boolean {
@@ -32,26 +44,8 @@ export class ReportCriteriaConsumptionComponent implements OnInit {
 
   splitTypeItems: any[] = [{id: 0, name: 'Combined'}, {id: 1, name: 'Split 1'}, {id: 2, name: 'Split 2'}];
   groupByItems: any[] = [{id:0, name: 'Account'}, {id: 1, name: 'Tenant'}, {id: 2, name: 'Shop'}];
-  serviceTypeItems: any[] = [
-    {id: 1, name: 'Electricity'},
-    {id: 2, name: 'Water'},
-    {id: 3, name: 'Sewerage'},
-    {id: 4, name: 'Rates'},
-    {id: 5, name: 'Refuse'},
-    {id: 6, name: 'Gas'},
-    {id: 7, name: 'Diesel'}
-  ];
-  visibleItems = [
-    {name: 'Client Expense', key: 'ClientExpenseVisible'}, 
-    {name: 'Client Recovery', key: 'ClientRecoverableVisible'}, 
-    {name: 'Council Account', key: 'CouncilAccountVisible'}, 
-    {name: 'UMFA Bulk Reading', key: 'BulkReadingVisible'}, 
-    {name: 'UMFA Recovery', key: 'UmfaRecoveryVisible'}, 
-    {name: 'Potential Recovery', key: 'PotentialRecVisible'}, 
-    {name: 'Non Recoverable', key: 'NonRecVisible'}, 
-    {name: 'UMFA Reading Dates', key: 'UmfaReadingDatesVisible'}, 
-    {name: 'Council Reading Dates', key: 'CouncilReadingDatesVisible'}
-  ];
+  shopItems: any[] = [];
+
   custPartnerTemplate = (arg: any) => {
     var ret = "<div class='custom-item' title='" + arg.Name + "'>" + arg.Name + "</div>";
     return ret;
@@ -68,25 +62,27 @@ export class ReportCriteriaConsumptionComponent implements OnInit {
     return ret;
   }
 
-  getVisibleControl(index, name) {
-    return this.form.get('visible')['controls'][name];
-  }
-
   ngOnInit(): void {
-    let visibleItemsControls = {};
-    this.visibleItems.forEach(item => {
-      visibleItemsControls[item.key] = [true];
-    })
     this.form = this._formBuilder.group({
-      partnerId: [null],
-      buildingId: [null, Validators.required],
-      startPeriodId: [null, Validators.required],
-      endPeriodId: [null, Validators.required],
-      Recoveries: [2, Validators.required],
-      Expenses: [1, Validators.required],
-      ServiceType: [null, Validators.required],
-      visible: this._formBuilder.group(visibleItemsControls)
+      PartnerId: [null],
+      BuildingId: [null, Validators.required],
+      PeriodId: [null, Validators.required],
+      SplitIndicator: [2, Validators.required],
+      Sort: [1, Validators.required],
+      Shops: [[62345], Validators.required],
     });
+
+    this.umfaService.shops$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((data: any) => {
+        if(data) {
+          this.shopItems = [{ShopId: '0', ShopName: 'All', expanded: true}]
+          data.map(item => {
+            this.shopItems.push({...item, categoryId: '0'});
+          });
+          this._cdr.detectChanges();
+        }
+      })
   }
   
   customSearch(term: string, item: any) {
@@ -94,63 +90,63 @@ export class ReportCriteriaConsumptionComponent implements OnInit {
     return item.Name.toLocaleLowerCase().indexOf(term) > -1;
   }
 
+  onTreeViewReady(event) {
+
+  }
+  
+  onTreeViewSelectionChanged(event) {
+    if(event.itemData.ShopId == '0') {
+      if(event.itemData.selected == true) {
+        this.shopItems.forEach(item => {
+          if(item['ShopId'] != '0') {
+            event.component.selectItem(item['ShopId']);
+          }
+        })
+      } else {
+        event.component.unselectAll();
+      }
+    }
+    this.form.get('Shops').setValue(event.component.getSelectedNodeKeys());
+  }
+  
   ngOnDestroy(): void {
     this.reportService.resetAll();
+    this._unsubscribeAll.next(null);
+    this._unsubscribeAll.complete();
   }
 
   valueChanged(e: any, method: string) {
     if(method == 'Partner') {
-      this.reportService.selectPartner(this.form.get('partnerId').value);
-      this.form.get('buildingId').setValue(null);
-      this.form.get('startPeriodId').setValue(0);
-      this.form.get('endPeriodId').setValue(0);
-      this.reportService.loadPeriods(this.form.get('buildingId').value);
-      this.reportService.selectStartPeriod(this.form.get('startPeriodId').value);
-      this.reportService.setUtility(null);
+      this.reportService.selectPartner(this.form.get('PartnerId').value);
+      this.form.get('BuildingId').setValue(null);
+      this.form.get('PeriodId').setValue(0);
+      this.reportService.loadPeriods(this.form.get('BuildingId').value);
+      this.reportService.setConsumptionSummary(null);
     } else if(method == 'Building') {
-      this.reportService.loadPeriods(this.form.get('buildingId').value);
-      this.form.get('startPeriodId').setValue(0);
-      this.form.get('endPeriodId').setValue(0);
-      this.reportService.selectStartPeriod(this.form.get('startPeriodId').value);
-      this.reportService.setUtility(null);
-    } else if (method == 'StartPeriod') {
-      this.reportService.selectStartPeriod(this.form.get('startPeriodId').value);
-      this.reportService.setUtility(null);
-    } else if (method == 'EndPeriod') {
-      this.reportService.ShowResults(false);
-      this.reportService.setUtility(null);
+      this.reportService.loadPeriods(this.form.get('BuildingId').value);
+      this.form.get('PeriodId').setValue(0);
+      this.reportService.setConsumptionSummary(null);
+    } else if(method == 'Period'){
+      if(this.form.get('BuildingId').value && this.form.get('PeriodId').value)
+        this.umfaService.getUmfaShops(this.form.get('BuildingId').value, this.form.get('PeriodId').value).subscribe();
     } else {
-      this.reportService.setUtility(null);
+      this.reportService.setConsumptionSummary(null);
     }
     this.setCriteria();
   }
 
   setCriteria() {
     if (this.form.valid ) {
-      if(this.reportService.SelectedReportId == 4) {
-        let visibleVal = this.form.get('visible').value;
-        this.reportService.UtilityReportParams = { 
-          BuildingId: this.form.get('buildingId').value, 
-          FromPeriodId: this.form.get('startPeriodId').value, 
-          ToPeriodId: this.form.get('endPeriodId').value,
-          Recoveries: this.form.get('Recoveries').value,
-          Expenses: this.form.get('Expenses').value,
-          ServiceType: this.form.get('ServiceType').value,
-          ReconType: 1,
-          NoteType: 1,
-          ViewClientExpense: 1,
-          ClientExpenseVisible: visibleVal['ClientExpenseVisible'],
-          CouncilAccountVisible: visibleVal['CouncilAccountVisible'],
-          BulkReadingVisible: visibleVal['BulkReadingVisible'],
-          PotentialRecVisible: visibleVal['PotentialRecVisible'],
-          NonRecVisible: visibleVal['NonRecVisible'],
-          UmfaReadingDatesVisible: visibleVal['UmfaReadingDatesVisible'],
-          CouncilReadingDatesVisible: visibleVal['CouncilReadingDatesVisible'],
-          UmfaRecoveryVisible: visibleVal['UmfaRecoveryVisible'],
-          ClientRecoverableVisible: visibleVal['ClientRecoverableVisible'],
+      if(this.reportService.SelectedReportId == 5) {
+        console.log(this.form.get('Shops').value);
+        this.reportService.ConsumptionSummaryReportParams = { 
+          BuildingId: 2403, //this.form.get('BuildingId').value, 
+          PeriodId: 174270, //this.form.get('PeriodId').value,
+          SplitIndicator: 0, //this.form.get('SplitIndicator').value,
+          Sort: 'Tenant', //this.form.get('Sort').value,
+          Shops: [62345]
         }
       }
-      
       this.reportService.setFrmValid(2, true);
     } else {
       this.reportService.ShopUsageVarianceParams = null;
