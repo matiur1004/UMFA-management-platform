@@ -1,5 +1,4 @@
-﻿using ClientPortal.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ClientPortal.Models.RequestModels
 {
