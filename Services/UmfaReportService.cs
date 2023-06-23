@@ -10,6 +10,7 @@ namespace ClientPortal.Services
         public Task<UtilityRecoveryReportResponse> GetUtilityRecoveryReportAsync(UtilityRecoveryReportRequest request);
         public Task<ShopUsageVarianceReportResponse> GetShopUsageVarianceReportAsync(ShopUsageVarianceRequest request);
         public Task<ShopCostVarianceReportResponse> GetShopCostVarianceReportAsync(ShopUsageVarianceRequest request);
+        public Task<ConsumptionSummarySpResponse> GetConsumptionSummaryReport(ConsumptionSummarySpRequest request);
     }
     public class UmfaReportService : IUmfaReportService
     {
@@ -37,6 +38,11 @@ namespace ClientPortal.Services
         {
             var spResponse = await _repository.GetShopCostVarianceReportAsync(request);
             return CreateShopCostVarianceReport(spResponse);
+        }
+
+        public async Task<ConsumptionSummarySpResponse> GetConsumptionSummaryReport(ConsumptionSummarySpRequest request)
+        {
+            return await _repository.GetConsumptionSummaryReport(request);
         }
 
         private UtilityRecoveryReportResponse CreateUtilityRecoveryReportResponse(UtilityRecoveryReportSpResponse source)

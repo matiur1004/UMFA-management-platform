@@ -40,7 +40,8 @@ const PROXY_CONFIG = [
       "/AlarmsPerBuilding",
       "/AlarmTriggered",
       "/TriggeredAlarmNotifications",
-      "/Reports"
+      "/Reports",
+      "/Umfa"
    ],
     target: target,
     secure: false,
