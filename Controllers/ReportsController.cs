@@ -37,10 +37,15 @@ namespace ClientPortal.Controllers
             return await _umfaReportService.GetShopCostVarianceReportAsync(request);
         }
 
-        [HttpGet("ConsumptionSummaryReport")]
-        public async Task<ActionResult<ConsumptionSummarySpResponse>> GetConsumptionSummary([FromQuery] ConsumptionSummarySpRequest request)
+        [HttpPut("ConsumptionSummaryReport")]
+        public async Task<ActionResult<ConsumptionSummarySpResponse>> GetConsumptionSummary([FromBody] ConsumptionSummaryRequest request)
         {
-            return await _umfaReportService.GetConsumptionSummaryReport(request);
+            if(request.Shops is null || !request.Shops.Any())
+            {
+                request.Shops = new List<int> { 0 };
+            }
+
+            return await _umfaReportService.GetConsumptionSummaryReport(new ConsumptionSummarySpRequest(request));
         }
     }
 }

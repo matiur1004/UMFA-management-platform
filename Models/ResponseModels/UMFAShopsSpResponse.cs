@@ -7,7 +7,7 @@
 
     public class UMFAShop
     {
-        public int Id { get; set; }
+        public int ShopId { get; set; }
         public string ShopNr { get; set; }
         public string ShopName { get; set; }
     }

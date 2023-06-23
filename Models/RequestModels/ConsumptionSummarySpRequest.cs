@@ -18,6 +18,16 @@ namespace ClientPortal.Models.RequestModels
         public string Sort { get; set; }
 
         [Required]
-        public string ShopFilter { get; set; }
+        public string ShopFilter { get; set; } 
+
+        public ConsumptionSummarySpRequest(ConsumptionSummaryRequest request)
+        {
+            BuildingID = request.BuildingID;
+            PeriodID = request.PeriodID;
+            SplitIndicator = request.SplitIndicator;
+            Sort = request.Sort;
+
+            ShopFilter = string.Join("|", request.Shops);
+        }
     }
 }
