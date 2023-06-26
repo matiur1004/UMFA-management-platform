@@ -47,5 +47,11 @@ namespace ClientPortal.Controllers
 
             return await _umfaReportService.GetConsumptionSummaryReport(new ConsumptionSummarySpRequest(request));
         }
+
+        [HttpGet("ConsumptionSummaryReconReport")]
+        public async Task<ActionResult<ConsumptionSummaryReconResponse>> GetConsumptionSummaryRecon([FromQuery] ConsumptionSummaryReconRequest request)
+        {
+            return await _umfaReportService.GetConsumptionSummaryReconReport(request);
+        }
     }
 }
