@@ -18,7 +18,8 @@ export class ReportCriteriaConsumptionComponent implements OnInit {
   
   form: UntypedFormGroup;
   buildings: IUmfaBuilding[] = [];
-  
+  treeBoxValue: any[];
+
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
   constructor(
@@ -69,18 +70,21 @@ export class ReportCriteriaConsumptionComponent implements OnInit {
       PeriodId: [null, Validators.required],
       SplitIndicator: [2, Validators.required],
       Sort: [1, Validators.required],
-      Shops: [[62345], Validators.required],
+      Shops: [[], Validators.required],
     });
 
     this.umfaService.shops$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: any) => {
         if(data) {
-          this.shopItems = [{ShopId: '0', ShopName: 'All', expanded: true}]
+          this.shopItems = [{ShopId: '0', ShopName: 'All', expanded: true}];
+          let shopValue = ['0'];
           data.map(item => {
-            this.shopItems.push({...item, categoryId: '0'});
+            item['categoryId'] = '0';
+            this.shopItems.push(item);
+            shopValue.push(item['ShopId']);
           });
-          this._cdr.detectChanges();
+          this.treeBoxValue = shopValue;
         }
       })
   }
@@ -91,9 +95,14 @@ export class ReportCriteriaConsumptionComponent implements OnInit {
   }
 
   onTreeViewReady(event) {
-
+    event.component.selectAll();
+    this.form.get('Shops').setValue(event.component.getSelectedNodeKeys());
   }
   
+  onInitialized(event) {
+    event.component.selectAll();
+  }
+
   onTreeViewSelectionChanged(event) {
     if(event.itemData.ShopId == '0') {
       if(event.itemData.selected == true) {
@@ -138,13 +147,12 @@ export class ReportCriteriaConsumptionComponent implements OnInit {
   setCriteria() {
     if (this.form.valid ) {
       if(this.reportService.SelectedReportId == 5) {
-        console.log(this.form.get('Shops').value);
         this.reportService.ConsumptionSummaryReportParams = { 
           BuildingId: 2403, //this.form.get('BuildingId').value, 
           PeriodId: 174270, //this.form.get('PeriodId').value,
           SplitIndicator: 0, //this.form.get('SplitIndicator').value,
           Sort: 'Tenant', //this.form.get('Sort').value,
-          Shops: [62345]
+          Shops: this.form.get('Shops').value
         }
       }
       this.reportService.setFrmValid(2, true);

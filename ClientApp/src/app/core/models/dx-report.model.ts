@@ -46,5 +46,9 @@ export interface IDXReport {
   }
   
   export interface IConsumptionSummaryReportParams {
-    
+    BuildingId: number,
+    PeriodId: number,
+    SplitIndicator: number,
+    Sort: string,
+    Shops: number[]
   }

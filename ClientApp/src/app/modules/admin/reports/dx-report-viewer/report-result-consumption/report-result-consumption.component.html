@@ -1,8 +1,33 @@
 <div class="flex flex-col gap-y-2 relative">
+    <div class="flex w-full p-2 mt-2" *ngIf="reportTotals">
+        <dx-data-grid
+            [dataSource]="totalGridDataSource"
+            [showBorders]="true"
+            (onExporting)="onExport($event)"
+            [remoteOperations]="true"
+            [wordWrapEnabled]="true"
+            [hoverStateEnabled]="true"
+            (onRowPrepared)="onRowPrepared($event)"
+            (onCellPrepared)="onCellPrepared($event)"
+        >
+            <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
+            <dxo-paging [pageSize]="100"></dxo-paging>
+            <dxi-column dataField="name" caption="Inv Group"></dxi-column>
+            <dxi-column dataField="excl" caption="Consumption Excl (R)" cellTemplate="cellValueTemplate">
+            </dxi-column>
+            <dxi-column dataField="vat" caption="Basic Charge Excl (R)" cellTemplate="cellValueTemplate">
+            </dxi-column>
+            <dxi-column dataField="incl" caption="Total Excl (R)" cellTemplate="cellValueTemplate">
+            </dxi-column>
+            <div *dxTemplate="let data of 'cellValueTemplate'">
+                <ng-container *ngIf="data.value != null; else emptyTemplate">
+                    R {{data.value | number : '1.2-2'}}
+                </ng-container>
+                <ng-template #emptyTemplate></ng-template>
+            </div>
+        </dx-data-grid>
+    </div>
     <div class="flex w-full p-2" *ngIf="resultsForGrid.length > 0">
-        <!-- <div class="flex absolute left-2 top-2 z-20">
-            <button mat-raised-button [color]="'primary'" type="button" class="dnm-btn dnm-btn-primary" (click)="export()">Export</button>
-        </div> -->
         <dx-data-grid
             #dataGrid
             [dataSource]="dataSource"
@@ -21,6 +46,10 @@
                 [width]="200"
                 placeholder="Search..."
             ></dxo-search-panel>
+            <dxi-column dataField="FinAccNo" caption="Account" [groupIndex]="0"></dxi-column>
+            <dxi-column dataField="Tenant" [groupIndex]="1"></dxi-column>
+            <dxi-column dataField="ShopNr" caption="Shop" [groupIndex]="2"></dxi-column>            
+            <dxi-column dataField="InvGroup" caption="Invoice Group" [groupIndex]="3"></dxi-column>
             <dxi-column dataField="MeterNo" caption="Meter Nr" [minWidth]="140"></dxi-column>
             <dxi-column dataField="Factor" caption="Fct" [minWidth]="50"></dxi-column>
             <dxi-column dataField="TotalArea" caption="Area" [minWidth]="80"></dxi-column>
@@ -36,6 +65,12 @@
             <dxi-column dataField="Vat" caption="Vat" [minWidth]="80"></dxi-column>
             <dxi-column dataField="Incl" caption="Incl" [minWidth]="80"></dxi-column>
             <dxo-export [enabled]="true" [allowExportSelectedData]="false" [formats]="['pdf', 'excel']"></dxo-export>
+            <!-- <dxo-summary>
+                <dxi-group-item column="Excl" summaryType="sum" valueFormat="currency" displayFormat="Total: {0}" [showInGroupFooter]="true"></dxi-group-item>
+            </dxo-summary>
+            <dxi-sort-by-group-summary-info
+                summaryItem="count"
+            ></dxi-sort-by-group-summary-info> -->
         </dx-data-grid>
     </div>
 </div>

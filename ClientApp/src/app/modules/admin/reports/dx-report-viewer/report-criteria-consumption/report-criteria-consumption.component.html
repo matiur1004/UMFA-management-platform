@@ -38,7 +38,8 @@
                 </dx-select-box>
             </div>
             <div class="col-span-2 mt-1.5">
-                <dx-drop-down-box 
+                <dx-drop-down-box
+                    [(value)]="treeBoxValue"
                     [formControlName]="'Shops'" [inputAttr]="{ 'aria-label': 'Owner' }"
                     valueExpr="ShopId"
                     displayExpr="ShopName"
@@ -57,6 +58,7 @@
                           displayExpr="ShopName"
                           [selectByClick]="true"
                           (onContentReady)="onTreeViewReady($event)"
+                          (onInitialized)="onInitialized($event)"
                           (onItemSelectionChanged)="onTreeViewSelectionChanged($event)"
                         >
                         </dx-tree-view>
