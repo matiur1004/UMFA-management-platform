@@ -383,10 +383,11 @@ namespace ClientPortal.Data.Repositories
         {
             try
             {
+                DateTime lastDataDTM = DateTime.Parse($"{DateTime.Now.Year.ToString()}-{DateTime.Now.Month.ToString()}-{DateTime.Now.AddDays(-1).Day.ToString()} 00:00:00");
                 var headers = await _context.ScadaRequestHeaders.AsNoTracking()
-                    .Where(h => h.Active == true && h.Status == 1 && h.StartRunDTM <= DateTime.UtcNow &&
+                    .Where(h => h.Active && h.Status == 1 && h.StartRunDTM <= DateTime.UtcNow &&
                         (h.LastRunDTM == null || h.LastRunDTM < DateTime.UtcNow.AddMinutes(-h.Interval)))
-                    .Include(h => h.ScadaRequestDetails.Where(d => d.Active && d.Status == 1))
+                    .Include(h => h.ScadaRequestDetails.Where(d => d.Active && d.Status == 1 && d.LastDataDate < lastDataDTM))
                         .ThenInclude(d => d.AmrScadaUser)
                     .Include(h => h.ScadaRequestDetails)
                         .ThenInclude(d => d.AmrMeter)

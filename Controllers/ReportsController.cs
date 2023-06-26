@@ -38,7 +38,7 @@ namespace ClientPortal.Controllers
         }
 
         [HttpPut("ConsumptionSummaryReport")]
-        public async Task<ActionResult<ConsumptionSummarySpResponse>> GetConsumptionSummary([FromBody] ConsumptionSummaryRequest request)
+        public async Task<ActionResult<ConsumptionSummaryResponse>> GetConsumptionSummary([FromBody] ConsumptionSummaryRequest request)
         {
             if(request.Shops is null || !request.Shops.Any())
             {

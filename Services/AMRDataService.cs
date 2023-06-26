@@ -189,7 +189,7 @@ namespace ClientPortal.Services
                 DateTime runStart = DateTime.UtcNow;
                 AmrJob ret = new() { CommsId = job.CommsId, Key1 = job.Key1, RunDate = runStart, Success = false };
 
-                //update the current run date and status (2: running) for header and detail
+                //update the current run date and status (3: processing data) for header and detail
                 trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == job.DetailId).CurrentRunDTM = runStart;
                 trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == job.DetailId).Status = 3;
 
@@ -203,6 +203,16 @@ namespace ClientPortal.Services
                 if (readings == null || readings.Result != "SUCCESS")
                 {
                     throw new ApplicationException($"Scada call returned failure: {readings?.Result ?? "Empty Object"}");
+                } else
+                {
+                    //update the current run date and status (4: data retrieved) for header and detail
+                    trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == job.DetailId).CurrentRunDTM = runStart;
+                    trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == job.DetailId).Status = 4;
+
+                    if (!await _repo.SaveTrackedItems())
+                    {
+                        throw new ApplicationException("Could not save tracked items from service");
+                    }
                 }
 
                 return readings;
@@ -211,7 +221,7 @@ namespace ClientPortal.Services
             catch (Exception ex)
             {
                 _logger.LogError("Error while retrieving scada data for {key1}: {msg}", job.Key1, ex.Message);
-                trackedHeader.ScadaRequestDetails[0].Status = 1;
+                trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == job.DetailId).Status = 1;
                 await _repo.SaveTrackedItems();
                 throw;
             }
@@ -264,7 +274,7 @@ namespace ClientPortal.Services
                     trackedHeader.LastRunDTM = DateTime.UtcNow;
                     trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == msg.Data.JobDetailId).Status = 1;
                     trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == msg.Data.JobDetailId).LastRunDTM = DateTime.UtcNow;
-                    DateTime lastDate = trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == msg.Data.JobDetailId).LastDataDate?? DateTime.UtcNow;
+                    DateTime lastDate = trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == msg.Data.JobDetailId).LastDataDate?? DateTime.UtcNow.AddMonths(-1);
                     trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == msg.Data.JobDetailId).LastDataDate = lastDate;
                     if (!await _repo.SaveTrackedItems())
                     {
@@ -355,7 +365,17 @@ namespace ClientPortal.Services
                     await _repo.SaveTrackedItems();
                 }
 
-                profiles.Add(profileDataMsg);
+                if (profileDataMsg.Data.ProfileData != null && profileDataMsg.Data.ProfileData.Count > 0)
+                {
+                    profiles.Add(profileDataMsg);
+                }
+                else
+                {
+                    _logger.LogError($"No data found for {job.Key1}");
+                    trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == job.DetailId).LastDataDate = job.ToDate;
+                    trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == job.DetailId).Status = 1;
+                    await _repo.SaveTrackedItems();
+                }
             }
 
             List<string> ret = new();
