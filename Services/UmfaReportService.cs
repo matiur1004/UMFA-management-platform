@@ -11,6 +11,7 @@ namespace ClientPortal.Services
         public Task<ShopUsageVarianceReportResponse> GetShopUsageVarianceReportAsync(ShopUsageVarianceRequest request);
         public Task<ShopCostVarianceReportResponse> GetShopCostVarianceReportAsync(ShopUsageVarianceRequest request);
         public Task<ConsumptionSummaryResponse> GetConsumptionSummaryReport(ConsumptionSummarySpRequest request);
+        public Task<ConsumptionSummaryReconResponse> GetConsumptionSummaryReconReport(ConsumptionSummaryReconRequest request);
     }
     public class UmfaReportService : IUmfaReportService
     {
@@ -294,6 +295,11 @@ namespace ClientPortal.Services
             response.PeriodList = source.ShopUsageVariances.DistinctBy(s => s.PeriodID).OrderBy(s => s.PeriodID).Select(s => s.PeriodName).ToList();
 
             return response;
+        }
+
+        public async Task<ConsumptionSummaryReconResponse> GetConsumptionSummaryReconReport(ConsumptionSummaryReconRequest request)
+        {
+            return await _repository.GetConsumptionSummaryReconReport(request);
         }
     }
 }
