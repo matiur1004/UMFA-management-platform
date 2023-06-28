@@ -1,6 +1,7 @@
 <div class="flex flex-col gap-y-2 relative">
     <div class="flex w-full p-2 mt-2" *ngIf="reportTotals">
         <dx-data-grid
+            #totalDataGrid
             [dataSource]="totalGridDataSource"
             [showBorders]="true"
             (onExporting)="onExport($event)"
@@ -9,16 +10,21 @@
             [hoverStateEnabled]="true"
             (onRowPrepared)="onRowPrepared($event)"
             (onCellPrepared)="onCellPrepared($event)"
+            (onExporting)="onExport($event)"
         >
             <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
             <dxo-paging [pageSize]="100"></dxo-paging>
             <dxi-column dataField="name" caption="Inv Group"></dxi-column>
             <dxi-column dataField="excl" caption="Consumption Excl (R)" cellTemplate="cellValueTemplate">
+                <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
             </dxi-column>
             <dxi-column dataField="vat" caption="Basic Charge Excl (R)" cellTemplate="cellValueTemplate">
+                <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
             </dxi-column>
             <dxi-column dataField="incl" caption="Total Excl (R)" cellTemplate="cellValueTemplate">
+                <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
             </dxi-column>
+            <dxo-export [enabled]="true" [allowExportSelectedData]="false" [formats]="['pdf', 'excel']"></dxo-export>
             <div *dxTemplate="let data of 'cellValueTemplate'">
                 <ng-container *ngIf="data.value != null; else emptyTemplate">
                     R {{data.value | number : '1.2-2'}}
@@ -32,9 +38,7 @@
             #dataGrid
             [dataSource]="dataSource"
             [showBorders]="true"
-            (onExporting)="onExport($event)"
             id="gridContainer"
-            [remoteOperations]="true"
             [wordWrapEnabled]="true"
             [hoverStateEnabled]="true"
         >
@@ -61,14 +65,18 @@
             <dxi-column dataField="ShopCons" caption="Unit(R)" [minWidth]="80"></dxi-column>
             <dxi-column dataField="TotBC" caption="Total(BC)" [minWidth]="80"></dxi-column>
             <dxi-column dataField="ShopBC" caption="Unit(BC)" [minWidth]="80"></dxi-column>
-            <dxi-column dataField="Excl" caption="Excl" [minWidth]="80"></dxi-column>
-            <dxi-column dataField="Vat" caption="Vat" [minWidth]="80"></dxi-column>
-            <dxi-column dataField="Incl" caption="Incl" [minWidth]="80"></dxi-column>
-            <dxo-export [enabled]="true" [allowExportSelectedData]="false" [formats]="['pdf', 'excel']"></dxo-export>
-            <!-- <dxo-summary>
-                <dxi-group-item column="Excl" summaryType="sum" valueFormat="currency" displayFormat="Total: {0}" [showInGroupFooter]="true"></dxi-group-item>
+            <dxi-column dataField="Excl" caption="Excl" [minWidth]="120">
+                <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+            </dxi-column>
+            <dxi-column dataField="Vat" caption="Vat" [minWidth]="120"></dxi-column>
+            <dxi-column dataField="Incl" caption="Incl" [minWidth]="120"></dxi-column>
+             <dxo-summary>
+                <dxi-group-item column="Excl" summaryType="sum" displayFormat="{0}" [showInGroupFooter]="false" [alignByColumn]="true" valueFormat="#,##0.##"  >
+                </dxi-group-item>
+                <dxi-group-item column="Vat" summaryType="sum" displayFormat="{0}" [showInGroupFooter]="false" [alignByColumn]="true" valueFormat="#,##0.##"></dxi-group-item>
+                <dxi-group-item column="Incl" summaryType="sum" displayFormat="{0}" [showInGroupFooter]="false" [alignByColumn]="true" valueFormat="#,##0.##"></dxi-group-item>
             </dxo-summary>
-            <dxi-sort-by-group-summary-info
+            <!--<dxi-sort-by-group-summary-info
                 summaryItem="count"
             ></dxi-sort-by-group-summary-info> -->
         </dx-data-grid>
