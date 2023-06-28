@@ -53,6 +53,9 @@ export class DxReportViewerComponent implements OnInit, OnDestroy {
     if(this.reportService.SelectedReportId == 4) {
       this.reportService.getReportDataForUtility().subscribe();
     }
+    if(this.reportService.SelectedReportId == 5) {
+      this.reportService.getReportDataForConsumptionSummary().subscribe();
+    }
   }
 
 }

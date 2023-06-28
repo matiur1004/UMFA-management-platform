@@ -1,0 +1,79 @@
+<div id="top">
+    <!--This section for Building Recovery Report-->
+    <form novalidate #frmReportParams="ngForm" [formGroup]="form">
+        <div class="grid grid-cols-6 gap-2">
+            <div class="col-span-2">
+            <dx-select-box [items]="partnerList$ | async" displayExpr="Name" valueExpr="Id" class="form-control" label="Partner"
+                            [itemTemplate]="custPartnerTemplate" placeholder="Select Partner" lableMode="static" id="partner"
+                            [formControlName]="'PartnerId'" name="partner" (onValueChanged)="valueChanged($event, 'Partner')"
+                            [searchEnabled]="true" searchExpr="Name" searchMode="contains" [searchTimeout]="400">
+            </dx-select-box>
+            </div>
+            <div class="col-span-2">
+            <dx-select-box [items]="buildingList$ | async" displayExpr="Name" valueExpr="BuildingId" class="form-control" label="Building"
+                            [itemTemplate]="custBldTemplate" required placeholder="Select Building" lableMode="static" id="building"
+                            [formControlName]="'BuildingId'" name="building" (onValueChanged)="valueChanged($event, 'Building')"
+                            [searchEnabled]="true" searchExpr="Name" searchMode="contains" [searchTimeout]="400">
+            </dx-select-box>
+            </div>
+            <div class="col-span-2">
+                <dx-select-box [items]="periodList$ | async" displayExpr="PeriodName" valueExpr="PeriodId" class="form-control" label="Building Period"
+                    [itemTemplate]="custPeriodTemplate" required placeholder="Select Building Period" lableMode="static" id="startPeriod"
+                    [formControlName]="'PeriodId'" name="StartPeriod" (onValueChanged)="valueChanged($event, 'Period')"
+                    [searchEnabled]="true">
+                </dx-select-box>
+            </div>
+            <div class="col-span-2">
+                <dx-select-box [items]="splitTypeItems" displayExpr="name" valueExpr="id" class="form-control" label="Split Type"
+                    placeholder="Select option" lableMode="static" id="recoveries"
+                    [formControlName]="'SplitIndicator'" (onValueChanged)="valueChanged($event, 'Recoveries')"
+                    [searchEnabled]="true">
+                </dx-select-box>
+            </div>
+            <div class="col-span-2">
+                <dx-select-box [items]="groupByItems" displayExpr="name" valueExpr="name" class="form-control" label="Group By"
+                    placeholder="Select option" lableMode="static" id="expense"
+                    [formControlName]="'Sort'" (onValueChanged)="valueChanged($event, 'Expenses')"
+                    [searchEnabled]="true">
+                </dx-select-box>
+            </div>
+            <div class="col-span-2">
+                <dx-drop-down-box
+                    [(value)]="treeBoxValue"
+                    [formControlName]="'Shops'" [inputAttr]="{ 'aria-label': 'Owner' }"
+                    valueExpr="ShopId"
+                    displayExpr="ShopName"
+                    placeholder="Select shops"
+                    label="Shop Selection"
+                    [showClearButton]="true"
+                    [dataSource]="shopItems">
+                    <div *dxTemplate="let data of 'content'">
+                        <dx-tree-view
+                          [dataSource]="shopItems"
+                          dataStructure="plain"
+                          keyExpr="ShopId"
+                          parentIdExpr="categoryId"
+                          selectionMode="multiple"
+                          showCheckBoxesMode="normal"
+                          [selectNodesRecursive]="false"
+                          displayExpr="ShopName"
+                          [selectByClick]="true"
+                          (onContentReady)="onTreeViewReady($event)"
+                          (onInitialized)="onInitialized($event)"
+                          (onItemSelectionChanged)="onTreeViewSelectionChanged($event)"
+                        >
+                        </dx-tree-view>
+                    </div>
+                </dx-drop-down-box>
+                        
+                        <!-- <dx-select-box [items]="shopItems" displayExpr="name" valueExpr="id" class="form-control" label="Service Type"
+                            required placeholder="Select option" lableMode="static" id="allTenants"
+                            [formControlName]="'ServiceType'" (onValueChanged)="valueChanged($event, 'ServiceType')"
+                            [searchEnabled]="true">
+                        </dx-select-box> -->
+            </div>
+        </div>
+    </form>
+  
+</div>
+  
