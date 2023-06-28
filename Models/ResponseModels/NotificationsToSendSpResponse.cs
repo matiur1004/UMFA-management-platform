@@ -26,6 +26,7 @@
         public string OccStartDTM { get; set; }
         public int NotificationSendTypeId { get; set; }
         public string NotificationSendTypeName { get; set; }
-
+        public decimal AverageObserved { get; set; }
+        public decimal MaximumObserved { get; set; }
     }
 }
