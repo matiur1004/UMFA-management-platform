@@ -25,5 +25,11 @@ namespace ClientPortal.Controllers
         {
             return await _umfaService.GetTenantSlipCardInfo(request);
         }
+
+        [HttpGet("Criteria")]
+        public async Task<ActionResult<TenantSlipCriteriaResponse>> GetCriteria([FromQuery] TenantSlipCriteriaSpRequest request)
+        {
+            return await _umfaService.GetTenantSlipCriteria(request);
+        }
     }
 }
