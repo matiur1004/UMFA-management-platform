@@ -47,5 +47,19 @@ namespace ClientPortal.Controllers
                 return Problem(e.Message);
             }
         }
+
+        [HttpGet("tenant-shops")]
+        public async Task<ActionResult<List<UMFAShop>>> GetUmfaTenantShops([FromQuery] UmfaTenantShopsSpRequest request)
+        {
+            try
+            {
+                return await _umfaService.GetTenantShopsAsync(request);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Could not get shops from umfa");
+                return Problem(e.Message);
+            }
+        }
     }
 }

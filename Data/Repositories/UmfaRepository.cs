@@ -1,7 +1,6 @@
 ﻿using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 using Dapper;
-using Microsoft.Identity.Client;
 using Newtonsoft.Json;
 
 namespace ClientPortal.Data.Repositories
@@ -20,6 +19,7 @@ namespace ClientPortal.Data.Repositories
         public Task AddMappedMeterAsync(MappedMeterSpRequest request);
         public Task<UMFAShopsSpResponse> GetShopsAsync(UmfaShopsRequest request);
         public Task<UMFATenantsSpResponse> GetTenantsAsync(UmfaTenantsSpRequest request);
+        public Task<UMFAShopsSpResponse> GetTenantShopsAsync(UmfaTenantShopsSpRequest request);
         #endregion
 
         public Task<TenantSlipCardInfoSpResponse> GetTenantSlipCardInfoAsync(TenantSlipCardInfoSpRequest request);
@@ -191,6 +191,11 @@ namespace ClientPortal.Data.Repositories
         public async Task<UMFATenantsSpResponse> GetTenantsAsync(UmfaTenantsSpRequest request)
         {
             return await RunStoredProcedureAsync<UMFATenantsSpResponse, UmfaTenantsSpRequest>("upPortal_GetBuildingPeriodTenants", request);
+        }
+
+        public async Task<UMFAShopsSpResponse> GetTenantShopsAsync(UmfaTenantShopsSpRequest request)
+        {
+             return await RunStoredProcedureAsync<UMFAShopsSpResponse, UmfaTenantShopsSpRequest>("upPortal_GetBuildingPeriodTenantShops", request);
         }
     }
 }
