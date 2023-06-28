@@ -138,6 +138,7 @@ export class ReportCriteriaConsumptionComponent implements OnInit {
     } else if(method == 'Period'){
       if(this.form.get('BuildingId').value && this.form.get('PeriodId').value)
         this.umfaService.getUmfaShops(this.form.get('BuildingId').value, this.form.get('PeriodId').value).subscribe();
+      this.reportService.setConsumptionSummary(null);
     } else {
       this.reportService.setConsumptionSummary(null);
     }
@@ -148,10 +149,10 @@ export class ReportCriteriaConsumptionComponent implements OnInit {
     if (this.form.valid ) {
       if(this.reportService.SelectedReportId == 5) {
         this.reportService.ConsumptionSummaryReportParams = { 
-          BuildingId: 2403, //this.form.get('BuildingId').value, 
-          PeriodId: 174270, //this.form.get('PeriodId').value,
-          SplitIndicator: 0, //this.form.get('SplitIndicator').value,
-          Sort: 'Tenant', //this.form.get('Sort').value,
+          BuildingId: this.form.get('BuildingId').value, 
+          PeriodId: this.form.get('PeriodId').value,
+          SplitIndicator: this.form.get('SplitIndicator').value,
+          Sort: this.form.get('Sort').value,
           Shops: this.form.get('Shops').value
         }
       }

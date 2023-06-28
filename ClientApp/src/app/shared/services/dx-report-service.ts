@@ -393,7 +393,13 @@ export class DXReportService {
 
   getReportDataForConsumptionSummary() {
     const url = `${CONFIG.apiURL}/Reports/ConsumptionSummaryReport`;
-    this.CSParams.Shops = [62345, 62346];
+    // this.CSParams = {
+    //   Shops: [62345, 62346],
+    //   BuildingId: 2403,
+    //   PeriodId: 174270,
+    //   SplitIndicator: 0,
+    //   Sort: 'Tenant'
+    // }
     return this.http.put<any>(url, this.CSParams, { withCredentials: true })
     .pipe(
         catchError(err => this.catchErrors(err)),

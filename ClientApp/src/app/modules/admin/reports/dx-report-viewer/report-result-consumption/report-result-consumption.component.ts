@@ -50,6 +50,8 @@ export class ReportResultConsumptionComponent implements OnInit {
           this.totalGridDataSource.push(totalItem);
           this.totalGridDataSource.push({name: 'Vat on individual Invoice Totals:', excl: null, vat: null, incl: this.reportTotals['Vat']});
           this.totalGridDataSource.push({name: 'Invoice Totals Incl. Vat:', excl: null, vat: null, incl: this.reportTotals['TotalIncl']});
+        } else {
+          this.dataSource = null;
         }
       })
   }
@@ -61,7 +63,7 @@ export class ReportResultConsumptionComponent implements OnInit {
   
   onExportExcel() {
     const workbook = new Workbook();
-    const worksheet = workbook.addWorksheet('report', {views: [{showGridLines: false}]});
+    const worksheet = workbook.addWorksheet('Report', {views: [{showGridLines: false}]});
 
     worksheet.mergeCells('A1:B4');
 
@@ -101,6 +103,7 @@ export class ReportResultConsumptionComponent implements OnInit {
       topLeftCell: { row: 7, column: 1 },
       autoFilterEnabled: true,
       customizeCell({ gridCell, excelCell }) {
+
       }
     }).then(() => {
       const totalWorksheet = workbook.addWorksheet('Total Report', {views: [{showGridLines: false}]});
@@ -134,6 +137,13 @@ export class ReportResultConsumptionComponent implements OnInit {
         topLeftCell: { row: 7, column: 1 },
         autoFilterEnabled: true,
         customizeCell({ gridCell, excelCell }) {
+          if(gridCell.rowType == 'data') {
+            if(gridCell.column['index'] == 0) {
+              excelCell.font = {
+                bold: true
+              };
+            }
+          }
         }
       }).then(() => {
         workbook.xlsx.writeBuffer().then((buffer) => {
@@ -174,6 +184,8 @@ export class ReportResultConsumptionComponent implements OnInit {
           lastPoint.y = rect.y + rect.h;
         }
       },
+      customizeCell: ({ gridCell, pdfCell }) => {
+      }
     };
 
     // Save or display the PDF
@@ -183,14 +195,20 @@ export class ReportResultConsumptionComponent implements OnInit {
         jsPDFDocument: pdfDoc,
         component: context.totalDataGrid.instance,
         topLeft: { x: 10, y: 20 },
-        customizeCell: ({ gridCell, pdfCell }) => {
+        customizeCell: ({ gridCell, pdfCell }) => {          
+          if(gridCell.rowType === 'header') {
+            pdfCell.textColor = '#000';
+            pdfCell.font.size = 18;
+            pdfCell.font.style = 'bold';
+          } else if(gridCell.rowType === 'data') {
+            pdfCell.font.size = 14;
+            pdfCell.font.style = 'normal';
+            if(gridCell.column['index'] == 0) {
+              pdfCell.font.style = 'bold';
+            }
+          }
         },
       }).then(() => {
-        // const pageCount = pdfDoc.getNumberOfPages();
-        // for(let i = 1; i <= pageCount; i++) {
-        //   pdfDoc.setPage(i);
-        //   pdfDoc.addImage(`data:image/png;base64,${this.headerInfo['CustomLogo']}`, 'PNG', 10, 20, 150, 70);
-        // }
       }).then(() => {
         pdfDoc.save('Consumption Summary Report.pdf');
       })
