@@ -68,8 +68,8 @@ export class ReportCriteriaConsumptionComponent implements OnInit {
       PartnerId: [null],
       BuildingId: [null, Validators.required],
       PeriodId: [null, Validators.required],
-      SplitIndicator: [2, Validators.required],
-      Sort: [1, Validators.required],
+      SplitIndicator: [0, Validators.required],
+      Sort: ['Tenant', Validators.required],
       Shops: [[], Validators.required],
     });
 
