@@ -7,6 +7,7 @@ namespace ClientPortal.Services
     public interface IUmfaService
     {
         public Task<UMFAShopsSpResponse> GetShopsAsync(UmfaShopsRequest request);
+        public Task<TenantSlipCardInfo> GetTenantSlipCardInfo(TenantSlipCardInfoSpRequest request);
     }
     public class UmfaService : IUmfaService
     {
@@ -22,6 +23,11 @@ namespace ClientPortal.Services
         public async Task<UMFAShopsSpResponse> GetShopsAsync(UmfaShopsRequest request)
         {
             return await _repository.GetShopsASync(request);
+        }
+
+        public async Task<TenantSlipCardInfo> GetTenantSlipCardInfo(TenantSlipCardInfoSpRequest request)
+        {
+            return (await _repository.GetTenantSlipCardInfo(request)).TenantSlipCardInfos.First();
         }
     }
 }

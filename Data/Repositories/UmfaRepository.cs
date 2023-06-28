@@ -15,6 +15,8 @@ namespace ClientPortal.Data.Repositories
         public Task<UMFAShopsSpResponse> GetShopsASync(UmfaShopsRequest request);
         public Task<ConsumptionSummarySpResponse> GetConsumptionSummaryReport(ConsumptionSummarySpRequest request);
         public Task<ConsumptionSummaryReconResponse> GetConsumptionSummaryReconReport(ConsumptionSummaryReconRequest request);
+
+        public Task<TenantSlipCardInfoSpResponse> GetTenantSlipCardInfo(TenantSlipCardInfoSpRequest request);
     }
     public class UmfaRepository : IUmfaRepository
     {
@@ -167,6 +169,11 @@ namespace ClientPortal.Data.Repositories
         {
             var response = await RunStoredProcedureAsync<ConsumptionSummaryReconSpResponse, ConsumptionSummaryReconRequest>("upPortal_ConsSummaryRecon", request);
             return new ConsumptionSummaryReconResponse(response);
+        }
+
+        public async Task<TenantSlipCardInfoSpResponse> GetTenantSlipCardInfo(TenantSlipCardInfoSpRequest request)
+        {
+            return await RunStoredProcedureAsync<TenantSlipCardInfoSpResponse, TenantSlipCardInfoSpRequest>("upPortal_TenantSlipCardInfo", request);
         }
     }
 }
