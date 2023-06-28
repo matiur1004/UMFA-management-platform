@@ -68,15 +68,15 @@ export class ReportCriteriaConsumptionComponent implements OnInit {
       PartnerId: [null],
       BuildingId: [null, Validators.required],
       PeriodId: [null, Validators.required],
-      SplitIndicator: [0, Validators.required],
-      Sort: ['Tenant', Validators.required],
+      SplitIndicator: [0],
+      Sort: ['Tenant'],
       Shops: [[], Validators.required],
     });
 
     this.umfaService.shops$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: any) => {
-        if(data) {
+        if(data && data.length > 0) {
           this.shopItems = [{ShopId: '0', ShopName: 'All', expanded: true}];
           let shopValue = ['0'];
           data.map(item => {
@@ -85,6 +85,7 @@ export class ReportCriteriaConsumptionComponent implements OnInit {
             shopValue.push(item['ShopId']);
           });
           this.treeBoxValue = shopValue;
+          this.form.get('Shops').setValue(this.treeBoxValue);
         }
       })
   }
@@ -129,16 +130,18 @@ export class ReportCriteriaConsumptionComponent implements OnInit {
       this.reportService.selectPartner(this.form.get('PartnerId').value);
       this.form.get('BuildingId').setValue(null);
       this.form.get('PeriodId').setValue(0);
-      this.reportService.loadPeriods(this.form.get('BuildingId').value);
+      //this.reportService.loadPeriods(this.form.get('BuildingId').value);
       this.reportService.setConsumptionSummary(null);
     } else if(method == 'Building') {
       this.reportService.loadPeriods(this.form.get('BuildingId').value);
-      this.form.get('PeriodId').setValue(0);
+      this.form.get('PeriodId').setValue(null);
       this.reportService.setConsumptionSummary(null);
     } else if(method == 'Period'){
       if(this.form.get('BuildingId').value && this.form.get('PeriodId').value)
-        this.umfaService.getUmfaShops(this.form.get('BuildingId').value, this.form.get('PeriodId').value).subscribe();
-      this.reportService.setConsumptionSummary(null);
+        this.umfaService.getUmfaShops(this.form.get('BuildingId').value, this.form.get('PeriodId').value).subscribe(() => {
+          this.reportService.setConsumptionSummary(null);
+          this.setCriteria();
+        });
     } else {
       this.reportService.setConsumptionSummary(null);
     }

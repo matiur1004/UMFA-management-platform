@@ -25,14 +25,14 @@
             </div>
             <div class="col-span-2">
                 <dx-select-box [items]="splitTypeItems" displayExpr="name" valueExpr="id" class="form-control" label="Split Type"
-                    required placeholder="Select option" lableMode="static" id="recoveries"
+                    placeholder="Select option" lableMode="static" id="recoveries"
                     [formControlName]="'SplitIndicator'" (onValueChanged)="valueChanged($event, 'Recoveries')"
                     [searchEnabled]="true">
                 </dx-select-box>
             </div>
             <div class="col-span-2">
                 <dx-select-box [items]="groupByItems" displayExpr="name" valueExpr="name" class="form-control" label="Group By"
-                    required placeholder="Select option" lableMode="static" id="expense"
+                    placeholder="Select option" lableMode="static" id="expense"
                     [formControlName]="'Sort'" (onValueChanged)="valueChanged($event, 'Expenses')"
                     [searchEnabled]="true">
                 </dx-select-box>
@@ -43,7 +43,7 @@
                     [formControlName]="'Shops'" [inputAttr]="{ 'aria-label': 'Owner' }"
                     valueExpr="ShopId"
                     displayExpr="ShopName"
-                    placeholder="Select a value..."
+                    placeholder="Select shops"
                     label="Shop Selection"
                     [showClearButton]="true"
                     [dataSource]="shopItems">
