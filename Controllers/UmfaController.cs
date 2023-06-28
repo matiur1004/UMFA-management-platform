@@ -2,7 +2,6 @@
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 using ClientPortal.Services;
-using DevExpress.Office.Utils;
 
 namespace ClientPortal.Controllers
 {
