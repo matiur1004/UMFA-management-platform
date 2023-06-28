@@ -9,8 +9,9 @@ namespace ClientPortal.Services
         public Task<UMFAShopsSpResponse> GetShopsAsync(UmfaShopsRequest request);
         public Task<List<UMFAShop>> GetTenantShopsAsync(UmfaTenantShopsSpRequest request);
         public Task<List<UMFATenant>> GetTenantsAsync(UmfaTenantsSpRequest request);
-        public Task<TenantSlipCardInfo> GetTenantSlipCardInfo(TenantSlipCardInfoSpRequest request);
-        public Task<TenantSlipCriteriaResponse> GetTenantSlipCriteria(TenantSlipCriteriaSpRequest request);
+        public Task<TenantSlipCardInfo> GetTenantSlipCardInfoAsync(TenantSlipCardInfoSpRequest request);
+        public Task<TenantSlipCriteriaResponse> GetTenantSlipCriteriaAsync(TenantSlipCriteriaSpRequest request);
+        public Task<TenantSlipDataSpResponse> GetTenantSlipDataAsync(TenantSlipDataSpRequest request);
     }
     public class UmfaService : IUmfaService
     {
@@ -28,13 +29,13 @@ namespace ClientPortal.Services
             return await _repository.GetShopsAsync(request);
         }
 
-        public async Task<TenantSlipCriteriaResponse> GetTenantSlipCriteria(TenantSlipCriteriaSpRequest request)
+        public async Task<TenantSlipCriteriaResponse> GetTenantSlipCriteriaAsync(TenantSlipCriteriaSpRequest request)
         {
             var response = await _repository.GetTenantSlipCriteriaAsync(request);
             return new TenantSlipCriteriaResponse(response);
         }
 
-        public async Task<TenantSlipCardInfo> GetTenantSlipCardInfo(TenantSlipCardInfoSpRequest request)
+        public async Task<TenantSlipCardInfo> GetTenantSlipCardInfoAsync(TenantSlipCardInfoSpRequest request)
         {
             return (await _repository.GetTenantSlipCardInfoAsync(request)).TenantSlipCardInfos.First();
         }
@@ -48,6 +49,11 @@ namespace ClientPortal.Services
         {
             var response = await _repository.GetTenantShopsAsync(request);
             return response.Shops;
+        }
+
+        public async Task<TenantSlipDataSpResponse> GetTenantSlipDataAsync(TenantSlipDataSpRequest request)
+        {
+            return await _repository.GetTenantSlipDataAsync(request);
         }
     }
 }
