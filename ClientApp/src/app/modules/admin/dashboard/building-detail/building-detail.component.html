@@ -75,6 +75,31 @@
                 </div>
             </div>
         </div>
+        <div class="bg-gradient-to-r from-green-700 to-green-900 col-span-1 lg:col-span-2 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100">
+            <div class="flex items-start justify-between text-white">
+                <div class="flex flex-col w-full gap-y-1">
+                    <div class="flex w-full justify-between">
+                        <div class="flex flex-col">
+                            <div class="text-2xl font-medium tracking-normal leading-8 truncate">Tenant Slip</div>
+                            <div class="text-3xl font-semibold tracking-normal ">
+                                {{stats.TenantStats.NumberOfTenants | number : '1.0-2'}}
+                            </div>
+                        </div>
+                        <mat-icon class="icon-size-10 text-white" [svgIcon]="'feather:users'"></mat-icon>
+                    </div>
+                    <div class="flex flex-col w-full gap-y-1">
+                        <div class="flex w-full justify-between leading-4">
+                            <span class="text-md">Occupied</span>
+                            <span class="text-lg font-semibold">{{stats.TenantStats.OccupiedPercentage | percent : '1.0-2'}}</span>
+                        </div>
+                        <div class="flex w-full justify-between leading-4">
+                            <span class="text-md">Recovered</span>
+                            <span class="text-lg font-semibold">{{stats.TenantStats.RecoverablePercentage | percent : '1.0-2'}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="bg-gradient-to-r from-violet-400 to-violet-600 sm:col-span-3 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100" *ngIf="isSmart">
             <div class="flex items-start justify-between text-white">
                 <div class="flex flex-col w-full gap-y-1">
