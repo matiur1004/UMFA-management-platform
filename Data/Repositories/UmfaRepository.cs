@@ -8,15 +8,22 @@ namespace ClientPortal.Data.Repositories
 {
     public interface IUmfaRepository
     {
+        #region Reports
         public Task<UtilityRecoveryReportSpResponse> GetUtilityRecoveryReportAsync(UtilityRecoveryReportRequest request);
         public Task<ShopUsageVarianceSpResponse> GetShopUsageVarianceReportAsync(ShopUsageVarianceRequest request);
         public Task<ShopCostVarianceSpResponse> GetShopCostVarianceReportAsync(ShopUsageVarianceRequest request);
-        public Task AddMappedMeterAsync(MappedMeterSpRequest request);
-        public Task<UMFAShopsSpResponse> GetShopsASync(UmfaShopsRequest request);
         public Task<ConsumptionSummarySpResponse> GetConsumptionSummaryReport(ConsumptionSummarySpRequest request);
         public Task<ConsumptionSummaryReconResponse> GetConsumptionSummaryReconReport(ConsumptionSummaryReconRequest request);
-        public Task<TenantSlipCardInfoSpResponse> GetTenantSlipCardInfo(TenantSlipCardInfoSpRequest request);
-        public Task<TenantSlipCriteriaSpResponse> GetTenantSlipCriteria(TenantSlipCriteriaSpRequest request);
+        #endregion
+
+        #region Basic
+        public Task AddMappedMeterAsync(MappedMeterSpRequest request);
+        public Task<UMFAShopsSpResponse> GetShopsAsync(UmfaShopsRequest request);
+        public Task<UMFATenantsSpResponse> GetTenantsAsync(UmfaTenantsSpRequest request);
+        #endregion
+
+        public Task<TenantSlipCardInfoSpResponse> GetTenantSlipCardInfoAsync(TenantSlipCardInfoSpRequest request);
+        public Task<TenantSlipCriteriaSpResponse> GetTenantSlipCriteriaAsync(TenantSlipCriteriaSpRequest request);
     }
     public class UmfaRepository : IUmfaRepository
     {
@@ -155,7 +162,7 @@ namespace ClientPortal.Data.Repositories
             await RunStoredProcedureAsync("upInsertMappedItems", request);
         }
 
-        public async Task<UMFAShopsSpResponse> GetShopsASync(UmfaShopsRequest request)
+        public async Task<UMFAShopsSpResponse> GetShopsAsync(UmfaShopsRequest request)
         {
             return await RunStoredProcedureAsync<UMFAShopsSpResponse, UmfaShopsRequest>("upPortal_GetShopsBuildingPeriod", request);
         }
@@ -171,14 +178,19 @@ namespace ClientPortal.Data.Repositories
             return new ConsumptionSummaryReconResponse(response);
         }
 
-        public async Task<TenantSlipCardInfoSpResponse> GetTenantSlipCardInfo(TenantSlipCardInfoSpRequest request)
+        public async Task<TenantSlipCardInfoSpResponse> GetTenantSlipCardInfoAsync(TenantSlipCardInfoSpRequest request)
         {
             return await RunStoredProcedureAsync<TenantSlipCardInfoSpResponse, TenantSlipCardInfoSpRequest>("upPortal_TenantSlipCardInfo", request);
         }
 
-        public async Task<TenantSlipCriteriaSpResponse> GetTenantSlipCriteria(TenantSlipCriteriaSpRequest request)
+        public async Task<TenantSlipCriteriaSpResponse> GetTenantSlipCriteriaAsync(TenantSlipCriteriaSpRequest request)
         {
             return await RunStoredProcedureAsync<TenantSlipCriteriaSpResponse, TenantSlipCriteriaSpRequest>("upPortal_TenantSlipsCriteria", request);
+        }
+
+        public async Task<UMFATenantsSpResponse> GetTenantsAsync(UmfaTenantsSpRequest request)
+        {
+            return await RunStoredProcedureAsync<UMFATenantsSpResponse, UmfaTenantsSpRequest>("upPortal_GetBuildingPeriodTenants", request);
         }
     }
 }

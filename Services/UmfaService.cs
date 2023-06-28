@@ -7,6 +7,7 @@ namespace ClientPortal.Services
     public interface IUmfaService
     {
         public Task<UMFAShopsSpResponse> GetShopsAsync(UmfaShopsRequest request);
+        public Task<List<UMFATenant>> GetTenantsAsync(UmfaTenantsSpRequest request);
         public Task<TenantSlipCardInfo> GetTenantSlipCardInfo(TenantSlipCardInfoSpRequest request);
         public Task<TenantSlipCriteriaResponse> GetTenantSlipCriteria(TenantSlipCriteriaSpRequest request);
     }
@@ -23,18 +24,23 @@ namespace ClientPortal.Services
 
         public async Task<UMFAShopsSpResponse> GetShopsAsync(UmfaShopsRequest request)
         {
-            return await _repository.GetShopsASync(request);
+            return await _repository.GetShopsAsync(request);
         }
 
         public async Task<TenantSlipCriteriaResponse> GetTenantSlipCriteria(TenantSlipCriteriaSpRequest request)
         {
-            var response = await _repository.GetTenantSlipCriteria(request);
+            var response = await _repository.GetTenantSlipCriteriaAsync(request);
             return new TenantSlipCriteriaResponse(response);
         }
 
         public async Task<TenantSlipCardInfo> GetTenantSlipCardInfo(TenantSlipCardInfoSpRequest request)
         {
-            return (await _repository.GetTenantSlipCardInfo(request)).TenantSlipCardInfos.First();
+            return (await _repository.GetTenantSlipCardInfoAsync(request)).TenantSlipCardInfos.First();
+        }
+
+        public async Task<List<UMFATenant>> GetTenantsAsync(UmfaTenantsSpRequest request)
+        {
+            return (await _repository.GetTenantsAsync(request)).Tenants;
         }
     }
 }
