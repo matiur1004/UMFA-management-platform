@@ -5,6 +5,6 @@ namespace ClientPortal.Models.RequestModels
     public class TenantSlipCardInfoSpRequest
     {
         [Required]
-        public int? PeriodId { get; set; }
+        public int? BuildingId { get; set; }
     }
 }
