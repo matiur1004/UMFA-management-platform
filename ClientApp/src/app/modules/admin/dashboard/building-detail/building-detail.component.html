@@ -1,8 +1,8 @@
 <div class="flex flex-col">
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-9 xl:grid-cols-9 gap-10 w-full">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-9 xl:grid-cols-9 gap-10 w-full" *ngIf="stats">
         <div class="bg-gradient-to-r from-blue-500 to-blue-800 col-span-1 lg:col-span-2 flex flex-col flex-auto p-6 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100">
-            <div class="flex items-start justify-between text-white">
-                <div class="flex flex-col w-full gap-y-1">
+            <div class="flex items-start justify-between text-white h-full">
+                <div class="flex flex-col w-full gap-y-1 justify-between h-full">
                     <div class="flex w-full justify-between">
                         <div class="flex flex-col">
                             <div class="text-2xl font-medium tracking-normal leading-8 truncate">Buildings</div>
@@ -26,8 +26,8 @@
             </div>
         </div>
         <div class="bg-gradient-to-r from-amber-400 to-amber-500 col-span-1 lg:col-span-2 flex flex-col flex-auto p-6 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100">
-            <div class="flex items-start justify-between text-white">
-                <div class="flex flex-col w-full gap-y-1">
+            <div class="flex items-start justify-between text-white h-full">
+                <div class="flex flex-col w-full gap-y-1 justify-between h-full">
                     <div class="flex w-full justify-between">
                         <div class="flex flex-col">
                             <div class="text-2xl font-medium tracking-normal leading-8 truncate">Shops</div>
@@ -51,8 +51,8 @@
             </div>
         </div>
         <div class="bg-gradient-to-r from-emerald-400 to-emerald-500 col-span-1 lg:col-span-2 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100">
-            <div class="flex items-start justify-between text-white">
-                <div class="flex flex-col w-full gap-y-1">
+            <div class="flex items-start justify-between text-white h-full">
+                <div class="flex flex-col w-full gap-y-1 justify-between h-full">
                     <div class="flex w-full justify-between">
                         <div class="flex flex-col">
                             <div class="text-2xl font-medium tracking-normal leading-8 truncate">Tenants</div>
@@ -76,25 +76,29 @@
             </div>
         </div>
         <div class="bg-gradient-to-r from-green-700 to-green-900 col-span-1 lg:col-span-2 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100">
-            <div class="flex items-start justify-between text-white">
-                <div class="flex flex-col w-full gap-y-1">
+            <div class="flex items-start justify-between text-white h-full cursor-pointer" (click)="onTenantSlip()">
+                <div class="flex flex-col w-full gap-y-1 justify-between h-full">
                     <div class="flex w-full justify-between">
                         <div class="flex flex-col">
                             <div class="text-2xl font-medium tracking-normal leading-8 truncate">Tenant Slip</div>
-                            <div class="text-3xl font-semibold tracking-normal ">
+                            <!-- <div class="text-3xl font-semibold tracking-normal ">
                                 {{stats.TenantStats.NumberOfTenants | number : '1.0-2'}}
-                            </div>
+                            </div> -->
                         </div>
                         <mat-icon class="icon-size-10 text-white" [svgIcon]="'feather:users'"></mat-icon>
                     </div>
                     <div class="flex flex-col w-full gap-y-1">
                         <div class="flex w-full justify-between leading-4">
-                            <span class="text-md">Occupied</span>
-                            <span class="text-lg font-semibold">{{stats.TenantStats.OccupiedPercentage | percent : '1.0-2'}}</span>
+                            <span class="text-md">Tenants</span>
+                            <span class="text-lg font-semibold">{{stats.TenantSlips.Tenants}}</span>
                         </div>
                         <div class="flex w-full justify-between leading-4">
-                            <span class="text-md">Recovered</span>
-                            <span class="text-lg font-semibold">{{stats.TenantStats.RecoverablePercentage | percent : '1.0-2'}}</span>
+                            <span class="text-md">Shops</span>
+                            <span class="text-lg font-semibold">{{stats.TenantSlips.Shops}}</span>
+                        </div>
+                        <div class="flex w-full justify-between leading-4">
+                            <span class="text-md">Amount</span>
+                            <span class="text-lg font-semibold">{{stats.TenantSlips.Amount | number : '1.0-2'}}</span>
                         </div>
                     </div>
                 </div>

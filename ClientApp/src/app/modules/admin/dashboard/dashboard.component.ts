@@ -274,7 +274,24 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             setTimeout(() => {
                 this._dbService.getAlarmTriggered(this._dbService.alarmTriggeredId).subscribe();
             }, 500);
-        }        
+        } 
+        
+        this._dbService.tenantSlip$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((buildingId) => {
+                if(buildingId) {
+                    this._dbService.getTenantSlipsCriteria(buildingId).subscribe(() => {
+                        let newTab: IHomeTab = {
+                            id: 0,
+                            title: 'Tenant Slip',
+                            type: 'TenantSlipDetail'
+                        };
+                        this.tabsList.push(newTab);
+                        this.selectedTab = this.tabsList.length;
+                        this._cdr.detectChanges();
+                    })                    
+                }
+            });
     }
 
     onDetail(type: EHomeTabType) {
@@ -321,7 +338,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             this._dbService.getTenantSlips(event.data.UmfaBuildingId),
             this._dbService.getBuildingStats(event.data.UmfaBuildingId)
         ]).subscribe(res => {
-            console.log('dashboard', res);
             let dataSource = res[1];
             dataSource = {...dataSource, TenantSlips: res[0]};
             let newTab: IHomeTab = {
@@ -335,19 +351,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             this.selectedTab = this.tabsList.length;
             this._cdr.detectChanges();
         })
-        // this._dbService.getBuildingStats(event.data.UmfaBuildingId)
-        //     .subscribe(res => {
-        //         let newTab: IHomeTab = {
-        //             id: event.data.UmfaBuildingId,
-        //             title: event.data.BuildingName,
-        //             type: 'BuildingDetail',
-        //             dataSource: res,
-        //             detail: event.data
-        //         };
-        //         this.tabsList.push(newTab);
-        //         this.selectedTab = this.tabsList.length;
-        //         this._cdr.detectChanges();                
-        //     })
     }
 
     setDataSource(ds: any): void {

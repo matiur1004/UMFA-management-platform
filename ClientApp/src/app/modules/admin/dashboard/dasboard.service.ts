@@ -14,7 +14,11 @@ export class DashboardService {
 
   private statsSubject: BehaviorSubject<IHomePageStats>;
   private _data: BehaviorSubject<any> = new BehaviorSubject(null);
-
+  private _tenantSlip: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _tenantSlipCriteria: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _tenantSlipTenants: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _tenantSlipTenantShops: BehaviorSubject<any> = new BehaviorSubject(null);
+  
   public stats$: Observable<IHomePageStats>;
   public alarmTriggeredId: any;
 
@@ -28,10 +32,25 @@ export class DashboardService {
     this.stats$ = this.statsSubject.asObservable();
   }
 
+  get tenantSlip$(): Observable<any> {
+    return this._tenantSlip.asObservable();
+  }
+
   public get StatsValue(): IHomePageStats {
     return this.statsSubject.value;
   }
 
+  get tenantSlipCriteria$(): Observable<any> {
+    return this._tenantSlipCriteria.asObservable();
+  }
+
+  get tenantSlipTenants$(): Observable<any> {
+    return this._tenantSlipTenants.asObservable();
+  }
+  
+  get tenantSlipTenantShops$(): Observable<any> {
+    return this._tenantSlipTenantShops.asObservable();
+  }
   /**
      * Getter for data
      */
@@ -75,7 +94,43 @@ export class DashboardService {
     return this.http.get<any>(url, { withCredentials: true })
       .pipe(
         catchError(err => this.catchAuthErrors(err)),
-        tap(bl => {
+        tap(res => {
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        })
+      );
+  }
+
+  getTenantSlipsCriteria(buildingId) {
+    const url = `${CONFIG.apiURL}/TenantSlips/Criteria?buildingId=${buildingId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(res => {
+          this._tenantSlipCriteria.next({...res, BuildingId: buildingId});
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        })
+      );
+  }
+
+  getTenantsWithBuildingAndPeriod(buildingId, periodId) {
+    const url = `${CONFIG.apiURL}/Umfa/tenants?buildingId=${buildingId}&periodId=${periodId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(res => {
+          this._tenantSlipTenants.next(res);
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        })
+      );
+  }
+
+  getTenantShops(buildingId, periodId, tenantId, reportType) {
+    const url = `${CONFIG.apiURL}/Umfa/tenant-shops?buildingId=${buildingId}&periodId=${periodId}&tenantId=${tenantId}&reportTypeId=${reportType}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(res => {
+          this._tenantSlipTenantShops.next(res);
           //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
         })
       );
@@ -105,6 +160,10 @@ export class DashboardService {
       );
   }
 
+  showTenantSlipDetail(buildingId) {
+    this._tenantSlip.next(buildingId);
+  }
+  
   cancel() {
     this.statsSubject.next(null);
   }

@@ -13,17 +13,19 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'app/shared/shared.module';
 import { DashboardComponent } from './dashboard.component';
 import { dashboardRoutes } from './dashboard.routing';
-import { DxChartModule, DxDataGridModule, DxSelectBoxModule } from 'devextreme-angular';
+import { DxButtonModule, DxChartModule, DxDataGridModule, DxSelectBoxModule, DxTextBoxModule } from 'devextreme-angular';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { BuildingDetailComponent } from './building-detail/building-detail.component';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { TenantSlipDetailComponent } from './tenant-slip-detail/tenant-slip-detail.component';
 
 @NgModule({
     declarations: [
         DashboardComponent,
-        BuildingDetailComponent
+        BuildingDetailComponent,
+        TenantSlipDetailComponent
     ],
     imports     : [
         CommonModule,
@@ -41,8 +43,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
         MatTooltipModule,
         MatTableModule,
         NgApexchartsModule,
+        DxTextBoxModule,
         DxDataGridModule,
         DxChartModule,
+        DxButtonModule,
         DxSelectBoxModule,
         MatTabsModule,
         SharedModule

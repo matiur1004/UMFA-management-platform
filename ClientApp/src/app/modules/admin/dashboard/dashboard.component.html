@@ -324,182 +324,195 @@
                     </ng-template>
                 </mat-tab>
                 <ng-container *ngFor="let tabItem of tabsList; let i = index;">
-                    <ng-container *ngIf="tabItem.title == 'Alarm Trigger'; else buildingDetailTemplate">
-                        <mat-tab label="Alarm Triggered">
-                            <ng-template mat-tab-label>
-                                Alarm Triggered
-                                <mat-icon class="icon-size-4 hover:text-red-500 ml-2" [svgIcon]="'feather:x'" (click)="removeTab(i)"></mat-icon>
-                              </ng-template>
-                            <ng-template matTabContent>
-                                <div class="flex flex-col bg-white p-4 rounded-md">
-                                    <div class="flex flex-col" *ngIf="alarmTrigerInfo">
-                                        <div class="text-2xl font-semibold pb-2">
-                                            <span class="text-red-500">{{alarmTrigerInfo.AlarmName}}</span> Alarm Analysis for AMR Meter {{alarmTrigerInfo.MeterSerial}}
+                    <ng-container [ngSwitch]="tabItem.title">
+                        <ng-container *ngSwitchCase="'Alarm Trigger'">
+                            <mat-tab label="Alarm Triggered">
+                                <ng-template mat-tab-label>
+                                    Alarm Triggered
+                                    <mat-icon class="icon-size-4 hover:text-red-500 ml-2" [svgIcon]="'feather:x'" (click)="removeTab(i)"></mat-icon>
+                                  </ng-template>
+                                <ng-template matTabContent>
+                                    <div class="flex flex-col bg-white p-4 rounded-md">
+                                        <div class="flex flex-col" *ngIf="alarmTrigerInfo">
+                                            <div class="text-2xl font-semibold pb-2">
+                                                <span class="text-red-500">{{alarmTrigerInfo.AlarmName}}</span> Alarm Analysis for AMR Meter {{alarmTrigerInfo.MeterSerial}}
+                                            </div>
+                                            <div class="flex text-xl gap-x-3">
+                                                <span class="font-bold min-w-20">Partner:</span>
+                                                <span>{{alarmTrigerInfo.Partner}}</span>
+                                            </div>
+                                            <div class="flex text-xl gap-x-3">
+                                                <span class="font-bold min-w-20">Building:</span>
+                                                <span>{{alarmTrigerInfo.Building}}</span>
+                                            </div>
+                                            <div class="flex text-xl gap-x-3">
+                                                <span class="font-bold min-w-20">UMFA Meter No:</span>
+                                                <span>{{alarmTrigerInfo.UMFAMeterNo}}</span>
+                                            </div>
+                                            <div class="flex text-xl gap-x-3">
+                                                <span class="font-bold min-w-20">Description:</span>
+                                                <span>{{alarmTrigerInfo.MeterDescription}}</span>
+                                            </div>
                                         </div>
-                                        <div class="flex text-xl gap-x-3">
-                                            <span class="font-bold min-w-20">Partner:</span>
-                                            <span>{{alarmTrigerInfo.Partner}}</span>
+                                        <div class="flex w-full" *ngIf="alarmTriggeredDataSource" style="height: 350px; overflow: visible !important; background-color: #f8f9fa;">
+                                            <dx-chart [dataSource]="alarmTriggeredDataSource" [customizePoint]="customizePoint" (onPointClick)="pointClick($event)" class="w-full">
+                                                <!-- <dxo-title [text]="chartTitleWater" [subtitle]="chartSubTitleWater"></dxo-title> -->
+                                                <dxo-size [height]="350"></dxo-size>
+                                                <dxi-series argumentField="ReadingDateString" valueField="ActFlow" type="bar" color="blue" name="Usage(kL)">
+                                                  <dxo-hover-style color="#0af5ed"></dxo-hover-style>
+                                                </dxi-series>
+                                                <dxo-argument-axis argumentType="string">
+                                                  <dxo-label displayMode="rotate" [rotationAngle]="-30"></dxo-label>
+                                                </dxo-argument-axis>
+                                                <dxo-tooltip [enabled]="false" [zIndex]="5000"
+                                                             [customizeTooltip]="customizeTooltip">
+                                                </dxo-tooltip>
+                                                <dxo-export [enabled]="true"></dxo-export>
+                                                <dxo-scroll-bar [visible]="true"></dxo-scroll-bar>
+                                                <dxo-zoom-and-pan argumentAxis="both"></dxo-zoom-and-pan>
+                                                <dxo-loading-indicator [enabled]="true"></dxo-loading-indicator>
+                                                <dxo-legend verticalAlignment="bottom" horizontalAlignment="center" zIndex="6000">
+                                                </dxo-legend>
+                                            </dx-chart>
                                         </div>
-                                        <div class="flex text-xl gap-x-3">
-                                            <span class="font-bold min-w-20">Building:</span>
-                                            <span>{{alarmTrigerInfo.Building}}</span>
-                                        </div>
-                                        <div class="flex text-xl gap-x-3">
-                                            <span class="font-bold min-w-20">UMFA Meter No:</span>
-                                            <span>{{alarmTrigerInfo.UMFAMeterNo}}</span>
-                                        </div>
-                                        <div class="flex text-xl gap-x-3">
-                                            <span class="font-bold min-w-20">Description:</span>
-                                            <span>{{alarmTrigerInfo.MeterDescription}}</span>
-                                        </div>
-                                    </div>
-                                    <div class="flex w-full" *ngIf="alarmTriggeredDataSource" style="height: 350px; overflow: visible !important; background-color: #f8f9fa;">
-                                        <dx-chart [dataSource]="alarmTriggeredDataSource" [customizePoint]="customizePoint" (onPointClick)="pointClick($event)" class="w-full">
-                                            <!-- <dxo-title [text]="chartTitleWater" [subtitle]="chartSubTitleWater"></dxo-title> -->
-                                            <dxo-size [height]="350"></dxo-size>
-                                            <dxi-series argumentField="ReadingDateString" valueField="ActFlow" type="bar" color="blue" name="Usage(kL)">
-                                              <dxo-hover-style color="#0af5ed"></dxo-hover-style>
-                                            </dxi-series>
-                                            <dxo-argument-axis argumentType="string">
-                                              <dxo-label displayMode="rotate" [rotationAngle]="-30"></dxo-label>
-                                            </dxo-argument-axis>
-                                            <dxo-tooltip [enabled]="false" [zIndex]="5000"
-                                                         [customizeTooltip]="customizeTooltip">
-                                            </dxo-tooltip>
-                                            <dxo-export [enabled]="true"></dxo-export>
-                                            <dxo-scroll-bar [visible]="true"></dxo-scroll-bar>
-                                            <dxo-zoom-and-pan argumentAxis="both"></dxo-zoom-and-pan>
-                                            <dxo-loading-indicator [enabled]="true"></dxo-loading-indicator>
-                                            <dxo-legend verticalAlignment="bottom" horizontalAlignment="center" zIndex="6000">
-                                            </dxo-legend>
-                                        </dx-chart>
-                                    </div>
-                                    <div class="flex flex-col gap-y-1" *ngIf="alarmTrigerInfo">
-                                        <div class="text-xl">Alarm configuration at time of Alarm - <span class="font-bold">{{alarmTrigerInfo.AlarmName}}</span>(Un-Expected flow observed during in-active hours)</div>
-                                        <div class="flex gap-x-6 alarmTrigger-detail items-center pt-2" [formGroup]="form">
-                                            <div class="flex items-center gap-x-2">
-                                                <div class="text-lg font-semibold">Alarm Threshold Value:</div>
-                                                <div class="flex items-center gap-x-1">
-                                                    <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
-                                                        <input matInput type="text" [formControlName]="'Threshold'"/> 
-                                                    </mat-form-field>
-                                                    <span class="text-lg font-semibold">KL</span>
+                                        <div class="flex flex-col gap-y-1" *ngIf="alarmTrigerInfo">
+                                            <div class="text-xl">Alarm configuration at time of Alarm - <span class="font-bold">{{alarmTrigerInfo.AlarmName}}</span>(Un-Expected flow observed during in-active hours)</div>
+                                            <div class="flex gap-x-6 alarmTrigger-detail items-center pt-2" [formGroup]="form">
+                                                <div class="flex items-center gap-x-2">
+                                                    <div class="text-lg font-semibold">Alarm Threshold Value:</div>
+                                                    <div class="flex items-center gap-x-1">
+                                                        <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
+                                                            <input matInput type="text" [formControlName]="'Threshold'"/> 
+                                                        </mat-form-field>
+                                                        <span class="text-lg font-semibold">KL</span>
+                                                    </div>
+                                                </div>
+                                                <div class="flex gap-x-2">
+                                                    <div class="text-lg font-semibold">For Duration:</div>
+                                                    <dx-select-box [items]="minutues" displayExpr="Value" valueExpr="Value" class="form-control" label="Duration"
+                                                        required placeholder="In Minutes" lableMode="static" name="meter" [searchEnabled]="true" [formControlName]="'Duration'">
+                                                    </dx-select-box>
                                                 </div>
                                             </div>
-                                            <div class="flex gap-x-2">
-                                                <div class="text-lg font-semibold">For Duration:</div>
-                                                <dx-select-box [items]="minutues" displayExpr="Value" valueExpr="Value" class="form-control" label="Duration"
-                                                    required placeholder="In Minutes" lableMode="static" name="meter" [searchEnabled]="true" [formControlName]="'Duration'">
-                                                </dx-select-box>
-                                            </div>
-                                        </div>
-                                        <div class="flex flex-col py-4 gap-y-2 bg-gray-200 px-4 width-fit min-w-200 mt-2">
-                                            <div class="flex">
-                                                <div class="text-lg font-semibold min-w-80">Average usage observed:</div>
-                                                <div class="flex items-center gap-x-1">
-                                                    <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
-                                                        <input matInput type="text" [readonly]="true" value="{{alarmTrigerInfo.AverageObserved}}"/> 
-                                                    </mat-form-field>
-                                                    <span class="text-lg font-semibold">KL</span>
+                                            <div class="flex flex-col py-4 gap-y-2 bg-gray-200 px-4 width-fit min-w-200 mt-2">
+                                                <div class="flex">
+                                                    <div class="text-lg font-semibold min-w-80">Average usage observed:</div>
+                                                    <div class="flex items-center gap-x-1">
+                                                        <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
+                                                            <input matInput type="text" [readonly]="true" value="{{alarmTrigerInfo.AverageObserved}}"/> 
+                                                        </mat-form-field>
+                                                        <span class="text-lg font-semibold">KL</span>
+                                                    </div>
+                                                </div>
+                                                <div class="flex">
+                                                    <div class="text-lg font-semibold min-w-80">Peak usage observed:</div>
+                                                    <div class="flex items-center gap-x-1">
+                                                        <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
+                                                            <input matInput type="text" [readonly]="true" value="{{alarmTrigerInfo.MaximumObserved}}"/> 
+                                                        </mat-form-field>
+                                                        <span class="text-lg font-semibold">KL</span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="flex">
-                                                <div class="text-lg font-semibold min-w-80">Peak usage observed:</div>
-                                                <div class="flex items-center gap-x-1">
-                                                    <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
-                                                        <input matInput type="text" [readonly]="true" value="{{alarmTrigerInfo.MaximumObserved}}"/> 
-                                                    </mat-form-field>
-                                                    <span class="text-lg font-semibold">KL</span>
-                                                </div>
+                                            <div class="flex pt-3 border-t border-gray-300 mt-2 justify-end gap-x-2">
+                                                <button routerLink="/admin" class="dnm-btn dnm-btn-cancel" type="button">Cancel</button>
+                                                <button mat-raised-button color="primary" class="dnm-btn dnm-btn-primary" type="button" (click)="onAcknowledge()">Acknowledge</button>
                                             </div>
-                                        </div>
-                                        <div class="flex pt-3 border-t border-gray-300 mt-2 justify-end gap-x-2">
-                                            <button routerLink="/admin" class="dnm-btn dnm-btn-cancel" type="button">Cancel</button>
-                                            <button mat-raised-button color="primary" class="dnm-btn dnm-btn-primary" type="button" (click)="onAcknowledge()">Acknowledge</button>
                                         </div>
                                     </div>
-                                </div>
-                            </ng-template>
-                        </mat-tab>
-                    </ng-container>
-                    <ng-template #buildingDetailTemplate>
-                        <mat-tab class="home-tab" label="{{tabItem.title}}">
-                            <ng-template mat-tab-label>
-                                {{tabItem.title}}
-                                <mat-icon class="icon-size-4 hover:text-red-500 ml-2" [svgIcon]="'feather:x'" (click)="removeTab(i)"></mat-icon>
-                              </ng-template>
-                            <ng-template matTabContent>
-                                <ng-container *ngIf="tabItem.type == 'BuildingDetail'; else tabTemplate;">
-                                    <app-building-detail [isSmart]="tabItem.detail.IsSmart" [title]="tabItem.title" [stats]="tabItem.dataSource"> </app-building-detail>
-                                </ng-container>
-                                <ng-template #tabTemplate>
-                                    <ng-container *ngIf="tabItem.dataSource">
-                                        <div class="flex gap-x-4">
-                                            <div class="bg-card p-2 flex flex-col gap-y-2">
-                                                <span class="text-xl font-semibold pt-2">Non-Smart buildings</span>
-                                                <dx-data-grid
-                                                    [dataSource]="tabItem.dataSource[0]"
-                                                    [showBorders]="true"
-                                                    class="grid-container"
-                                                    (onRowPrepared)="onRowPrepared($event)"
-                                                    (onRowClick)="onRowClick($event)"
-                                                >
-                                                    <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
-                                                    <dxo-paging [pageSize]="10"> </dxo-paging>
-                                                    <dxo-pager
-                                                        [visible]="true"
-                                                        [allowedPageSizes]="allowedPageSizes"
-                                                        [displayMode]="'compact'"
-                                                        [showPageSizeSelector]="true"
-                                                        [showInfo]="true"
-                                                        [showNavigationButtons]="true"
-                                                    >
-                                                    </dxo-pager>
-                                                    <dxo-search-panel
-                                                        [visible]="true"
-                                                        [width]="200"
-                                                        placeholder="Search..."
-                                                    ></dxo-search-panel>
-                                                    <dxi-column dataField="PartnerName" caption="Branch" ></dxi-column>
-                                                    <dxi-column dataField="BuildingName" caption="Building"></dxi-column>
-                                                </dx-data-grid>
-                                            </div>  
-                                            <div class="bg-card p-2 flex flex-col gap-y-2">
-                                                <span class="text-xl font-semibold pt-2">Smart buildings</span>
-                                                <dx-data-grid
-                                                    [dataSource]="tabItem.dataSource[1]"
-                                                    [showBorders]="true"
-                                                    class="grid-container"
-                                                    (onRowPrepared)="onRowPrepared($event)"
-                                                    (onRowClick)="onRowClick($event)"
-                                                >
-                                                    <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
-                                                    <dxo-paging [pageSize]="10"> </dxo-paging>
-                                                    <dxo-pager
-                                                        [visible]="true"
-                                                        [allowedPageSizes]="allowedPageSizes"
-                                                        [displayMode]="'compact'"
-                                                        [showPageSizeSelector]="true"
-                                                        [showInfo]="true"
-                                                        [showNavigationButtons]="true"
-                                                    >
-                                                    </dxo-pager>
-                                                    <dxo-search-panel
-                                                        [visible]="true"
-                                                        [width]="200"
-                                                        placeholder="Search..."
-                                                    ></dxo-search-panel>
-                                                    <dxi-column dataField="PartnerName" caption="Branch" ></dxi-column>
-                                                    <dxi-column dataField="BuildingName" caption="Building"></dxi-column>
-                                                </dx-data-grid>
-                                            </div>                                  
-                                        </div>
-                                    </ng-container>
                                 </ng-template>
-                                
-                            </ng-template>
-                        </mat-tab>
-                    </ng-template>
+                            </mat-tab>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'Tenant Slip'">
+                            <mat-tab class="home-tab" label="{{tabItem.title}}">
+                                <ng-template mat-tab-label>
+                                    {{tabItem.title}}
+                                    <mat-icon class="icon-size-4 hover:text-red-500 ml-2" [svgIcon]="'feather:x'" (click)="removeTab(i)"></mat-icon>
+                                </ng-template>
+                                <ng-template matTabContent>
+                                    <app-tenant-slip-detail></app-tenant-slip-detail>
+                                </ng-template>
+                            </mat-tab>
+                        </ng-container>
+                        <ng-container *ngSwitchDefault>
+                            <mat-tab class="home-tab" label="{{tabItem.title}}">
+                                <ng-template mat-tab-label>
+                                    {{tabItem.title}}
+                                    <mat-icon class="icon-size-4 hover:text-red-500 ml-2" [svgIcon]="'feather:x'" (click)="removeTab(i)"></mat-icon>
+                                  </ng-template>
+                                <ng-template matTabContent>
+                                    <ng-container *ngIf="tabItem.type == 'BuildingDetail'; else tabTemplate;">
+                                        <app-building-detail [isSmart]="tabItem.detail.IsSmart" [title]="tabItem.title" [stats]="tabItem.dataSource" [buildingId]="tabItem.id"> </app-building-detail>
+                                    </ng-container>
+                                    <ng-template #tabTemplate>
+                                        <ng-container *ngIf="tabItem.dataSource">
+                                            <div class="flex gap-x-4">
+                                                <div class="bg-card p-2 flex flex-col gap-y-2">
+                                                    <span class="text-xl font-semibold pt-2">Non-Smart buildings</span>
+                                                    <dx-data-grid
+                                                        [dataSource]="tabItem.dataSource[0]"
+                                                        [showBorders]="true"
+                                                        class="grid-container"
+                                                        (onRowPrepared)="onRowPrepared($event)"
+                                                        (onRowClick)="onRowClick($event)"
+                                                    >
+                                                        <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+                                                        <dxo-paging [pageSize]="10"> </dxo-paging>
+                                                        <dxo-pager
+                                                            [visible]="true"
+                                                            [allowedPageSizes]="allowedPageSizes"
+                                                            [displayMode]="'compact'"
+                                                            [showPageSizeSelector]="true"
+                                                            [showInfo]="true"
+                                                            [showNavigationButtons]="true"
+                                                        >
+                                                        </dxo-pager>
+                                                        <dxo-search-panel
+                                                            [visible]="true"
+                                                            [width]="200"
+                                                            placeholder="Search..."
+                                                        ></dxo-search-panel>
+                                                        <dxi-column dataField="PartnerName" caption="Branch" ></dxi-column>
+                                                        <dxi-column dataField="BuildingName" caption="Building"></dxi-column>
+                                                    </dx-data-grid>
+                                                </div>  
+                                                <div class="bg-card p-2 flex flex-col gap-y-2">
+                                                    <span class="text-xl font-semibold pt-2">Smart buildings</span>
+                                                    <dx-data-grid
+                                                        [dataSource]="tabItem.dataSource[1]"
+                                                        [showBorders]="true"
+                                                        class="grid-container"
+                                                        (onRowPrepared)="onRowPrepared($event)"
+                                                        (onRowClick)="onRowClick($event)"
+                                                    >
+                                                        <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+                                                        <dxo-paging [pageSize]="10"> </dxo-paging>
+                                                        <dxo-pager
+                                                            [visible]="true"
+                                                            [allowedPageSizes]="allowedPageSizes"
+                                                            [displayMode]="'compact'"
+                                                            [showPageSizeSelector]="true"
+                                                            [showInfo]="true"
+                                                            [showNavigationButtons]="true"
+                                                        >
+                                                        </dxo-pager>
+                                                        <dxo-search-panel
+                                                            [visible]="true"
+                                                            [width]="200"
+                                                            placeholder="Search..."
+                                                        ></dxo-search-panel>
+                                                        <dxi-column dataField="PartnerName" caption="Branch" ></dxi-column>
+                                                        <dxi-column dataField="BuildingName" caption="Building"></dxi-column>
+                                                    </dx-data-grid>
+                                                </div>                                  
+                                            </div>
+                                        </ng-container>
+                                    </ng-template>
+                                    
+                                </ng-template>
+                            </mat-tab>
+                        </ng-container>
+                    </ng-container>
                     
                 </ng-container>
             </mat-tab-group>

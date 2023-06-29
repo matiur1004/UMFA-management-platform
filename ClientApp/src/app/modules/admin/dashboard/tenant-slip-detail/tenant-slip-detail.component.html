@@ -1,0 +1,60 @@
+<form [formGroup]="form">
+    <div class="grid grid-cols-10 gap-2">
+        <div class="col-span-2">
+            <dx-select-box [items]="periodList" displayExpr="DisplayName" valueExpr="PeriodId" class="form-control" label="Building Period"
+                [itemTemplate]="custPeriodTemplate" required placeholder="Select Building Period" lableMode="static" id="buildingPeriod"
+                [formControlName]="'PeriodId'" name="BuildingPeriod" (onValueChanged)="valueChanged($event, 'Period')" [searchEnabled]="true">
+            </dx-select-box>
+        </div>
+        <div class="col-span-2">
+            <dx-select-box [items]="reportTypeList" displayExpr="ReportTypeName" valueExpr="ReportTypeId" class="form-control" label="Report Type"
+                placeholder="Select option" lableMode="static" id="reportType" (onValueChanged)="valueChanged($event, 'ReportType')"
+                [formControlName]="'ReportTypeId'" [searchEnabled]="true">
+            </dx-select-box>
+        </div>
+        <div class="col-span-2">
+            <dx-select-box [items]="fileFormatList" displayExpr="Value" valueExpr="Id" class="form-control" label="File format"
+                placeholder="Select option" lableMode="static" id="fileFormat" (onValueChanged)="valueChanged($event, 'FileFormat')"
+                [formControlName]="'FileFormat'" [searchEnabled]="true">
+            </dx-select-box>
+        </div>
+        <div class="col-span-2" *ngIf="isVisibleCustomFileFormat">
+            <dx-text-box placeholder="Enter custom file format" [formControlName]="'CustomFileFormat'" [matTooltip]="'Custom File Format'" style="margin-top: 6px;"></dx-text-box>
+        </div>
+        <div class="col-span-2">
+            <dx-text-box placeholder="Enter file name" [formControlName]="'FileName'" [matTooltip]="'File Name'" style="margin-top: 6px;"></dx-text-box>
+        </div>
+    </div>
+    <div class="grid grid-cols-10 gap-2">
+        <div class="col-span-2">
+            <dx-select-box [items]="tenantList" displayExpr="TenantName" valueExpr="TenantId" class="form-control" label="Tenant"
+                placeholder="Select option" lableMode="static" id="tenant"
+                [formControlName]="'TenantId'" [searchEnabled]="true" (onValueChanged)="valueChanged($event, 'Tenant')">
+            </dx-select-box>
+        </div>
+        <div class="col-span-2">
+            <dx-select-box [items]="tenantShopList" displayExpr="ShopName" valueExpr="ShopId" class="form-control" label="Tenant"
+                placeholder="Select option" lableMode="static" id="tenant"
+                [formControlName]="'TenantShop'" [searchEnabled]="true">
+            </dx-select-box>
+        </div>
+        <div class="col-span-4 flex gap-x-4 justify-center" style="margin-top: 7px;">
+            <dx-button
+                stylingMode="contained"
+                text="View Selection"
+                type="default"
+                [width]="150"
+                [height]="34"
+            >
+            </dx-button>
+            <dx-button
+                stylingMode="contained"
+                text="Archive selection"
+                type="danger"
+                [width]="150"
+                [height]="34"
+            >
+            </dx-button>
+        </div>
+    </div>
+</form>

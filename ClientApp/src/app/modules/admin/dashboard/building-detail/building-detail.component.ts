@@ -14,6 +14,7 @@ import {
   ApexFill,
   ApexTooltip
 } from "ng-apexcharts";
+import { DashboardService } from '../dasboard.service';
 
 export type ChartOptions = {
     series: ApexAxisChartSeries;
@@ -39,7 +40,8 @@ export class BuildingDetailComponent implements OnInit {
   @Input() stats: IHomePageStats;
   @Input() title: string;
   @Input() isSmart: boolean;
-  
+  @Input() buildingId: number;
+
   chartElectricityUsage: Partial<ChartOptions>;
   chartWaterUsage: Partial<ChartOptions>;
   chartSales: Partial<ChartOptions>;
@@ -51,7 +53,9 @@ export class BuildingDetailComponent implements OnInit {
   varianceElectricity: number;
   varianceWater: number;
   varianceSales: number;
-  constructor() {
+  constructor(
+    private _dbService: DashboardService,
+  ) {
     this.chartElectricityUsage = {
         series: [
         ],
@@ -149,7 +153,7 @@ export class BuildingDetailComponent implements OnInit {
       colors : ['#34d399'],
     };
    }
-
+   
   ngOnInit(): void {
     this.chartElectricityUsage.xaxis.categories = this.stats.GraphStats.map(graph => graph.PeriodName);
     this.chartWaterUsage.xaxis.categories = this.stats.GraphStats.map(graph => graph.PeriodName);
@@ -178,4 +182,7 @@ export class BuildingDetailComponent implements OnInit {
     this.varianceSales = sales.data[sales.data.length - 1] / ( this.totalSales / sales.data.length ) * 100;
   }
 
+  onTenantSlip() {
+    this._dbService.showTenantSlipDetail(this.buildingId);
+  }
 }
