@@ -70,6 +70,17 @@ export class DashboardService {
       );
   }
 
+  getTenantSlips(buildingId) {
+    const url = `${CONFIG.apiURL}/TenantSlips/CardInfo?buildingId=${buildingId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(bl => {
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        })
+      );
+  }
+
   getAlarmTriggered(alarmTriggeredId) {
     const url = `${CONFIG.apiURL}/AlarmTriggered/getAlarmTriggered`;
     return this.http.post<any>(url, {AMRMeterTriggeredAlarmId: alarmTriggeredId}, { withCredentials: true })

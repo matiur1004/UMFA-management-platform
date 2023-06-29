@@ -11,6 +11,11 @@ export interface IHomePageStats {
       OccupiedPercentage: number;
       RecoverablePercentage: number;
     };
+    TenantSlips: {
+      Tenants: number;
+      Shops: number;
+      Amount: number;
+    };
     ShopStats: {
       NumberOfShops: number;
       OccupiedPercentage: number;
