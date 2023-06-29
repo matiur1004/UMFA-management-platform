@@ -31,6 +31,7 @@
                 <report-criteria *ngIf="reportId == 1"></report-criteria>
                 <report-criteria-shop *ngIf="reportId == 2 || reportId == 3"></report-criteria-shop>
                 <report-criteria-utility *ngIf="reportId == 4"></report-criteria-utility>
+                <report-criteria-consumption *ngIf="reportId == 5"></report-criteria-consumption>
             </div>
             <div class="col-span-1 flex items-end">
                 <button mat-raised-button [color]="'primary'" type="button"
@@ -46,5 +47,6 @@
         <report-result-shop *ngIf="reportId == 2" class="w-full"></report-result-shop>
         <report-result-shop-cost *ngIf="reportId == 3" class="w-full"></report-result-shop-cost>
         <report-result-utility *ngIf="reportId == 4" class="w-full"></report-result-utility>
+        <report-result-consumption *ngIf="reportId == 5" class="w-full"></report-result-consumption>
     </div>
 </div>

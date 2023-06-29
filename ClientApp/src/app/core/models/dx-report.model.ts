@@ -45,3 +45,10 @@ export interface IDXReport {
     ClientRecoverableVisible: boolean;
   }
   
+  export interface IConsumptionSummaryReportParams {
+    BuildingId: number,
+    PeriodId: number,
+    SplitIndicator: number,
+    Sort: string,
+    Shops: number[]
+  }

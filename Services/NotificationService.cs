@@ -40,6 +40,8 @@ namespace ClientPortal.Services
                 $"Description: {notification.Description}\r\n" +
                 $"Alarm: {notification.AlarmName}\r\n" +
                 $"Alarm Description: {notification.AlarmDescription}\r\n\r\n" +
+                $"Average Observed: {notification.AverageObserved}\r\n\r\n" +
+                $"Maximum Observed: {notification.MaximumObserved}\r\n\r\n" +
                 $"Please Follow this link to Acknowledge Alarm: {returnUrl}\r\n\r\n";
 
             return msg;
