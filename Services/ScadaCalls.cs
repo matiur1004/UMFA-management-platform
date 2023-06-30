@@ -52,6 +52,7 @@ namespace ClientPortal.Services
                 //url += $"&eid={job.CommsId}&startdate={job.FromDate.ToString("yyyy-MM-dd HH:mm")}&enddate={job.ToDate.ToString("yyyy-MM-dd HH:mm")}";
                 url += $"&key1={job.Key1}&startdate={job.FromDate.ToString("yyyy-MM-dd HH:mm")}&enddate={job.ToDate.ToString("yyyy-MM-dd HH:mm")}";
                 using var httpClient = new HttpClient();
+                httpClient.Timeout = TimeSpan.FromSeconds(240);
                 using var resp = await httpClient.GetAsync(url);
                 var result = await resp.Content.ReadAsStreamAsync();
                 var serializer = new XmlSerializer(typeof(ScadaMeterReading));
