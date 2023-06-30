@@ -81,23 +81,29 @@ namespace ClientPortal.Services
                         }
 
                         //insert the data into the database
-                        if (!await _repo.InsertScadaReadingData(readingDetail.ReadingData))
+                        if (await _repo.InsertScadaReadingData(readingDetail.ReadingData))
                         {
-                            throw new ApplicationException($"Failed to insert reading data");
+                            //update the detail 
+                            trackedHeader.LastRunDTM = DateTime.UtcNow;
+                            trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == detailId).Status = 1;
+                            trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == detailId).LastRunDTM = DateTime.UtcNow;
+                            DateTime lastDate = DateTime.Parse(readingDetail.ReadingData.Meter.EndTotal.ReadingDate);
+                            trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == detailId).LastDataDate = lastDate;
+                            _logger.LogInformation("Successfully processed readings for meter {meter}", readingDetail.ReadingData.Meter.SerialNumber);
+                        }
+                        else
+                        {
+                            _logger.LogError($"Could not add data to DB.");
+                            trackedHeader.LastRunDTM = DateTime.UtcNow;
+                            trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == detailId).Status = 1;
+                            trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == detailId).LastRunDTM = DateTime.UtcNow;
                         }
 
-                        //update the detail 
-                        trackedHeader.LastRunDTM = DateTime.UtcNow;
-                        trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == detailId).Status = 1;
-                        trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == detailId).LastRunDTM = DateTime.UtcNow;
-                        DateTime lastDate = DateTime.Parse(readingDetail.ReadingData.Meter.EndTotal.ReadingDate);
-                        trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == detailId).LastDataDate = lastDate;
                         if (!await _repo.SaveTrackedItems())
                         {
-                            throw new ApplicationException("Could not save tracked items form service");
+                            _logger.LogError("Could not save tracked items form service");
                         }
 
-                        _logger.LogInformation("Successfully processed readings for meter {meter}", readingDetail.ReadingData.Meter.SerialNumber);
 
                     }
                 }
