@@ -33,9 +33,16 @@ namespace ClientPortal.Controllers
         }
 
         [HttpGet("Reports")]
-        public async Task<ActionResult<TenantSlipDataSpResponse>> GetData([FromQuery] TenantSlipDataSpRequest request)
+        public async Task<ActionResult<TenantSlipReportSpResponse>> GetReports([FromQuery] TenantSlipReportSpRequest request)
+        {
+            return await _umfaService.GetTenantSlipReportsAsync(request);
+        }
+        
+        [HttpPut("Data")]
+        public async Task<ActionResult<TenantSlipDataResponse>> Getdata([FromBody] TenantSlipDataRequest request)
         {
             return await _umfaService.GetTenantSlipDataAsync(request);
         }
+
     }
 }

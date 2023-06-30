@@ -24,6 +24,8 @@ namespace ClientPortal.Data.Repositories
 
         public Task<TenantSlipCardInfoSpResponse> GetTenantSlipCardInfoAsync(TenantSlipCardInfoSpRequest request);
         public Task<TenantSlipCriteriaSpResponse> GetTenantSlipCriteriaAsync(TenantSlipCriteriaSpRequest request);
+        public Task<TenantSlipReportSpResponse> GetTenantSlipReportsAsync(TenantSlipReportSpRequest request);
+
         public Task<TenantSlipDataSpResponse> GetTenantSlipDataAsync(TenantSlipDataSpRequest request);
     }
     public class UmfaRepository : IUmfaRepository
@@ -199,9 +201,14 @@ namespace ClientPortal.Data.Repositories
              return await RunStoredProcedureAsync<UMFAShopsSpResponse, UmfaTenantShopsSpRequest>("upPortal_GetBuildingPeriodTenantShops", request);
         }
 
+        public async Task<TenantSlipReportSpResponse> GetTenantSlipReportsAsync(TenantSlipReportSpRequest request)
+        {
+            return await RunStoredProcedureAsync<TenantSlipReportSpResponse, TenantSlipReportSpRequest>("upPortal_TenantSlipsData", request);
+        }
+
         public async Task<TenantSlipDataSpResponse> GetTenantSlipDataAsync(TenantSlipDataSpRequest request)
         {
-            return await RunStoredProcedureAsync<TenantSlipDataSpResponse, TenantSlipDataSpRequest>("upPortal_TenantSlipsData", request);
+            return await RunStoredProcedureAsync<TenantSlipDataSpResponse, TenantSlipDataSpRequest>("upPortal_GetTenantSlipData", request);
         }
     }
 }
