@@ -132,16 +132,16 @@ namespace ClientPortal.Data.Repositories
                     Description = readings.Meter.Description,
                     ReadingResult = readings.Meter.EndTotal.Result,
                     ReadingDate = DateTime.Parse(readings.Meter.EndTotal.ReadingDate),
-                    P1 = float.Parse(readings.Meter.EndTotal.P1, CultureInfo.InvariantCulture.NumberFormat),
-                    P2 = float.Parse(readings.Meter.EndTotal.P2, CultureInfo.InvariantCulture.NumberFormat),
-                    Q1 = float.Parse(readings.Meter.EndTotal.Q1, CultureInfo.InvariantCulture.NumberFormat),
-                    Q2 = float.Parse(readings.Meter.EndTotal.Q2, CultureInfo.InvariantCulture.NumberFormat),
-                    Q3 = float.Parse(readings.Meter.EndTotal.Q3, CultureInfo.InvariantCulture.NumberFormat),
-                    Q4 = float.Parse(readings.Meter.EndTotal.Q4, CultureInfo.InvariantCulture.NumberFormat),
+                    P1 = float.Parse(readings.Meter.EndTotal.P1.Replace('X', '0'), CultureInfo.InvariantCulture.NumberFormat),
+                    P2 = float.Parse(readings.Meter.EndTotal.P2.Replace('X', '0'), CultureInfo.InvariantCulture.NumberFormat),
+                    Q1 = float.Parse(readings.Meter.EndTotal.Q1.Replace('X', '0'), CultureInfo.InvariantCulture.NumberFormat),
+                    Q2 = float.Parse(readings.Meter.EndTotal.Q2.Replace('X', '0'), CultureInfo.InvariantCulture.NumberFormat),
+                    Q3 = float.Parse(readings.Meter.EndTotal.Q3.Replace('X', '0'), CultureInfo.InvariantCulture.NumberFormat),
+                    Q4 = float.Parse(readings.Meter.EndTotal.Q4.Replace('X', '0'), CultureInfo.InvariantCulture.NumberFormat),
                     ReadingStatus = int.Parse(readings.Meter.EndTotal.Status),
                     KvaResult = readings.Meter.MaxDemand.Result,
                     kvaDate = DateTime.Parse(readings.Meter.MaxDemand.MaxDemandDate),
-                    kVA = float.Parse(readings.Meter.MaxDemand.kVA, CultureInfo.InvariantCulture.NumberFormat),
+                    kVA = float.Parse(readings.Meter.MaxDemand.kVA.Replace('X', '0'), CultureInfo.InvariantCulture.NumberFormat),
                     IsActive = true
                 };
 
