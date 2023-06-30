@@ -23,13 +23,19 @@ namespace ClientPortal.Controllers
         [HttpGet("CardInfo")]
         public async Task<ActionResult<TenantSlipCardInfo>> GetCardInfo([FromQuery] TenantSlipCardInfoSpRequest request)
         {
-            return await _umfaService.GetTenantSlipCardInfo(request);
+            return await _umfaService.GetTenantSlipCardInfoAsync(request);
         }
 
         [HttpGet("Criteria")]
         public async Task<ActionResult<TenantSlipCriteriaResponse>> GetCriteria([FromQuery] TenantSlipCriteriaSpRequest request)
         {
-            return await _umfaService.GetTenantSlipCriteria(request);
+            return await _umfaService.GetTenantSlipCriteriaAsync(request);
+        }
+
+        [HttpGet("Reports")]
+        public async Task<ActionResult<TenantSlipDataSpResponse>> GetData([FromQuery] TenantSlipDataSpRequest request)
+        {
+            return await _umfaService.GetTenantSlipDataAsync(request);
         }
     }
 }
