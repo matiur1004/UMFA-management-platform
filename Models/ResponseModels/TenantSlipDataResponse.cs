@@ -2,29 +2,17 @@
 {
     public class TenantSlipDataResponse
     {
-        public int? TenantId { get; set; }
-        public int? AccountId { get; set; }
-        public int? PeriodId { get; set; }
-        public int? ShopId { get; set; }
-        public int? SplitIndicator { get; set; }
-        public string? TenantName { get; set; }
-        public string? Units { get; set; }
-        public decimal? Excl { get; set; }
-        public decimal? Vat { get; set; }
-        public decimal? Incl { get; set; }
+        public TenantSlipDataHeader? Header { get; set; }
+        public List<TenantSlipDataDetails> Details { get; set; }
+        public List<TenantSlipDataMeterReadings> MeterReadings { get; set; }
+        public List<TenantSlipDataGraphData> GraphData { get; set; }
 
-        public TenantSlipDataResponse(TenantSlipData data) 
+        public TenantSlipDataResponse(TenantSlipDataSpResponse response) 
         {
-            TenantId = data.TenantID;
-            AccountId = data.AccountId;
-            PeriodId = data.PeriodID;
-            ShopId = data.ShopID;
-            SplitIndicator = data.SplitIndicator;
-            TenantName = data.TenantName;
-            Units = data.Units;
-            Excl = data.Excl;
-            Vat = data.Vat;
-            Incl = data.Incl;
+            Header = response.Headers.FirstOrDefault();
+            Details = response.Details;
+            MeterReadings = response.MeterReadings;
+            GraphData = response.GraphData;
         }
     }
 }
