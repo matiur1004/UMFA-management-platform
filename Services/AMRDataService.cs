@@ -220,10 +220,10 @@ namespace ClientPortal.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error while retrieving scada data for {key1}: {msg}", job.Key1, ex.Message);
+                _logger.LogError("Error while retrieving scada data for detailid {det} - key - {key1}: {msg}", job.DetailId, job.Key1, ex.Message);
                 trackedHeader.ScadaRequestDetails.FirstOrDefault(d => d.Id == job.DetailId).Status = 1;
                 await _repo.SaveTrackedItems();
-                throw;
+                return null;
             }
         }
 

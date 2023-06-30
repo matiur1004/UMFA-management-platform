@@ -396,7 +396,7 @@ namespace ClientPortal.Data.Repositories
 
                 for (int i = 0; i < headers.Count; i++)
                 {
-                    if (_context.ScadaRequestDetails.Where(d => d.HeaderId == headers[i].Id).Any(d => d.Status != 1))
+                    if (_context.ScadaRequestDetails.Where(d => d.HeaderId == headers[i].Id).Any(d => d.Active && d.Status != 1))
                     {
                         headers.RemoveAt(i);
                     }
