@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { DashboardService } from '../dasboard.service';
 import { Subject, takeUntil } from 'rxjs';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { AllowedPageSizes } from '@core/helpers';
 
 @Component({
   selector: 'app-tenant-slip-detail',
@@ -11,6 +12,8 @@ import { DatePipe } from '@angular/common';
 })
 export class TenantSlipDetailComponent implements OnInit {
 
+  readonly allowedPageSizes = AllowedPageSizes;
+  
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
   isVisibleCustomFileFormat: boolean = false;
@@ -21,6 +24,7 @@ export class TenantSlipDetailComponent implements OnInit {
   tenantList:any;
   buildingId: any;
   tenantShopList: any;
+  tenantSlipsReportsDataSource: any;
 
   custPeriodTemplate = (arg: any) => {
     const datepipe: DatePipe = new DatePipe('en-ZA');
@@ -31,6 +35,7 @@ export class TenantSlipDetailComponent implements OnInit {
   constructor(
     private _service: DashboardService,
     private _formBuilder: UntypedFormBuilder,
+    private _cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -39,8 +44,7 @@ export class TenantSlipDetailComponent implements OnInit {
       ReportTypeId: [null],
       FileFormat: [null],
       FileName: [null],
-      TenantId: [null],
-      TenantShop: [null]
+      CustomFileFormat: [null]
     });
     this._service.tenantSlipCriteria$
       .pipe(takeUntil(this._unsubscribeAll))
@@ -54,16 +58,14 @@ export class TenantSlipDetailComponent implements OnInit {
         }
       })
 
-    this._service.tenantSlipTenants$
+    this._service.tenantSlipsReports$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((res) => {
-        this.tenantList = res;
-      });
-
-    this._service.tenantSlipTenantShops$
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((res) => {
-        this.tenantShopList = res;
+        if(res){
+          this.tenantSlipsReportsDataSource = res['Slips'];
+          this._cdr.detectChanges();
+          console.log(this.tenantSlipsReportsDataSource);
+        }
       });
   }
 
@@ -71,11 +73,9 @@ export class TenantSlipDetailComponent implements OnInit {
     if(method == 'Period') {
       this._service.getTenantsWithBuildingAndPeriod(this.buildingId, this.form.get('PeriodId').value).subscribe();
     } else if(method == 'Tenant') {
-      if(this.form.get('ReportTypeId').value)
-        this._service.getTenantShops(this.buildingId, this.form.get('PeriodId').value, this.form.get('TenantId').value, this.form.get('ReportTypeId').value).subscribe();
+      
     } else if(method == 'ReportType') {
-      if(this.form.get('TenantId').value)
-        this._service.getTenantShops(this.buildingId, this.form.get('PeriodId').value, this.form.get('TenantId').value, this.form.get('ReportTypeId').value).subscribe();
+      
     } else if(method == 'FileFormat') {
       let fileFormatItem = this.fileFormatList.find(obj => obj.Id == this.form.get('FileFormat').value);
       if(fileFormatItem['Value'] == 'Custom') {
@@ -83,6 +83,11 @@ export class TenantSlipDetailComponent implements OnInit {
       } else this.isVisibleCustomFileFormat = false;
     }
   }
+
+  viewSelection() {
+    this._service.getTenantSlipsReports(this.buildingId, this.form.get('PeriodId').value, this.form.get('ReportTypeId').value).subscribe();
+  }
+
   /**
      * On destroy
      */

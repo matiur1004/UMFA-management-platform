@@ -18,6 +18,7 @@ export class DashboardService {
   private _tenantSlipCriteria: BehaviorSubject<any> = new BehaviorSubject(null);
   private _tenantSlipTenants: BehaviorSubject<any> = new BehaviorSubject(null);
   private _tenantSlipTenantShops: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _tenantSlipsReports: BehaviorSubject<any> = new BehaviorSubject(null);
   
   public stats$: Observable<IHomePageStats>;
   public alarmTriggeredId: any;
@@ -51,6 +52,11 @@ export class DashboardService {
   get tenantSlipTenantShops$(): Observable<any> {
     return this._tenantSlipTenantShops.asObservable();
   }
+
+  get tenantSlipsReports$(): Observable<any> {
+    return this._tenantSlipsReports.asObservable();
+  }
+
   /**
      * Getter for data
      */
@@ -95,6 +101,18 @@ export class DashboardService {
       .pipe(
         catchError(err => this.catchAuthErrors(err)),
         tap(res => {
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        })
+      );
+  }
+
+  getTenantSlipsReports(buildingId, periodId, reportTypeId) {
+    const url = `${CONFIG.apiURL}/TenantSlips/Reports?buildingId=${buildingId}&periodId=${periodId}&reportTypeId=${reportTypeId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(res => {
+          this._tenantSlipsReports.next(res);
           //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
         })
       );

@@ -1,60 +1,69 @@
-<form [formGroup]="form">
-    <div class="grid grid-cols-10 gap-2">
-        <div class="col-span-2">
-            <dx-select-box [items]="periodList" displayExpr="DisplayName" valueExpr="PeriodId" class="form-control" label="Building Period"
-                [itemTemplate]="custPeriodTemplate" required placeholder="Select Building Period" lableMode="static" id="buildingPeriod"
-                [formControlName]="'PeriodId'" name="BuildingPeriod" (onValueChanged)="valueChanged($event, 'Period')" [searchEnabled]="true">
-            </dx-select-box>
+<div class="flex flex-col gap-y-4">
+    <form [formGroup]="form">
+        <div class="grid grid-cols-12 gap-2">
+            <div class="col-span-3">
+                <dx-select-box [items]="periodList" displayExpr="DisplayName" valueExpr="PeriodId" class="form-control" label="Building Period"
+                    [itemTemplate]="custPeriodTemplate" required placeholder="Select Building Period" lableMode="static" id="buildingPeriod"
+                    [formControlName]="'PeriodId'" name="BuildingPeriod" (onValueChanged)="valueChanged($event, 'Period')" [searchEnabled]="true">
+                </dx-select-box>
+            </div>
+            <div class="col-span-2">
+                <dx-select-box [items]="reportTypeList" displayExpr="ReportTypeName" valueExpr="ReportTypeId" class="form-control" label="Report Type"
+                    placeholder="Select option" lableMode="static" id="reportType" (onValueChanged)="valueChanged($event, 'ReportType')"
+                    [formControlName]="'ReportTypeId'" [searchEnabled]="true">
+                </dx-select-box>
+            </div>
+            <div class="col-span-3">
+                <dx-select-box [items]="fileFormatList" displayExpr="Value" valueExpr="Id" class="form-control" label="File format"
+                    placeholder="Select option" lableMode="static" id="fileFormat" (onValueChanged)="valueChanged($event, 'FileFormat')"
+                    [formControlName]="'FileFormat'" [searchEnabled]="true">
+                </dx-select-box>
+            </div>
+            <div class="col-span-3" *ngIf="isVisibleCustomFileFormat">
+                <dx-text-box placeholder="Enter custom file format" [formControlName]="'CustomFileFormat'" [matTooltip]="'Custom File Format'" style="margin-top: 6px;"></dx-text-box>
+            </div>
+            <div class="col-span-3">
+                <dx-text-box placeholder="Enter file name" [formControlName]="'FileName'" [matTooltip]="'File Name'" style="margin-top: 6px;"></dx-text-box>
+            </div>
+            <div class="col-span-3 flex gap-x-3 justify-center" style="margin-top: 7px;">
+                <dx-button stylingMode="contained" text="View Selection" type="default" [width]="130" [height]="34" (onClick)="viewSelection()">
+                </dx-button>
+                <dx-button stylingMode="contained" text="Archive Selection" type="danger" [width]="145" [height]="34">
+                </dx-button>
+            </div>
         </div>
-        <div class="col-span-2">
-            <dx-select-box [items]="reportTypeList" displayExpr="ReportTypeName" valueExpr="ReportTypeId" class="form-control" label="Report Type"
-                placeholder="Select option" lableMode="static" id="reportType" (onValueChanged)="valueChanged($event, 'ReportType')"
-                [formControlName]="'ReportTypeId'" [searchEnabled]="true">
-            </dx-select-box>
-        </div>
-        <div class="col-span-2">
-            <dx-select-box [items]="fileFormatList" displayExpr="Value" valueExpr="Id" class="form-control" label="File format"
-                placeholder="Select option" lableMode="static" id="fileFormat" (onValueChanged)="valueChanged($event, 'FileFormat')"
-                [formControlName]="'FileFormat'" [searchEnabled]="true">
-            </dx-select-box>
-        </div>
-        <div class="col-span-2" *ngIf="isVisibleCustomFileFormat">
-            <dx-text-box placeholder="Enter custom file format" [formControlName]="'CustomFileFormat'" [matTooltip]="'Custom File Format'" style="margin-top: 6px;"></dx-text-box>
-        </div>
-        <div class="col-span-2">
-            <dx-text-box placeholder="Enter file name" [formControlName]="'FileName'" [matTooltip]="'File Name'" style="margin-top: 6px;"></dx-text-box>
-        </div>
-    </div>
-    <div class="grid grid-cols-10 gap-2">
-        <div class="col-span-2">
-            <dx-select-box [items]="tenantList" displayExpr="TenantName" valueExpr="TenantId" class="form-control" label="Tenant"
-                placeholder="Select option" lableMode="static" id="tenant"
-                [formControlName]="'TenantId'" [searchEnabled]="true" (onValueChanged)="valueChanged($event, 'Tenant')">
-            </dx-select-box>
-        </div>
-        <div class="col-span-2">
-            <dx-select-box [items]="tenantShopList" displayExpr="ShopName" valueExpr="ShopId" class="form-control" label="Tenant"
-                placeholder="Select option" lableMode="static" id="tenant"
-                [formControlName]="'TenantShop'" [searchEnabled]="true">
-            </dx-select-box>
-        </div>
-        <div class="col-span-4 flex gap-x-4 justify-center" style="margin-top: 7px;">
-            <dx-button
-                stylingMode="contained"
-                text="View Selection"
-                type="default"
-                [width]="150"
-                [height]="34"
+    </form>
+
+    <!-- Grid view -->
+    <div class="flex w-full">
+        <dx-data-grid
+            [dataSource]="tenantSlipsReportsDataSource"
+            [showBorders]="true"
+            class="grid-container"
+            [hoverStateEnabled]="true"
+        >
+            <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+            <dxo-paging [pageSize]="15"> </dxo-paging>
+            <dxo-pager
+                [visible]="true"
+                [allowedPageSizes]="allowedPageSizes"
+                [displayMode]="'compact'"
+                [showPageSizeSelector]="true"
+                [showInfo]="true"
+                [showNavigationButtons]="true"
             >
-            </dx-button>
-            <dx-button
-                stylingMode="contained"
-                text="Archive selection"
-                type="danger"
-                [width]="150"
-                [height]="34"
-            >
-            </dx-button>
-        </div>
+            </dxo-pager>
+            <dxo-search-panel
+                [visible]="true"
+                [width]="200"
+                placeholder="Search..."
+            ></dxo-search-panel>
+            <dxi-column dataField="TenantName" caption="Tenant" [minWidth]="100"></dxi-column>
+            <dxi-column dataField="Units" caption="Shop" [minWidth]="100"></dxi-column>
+            <dxi-column dataField="Excl" caption="Excl" [minWidth]="100"></dxi-column>
+            <dxi-column dataField="Vat" caption="Vat" [minWidth]="100"></dxi-column>
+            <dxi-column dataField="Incl" caption="Incl" [minWidth]="100"></dxi-column>
+            
+        </dx-data-grid>
     </div>
-</form>
+</div>
