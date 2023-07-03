@@ -194,3 +194,7 @@ thead.dx-pivotgrid-horizontal-headers tr:nth-child(3) {
 .dx-empty-area-text {
     display: none;
 }
+.dx-datagrid-rowsview .dx-row.dx-selection {
+    background-color: #1e2849 !important;
+    background-image: linear-gradient(to right, #212c4f, #202b4d, #1f2a4b, #1f294a, #1e2848);
+}

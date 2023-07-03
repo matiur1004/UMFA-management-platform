@@ -14,6 +14,7 @@ import {
   ApexFill,
   ApexTooltip
 } from "ng-apexcharts";
+import { DashboardService } from '../dasboard.service';
 
 export type ChartOptions = {
     series: ApexAxisChartSeries;
@@ -39,7 +40,8 @@ export class BuildingDetailComponent implements OnInit {
   @Input() stats: IHomePageStats;
   @Input() title: string;
   @Input() isSmart: boolean;
-  
+  @Input() buildingId: number;
+
   chartElectricityUsage: Partial<ChartOptions>;
   chartWaterUsage: Partial<ChartOptions>;
   chartSales: Partial<ChartOptions>;
@@ -51,7 +53,9 @@ export class BuildingDetailComponent implements OnInit {
   varianceElectricity: number;
   varianceWater: number;
   varianceSales: number;
-  constructor() {
+  constructor(
+    private _dbService: DashboardService,
+  ) {
     this.chartElectricityUsage = {
         series: [
         ],
@@ -149,33 +153,39 @@ export class BuildingDetailComponent implements OnInit {
       colors : ['#34d399'],
     };
    }
-
+   
   ngOnInit(): void {
-    this.chartElectricityUsage.xaxis.categories = this.stats.GraphStats.map(graph => graph.PeriodName);
-    this.chartWaterUsage.xaxis.categories = this.stats.GraphStats.map(graph => graph.PeriodName);
-    this.chartSales.xaxis.categories = this.stats.GraphStats.map(graph => graph.PeriodName);
+    if(this.stats.GraphStats) {
+      this.chartElectricityUsage.xaxis.categories = this.stats.GraphStats.map(graph => graph.PeriodName);
+      this.chartWaterUsage.xaxis.categories = this.stats.GraphStats.map(graph => graph.PeriodName);
+      this.chartSales.xaxis.categories = this.stats.GraphStats.map(graph => graph.PeriodName);
 
-    let electricityUsage = {name: 'Electricity Usage', data: []};
-    let waterUsage = {name: 'Water Usage', data: []};
-    let sales = {name: 'Sales', data: []};
+      let electricityUsage = {name: 'Electricity Usage', data: []};
+      let waterUsage = {name: 'Water Usage', data: []};
+      let sales = {name: 'Sales', data: []};
 
-    this.stats.GraphStats.forEach(graph => {
-        electricityUsage.data.push(graph['TotalElectricityUsage']);
-        waterUsage.data.push(graph['TotalWaterUsage']);
-        sales.data.push(graph['TotalSales']);
-    })
+      this.stats.GraphStats.forEach(graph => {
+          electricityUsage.data.push(graph['TotalElectricityUsage']);
+          waterUsage.data.push(graph['TotalWaterUsage']);
+          sales.data.push(graph['TotalSales']);
+      })
 
-    this.chartElectricityUsage.series = [electricityUsage];
-    this.chartWaterUsage.series = [waterUsage];
-    this.chartSales.series = [sales];
+      this.chartElectricityUsage.series = [electricityUsage];
+      this.chartWaterUsage.series = [waterUsage];
+      this.chartSales.series = [sales];
+      
+      this.totalElectricityUsage = electricityUsage.data.reduce((prev, cur) => prev + cur, 0);
+      this.totalWaterUsage = waterUsage.data.reduce((prev, cur) => prev + cur, 0);
+      this.totalSales = sales.data.reduce((prev, cur) => prev + cur, 0);
+
+      this.varianceElectricity = electricityUsage.data[electricityUsage.data.length - 1] / ( this.totalElectricityUsage / electricityUsage.data.length ) * 100; 
+      this.varianceWater = waterUsage.data[waterUsage.data.length - 1] / ( this.totalWaterUsage / waterUsage.data.length ) * 100; 
+      this.varianceSales = sales.data[sales.data.length - 1] / ( this.totalSales / sales.data.length ) * 100;
+    }
     
-    this.totalElectricityUsage = electricityUsage.data.reduce((prev, cur) => prev + cur, 0);
-    this.totalWaterUsage = waterUsage.data.reduce((prev, cur) => prev + cur, 0);
-    this.totalSales = sales.data.reduce((prev, cur) => prev + cur, 0);
-
-    this.varianceElectricity = electricityUsage.data[electricityUsage.data.length - 1] / ( this.totalElectricityUsage / electricityUsage.data.length ) * 100; 
-    this.varianceWater = waterUsage.data[waterUsage.data.length - 1] / ( this.totalWaterUsage / waterUsage.data.length ) * 100; 
-    this.varianceSales = sales.data[sales.data.length - 1] / ( this.totalSales / sales.data.length ) * 100;
   }
 
+  onTenantSlip() {
+    this._dbService.showTenantSlipDetail(this.buildingId);
+  }
 }

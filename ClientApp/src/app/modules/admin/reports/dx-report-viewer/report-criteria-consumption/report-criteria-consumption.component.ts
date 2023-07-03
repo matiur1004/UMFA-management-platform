@@ -24,7 +24,7 @@ export class ReportCriteriaConsumptionComponent implements OnInit {
   
   constructor(
     private reportService: DXReportService, 
-    private _formBuilder: UntypedFormBuilder, 
+    private _formBuilder: UntypedFormBuilder,
     private umfaService: UmfaService,
     private _cdr: ChangeDetectorRef) { }
 

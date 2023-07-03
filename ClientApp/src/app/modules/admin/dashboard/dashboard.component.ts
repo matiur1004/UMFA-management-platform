@@ -3,7 +3,7 @@ import { AuthService } from 'app/core/auth/auth.service';
 import { EHomeTabType, IHomeTab, CHomeTabTypeText, IWaterProfileResponse, IWaterProfileDetail } from 'app/core/models';
 import { BuildingService } from 'app/shared/services/building.service';
 import { ApexOptions } from 'ng-apexcharts';
-import { catchError, EMPTY, map, of, Subject, takeUntil, tap } from 'rxjs';
+import { catchError, EMPTY, forkJoin, map, of, Subject, takeUntil, tap } from 'rxjs';
 import { DashboardService } from './dasboard.service';
 
 import {
@@ -274,7 +274,24 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             setTimeout(() => {
                 this._dbService.getAlarmTriggered(this._dbService.alarmTriggeredId).subscribe();
             }, 500);
-        }        
+        } 
+        
+        this._dbService.tenantSlip$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((buildingId) => {
+                if(buildingId) {
+                    this._dbService.getTenantSlipsCriteria(buildingId).subscribe(() => {
+                        let newTab: IHomeTab = {
+                            id: 0,
+                            title: 'Tenant Slip',
+                            type: 'TenantSlipDetail'
+                        };
+                        this.tabsList.push(newTab);
+                        this.selectedTab = this.tabsList.length;
+                        this._cdr.detectChanges();
+                    })                    
+                }
+            });
     }
 
     onDetail(type: EHomeTabType) {
@@ -317,19 +334,26 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     onRowClick(event) {
-        this._dbService.getBuildingStats(event.data.UmfaBuildingId)
-            .subscribe(res => {
+        if(event.data) {
+            forkJoin([
+                this._dbService.getTenantSlips(event.data.UmfaBuildingId),
+                this._dbService.getBuildingStats(event.data.UmfaBuildingId)
+            ]).subscribe(res => {
+                let dataSource = res[1];
+                dataSource = {...dataSource, TenantSlips: res[0]};
                 let newTab: IHomeTab = {
                     id: event.data.UmfaBuildingId,
                     title: event.data.BuildingName,
                     type: 'BuildingDetail',
-                    dataSource: res,
+                    dataSource: dataSource,
                     detail: event.data
                 };
                 this.tabsList.push(newTab);
                 this.selectedTab = this.tabsList.length;
-                this._cdr.detectChanges();                
+                this._cdr.detectChanges();
             })
+        }
+        
     }
 
     setDataSource(ds: any): void {
