@@ -4,6 +4,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { AllowedPageSizes } from '@core/helpers';
+import themes from 'devextreme/ui/themes';
 
 @Component({
   selector: 'app-tenant-slip-detail',
@@ -26,6 +27,8 @@ export class TenantSlipDetailComponent implements OnInit {
   tenantShopList: any;
   tenantSlipsReportsDataSource: any;
 
+  checkBoxesMode: string;
+
   custPeriodTemplate = (arg: any) => {
     const datepipe: DatePipe = new DatePipe('en-ZA');
     var ret = "<div class='custom-item' title='(" + arg.DisplayName + ")'>" + arg.DisplayName + "</div>";
@@ -36,12 +39,14 @@ export class TenantSlipDetailComponent implements OnInit {
     private _service: DashboardService,
     private _formBuilder: UntypedFormBuilder,
     private _cdr: ChangeDetectorRef
-  ) { }
+  ) { 
+    this.checkBoxesMode = themes.current().startsWith('material') ? 'always' : 'onClick';
+  }
 
   ngOnInit(): void {
     this.form = this._formBuilder.group({
       PeriodId: [null, Validators.required],
-      ReportTypeId: [null],
+      ReportTypeId: [null, Validators.required],
       FileFormat: [null],
       FileName: [null],
       CustomFileFormat: [null]
@@ -64,7 +69,6 @@ export class TenantSlipDetailComponent implements OnInit {
         if(res){
           this.tenantSlipsReportsDataSource = res['Slips'];
           this._cdr.detectChanges();
-          console.log(this.tenantSlipsReportsDataSource);
         }
       });
   }

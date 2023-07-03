@@ -334,23 +334,26 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     onRowClick(event) {
-        forkJoin([
-            this._dbService.getTenantSlips(event.data.UmfaBuildingId),
-            this._dbService.getBuildingStats(event.data.UmfaBuildingId)
-        ]).subscribe(res => {
-            let dataSource = res[1];
-            dataSource = {...dataSource, TenantSlips: res[0]};
-            let newTab: IHomeTab = {
-                id: event.data.UmfaBuildingId,
-                title: event.data.BuildingName,
-                type: 'BuildingDetail',
-                dataSource: dataSource,
-                detail: event.data
-            };
-            this.tabsList.push(newTab);
-            this.selectedTab = this.tabsList.length;
-            this._cdr.detectChanges();
-        })
+        if(event.data) {
+            forkJoin([
+                this._dbService.getTenantSlips(event.data.UmfaBuildingId),
+                this._dbService.getBuildingStats(event.data.UmfaBuildingId)
+            ]).subscribe(res => {
+                let dataSource = res[1];
+                dataSource = {...dataSource, TenantSlips: res[0]};
+                let newTab: IHomeTab = {
+                    id: event.data.UmfaBuildingId,
+                    title: event.data.BuildingName,
+                    type: 'BuildingDetail',
+                    dataSource: dataSource,
+                    detail: event.data
+                };
+                this.tabsList.push(newTab);
+                this.selectedTab = this.tabsList.length;
+                this._cdr.detectChanges();
+            })
+        }
+        
     }
 
     setDataSource(ds: any): void {

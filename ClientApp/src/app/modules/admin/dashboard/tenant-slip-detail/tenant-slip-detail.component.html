@@ -26,7 +26,7 @@
                 <dx-text-box placeholder="Enter file name" [formControlName]="'FileName'" [matTooltip]="'File Name'" style="margin-top: 6px;"></dx-text-box>
             </div>
             <div class="col-span-3 flex gap-x-3 justify-center" style="margin-top: 7px;">
-                <dx-button stylingMode="contained" text="View Selection" type="default" [width]="130" [height]="34" (onClick)="viewSelection()">
+                <dx-button stylingMode="contained" text="View Selection" type="default" [width]="130" [height]="34" (onClick)="viewSelection()" [disabled]="!form.valid">
                 </dx-button>
                 <dx-button stylingMode="contained" text="Archive Selection" type="danger" [width]="145" [height]="34">
                 </dx-button>
@@ -42,6 +42,11 @@
             class="grid-container"
             [hoverStateEnabled]="true"
         >
+            <dxo-selection
+                [selectAllMode]="'allPages'"
+                [showCheckBoxesMode]="checkBoxesMode"
+                mode="multiple"
+            ></dxo-selection>
             <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
             <dxo-paging [pageSize]="15"> </dxo-paging>
             <dxo-pager
