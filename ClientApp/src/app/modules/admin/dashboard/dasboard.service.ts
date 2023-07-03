@@ -178,6 +178,10 @@ export class DashboardService {
       );
   }
 
+  destroyTenantSlips() {
+    this._tenantSlipsReports.next(null);
+  }
+
   showTenantSlipDetail(buildingId) {
     this._tenantSlip.next(buildingId);
   }
