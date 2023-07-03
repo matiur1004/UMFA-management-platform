@@ -29,6 +29,10 @@ export class TenantSlipDetailComponent implements OnInit {
 
   checkBoxesMode: string;
 
+  applyFilterTypes: any;
+  currentFilter: any;
+
+
   custPeriodTemplate = (arg: any) => {
     const datepipe: DatePipe = new DatePipe('en-ZA');
     var ret = "<div class='custom-item' title='(" + arg.DisplayName + ")'>" + arg.DisplayName + "</div>";
@@ -41,6 +45,14 @@ export class TenantSlipDetailComponent implements OnInit {
     private _cdr: ChangeDetectorRef
   ) { 
     this.checkBoxesMode = themes.current().startsWith('material') ? 'always' : 'onClick';
+    this.applyFilterTypes = [{
+        key: 'auto',
+        name: 'Immediately',
+    }, {
+        key: 'onClick',
+        name: 'On Button Click',
+    }];
+    this.currentFilter = this.applyFilterTypes[0].key;
   }
 
   ngOnInit(): void {
