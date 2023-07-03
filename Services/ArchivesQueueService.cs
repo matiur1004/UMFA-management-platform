@@ -15,6 +15,7 @@ namespace ClientPortal.Services
         public ArchivesQueueService(IOptions<ArchivesQueueSettings> settings)
         {
             _queueClient = new QueueClient(settings.Value.ConnectionString, settings.Value.QueueName);
+            _queueClient.CreateIfNotExists();
         }
 
         public async Task AddMessageToQueueAsync(string queueMessage)
