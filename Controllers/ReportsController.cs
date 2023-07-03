@@ -2,6 +2,7 @@
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 using ClientPortal.Services;
+using System.Text.Json;
 
 namespace ClientPortal.Controllers
 {
@@ -13,10 +14,13 @@ namespace ClientPortal.Controllers
 
         private readonly ILogger<ReportsController> _logger;
         private readonly IUmfaReportService _umfaReportService;
-        public ReportsController(ILogger<ReportsController> logger, IUmfaReportService umfaReportService) 
+        private readonly IQueueService _queueService;
+
+        public ReportsController(ILogger<ReportsController> logger, IUmfaReportService umfaReportService, IQueueService queueService) 
         {
             _logger = logger;
             _umfaReportService = umfaReportService;
+            _queueService = queueService;
         }
 
         [HttpGet("UtilityRecoveryReport")]
@@ -53,5 +57,22 @@ namespace ClientPortal.Controllers
         {
             return await _umfaReportService.GetConsumptionSummaryReconReport(request);
         }
+
+        [HttpPost("Archives")]
+        public async Task<IActionResult> ArchiveReports([FromBody] List<ArchiveReportsRequest> request)
+        {
+            try
+            {
+                var message = JsonSerializer.Serialize(request);
+                await _queueService.AddMessageToQueueAsync(message);
+                return Accepted();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Could not archive reports");
+                return Problem(e.Message);
+            }
+        }
+
     }
 }
