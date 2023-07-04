@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { IUmfaBuilding } from '@core/models';
 import { DXReportService } from '@shared/services';
@@ -25,8 +25,7 @@ export class ReportCriteriaConsumptionComponent implements OnInit {
   constructor(
     private reportService: DXReportService, 
     private _formBuilder: UntypedFormBuilder,
-    private umfaService: UmfaService,
-    private _cdr: ChangeDetectorRef) { }
+    private umfaService: UmfaService) { }
 
 
   get showPage(): boolean {

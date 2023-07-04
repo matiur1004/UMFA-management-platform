@@ -36,6 +36,8 @@ import { ReportResultUtilityComponent } from './dx-report-viewer/report-result-u
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { ReportCriteriaConsumptionComponent } from './dx-report-viewer/report-criteria-consumption/report-criteria-consumption.component';
 import { ReportResultConsumptionComponent } from './dx-report-viewer/report-result-consumption/report-result-consumption.component';
+import { ReportCriteriaConsumptionReconComponent } from './dx-report-viewer/report-criteria-consumption-recon/report-criteria-consumption-recon.component';
+import { ReportResultConsumptionReconComponent } from './dx-report-viewer/report-result-consumption-recon/report-result-consumption-recon.component';
 @NgModule({
   declarations: [
     DxReportViewerComponent,
@@ -52,7 +54,9 @@ import { ReportResultConsumptionComponent } from './dx-report-viewer/report-resu
     ReportCriteriaUtilityComponent,
     ReportResultUtilityComponent,
     ReportCriteriaConsumptionComponent,
-    ReportResultConsumptionComponent
+    ReportResultConsumptionComponent,
+    ReportCriteriaConsumptionReconComponent,
+    ReportResultConsumptionReconComponent
   ],
   imports: [
     CommonModule,
