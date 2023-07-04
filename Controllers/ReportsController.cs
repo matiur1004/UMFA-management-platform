@@ -15,12 +15,14 @@ namespace ClientPortal.Controllers
         private readonly ILogger<ReportsController> _logger;
         private readonly IUmfaReportService _umfaReportService;
         private readonly IQueueService _queueService;
+        private readonly IArchivesServices _archivesService;
 
-        public ReportsController(ILogger<ReportsController> logger, IUmfaReportService umfaReportService, IQueueService queueService) 
+        public ReportsController(ILogger<ReportsController> logger, IUmfaReportService umfaReportService, IQueueService queueService, IArchivesServices archivesServices) 
         {
             _logger = logger;
             _umfaReportService = umfaReportService;
             _queueService = queueService;
+            _archivesService = archivesServices;
         }
 
         [HttpGet("UtilityRecoveryReport")]
@@ -61,16 +63,38 @@ namespace ClientPortal.Controllers
         [HttpPost("Archives")]
         public async Task<IActionResult> ArchiveReports([FromBody] List<ArchiveReportsRequest> request)
         {
+            if(!request.Any())
+            {
+                return BadRequest("Reports List is empty");
+            }
+
+            int? headerId = null;
             try
             {
-                var message = JsonSerializer.Serialize(request);
-                await _queueService.AddMessageToQueueAsync(message);
-                return Accepted();
+                headerId = await _archivesService.CreateArhiveRequestEntriesAsync(request);
+            }
+            catch(Exception e) 
+            {
+                _logger.LogError(e, "Error while adding archives to db");
+                return Problem("Could not add reports to database");
+            }
+
+            try
+            {
+                if(headerId is not null)
+                {
+                    await _queueService.AddMessageToQueueAsync(headerId.ToString());
+                    return Accepted();
+                }
+                else
+                {
+                    return Problem("Something went wrong");
+                }
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Could not archive reports");
-                return Problem(e.Message);
+                _logger.LogError(e, "Could queue archive reports");
+                return Problem("Could not add reports to queue");
             }
         }
 

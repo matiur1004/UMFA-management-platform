@@ -72,6 +72,8 @@ namespace ClientPortal.Data
         public DbSet<UserAMRMeterActiveNotification> UserAMRMeterActiveNotifications { get; set; }
         public DbSet<AMRMeterTriggeredAlarm> AMRMeterTriggeredAlarms { get; set; }
         public DbSet<TriggeredAlarmNotification> TriggeredAlarmNotifications { get; set; }
+        public DbSet<ArchiveRequestHeader> ArchiveRequestHeaders { get; set; }
+        public DbSet<ArchiveRequestDetail> ArchiveRequestDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -130,6 +132,8 @@ namespace ClientPortal.Data
             modelBuilder.Entity<TOUDayOfWeekDayType>().HasOne(dt => dt.TOUHeader).WithMany(r => r.TOUDayOfWeekDayTypes).OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<AMRMeterTriggeredAlarm>().HasOne(at => at.AMRMeterAlarm).WithMany(a => a.AMRMeterTriggeredAlarms).OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<ArchiveRequestHeader>().HasMany(h => h.ArchiveRequestDetails).WithOne(d => d.ArchiveRequestHeader).HasForeignKey(d => d.ArchiveRequestId).OnDelete(DeleteBehavior.Restrict);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
