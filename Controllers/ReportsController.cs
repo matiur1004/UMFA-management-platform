@@ -111,7 +111,7 @@ namespace ClientPortal.Controllers
                     return Problem("Something went wrong");
                 }
 
-                return archives;
+                return archives.OrderByDescending(a => a.CreatedDateTime).ToList();
             }
             catch(Exception e)
             {
