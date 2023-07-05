@@ -1,4 +1,5 @@
 ﻿using ClientPortal.Controllers.Authorization;
+using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 using ClientPortal.Services;
@@ -15,9 +16,9 @@ namespace ClientPortal.Controllers
         private readonly ILogger<ReportsController> _logger;
         private readonly IUmfaReportService _umfaReportService;
         private readonly IQueueService _queueService;
-        private readonly IArchivesServices _archivesService;
+        private readonly IArchivesService _archivesService;
 
-        public ReportsController(ILogger<ReportsController> logger, IUmfaReportService umfaReportService, IQueueService queueService, IArchivesServices archivesServices) 
+        public ReportsController(ILogger<ReportsController> logger, IUmfaReportService umfaReportService, IQueueService queueService, IArchivesService archivesServices) 
         {
             _logger = logger;
             _umfaReportService = umfaReportService;
@@ -98,5 +99,25 @@ namespace ClientPortal.Controllers
             }
         }
 
+        [HttpGet("Archives")]
+        public async Task<ActionResult<List<ArchivedReport>>> GetArchiveReports([FromQuery] GetArchivedReportsRequest request)
+        {
+            try
+            {
+                var archives = await _archivesService.GetArchivedReportsForUserAsync((int)request.UserId!);
+
+                if (archives == null)
+                {
+                    return Problem("Something went wrong");
+                }
+
+                return archives;
+            }
+            catch(Exception e)
+            {
+                _logger.LogError(e, "Could not retrieve archived reports");
+                return Problem(e.Message);
+            }
+        }
     }
 }
