@@ -1,6 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { DXReportService } from '@shared/services';
+import { DxDataGridComponent } from 'devextreme-angular';
+import { Workbook } from 'exceljs';
 import { Subject, takeUntil } from 'rxjs';
+import saveAs from 'file-saver';
+import { exportDataGrid as exportDataGridToExcel } from 'devextreme/excel_exporter';
+import { exportDataGrid as exportDataGridToPdf } from 'devextreme/pdf_exporter';
+import { jsPDF } from 'jspdf';
 
 @Component({
   selector: 'report-result-consumption-recon',
@@ -18,6 +24,16 @@ export class ReportResultConsumptionReconComponent implements OnInit {
   otherBulkMetersDataSource: any;
   otherSummariesDataSource: any;
 
+  headerInfo: any;
+
+  @ViewChild('electricityRecoveryDataGrid') electricityRecoveryDataGrid: DxDataGridComponent;
+  @ViewChild('electricityBulkMeterDataGrid') electricityBulkMeterDataGrid: DxDataGridComponent;
+  @ViewChild('electricitySummariesDataGrid') electricitySummariesDataGrid: DxDataGridComponent;
+  
+  @ViewChildren('otherRecoveryDataGrid') otherRecoveryDataGrid: QueryList<DxDataGridComponent>;
+  @ViewChildren('otherBulkMeterDataGrid') otherBulkMeterDataGrid: QueryList<DxDataGridComponent>;
+  @ViewChildren('otherSummariesDataGrid') otherSummariesDataGrid: QueryList<DxDataGridComponent>;
+
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   constructor(
     private reportService: DXReportService
@@ -29,6 +45,7 @@ export class ReportResultConsumptionReconComponent implements OnInit {
       .subscribe((data: any) => {
         if(data) {
           console.log(data);
+          this.headerInfo = data['ReportHeader'];  //DisplayName , PeriodInfo
           // Electricity Recoveries Report
           this.electricityRecoveriesDataSource = data['ElectricityRecoveries'].map(item => {
             let result = {
@@ -266,6 +283,258 @@ export class ReportResultConsumptionReconComponent implements OnInit {
     if (event.rowType === "data") {
       if(event.columnIndex == 0) event.cellElement.style.fontWeight = 'bold';
     }
+  }
+
+  onExport(type) {
+    if(type == 'csv') this.onExportCSV();
+    else this.onExportPdf();
+  }
+
+  onExportPdf() {
+    const pdfDoc = new jsPDF('landscape', 'px', [800, 768]);
+    var logoUrl = '/assets/images/logo/logo.png';
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', logoUrl, true);
+    xhr.responseType = 'blob';
+
+    var headerInfo = this.headerInfo;
+    var _this = this;
+    xhr.onload = function (e) {
+      if (this.status === 200) {
+        var blob = this.response;
+
+        // Create a new Image element
+        var img = new Image();
+
+        img.onload = async function () {
+          pdfDoc.addImage(img, 'PNG', 10, 20, 150, 70);
+
+          pdfDoc.setTextColor(0, 0, 0);
+          pdfDoc.setFontSize(16);
+          pdfDoc.text(headerInfo['DisplayName'], 260, 40);
+
+          pdfDoc.setFontSize(14);
+          pdfDoc.text(headerInfo['PeriodInfo'], 300, 60);
+
+          const lastPoint = { x: 0, y: 0 };
+          await exportDataGridToPdf({
+            jsPDFDocument: pdfDoc,
+            topLeft: { x: 10, y: 100 },
+            component: _this.electricityRecoveryDataGrid.instance,
+            customizeCell({ gridCell, pdfCell }) {
+            },
+            customDrawCell({ rect }) {
+              lastPoint.y = rect.y + rect.h;
+            }
+          })
+
+          await exportDataGridToPdf({
+            jsPDFDocument: pdfDoc,
+            topLeft: { x: 10, y: lastPoint.y + 10 },
+            component: _this.electricityBulkMeterDataGrid.instance,
+            customizeCell({ gridCell, pdfCell }) {
+            },
+            customDrawCell({ rect }) {
+              lastPoint.y = rect.y + rect.h;
+            }
+          })
+
+          await exportDataGridToPdf({
+            jsPDFDocument: pdfDoc,
+            topLeft: { x: 10, y: lastPoint.y + 10 },
+            component: _this.electricitySummariesDataGrid.instance,
+            customizeCell({ gridCell, pdfCell }) {
+            },
+            customDrawCell({ rect }) {
+              lastPoint.y = rect.y + rect.h;
+            }
+          })
+          
+          console.log(lastPoint);
+          Promise.all(
+            _this.otherDataSource.map(async (other, index) => {
+              pdfDoc.addPage();
+
+              pdfDoc.addImage(img, 'PNG', 10, 20, 150, 70);
+
+              pdfDoc.setTextColor(0, 0, 0);
+              pdfDoc.setFontSize(16);
+              pdfDoc.text(headerInfo['DisplayName'], 260, 40);
+
+              pdfDoc.setFontSize(14);
+              pdfDoc.text(headerInfo['PeriodInfo'], 300, 60);
+
+            })
+          ).then(() => {
+            pdfDoc.setPage(2);
+            Promise.all(
+            _this.otherDataSource.map(async (other, index) => {
+              await exportDataGridToPdf({
+                jsPDFDocument: pdfDoc,
+                topLeft: { x: 10, y: 100 },
+                component: _this.otherRecoveryDataGrid.get(index).instance,
+                customizeCell({ gridCell, pdfCell }) {
+                },
+                customDrawCell({ rect }) {
+                  lastPoint.y = rect.y + rect.h;
+                }
+              })
+              pdfDoc.setPage(index + 3);
+            })).then(() => {
+              pdfDoc.save('Consumption Summary Recon Report.pdf');
+            })
+            
+          })
+
+        };
+        img.src = URL.createObjectURL(blob);
+      }
+    };
+    xhr.send();
+  }
+
+  onExportCSV() {
+    const workbook = new Workbook();
+    const worksheet = workbook.addWorksheet('Electricity', {views: [{showGridLines: false}]});
+
+    worksheet.mergeCells('A1:B4');
+
+    var logoUrl = '/assets/images/logo/logo.png';
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', logoUrl, true);
+    xhr.responseType = 'blob';
+
+    var headerInfo = this.headerInfo;
+    var _this = this;
+    xhr.onload = function (e) {
+      if (this.status === 200) {
+        var blob = this.response;
+
+        // Create a new Image element
+        var img = new Image();
+
+        img.onload = async function () {
+          const image = workbook.addImage({
+            buffer: blob.arrayBuffer(),
+            extension: "png",
+            
+          });
+          worksheet.addImage(image, {
+            tl: { col: 0, row: 0 },
+            ext: { width: 200, height: 100 },
+          });
+          
+          worksheet.mergeCells('C2:L2');
+          worksheet.mergeCells('C3:L3');
+          worksheet.getCell('C2').value = headerInfo['DisplayName'];
+          worksheet.getCell('C2:L2').font = {bold: true, size: 16};
+          worksheet.getCell('C2').alignment  = {vertical: 'middle', horizontal: 'center'};
+
+          worksheet.getCell('C3').value = headerInfo['PeriodInfo'];
+          worksheet.getCell('C3:L3').font = {bold: true, size: 14};
+          worksheet.getCell('C3').alignment  = {vertical: 'middle', horizontal: 'center'};
+
+          worksheet.mergeCells('A7:E7');
+          worksheet.getCell(`A7`).value = 'Electricity Monthly Recovery statistics Excl VAT.';
+          worksheet.getCell(`A7`).font = {bold: true, size: 13};
+          let cellRange = await exportDataGridToExcel({
+            component: _this.electricityRecoveryDataGrid.instance,
+            worksheet,
+            topLeftCell: { row: 9, column: 1 },
+            autoFilterEnabled: false,
+            customizeCell({ gridCell, excelCell }) {
+            }
+          })
+
+          let footerRowIndex = cellRange.to.row;
+          worksheet.mergeCells(`A${footerRowIndex + 2}:D${footerRowIndex + 2}`);
+          worksheet.getCell(`A${footerRowIndex + 2}`).value = 'Electricity Bulk Meter';
+          worksheet.getCell(`A${footerRowIndex + 2}`).font = {bold: true, size: 13};
+
+          cellRange = await exportDataGridToExcel({
+            component: _this.electricityBulkMeterDataGrid.instance,
+            worksheet,
+            topLeftCell: { row: footerRowIndex + 4, column: 1 },
+            autoFilterEnabled: false,
+            customizeCell({ gridCell, excelCell }) {
+            }
+          })
+
+          footerRowIndex = cellRange.to.row;
+          await exportDataGridToExcel({
+            component: _this.electricitySummariesDataGrid.instance,
+            worksheet,
+            topLeftCell: { row: footerRowIndex + 2, column: 1 },
+            autoFilterEnabled: false,
+            customizeCell({ gridCell, excelCell }) {
+            }
+          })
+
+          await Promise.all(
+            _this.otherDataSource.map(async (other, index) => {
+              let otherWorksheet = workbook.addWorksheet(`Other (${other.ServiceName})`, {views: [{showGridLines: false}]});
+
+              otherWorksheet.addImage(image, {
+                tl: { col: 0, row: 0 },
+                ext: { width: 200, height: 100 },
+              });
+              
+              otherWorksheet.mergeCells('C2:L2');
+              otherWorksheet.mergeCells('C3:L3');
+              otherWorksheet.getCell('C2').value = headerInfo['DisplayName'];
+              otherWorksheet.getCell('C2:L2').font = {bold: true, size: 16};
+              otherWorksheet.getCell('C2').alignment  = {vertical: 'middle', horizontal: 'center'};
+
+              otherWorksheet.getCell('C3').value = headerInfo['PeriodInfo'];
+              otherWorksheet.getCell('C3:L3').font = {bold: true, size: 14};
+              otherWorksheet.getCell('C3').alignment  = {vertical: 'middle', horizontal: 'center'};
+
+              otherWorksheet.mergeCells('A7:E7');
+              otherWorksheet.getCell(`A7`).value = `${other.ServiceName} Monthly Recovery statistics Excl VAT.`;
+              otherWorksheet.getCell(`A7`).font = {bold: true, size: 13};
+
+              let otherCellRange = await exportDataGridToExcel({
+                component: _this.otherRecoveryDataGrid.get(index).instance,
+                worksheet: otherWorksheet,
+                topLeftCell: { row: 9, column: 1 },
+                autoFilterEnabled: false,
+                customizeCell({ gridCell, excelCell }) {
+                }
+              })
+
+              let footerRowIndex = otherCellRange.to.row;
+              otherWorksheet.mergeCells(`A${footerRowIndex + 2}:D${footerRowIndex + 2}`);
+              otherWorksheet.getCell(`A${footerRowIndex + 2}`).value = `${other.ServiceName} Bulk Meter`;
+              otherWorksheet.getCell(`A${footerRowIndex + 2}`).font = {bold: true, size: 13};
+
+              otherCellRange = await exportDataGridToExcel({
+                component: _this.otherBulkMeterDataGrid.get(index).instance,
+                worksheet: otherWorksheet,
+                topLeftCell: { row: footerRowIndex + 4, column: 1 },
+                autoFilterEnabled: false,
+                customizeCell({ gridCell, excelCell }) {
+                }
+              })
+
+              footerRowIndex = otherCellRange.to.row;
+              await exportDataGridToExcel({
+                component: _this.otherSummariesDataGrid.get(index).instance,
+                worksheet: otherWorksheet,
+                topLeftCell: { row: footerRowIndex + 2, column: 1 },
+                autoFilterEnabled: false,
+                customizeCell({ gridCell, excelCell }) {
+                }
+              })
+            })
+          )
+          workbook.xlsx.writeBuffer().then((buffer) => {
+            saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'Consumption Summary Recon Report.xlsx');
+          });
+        }
+        img.src = URL.createObjectURL(blob);
+      }
+    };
+    xhr.send();
   }
 
   ngOnDestroy(): void {

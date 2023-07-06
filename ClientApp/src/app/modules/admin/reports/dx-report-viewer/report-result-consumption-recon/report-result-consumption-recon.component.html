@@ -1,8 +1,18 @@
 <div class="flex flex-col gap-y-2 relative">
-    <span class="text-lg font-semibold mt-2 px-2" *ngIf="electricityRecoveriesDataSource">Electricity Monthly Recovery statistics Excl VAT.</span>
+    <div class="flex justify-between w-full mt-2 px-2 items-center" *ngIf="electricityRecoveriesDataSource">
+        <span class="text-lg font-semibold" >Electricity Monthly Recovery statistics Excl VAT.</span>
+        <button mat-raised-button [color]="'primary'" [matMenuTriggerFor]="menu" type="button" class="dnm-btn dnm-btn-primary">
+           Export
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="onExport('csv')">Excel</button>
+            <button mat-menu-item (click)="onExport('pdf')">PDF</button>
+        </mat-menu>
+    </div>
+    
     <div class="flex w-full p-2" *ngIf="electricityRecoveriesDataSource">
         <dx-data-grid
-            #totalDataGrid
+            #electricityRecoveryDataGrid
             [dataSource]="electricityRecoveriesDataSource"
             [showBorders]="true"
             [remoteOperations]="true"
@@ -36,7 +46,7 @@
     </div>
     <div class="flex w-full p-2" *ngIf="electricityBulkMetersDataSource">
         <dx-data-grid
-            #totalDataGrid
+            #electricityBulkMeterDataGrid
             [dataSource]="electricityBulkMetersDataSource"
             [showBorders]="true"
             [remoteOperations]="true"
@@ -70,7 +80,7 @@
     </div>
     <div class="flex w-full p-2 mt-2" *ngIf="electricitySummariesDataSource">
         <dx-data-grid
-            #totalDataGrid
+            #electricitySummariesDataGrid
             class="summaryReport"
             [dataSource]="electricitySummariesDataSource"
             [showBorders]="true"
@@ -108,7 +118,7 @@
             <span class="text-lg font-semibold mt-2 px-2">{{item.ServiceName}} Monthly Recovery statistics Excl VAT.</span>
             <div class="flex w-full p-2" *ngIf="item.otherRecoveriesDataSource">
                 <dx-data-grid
-                    #totalDataGrid
+                    #otherRecoveryDataGrid
                     [dataSource]="item.otherRecoveriesDataSource"
                     [showBorders]="true"
                     [remoteOperations]="true"
@@ -139,7 +149,7 @@
             </div>
             <div class="flex w-full p-2" *ngIf="item.otherBulkMetersDataSource">
                 <dx-data-grid
-                    #totalDataGrid
+                    #otherBulkMeterDataGrid
                     [dataSource]="item.otherBulkMetersDataSource"
                     [showBorders]="true"
                     [remoteOperations]="true"
@@ -170,6 +180,7 @@
             </div>
             <div class="flex w-full p-2 mt-2" *ngIf="item.otherSummariesDataSource">
                 <dx-data-grid
+                    #otherSummariesDataGrid
                     class="summaryReport"
                     [dataSource]="item.otherSummariesDataSource"
                     [showBorders]="true"
