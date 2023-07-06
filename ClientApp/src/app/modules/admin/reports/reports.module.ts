@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -88,6 +88,7 @@ import { MatIconModule } from '@angular/material/icon';
     DxReportViewerModule
   ],
   providers: [
+    DecimalPipe
   ]
 })
 export class ReportsModule { }

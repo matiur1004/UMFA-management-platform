@@ -466,7 +466,7 @@ export class DXReportService {
     }
 
     setConsumptionSummaryRecon(data) {
-        this._consumptionSummary.next(data);
+        this._consumptionSummaryRecon.next(data);
     }
     
     catchErrors(error: { error: { message: any; }; message: any; }): Observable<Response> {

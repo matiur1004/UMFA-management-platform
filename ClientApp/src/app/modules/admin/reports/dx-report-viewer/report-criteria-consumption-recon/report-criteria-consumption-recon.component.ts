@@ -55,13 +55,11 @@ export class ReportCriteriaConsumptionReconComponent implements OnInit {
       this.reportService.selectPartner(this.form.get('PartnerId').value);
       this.form.get('BuildingId').setValue(null);
       this.form.get('PeriodId').setValue(0);
-      //this.reportService.loadPeriods(this.form.get('BuildingId').value);
-      this.reportService.setConsumptionSummaryRecon(null);
     } else if(method == 'Building') {
       this.reportService.loadPeriods(this.form.get('BuildingId').value);
       this.form.get('PeriodId').setValue(null);
-      this.reportService.setConsumptionSummaryRecon(null);
     }
+    this.reportService.setConsumptionSummaryRecon(null);
     this.setCriteria();
   }
 

@@ -7,6 +7,7 @@ import saveAs from 'file-saver';
 import { exportDataGrid as exportDataGridToExcel } from 'devextreme/excel_exporter';
 import { exportDataGrid as exportDataGridToPdf } from 'devextreme/pdf_exporter';
 import { jsPDF } from 'jspdf';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'report-result-consumption-recon',
@@ -36,7 +37,8 @@ export class ReportResultConsumptionReconComponent implements OnInit {
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   constructor(
-    private reportService: DXReportService
+    private reportService: DXReportService,
+    private _decimalPipe: DecimalPipe
   ) { }
 
   ngOnInit(): void {
@@ -44,7 +46,6 @@ export class ReportResultConsumptionReconComponent implements OnInit {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: any) => {
         if(data) {
-          console.log(data);
           this.headerInfo = data['ReportHeader'];  //DisplayName , PeriodInfo
           // Electricity Recoveries Report
           this.electricityRecoveriesDataSource = data['ElectricityRecoveries'].map(item => {
@@ -99,7 +100,7 @@ export class ReportResultConsumptionReconComponent implements OnInit {
               KWHUnits: item['KWHUsage'],
               KWHRC: item['KWHAmount'],
               kVAUnits: item['KVAUsage'],
-              KVARC: item['KVAAmount'],
+              KVARC: item['KVAAMOUNT'],
               BasicRC: item['BCAmount'],
               OtherRC: item['OtherAmount'],
               TotalRC: item['TotalAmount']
@@ -113,10 +114,10 @@ export class ReportResultConsumptionReconComponent implements OnInit {
             KWHUnits: this.getTotal('KWHUsage', data['ElectricityBulkMeters']),
             KWHRC: this.getTotal('KWHAmount', data['ElectricityBulkMeters']),
             kVAUnits: this.getTotal('KVAUsage', data['ElectricityBulkMeters']),
-            KVARC: this.getTotal('KVAAmount', data['ElectricityBulkMeters']),
+            KVARC: this.getTotal('KVAAMOUNT', data['ElectricityBulkMeters']),
             BasicRC: this.getTotal('BCAmount', data['ElectricityBulkMeters']),
             OtherRC: this.getTotal('OtherAmount', data['ElectricityBulkMeters']),
-            TotalRC: this.getTotal('TotalAmt', data['ElectricityBulkMeters']),
+            TotalRC: this.getTotal('TotalAmount', data['ElectricityBulkMeters']),
           })
 
           // Electricity Summaries Report
@@ -267,6 +268,11 @@ export class ReportResultConsumptionReconComponent implements OnInit {
             })
             this.otherDataSource.push(report);
           })
+        } else {
+          this.otherDataSource = null;
+          this.electricityRecoveriesDataSource = null;
+          this.electricityBulkMetersDataSource = null;
+          this.electricitySummariesDataSource = null;
         }
       });
   }
@@ -316,23 +322,44 @@ export class ReportResultConsumptionReconComponent implements OnInit {
           pdfDoc.setFontSize(14);
           pdfDoc.text(headerInfo['PeriodInfo'], 300, 60);
 
+          pdfDoc.setFontSize(13);
+          pdfDoc.text('Electricity Monthly Recovery statistics Excl VAT.', 40, 120);
           const lastPoint = { x: 0, y: 0 };
           await exportDataGridToPdf({
             jsPDFDocument: pdfDoc,
             topLeft: { x: 10, y: 100 },
             component: _this.electricityRecoveryDataGrid.instance,
             customizeCell({ gridCell, pdfCell }) {
+              if(gridCell.rowType == 'data') {
+                pdfCell.font.style = 'normal';
+                if(gridCell.column['index'] == 0) {
+                  pdfCell.font.style = 'bold';
+                }
+                if(['KWHRC', 'KVARC', 'BasicRC', 'OtherRC', 'TotalRC'].indexOf(gridCell.column.dataField) > -1) 
+                  pdfCell.text = `R ${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+                if(['KWHUnits', 'kVAUnits'].indexOf(gridCell.column.dataField) > -1) 
+                  pdfCell.text = `${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+              }   
             },
             customDrawCell({ rect }) {
               lastPoint.y = rect.y + rect.h;
             }
           })
 
+          pdfDoc.setFontSize(13);
+          pdfDoc.text('Electricity Bulk Meter', 40, lastPoint.y + 20);
           await exportDataGridToPdf({
             jsPDFDocument: pdfDoc,
-            topLeft: { x: 10, y: lastPoint.y + 10 },
+            topLeft: { x: 10, y: lastPoint.y + 5 },
             component: _this.electricityBulkMeterDataGrid.instance,
             customizeCell({ gridCell, pdfCell }) {
+              pdfCell.font.style = 'normal';
+              if(gridCell.rowType == 'data') {
+                if(['KWHRC', 'KVARC', 'BasicRC', 'OtherRC', 'TotalRC'].indexOf(gridCell.column.dataField) > -1) 
+                  pdfCell.text = `R ${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+                if(['KWHUnits', 'kVAUnits'].indexOf(gridCell.column.dataField) > -1) 
+                  pdfCell.text = `${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+              }
             },
             customDrawCell({ rect }) {
               lastPoint.y = rect.y + rect.h;
@@ -341,16 +368,22 @@ export class ReportResultConsumptionReconComponent implements OnInit {
 
           await exportDataGridToPdf({
             jsPDFDocument: pdfDoc,
-            topLeft: { x: 10, y: lastPoint.y + 10 },
+            topLeft: { x: 10, y: lastPoint.y + 5 },
             component: _this.electricitySummariesDataGrid.instance,
             customizeCell({ gridCell, pdfCell }) {
+              pdfCell.font.style = 'bold';
+              if(gridCell.rowType == 'data') {
+                if(['KWHRC', 'KVARC', 'BasicRC', 'OtherRC', 'TotalRC'].indexOf(gridCell.column.dataField) > -1) 
+                  pdfCell.text = `R ${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+                if(['KWHUnits', 'kVAUnits'].indexOf(gridCell.column.dataField) > -1) 
+                  pdfCell.text = `${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+              }          
             },
             customDrawCell({ rect }) {
               lastPoint.y = rect.y + rect.h;
             }
           })
           
-          console.log(lastPoint);
           Promise.all(
             _this.otherDataSource.map(async (other, index) => {
               pdfDoc.addPage();
@@ -364,26 +397,99 @@ export class ReportResultConsumptionReconComponent implements OnInit {
               pdfDoc.setFontSize(14);
               pdfDoc.text(headerInfo['PeriodInfo'], 300, 60);
 
+              pdfDoc.setFontSize(13);
+              pdfDoc.text(`${other.ServiceName} Monthly Recovery statistics Excl VAT.`, 40, 120);
             })
-          ).then(() => {
+          ).then(async () => {
             pdfDoc.setPage(2);
-            Promise.all(
+            let lastPointArray = [];
+            await Promise.all(
             _this.otherDataSource.map(async (other, index) => {
+              let lastPointY;
               await exportDataGridToPdf({
                 jsPDFDocument: pdfDoc,
                 topLeft: { x: 10, y: 100 },
                 component: _this.otherRecoveryDataGrid.get(index).instance,
                 customizeCell({ gridCell, pdfCell }) {
+                  pdfCell.font.style = 'normal';
+                  if(gridCell.rowType == 'data') {
+                    if(['Amount', 'BCAmount', 'TotalRC'].indexOf(gridCell.column.dataField) > -1) 
+                      pdfCell.text = `R ${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+                    if(['Usage'].indexOf(gridCell.column.dataField) > -1) 
+                      pdfCell.text = `${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+                  }
                 },
                 customDrawCell({ rect }) {
-                  lastPoint.y = rect.y + rect.h;
+                  lastPointY = rect.y + rect.h;
                 }
               })
+              
+              lastPointArray.push(lastPointY)
               pdfDoc.setPage(index + 3);
-            })).then(() => {
-              pdfDoc.save('Consumption Summary Recon Report.pdf');
-            })
-            
+            }));
+
+            pdfDoc.setPage(2);
+
+            await Promise.all(
+              _this.otherDataSource.map(async (other, index) => {
+                pdfDoc.text(`${other.ServiceName} Bulk Meter`, 40, lastPointArray[index] + 20);
+                pdfDoc.setPage(index + 3);
+              })
+            );
+
+            pdfDoc.setPage(2);
+            await Promise.all(
+              _this.otherDataSource.map(async (other, index) => {
+                let prevY = lastPointArray[index];
+                await exportDataGridToPdf({
+                  jsPDFDocument: pdfDoc,
+                  topLeft: { x: 10, y: prevY + 5 },
+                  component: _this.otherBulkMeterDataGrid.get(index).instance,
+                  customizeCell({ gridCell, pdfCell }) {
+                    pdfCell.font.style = 'normal';
+                    if(gridCell.rowType == 'data') {
+                      if(['Amount', 'BCAmount', 'TotalRC'].indexOf(gridCell.column.dataField) > -1) 
+                        pdfCell.text = `R ${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+                      if(['Usage'].indexOf(gridCell.column.dataField) > -1) 
+                        pdfCell.text = `${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+                    }
+                  },
+                  customDrawCell({ rect }) {
+                    lastPointArray[index] = rect.y + rect.h;
+                  }
+                })
+                
+                pdfDoc.setPage(index + 3);
+              })
+            );
+
+            pdfDoc.setPage(2);
+            await Promise.all(
+              _this.otherDataSource.map(async (other, index) => {
+                let prevY = lastPointArray[index];
+                await exportDataGridToPdf({
+                  jsPDFDocument: pdfDoc,
+                  topLeft: { x: 10, y: prevY + 5 },
+                  component: _this.otherSummariesDataGrid.get(index).instance,
+                  customizeCell({ gridCell, pdfCell }) {
+                    pdfCell.font.style = 'bold';
+                    if(gridCell.rowType == 'data') {
+                      if(['Amount', 'BCAmount', 'TotalRC'].indexOf(gridCell.column.dataField) > -1) 
+                        pdfCell.text = `R ${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+                      if(['Usage'].indexOf(gridCell.column.dataField) > -1) 
+                        pdfCell.text = `${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+                    }
+                  },
+                  customDrawCell({ rect }) {
+                    lastPointArray[index] = rect.y + rect.h;
+                  }
+                })
+                
+                pdfDoc.setPage(index + 3);
+              })
+            );
+
+            pdfDoc.save('Consumption Summary Recon Report.pdf');
           })
 
         };
@@ -443,6 +549,18 @@ export class ReportResultConsumptionReconComponent implements OnInit {
             topLeftCell: { row: 9, column: 1 },
             autoFilterEnabled: false,
             customizeCell({ gridCell, excelCell }) {
+              if(gridCell.rowType == 'data') {
+                if(gridCell.column['index'] == 0) {
+                  excelCell.font = {
+                    bold: true
+                  };
+                }
+                if(['KWHRC', 'KVARC', 'BasicRC', 'OtherRC', 'TotalRC'].indexOf(gridCell.column.dataField) > -1) 
+                  excelCell.value = `R ${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+                if(['KWHUnits', 'kVAUnits'].indexOf(gridCell.column.dataField) > -1) 
+                  excelCell.value = `${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+              }
+              
             }
           })
 
@@ -457,6 +575,12 @@ export class ReportResultConsumptionReconComponent implements OnInit {
             topLeftCell: { row: footerRowIndex + 4, column: 1 },
             autoFilterEnabled: false,
             customizeCell({ gridCell, excelCell }) {
+              if(gridCell.rowType == 'data') {
+                if(['KWHRC', 'KVARC', 'BasicRC', 'OtherRC', 'TotalRC'].indexOf(gridCell.column.dataField) > -1) 
+                  excelCell.value = `R ${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+                if(['KWHUnits', 'kVAUnits'].indexOf(gridCell.column.dataField) > -1) 
+                  excelCell.value = `${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+              }              
             }
           })
 
@@ -467,6 +591,15 @@ export class ReportResultConsumptionReconComponent implements OnInit {
             topLeftCell: { row: footerRowIndex + 2, column: 1 },
             autoFilterEnabled: false,
             customizeCell({ gridCell, excelCell }) {
+              excelCell.font = {
+                bold: true
+              };
+              if(gridCell.rowType == 'data') {
+                if(['KWHRC', 'KVARC', 'BasicRC', 'OtherRC', 'TotalRC'].indexOf(gridCell.column.dataField) > -1) 
+                  excelCell.value = `R ${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+                if(['KWHUnits', 'kVAUnits'].indexOf(gridCell.column.dataField) > -1) 
+                  excelCell.value = `${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+              }
             }
           })
 
@@ -499,6 +632,17 @@ export class ReportResultConsumptionReconComponent implements OnInit {
                 topLeftCell: { row: 9, column: 1 },
                 autoFilterEnabled: false,
                 customizeCell({ gridCell, excelCell }) {
+                  if(gridCell.rowType == 'data') {
+                    if(gridCell.column['index'] == 0) {
+                      excelCell.font = {
+                        bold: true
+                      };
+                    }
+                    if(['Amount', 'BCAmount', 'TotalRC'].indexOf(gridCell.column.dataField) > -1) 
+                        excelCell.value = `R ${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+                    if(['Usage'].indexOf(gridCell.column.dataField) > -1) 
+                      excelCell.value = `${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+                  }
                 }
               })
 
@@ -513,6 +657,12 @@ export class ReportResultConsumptionReconComponent implements OnInit {
                 topLeftCell: { row: footerRowIndex + 4, column: 1 },
                 autoFilterEnabled: false,
                 customizeCell({ gridCell, excelCell }) {
+                  if(gridCell.rowType == 'data') {
+                    if(['Amount', 'BCAmount', 'TotalRC'].indexOf(gridCell.column.dataField) > -1) 
+                      excelCell.value = `R ${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+                    if(['Usage'].indexOf(gridCell.column.dataField) > -1) 
+                      excelCell.value = `${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+                  }                
                 }
               })
 
@@ -523,6 +673,16 @@ export class ReportResultConsumptionReconComponent implements OnInit {
                 topLeftCell: { row: footerRowIndex + 2, column: 1 },
                 autoFilterEnabled: false,
                 customizeCell({ gridCell, excelCell }) {
+                  excelCell.font = {
+                    bold: true
+                  };
+                  if(gridCell.rowType == 'data') {
+                    if(['Amount', 'BCAmount', 'TotalRC'].indexOf(gridCell.column.dataField) > -1) 
+                      excelCell.value = `R ${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+                    if(['Usage'].indexOf(gridCell.column.dataField) > -1) 
+                      excelCell.value = `${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+                  }
+                  
                 }
               })
             })
