@@ -70,7 +70,6 @@ export class ReportResultConsumptionComponent implements OnInit {
     const image = workbook.addImage({
       base64: `data:image/png;base64,${this.headerInfo['CustomLogo']}`,
       extension: "png",
-      
     });
     worksheet.addImage(image, {
       tl: { col: 0, row: 0 },

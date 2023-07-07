@@ -52,3 +52,9 @@ export interface IDXReport {
     Sort: string,
     Shops: number[]
   }
+
+  export interface IConsumptionSummaryReconReportParams {
+    PartnerId: number,
+    BuildingId: number,
+    PeriodId: number,
+  }

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -25,6 +25,7 @@ import { AmrGraphSelectionComponent } from './amr-charts/amr-graph-selection/amr
 import { AmrGraphCriteriaComponent } from './amr-charts/amr-graph-criteria/amr-graph-criteria.component';
 import { AmrGraphResultComponent } from './amr-charts/amr-graph-result/amr-graph-result.component';
 import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReportCriteriaShopComponent } from './dx-report-viewer/report-criteria-shop/report-criteria-shop.component';
@@ -36,6 +37,9 @@ import { ReportResultUtilityComponent } from './dx-report-viewer/report-result-u
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { ReportCriteriaConsumptionComponent } from './dx-report-viewer/report-criteria-consumption/report-criteria-consumption.component';
 import { ReportResultConsumptionComponent } from './dx-report-viewer/report-result-consumption/report-result-consumption.component';
+import { ReportCriteriaConsumptionReconComponent } from './dx-report-viewer/report-criteria-consumption-recon/report-criteria-consumption-recon.component';
+import { ReportResultConsumptionReconComponent } from './dx-report-viewer/report-result-consumption-recon/report-result-consumption-recon.component';
+import { MatIconModule } from '@angular/material/icon';
 @NgModule({
   declarations: [
     DxReportViewerComponent,
@@ -52,7 +56,9 @@ import { ReportResultConsumptionComponent } from './dx-report-viewer/report-resu
     ReportCriteriaUtilityComponent,
     ReportResultUtilityComponent,
     ReportCriteriaConsumptionComponent,
-    ReportResultConsumptionComponent
+    ReportResultConsumptionComponent,
+    ReportCriteriaConsumptionReconComponent,
+    ReportResultConsumptionReconComponent
   ],
   imports: [
     CommonModule,
@@ -73,6 +79,8 @@ import { ReportResultConsumptionComponent } from './dx-report-viewer/report-resu
     MatButtonModule,
     NgSelectModule,
     MatFormFieldModule,
+    MatMenuModule,
+    MatIconModule,
     NgApexchartsModule
     // DxValidatorModule,
   ],
@@ -80,6 +88,7 @@ import { ReportResultConsumptionComponent } from './dx-report-viewer/report-resu
     DxReportViewerModule
   ],
   providers: [
+    DecimalPipe
   ]
 })
 export class ReportsModule { }

@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, catchError, of, tap, throwError } from "rxjs";
-import { IBuildingRecoveryParams, IConsumptionSummaryReportParams, IDXReport, IShopCostVarianceParams, IShopUsageVarianceParams, IUmfaBuilding, IUmfaPartner, IUmfaPeriod, IUtilityReportParams } from "../../core/models";
+import { IBuildingRecoveryParams, IConsumptionSummaryReconReportParams, IConsumptionSummaryReportParams, IDXReport, IShopCostVarianceParams, IShopUsageVarianceParams, IUmfaBuilding, IUmfaPartner, IUmfaPeriod, IUtilityReportParams } from "../../core/models";
 import { BuildingService } from "./building.service";
 import { CONFIG } from "@core/helpers";
 import { HttpClient } from "@angular/common/http";
@@ -12,7 +12,8 @@ export class DXReportService {
     private _shopUsageVariance: BehaviorSubject<any> = new BehaviorSubject(null);
     private _utilityRecoveryExpense: BehaviorSubject<any> = new BehaviorSubject(null);
     private _consumptionSummary: BehaviorSubject<any> = new BehaviorSubject(null);
-
+    private _consumptionSummaryRecon: BehaviorSubject<any> = new BehaviorSubject(null);
+    
     constructor(
         private buildingService: BuildingService,
         private http: HttpClient
@@ -49,6 +50,10 @@ export class DXReportService {
         return this._consumptionSummary.asObservable();
     }
 
+    get consumptionSummaryRecon$(): Observable<any> {
+        return this._consumptionSummaryRecon.asObservable();
+    }
+
     get reportChanged$(): Observable<boolean> {
         return this._reportChanged.asObservable();
     }
@@ -60,6 +65,7 @@ export class DXReportService {
     private dxReportList: IDXReport[] = [
         { Id: 1, Name: 'Building Recovery', Description: 'Building Recovery Report', DXReportName: 'BuildingRecovery' },
         { Id: 5, Name: 'Consumption Summary', Description: 'Consumption Summary Report', DXReportName: 'ConsumptionSummary' },
+        { Id: 6, Name: 'Consumption Summary Recon', Description: 'Consumption Summary Recon Report', DXReportName: 'ConsumptionSummaryRecon' },
         { Id: 3, Name: 'Shop Costs Variances', Description: 'Shop Costs Variances Report', DXReportName: 'ShopCostsVariances' },
         { Id: 2, Name: 'Shop Usage Variance', Description: 'Shop Usage Variance Report', DXReportName: 'ShopUsageVariance' },
         { Id: 4, Name: 'Utility Recovery and Expense', Description: 'Utility Recovery and Expense Report', DXReportName: 'UtilityRecoveryExpense' },
@@ -203,6 +209,7 @@ export class DXReportService {
     private SCVParams: IShopCostVarianceParams;
     private UREParams: IUtilityReportParams;
     private CSParams: IConsumptionSummaryReportParams;
+    private CSRParams: IConsumptionSummaryReconReportParams;
 
     get BuildingRecoveryParams(): IBuildingRecoveryParams {
         return this.BRParams;
@@ -304,7 +311,28 @@ export class DXReportService {
         }
     }
 
+    get ConsumptionSummaryReconReportParams(): IConsumptionSummaryReconReportParams {
+        return this.CSRParams;
+    }
 
+    set ConsumptionSummaryReconReportParams(value: IConsumptionSummaryReconReportParams) {
+        this.CSRParams = value;
+        if (this.selectedReport && this.selectedReport.Id != 0) {
+            // switch (this.selectedReport.Id) {
+            //     case 6: {
+            //         if (this.CSRParams)
+            //             this.sel
+            //             //this.selectedReport.DXReportName = `ShopUsageVariance?${this.CSRParams.BuildingId},${this.CSRParams.FromPeriodId},${this.SUVParams.ToPeriodId},${this.SUVParams.AllTenants}`;
+            //         break;
+            //     }
+            //     default: {
+            //         break;
+            //     }
+            // }
+        }
+    }
+    
+    
     get SelectedReportId(): number {
         return this.selectedReport ? this.selectedReport.Id : null;
     }
@@ -410,6 +438,17 @@ export class DXReportService {
             );
     }
 
+    getReportDataForConsumptionSummaryRecon() {
+        const url = `${CONFIG.apiURL}/Reports/ConsumptionSummaryReconReport?periodId=${this.CSRParams.PeriodId}`;
+        return this.http.get<any>(url, { withCredentials: true })
+            .pipe(
+                catchError(err => this.catchErrors(err)),
+                tap(m => {
+                    this._consumptionSummaryRecon.next(m);
+                }),
+            );
+    }
+
     setShopUsageVariance(data) {
         this._shopUsageVariance.next(data);
     }
@@ -426,6 +465,10 @@ export class DXReportService {
         this._consumptionSummary.next(data);
     }
 
+    setConsumptionSummaryRecon(data) {
+        this._consumptionSummaryRecon.next(data);
+    }
+    
     catchErrors(error: { error: { message: any; }; message: any; }): Observable<Response> {
         if (error && error.error && error.error.message) { //clientside error
             console.log(`Client side error: ${error.error.message}`);
