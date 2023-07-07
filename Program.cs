@@ -145,7 +145,7 @@ IConfiguration? configuration = builder.Configuration;
     services.AddScoped<IAMRMeterTriggeredAlarmService, AMRMeterTriggeredAlarmService>();
     services.AddScoped<IUmfaService, UmfaService>();
     services.AddSingleton<IQueueService, ArchivesQueueService>();
-    services.AddScoped<IArchivesServices, ArchivesServices>();
+    services.AddScoped<IArchivesService, ArchivesService>();
 
     //Data components
     services.AddScoped<IPortalStatsRepository, PortalStatsRepository>();
@@ -162,6 +162,7 @@ IConfiguration? configuration = builder.Configuration;
     services.AddScoped<IAMRMeterTriggeredAlarmRepository, AMRMeterTriggeredAlarmRepository>();
     services.AddScoped<IArchiveRequestDetailRepository, ArchiveRequestDetailRepository>();
     services.AddScoped<IArchiveRequestHeaderRepository, ArchiveRequestHeaderRepository>();
+    services.AddScoped<IArchivedReportsRepository, ArchivedReportsRepository>();
 }
 
 var app = builder.Build();

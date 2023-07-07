@@ -4,21 +4,25 @@ using ClientPortal.Models.RequestModels;
 
 namespace ClientPortal.Services
 {
-    public interface IArchivesServices
+    public interface IArchivesService
     {
         public Task<int> CreateArhiveRequestEntriesAsync(List<ArchiveReportsRequest> reports);
+        public Task<List<ArchivedReport>> GetArchivedReportsForUserAsync(int umfaUserId);
     }
-    public class ArchivesServices : IArchivesServices
+    public class ArchivesService : IArchivesService
     {
-        private readonly ILogger<ArchivesServices> _logger;
+        private readonly ILogger<ArchivesService> _logger;
         private readonly IArchiveRequestDetailRepository _archiveRequestDetailRepository;
         private readonly IArchiveRequestHeaderRepository _archiveRequestHeaderRepository;
-
-        public ArchivesServices(ILogger<ArchivesServices> logger, IArchiveRequestDetailRepository archiveRequestDetailRepository, IArchiveRequestHeaderRepository archiveRequestHeaderRepository)
+        private readonly IArchivedReportsRepository _archivedReportsRepository;
+        private readonly IUMFABuildingRepository _umfaBuildingRepository;
+        public ArchivesService(ILogger<ArchivesService> logger, IArchiveRequestDetailRepository archiveRequestDetailRepository, IArchiveRequestHeaderRepository archiveRequestHeaderRepository, IArchivedReportsRepository archivedReportsRepository, IUMFABuildingRepository umfaBuildingRepository)
         {
             _logger = logger;
             _archiveRequestDetailRepository = archiveRequestDetailRepository;
             _archiveRequestHeaderRepository = archiveRequestHeaderRepository;
+            _archivedReportsRepository = archivedReportsRepository;
+            _umfaBuildingRepository = umfaBuildingRepository;
         }
 
         public async Task<int> CreateArhiveRequestEntriesAsync(List<ArchiveReportsRequest> reports)
@@ -45,6 +49,22 @@ namespace ClientPortal.Services
             }
 
             return header.ArchiveRequestId;
+        }
+        
+        public async Task<List<ArchivedReport>> GetArchivedReportsForUserAsync(int umfaUserId)
+        {
+            var buildingsResponse = await _umfaBuildingRepository.GetBuildings(umfaUserId);
+
+            if(buildingsResponse.UmfaBuildings is null)
+            {
+                return null;
+            }
+            else if(!buildingsResponse.UmfaBuildings.Any())
+            {
+                return new List<ArchivedReport>();
+            }
+
+            return await _archivedReportsRepository.GetArchivedReportsForBuildings(buildingsResponse.UmfaBuildings.Select(b => b.BuildingId).ToList());
         }
     }
 }
