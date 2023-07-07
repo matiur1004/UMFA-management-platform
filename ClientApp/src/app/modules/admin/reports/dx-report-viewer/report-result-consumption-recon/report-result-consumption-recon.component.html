@@ -9,7 +9,6 @@
             <button mat-menu-item (click)="onExport('pdf')">PDF</button>
         </mat-menu>
     </div>
-    
     <div class="flex w-full p-2" *ngIf="electricityRecoveriesDataSource">
         <dx-data-grid
             #electricityRecoveryDataGrid
@@ -44,6 +43,7 @@
             </div>
         </dx-data-grid>
     </div>
+    <span class="text-md font-semibold px-2" *ngIf="electricityRecoveriesDataSource">Electricity Bulk Meter</span>
     <div class="flex w-full p-2" *ngIf="electricityBulkMetersDataSource">
         <dx-data-grid
             #electricityBulkMeterDataGrid
@@ -147,7 +147,7 @@
                     </div>
                 </dx-data-grid>
             </div>
-            <span class="text-lg font-semibold mt-2 px-2">{{item.ServiceName}} Bulk Meter</span>
+            <span class="text-md font-semibold mt-2 px-2">{{item.ServiceName}} Bulk Meter</span>
             <div class="flex w-full p-2" *ngIf="item.otherBulkMetersDataSource">
                 <dx-data-grid
                     #otherBulkMeterDataGrid
