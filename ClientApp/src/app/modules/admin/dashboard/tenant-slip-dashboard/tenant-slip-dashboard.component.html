@@ -1,0 +1,67 @@
+<div class="flex flex-col items-center" *ngIf="tenantSlipData">
+    <div class="flex min-w-280 max-w-300 flex-col gap-y-2 p-2 bg-slate-300 rounded-3xl border-2 border-black">
+        <div class="flex w-full gap-x-2">
+            <div class="flex w-l px-8 py-4 bg-white border-black rounded-3xl border-2">
+                <img class="" src="data:image/png;base64,{{headerDetail.LogoCrystalImage}}" />
+            </div>
+            <div class="flex w-r flex-col items-center justify-between">
+                <div class="flex flex-col gap-y-1 text-xl items-center">
+                    <span class="font-bold">{{headerDetail.BusinessName}}</span>
+                    <div class="flex gap-x-1">
+                        <span>Registration No: {{headerDetail.CompRegNr}}</span>
+                    </div>
+                    <span>{{headerDetail.PostalAdd}}</span>
+                </div>
+                <div class="flex flex-col gap-y-1 text-xl items-center mb-4">
+                    <div class="flex gap-x-4">
+                        <span>Tel: {{headerDetail.TelNo}}</span>
+                        <span>Fax: {{headerDetail.FaxNo}}</span>
+                    </div>
+                    <div class="flex gap-x-4">
+                        <span>Email: {{headerDetail.Email}}</span>
+                        <span>Website: {{headerDetail.WebURL}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex gap-x-2">
+            <div class="flex w-l px-4 py-2 bg-white border-black rounded-3xl border-2 min-h-50">
+                <div class="flex flex-col text-xl justify-between">
+                    <span class="font-bold">CCI SA UMHLANGA PTY LTD</span>
+                    <span>Vat Reg:</span>
+                </div>
+            </div>
+            <div class="flex w-r p-2 bg-white border-black rounded-3xl border-2 min-h-50 text-xl">
+                <div class="flex flex-col gap-y-1 w-full">
+                    <div class="flex justify-between border-2 border-black rounded-md">
+                        <div class="flex items-center w-3/5">
+                            <div class="font-bold px-1 min-w-24 bg-slate-300 py-1 rounded-l-md border-r-2 border-black">Building</div>
+                            <span class="px-2">{{headerDetail.BuildingName}}</span>
+                        </div>
+                        <div class="flex items-center w-2/5">
+                            <div class="font-bold px-1 min-w-24 bg-slate-300 py-1 border-t-0 border-b-0 border-2 border-black">Acc No</div>
+                            <span class="px-2">NW010010</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between border-2 border-black rounded-md">
+                        <div class="flex items-center w-3/5">
+                            <div class="font-bold px-1 min-w-24 bg-slate-300 py-1 rounded-l-md border-r-2 border-black">Units</div>
+                            <span class="px-2">{{headerDetail.Units}}</span>
+                        </div>
+                        <div class="flex items-center w-2/5">
+                            <div class="font-bold px-1 min-w-24 bg-slate-300 py-1 border-t-0 border-b-0 border-2 border-black">Area</div>
+                            <span class="px-2">{{headerDetail.Area}}</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between border-2 border-black rounded-md h-full">
+                        <div class="flex">
+                            <div class="font-bold px-1 min-w-24 bg-slate-300 py-1 rounded-tl-md border-b-2 border-r-2 border-black h-fit">Notes</div>
+                            <span class="px-2"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
