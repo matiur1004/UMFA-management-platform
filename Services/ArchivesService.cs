@@ -8,6 +8,9 @@ namespace ClientPortal.Services
     {
         public Task<int> CreateArhiveRequestEntriesAsync(List<ArchiveReportsRequest> reports);
         public Task<List<ArchivedReport>> GetArchivedReportsForUserAsync(int umfaUserId);
+
+        public Task<ArchiveRequestHeader> GetArchiveRequestHeaderAsync(int id);
+        public Task<List<ArchiveRequestDetail>> GetArchiveRequestDetailsByHeaderIdAsync(int id);
     }
     public class ArchivesService : IArchivesService
     {
@@ -65,6 +68,16 @@ namespace ClientPortal.Services
             }
 
             return await _archivedReportsRepository.GetArchivedReportsForBuildings(buildingsResponse.UmfaBuildings.Select(b => b.BuildingId).ToList());
+        }
+
+        public async Task<ArchiveRequestHeader> GetArchiveRequestHeaderAsync(int id)
+        {
+            return await _archiveRequestHeaderRepository.GetAsync(id);
+        }
+
+        public async Task<List<ArchiveRequestDetail>> GetArchiveRequestDetailsByHeaderIdAsync(int id)
+        {
+            return await _archiveRequestDetailRepository.GetAllAsync(ad => ad.ArchiveRequestId.Equals(id));
         }
     }
 }
