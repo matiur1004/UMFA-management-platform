@@ -61,6 +61,12 @@ namespace ClientPortal.Services
         public async Task<TenantSlipDataResponse> GetTenantSlipDataAsync(TenantSlipDataRequest request)
         {
             var response = await _repository.GetTenantSlipDataAsync(new TenantSlipDataSpRequest(request));
+
+            if(!response.Headers.Any())
+            {
+                return null;    
+            }
+
             return new TenantSlipDataResponse(response);
         }
     }

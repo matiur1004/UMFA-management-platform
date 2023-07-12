@@ -6,7 +6,9 @@
         public List<TenantSlipDataDetails> Details { get; set; }
         public List<TenantSlipDataMeterReadings> MeterReadings { get; set; }
         public List<TenantSlipDataGraphData> GraphData { get; set; }
+        public string? FileName { get; set; }
 
+        public TenantSlipDataResponse() { }
         public TenantSlipDataResponse(TenantSlipDataSpResponse response) 
         {
             Header = response.Headers.FirstOrDefault();
