@@ -21,6 +21,8 @@ export class UserNotificationsComponent implements OnInit {
   allBuildings: IUmfaBuilding[] = [];
   buildings: IUmfaBuilding[] = [];
   users: any[] = [];
+  applyFilterTypes: any;
+  currentFilter: any;
   
   readonly allowedPageSizes = AllowedPageSizes;
   
@@ -37,6 +39,14 @@ export class UserNotificationsComponent implements OnInit {
     private _matDialog: MatDialog,
   ) { 
     this.onEdit = this.onEdit.bind(this);
+    this.applyFilterTypes = [{
+        key: 'auto',
+        name: 'Immediately',
+    }, {
+        key: 'onClick',
+        name: 'On Button Click',
+    }];
+    this.currentFilter = this.applyFilterTypes[0].key;
   }
 
   ngOnInit(): void {

@@ -14,11 +14,22 @@ export class AmrUserComponent implements OnInit {
   user = this.userService.userValue;
   user$: Observable<IopUser>;
   scadaUsers: any[];
+  applyFilterTypes: any;
+  currentFilter: any;
+  
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   readonly allowedPageSizes = AllowedPageSizes;
 
   constructor(private userService: UserService, private _router: Router) {
     this.onEdit = this.onEdit.bind(this);
+    this.applyFilterTypes = [{
+        key: 'auto',
+        name: 'Immediately',
+    }, {
+        key: 'onClick',
+        name: 'On Button Click',
+    }];
+    this.currentFilter = this.applyFilterTypes[0].key;
   }
 
   ngOnInit(): void {

@@ -22,6 +22,9 @@ export class UserManagementComponent implements OnInit {
   senderTypes: any[] = [];
   summaryTypes: any[] = [];
 
+  applyFilterTypes: any;
+  currentFilter: any;
+
   readonly allowedPageSizes = AllowedPageSizes;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
@@ -34,6 +37,14 @@ export class UserManagementComponent implements OnInit {
     this.onEdit = this.onEdit.bind(this);
     this.onGetUserNotifications = this.onGetUserNotifications.bind(this);
 
+    this.applyFilterTypes = [{
+      key: 'auto',
+      name: 'Immediately',
+    }, {
+        key: 'onClick',
+        name: 'On Button Click',
+    }];
+    this.currentFilter = this.applyFilterTypes[0].key;
    }
 
   ngOnInit(): void {

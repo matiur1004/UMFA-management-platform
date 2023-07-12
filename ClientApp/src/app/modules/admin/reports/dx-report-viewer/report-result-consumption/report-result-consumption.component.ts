@@ -24,10 +24,21 @@ export class ReportResultConsumptionComponent implements OnInit {
   resultsForGrid: any[] = [];
   reportTotals: any;
   headerInfo: any;
+  applyFilterTypes: any;
+  currentFilter: any;
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
-  constructor(private reportService: DXReportService) { }
+  constructor(private reportService: DXReportService) { 
+    this.applyFilterTypes = [{
+        key: 'auto',
+        name: 'Immediately',
+    }, {
+        key: 'onClick',
+        name: 'On Button Click',
+    }];
+    this.currentFilter = this.applyFilterTypes[0].key;
+  }
 
   ngOnInit(): void {
     this.reportService.consumptionSummary$
