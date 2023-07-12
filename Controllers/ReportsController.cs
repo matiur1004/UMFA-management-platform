@@ -69,6 +69,7 @@ namespace ClientPortal.Controllers
                 return BadRequest("Reports List is empty");
             }
 
+            // create header and detail entries in portal DB
             int? headerId = null;
             try
             {
@@ -80,6 +81,23 @@ namespace ClientPortal.Controllers
                 return Problem("Could not add reports to database");
             }
 
+            // update umfa db file formats
+            try
+            {
+                await _umfaReportService.UpdateReportArhivesFileFormats(new UpdateArchiveFileFormatSpRequest
+                {
+                    BuildingId = (int)request[0].BuildingId!,
+                    Format = request[0].FileFormat.FileNameFormat,
+                    Description = request[0].FileFormat.Description,
+                    Id = (int)request[0].FileFormat.Id!
+                });
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Could not update UmfaDb FileFormats");
+            }
+
+            // send messages to queue
             try
             {
                 if(headerId is not null)

@@ -43,7 +43,7 @@ namespace ClientPortal.Data.Entities.PortalEntities
             ArchiveRequestId = headerId;
             TenantId = (int)report.TenantId!;
             ShopId = (int)report.ShopId!;
-            FileFormat = report.FileFormat;
+            FileFormat = report.FileFormat.FileNameFormat;
             CreatedDTM = DateTime.Now;
             LastUpdateDTM = DateTime.Now;
             Status = 1;

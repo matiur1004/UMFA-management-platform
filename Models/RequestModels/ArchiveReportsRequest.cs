@@ -16,7 +16,8 @@ namespace ClientPortal.Models.RequestModels
         [Required]
         public string FileName { get; set; }
 
-        public string FileFormat { get; set; }
+        [Required]
+        public FileFormat FileFormat {get; set;}
 
         [Required]
         public int? TenantId { get; set; }
@@ -24,4 +25,16 @@ namespace ClientPortal.Models.RequestModels
         [Required]
         public int? ShopId { get; set; }
     }
+
+    public class FileFormat 
+    {
+        [Required]
+        public string FileNameFormat { get; set; }
+
+        [Required]
+        public int? Id { get; set; }
+
+        public string Description { get; set; } = "";
+    }
+
 }
