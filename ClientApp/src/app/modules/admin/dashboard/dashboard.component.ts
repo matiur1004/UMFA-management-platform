@@ -339,7 +339,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
 
     removeTab(index: number) {
         this.selectedTab = index > 0 ? 1 : 0;
-        if(this.tabsList[index]['type'] == 'TenantSlipDashboard') {
+        if(this.tabsList[index]['type'] == 'TenantSlipDashboard' || this.tabsList[index]['type'] == 'TenantSlipDetail') {
             this.selectedTab = index;    
         }
         this.tabsList.splice(index, 1);        
