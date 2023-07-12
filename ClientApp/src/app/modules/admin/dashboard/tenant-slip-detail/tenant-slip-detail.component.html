@@ -70,6 +70,13 @@
             <dxi-column dataField="Excl" caption="Excl" [minWidth]="100" cellTemplate="cellValueTemplate"></dxi-column>
             <dxi-column dataField="Vat" caption="Vat" [minWidth]="100" cellTemplate="cellValueTemplate"></dxi-column>
             <dxi-column dataField="Incl" caption="Incl" [minWidth]="100" cellTemplate="cellValueTemplate"></dxi-column>
+            <dxi-column type="buttons">
+                <dxi-button
+                    hint="Go to Tenant Slip Detail Dashboard"
+                    icon="info"
+                    [onClick]="onGetTenantSlipDetail"
+                ></dxi-button>
+            </dxi-column>
             <div *dxTemplate="let data of 'cellValueTemplate'">
                 <ng-container *ngIf="data.value != null; else emptyTemplate">
                     R {{data.value | number : '1.2-2'}}

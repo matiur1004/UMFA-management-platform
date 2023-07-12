@@ -292,6 +292,22 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                     })                    
                 }
             });
+
+        this._dbService.tenantSlipDetail$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((data) => {
+                if(data) {
+                    let newTab: IHomeTab = {
+                        id: 0,
+                        title: 'Tenant Slip Dashboard',
+                        type: 'TenantSlipDashboard',
+                        dataSource: data
+                    };
+                    this.tabsList.push(newTab);
+                    this.selectedTab = this.tabsList.length;
+                    this._cdr.detectChanges();
+                }
+            });
     }
 
     onDetail(type: EHomeTabType) {
@@ -322,8 +338,11 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     removeTab(index: number) {
-        this.tabsList.splice(index, 1);
         this.selectedTab = index > 0 ? 1 : 0;
+        if(this.tabsList[index]['type'] == 'TenantSlipDashboard' || this.tabsList[index]['type'] == 'TenantSlipDetail') {
+            this.selectedTab = index;    
+        }
+        this.tabsList.splice(index, 1);        
         this._cdr.markForCheck();
     }
 

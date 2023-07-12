@@ -20,12 +20,14 @@ import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TenantSlipDetailComponent } from './tenant-slip-detail/tenant-slip-detail.component';
+import { TenantSlipDashboardComponent } from './tenant-slip-dashboard/tenant-slip-dashboard.component';
 
 @NgModule({
     declarations: [
         DashboardComponent,
         BuildingDetailComponent,
-        TenantSlipDetailComponent
+        TenantSlipDetailComponent,
+        TenantSlipDashboardComponent
     ],
     imports     : [
         CommonModule,
