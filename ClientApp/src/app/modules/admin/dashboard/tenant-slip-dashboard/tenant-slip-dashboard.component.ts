@@ -169,4 +169,15 @@ export class TenantSlipDashboardComponent implements OnInit {
       });
     });
   }
+
+  /**
+     * On destroy
+     */
+  ngOnDestroy(): void
+  {
+      // Unsubscribe from all subscriptions
+      this._unsubscribeAll.next(null);
+      this._unsubscribeAll.complete();
+      this._service.destroyTenantSlipDetail();
+  }
 }

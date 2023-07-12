@@ -212,6 +212,10 @@ export class DashboardService {
     this._tenantSlipDetail.next(data);
   }
 
+  destroyTenantSlipDetail() {
+    this._tenantSlipDetail.next(null);
+  }
+
   cancel() {
     this.statsSubject.next(null);
   }
