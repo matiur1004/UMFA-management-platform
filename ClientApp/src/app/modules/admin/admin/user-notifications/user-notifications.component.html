@@ -76,6 +76,7 @@
                 [width]="200"
                 placeholder="Search..."
             ></dxo-search-panel>
+            <dxo-filter-row [visible]="'true'" [applyFilter]="currentFilter"></dxo-filter-row>
             <dxi-column dataField="MeterNo" caption="Meter No" [minWidth]="120"></dxi-column>
             <dxi-column dataField="Description" [minWidth]="200"></dxi-column>
             <dxi-column dataField="Night Flow" [minWidth]="80" cellTemplate="cellTemplate"></dxi-column>

@@ -17,11 +17,21 @@ export class AmrScheduleComponent implements OnInit {
   scadaRequestHeaders: IScadaRequestHeader[] = [];
   scheduleHeaderStatus: IScadaScheduleStatus[] = [];
   jobStatus: IScadaJobStatus[] = [];
+  applyFilterTypes: any;
+  currentFilter: any;
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
   constructor(private _amrScheduleService: AMRScheduleService, private _router: Router) { 
     this.onEdit = this.onEdit.bind(this);
+    this.applyFilterTypes = [{
+        key: 'auto',
+        name: 'Immediately',
+    }, {
+        key: 'onClick',
+        name: 'On Button Click',
+    }];
+    this.currentFilter = this.applyFilterTypes[0].key;
   }
 
   ngOnInit(): void {

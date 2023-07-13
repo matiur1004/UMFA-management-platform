@@ -23,6 +23,9 @@ export class AmrMeterAssignmentsComponent implements OnInit {
   user: IopUser;
   scheduleStatus: IScadaScheduleStatus[] = [];
   buildings: IUmfaBuilding[] = [];
+  applyFilterTypes: any;
+  currentFilter: any;
+
   readonly allowedPageSizes = AllowedPageSizes;
   
   private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -40,6 +43,15 @@ export class AmrMeterAssignmentsComponent implements OnInit {
     this.onEdit = this.onEdit.bind(this);
     this.onRemove = this.onRemove.bind(this);
     this.user = this.userService.userValue;
+
+    this.applyFilterTypes = [{
+        key: 'auto',
+        name: 'Immediately',
+    }, {
+        key: 'onClick',
+        name: 'On Button Click',
+    }];
+    this.currentFilter = this.applyFilterTypes[0].key;
   }
 
   ngOnInit(): void {

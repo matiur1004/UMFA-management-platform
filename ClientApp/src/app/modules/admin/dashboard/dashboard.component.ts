@@ -121,6 +121,9 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
     @ViewChild("chart") chart: ChartComponent;
     public chartOptions: Partial<ChartOptions>;
 
+    applyFilterTypes: any;
+    currentFilter: any;
+
     constructor(
         private _dbService: DashboardService,
         private _bldService: BuildingService,
@@ -193,7 +196,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
           },
           colors : ['#3b82f6'],
       };
-      this.chartSales = {
+        this.chartSales = {
         series: [
         ],
         chart: {
@@ -225,6 +228,14 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
         },
         colors : ['#34d399'],
         };
+        this.applyFilterTypes = [{
+            key: 'auto',
+            name: 'Immediately',
+        }, {
+            key: 'onClick',
+            name: 'On Button Click',
+        }];
+        this.currentFilter = this.applyFilterTypes[0].key;
     }
 
     ngOnInit(): void {

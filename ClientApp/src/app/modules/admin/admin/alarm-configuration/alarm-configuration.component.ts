@@ -21,6 +21,8 @@ export class AlarmConfigurationComponent implements OnInit {
   allBuildings: IUmfaBuilding[] = [];
   buildings: IUmfaBuilding[] = [];
   isSelectedAlarm: boolean = false;
+  applyFilterTypes: any;
+  currentFilter: any;
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
@@ -29,7 +31,16 @@ export class AlarmConfigurationComponent implements OnInit {
     private _formBuilder: FormBuilder, 
     private _buildingService: BuildingService,
     private _alarmConfigurationService: AlarmConfigurationService
-  ) { }
+  ) {
+    this.applyFilterTypes = [{
+        key: 'auto',
+        name: 'Immediately',
+    }, {
+        key: 'onClick',
+        name: 'On Button Click',
+    }];
+    this.currentFilter = this.applyFilterTypes[0].key;
+   }
 
   ngOnInit(): void {
     this.searchForm = this._formBuilder.group({
