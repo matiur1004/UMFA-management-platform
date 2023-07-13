@@ -51,6 +51,7 @@
                     [width]="200"
                     placeholder="Search..."
                 ></dxo-search-panel>
+                <dxo-filter-row [visible]="'true'" [applyFilter]="currentFilter"></dxo-filter-row>
                 <dxi-column dataField="FinAccNo" caption="Account" [groupIndex]="0"></dxi-column>
                 <dxi-column dataField="Tenant" [groupIndex]="1"></dxi-column>
                 <dxi-column dataField="ShopNr" caption="Shop" [groupIndex]="2"></dxi-column>            

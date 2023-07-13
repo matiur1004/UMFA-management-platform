@@ -53,6 +53,7 @@ export class TenantSlipDetailComponent implements OnInit {
         name: 'On Button Click',
     }];
     this.currentFilter = this.applyFilterTypes[0].key;
+    this.onGetTenantSlipDetail = this.onGetTenantSlipDetail.bind(this);
   }
 
   ngOnInit(): void {
@@ -102,6 +103,19 @@ export class TenantSlipDetailComponent implements OnInit {
 
   viewSelection() {
     this._service.getTenantSlipsReports(this.buildingId, this.form.get('PeriodId').value, this.form.get('ReportTypeId').value).subscribe();
+  }
+
+  onGetTenantSlipDetail(e) {
+    e.event.preventDefault();
+    let data = {
+      tenantId: e.row.data.TenantID,
+      shopId: e.row.data.ShopID,
+      buildingId: this.buildingId,
+      periodId: this.form.get('PeriodId').value,
+      reportType: this.form.get('ReportTypeId').value
+    }
+    this._service.showTenantSlipDetail(data);
+    //this.onAction('UserNotification', e.row.data);
   }
 
   /**

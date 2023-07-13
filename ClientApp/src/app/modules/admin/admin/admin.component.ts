@@ -30,7 +30,6 @@ export class AdminComponent implements OnInit {
     if(location.pathname.includes('alarm-configuration')) this.selectedTab = 5;
     if(location.pathname.includes('user-notifications')) this.selectedTab = 6;
 
-    console.log('ngOninit', this.selectedTab);
     //this.selectedTab = 6;
     this.roleId = this._userService.userValue.RoleId;
 

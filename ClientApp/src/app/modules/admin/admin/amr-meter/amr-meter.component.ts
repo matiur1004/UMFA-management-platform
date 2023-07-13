@@ -14,6 +14,8 @@ export class AmrMeterComponent implements OnInit {
 
   user: IopUser;
   meters$: Observable<IAmrMeter[]>;
+  applyFilterTypes: any;
+    currentFilter: any;
   readonly allowedPageSizes = AllowedPageSizes;
 
   constructor(
@@ -21,7 +23,15 @@ export class AmrMeterComponent implements OnInit {
     private userService: UserService,
     public _router: Router) {
       this.onEdit = this.onEdit.bind(this);
-     }
+      this.applyFilterTypes = [{
+          key: 'auto',
+          name: 'Immediately',
+      }, {
+          key: 'onClick',
+          name: 'On Button Click',
+      }];
+      this.currentFilter = this.applyFilterTypes[0].key;
+    }
 
   ngOnInit(): void {
     this.user = this.userService.userValue;

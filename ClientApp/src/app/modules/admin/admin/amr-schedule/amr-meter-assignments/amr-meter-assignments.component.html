@@ -28,6 +28,7 @@
                 [width]="200"
                 placeholder="Search..."
             ></dxo-search-panel>
+            <dxo-filter-row [visible]="'true'" [applyFilter]="currentFilter"></dxo-filter-row>
             <dxi-column dataField="AmrMeter.MeterNo" caption="Meter No" [width]="120"></dxi-column>
             <dxi-column dataField="AmrMeter.Description" caption="Meter Description" [width]="160"></dxi-column>
             <dxi-column dataField="StatusLabel" caption="Status" [width]="130"></dxi-column>

@@ -19,7 +19,9 @@ export class DashboardService {
   private _tenantSlipTenants: BehaviorSubject<any> = new BehaviorSubject(null);
   private _tenantSlipTenantShops: BehaviorSubject<any> = new BehaviorSubject(null);
   private _tenantSlipsReports: BehaviorSubject<any> = new BehaviorSubject(null);
-  
+  private _tenantSlipDetail: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _tenantSlipData: BehaviorSubject<any> = new BehaviorSubject(null);
+
   public stats$: Observable<IHomePageStats>;
   public alarmTriggeredId: any;
 
@@ -37,6 +39,14 @@ export class DashboardService {
     return this._tenantSlip.asObservable();
   }
 
+  get tenantSlipDetail$(): Observable<any> {
+    return this._tenantSlipDetail.asObservable();
+  }
+
+  get tenantSlipData$(): Observable<any> {
+    return this._tenantSlipData.asObservable();
+  }
+  
   public get StatsValue(): IHomePageStats {
     return this.statsSubject.value;
   }
@@ -130,6 +140,18 @@ export class DashboardService {
       );
   }
 
+  getTenantSlipData(params) {
+    const url = `${CONFIG.apiURL}/TenantSlips/Data`;
+    return this.http.put<any>(url, params, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(res => {
+          this._tenantSlipData.next(res);
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        })
+      );
+  }
+
   getTenantsWithBuildingAndPeriod(buildingId, periodId) {
     const url = `${CONFIG.apiURL}/Umfa/tenants?buildingId=${buildingId}&periodId=${periodId}`;
     return this.http.get<any>(url, { withCredentials: true })
@@ -182,10 +204,18 @@ export class DashboardService {
     this._tenantSlipsReports.next(null);
   }
 
-  showTenantSlipDetail(buildingId) {
+  showTenantSlip(buildingId) {
     this._tenantSlip.next(buildingId);
   }
   
+  showTenantSlipDetail(data) {
+    this._tenantSlipDetail.next(data);
+  }
+
+  destroyTenantSlipDetail() {
+    this._tenantSlipDetail.next(null);
+  }
+
   cancel() {
     this.statsSubject.next(null);
   }

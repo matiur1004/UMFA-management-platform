@@ -62,6 +62,7 @@
                 [width]="200"
                 placeholder="Search..."
             ></dxo-search-panel>
+            <dxo-filter-row [visible]="'true'" [applyFilter]="currentFilter"></dxo-filter-row>
             <dxi-column dataField="MeterNo" caption="Meter No" [minWidth]="100"></dxi-column>
             <dxi-column dataField="Description" [minWidth]="160"></dxi-column>
             <dxi-column caption="Alarms Configuration" dataField="alarmConfig" [minWidth]="190" cellTemplate="alarmConfigTemplate"></dxi-column>
