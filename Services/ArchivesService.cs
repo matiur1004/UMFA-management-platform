@@ -11,6 +11,8 @@ namespace ClientPortal.Services
 
         public Task<ArchiveRequestHeader> GetArchiveRequestHeaderAsync(int id);
         public Task<List<ArchiveRequestDetail>> GetArchiveRequestDetailsByHeaderIdAsync(int id);
+
+        public Task<ArchivedReport> AddArchivedReportAsync(ArchivedReport report);
     }
     public class ArchivesService : IArchivesService
     {
@@ -78,6 +80,11 @@ namespace ClientPortal.Services
         public async Task<List<ArchiveRequestDetail>> GetArchiveRequestDetailsByHeaderIdAsync(int id)
         {
             return await _archiveRequestDetailRepository.GetAllAsync(ad => ad.ArchiveRequestId.Equals(id));
+        }
+
+        public async Task<ArchivedReport> AddArchivedReportAsync(ArchivedReport report)
+        {
+            return await _archivedReportsRepository.AddAsync(report);
         }
     }
 }
