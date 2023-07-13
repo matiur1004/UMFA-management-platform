@@ -12,6 +12,8 @@ namespace ClientPortal.Services
         public Task<ShopCostVarianceReportResponse> GetShopCostVarianceReportAsync(ShopUsageVarianceRequest request);
         public Task<ConsumptionSummaryResponse> GetConsumptionSummaryReport(ConsumptionSummarySpRequest request);
         public Task<ConsumptionSummaryReconResponse> GetConsumptionSummaryReconReport(ConsumptionSummaryReconRequest request);
+
+        public Task UpdateReportArhivesFileFormats(UpdateArchiveFileFormatSpRequest request);
     }
     public class UmfaReportService : IUmfaReportService
     {
@@ -300,6 +302,11 @@ namespace ClientPortal.Services
         public async Task<ConsumptionSummaryReconResponse> GetConsumptionSummaryReconReport(ConsumptionSummaryReconRequest request)
         {
             return await _repository.GetConsumptionSummaryReconReport(request);
+        }
+
+        public async Task UpdateReportArhivesFileFormats(UpdateArchiveFileFormatSpRequest request)
+        {
+            await _repository.UpdateArchiveFileFormatsAsync(request);
         }
     }
 }
