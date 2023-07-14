@@ -21,13 +21,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TenantSlipDetailComponent } from './tenant-slip-detail/tenant-slip-detail.component';
 import { TenantSlipDashboardComponent } from './tenant-slip-dashboard/tenant-slip-dashboard.component';
+import { TenantSlipDownloadsComponent } from './tenant-slip-downloads/tenant-slip-downloads.component';
 
 @NgModule({
     declarations: [
         DashboardComponent,
         BuildingDetailComponent,
         TenantSlipDetailComponent,
-        TenantSlipDashboardComponent
+        TenantSlipDashboardComponent,
+        TenantSlipDownloadsComponent
     ],
     imports     : [
         CommonModule,

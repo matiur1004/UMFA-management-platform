@@ -25,10 +25,10 @@
             <div class="col-span-3">
                 <dx-text-box placeholder="Enter file name" [formControlName]="'FileName'" [matTooltip]="'File Name'" style="margin-top: 6px;"></dx-text-box>
             </div>
-            <div class="col-span-3 flex gap-x-3 justify-center" style="margin-top: 7px;">
+            <div class="col-span-6 lg:col-span-3 flex gap-x-3 justify-center" style="margin-top: 7px;">
                 <dx-button stylingMode="contained" text="View Selection" type="default" [width]="130" [height]="34" (onClick)="viewSelection()" [disabled]="!form.valid">
                 </dx-button>
-                <dx-button stylingMode="contained" text="Archive Selection" type="danger" [width]="145" [height]="34">
+                <dx-button stylingMode="contained" text="Archive Selection" type="danger" [width]="145" [height]="34" (onClick)="archiveSelection()" [disabled]="!isArchiveEnabled">
                 </dx-button>
             </div>
         </div>
@@ -37,16 +37,19 @@
     <!-- Grid view -->
     <div class="flex w-full">
         <dx-data-grid
+            #grid
             [dataSource]="tenantSlipsReportsDataSource"
             [showBorders]="true"
             class="grid-container"
             [hoverStateEnabled]="true"
+            (onSelectionChanged)="selectionChangedHandler()"
         >
-            <dxo-selection
+            <!-- <dxo-selection
                 [selectAllMode]="'allPages'"
                 [showCheckBoxesMode]="checkBoxesMode"
                 mode="multiple"
-            ></dxo-selection>
+            ></dxo-selection> -->
+            <dxo-selection mode="single"></dxo-selection>
             <dxo-filter-row [visible]="'true'"
                 [applyFilter]="currentFilter"></dxo-filter-row>
             <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>

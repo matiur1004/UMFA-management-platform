@@ -21,7 +21,9 @@ export class DashboardService {
   private _tenantSlipsReports: BehaviorSubject<any> = new BehaviorSubject(null);
   private _tenantSlipDetail: BehaviorSubject<any> = new BehaviorSubject(null);
   private _tenantSlipData: BehaviorSubject<any> = new BehaviorSubject(null);
-
+  private _tenantSlipDownloads: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _reportsArchives: BehaviorSubject<any> = new BehaviorSubject(null);
+  
   public stats$: Observable<IHomePageStats>;
   public alarmTriggeredId: any;
 
@@ -65,6 +67,14 @@ export class DashboardService {
 
   get tenantSlipsReports$(): Observable<any> {
     return this._tenantSlipsReports.asObservable();
+  }
+
+  get tenantSlipDownloads$(): Observable<any> {
+    return this._tenantSlipDownloads.asObservable();
+  }
+  
+  get reportsArchives$(): Observable<any> {
+    return this._reportsArchives.asObservable();
   }
 
   /**
@@ -200,6 +210,29 @@ export class DashboardService {
       );
   }
 
+  getReportsArchives(userId) {
+    const url = `${CONFIG.apiURL}/Reports/Archives?userId=${userId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(bl => {
+          this._reportsArchives.next(bl);
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        })
+      );
+  }
+
+  onReportsArchives(data) {
+    const url = `${CONFIG.apiURL}/Reports/Archives`;
+    return this.http.post<any>(url, data, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(bl => {
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        })
+      );
+  }
+
   destroyTenantSlips() {
     this._tenantSlipsReports.next(null);
   }
@@ -210,6 +243,10 @@ export class DashboardService {
   
   showTenantSlipDetail(data) {
     this._tenantSlipDetail.next(data);
+  }
+
+  showDownloads() {
+    this._tenantSlipDownloads.next(true);
   }
 
   destroyTenantSlipDetail() {

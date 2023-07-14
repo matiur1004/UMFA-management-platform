@@ -188,4 +188,8 @@ export class BuildingDetailComponent implements OnInit {
   onTenantSlip() {
     this._dbService.showTenantSlip(this.buildingId);
   }
+
+  onDownloads() {
+    this._dbService.showDownloads();
+  }
 }
