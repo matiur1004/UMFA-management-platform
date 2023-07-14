@@ -59,9 +59,13 @@ namespace ClientPortal.Services
                     TenantId = (int)report.TenantId!
                 });
 
-                report.FileName = FileFormatHelper.TranslateFileFormat(report.FileFormat.FileNameFormat, fileFormatData.FilesFormatData[0]);
+                if(fileFormatData != null && fileFormatData.FilesFormatData.Count != 0)
+                {
+                    report.FileName = FileFormatHelper.TranslateFileFormat(report.FileFormat.FileNameFormat, fileFormatData.FilesFormatData[0]);
 
-                details.Add(new ArchiveRequestDetail(report, header.ArchiveRequestId));
+                    details.Add(new ArchiveRequestDetail(report, header.ArchiveRequestId));
+                }
+
             }
 
             try
