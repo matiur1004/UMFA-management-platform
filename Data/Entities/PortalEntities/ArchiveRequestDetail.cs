@@ -21,6 +21,8 @@ namespace ClientPortal.Data.Entities.PortalEntities
         [Required]
         public string FileFormat { get; set; }
         
+        public string FileName { get; set; }
+
         [Required]
         public DateTime CreatedDTM { get; set; }
         
@@ -44,6 +46,7 @@ namespace ClientPortal.Data.Entities.PortalEntities
             TenantId = (int)report.TenantId!;
             ShopId = (int)report.ShopId!;
             FileFormat = report.FileFormat.FileNameFormat;
+            FileName = report.FileName;
             CreatedDTM = DateTime.Now;
             LastUpdateDTM = DateTime.Now;
             Status = 1;

@@ -13,7 +13,6 @@ namespace ClientPortal.Models.RequestModels
         [Required]
         public int? ReportTypeId { get; set; }
 
-        [Required]
         public string FileName { get; set; }
 
         [Required]
