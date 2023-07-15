@@ -23,8 +23,8 @@
                 [width]="200"
                 placeholder="Search..."
             ></dxo-search-panel>
-            <dxi-column dataField="fileName" caption="File Name" [minWidth]="100"></dxi-column>
-            <dxi-column dataField="CreatedDateTime" caption="Date Created" [minWidth]="100"></dxi-column>
+            <dxi-column dataField="FileName" caption="File Name" [minWidth]="100"></dxi-column>
+            <dxi-column dataField="CreatedDateTime" [customizeText]="onCustomizeDateTime" caption="Date Created" [minWidth]="100"></dxi-column>
             <dxi-column type="buttons">
                 <dxi-button
                     hint="Download"

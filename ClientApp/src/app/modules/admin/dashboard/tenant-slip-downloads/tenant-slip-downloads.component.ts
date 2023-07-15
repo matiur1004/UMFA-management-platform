@@ -3,6 +3,7 @@ import { DashboardService } from '../dasboard.service';
 import { Subject, takeUntil } from 'rxjs';
 import { AllowedPageSizes } from '@core/helpers';
 import themes from 'devextreme/ui/themes';
+import moment from 'moment';
 
 @Component({
   selector: 'app-tenant-slip-downloads',
@@ -47,5 +48,9 @@ export class TenantSlipDownloadsComponent implements OnInit {
 
   onDownload(e) {
     e.event.preventDefault();
+  }
+
+  onCustomizeDateTime(cellInfo) {
+    return moment(new Date(cellInfo.value)).format('YYYY-MM-DD mm:hh:ss');
   }
 }

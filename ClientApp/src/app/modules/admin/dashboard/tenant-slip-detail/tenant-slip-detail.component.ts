@@ -6,6 +6,7 @@ import { DatePipe } from '@angular/common';
 import { AllowedPageSizes } from '@core/helpers';
 import themes from 'devextreme/ui/themes';
 import { DxDataGridComponent } from 'devextreme-angular';
+import { NotificationService } from '@shared/services';
 
 @Component({
   selector: 'app-tenant-slip-detail',
@@ -44,7 +45,8 @@ export class TenantSlipDetailComponent implements OnInit {
   constructor(
     private _service: DashboardService,
     private _formBuilder: UntypedFormBuilder,
-    private _cdr: ChangeDetectorRef
+    private _cdr: ChangeDetectorRef,
+    private _notificationService: NotificationService
   ) { 
     this.checkBoxesMode = themes.current().startsWith('material') ? 'always' : 'onClick';
     this.applyFilterTypes = [{
@@ -126,30 +128,31 @@ export class TenantSlipDetailComponent implements OnInit {
   }
 
   selectionChangedHandler() {
+    console.log(this.dataGrid.instance.getSelectedRowsData());
     this.isSelected = this.dataGrid.instance.getSelectedRowsData().length > 0;
   }
 
   archiveSelection() {
-    let rowData = this.dataGrid.instance.getSelectedRowsData()[0];
     let fileFormatItem = this.fileFormatList.find(obj => obj.Id == this.form.get('FileFormat').value);
-    let formData = {
-      "TenantId": rowData['TenantID'],
-      "ShopId": rowData['ShopID'],
-      "BuildingId": this.buildingId,
-      "PeriodId": rowData['PeriodID'],
-      "ReportTypeId": this.form.get('ReportTypeId').value,
-      "FileName": this.form.get('FileName').value,
-      "FileFormat": {
-        "FileNameFormat": fileFormatItem.Value != 'Custom' ? fileFormatItem.Value :  this.form.get('CustomFileFormat').value,
-        "Id": fileFormatItem.Id,
-        "Description": fileFormatItem.Value != 'Custom' ? fileFormatItem.Description : ''
-      }
-    }
+    let formData = this.dataGrid.instance.getSelectedRowsData().map(rowData => {
+      return {
+        "TenantId": rowData['TenantID'],
+        "ShopId": rowData['ShopID'],
+        "BuildingId": this.buildingId,
+        "PeriodId": rowData['PeriodID'],
+        "ReportTypeId": this.form.get('ReportTypeId').value,
+        "FileName": this.form.get('FileName').value,
+        "FileFormat": {
+          "FileNameFormat": fileFormatItem.Value != 'Custom' ? fileFormatItem.Value :  this.form.get('CustomFileFormat').value,
+          "Id": fileFormatItem.Id,
+          "Description": fileFormatItem.Value != 'Custom' ? fileFormatItem.Description : ''
+        }
+      } 
+    });
     this._service.onReportsArchives(formData)
       .subscribe(res => {
-        console.log(res);
+        this._notificationService.message('Request submitted.');
       })
-    console.log(formData);
   }
   /**
      * On destroy
