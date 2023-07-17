@@ -13,6 +13,7 @@ namespace ClientPortal.Services
         public Task<TenantSlipCriteriaResponse> GetTenantSlipCriteriaAsync(TenantSlipCriteriaSpRequest request);
         public Task<TenantSlipReportSpResponse> GetTenantSlipReportsAsync(TenantSlipReportSpRequest request);
         public Task<TenantSlipDataResponse> GetTenantSlipDataAsync(TenantSlipDataRequest request);
+        public Task<TenantSlipDataForArchiveSpResponse> GetTenantSlipDataForArchiveAsync(TenantSlipDataForArchiveSpRequest request);
 
     }
     public class UmfaService : IUmfaService
@@ -68,6 +69,18 @@ namespace ClientPortal.Services
             }
 
             return new TenantSlipDataResponse(response);
+        }
+
+        public async Task<TenantSlipDataForArchiveSpResponse> GetTenantSlipDataForArchiveAsync(TenantSlipDataForArchiveSpRequest request)
+        {
+            var response = await _repository.GetTenantSlipDataForArchiveAsync(request);
+
+            if (!response.Headers.Any())
+            {
+                return null;
+            }
+
+            return response;
         }
     }
 }
