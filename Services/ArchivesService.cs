@@ -1,5 +1,6 @@
 ﻿using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Data.Repositories;
+using ClientPortal.Helpers;
 using ClientPortal.Models.RequestModels;
 
 namespace ClientPortal.Services
@@ -11,6 +12,8 @@ namespace ClientPortal.Services
 
         public Task<ArchiveRequestHeader> GetArchiveRequestHeaderAsync(int id);
         public Task<List<ArchiveRequestDetail>> GetArchiveRequestDetailsByHeaderIdAsync(int id);
+
+        public Task<ArchivedReport> AddArchivedReportAsync(ArchivedReport report);
     }
     public class ArchivesService : IArchivesService
     {
@@ -19,13 +22,21 @@ namespace ClientPortal.Services
         private readonly IArchiveRequestHeaderRepository _archiveRequestHeaderRepository;
         private readonly IArchivedReportsRepository _archivedReportsRepository;
         private readonly IUMFABuildingRepository _umfaBuildingRepository;
-        public ArchivesService(ILogger<ArchivesService> logger, IArchiveRequestDetailRepository archiveRequestDetailRepository, IArchiveRequestHeaderRepository archiveRequestHeaderRepository, IArchivedReportsRepository archivedReportsRepository, IUMFABuildingRepository umfaBuildingRepository)
+        private readonly IUmfaRepository _umfaRepository;
+        public ArchivesService(
+            ILogger<ArchivesService> logger, 
+            IArchiveRequestDetailRepository archiveRequestDetailRepository, 
+            IArchiveRequestHeaderRepository archiveRequestHeaderRepository, 
+            IArchivedReportsRepository archivedReportsRepository, 
+            IUMFABuildingRepository umfaBuildingRepository, 
+            IUmfaRepository umfaRepository)
         {
             _logger = logger;
             _archiveRequestDetailRepository = archiveRequestDetailRepository;
             _archiveRequestHeaderRepository = archiveRequestHeaderRepository;
             _archivedReportsRepository = archivedReportsRepository;
             _umfaBuildingRepository = umfaBuildingRepository;
+            _umfaRepository = umfaRepository;
         }
 
         public async Task<int> CreateArhiveRequestEntriesAsync(List<ArchiveReportsRequest> reports)
@@ -39,7 +50,22 @@ namespace ClientPortal.Services
 
             foreach (var report in reports)
             {
-                details.Add(new ArchiveRequestDetail(report, header.ArchiveRequestId));
+                var fileFormatData = await _umfaRepository.GetFileFormatData(new FileFormatDataSpRequest
+                {
+                    ShopId = (int)report.ShopId!,
+                    BuildingId = header.BuildingId!,
+                    PeriodId = (int)report.PeriodId!,
+                    ReportTypeId = (int)report.ReportTypeId!,
+                    TenantId = (int)report.TenantId!
+                });
+
+                if(fileFormatData != null && fileFormatData.FilesFormatData.Count != 0)
+                {
+                    report.FileName = FileFormatHelper.TranslateFileFormat(report.FileFormat.FileNameFormat, fileFormatData.FilesFormatData[0]);
+
+                    details.Add(new ArchiveRequestDetail(report, header.ArchiveRequestId));
+                }
+
             }
 
             try
@@ -78,6 +104,11 @@ namespace ClientPortal.Services
         public async Task<List<ArchiveRequestDetail>> GetArchiveRequestDetailsByHeaderIdAsync(int id)
         {
             return await _archiveRequestDetailRepository.GetAllAsync(ad => ad.ArchiveRequestId.Equals(id));
+        }
+
+        public async Task<ArchivedReport> AddArchivedReportAsync(ArchivedReport report)
+        {
+            return await _archivedReportsRepository.AddAsync(report);
         }
     }
 }

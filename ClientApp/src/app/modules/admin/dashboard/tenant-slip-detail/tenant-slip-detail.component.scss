@@ -1,3 +1,20 @@
+::ng-deep .mat-tooltip {
+    color: black;
+    z-index: 9999;
+}
+
+::ng-deep .cdk-overlay-pane {
+    z-index: 9999 !important;
+}
+::ng-deep .cdk-overlay-container {
+    z-index: 9999 !important;
+}
+::ng-deep .cdk-overlay-connected-position-bounding-box {
+    z-index: 9999 !important;
+}
+// ::ng-deep .dx-dropdownlist-popup-wrapper.dx-popup-wrapper .dx-overlay-content {
+//     z-index: 900 !important;
+// }
 #slip-grid-container {
     max-height: 600px;
 }
