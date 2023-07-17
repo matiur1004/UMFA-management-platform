@@ -279,6 +279,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             let newTab: IHomeTab = {
                 id: 0,
                 title: 'Alarm Trigger',
+                type: 'AlarmTrigger'
             };
             this.tabsList.push(newTab);
             this.selectedTab = 1;
@@ -340,18 +341,37 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                 }
             });
 
+        this._dbService.buildingReports$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((res) => {
+                if(res) {
+                    console.log(res);
+                    let newTab: IHomeTab = {
+                        id: 0,
+                        title: `${res.reportType} Reports`,
+                        type: 'BuildingReports',
+                        dataSource: res
+                    };
+                    this.tabsList.push(newTab);
+                    this.selectedTab = this.tabsList.length;
+                    this._cdr.detectChanges();
+                }
+            });
+            
         // Wip
-        // this._dbService.getReportsArchives(this._usrService.userValue.Id)
-        //     .subscribe();
-        // let newTab: IHomeTab = {
-        //     id: 0,
-        //     title: 'Downloads',
-        //     type: 'TenantSlipDownloads',
-        //     dataSource: null
-        // };
-        // this.tabsList.push(newTab);
-        // this.selectedTab = this.tabsList.length;
-        // this._cdr.detectChanges();
+        let res = {
+            "buildingId": 2403,
+            "reportType": "Building Recovery"
+        }
+        let newTab: IHomeTab = {
+            id: 0,
+            title: `${res.reportType} Reports`,
+            type: 'BuildingReports',
+            dataSource: res
+        };
+        this.tabsList.push(newTab);
+        this.selectedTab = this.tabsList.length;
+        this._cdr.detectChanges();
     }
 
     onDetail(type: EHomeTabType) {

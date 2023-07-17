@@ -192,4 +192,8 @@ export class BuildingDetailComponent implements OnInit {
   onDownloads() {
     this._dbService.showDownloads();
   }
+
+  onReports(reportType: string) {
+    this._dbService.showReports({buildingId: this.buildingId, reportType});
+  }
 }

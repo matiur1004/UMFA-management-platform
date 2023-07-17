@@ -111,6 +111,28 @@
                 </div>
             </div>
         </div>
+        <div class="bg-gradient-to-r from-violet-700 to-violet-900 col-span-2 lg:col-span-3 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100">
+            <div class="flex items-start justify-between text-white h-full cursor-pointer">
+                <div class="flex flex-col w-full gap-y-1 justify-between h-full">
+                    <div class="flex w-full justify-between">
+                        <div class="flex flex-col">
+                            <div class="text-2xl font-medium tracking-normal leading-8 truncate">Reports</div>
+                        </div>
+                        <mat-icon class="icon-size-10 text-white" [svgIcon]="'heroicons_solid:marketing'"></mat-icon>
+                    </div>
+                    <div class="flex flex-col gap-y-1">
+                        <div class="flex flex-col w-full gap-y-1">
+                            <a class="underline" href="javascript: void(0);" (click)="onReports('Building Recovery')">Building Recovery</a>
+                            <a class="underline" href="javascript: void(0);" (click)="onReports('Consumption Summary')">Consumption Summary</a>
+                            <a class="underline" href="javascript: void(0);" (click)="onReports('Consumption Summary Recon')">Consumption Summary Recon</a>
+                            <a class="underline" href="javascript: void(0);" (click)="onReports('Shop Costs Variance')">Shop Costs Variance</a>
+                            <a class="underline" href="javascript: void(0);" (click)="onReports('Shop Usage Variance')">Shop Usage Variance</a>
+                            <a class="underline" href="javascript: void(0);" (click)="onReports('Utility Recovery and Expense')">Utility Recovery and Expense</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="bg-gradient-to-r from-violet-400 to-violet-600 sm:col-span-3 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100" *ngIf="isSmart">
             <div class="flex items-start justify-between text-white">
                 <div class="flex flex-col w-full gap-y-1">

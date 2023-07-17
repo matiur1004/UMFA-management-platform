@@ -324,8 +324,8 @@
                     </ng-template>
                 </mat-tab>
                 <ng-container *ngFor="let tabItem of tabsList; let i = index;">
-                    <ng-container [ngSwitch]="tabItem.title">
-                        <ng-container *ngSwitchCase="'Alarm Trigger'">
+                    <ng-container [ngSwitch]="tabItem.type">
+                        <ng-container *ngSwitchCase="'AlarmTrigger'">
                             <mat-tab label="Alarm Triggered">
                                 <ng-template mat-tab-label>
                                     Alarm Triggered
@@ -423,7 +423,7 @@
                                 </ng-template>
                             </mat-tab>
                         </ng-container>
-                        <ng-container *ngSwitchCase="'Tenant Slip'">
+                        <ng-container *ngSwitchCase="'TenantSlipDetail'">
                             <mat-tab class="home-tab" label="{{tabItem.title}}">
                                 <ng-template mat-tab-label>
                                     {{tabItem.title}}
@@ -434,7 +434,7 @@
                                 </ng-template>
                             </mat-tab>
                         </ng-container>
-                        <ng-container *ngSwitchCase="'Tenant Slip Dashboard'">
+                        <ng-container *ngSwitchCase="'TenantSlipDashboard'">
                             <mat-tab class="home-tab" label="{{tabItem.title}}">
                                 <ng-template mat-tab-label>
                                     {{tabItem.title}}
@@ -445,7 +445,7 @@
                                 </ng-template>
                             </mat-tab>
                         </ng-container>
-                        <ng-container *ngSwitchCase="'Downloads'">
+                        <ng-container *ngSwitchCase="'TenantSlipDownloads'">
                             <mat-tab class="home-tab" label="{{tabItem.title}}">
                                 <ng-template mat-tab-label>
                                     {{tabItem.title}}
@@ -453,6 +453,18 @@
                                 </ng-template>
                                 <ng-template matTabContent>
                                     <app-tenant-slip-downloads></app-tenant-slip-downloads>
+                                </ng-template>
+                            </mat-tab>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'BuildingReports'">
+                            <mat-tab class="home-tab" label="{{tabItem.title}}">
+                                <ng-template mat-tab-label>
+                                    {{tabItem.title}}
+                                    <mat-icon class="icon-size-4 hover:text-red-500 ml-2" [svgIcon]="'feather:x'" (click)="removeTab(i)"></mat-icon>
+                                </ng-template>
+                                <ng-template matTabContent>
+                                    <app-building-reports></app-building-reports>
+                                    <!-- <app-tenant-slip-downloads></app-tenant-slip-downloads> -->
                                 </ng-template>
                             </mat-tab>
                         </ng-container>
