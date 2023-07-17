@@ -17,6 +17,11 @@
                 <dx-select-box [items]="fileFormatList" displayExpr="Value" valueExpr="Id" class="form-control" label="File format"
                     placeholder="Select option" lableMode="static" id="fileFormat" (onValueChanged)="valueChanged($event, 'FileFormat')"
                     [formControlName]="'FileFormat'" [searchEnabled]="true">
+                    <div *dxTemplate="let data of 'item'">
+                        <div class="custom-item" [matTooltip]="data.Description">
+                            {{data.Value}}
+                        </div>
+                    </div>
                 </dx-select-box>
             </div>
             <div class="col-span-3" *ngIf="isVisibleCustomFileFormat">
