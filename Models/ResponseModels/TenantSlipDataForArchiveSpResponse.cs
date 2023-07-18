@@ -15,6 +15,7 @@
 
     public class TenantSlipDataForArchiveBusiness
     {
+        public int ReportTypeId { get; set; }
         public string BusinessName { get; set; }
         public string CompRegNr { get; set; }
         public string PostalAdd { get; set; }
@@ -29,6 +30,7 @@
 
     public class TenantSlipDataForArchiveTenantInfo
     {
+        public int TenantId { get; set; }
         public string TenantName { get; set; }
         public string AddLine1 { get; set; }
         public string AddLine2 { get; set; }
