@@ -16,6 +16,7 @@ namespace ClientPortal.Data.Repositories
         public Task<TTable> AddAsync(TTable entity);
         public Task AddRangeAsync(List<TTable> entities);
         public Task<TTable> UpdateAsync(TTable entity);
+        public Task UpdateRangeAsync(List<TTable> entities);
         public Task<TTable> RemoveAsync(int id);
         public Task<T> RunStoredProcedureAsync<T, TArgumentClass>(string procedure, TArgumentClass? args = default) where T : new();
         public Task RunStoredProcedureAsync<TArgumentClass>(string procedure, TArgumentClass? args = default);
@@ -436,6 +437,33 @@ namespace ClientPortal.Data.Repositories
 
             _logger.LogInformation($"{typeof(TTable).Name} updated successfully");
             return entity;
+        }
+
+        public async Task UpdateRangeAsync(List<TTable> entities)
+        {
+            _logger.LogInformation($"Updating {typeof(TTable).Name}");
+
+            var tableExists = _dbContext.Model.FindEntityType(typeof(TTable)) != null;
+
+            if (!tableExists)
+            {
+                _logger.LogError($"{typeof(TTable).Name} Table is Not Found");
+                return;
+            }
+
+            _dbContext.UpdateRange(entities);
+
+            try
+            {
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                _logger.LogError($"{typeof(TTable).Name} could not be updated!");
+                return;
+            }
+
+            _logger.LogInformation($"{typeof(TTable).Name} updated successfully");
         }
 
         protected async Task<T> RunStoredProcedure<T, TArgumentClass>(string procedure, TArgumentClass? args = default) where T : new()

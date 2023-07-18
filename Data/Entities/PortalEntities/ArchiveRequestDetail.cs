@@ -28,10 +28,14 @@ namespace ClientPortal.Data.Entities.PortalEntities
         
         [Required]
         public DateTime LastUpdateDTM { get; set; }
-        
+
+
+        /// <summary>
+        /// 1 = Requested 3 = Complete 4 = failed
+        /// </summary>
         [Required]
-        public int Status { get; set; }
-        
+        public int Status { get; set; } 
+
         public string? StatusMessage { get; set; }
         
         [Required]

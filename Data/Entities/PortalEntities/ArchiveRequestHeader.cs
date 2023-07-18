@@ -28,7 +28,10 @@ namespace ClientPortal.Data.Entities.PortalEntities
         public DateTime LastUpdateDTM { get; set; }
         
         [Required]
-        public int Status { get; set; } // 1 = Requested 2 = Processing 3 = Complete 4 = failed?
+        /// <summary>
+        /// 1 = Requested 2 = partially completed 3 = Complete 4 = failed
+        /// </summary>
+        public int Status { get; set; } 
 
         public string? StatusMessage { get; set; }
         

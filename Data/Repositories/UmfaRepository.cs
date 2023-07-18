@@ -26,6 +26,7 @@ namespace ClientPortal.Data.Repositories
         public Task<TenantSlipCriteriaSpResponse> GetTenantSlipCriteriaAsync(TenantSlipCriteriaSpRequest request);
         public Task<TenantSlipReportSpResponse> GetTenantSlipReportsAsync(TenantSlipReportSpRequest request);
         public Task<TenantSlipDataSpResponse> GetTenantSlipDataAsync(TenantSlipDataSpRequest request);
+        public Task<TenantSlipDataForArchiveSpResponse> GetTenantSlipDataForArchiveAsync(TenantSlipDataForArchiveSpRequest request);
         public Task<FileFormatDataSpResponse> GetFileFormatData(FileFormatDataSpRequest request);
 
         public Task UpdateArchiveFileFormatsAsync(UpdateArchiveFileFormatSpRequest request);
@@ -221,6 +222,11 @@ namespace ClientPortal.Data.Repositories
         public async Task UpdateArchiveFileFormatsAsync(UpdateArchiveFileFormatSpRequest request)
         {
             await RunStoredProcedureAsync<TenantSlipDataSpRequest>("upPortal_MaintainArchiveFileFormats");
+        }
+
+        public async Task<TenantSlipDataForArchiveSpResponse> GetTenantSlipDataForArchiveAsync(TenantSlipDataForArchiveSpRequest request)
+        {
+            return await RunStoredProcedureAsync<TenantSlipDataForArchiveSpResponse, TenantSlipDataForArchiveSpRequest>("upPortal_TenantSlipPortal", request);
         }
     }
 }

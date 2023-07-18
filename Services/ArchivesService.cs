@@ -2,6 +2,7 @@
 using ClientPortal.Data.Repositories;
 using ClientPortal.Helpers;
 using ClientPortal.Models.RequestModels;
+using DevExpress.XtraRichEdit.Layout;
 
 namespace ClientPortal.Services
 {
@@ -12,6 +13,7 @@ namespace ClientPortal.Services
 
         public Task<ArchiveRequestHeader> GetArchiveRequestHeaderAsync(int id);
         public Task<List<ArchiveRequestDetail>> GetArchiveRequestDetailsByHeaderIdAsync(int id);
+        public Task UpdateArchiveRequestStatusAsync(ArchiveRequestHeader header, List<ArchiveRequestDetail> details, List<int> completedDetailIds);
 
         public Task<ArchivedReport> AddArchivedReportAsync(ArchivedReport report);
     }
@@ -109,6 +111,33 @@ namespace ClientPortal.Services
         public async Task<ArchivedReport> AddArchivedReportAsync(ArchivedReport report)
         {
             return await _archivedReportsRepository.AddAsync(report);
+        }
+
+        public async Task UpdateArchiveRequestStatusAsync(ArchiveRequestHeader header, List<ArchiveRequestDetail> details,  List<int> completedDetailIds)
+        {
+            if(!completedDetailIds.Any())
+            {
+                header.Status = 4;
+                
+                foreach (var detail in details)
+                {
+                    detail.Status = 4;
+                }
+            }
+            else
+            {
+                var allCompleted = details.Count == completedDetailIds.Count;
+
+                header.Status = allCompleted ? 3 : 2;
+
+                foreach (var detail in details)
+                {
+                    detail.Status = allCompleted || completedDetailIds.Contains(detail.ArchiveRequestDetailId) ? 3 : 4;
+                }
+            }
+
+            await _archiveRequestHeaderRepository.UpdateAsync(header);
+            await _archiveRequestDetailRepository.UpdateRangeAsync(details);
         }
     }
 }
