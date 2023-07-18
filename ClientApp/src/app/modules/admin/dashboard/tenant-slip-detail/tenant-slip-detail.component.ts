@@ -1,10 +1,12 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { DashboardService } from '../dasboard.service';
 import { Subject, takeUntil } from 'rxjs';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { AllowedPageSizes } from '@core/helpers';
 import themes from 'devextreme/ui/themes';
+import { DxDataGridComponent } from 'devextreme-angular';
+import { NotificationService } from '@shared/services';
 
 @Component({
   selector: 'app-tenant-slip-detail',
@@ -31,7 +33,8 @@ export class TenantSlipDetailComponent implements OnInit {
 
   applyFilterTypes: any;
   currentFilter: any;
-
+  isSelected: boolean = false;
+  @ViewChild('grid') dataGrid: DxDataGridComponent;
 
   custPeriodTemplate = (arg: any) => {
     const datepipe: DatePipe = new DatePipe('en-ZA');
@@ -42,7 +45,8 @@ export class TenantSlipDetailComponent implements OnInit {
   constructor(
     private _service: DashboardService,
     private _formBuilder: UntypedFormBuilder,
-    private _cdr: ChangeDetectorRef
+    private _cdr: ChangeDetectorRef,
+    private _notificationService: NotificationService
   ) { 
     this.checkBoxesMode = themes.current().startsWith('material') ? 'always' : 'onClick';
     this.applyFilterTypes = [{
@@ -54,6 +58,12 @@ export class TenantSlipDetailComponent implements OnInit {
     }];
     this.currentFilter = this.applyFilterTypes[0].key;
     this.onGetTenantSlipDetail = this.onGetTenantSlipDetail.bind(this);
+  }
+
+  get isArchiveEnabled() {
+    if(!this.isSelected) return false;
+    if(!this.form.get('FileFormat').value) return false;
+    return true;
   }
 
   ngOnInit(): void {
@@ -115,9 +125,35 @@ export class TenantSlipDetailComponent implements OnInit {
       reportType: this.form.get('ReportTypeId').value
     }
     this._service.showTenantSlipDetail(data);
-    //this.onAction('UserNotification', e.row.data);
   }
 
+  selectionChangedHandler() {
+    console.log(this.dataGrid.instance.getSelectedRowsData());
+    this.isSelected = this.dataGrid.instance.getSelectedRowsData().length > 0;
+  }
+
+  archiveSelection() {
+    let fileFormatItem = this.fileFormatList.find(obj => obj.Id == this.form.get('FileFormat').value);
+    let formData = this.dataGrid.instance.getSelectedRowsData().map(rowData => {
+      return {
+        "TenantId": rowData['TenantID'],
+        "ShopId": rowData['ShopID'],
+        "BuildingId": this.buildingId,
+        "PeriodId": rowData['PeriodID'],
+        "ReportTypeId": this.form.get('ReportTypeId').value,
+        "FileName": this.form.get('FileName').value,
+        "FileFormat": {
+          "FileNameFormat": fileFormatItem.Value != 'Custom' ? fileFormatItem.Value :  this.form.get('CustomFileFormat').value,
+          "Id": fileFormatItem.Id,
+          "Description": fileFormatItem.Value != 'Custom' ? fileFormatItem.Description : ''
+        }
+      } 
+    });
+    this._service.onReportsArchives(formData)
+      .subscribe(res => {
+        this._notificationService.message('Request submitted.');
+      })
+  }
   /**
      * On destroy
      */

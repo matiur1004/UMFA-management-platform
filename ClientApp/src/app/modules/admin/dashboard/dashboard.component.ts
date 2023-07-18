@@ -319,6 +319,39 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                     this._cdr.detectChanges();
                 }
             });
+        
+        this._dbService.tenantSlipDownloads$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((data) => {
+                if(data) {
+                    this._dbService.getReportsArchives(this._usrService.userValue.Id)
+                        .subscribe(() => {
+                            let newTab: IHomeTab = {
+                                id: 0,
+                                title: 'Downloads',
+                                type: 'TenantSlipDownloads',
+                                dataSource: data
+                            };
+                            this.tabsList.push(newTab);
+                            this.selectedTab = this.tabsList.length;
+                            this._cdr.detectChanges();
+                        });
+                    
+                }
+            });
+
+        // Wip
+        // this._dbService.getReportsArchives(this._usrService.userValue.Id)
+        //     .subscribe();
+        // let newTab: IHomeTab = {
+        //     id: 0,
+        //     title: 'Downloads',
+        //     type: 'TenantSlipDownloads',
+        //     dataSource: null
+        // };
+        // this.tabsList.push(newTab);
+        // this.selectedTab = this.tabsList.length;
+        // this._cdr.detectChanges();
     }
 
     onDetail(type: EHomeTabType) {
@@ -350,7 +383,9 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
 
     removeTab(index: number) {
         this.selectedTab = index > 0 ? 1 : 0;
-        if(this.tabsList[index]['type'] == 'TenantSlipDashboard' || this.tabsList[index]['type'] == 'TenantSlipDetail') {
+        if( this.tabsList[index]['type'] == 'TenantSlipDashboard' || 
+            this.tabsList[index]['type'] == 'TenantSlipDetail' || 
+            this.tabsList[index]['type'] == 'TenantSlipDownloads') {
             this.selectedTab = index;    
         }
         this.tabsList.splice(index, 1);        
