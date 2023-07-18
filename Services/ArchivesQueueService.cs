@@ -20,7 +20,8 @@ namespace ClientPortal.Services
 
         public async Task AddMessageToQueueAsync(string queueMessage)
         {
-            await _queueClient.SendMessageAsync(queueMessage);
+            string encodedMessage = Convert.ToBase64String(Encoding.UTF8.GetBytes(queueMessage));
+            await _queueClient.SendMessageAsync(encodedMessage);
         }
     }
 }
