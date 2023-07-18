@@ -48,6 +48,7 @@ export class TenantSlipDownloadsComponent implements OnInit {
 
   onDownload(e) {
     e.event.preventDefault();
+    window.open(e.row.data.Url, "_blank");
   }
 
   onCustomizeDateTime(cellInfo) {
