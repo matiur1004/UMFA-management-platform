@@ -25,10 +25,10 @@
     <div class="flex flex-col w-full mx-auto py-2 px-4 sm:px-4 bg-card border-b">
         <div class="flex grid grid-cols-10 gap-2">
             <div class="col-span-2">
-                <report-selection [reportList]="(reportList$ | async)"></report-selection>
+                <report-selection [reportList]="(reportList$ | async)" [reportId]="buildingReportId"></report-selection>
             </div>
             <div class="col-span-7">
-                <report-criteria *ngIf="reportId == 1"></report-criteria>
+                <report-criteria *ngIf="reportId == 1" [buildingId]="buildingId" [partnerId]="partnerId"></report-criteria>
                 <report-criteria-shop *ngIf="reportId == 2 || reportId == 3"></report-criteria-shop>
                 <report-criteria-utility *ngIf="reportId == 4"></report-criteria-utility>
                 <report-criteria-consumption *ngIf="reportId == 5"></report-criteria-consumption>

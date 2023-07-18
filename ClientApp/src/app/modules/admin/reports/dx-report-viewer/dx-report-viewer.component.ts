@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { DXReportService } from 'app/shared/services/dx-report-service';
 import { Subject, Subscription, tap } from 'rxjs';
 
@@ -9,6 +9,10 @@ import { Subject, Subscription, tap } from 'rxjs';
 })
 export class DxReportViewerComponent implements OnInit, OnDestroy {
 
+  @Input() buildingReportId: number;
+  @Input() partnerId: number;
+  @Input() buildingId: number;
+  
   private errorMessageSubject = new Subject<string>();
   localErrMsg$ = this.errorMessageSubject.asObservable();
 
@@ -35,6 +39,8 @@ export class DxReportViewerComponent implements OnInit, OnDestroy {
   constructor(private reportService: DXReportService) { }
 
   ngOnInit(): void {
+    console.log('aaaaaaa', this.partnerId);
+    if(this.buildingReportId) this.reportService.SelectedReportId = this.buildingReportId;
   }
 
   ngOnDestroy(): void {

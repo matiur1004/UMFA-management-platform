@@ -463,10 +463,10 @@
                                     <mat-icon class="icon-size-4 hover:text-red-500 ml-2" [svgIcon]="'feather:x'" (click)="removeTab(i)"></mat-icon>
                                 </ng-template>
                                 <ng-template matTabContent>
-                                    <app-building-reports></app-building-reports>
+                                    <app-building-reports [reportType]="tabItem.dataSource.reportType" [buildingId]="tabItem.dataSource.buildingId" [partnerId]="tabItem.dataSource.partnerId"></app-building-reports>
                                     <!-- <app-tenant-slip-downloads></app-tenant-slip-downloads> -->
                                 </ng-template>
-                            </mat-tab>
+                            </mat-tab>s
                         </ng-container>
                         <ng-container *ngSwitchDefault>
                             <mat-tab class="home-tab" label="{{tabItem.title}}">
@@ -476,7 +476,7 @@
                                   </ng-template>
                                 <ng-template matTabContent>
                                     <ng-container *ngIf="tabItem.type == 'BuildingDetail'; else tabTemplate;">
-                                        <app-building-detail [isSmart]="tabItem.detail.IsSmart" [title]="tabItem.title" [stats]="tabItem.dataSource" [buildingId]="tabItem.id"> </app-building-detail>
+                                        <app-building-detail [isSmart]="tabItem.detail.IsSmart" [title]="tabItem.title" [stats]="tabItem.dataSource" [buildingId]="tabItem.id" [partnerId]="tabItem.detail.partnerId"> </app-building-detail>
                                     </ng-container>
                                     <ng-template #tabTemplate>
                                         <ng-container *ngIf="tabItem.dataSource">

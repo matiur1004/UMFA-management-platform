@@ -3,14 +3,14 @@
   <form *ngIf="reportId == 1" novalidate #frmReportParams="ngForm" [formGroup]="form">
     <div class="grid grid-cols-7 gap-2">
       <div class="col-span-2">
-        <dx-select-box [items]="partnerList$ | async" displayExpr="Name" valueExpr="Id" class="form-control" label="Partner"
+        <dx-select-box [readOnly]="partnerId > 0" [items]="partnerList$ | async" displayExpr="Name" valueExpr="Id" class="form-control" label="Partner"
                         [itemTemplate]="custPartnerTemplate" placeholder="Select Partner" lableMode="static" id="partner"
                         [formControlName]="'partnerId'" name="partner" (onValueChanged)="valueChanged($event, 'Partner')"
                         [searchEnabled]="true" searchExpr="Name" searchMode="contains" [searchTimeout]="400">
         </dx-select-box>
       </div>
       <div class="col-span-2">
-        <dx-select-box [items]="buildingList$ | async" displayExpr="Name" valueExpr="BuildingId" class="form-control" label="Building"
+        <dx-select-box [readOnly]="buildingId > 0" [items]="buildingList$ | async" displayExpr="Name" valueExpr="BuildingId" class="form-control" label="Building"
                         [itemTemplate]="custBldTemplate" required placeholder="Select Building" lableMode="static" id="building"
                         [formControlName]="'buildingId'" name="building" (onValueChanged)="valueChanged($event, 'Building')"
                         [searchEnabled]="true" searchExpr="Name" searchMode="contains" [searchTimeout]="400">

@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Input } from '@angular/core';
 import { NgForm, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { IUmfaBuilding } from 'app/core/models';
 import { DXReportService } from 'app/shared/services/dx-report-service';
@@ -12,6 +12,9 @@ import { tap } from 'rxjs';
 })
 export class ReportCriteriaComponent implements OnInit, OnDestroy {
   
+  @Input() buildingId: number;
+  @Input() partnerId: number;
+
   form: UntypedFormGroup;
   buildings: IUmfaBuilding[] = [];
   constructor(private reportService: DXReportService, private _formBuilder: UntypedFormBuilder) { }
@@ -28,8 +31,8 @@ export class ReportCriteriaComponent implements OnInit, OnDestroy {
   buildingList$ = this.reportService.obsBuildings;
   periodList$ = this.reportService.obsPeriods;
   endPeriodList$ = this.reportService.obsEndPeriods;
-  buildingId: number;
-  partnerId: number;
+  // buildingId: number;
+  // partnerId: number;
   startPeriodId: number;
   endPeriodId: number;
 
@@ -56,6 +59,19 @@ export class ReportCriteriaComponent implements OnInit, OnDestroy {
       startPeriodId: [null, Validators.required],
       endPeriodId: [null, Validators.required]
     });
+    if(this.partnerId) {
+      this.form.get('partnerId').setValue(this.partnerId);
+      this.buildingList$.subscribe(buildingList => {
+        if(buildingList && buildingList.length > 0) {
+          this.reportService.selectPartner(this.partnerId);
+        }
+      })
+      
+    }
+    if(this.buildingId) {
+      this.form.get('buildingId').setValue(this.buildingId);
+      this.reportService.loadPeriods(this.form.get('buildingId').value);
+    }
   }
 
   ngOnDestroy(): void {
@@ -73,29 +89,6 @@ export class ReportCriteriaComponent implements OnInit, OnDestroy {
       this.reportService.ShowResults(false);
     }
     this.setCriteria();
-    // if (e.value) {
-    //   if (e.value != e.previousValue) {
-    //     if (e.element.id == 'partner') {
-    //       this.buildingId = null;
-    //       this.startPeriodId = null;
-    //       this.endPeriodId = null;
-    //       this.reportService.selectPartner(e.value);
-    //     }
-    //     if (e.element.id == 'building') {
-    //       this.reportService.loadPeriods(e.value);
-    //       this.startPeriodId = null;
-    //       this.endPeriodId = null;
-    //     }
-    //     if (e.element.id == 'startPeriod') {
-    //       this.reportService.selectStartPeriod(e.value);
-    //       this.endPeriodId = null;
-    //     }
-    //     if (e.element.id == 'endPeriod') {
-    //       this.reportService.ShowResults(false);
-    //     }
-    //   }
-    //   this.setCriteria(frm);
-    // }
   }
 
   setCriteria() {

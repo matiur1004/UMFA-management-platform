@@ -41,6 +41,7 @@ export class BuildingDetailComponent implements OnInit {
   @Input() title: string;
   @Input() isSmart: boolean;
   @Input() buildingId: number;
+  @Input() partnerId: number;
 
   chartElectricityUsage: Partial<ChartOptions>;
   chartWaterUsage: Partial<ChartOptions>;
@@ -194,6 +195,6 @@ export class BuildingDetailComponent implements OnInit {
   }
 
   onReports(reportType: string) {
-    this._dbService.showReports({buildingId: this.buildingId, reportType});
+    this._dbService.showReports({buildingId: this.buildingId, reportType, partnerId: this.partnerId});
   }
 }

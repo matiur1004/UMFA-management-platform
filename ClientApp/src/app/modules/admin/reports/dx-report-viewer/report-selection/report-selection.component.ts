@@ -12,6 +12,8 @@ import { tap } from 'rxjs';
 export class ReportSelectionComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @Input() reportList;
+  @Input() reportId;
+
   selectedReportId: number;
   form: UntypedFormGroup;
   
@@ -28,6 +30,11 @@ export class ReportSelectionComponent implements OnInit, OnDestroy, AfterViewIni
     this.form = this._formBuilder.group({
       selectedReportId: [null, Validators.required]
     });
+
+    if(this.reportId) {
+      this.form.get('selectedReportId').setValue(this.reportId);
+      this.selectReport();
+    }
   }
 
   ngOnDestroy(): void {

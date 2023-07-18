@@ -361,6 +361,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
         // Wip
         let res = {
             "buildingId": 2403,
+            "partnerId": 7,
             "reportType": "Building Recovery"
         }
         let newTab: IHomeTab = {
@@ -433,6 +434,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                     dataSource: dataSource,
                     detail: event.data
                 };
+                console.log(newTab)
                 this.tabsList.push(newTab);
                 this.selectedTab = this.tabsList.length;
                 this._cdr.detectChanges();
