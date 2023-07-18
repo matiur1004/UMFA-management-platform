@@ -1,5 +1,6 @@
 ﻿using ClientPortal.Data.Entities.UMFAEntities;
 using ClientPortal.Data.Repositories;
+using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 
 namespace ClientPortal.Services
@@ -11,15 +12,17 @@ namespace ClientPortal.Services
         readonly IBuildingService _buildingService;
         private readonly IUserService _userService;
         private readonly IMappedMeterService _mappedMeterService;
+        private readonly IUmfaRepository _umfaRepository;
 
         public DashboardService(IPortalStatsRepository portalStats, ILogger<DashboardService> logger, IBuildingService buildingService,
-            IUserService userService, IMappedMeterService mappedMeterService)
+            IUserService userService, IMappedMeterService mappedMeterService, IUmfaRepository umfaRepository)
         {
             _buildingService = buildingService;
             _userService = userService;
             _portalStats = portalStats;
             _logger = logger;
             _mappedMeterService = mappedMeterService;
+            _umfaRepository = umfaRepository;
         }
 
         public DashboardMainResponse GetMainDashboard(int umfaUserId)
@@ -93,6 +96,11 @@ namespace ClientPortal.Services
                 _logger.LogError($"Stats not return correctly: {response?.Response}");
                 return new List<DashboardBuilding>();
             }
+        }
+
+        public async Task<DashboardShopsSpResponse> GetShopDataAsync(DashboardShopsSpRequest request)
+        {
+            return await _umfaRepository.GetDashboardShopDataAsync(request);
         }
     }
 }
