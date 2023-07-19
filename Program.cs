@@ -55,7 +55,8 @@ IConfiguration? configuration = builder.Configuration;
     services.Configure<WhatsAppSettings>(builder.Configuration.GetSection(nameof(WhatsAppSettings)));
     services.Configure<TelegramSettings>(builder.Configuration.GetSection(nameof(TelegramSettings)));
     services.Configure<NotificationSettings>(builder.Configuration.GetSection(nameof(NotificationSettings)));
-    services.Configure<ArchivesQueueSettings>(builder.Configuration.GetSection(nameof(ArchivesQueueSettings)));
+    //services.Configure<ArchivesQueueSettings>(builder.Configuration.GetSection(nameof(ArchivesQueueSettings)));
+    services.Configure<ArchivesQueueSettings>(builder.Configuration.GetSection("ArchivesQueueSettings"));
 
     services.AddMvcCore();
     services.AddControllers().AddJsonOptions(x =>
