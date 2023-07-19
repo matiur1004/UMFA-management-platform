@@ -1,4 +1,6 @@
 ﻿using ClientPortal.Controllers.Authorization;
+using ClientPortal.Models.RequestModels;
+using ClientPortal.Models.ResponseModels;
 using ClientPortal.Services;
 
 namespace ClientPortal.Controllers
@@ -59,6 +61,21 @@ namespace ClientPortal.Controllers
             {
                 _logger.LogError($"Error while retrieving stats from service: {ex.Message}");
                 return BadRequest($"Error while retrieving stats from service: {ex.Message}");
+            }
+        }
+
+        [HttpGet("shops")]
+        public async Task<ActionResult<DashboardShopsSpResponse>> GetShopsData([FromQuery] DashboardShopsSpRequest request)
+        {
+            try
+            {
+                var response = await _dbService.GetShopDataAsync(request);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while retrieving shop data from service: {ex.Message}");
+                return BadRequest($"Error while retrieving shop from service: {ex.Message}");
             }
         }
     }

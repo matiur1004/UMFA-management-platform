@@ -30,6 +30,8 @@ namespace ClientPortal.Data.Repositories
         public Task<FileFormatDataSpResponse> GetFileFormatData(FileFormatDataSpRequest request);
 
         public Task UpdateArchiveFileFormatsAsync(UpdateArchiveFileFormatSpRequest request);
+
+        public Task<DashboardShopsSpResponse> GetDashboardShopDataAsync(DashboardShopsSpRequest request);
     }
     public class UmfaRepository : IUmfaRepository
     {
@@ -227,6 +229,11 @@ namespace ClientPortal.Data.Repositories
         public async Task<TenantSlipDataForArchiveSpResponse> GetTenantSlipDataForArchiveAsync(TenantSlipDataForArchiveSpRequest request)
         {
             return await RunStoredProcedureAsync<TenantSlipDataForArchiveSpResponse, TenantSlipDataForArchiveSpRequest>("upPortal_TenantSlipPortal", request);
+        }
+
+        public async Task<DashboardShopsSpResponse> GetDashboardShopDataAsync(DashboardShopsSpRequest request)
+        {
+            return await RunStoredProcedureAsync<DashboardShopsSpResponse, DashboardShopsSpRequest>("upPortal_ShopDashboard", request);
         }
     }
 }

@@ -15,7 +15,7 @@ const PROXY_CONFIG = [
       "/Building",
       "/AMRMeter",
       "/AMRData",
-      "/dashboard",
+      "/Dashboard",
       "/DXXRDV",
       "/MappedMeters",
       "/ScadaMeters",

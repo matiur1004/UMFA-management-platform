@@ -69,7 +69,7 @@ export const CONFIG: ApplicationConfiguration = {
     refreshPath: '/user/refresh-token',
     revokePath: '/user/revoke-token',
     getHomeStats: '/home/get-stats',
-    dashboardStats: '/dashboard/getDBStats',
+    dashboardStats: '/Dashboard/getDBStats',
     getUser: '/user/',
     // paths for amr scada users
     getAmrScadaUser: '/AMRScadaUser/',

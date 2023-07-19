@@ -105,7 +105,7 @@ export class DashboardService {
   }
 
   getBuildingStats(buildingId) {
-    const url = `${CONFIG.apiURL}/dashboard/getDBBuildingStats/${buildingId}`;
+    const url = `${CONFIG.apiURL}/Dashboard/getDBBuildingStats/${buildingId}`;
     return this.http.get<any>(url, { withCredentials: true })
       .pipe(
         catchError(err => this.catchAuthErrors(err)),

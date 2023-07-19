@@ -38,7 +38,7 @@ export class BuildingService {
 
   //Get Building List for user
   getBuildingList(userId: number): Observable<IUmfaBuilding[]> {
-    const url = `dashboard/GetBuildingList/${userId}`;
+    const url = `Dashboard/GetBuildingList/${userId}`;
     return this.http.get<any>(url, { withCredentials: true })
       .pipe(
         catchError(err => this.catchErrors(err)),
