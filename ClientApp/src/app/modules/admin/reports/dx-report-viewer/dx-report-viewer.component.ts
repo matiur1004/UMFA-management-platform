@@ -1,6 +1,6 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { DXReportService } from 'app/shared/services/dx-report-service';
-import { Subject, Subscription, tap } from 'rxjs';
+import { Subject, Subscription, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'app-dx-report-viewer',
@@ -24,6 +24,9 @@ export class DxReportViewerComponent implements OnInit, OnDestroy {
   
   reportList$ = this.reportService.dxReportList$.pipe(tap(rl => { }));
   
+  formValid: boolean = false;
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
+
   get frmsValid(): boolean {
     return this.reportService.IsFrmsValid();
   }
@@ -36,15 +39,25 @@ export class DxReportViewerComponent implements OnInit, OnDestroy {
     return null;
   }
 
-  constructor(private reportService: DXReportService) { }
+
+  constructor(private reportService: DXReportService, private _cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    console.log('aaaaaaa', this.partnerId);
     if(this.buildingReportId) this.reportService.SelectedReportId = this.buildingReportId;
-  }
 
+    this.reportService.isFormValid$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((status: boolean) => {
+        this.formValid = status;
+        this._cdr.detectChanges();
+      });
+  }
+  
   ngOnDestroy(): void {
     this.remoteErrorSub.unsubscribe();
+    this._unsubscribeAll.next(null);
+    this._unsubscribeAll.complete();
+    this.reportService.destroyReportViewer();
   }
 
   showReport(e: any) {

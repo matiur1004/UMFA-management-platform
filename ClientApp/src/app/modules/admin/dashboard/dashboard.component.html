@@ -476,7 +476,7 @@
                                   </ng-template>
                                 <ng-template matTabContent>
                                     <ng-container *ngIf="tabItem.type == 'BuildingDetail'; else tabTemplate;">
-                                        <app-building-detail [isSmart]="tabItem.detail.IsSmart" [title]="tabItem.title" [stats]="tabItem.dataSource" [buildingId]="tabItem.id" [partnerId]="tabItem.detail.partnerId"> </app-building-detail>
+                                        <app-building-detail [isSmart]="tabItem.detail.IsSmart" [title]="tabItem.title" [stats]="tabItem.dataSource" [buildingId]="tabItem.id" [partnerId]="tabItem.detail.PartnerId"> </app-building-detail>
                                     </ng-container>
                                     <ng-template #tabTemplate>
                                         <ng-container *ngIf="tabItem.dataSource">

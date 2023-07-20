@@ -1,9 +1,9 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { IUmfaBuilding } from '@core/models';
 import { DXReportService } from '@shared/services';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'report-criteria-consumption-recon',
@@ -12,6 +12,9 @@ import { Subject } from 'rxjs';
 })
 export class ReportCriteriaConsumptionReconComponent implements OnInit {
 
+  @Input() buildingId: number;
+  @Input() partnerId: number;
+  
   form: UntypedFormGroup;
   buildings: IUmfaBuilding[] = [];
   
@@ -48,6 +51,22 @@ export class ReportCriteriaConsumptionReconComponent implements OnInit {
       BuildingId: [null, Validators.required],
       PeriodId: [null, Validators.required],
     })
+
+    if(this.partnerId) {
+      this.form.get('PartnerId').setValue(this.partnerId);
+      this.reportService.obsBuildings
+        .pipe(takeUntil(this._unsubscribeAll))
+        .subscribe((buildingList: any) => {
+          if(buildingList && buildingList.length > 0) {
+            this.reportService.selectPartner(this.partnerId);
+          }
+        });
+      
+    }
+    if(this.buildingId) {
+      this.form.get('BuildingId').setValue(this.buildingId);
+      this.reportService.loadPeriods(this.buildingId);
+    }
   }
 
   valueChanged(e: any, method: string) {
@@ -73,6 +92,7 @@ export class ReportCriteriaConsumptionReconComponent implements OnInit {
         }
       }
       this.reportService.setFrmValid(2, true);
+      this.reportService.showFormValid(true);
     } else {
       this.reportService.ShopUsageVarianceParams = null;
       this.reportService.setFrmValid(2, false);

@@ -359,20 +359,20 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             });
             
         // Wip
-        let res = {
-            "buildingId": 2403,
-            "partnerId": 7,
-            "reportType": "Building Recovery"
-        }
-        let newTab: IHomeTab = {
-            id: 0,
-            title: `${res.reportType} Reports`,
-            type: 'BuildingReports',
-            dataSource: res
-        };
-        this.tabsList.push(newTab);
-        this.selectedTab = this.tabsList.length;
-        this._cdr.detectChanges();
+        // let res = {
+        //     "buildingId": 2403,
+        //     "partnerId": 7,
+        //     "reportType": "Shop Costs Variances"
+        // }
+        // let newTab: IHomeTab = {
+        //     id: 0,
+        //     title: `${res.reportType} Reports`,
+        //     type: 'BuildingReports',
+        //     dataSource: res
+        // };
+        // this.tabsList.push(newTab);
+        // this.selectedTab = this.tabsList.length;
+        // this._cdr.detectChanges();
     }
 
     onDetail(type: EHomeTabType) {
@@ -406,7 +406,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
         this.selectedTab = index > 0 ? 1 : 0;
         if( this.tabsList[index]['type'] == 'TenantSlipDashboard' || 
             this.tabsList[index]['type'] == 'TenantSlipDetail' || 
-            this.tabsList[index]['type'] == 'TenantSlipDownloads') {
+            this.tabsList[index]['type'] == 'TenantSlipDownloads' ||
+            this.tabsList[index]['type'] == 'BuildingReports') {
             this.selectedTab = index;    
         }
         this.tabsList.splice(index, 1);        
@@ -434,7 +435,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                     dataSource: dataSource,
                     detail: event.data
                 };
-                console.log(newTab)
                 this.tabsList.push(newTab);
                 this.selectedTab = this.tabsList.length;
                 this._cdr.detectChanges();

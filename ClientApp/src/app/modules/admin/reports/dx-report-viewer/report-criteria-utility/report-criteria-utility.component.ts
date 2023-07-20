@@ -1,8 +1,9 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { IUmfaBuilding } from '@core/models';
 import { DXReportService } from '@shared/services';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'report-criteria-utility',
@@ -11,6 +12,9 @@ import { DXReportService } from '@shared/services';
 })
 export class ReportCriteriaUtilityComponent implements OnInit {
 
+  @Input() buildingId: number;
+  @Input() partnerId: number;
+  
   form: UntypedFormGroup;
   buildings: IUmfaBuilding[] = [];
   constructor(private reportService: DXReportService, private _formBuilder: UntypedFormBuilder) { }
@@ -25,8 +29,7 @@ export class ReportCriteriaUtilityComponent implements OnInit {
   periodList$ = this.reportService.obsPeriods;
   endPeriodList$ = this.reportService.obsEndPeriods;
   tenantOptions$ = this.reportService.tenantOptions$;
-  buildingId: number;
-  partnerId: number;
+  
   startPeriodId: number;
   endPeriodId: number;
 
@@ -72,6 +75,8 @@ export class ReportCriteriaUtilityComponent implements OnInit {
     return this.form.get('visible')['controls'][name];
   }
 
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
+
   ngOnInit(): void {
     let visibleItemsControls = {};
     this.visibleItems.forEach(item => {
@@ -87,15 +92,27 @@ export class ReportCriteriaUtilityComponent implements OnInit {
       ServiceType: [null, Validators.required],
       visible: this._formBuilder.group(visibleItemsControls)
     });
+
+    if(this.partnerId) {
+      this.form.get('partnerId').setValue(this.partnerId);
+      this.reportService.obsBuildings
+        .pipe(takeUntil(this._unsubscribeAll))
+        .subscribe((buildingList: any) => {
+          if(buildingList && buildingList.length > 0) {
+            this.reportService.selectPartner(this.partnerId);
+          }
+        });
+      
+    }
+    if(this.buildingId) {
+      this.form.get('buildingId').setValue(this.buildingId);
+      this.reportService.loadPeriods(this.buildingId);
+    }
   }
   
   customSearch(term: string, item: any) {
     term = term.toLocaleLowerCase();
     return item.Name.toLocaleLowerCase().indexOf(term) > -1;
-  }
-
-  ngOnDestroy(): void {
-    this.reportService.resetAll();
   }
 
   valueChanged(e: any, method: string) {
@@ -149,13 +166,18 @@ export class ReportCriteriaUtilityComponent implements OnInit {
           UmfaRecoveryVisible: visibleVal['UmfaRecoveryVisible'],
           ClientRecoverableVisible: visibleVal['ClientRecoverableVisible'],
         }
-      }
-      
+      }      
       this.reportService.setFrmValid(2, true);
+      this.reportService.showFormValid(true);
     } else {
       this.reportService.ShopUsageVarianceParams = null;
       this.reportService.setFrmValid(2, false);
     }
   }
 
+  ngOnDestroy(): void {
+    this.reportService.resetAll();
+    this._unsubscribeAll.next(null);
+    this._unsubscribeAll.complete();
+  }
 }

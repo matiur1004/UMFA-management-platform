@@ -4,6 +4,7 @@ import { IBuildingRecoveryParams, IConsumptionSummaryReconReportParams, IConsump
 import { BuildingService } from "./building.service";
 import { CONFIG } from "@core/helpers";
 import { HttpClient } from "@angular/common/http";
+import { UmfaService } from "./umfa.service";
 
 @Injectable({ providedIn: 'root' })
 export class DXReportService {
@@ -13,10 +14,12 @@ export class DXReportService {
     private _utilityRecoveryExpense: BehaviorSubject<any> = new BehaviorSubject(null);
     private _consumptionSummary: BehaviorSubject<any> = new BehaviorSubject(null);
     private _consumptionSummaryRecon: BehaviorSubject<any> = new BehaviorSubject(null);
-    
+    private _isFormValid: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
     constructor(
         private buildingService: BuildingService,
-        private http: HttpClient
+        private http: HttpClient,
+        private umfaService: UmfaService,
     ) {
         this.ErrorSubject = new BehaviorSubject<string>(null);
         this.Error$ = this.ErrorSubject.asObservable();
@@ -56,6 +59,10 @@ export class DXReportService {
 
     get reportChanged$(): Observable<boolean> {
         return this._reportChanged.asObservable();
+    }
+
+    get isFormValid$(): Observable<boolean> {
+        return this._isFormValid.asObservable();
     }
 
     private ErrorSubject: BehaviorSubject<string>;
@@ -118,8 +125,10 @@ export class DXReportService {
     }
 
     public selectPartner(partnerId: number) {
-        const filteredBuildings = this.buildings.filter(bld => bld.PartnerId == partnerId);
-        this.bsBuildings.next(filteredBuildings);
+        if(this.buildings && this.buildings.length > 0) {
+            const filteredBuildings = this.buildings.filter(bld => bld.PartnerId == partnerId);            
+            this.bsBuildings.next(filteredBuildings);
+        }        
     }
 
     //Periods
@@ -187,6 +196,10 @@ export class DXReportService {
                 break;
             }
         }
+    }
+
+    showFormValid(status) {
+        this._isFormValid.next(status);
     }
 
     public ShowResults(value: boolean) {
@@ -318,17 +331,6 @@ export class DXReportService {
     set ConsumptionSummaryReconReportParams(value: IConsumptionSummaryReconReportParams) {
         this.CSRParams = value;
         if (this.selectedReport && this.selectedReport.Id != 0) {
-            // switch (this.selectedReport.Id) {
-            //     case 6: {
-            //         if (this.CSRParams)
-            //             this.sel
-            //             //this.selectedReport.DXReportName = `ShopUsageVariance?${this.CSRParams.BuildingId},${this.CSRParams.FromPeriodId},${this.SUVParams.ToPeriodId},${this.SUVParams.AllTenants}`;
-            //         break;
-            //     }
-            //     default: {
-            //         break;
-            //     }
-            // }
         }
     }
     
@@ -355,6 +357,7 @@ export class DXReportService {
         this.BRParams = null;
         this.showCrit = false;
         this.showCrit = false;
+        this.umfaService.setShops(null);
     }
 
     ReportSelectionChanged() {
@@ -422,13 +425,6 @@ export class DXReportService {
 
     getReportDataForConsumptionSummary() {
         const url = `${CONFIG.apiURL}/Reports/ConsumptionSummaryReport`;
-        // this.CSParams = {
-        //   Shops: [62345, 62346],
-        //   BuildingId: 2403,
-        //   PeriodId: 174270,
-        //   SplitIndicator: 0,
-        //   Sort: 'Tenant'
-        // }
         return this.http.put<any>(url, this.CSParams, { withCredentials: true })
             .pipe(
                 catchError(err => this.catchErrors(err)),
@@ -469,6 +465,18 @@ export class DXReportService {
         this._consumptionSummaryRecon.next(data);
     }
     
+    destroyReportViewer() {
+        this.bsBuildings.next([]);
+        this.buildings = null;
+        this.SelectedReportId = 0;
+        this._isFormValid.next(false);
+        this._consumptionSummary.next(null);
+        this._consumptionSummaryRecon.next(null);
+        this._utilityRecoveryExpense.next(null);
+        this._shopUsageVariance.next(null);
+        this._shopCostVariance.next(null);
+    }
+
     catchErrors(error: { error: { message: any; }; message: any; }): Observable<Response> {
         if (error && error.error && error.error.message) { //clientside error
             console.log(`Client side error: ${error.error.message}`);

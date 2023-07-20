@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { IUmfaBuilding } from '@core/models';
 import { DXReportService } from '@shared/services';
@@ -16,6 +16,9 @@ export class ReportCriteriaConsumptionComponent implements OnInit {
 
   @ViewChild(DxTreeViewComponent, { static: false }) treeView;
   
+  @Input() buildingId: number;
+  @Input() partnerId: number;
+  
   form: UntypedFormGroup;
   buildings: IUmfaBuilding[] = [];
   treeBoxValue: any[];
@@ -25,7 +28,8 @@ export class ReportCriteriaConsumptionComponent implements OnInit {
   constructor(
     private reportService: DXReportService, 
     private _formBuilder: UntypedFormBuilder,
-    private umfaService: UmfaService) { }
+    private umfaService: UmfaService,
+    private _cdr: ChangeDetectorRef) { }
 
 
   get showPage(): boolean {
@@ -37,8 +41,6 @@ export class ReportCriteriaConsumptionComponent implements OnInit {
   periodList$ = this.reportService.obsPeriods;
   endPeriodList$ = this.reportService.obsEndPeriods;
   tenantOptions$ = this.reportService.tenantOptions$;
-  buildingId: number;
-  partnerId: number;
   startPeriodId: number;
   endPeriodId: number;
 
@@ -72,6 +74,21 @@ export class ReportCriteriaConsumptionComponent implements OnInit {
       Shops: [[], Validators.required],
     });
 
+    if(this.partnerId) {
+      this.form.get('PartnerId').setValue(this.partnerId);
+      this.reportService.obsBuildings
+        .pipe(takeUntil(this._unsubscribeAll))
+        .subscribe((buildingList: any) => {
+          if(buildingList && buildingList.length > 0) {
+            this.reportService.selectPartner(this.partnerId);
+          }
+        });
+      
+    }
+    if(this.buildingId) {
+      this.form.get('BuildingId').setValue(this.buildingId);
+      this.reportService.loadPeriods(this.buildingId);
+    }
     this.umfaService.shops$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: any) => {
@@ -140,11 +157,12 @@ export class ReportCriteriaConsumptionComponent implements OnInit {
         this.umfaService.getUmfaShops(this.form.get('BuildingId').value, this.form.get('PeriodId').value).subscribe(() => {
           this.reportService.setConsumptionSummary(null);
           this.setCriteria();
+          this._cdr.detectChanges();
         });
     } else {
       this.reportService.setConsumptionSummary(null);
     }
-    this.setCriteria();
+    //this.setCriteria();
   }
 
   setCriteria() {
@@ -159,6 +177,7 @@ export class ReportCriteriaConsumptionComponent implements OnInit {
         }
       }
       this.reportService.setFrmValid(2, true);
+      this.reportService.showFormValid(true);
     } else {
       this.reportService.ShopUsageVarianceParams = null;
       this.reportService.setFrmValid(2, false);

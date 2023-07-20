@@ -27,6 +27,10 @@ export class UmfaService {
         );
     }
 
+    setShops(data) {
+        this._shops.next(data);
+    }
+
     //catches errors
     private catchErrors(error: { error: { message: any; }; message: any; }): Observable<Response> {
         if (error && error.error && error.error.message) { //clientside error

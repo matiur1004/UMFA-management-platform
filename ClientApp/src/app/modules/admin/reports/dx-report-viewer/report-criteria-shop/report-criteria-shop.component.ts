@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { IUmfaBuilding } from '@core/models';
 import { DXReportService } from '@shared/services';
@@ -12,6 +12,9 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class ReportCriteriaShopComponent implements OnInit {
 
+  @Input() buildingId: number;
+  @Input() partnerId: number;
+  
   form: UntypedFormGroup;
   buildings: IUmfaBuilding[] = [];
 
@@ -21,7 +24,6 @@ export class ReportCriteriaShopComponent implements OnInit {
 
 
   get showPage(): boolean {
-    console.log("sdfdf");
     return this.reportService.ShowCrit();
   }
 
@@ -30,8 +32,6 @@ export class ReportCriteriaShopComponent implements OnInit {
   periodList$ = this.reportService.obsPeriods;
   endPeriodList$ = this.reportService.obsEndPeriods;
   tenantOptions$ = this.reportService.tenantOptions$;
-  buildingId: number;
-  partnerId: number;
   startPeriodId: number;
   endPeriodId: number;
 
@@ -59,6 +59,22 @@ export class ReportCriteriaShopComponent implements OnInit {
       endPeriodId: [null, Validators.required],
       allTenants: [1, Validators.required]
     });
+
+    if(this.partnerId) {
+      this.form.get('partnerId').setValue(this.partnerId);
+      this.reportService.obsBuildings
+        .pipe(takeUntil(this._unsubscribeAll))
+        .subscribe((buildingList: any) => {
+          if(buildingList && buildingList.length > 0) {
+            this.reportService.selectPartner(this.partnerId);
+          }
+        });
+      
+    }
+    if(this.buildingId) {
+      this.form.get('buildingId').setValue(this.buildingId);
+      this.reportService.loadPeriods(this.buildingId);
+    }
 
     this.reportService.reportChanged$
       .pipe(takeUntil(this._unsubscribeAll))
@@ -134,6 +150,7 @@ export class ReportCriteriaShopComponent implements OnInit {
       }
       
       this.reportService.setFrmValid(2, true);
+      this.reportService.showFormValid(true);
     } else {
       this.reportService.ShopUsageVarianceParams = null;
       this.reportService.setFrmValid(2, false);

@@ -29,16 +29,16 @@
             </div>
             <div class="col-span-7">
                 <report-criteria *ngIf="reportId == 1" [buildingId]="buildingId" [partnerId]="partnerId"></report-criteria>
-                <report-criteria-shop *ngIf="reportId == 2 || reportId == 3"></report-criteria-shop>
-                <report-criteria-utility *ngIf="reportId == 4"></report-criteria-utility>
-                <report-criteria-consumption *ngIf="reportId == 5"></report-criteria-consumption>
-                <report-criteria-consumption-recon *ngIf="reportId == 6"></report-criteria-consumption-recon>
+                <report-criteria-shop *ngIf="reportId == 2 || reportId == 3" [buildingId]="buildingId" [partnerId]="partnerId"></report-criteria-shop>
+                <report-criteria-utility *ngIf="reportId == 4" [buildingId]="buildingId" [partnerId]="partnerId"></report-criteria-utility>
+                <report-criteria-consumption *ngIf="reportId == 5" [buildingId]="buildingId" [partnerId]="partnerId"></report-criteria-consumption>
+                <report-criteria-consumption-recon *ngIf="reportId == 6" [buildingId]="buildingId" [partnerId]="partnerId"></report-criteria-consumption-recon>
             </div>
             <div class="col-span-1 flex items-end">
                 <button mat-raised-button [color]="'primary'" type="button"
                     [title]="(frmsValid) ? 'Show Report' : 'Disabled until the criteria is valid'"
                     class="dnm-btn dnm-btn-primary"
-                    [disabled]="!frmsValid"
+                    [disabled]="!formValid"
                     (click)="showReport($event);">Show Report</button>
             </div>
         </div>
