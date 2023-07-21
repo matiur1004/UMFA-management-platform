@@ -45,5 +45,6 @@
         public double Excl { get; set; }
         public double Vat { get; set; }
         public double Incl { get; set; }
+        public bool Recoverable { get; set; }
     }
 }
