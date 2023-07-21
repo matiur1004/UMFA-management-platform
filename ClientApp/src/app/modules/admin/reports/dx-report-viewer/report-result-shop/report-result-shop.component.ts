@@ -21,7 +21,7 @@ export class ReportResultShopComponent implements OnInit {
   currentFilter: any;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
-  constructor(private reportService: DXReportService, private cdr: ChangeDetectorRef) {
+  constructor(private reportService: DXReportService, private _cdr: ChangeDetectorRef) {
     this.applyFilterTypes = [{
         key: 'auto',
         name: 'Immediately',
@@ -55,6 +55,7 @@ export class ReportResultShopComponent implements OnInit {
             return item;
           })
           this.dataSource = this.dataSource.concat(totalRows);
+          this._cdr.detectChanges();
         } else {this.dataSource = null;}
       })
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { DXReportService } from '@shared/services';
 import { exportDataGrid, exportPivotGrid } from 'devextreme/excel_exporter';
 import { Workbook } from 'exceljs';
@@ -20,7 +20,7 @@ export class ReportResultShopCostComponent implements OnInit {
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
-  constructor(private reportService: DXReportService) {
+  constructor(private reportService: DXReportService, private _cdr: ChangeDetectorRef) {
     this.applyFilterTypes = [{
         key: 'auto',
         name: 'Immediately',
@@ -55,6 +55,7 @@ export class ReportResultShopCostComponent implements OnInit {
             return item;
           })
           this.dataSource = this.dataSource.concat(totalRows);
+          this._cdr.detectChanges();
         } else {this.dataSource = null;}
       })
   }

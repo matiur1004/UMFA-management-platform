@@ -1,4 +1,4 @@
-import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { DXReportService } from '@shared/services';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { Workbook } from 'exceljs';
@@ -38,7 +38,8 @@ export class ReportResultConsumptionReconComponent implements OnInit {
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   constructor(
     private reportService: DXReportService,
-    private _decimalPipe: DecimalPipe
+    private _decimalPipe: DecimalPipe,
+    private _cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -268,6 +269,7 @@ export class ReportResultConsumptionReconComponent implements OnInit {
             })
             this.otherDataSource.push(report);
           })
+          this._cdr.detectChanges();
         } else {
           this.otherDataSource = null;
           this.electricityRecoveriesDataSource = null;

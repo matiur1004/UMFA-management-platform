@@ -1,6 +1,6 @@
-import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { DXReportService } from '@shared/services';
-import { exportDataGrid, exportPivotGrid } from 'devextreme/excel_exporter';
+import { exportDataGrid } from 'devextreme/excel_exporter';
 import { exportDataGrid as exportDataGridToPdf } from 'devextreme/pdf_exporter';
 import { Workbook } from 'exceljs';
 import { jsPDF } from 'jspdf';
@@ -44,7 +44,7 @@ export class ReportResultUtilityComponent implements OnInit {
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
-  constructor(private reportService: DXReportService, private renderer: Renderer2) {
+  constructor(private reportService: DXReportService, private _cdr: ChangeDetectorRef) {
     this.chartOptions = {
       series: [
       ],
@@ -122,12 +122,12 @@ export class ReportResultUtilityComponent implements OnInit {
             seriesData.push(rowData);
           });
           this.chartOptions.series = seriesData;
+          this._cdr.detectChanges();
         } else {
           this.periodList = [];
           this.resultsForGrid = [];
           this.resultsForGraph = [];
         }
-        
       })
   }
 

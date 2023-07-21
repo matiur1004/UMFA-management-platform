@@ -22,6 +22,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { TenantSlipDetailComponent } from './tenant-slip-detail/tenant-slip-detail.component';
 import { TenantSlipDashboardComponent } from './tenant-slip-dashboard/tenant-slip-dashboard.component';
 import { TenantSlipDownloadsComponent } from './tenant-slip-downloads/tenant-slip-downloads.component';
+import { BuildingReportsComponent } from './building-reports/building-reports.component';
+import { ReportsModule } from '../reports/reports.module';
 
 @NgModule({
     declarations: [
@@ -29,7 +31,8 @@ import { TenantSlipDownloadsComponent } from './tenant-slip-downloads/tenant-sli
         BuildingDetailComponent,
         TenantSlipDetailComponent,
         TenantSlipDashboardComponent,
-        TenantSlipDownloadsComponent
+        TenantSlipDownloadsComponent,
+        BuildingReportsComponent
     ],
     imports     : [
         CommonModule,
@@ -48,12 +51,16 @@ import { TenantSlipDownloadsComponent } from './tenant-slip-downloads/tenant-sli
         MatTableModule,
         NgApexchartsModule,
         DxTextBoxModule,
+        ReportsModule,
         DxDataGridModule,
         DxChartModule,
         DxButtonModule,
         DxSelectBoxModule,
         MatTabsModule,
         SharedModule
+    ],
+    exports: [
+        ReportsModule
     ]
 })
 export class DashboardModule

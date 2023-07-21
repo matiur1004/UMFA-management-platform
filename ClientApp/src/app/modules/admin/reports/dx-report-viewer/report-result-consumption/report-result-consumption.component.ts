@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { DXReportService } from '@shared/services';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { Workbook } from 'exceljs';
@@ -29,7 +29,8 @@ export class ReportResultConsumptionComponent implements OnInit {
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
-  constructor(private reportService: DXReportService) { 
+  constructor(private reportService: DXReportService,
+      private _cdr: ChangeDetectorRef) { 
     this.applyFilterTypes = [{
         key: 'auto',
         name: 'Immediately',
@@ -61,6 +62,7 @@ export class ReportResultConsumptionComponent implements OnInit {
           this.totalGridDataSource.push(totalItem);
           this.totalGridDataSource.push({name: 'Vat on individual Invoice Totals:', excl: null, vat: null, incl: this.reportTotals['Vat']});
           this.totalGridDataSource.push({name: 'Invoice Totals Incl. Vat:', excl: null, vat: null, incl: this.reportTotals['TotalIncl']});
+          this._cdr.detectChanges();
         } else {
           this.dataSource = null;
         }

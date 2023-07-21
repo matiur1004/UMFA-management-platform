@@ -85,7 +85,8 @@ import { MatIconModule } from '@angular/material/icon';
     // DxValidatorModule,
   ],
   exports: [
-    DxReportViewerModule
+    DxReportViewerModule,
+    DxReportViewerComponent
   ],
   providers: [
     DecimalPipe

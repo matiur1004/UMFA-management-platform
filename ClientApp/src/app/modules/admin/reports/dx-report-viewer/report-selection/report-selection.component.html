@@ -21,7 +21,7 @@
 
 </div> -->
 <form novalidate [formGroup]="form" #frmReportSelect="ngForm">
-    <dx-select-box [items]="reportList" displayExpr="Name" valueExpr="Id" class="form-control" label="Select Report to View"
+    <dx-select-box [readOnly]="reportId > 0" [items]="reportList" displayExpr="Name" valueExpr="Id" class="form-control" label="Select Report to View"
                    [itemTemplate]="custReportTemplate" required placeholder="Select Report" labelMode="static"
                    [formControlName]="'selectedReportId'" name="report" (onValueChanged)="selectionChanged($event)">
     </dx-select-box>

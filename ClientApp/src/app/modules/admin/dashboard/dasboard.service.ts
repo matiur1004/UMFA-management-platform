@@ -22,6 +22,8 @@ export class DashboardService {
   private _tenantSlipDetail: BehaviorSubject<any> = new BehaviorSubject(null);
   private _tenantSlipData: BehaviorSubject<any> = new BehaviorSubject(null);
   private _tenantSlipDownloads: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _buildingReports: BehaviorSubject<any> = new BehaviorSubject(null);
+  
   private _reportsArchives: BehaviorSubject<any> = new BehaviorSubject(null);
   
   public stats$: Observable<IHomePageStats>;
@@ -77,6 +79,9 @@ export class DashboardService {
     return this._reportsArchives.asObservable();
   }
 
+  get buildingReports$(): Observable<any> {
+    return this._buildingReports.asObservable();
+  }
   /**
      * Getter for data
      */
@@ -247,6 +252,10 @@ export class DashboardService {
 
   showDownloads() {
     this._tenantSlipDownloads.next(true);
+  }
+
+  showReports(buildingId) {
+    this._buildingReports.next(buildingId);
   }
 
   destroyTenantSlipDetail() {
