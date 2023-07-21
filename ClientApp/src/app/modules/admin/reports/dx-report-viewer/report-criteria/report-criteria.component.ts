@@ -99,6 +99,7 @@ export class ReportCriteriaComponent implements OnInit, OnDestroy {
         EndPeriodId: this.form.get('endPeriodId').value
       }
       this.reportService.setFrmValid(2, true);
+      this.reportService.showFormValid(true);
     } else {
       this.reportService.BuildingRecoveryParams = null;
       this.reportService.setFrmValid(2, false);
