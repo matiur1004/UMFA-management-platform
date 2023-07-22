@@ -17,6 +17,7 @@
         public DateTime OccDTM { get; set; }
         public decimal? Average { get; set; }
         public string? Variance { get; set; }
+        public bool Recoverable { get; set; }
         public List<PeriodUsageDetail> PeriodUsageDetails { get; set; } = new List<PeriodUsageDetail>();
     }
 

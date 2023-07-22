@@ -224,6 +224,7 @@ namespace ClientPortal.Services
                     OccDTM = shopGroup.First().OccDTM,
                     PeriodUsageDetails = new List<PeriodUsageDetail>(),
                     InvGroup = shopGroup.Key.InvGroup,
+                    Recoverable = shopGroup.Any(sg => sg.Recoverable),
                 };
 
                 foreach (var shopUsageVariance in shopGroup)

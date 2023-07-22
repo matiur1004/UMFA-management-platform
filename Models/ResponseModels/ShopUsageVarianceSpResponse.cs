@@ -14,6 +14,7 @@
         public string PeriodName { get; set; }
         public string InvGroup { get; set; }
         public decimal? UsageValue { get; set; }
+        public bool Recoverable { get; set; }
     }
 
 }
