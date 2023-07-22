@@ -15,5 +15,6 @@
         public string GroupName { get; set; }
         public int GroupId { get; set; }
         public decimal? RandValue { get; set; }
+        public bool Recoverable { get; set; }
     }
 }
