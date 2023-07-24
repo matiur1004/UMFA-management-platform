@@ -45,7 +45,7 @@ export class ReportCriteriaConsumptionComponent implements OnInit {
   endPeriodId: number;
 
   splitTypeItems: any[] = [{id: 0, name: 'Combined'}, {id: 1, name: 'Split 1'}, {id: 2, name: 'Split 2'}];
-  groupByItems: any[] = [{id:0, name: 'Account'}, {id: 1, name: 'Tenant'}, {id: 2, name: 'Shop'}];
+  groupByItems: any[] = [ {id: 1, name: 'Tenant'}, {id: 2, name: 'Shop'}];
   shopItems: any[] = [];
 
   custPartnerTemplate = (arg: any) => {
