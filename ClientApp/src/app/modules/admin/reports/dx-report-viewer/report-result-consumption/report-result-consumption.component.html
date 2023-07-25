@@ -1,40 +1,64 @@
-<div class="flex flex-col gap-y-2 relative">
+<div class="flex flex-col gap-y-1 relative">
     <ng-container *ngIf="dataSource">
-        <div class="flex w-full p-2 mt-2" *ngIf="reportTotals">
-            <dx-data-grid
-                #totalDataGrid
-                [dataSource]="totalGridDataSource"
-                [showBorders]="true"
-                (onExporting)="onExport($event)"
-                [remoteOperations]="true"
-                [wordWrapEnabled]="true"
-                [hoverStateEnabled]="true"
-                (onRowPrepared)="onRowPrepared($event)"
-                (onCellPrepared)="onCellPrepared($event)"
-                (onExporting)="onExport($event)"
-            >
-                <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
-                <dxo-paging [pageSize]="100"></dxo-paging>
-                <dxi-column dataField="name" caption="Inv Group"></dxi-column>
-                <dxi-column dataField="excl" caption="Consumption Excl (R)" cellTemplate="cellValueTemplate">
-                    <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
-                </dxi-column>
-                <dxi-column dataField="vat" caption="Basic Charge Excl (R)" cellTemplate="cellValueTemplate">
-                    <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
-                </dxi-column>
-                <dxi-column dataField="incl" caption="Total Excl (R)" cellTemplate="cellValueTemplate">
-                    <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
-                </dxi-column>
-                <dxo-export [enabled]="true" [allowExportSelectedData]="false" [formats]="['pdf', 'excel']"></dxo-export>
-                <div *dxTemplate="let data of 'cellValueTemplate'">
-                    <ng-container *ngIf="data.value != null; else emptyTemplate">
-                        R {{data.value | number : '1.2-2'}}
-                    </ng-container>
-                    <ng-template #emptyTemplate></ng-template>
-                </div>
-            </dx-data-grid>
+        <div class="flex w-full justify-end mt-2 px-2 py-1">
+            <button mat-raised-button [color]="'primary'" [matMenuTriggerFor]="menu" type="button" class="dnm-btn dnm-btn-primary">
+                Export
+             </button>
+             <mat-menu #menu="matMenu">
+                 <button mat-menu-item (click)="onExport('csv')">Excel</button>
+                 <button mat-menu-item (click)="onExport('pdf')">PDF</button>
+             </mat-menu>
         </div>
-        <div class="flex w-full p-2" *ngIf="resultsForGrid.length > 0">
+        <div class="flex w-full px-2 py-1" *ngIf="reportTotals">
+            <mat-accordion>
+                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <span>Summary Grid </span>
+                            <span *ngIf="!panelOpenState" class="flex gap-x-8">
+                                <span>R {{totalGridDataSource[0]['incl'] | number : '1.2-2'}}</span> 
+                                <span>R {{totalGridDataSource[1]['incl'] | number : '1.2-2'}}</span>
+                                <span>R {{totalGridDataSource[2]['incl'] | number : '1.2-2'}}</span>
+                            </span>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <dx-data-grid
+                        #totalDataGrid
+                        [dataSource]="totalGridDataSource"
+                        [showBorders]="true"
+                        (onExporting)="onExport($event)"
+                        [remoteOperations]="true"
+                        [wordWrapEnabled]="true"
+                        [hoverStateEnabled]="true"
+                        (onRowPrepared)="onRowPrepared($event)"
+                        (onCellPrepared)="onCellPrepared($event)"
+                        (onExporting)="onExport($event)"
+                    >
+                        <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
+                        <dxo-paging [pageSize]="100"></dxo-paging>
+                        <dxi-column dataField="name" caption="Inv Group"></dxi-column>
+                        <dxi-column dataField="excl" caption="Consumption Excl (R)" cellTemplate="cellValueTemplate">
+                            <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+                        </dxi-column>
+                        <dxi-column dataField="vat" caption="Basic Charge Excl (R)" cellTemplate="cellValueTemplate">
+                            <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+                        </dxi-column>
+                        <dxi-column dataField="incl" caption="Total Excl (R)" cellTemplate="cellValueTemplate">
+                            <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+                        </dxi-column>
+                        <dxo-export [enabled]="true" [allowExportSelectedData]="false" [formats]="['pdf', 'excel']"></dxo-export>
+                        <div *dxTemplate="let data of 'cellValueTemplate'">
+                            <ng-container *ngIf="data.value != null; else emptyTemplate">
+                                R {{data.value | number : '1.2-2'}}
+                            </ng-container>
+                            <ng-template #emptyTemplate></ng-template>
+                        </div>
+                    </dx-data-grid>
+                </mat-expansion-panel>
+            </mat-accordion>
+            
+        </div>
+        <div class="flex w-full px-2 py-1" *ngIf="resultsForGrid.length > 0">
             <dx-data-grid
                 #dataGrid
                 [dataSource]="dataSource"
@@ -52,7 +76,7 @@
                     placeholder="Search..."
                 ></dxo-search-panel>
                 <dxo-filter-row [visible]="'true'" [applyFilter]="currentFilter"></dxo-filter-row>
-                <dxi-column dataField="FinAccNo" caption="Account" [groupIndex]="0"></dxi-column>
+                <dxi-column dataField="Recoverable" caption="" [groupIndex]="0"></dxi-column>
                 <dxi-column dataField="Tenant" [groupIndex]="1"></dxi-column>
                 <dxi-column dataField="ShopNr" caption="Shop" [groupIndex]="2"></dxi-column>            
                 <dxi-column dataField="InvGroup" caption="Invoice Group" [groupIndex]="3"></dxi-column>

@@ -26,7 +26,7 @@ export class ReportResultConsumptionComponent implements OnInit {
   headerInfo: any;
   applyFilterTypes: any;
   currentFilter: any;
-
+  panelOpenState = false;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
   constructor(private reportService: DXReportService,
@@ -47,7 +47,9 @@ export class ReportResultConsumptionComponent implements OnInit {
       .subscribe((data: any) => {
         if(data) {
           this.resultsForGrid = data['Details'];
-          this.dataSource = data['Details'];
+          this.dataSource = data['Details'].map(obj => {
+            return {...obj, Tenant: `${obj['Tenant']} - ${obj['FinAccNo']}`, Recoverable: obj['Recoverable'] ? 'Recoverable' : 'Unrecoverable'};
+          });
           this.reportTotals = data['ReportTotals'];
           this.headerInfo = data['Headers'][0];
 
@@ -69,8 +71,8 @@ export class ReportResultConsumptionComponent implements OnInit {
       })
   }
 
-  onExport($event) {
-    if($event.format == 'pdf') this.onExportPdf();
+  onExport(format) {
+    if(format == 'pdf') this.onExportPdf();
     else this.onExportExcel();
   }
   
