@@ -26,7 +26,7 @@ export class ReportResultConsumptionComponent implements OnInit {
   headerInfo: any;
   applyFilterTypes: any;
   currentFilter: any;
-
+  panelOpenState = false;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
   constructor(private reportService: DXReportService,

@@ -11,10 +11,11 @@
         </div>
         <div class="flex w-full px-2 py-1" *ngIf="reportTotals">
             <mat-accordion>
-                <mat-expansion-panel>
+                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            Summary Grid
+                            Summary Grid 
+                            <ng-container *ngIf="!panelOpenState"> (Vat on individual Invoice Totals: R {{totalGridDataSource[1]['incl'] | number : '1.2-2'}}, Invoice Totals Incl. Vat: R {{totalGridDataSource[2]['incl'] | number : '1.2-2'}})</ng-container>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <dx-data-grid
@@ -71,7 +72,7 @@
                     placeholder="Search..."
                 ></dxo-search-panel>
                 <dxo-filter-row [visible]="'true'" [applyFilter]="currentFilter"></dxo-filter-row>
-                <dxi-column dataField="Recoverable" caption="Recoverable / Unrecoverable" [groupIndex]="0"></dxi-column>
+                <dxi-column dataField="Recoverable" caption="" [groupIndex]="0"></dxi-column>
                 <dxi-column dataField="Tenant" [groupIndex]="1"></dxi-column>
                 <dxi-column dataField="ShopNr" caption="Shop" [groupIndex]="2"></dxi-column>            
                 <dxi-column dataField="InvGroup" caption="Invoice Group" [groupIndex]="3"></dxi-column>
