@@ -14,8 +14,12 @@
                 <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            Summary Grid 
-                            <ng-container *ngIf="!panelOpenState"> (Vat on individual Invoice Totals: R {{totalGridDataSource[1]['incl'] | number : '1.2-2'}}, Invoice Totals Incl. Vat: R {{totalGridDataSource[2]['incl'] | number : '1.2-2'}})</ng-container>
+                            <span>Summary Grid </span>
+                            <span *ngIf="!panelOpenState" class="flex gap-x-8">
+                                <span>R {{totalGridDataSource[0]['incl'] | number : '1.2-2'}}</span> 
+                                <span>R {{totalGridDataSource[1]['incl'] | number : '1.2-2'}}</span>
+                                <span>R {{totalGridDataSource[2]['incl'] | number : '1.2-2'}}</span>
+                            </span>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <dx-data-grid
