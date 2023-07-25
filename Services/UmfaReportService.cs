@@ -131,7 +131,8 @@ namespace ClientPortal.Services
                     GroupId = shopGroup.First().GroupId,
                     Tenants = shopGroup.Key.Tenants,
                     OccDTM = shopGroup.First().OccDTM,
-                    PeriodCostDetails = new List<PeriodCostDetail>()
+                    PeriodCostDetails = new List<PeriodCostDetail>(),
+                    Recoverable = shopGroup.Any(sg => sg.Recoverable),
                 };
 
                 foreach (var shopCostVariance in shopGroup)
