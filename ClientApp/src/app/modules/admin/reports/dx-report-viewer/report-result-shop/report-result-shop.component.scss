@@ -6,3 +6,8 @@
     font-weight: bold;
     color: black;
 }
+::ng-deep .mat-expansion-panel-header-title {
+    font-weight: bold;
+    font-size: 16px;
+    justify-content: space-between;
+}
