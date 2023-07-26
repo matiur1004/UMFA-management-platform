@@ -71,7 +71,7 @@ export class ReportResultShopComponent implements OnInit {
   onExport() {
     const workbook = new Workbook();
     const worksheet = workbook.addWorksheet('ShopUsageVariance');
-
+    worksheet.getColumn(2).hidden = true;
     let _this = this;
     exportDataGrid({
       component: _this.dataGrid.instance,
