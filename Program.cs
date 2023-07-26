@@ -57,6 +57,7 @@ IConfiguration? configuration = builder.Configuration;
     services.Configure<NotificationSettings>(builder.Configuration.GetSection(nameof(NotificationSettings)));
     //services.Configure<ArchivesQueueSettings>(builder.Configuration.GetSection(nameof(ArchivesQueueSettings)));
     services.Configure<ArchivesQueueSettings>(builder.Configuration.GetSection("ArchivesQueueSettings"));
+    services.Configure<UmfaApiSettings>(builder.Configuration.GetSection(nameof(UmfaApiSettings)));
 
     services.AddMvcCore();
     services.AddControllers().AddJsonOptions(x =>
