@@ -114,8 +114,8 @@ export class ReportCriteriaShopComponent implements OnInit {
       this.reportService.setShopCostVariance(null);
     } else if(method == 'Building') {
       this.reportService.loadPeriods(this.form.get('buildingId').value);
-      this.form.get('startPeriodId').setValue(0);
-      this.form.get('endPeriodId').setValue(0);
+      this.form.get('startPeriodId').setValue(null);
+      this.form.get('endPeriodId').setValue(null);
       this.reportService.selectStartPeriod(this.form.get('startPeriodId').value);
       this.reportService.setShopUsageVariance(null);
       this.reportService.setShopCostVariance(null);

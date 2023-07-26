@@ -154,8 +154,8 @@ export class DXReportService {
     }
 
     public selectStartPeriod(periodId: number) {
-        if (periodId == 0) {
-            this.bsEndPeriods.next(<IUmfaPeriod[]>{});
+        if (periodId == 0 || periodId == null) {
+            this.bsEndPeriods.next([]);
         } else {
             const endPeriods = this.periods.filter(p => p.PeriodId >= periodId);
             this.bsEndPeriods.next(endPeriods);

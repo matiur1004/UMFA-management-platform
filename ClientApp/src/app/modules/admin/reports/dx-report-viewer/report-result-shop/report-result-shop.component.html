@@ -1,37 +1,94 @@
 <ng-container *ngIf="dataSource && dataSource.length > 0">
-    <div class="p-2">
-        <dx-data-grid
-            [dataSource]="dataSource"
-            [showBorders]="true"
-            (onExporting)="onExporting($event)"
-            id="gridContainer"
-            [remoteOperations]="true"
-            [wordWrapEnabled]="true"
-            [hoverStateEnabled]="true"
-        >
-            <!-- <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling> -->
-            <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
-            <dxo-paging [pageSize]="100"></dxo-paging>
-            <dxo-search-panel
-                [visible]="true"
-                [width]="200"
-                placeholder="Search..."
-            ></dxo-search-panel>
-            <dxo-filter-row [visible]="'true'" [applyFilter]="currentFilter"></dxo-filter-row>
-            <dxi-column dataField="Tenants" [minWidth]="120"></dxi-column>
-            <dxi-column dataField="Shop" [minWidth]="120"></dxi-column>
-            <dxi-column dataField="InvGroup" caption="Group Name" [minWidth]="120"></dxi-column>
-            <ng-container *ngFor="let period of periodList">
-                <dxi-column [dataField]="period" [caption]="period" [minWidth]="80">
+    <div class="flex flex-col p-2 gap-y-1">
+        <div class="flex w-full justify-end mt-2 py-1">
+            <button mat-raised-button [color]="'primary'" type="button" class="dnm-btn dnm-btn-primary" (click)="onExport()">
+                Export
+             </button>
+             <!-- <mat-menu #menu="matMenu">
+                 <button mat-menu-item (click)="onExport()">Excel</button>
+                 <button mat-menu-item (click)="onExport('pdf')">PDF</button>
+             </mat-menu> -->
+        </div>
+        <div class="flex w-full py-1">
+            <mat-accordion>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <span>Summary Grid </span>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <dx-data-grid
+                        #totalDataGrid
+                        [dataSource]="totalDataSource"
+                        [showBorders]="true"
+                        id="totalGridContainer"
+                        [wordWrapEnabled]="true"
+                        [hoverStateEnabled]="true"
+                    >
+                    <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
+                        <dxo-paging [pageSize]="100"></dxo-paging>
+                        <dxo-search-panel
+                            [visible]="true"
+                            [width]="200"
+                            placeholder="Search..."
+                        ></dxo-search-panel>
+                        <dxo-filter-row [visible]="'true'" [applyFilter]="currentFilter"></dxo-filter-row>
+                        <dxi-column dataField="InvGroup" caption="Group Name" [minWidth]="120"></dxi-column>
+                        
+                        <ng-container *ngFor="let period of periodList">
+                            <dxi-column [dataField]="period" [caption]="period" [minWidth]="80">
+                                <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+                            </dxi-column>
+                        </ng-container>
+                        <dxi-column dataField="Average" [minWidth]="100">
+                            <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+                        </dxi-column>
+                        <dxi-column dataField="Variance" [minWidth]="100"></dxi-column>
+                </dx-data-grid>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+        <div class="flex w-full py-1">
+            <dx-data-grid
+                #dataGrid
+                [dataSource]="dataSource"
+                [showBorders]="true"
+                id="gridContainer"
+                [wordWrapEnabled]="true"
+                [hoverStateEnabled]="true"
+                (onCellPrepared)="onCellPrepared($event)"
+            >
+                <!-- <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling> -->
+                <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
+                <dxo-paging [pageSize]="100"></dxo-paging>
+                <dxo-search-panel
+                    [visible]="true"
+                    [width]="200"
+                    placeholder="Search..."
+                ></dxo-search-panel>
+                <dxo-filter-row [visible]="'true'" [applyFilter]="currentFilter"></dxo-filter-row>
+                <dxi-column dataField="Recoverable" caption="" [groupIndex]="0"></dxi-column>
+                <dxi-column dataField="Tenants" [groupIndex]="1"></dxi-column>
+                <dxi-column dataField="Shop" caption="Shop" [groupIndex]="2"></dxi-column>          
+                <dxi-column dataField="InvGroup" caption="Group Name" [minWidth]="120"></dxi-column>
+                <dxi-column dataField="PeriodGraph" caption="Period Graph" [width]="160" cellTemplate="periodGraphTemplate">
+                    <div *dxTemplate="let data of 'periodGraphTemplate'">
+                        <dx-sparkline [dataSource]="data.value" type="line" argumentField="x" valueField="y" [showMinMax]="false" [pointSize]="4" width="160" [ignoreEmptyPoints]="false">
+                        </dx-sparkline>
+                    </div>
+                </dxi-column>
+                <ng-container *ngFor="let period of periodList">
+                    <dxi-column [dataField]="period" [caption]="period" [minWidth]="80">
+                        <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+                    </dxi-column>
+                </ng-container>
+                <dxi-column dataField="Average" [minWidth]="100">
                     <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
                 </dxi-column>
-            </ng-container>
-            <dxi-column dataField="Average" [minWidth]="100">
-                <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
-            </dxi-column>
-            <dxi-column dataField="Variance" [minWidth]="100"></dxi-column>
-            <dxo-export [enabled]="true" [allowExportSelectedData]="false"></dxo-export>
-        </dx-data-grid>
+                <dxi-column dataField="Variance" [minWidth]="100"></dxi-column>
+            </dx-data-grid>
+        </div>
+       
     </div>
     
 </ng-container>
