@@ -17,7 +17,11 @@ export class ReportCriteriaUtilityComponent implements OnInit {
   
   form: UntypedFormGroup;
   buildings: IUmfaBuilding[] = [];
-  constructor(private reportService: DXReportService, private _formBuilder: UntypedFormBuilder) { }
+  constructor(private reportService: DXReportService, private _formBuilder: UntypedFormBuilder) { 
+    this.recoveriesItems = this.reportService.recoveriesItems;
+    this.expenseItems = this.reportService.expenseItems;
+    this.visibleItems = this.reportService.visibleItems;
+  }
 
 
   get showPage(): boolean {
@@ -33,8 +37,8 @@ export class ReportCriteriaUtilityComponent implements OnInit {
   startPeriodId: number;
   endPeriodId: number;
 
-  recoveriesItems: any[] = [{id: 1, name: 'Client Recoveries'}, {id: 2, name: 'UMFA Recoveries'}];
-  expenseItems: any[] = [{id: 0, name: 'Client Expense'}, {id: 1, name: 'UMFA Bulk Readings'}, {id: 2, name: 'Council Account'}];
+  recoveriesItems: any[] = [];
+  expenseItems: any[] = [];
   serviceTypeItems: any[] = [
     {id: 1, name: 'Electricity'},
     {id: 2, name: 'Water'},
@@ -44,17 +48,7 @@ export class ReportCriteriaUtilityComponent implements OnInit {
     {id: 6, name: 'Gas'},
     {id: 7, name: 'Diesel'}
   ];
-  visibleItems = [
-    {name: 'Client Expense', key: 'ClientExpenseVisible'}, 
-    {name: 'Client Recovery', key: 'ClientRecoverableVisible'}, 
-    {name: 'Council Account', key: 'CouncilAccountVisible'}, 
-    {name: 'UMFA Bulk Reading', key: 'BulkReadingVisible'}, 
-    {name: 'UMFA Recovery', key: 'UmfaRecoveryVisible'}, 
-    {name: 'Potential Recovery', key: 'PotentialRecVisible'}, 
-    {name: 'Non Recoverable', key: 'NonRecVisible'}, 
-    {name: 'UMFA Reading Dates', key: 'UmfaReadingDatesVisible'}, 
-    {name: 'Council Reading Dates', key: 'CouncilReadingDatesVisible'}
-  ];
+  visibleItems = [];
   custPartnerTemplate = (arg: any) => {
     var ret = "<div class='custom-item' title='" + arg.Name + "'>" + arg.Name + "</div>";
     return ret;

@@ -39,6 +39,8 @@ export class ReportResultUtilityComponent implements OnInit {
   resultsForGraph: any[] = [];
   periodList: [] = [];
   headerInfo: any;
+  selectedRecovery;
+  selectedExpense;
 
   public chartOptions: Partial<ChartOptions>;
 
@@ -93,9 +95,21 @@ export class ReportResultUtilityComponent implements OnInit {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: any) => {
         if(data) {
+          this.selectedExpense = this.reportService.expenseItems.find(item => item.id == this.reportService.UtilityReportParams.Expenses);
+          this.selectedRecovery = this.reportService.recoveriesItems.find(item => item.id == this.reportService.UtilityReportParams.Recoveries);
+
           this.periodList = data['PeriodList'];
           this.headerInfo = data['HeaderValues'][0];
-          this.resultsForGrid = data['GridValues'].sort((a, b) => {
+          this.resultsForGrid = data['GridValues'].filter(item => {
+            if(item['RowHeader'] == 'Client Balanced Expense' || item['RowHeader'] == 'Client Expense') {
+              return this.reportService.UtilityReportParams.ClientExpenseVisible ? true : false;
+            }
+            if(item['RowHeader'] == 'Client Recoveries') {
+              return this.reportService.UtilityReportParams.ClientRecoverableVisible ? true : false;
+            }
+            
+            return true;
+          }).sort((a, b) => {
             if(Number(a.RowNumber) > Number(b.RowNumber)) return 1;
             return -1;
           });
@@ -320,6 +334,20 @@ export class ReportResultUtilityComponent implements OnInit {
       }
     };
     xhr.send();
+  }
+
+  onCellPrepared(event) {
+    if (event.rowType === "data") {
+      if(event.values.indexOf(this.selectedRecovery['name']) > -1 || event.values.indexOf(this.selectedExpense['name']) > -1 || event.values.indexOf('Profit / Loss') > -1) {
+        event.cellElement.style.backgroundColor = '#E8F0FE';
+      }
+      if(event.values.indexOf('UMFA Read') > -1) {
+        event.cellElement.style.borderTop = '1px solid black';
+      } 
+      if (event.values.indexOf('Council Read') > -1) {
+        if(!this.reportService.UtilityReportParams.UmfaReadingDatesVisible) event.cellElement.style.borderTop = '1px solid black';
+      }
+    }
   }
 
   ngOnDestroy(): void {
