@@ -8,6 +8,13 @@ import { exportDataGrid as exportDataGridToExcel } from 'devextreme/excel_export
 import { exportDataGrid as exportDataGridToPdf } from 'devextreme/pdf_exporter';
 import { jsPDF } from 'jspdf';
 import { DecimalPipe } from '@angular/common';
+import { ApexChart, ApexNonAxisChartSeries } from 'ng-apexcharts';
+
+export type ChartOptions = {
+  series: ApexNonAxisChartSeries;
+  chart: ApexChart;
+  labels: any;
+};
 
 @Component({
   selector: 'report-result-consumption-recon',
@@ -19,7 +26,7 @@ export class ReportResultConsumptionReconComponent implements OnInit {
   electricityRecoveriesDataSource: any;
   electricityBulkMetersDataSource: any;
   electricitySummariesDataSource: any;
-
+  electricityBulkMeterChart: Partial<ChartOptions>;
   otherDataSource: any;
   otherRecoveriesDataSource: any;
   otherBulkMetersDataSource: any;
@@ -96,8 +103,7 @@ export class ReportResultConsumptionReconComponent implements OnInit {
           // Electricity Bulk Meters Report
           this.electricityBulkMetersDataSource = data['ElectricityBulkMeters'].map(item => {
             let result = {
-              MeterNo: item['MeterNo'],
-              Description: item['DescriptionField'],
+              MeterNo: `${item['MeterNo']} - ${item['DescriptionField']}`,
               KWHUnits: item['KWHUsage'],
               KWHRC: item['KWHAmount'],
               kVAUnits: item['KVAUsage'],
@@ -109,6 +115,14 @@ export class ReportResultConsumptionReconComponent implements OnInit {
             return result;
           });
 
+          this.electricityBulkMeterChart = {
+            series: [44, 55, 13, 43, 22],
+            chart: {
+              width: 380,
+              type: "pie"
+            },
+            labels: ["Team A", "Team B", "Team C", "Team D", "Team E"]
+          }
           this.electricityBulkMetersDataSource.push({
             MeterNo: '',
             Description: '',
@@ -174,7 +188,7 @@ export class ReportResultConsumptionReconComponent implements OnInit {
 
           this.otherDataSource = [];
           serviceTypes.forEach(service => {
-            let report = {ServiceName: service, otherRecoveriesDataSource: [], otherBulkMetersDataSource: [], otherSummariesDataSource: []};
+            let report = {ServiceName: service, otherRecoveriesDataSource: [], otherBulkMetersDataSource: [], otherSummariesDataSource: [], otherBulkMeterChart: null};
             
             // Other Recoveries Report
             let otherRecoveriesByService = data['OtherRecoveries'].filter(item => item['ServiceName'] == service);
@@ -215,8 +229,7 @@ export class ReportResultConsumptionReconComponent implements OnInit {
             let otherBulkMetersByService = data['OtherBulkMeters'].filter(item => item['ServiceName'] == service);
             report.otherBulkMetersDataSource = otherBulkMetersByService.map(item => {
               let result = {
-                MeterNo: item['MeterNo'],
-                Description: item['DescriptionField'],
+                MeterNo: `${item['MeterNo']} - ${item['DescriptionField']}`,
                 Usage: item['Usage'],
                 Amount: item['ConsAmount'],
                 BCAmount: item['BCAmount'],
@@ -233,6 +246,14 @@ export class ReportResultConsumptionReconComponent implements OnInit {
               TotalRC: this.getTotal('TotalAmount', otherBulkMetersByService)
             })
 
+            report.otherBulkMeterChart = {
+              series: [44, 55, 13, 43, 22],
+              chart: {
+                width: 380,
+                type: "pie"
+              },
+              labels: ["Team A", "Team B", "Team C", "Team D", "Team E"]
+            }
             // Summaries Report
             let otherSummariesByService = data['OtherSummaries'].filter(item => item['ServiceName'] == service);
             report.otherSummariesDataSource = [];
