@@ -14,10 +14,34 @@
             <mat-expansion-panel *ngIf="electricityRecoveriesDataSource">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        <span class="text-lg font-semibold">Electricity Monthly Recovery statistics Excl VAT.</span>
+                        <span class="text-xl font-semibold">Electricity Monthly Recovery statistics Excl VAT.</span>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
-                <div class="flex w-full p-2" *ngIf="electricityBulkMeterChart">
+                <div class="flex w-full p-2 gap-x-8" *ngIf="electricityBulkMeterChart">
+                    <div class="flex items-center">
+                        <dx-radio-group [items]="valueTypes" [value]="valueTypes[0]" (valueChange)="onChartChange('electricity', $event, 0)">
+                        </dx-radio-group>
+                    </div>                    
+                    <div class="flex flex-col gap-y-6">
+                        <div class="flex flex-col gap-y-2" style="width: 300px;">
+                            <span class="font-semibold text-lg">Aircon</span>
+                            <div class="flex roundex-md" style="height: 32px;">
+                                <div class="flex justify-center items-center bg-red-400" style="width: 34%">34%</div>
+                                <div class="flex bg-blue-400" style="width: 66%;"></div>
+                            </div>
+                            <div class="flex flex-col gap-y-1 text-lg font-semibold">
+                                <div class="flex gap-x-2 items-center">
+                                    <div class="bg-red-400 w-2 h-2 rounded-sm"></div>
+                                    <span>R 57,864.57 (NR)</span>
+                                </div>
+                                <div class="flex gap-x-2 items-center">
+                                    <div class="bg-blue-400 w-2 h-2 rounded-sm"></div>
+                                    <span>R 57,864.57</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col"></div>
+                    </div>
                     <apx-chart
                         [series]="electricityBulkMeterChart.series"
                         [chart]="electricityBulkMeterChart.chart"
@@ -129,14 +153,38 @@
                     </dx-data-grid>
                 </div>
             </mat-expansion-panel>
-            <mat-expansion-panel *ngFor="let item of otherDataSource">
+            <mat-expansion-panel *ngFor="let item of otherDataSource; let i = index;">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        <span class="text-lg font-semibold">{{item.ServiceName}} Monthly Recovery statistics Excl VAT.</span>
+                        <span class="text-xl font-semibold">{{item.ServiceName}} Monthly Recovery statistics Excl VAT.</span>
                     </mat-panel-title>
                 </mat-expansion-panel-header>
                 <div class="flex flex-col">
-                    <div class="flex w-full p-2" *ngIf="item.otherBulkMeterChart">
+                    <div class="flex w-full p-2 gap-x-8" *ngIf="item.otherBulkMeterChart">
+                        <div class="flex items-center">
+                            <dx-radio-group [items]="valueTypes" [value]="valueTypes[0]" (valueChange)="onChartChange(item.ServiceName, $event, i)">
+                            </dx-radio-group>
+                        </div>                    
+                        <div class="flex flex-col gap-y-6">
+                            <div class="flex flex-col gap-y-2" style="width: 300px;">
+                                <span class="font-semibold text-lg">Aircon</span>
+                                <div class="flex roundex-md" style="height: 32px;">
+                                    <div class="flex justify-center items-center bg-red-400" style="width: 34%">34%</div>
+                                    <div class="flex bg-blue-400" style="width: 66%;"></div>
+                                </div>
+                                <div class="flex flex-col gap-y-1 text-lg font-semibold">
+                                    <div class="flex gap-x-2 items-center">
+                                        <div class="bg-red-400 w-2 h-2 rounded-sm"></div>
+                                        <span>R 57,864.57 (NR)</span>
+                                    </div>
+                                    <div class="flex gap-x-2 items-center">
+                                        <div class="bg-blue-400 w-2 h-2 rounded-sm"></div>
+                                        <span>R 57,864.57</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex flex-col"></div>
+                        </div>
                         <apx-chart
                             [series]="item.otherBulkMeterChart.series"
                             [chart]="item.otherBulkMeterChart.chart"

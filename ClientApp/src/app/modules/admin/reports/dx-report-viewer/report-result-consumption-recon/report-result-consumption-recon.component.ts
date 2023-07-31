@@ -23,6 +23,7 @@ export type ChartOptions = {
 })
 export class ReportResultConsumptionReconComponent implements OnInit {
 
+  dataSource: any;
   electricityRecoveriesDataSource: any;
   electricityBulkMetersDataSource: any;
   electricitySummariesDataSource: any;
@@ -33,6 +34,7 @@ export class ReportResultConsumptionReconComponent implements OnInit {
   otherSummariesDataSource: any;
 
   headerInfo: any;
+  valueTypes = ['kWh', 'Rand'];
 
   @ViewChild('electricityRecoveryDataGrid') electricityRecoveryDataGrid: DxDataGridComponent;
   @ViewChild('electricityBulkMeterDataGrid') electricityBulkMeterDataGrid: DxDataGridComponent;
@@ -54,6 +56,7 @@ export class ReportResultConsumptionReconComponent implements OnInit {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: any) => {
         if(data) {
+          this.dataSource = data;
           this.headerInfo = data['ReportHeader'];  //DisplayName , PeriodInfo
           // Electricity Recoveries Report
           this.electricityRecoveriesDataSource = data['ElectricityRecoveries'].map(item => {
@@ -115,14 +118,8 @@ export class ReportResultConsumptionReconComponent implements OnInit {
             return result;
           });
 
-          this.electricityBulkMeterChart = {
-            series: [44, 55, 13, 43, 22],
-            chart: {
-              width: 380,
-              type: "pie"
-            },
-            labels: ["Team A", "Team B", "Team C", "Team D", "Team E"]
-          }
+          this.onChartChange('electricity', 'kWh');
+
           this.electricityBulkMetersDataSource.push({
             MeterNo: '',
             Description: '',
@@ -187,7 +184,7 @@ export class ReportResultConsumptionReconComponent implements OnInit {
           });
 
           this.otherDataSource = [];
-          serviceTypes.forEach(service => {
+          serviceTypes.forEach((service, idx) => {
             let report = {ServiceName: service, otherRecoveriesDataSource: [], otherBulkMetersDataSource: [], otherSummariesDataSource: [], otherBulkMeterChart: null};
             
             // Other Recoveries Report
@@ -246,14 +243,14 @@ export class ReportResultConsumptionReconComponent implements OnInit {
               TotalRC: this.getTotal('TotalAmount', otherBulkMetersByService)
             })
 
-            report.otherBulkMeterChart = {
-              series: [44, 55, 13, 43, 22],
-              chart: {
-                width: 380,
-                type: "pie"
-              },
-              labels: ["Team A", "Team B", "Team C", "Team D", "Team E"]
-            }
+            // report.otherBulkMeterChart = {
+            //   series: [44, 55, 13, 43, 22],
+            //   chart: {
+            //     width: 380,
+            //     type: "pie"
+            //   },
+            //   labels: ["Team A", "Team B", "Team C", "Team D", "Team E"]
+            // }
             // Summaries Report
             let otherSummariesByService = data['OtherSummaries'].filter(item => item['ServiceName'] == service);
             report.otherSummariesDataSource = [];
@@ -289,6 +286,10 @@ export class ReportResultConsumptionReconComponent implements OnInit {
               TotalRC: this.getTotal('PercTotalDiff', otherSummariesByService)
             })
             this.otherDataSource.push(report);
+          })
+
+          serviceTypes.forEach((service, idx) => {
+            this.onChartChange(service, 'kWh', idx);
           })
           this._cdr.detectChanges();
         } else {
@@ -718,6 +719,32 @@ export class ReportResultConsumptionReconComponent implements OnInit {
       }
     };
     xhr.send();
+  }
+
+  onChartChange(type, value, index = 0) {    
+    if(type == 'electricity') {
+      let key = value == 'Rand' ? 'TotalAmount' : 'KWHUsage';
+      this.electricityBulkMeterChart = {
+        series: this.dataSource['ElectricityBulkMeters'].filter(item => item[key]).map(item => { return item[key]}),
+        chart: {
+          width: 400,
+          type: "pie"
+        },
+        labels: this.dataSource['ElectricityBulkMeters'].filter(item => item[key]).map(item => { return item['DescriptionField']})
+      }
+    } else {
+      let key = value == 'Rand' ? 'TotalAmount' : 'Usage';
+      let otherBulkMetersByService = this.dataSource['OtherBulkMeters'].filter(item => item['ServiceName'] == type);
+      
+      this.otherDataSource[index].otherBulkMeterChart = {
+        series: otherBulkMetersByService.filter(item => item[key]).map(item => { return item[key]}),
+        chart: {
+          width: 400,
+          type: "pie"
+        },
+        labels: otherBulkMetersByService.filter(item => item[key]).map(item => { return item['DescriptionField']})
+      }
+    }
   }
 
   ngOnDestroy(): void {
