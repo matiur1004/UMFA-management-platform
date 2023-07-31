@@ -63,7 +63,7 @@
         <div class="flex gap-2 flex-wrap mt-2" [formGroupName]="'visible'">
             <ng-container *ngFor="let item of visibleItems; let i = index;">
                 <div class="flex items-center min-w-44">                    
-                    <mat-checkbox [color]="'primary'" [formControl]="getVisibleControl(i, item.key)"></mat-checkbox>
+                    <mat-checkbox [color]="'primary'" [formControl]="getVisibleControl(i, item.key)" (change)="valueChanged($event, 'Visible')"></mat-checkbox>
                     <span class="text-md">{{item.name}}</span>
                 </div>
             </ng-container>

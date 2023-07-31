@@ -13,6 +13,7 @@
                 [remoteOperations]="true"
                 [wordWrapEnabled]="true"
                 [hoverStateEnabled]="true"
+                (onCellPrepared)="onCellPrepared($event)"
             >
                 <!-- <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling> -->
                 <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
