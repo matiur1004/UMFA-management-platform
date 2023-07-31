@@ -24,21 +24,21 @@ namespace ClientPortal.Services
         private readonly IArchiveRequestHeaderRepository _archiveRequestHeaderRepository;
         private readonly IArchivedReportsRepository _archivedReportsRepository;
         private readonly IUMFABuildingRepository _umfaBuildingRepository;
-        private readonly IUmfaRepository _umfaRepository;
+        private readonly IUmfaService _umfaService;
         public ArchivesService(
             ILogger<ArchivesService> logger, 
             IArchiveRequestDetailRepository archiveRequestDetailRepository, 
             IArchiveRequestHeaderRepository archiveRequestHeaderRepository, 
             IArchivedReportsRepository archivedReportsRepository, 
             IUMFABuildingRepository umfaBuildingRepository, 
-            IUmfaRepository umfaRepository)
+            IUmfaService umfaService)
         {
             _logger = logger;
             _archiveRequestDetailRepository = archiveRequestDetailRepository;
             _archiveRequestHeaderRepository = archiveRequestHeaderRepository;
             _archivedReportsRepository = archivedReportsRepository;
             _umfaBuildingRepository = umfaBuildingRepository;
-            _umfaRepository = umfaRepository;
+            _umfaService = umfaService;
         }
 
         public async Task<int> CreateArhiveRequestEntriesAsync(List<ArchiveReportsRequest> reports)
@@ -52,7 +52,7 @@ namespace ClientPortal.Services
 
             foreach (var report in reports)
             {
-                var fileFormatData = await _umfaRepository.GetFileFormatData(new FileFormatDataSpRequest
+                var fileFormatData = await _umfaService.GetFileFormatData(new FileFormatDataSpRequest
                 {
                     ShopId = (int)report.ShopId!,
                     BuildingId = header.BuildingId!,

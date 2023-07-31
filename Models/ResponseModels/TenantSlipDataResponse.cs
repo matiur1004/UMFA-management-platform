@@ -1,11 +1,22 @@
-﻿namespace ClientPortal.Models.ResponseModels
+﻿using System.Text.Json.Serialization;
+
+namespace ClientPortal.Models.ResponseModels
 {
     public class TenantSlipDataResponse
     {
+        [JsonPropertyName("header")]
         public TenantSlipDataHeader? Header { get; set; }
+
+        [JsonPropertyName("details")]
         public List<TenantSlipDataDetails> Details { get; set; }
+
+        [JsonPropertyName("meterReadings")]
         public List<TenantSlipDataMeterReadings> MeterReadings { get; set; }
+
+        [JsonPropertyName("graphData")]
         public List<TenantSlipDataGraphData> GraphData { get; set; }
+
+        [JsonPropertyName("fileName")]
         public string? FileName { get; set; }
 
         public TenantSlipDataResponse() { }

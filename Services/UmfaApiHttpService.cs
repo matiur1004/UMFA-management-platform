@@ -8,12 +8,38 @@ using System.Web;
 namespace ClientPortal.Services
 {
 
-    public interface IUmfaApiService
+    public interface IUmfaService
     {
+        public Task<UMFAShopsSpResponse> GetShopsAsync(UmfaShopsRequest request);
+
+        public Task<List<UMFAShop>> GetTenantShopsAsync(UmfaTenantShopsSpRequest request);
+        public Task<List<UMFATenant>> GetTenantsAsync(UmfaTenantsSpRequest request);
+
+        public Task<TenantSlipCardInfo> GetTenantSlipCardInfoAsync(TenantSlipCardInfoSpRequest request);
+        public Task<TenantSlipCriteriaResponse> GetTenantSlipCriteriaAsync(TenantSlipCriteriaSpRequest request);
+        public Task<TenantSlipReportSpResponse> GetTenantSlipReportsAsync(TenantSlipReportSpRequest request);
+        public Task<TenantSlipDataResponse> GetTenantSlipDataAsync(TenantSlipDataRequest request);
         public Task<TenantSlipDataForArchiveSpResponse> GetTenantSlipDataForArchiveAsync(TenantSlipDataForArchiveSpRequest request);
+
+        public Task AddMappedMeterAsync(MappedMeterSpRequest request);
+
+        #region Reports
+        public Task<UtilityRecoveryReportResponse> GetUtilityRecoveryReportAsync(UtilityRecoveryReportRequest request);
+        public Task<ShopUsageVarianceReportResponse> GetShopUsageVarianceReportAsync(ShopUsageVarianceRequest request);
+        public Task<ShopCostVarianceReportResponse> GetShopCostVarianceReportAsync(ShopUsageVarianceRequest request);
+        public Task<ConsumptionSummaryResponse> GetConsumptionSummaryReportAsync(ConsumptionSummarySpRequest request);
+        public Task<ConsumptionSummaryReconResponse> GetConsumptionSummaryReconReportAsync(ConsumptionSummaryReconRequest request);
+        public Task<BuildingRecoveryReport> GetBuildingRecoveryReportAsync(BuildingRecoveryReportSpRequest request);
+        public Task UpdateReportArhivesFileFormatsAsync(UpdateArchiveFileFormatSpRequest request);
+        #endregion
+
+        public Task<DashboardShopsSpResponse> GetDashboardShopDataAsync(DashboardShopsSpRequest request);
+
+        public Task<FileFormatDataSpResponse> GetFileFormatData(FileFormatDataSpRequest request);
     }
 
-    public class UmfaApiHttpService : IUmfaApiService
+
+    public class UmfaApiHttpService : IUmfaService
     {
         private readonly HttpClient _httpClient;
         public UmfaApiHttpService(IOptions<UmfaApiSettings> options) 
@@ -22,13 +48,6 @@ namespace ClientPortal.Services
             {
                 BaseAddress = new Uri(options.Value.BaseUrl)
             };
-        }
-
-        public async Task<TenantSlipDataForArchiveSpResponse> GetTenantSlipDataForArchiveAsync(TenantSlipDataForArchiveSpRequest request)
-        {
-            var response = await GetAsync("TenantSlips/ArchiveData", request);
-
-            return JsonSerializer.Deserialize<TenantSlipDataForArchiveSpResponse>(response);
         }
 
         private async Task<string> GetAsync(string endpoint, object? queryParams = null)
@@ -108,6 +127,115 @@ namespace ClientPortal.Services
             }
 
             return "?" + queryString.ToString();
+        }
+
+        public async Task<TenantSlipDataForArchiveSpResponse> GetTenantSlipDataForArchiveAsync(TenantSlipDataForArchiveSpRequest request)
+        {
+            var response = await GetAsync("tenantSlips/archiveData", request);
+
+            return JsonSerializer.Deserialize<TenantSlipDataForArchiveSpResponse>(response);
+        }
+
+        public async Task<TenantSlipCriteriaResponse> GetTenantSlipCriteriaAsync(TenantSlipCriteriaSpRequest request)
+        {
+            var response = await GetAsync("tenantSlips/criteria", request);
+            return  JsonSerializer.Deserialize<TenantSlipCriteriaResponse>(response);
+        }
+
+        public async Task<TenantSlipCardInfo> GetTenantSlipCardInfoAsync(TenantSlipCardInfoSpRequest request)
+        {
+            var response = await GetAsync("tenantSlips/cardInfo", request);
+            return JsonSerializer.Deserialize<TenantSlipCardInfo>(response);
+        }
+
+        public async Task<List<UMFATenant>> GetTenantsAsync(UmfaTenantsSpRequest request)
+        {
+            var response = await GetAsync("tenants", request);
+            return JsonSerializer.Deserialize<List<UMFATenant>>(response);
+        }
+
+        public async Task<List<UMFAShop>> GetTenantShopsAsync(UmfaTenantShopsSpRequest request)
+        {
+            var response = await GetAsync("tenants/shops", request);
+            return JsonSerializer.Deserialize<List<UMFAShop>>(response);
+        }
+
+        public async Task<UMFAShopsSpResponse> GetShopsAsync(UmfaShopsRequest request)
+        {
+            var response = await GetAsync("shops", request);
+            return JsonSerializer.Deserialize<UMFAShopsSpResponse>(response);
+        }
+
+        public async Task<TenantSlipReportSpResponse> GetTenantSlipReportsAsync(TenantSlipReportSpRequest request)
+        {
+            var response = await GetAsync("tenantSlips/reports", request);
+            return JsonSerializer.Deserialize<TenantSlipReportSpResponse>(response);
+        }
+
+        public async Task<TenantSlipDataResponse> GetTenantSlipDataAsync(TenantSlipDataRequest request)
+        {
+            var response = await PutAsync("tenantSlips/data", request);
+            return JsonSerializer.Deserialize<TenantSlipDataResponse>(response);
+        }
+
+        #region
+        public async Task<UtilityRecoveryReportResponse> GetUtilityRecoveryReportAsync(UtilityRecoveryReportRequest request)
+        {
+            var response = await GetAsync("reports/utilityrecoveryreport", request);
+            return JsonSerializer.Deserialize<UtilityRecoveryReportResponse>(response);
+        }
+
+        public async Task<ShopUsageVarianceReportResponse> GetShopUsageVarianceReportAsync(ShopUsageVarianceRequest request)
+        {
+            var response = await GetAsync("reports/shopUsagevariancereport", request);
+            return JsonSerializer.Deserialize<ShopUsageVarianceReportResponse>(response);
+        }
+
+        public async Task<ShopCostVarianceReportResponse> GetShopCostVarianceReportAsync(ShopUsageVarianceRequest request)
+        {
+            var response = await GetAsync("reports/shopcostvariancereport", request);
+            return JsonSerializer.Deserialize<ShopCostVarianceReportResponse>(response);
+        }
+
+        public async Task<ConsumptionSummaryResponse> GetConsumptionSummaryReportAsync(ConsumptionSummarySpRequest request)
+        {
+            var response = await PutAsync("reports/consumptionsummaryreport", request);
+            return JsonSerializer.Deserialize<ConsumptionSummaryResponse>(response);
+        }
+
+        public async Task<ConsumptionSummaryReconResponse> GetConsumptionSummaryReconReportAsync(ConsumptionSummaryReconRequest request)
+        {
+            var response = await GetAsync("reports/consumptionsummaryreconreport", request);
+            return JsonSerializer.Deserialize<ConsumptionSummaryReconResponse>(response);
+        }
+
+        public async Task UpdateReportArhivesFileFormatsAsync(UpdateArchiveFileFormatSpRequest request)
+        {
+            await PutAsync("reports/updatereportarhivesfileformats", request);
+        }
+        #endregion
+
+        public async Task AddMappedMeterAsync(MappedMeterSpRequest request)
+        {
+            await PostAsync("mappedmeters", request);
+        }
+
+        public async Task<DashboardShopsSpResponse> GetDashboardShopDataAsync(DashboardShopsSpRequest request)
+        {
+            var response = await GetAsync("dashboard/shops", request);
+            return JsonSerializer.Deserialize<DashboardShopsSpResponse>(response);
+        }
+
+        public async Task<BuildingRecoveryReport> GetBuildingRecoveryReportAsync(BuildingRecoveryReportSpRequest request)
+        {
+            var response = await GetAsync("reports/buildingrecoveryreport", request);
+            return JsonSerializer.Deserialize<BuildingRecoveryReport>(response);
+        }
+
+        public async Task<FileFormatDataSpResponse> GetFileFormatData(FileFormatDataSpRequest request)
+        {
+            var response = await GetAsync("archives/fileformatdata", request);
+            return JsonSerializer.Deserialize<FileFormatDataSpResponse>(response);
         }
     }
 }

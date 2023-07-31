@@ -19,13 +19,13 @@ namespace ClientPortal.Services
     {
         private readonly ILogger<MappedMetersService> _logger;
         private readonly IMappedMeterRepository _repo;
-        private readonly IUmfaRepository _umfaRepository;
+        private readonly IUmfaService _umfaService;
 
-        public MappedMetersService(IMappedMeterRepository repo, ILogger<MappedMetersService> logger, IUmfaRepository umfaRepository)
+        public MappedMetersService(IMappedMeterRepository repo, ILogger<MappedMetersService> logger, IUmfaService umfaService)
         {
             _repo = repo;
             _logger = logger;
-            _umfaRepository = umfaRepository;
+            _umfaService = umfaService;
         }
 
         public async Task<MappedMeterResponse<List<MappedMeter>>> GetMappedMetersByBuildingAsync(int buildingId)
@@ -102,7 +102,7 @@ namespace ClientPortal.Services
 
         public async Task AddUmfaMappedMeterAsync(MappedMeter meter)
         {
-            await _umfaRepository.AddMappedMeterAsync(new MappedMeterSpRequest(meter));
+            await _umfaService.AddMappedMeterAsync(new MappedMeterSpRequest(meter));
         }
     }
 }

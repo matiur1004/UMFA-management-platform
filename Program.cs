@@ -143,9 +143,8 @@ IConfiguration? configuration = builder.Configuration;
     services.AddTransient<ITelegramService, TelegramService>();
     services.AddTransient<INotificationService, NotificationService>();
     services.AddScoped<IScadaRequestService, ScadaRequestService>();
-    services.AddScoped<IUmfaReportService, UmfaReportService>();
     services.AddScoped<IAMRMeterTriggeredAlarmService, AMRMeterTriggeredAlarmService>();
-    services.AddScoped<IUmfaService, UmfaService>();
+    services.AddScoped<IUmfaService, UmfaApiHttpService>();
     services.AddSingleton<IQueueService, ArchivesQueueService>();
     services.AddScoped<IArchivesService, ArchivesService>();
 
@@ -155,7 +154,6 @@ IConfiguration? configuration = builder.Configuration;
     services.AddScoped<IUMFABuildingRepository, UMFABuildingRepository>();
     services.AddScoped<IAMRScadaUserRepository, AMRScadaUserRepository>();
     services.AddScoped<IAMRDataRepository, AMRDataRepository>();
-    services.AddScoped<IReportRepository, ReportRepository>();
     services.AddScoped<IMappedMeterRepository, MappedMeterRepository>();
     services.AddScoped<IScadaRequestRepository<ScadaRequestHeader>, ScadaRequestHeaderRepository>();
     services.AddScoped<IScadaRequestRepository<ScadaRequestDetail>, ScadaRequestDetailRepository>();

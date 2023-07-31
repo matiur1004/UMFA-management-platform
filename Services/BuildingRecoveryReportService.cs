@@ -1,27 +1,27 @@
 ﻿using DevExpress.Utils;
 using DevExpress.XtraPrinting;
 using DevExpress.XtraReports.UI;
-using ClientPortal.Data.Repositories;
 using ClientPortal.Models.ResponseModels;
 using ClientPortal.PredefinedReports;
 using ServiceStack;
 using System.Drawing;
 using DevExpress.Drawing;
 using System.Globalization;
+using ClientPortal.Models.RequestModels;
 
 namespace ClientPortal.Services
 {
     public class BuildingRecoveryReportService
     {
-        private readonly IReportRepository _repo;
+        private readonly IUmfaService _umfaService;
 
-        public BuildingRecoveryReportService(IReportRepository repo)
+        public BuildingRecoveryReportService(IUmfaService umfaService)
         {
-            _repo = repo;
+            _umfaService = umfaService;
         }
         public async Task<XtraReport> BuildReport(string strtPeriodId, string endPeriodId)
         {
-            BuildingRecoveryReport reportData = await Task.Run(() => { return _repo.GetBuildingRecoveryReport(strtPeriodId.ToInt(), endPeriodId.ToInt()); });
+            BuildingRecoveryReport reportData = await _umfaService.GetBuildingRecoveryReportAsync(new BuildingRecoveryReportSpRequest{StartPeriodId = strtPeriodId.ToInt(), EndPeriodId= endPeriodId.ToInt()});
 
             XtraReport report = new BuildingRecovery(); // XtraReport();
             report.Landscape = true;
@@ -473,7 +473,7 @@ namespace ClientPortal.Services
                 cellDet2.BorderColor = Color.LightGray;
                 cellDet2.Borders = BorderSide.All;
                 cellDet2.Font = new DXFont("Arial", 8F);
-                cellDet2.Text = dt.kWhUsage.ToString("### ### ##0");
+                cellDet2.Text = dt.KWhUsage.ToString("### ### ##0");
                 cellDet2.TextAlignment = TextAlignment.MiddleRight;
                 cellDet2.WidthF = 60F;
 
@@ -483,7 +483,7 @@ namespace ClientPortal.Services
                 cellDet3.BorderColor = Color.LightGray;
                 cellDet3.Borders = BorderSide.All;
                 cellDet3.Font = new DXFont("Arial", 8F);
-                cellDet3.Text = dt.kVAUsage.ToString("### ### ##0");
+                cellDet3.Text = dt.KVAUsage.ToString("### ### ##0");
                 cellDet3.TextAlignment = TextAlignment.MiddleRight;
                 cellDet3.WidthF = 60F;
 
@@ -501,18 +501,18 @@ namespace ClientPortal.Services
 
                 if (dt.Recoverable)
                 {
-                    summaryVars["totReckWh"] += dt.kWhUsage;
-                    summaryVars["totReckVA"] += dt.kVAUsage;
+                    summaryVars["totReckWh"] += dt.KWhUsage;
+                    summaryVars["totReckVA"] += dt.KVAUsage;
                     summaryVars["totRecRC"] += dt.TotalAmount;
                 }
                 else
                 {
-                    summaryVars["totNonReckWh"] += dt.kWhUsage;
-                    summaryVars["totNonReckVA"] += dt.kVAUsage;
+                    summaryVars["totNonReckWh"] += dt.KWhUsage;
+                    summaryVars["totNonReckVA"] += dt.KVAUsage;
                     summaryVars["totNonRecRC"] += dt.TotalAmount;
                 }
-                summaryVars["totPotkWh"] += dt.kWhUsage;
-                summaryVars["totPotkVA"] += dt.kVAUsage;
+                summaryVars["totPotkWh"] += dt.KWhUsage;
+                summaryVars["totPotkVA"] += dt.KVAUsage;
                 summaryVars["totPotRC"] += dt.TotalAmount;
             }
 
@@ -715,7 +715,7 @@ namespace ClientPortal.Services
                 cellDet2.BorderColor = Color.LightGray;
                 cellDet2.Borders = BorderSide.All;
                 cellDet2.Font = new DXFont("Arial", 8F);
-                cellDet2.Text = (dt.ItemName.Contains("%")) ? (dt.kWhUsage).ToString("##0.00") : dt.kWhUsage.ToString("### ### ##0");
+                cellDet2.Text = (dt.ItemName.Contains("%")) ? (dt.KWhUsage).ToString("##0.00") : dt.KWhUsage.ToString("### ### ##0");
                 cellDet2.TextAlignment = TextAlignment.MiddleRight;
                 cellDet2.WidthF = 60F;
 
@@ -725,7 +725,7 @@ namespace ClientPortal.Services
                 cellDet3.BorderColor = Color.LightGray;
                 cellDet3.Borders = BorderSide.All;
                 cellDet3.Font = new DXFont("Arial", 8F);
-                cellDet3.Text = (dt.ItemName.Contains("%")) ? dt.kVAUsage.ToString("### ##0.00") : dt.kVAUsage.ToString("### ### ##0");
+                cellDet3.Text = (dt.ItemName.Contains("%")) ? dt.KVAUsage.ToString("### ##0.00") : dt.KVAUsage.ToString("### ### ##0");
                 cellDet3.TextAlignment = TextAlignment.MiddleRight;
                 cellDet3.WidthF = 60F;
 
@@ -743,8 +743,8 @@ namespace ClientPortal.Services
 
                 if (!dt.Highlighted)
                 {
-                    summaryVars["sumRow1kWh"] += dt.kWhUsage;
-                    summaryVars["sumRow1kVA"] += dt.kVAUsage;
+                    summaryVars["sumRow1kWh"] += dt.KWhUsage;
+                    summaryVars["sumRow1kVA"] += dt.KVAUsage;
                     summaryVars["sumRow1RC"] += dt.TotalAmount;
                 }
             }
@@ -949,7 +949,7 @@ namespace ClientPortal.Services
                 cellDet2.BorderColor = Color.LightGray;
                 cellDet2.Borders = BorderSide.All;
                 cellDet2.Font = new DXFont("Arial", 8F);
-                cellDet2.Text = (dt.ItemName.Contains("%")) ? (dt.kWhUsage).ToString("##0.00") : dt.kWhUsage.ToString("### ### ##0");
+                cellDet2.Text = (dt.ItemName.Contains("%")) ? (dt.KWhUsage).ToString("##0.00") : dt.KWhUsage.ToString("### ### ##0");
                 cellDet2.TextAlignment = TextAlignment.MiddleRight;
                 cellDet2.WidthF = 60F;
 
@@ -959,7 +959,7 @@ namespace ClientPortal.Services
                 cellDet3.BorderColor = Color.LightGray;
                 cellDet3.Borders = BorderSide.All;
                 cellDet3.Font = new DXFont("Arial", 8F);
-                cellDet3.Text = (dt.ItemName.Contains("%")) ? dt.kVAUsage.ToString("### ##0.00") : dt.kVAUsage.ToString("### ### ##0");
+                cellDet3.Text = (dt.ItemName.Contains("%")) ? dt.KVAUsage.ToString("### ##0.00") : dt.KVAUsage.ToString("### ### ##0");
                 cellDet3.TextAlignment = TextAlignment.MiddleRight;
                 cellDet3.WidthF = 60F;
 
@@ -977,8 +977,8 @@ namespace ClientPortal.Services
 
                 if (!dt.Highlighted)
                 {
-                    summaryVars["sumRow1kWh"] += dt.kWhUsage;
-                    summaryVars["sumRow1kVA"] += dt.kVAUsage;
+                    summaryVars["sumRow1kWh"] += dt.KWhUsage;
+                    summaryVars["sumRow1kVA"] += dt.KVAUsage;
                     summaryVars["sumRow1RC"] += dt.TotalAmount;
                 }
             }
