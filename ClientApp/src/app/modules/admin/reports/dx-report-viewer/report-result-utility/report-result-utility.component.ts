@@ -203,9 +203,9 @@ export class ReportResultUtilityComponent implements OnInit {
             autoFilterEnabled: true,
             customizeCell({ gridCell, excelCell }) {
               if (gridCell.rowType === 'data' && 
-                (gridCell.data['RowHeader'] === 'UMFA Bulk Reading' || 
-                gridCell.data['RowHeader'] === 'UMFA Recovery' ||
-                gridCell.data['RowHeader'].indexOf('Actual Recovery') > -1) ) {
+              (gridCell.data['RowHeader'] == _this.selectedRecovery['name'] || 
+              gridCell.data['RowHeader'] == _this.selectedExpense['name'] || 
+              gridCell.data['RowHeader'] == 'Profit / Loss') ) {
                 excelCell.fill = {
                   type: 'pattern',
                   pattern: 'solid',
@@ -254,15 +254,16 @@ export class ReportResultUtilityComponent implements OnInit {
 
   onExportPdf() {
     const pdfDoc = new jsPDF('landscape', 'px', [800, 768]);
+    let _this = this;
     const options = {
       jsPDFDocument: pdfDoc,
       topLeft: { x: 10, y: 100 },
       component: this.dataGrid.instance,
       customizeCell({ gridCell, pdfCell }) {
         if (gridCell.rowType === 'data' && 
-          (gridCell.data['RowHeader'] === 'UMFA Bulk Reading' || 
-          gridCell.data['RowHeader'] === 'UMFA Recovery' ||
-          gridCell.data['RowHeader'].indexOf('Actual Recovery') > -1) ) {
+        (gridCell.data['RowHeader'] == _this.selectedRecovery['name'] || 
+        gridCell.data['RowHeader'] == _this.selectedExpense['name'] || 
+        gridCell.data['RowHeader'] == 'Profit / Loss') ) {
           pdfCell.backgroundColor = '#BEDFE6';
         }
         if(gridCell.rowType == 'data') {
