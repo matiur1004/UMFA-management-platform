@@ -9,112 +9,112 @@ namespace ClientPortal.Models.ResponseModels
     }
     public class ConsumptionSummaryHeader
     {
-        // [JsonPropertyName("periodID")]
+        // // [JsonPropertyName("periodID")]
         public int PeriodID { get; set; }
 
-        // [JsonPropertyName("buildingID")]
+        // // [JsonPropertyName("buildingID")]
         public int BuildingID { get; set; }
 
-        // [JsonPropertyName("name")]
+        // // [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        // [JsonPropertyName("readingName")]
+        // // [JsonPropertyName("readingName")]
         public string ReadingName { get; set; }
 
-        // [JsonPropertyName("readingShort")]
+        // // [JsonPropertyName("readingShort")]
         public string ReadingShort { get; set; }
 
-        // [JsonPropertyName("periodStart")]
+        // // [JsonPropertyName("periodStart")]
         public string PeriodStart { get; set; }
 
-        // [JsonPropertyName("periodEnd")]
+        // // [JsonPropertyName("periodEnd")]
         public string PeriodEnd { get; set; }
 
-        // [JsonPropertyName("days")]
+        // // [JsonPropertyName("days")]
         public int Days { get; set; }
 
-        // [JsonPropertyName("customLogo")]
+        // // [JsonPropertyName("customLogo")]
         public string CustomLogo { get; set; }
 
-        // [JsonPropertyName("splitMessage")]
+        // // [JsonPropertyName("splitMessage")]
         public string SplitMessage { get; set; }
     }
 
     public class ConsumptionSummaryDetail
     {
-        // [JsonPropertyName("serviceSpecID")]
+        // // [JsonPropertyName("serviceSpecID")]
         public int ServiceSpecID { get; set; }
 
-        // [JsonPropertyName("buildingID")]
+        // // [JsonPropertyName("buildingID")]
         public int BuildingID { get; set; }
 
-        // [JsonPropertyName("periodID")]
+        // // [JsonPropertyName("periodID")]
         public int PeriodID { get; set; }
 
-        // [JsonPropertyName("tenant")]
+        // // [JsonPropertyName("tenant")]
         public string Tenant { get; set; }
 
-        // [JsonPropertyName("shop")]
+        // // [JsonPropertyName("shop")]
         public string Shop { get; set; }
 
-        // [JsonPropertyName("shopNr")]
+        // // [JsonPropertyName("shopNr")]
         public string ShopNr { get; set; }
 
-        // [JsonPropertyName("finAccNo")]
+        // // [JsonPropertyName("finAccNo")]
         public string FinAccNo { get; set; }
 
-        // [JsonPropertyName("meterNo")]
+        // // [JsonPropertyName("meterNo")]
         public string MeterNo { get; set; }
 
-        // [JsonPropertyName("factor")]
+        // // [JsonPropertyName("factor")]
         public int Factor { get; set; }
 
-        // [JsonPropertyName("totalArea")]
+        // // [JsonPropertyName("totalArea")]
         public double TotalArea { get; set; }
 
-        // [JsonPropertyName("assArea")]
+        // // [JsonPropertyName("assArea")]
         public double AssArea { get; set; }
 
-        // [JsonPropertyName("invGroup")]
+        // // [JsonPropertyName("invGroup")]
         public string InvGroup { get; set; }
 
-        // [JsonPropertyName("previousReadingDate")]
+        // // [JsonPropertyName("previousReadingDate")]
         public string PreviousReadingDate { get; set; }
 
-        // [JsonPropertyName("readingDate")]
+        // // [JsonPropertyName("readingDate")]
         public string ReadingDate { get; set; }
 
-        // [JsonPropertyName("previousReading")]
+        // // [JsonPropertyName("previousReading")]
         public string PreviousReading { get; set; }
 
-        // [JsonPropertyName("currentReading")]
+        // // [JsonPropertyName("currentReading")]
         public string CurrentReading { get; set; }
 
-        // [JsonPropertyName("usage")]
+        // // [JsonPropertyName("usage")]
         public double? Usage { get; set; }
 
-        // [JsonPropertyName("shopCons")]
+        // // [JsonPropertyName("shopCons")]
         public double ShopCons { get; set; }
 
-        // [JsonPropertyName("shopBC")]
+        // // [JsonPropertyName("shopBC")]
         public double ShopBC { get; set; }
 
-        // [JsonPropertyName("totBC")]
+        // // [JsonPropertyName("totBC")]
         public double TotBC { get; set; }
 
-        // [JsonPropertyName("totCons")]
+        // // [JsonPropertyName("totCons")]
         public double TotCons { get; set; }
 
-        // [JsonPropertyName("excl")]
+        // // [JsonPropertyName("excl")]
         public double Excl { get; set; }
 
-        // [JsonPropertyName("vat")]
+        // // [JsonPropertyName("vat")]
         public double Vat { get; set; }
 
-        // [JsonPropertyName("incl")]
+        // // [JsonPropertyName("incl")]
         public double Incl { get; set; }
 
-        // [JsonPropertyName("recoverable")]
+        // // [JsonPropertyName("recoverable")]
         public bool Recoverable { get; set; }
     }
 }

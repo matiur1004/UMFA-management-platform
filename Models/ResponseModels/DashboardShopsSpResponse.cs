@@ -4,154 +4,154 @@ namespace ClientPortal.Models.ResponseModels
 {
     public class DashboardShopsSpResponse
     {
-        // [JsonPropertyName("infos")]
+        // // [JsonPropertyName("infos")]
         public List<DashboardShopInfo> Infos { get; set; }
 
-        // [JsonPropertyName("billings")]
+        // // [JsonPropertyName("billings")]
         public List<DashboardShopBilling> Billings { get; set; }
 
-        // [JsonPropertyName("occupations")]
+        // // [JsonPropertyName("occupations")]
         public List<DashboardShopOccupation> Occupations { get; set; }
 
-        // [JsonPropertyName("assignedMeters")]
+        // // [JsonPropertyName("assignedMeters")]
         public List<DashboardShopAssignedMeter> AssignedMeters { get; set; }
 
-        // [JsonPropertyName("readings")]
+        // // [JsonPropertyName("readings")]
         public List<DasboardShopReading> Readings { get; set; }
     }
 
     public class DashboardShopInfo
     {
-        // [JsonPropertyName("id")]
+        // // [JsonPropertyName("id")]
         public int Id { get; set; }
 
-        // [JsonPropertyName("shopID")]
+        // // [JsonPropertyName("shopID")]
         public int ShopID { get; set; }
 
-        // [JsonPropertyName("isVacant")]
+        // // [JsonPropertyName("isVacant")]
         public bool IsVacant { get; set; }
 
-        // [JsonPropertyName("shopNr")]
+        // // [JsonPropertyName("shopNr")]
         public string ShopNr { get; set; }
 
-        // [JsonPropertyName("shopName")]
+        // // [JsonPropertyName("shopName")]
         public string ShopName { get; set; }
 
-        // [JsonPropertyName("shopDescription")]
+        // // [JsonPropertyName("shopDescription")]
         public string ShopDescription { get; set; }
 
-        // [JsonPropertyName("shopArea")]
+        // // [JsonPropertyName("shopArea")]
         public double ShopArea { get; set; }
 
-        // [JsonPropertyName("shopActive")]
+        // // [JsonPropertyName("shopActive")]
         public bool ShopActive { get; set; }
 
-        // [JsonPropertyName("noOfOccupations")]
+        // // [JsonPropertyName("noOfOccupations")]
         public int NoOfOccupations { get; set; }
     }
 
     public class DashboardShopBilling
     {
-        // [JsonPropertyName("id")]
+        // // [JsonPropertyName("id")]
         public int Id { get; set; }
 
-        // [JsonPropertyName("shopID")]
+        // // [JsonPropertyName("shopID")]
         public int ShopID { get; set; }
 
-        // [JsonPropertyName("groupID")]
+        // // [JsonPropertyName("groupID")]
         public int GroupID { get; set; }
 
-        // [JsonPropertyName("periodID")]
+        // // [JsonPropertyName("periodID")]
         public int PeriodID { get; set; }
 
-        // [JsonPropertyName("periodName")]
+        // // [JsonPropertyName("periodName")]
         public string PeriodName { get; set; }
 
-        // [JsonPropertyName("groupName")]
+        // // [JsonPropertyName("groupName")]
         public string GroupName { get; set; }
 
-        // [JsonPropertyName("usage")]
+        // // [JsonPropertyName("usage")]
         public double Usage { get; set; }
 
-        // [JsonPropertyName("amount")]
+        // // [JsonPropertyName("amount")]
         public decimal Amount { get; set; }
     }
 
     public class DashboardShopOccupation
     {
-        // [JsonPropertyName("id")]
+        // // [JsonPropertyName("id")]
         public int Id { get; set; }
 
-        // [JsonPropertyName("shopID")]
+        // // [JsonPropertyName("shopID")]
         public int ShopID { get; set; }
 
-        // [JsonPropertyName("tenantId")]
+        // // [JsonPropertyName("tenantId")]
         public int TenantId { get; set; }
 
-        // [JsonPropertyName("tenantName")]
+        // // [JsonPropertyName("tenantName")]
         public string TenantName { get; set; }
 
-        // [JsonPropertyName("tenantActive")]
+        // // [JsonPropertyName("tenantActive")]
         public bool TenantActive { get; set; }
 
-        // [JsonPropertyName("occupationDTM")]
+        // // [JsonPropertyName("occupationDTM")]
         public DateTime OccupationDTM { get; set; }
 
-        // [JsonPropertyName("vacationDTM")]
+        // // [JsonPropertyName("vacationDTM")]
         public DateTime? VacationDTM { get; set; }
     }
 
     public class DashboardShopAssignedMeter
     {
-        // [JsonPropertyName("id")]
+        // // [JsonPropertyName("id")]
         public int Id { get; set; }
 
-        // [JsonPropertyName("shopID")]
+        // // [JsonPropertyName("shopID")]
         public int ShopID { get; set; }
 
-        // [JsonPropertyName("buildingServiceID")]
+        // // [JsonPropertyName("buildingServiceID")]
         public int BuildingServiceID { get; set; }
 
-        // [JsonPropertyName("meterNo")]
+        // // [JsonPropertyName("meterNo")]
         public string MeterNo { get; set; }
 
-        // [JsonPropertyName("assType")]
+        // // [JsonPropertyName("assType")]
         public string AssType { get; set; }
     }
 
     public class DasboardShopReading
     {
-        // [JsonPropertyName("id")]
+        // // [JsonPropertyName("id")]
         public int Id { get; set; }
 
-        // [JsonPropertyName("buildingServiceID")]
+        // // [JsonPropertyName("buildingServiceID")]
         public int BuildingServiceID { get; set; }
 
-        // [JsonPropertyName("periodId")]
+        // // [JsonPropertyName("periodId")]
         public int PeriodId { get; set; }
 
-        // [JsonPropertyName("periodName")]
+        // // [JsonPropertyName("periodName")]
         public string PeriodName { get; set; }
 
-        // [JsonPropertyName("periodStart")]
+        // // [JsonPropertyName("periodStart")]
         public DateTime PeriodStart { get; set; }
 
-        // [JsonPropertyName("periodEnd")]
+        // // [JsonPropertyName("periodEnd")]
         public DateTime PeriodEnd { get; set; }
 
-        // [JsonPropertyName("readingDate")]
+        // // [JsonPropertyName("readingDate")]
         public DateTime ReadingDate { get; set; }
 
-        // [JsonPropertyName("actualReading")]
+        // // [JsonPropertyName("actualReading")]
         public double ActualReading { get; set; }
 
-        // [JsonPropertyName("readingUsage")]
+        // // [JsonPropertyName("readingUsage")]
         public double ReadingUsage { get; set; }
 
-        // [JsonPropertyName("readingMethod")]
+        // // [JsonPropertyName("readingMethod")]
         public string ReadingMethod { get; set; }
 
-        // [JsonPropertyName("photo")]
+        // // [JsonPropertyName("photo")]
         public string Photo { get; set; }
     }
 }

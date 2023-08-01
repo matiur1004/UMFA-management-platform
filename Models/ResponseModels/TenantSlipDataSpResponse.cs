@@ -4,196 +4,196 @@ namespace ClientPortal.Models.ResponseModels
 {
     public class TenantSlipDataSpResponse
     {
-        [JsonPropertyName("headers")]
+        // [JsonPropertyName("headers")]
         public List<TenantSlipDataHeader> Headers { get; set; }
 
-        [JsonPropertyName("details")]
+        // [JsonPropertyName("details")]
         public List<TenantSlipDataDetails> Details { get; set; }
 
-        [JsonPropertyName("meterReadings")]
+        // [JsonPropertyName("meterReadings")]
         public List<TenantSlipDataMeterReadings> MeterReadings { get; set; }
 
-        [JsonPropertyName("graphData")]
+        // [JsonPropertyName("graphData")]
         public List<TenantSlipDataGraphData> GraphData { get; set; }
     }
 
     public class TenantSlipDataHeader
     {
-        [JsonPropertyName("splitDate")]
+        // [JsonPropertyName("splitDate")]
         public string SplitDate { get; set; }
 
-        [JsonPropertyName("tenantID")]
+        // [JsonPropertyName("tenantID")]
         public int TenantID { get; set; }
 
-        [JsonPropertyName("exportCode")]
+        // [JsonPropertyName("exportCode")]
         public string ExportCode { get; set; }
 
-        [JsonPropertyName("tenantName")]
+        // [JsonPropertyName("tenantName")]
         public string TenantName { get; set; }
 
-        [JsonPropertyName("addLine1")]
+        // [JsonPropertyName("addLine1")]
         public string AddLine1 { get; set; }
 
-        [JsonPropertyName("addLine2")]
+        // [JsonPropertyName("addLine2")]
         public string AddLine2 { get; set; }
 
-        [JsonPropertyName("addLine3")]
+        // [JsonPropertyName("addLine3")]
         public string AddLine3 { get; set; }
 
-        [JsonPropertyName("addLine4")]
+        // [JsonPropertyName("addLine4")]
         public string AddLine4 { get; set; }
 
-        [JsonPropertyName("code")]
+        // [JsonPropertyName("code")]
         public string Code { get; set; }
 
-        [JsonPropertyName("tenantVat")]
+        // [JsonPropertyName("tenantVat")]
         public string TenantVat { get; set; }
 
-        [JsonPropertyName("buildingName")]
+        // [JsonPropertyName("buildingName")]
         public string BuildingName { get; set; }
 
-        [JsonPropertyName("units")]
+        // [JsonPropertyName("units")]
         public string Units { get; set; }
 
-        [JsonPropertyName("area")]
+        // [JsonPropertyName("area")]
         public decimal Area { get; set; }
 
-        [JsonPropertyName("supplierName")]
+        // [JsonPropertyName("supplierName")]
         public string SupplierName { get; set; }
 
-        [JsonPropertyName("name")]
+        // [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonPropertyName("businessName")]
+        // [JsonPropertyName("businessName")]
         public string BusinessName { get; set; }
 
-        [JsonPropertyName("vatNr")]
+        // [JsonPropertyName("vatNr")]
         public string VatNr { get; set; }
 
-        [JsonPropertyName("compRegNr")]
+        // [JsonPropertyName("compRegNr")]
         public string CompRegNr { get; set; }
 
-        [JsonPropertyName("email")]
+        // [JsonPropertyName("email")]
         public string Email { get; set; }
 
-        [JsonPropertyName("webURL")]
+        // [JsonPropertyName("webURL")]
         public string WebURL { get; set; }
 
-        [JsonPropertyName("physicalAdd")]
+        // [JsonPropertyName("physicalAdd")]
         public string PhysicalAdd { get; set; }
 
-        [JsonPropertyName("postalAdd")]
+        // [JsonPropertyName("postalAdd")]
         public string PostalAdd { get; set; }
 
-        [JsonPropertyName("telNo")]
+        // [JsonPropertyName("telNo")]
         public string TelNo { get; set; }
 
-        [JsonPropertyName("faxNo")]
+        // [JsonPropertyName("faxNo")]
         public string FaxNo { get; set; }
 
-        [JsonPropertyName("periodName")]
+        // [JsonPropertyName("periodName")]
         public string PeriodName { get; set; }
 
-        [JsonPropertyName("days")]
+        // [JsonPropertyName("days")]
         public int Days { get; set; }
 
-        [JsonPropertyName("finAccNo")]
+        // [JsonPropertyName("finAccNo")]
         public string FinAccNo { get; set; }
 
-        [JsonPropertyName("comments")]
+        // [JsonPropertyName("comments")]
         public string Comments { get; set; }
 
-        [JsonPropertyName("vacated")]
+        // [JsonPropertyName("vacated")]
         public string Vacated { get; set; }
 
-        [JsonPropertyName("logoCrystalImage")]
+        // [JsonPropertyName("logoCrystalImage")]
         public byte[] LogoCrystalImage { get; set; }
 
-        [JsonPropertyName("periodStart")]
+        // [JsonPropertyName("periodStart")]
         public string PeriodStart { get; set; }
 
-        [JsonPropertyName("periodEnd")]
+        // [JsonPropertyName("periodEnd")]
         public string PeriodEnd { get; set; }
 
-        [JsonPropertyName("splitDays")]
+        // [JsonPropertyName("splitDays")]
         public int SplitDays { get; set; }
     }
 
     public class TenantSlipDataDetails
     {
-        [JsonPropertyName("date")]
+        // [JsonPropertyName("date")]
         public string Date { get; set; }
 
-        [JsonPropertyName("service")]
+        // [JsonPropertyName("service")]
         public string Service { get; set; }
 
-        [JsonPropertyName("levy")]
+        // [JsonPropertyName("levy")]
         public decimal Levy { get; set; }
 
-        [JsonPropertyName("vat")]
+        // [JsonPropertyName("vat")]
         public decimal Vat { get; set; }
 
-        [JsonPropertyName("amount")]
+        // [JsonPropertyName("amount")]
         public decimal Amount { get; set; }
 
-        [JsonPropertyName("totalExc")]
+        // [JsonPropertyName("totalExc")]
         public decimal TotalExc { get; set; }
 
-        [JsonPropertyName("totalVat")]
+        // [JsonPropertyName("totalVat")]
         public decimal TotalVat { get; set; }
 
-        [JsonPropertyName("totalIncluding")]
+        // [JsonPropertyName("totalIncluding")]
         public decimal TotalIncluding { get; set; }
 
-        [JsonPropertyName("taxPerc")]
+        // [JsonPropertyName("taxPerc")]
         public decimal TaxPerc { get; set; }
     }
 
     public class TenantSlipDataMeterReadings
     {
-        [JsonPropertyName("meterNo")]
+        // [JsonPropertyName("meterNo")]
         public string MeterNo { get; set; }
 
-        [JsonPropertyName("prevReadingDate")]
+        // [JsonPropertyName("prevReadingDate")]
         public string PrevReadingDate { get; set; }
 
-        [JsonPropertyName("prevReading")]
+        // [JsonPropertyName("prevReading")]
         public string PrevReading { get; set; }
 
-        [JsonPropertyName("currReading")]
+        // [JsonPropertyName("currReading")]
         public string CurrReading { get; set; }
 
-        [JsonPropertyName("currReadingDate")]
+        // [JsonPropertyName("currReadingDate")]
         public string CurrReadingDate { get; set; }
 
-        [JsonPropertyName("factor")]
+        // [JsonPropertyName("factor")]
         public string Factor { get; set; }
 
-        [JsonPropertyName("usage")]
+        // [JsonPropertyName("usage")]
         public string Usage { get; set; }
 
-        [JsonPropertyName("perc")]
+        // [JsonPropertyName("perc")]
         public decimal Perc { get; set; }
 
-        [JsonPropertyName("cons")]
+        // [JsonPropertyName("cons")]
         public decimal Cons { get; set; }
     }
 
     public class TenantSlipDataGraphData
     {
-        [JsonPropertyName("date")]
+        // [JsonPropertyName("date")]
         public string Date { get; set; }
 
-        [JsonPropertyName("readingShort")]
+        // [JsonPropertyName("readingShort")]
         public string ReadingShort { get; set; }
 
-        [JsonPropertyName("levy")]
+        // [JsonPropertyName("levy")]
         public decimal Levy { get; set; }
 
-        [JsonPropertyName("vat")]
+        // [JsonPropertyName("vat")]
         public decimal Vat { get; set; }
 
-        [JsonPropertyName("amount")]
+        // [JsonPropertyName("amount")]
         public decimal Amount { get; set; }
     }
 }

@@ -5,55 +5,55 @@ namespace ClientPortal.Models.ResponseModels
 {
     public class UtilityRecoveryReportResponse
     {
-        [JsonPropertyName("headerValues")]
+        // [JsonPropertyName("headerValues")]
         public List<UtilityRecoveryHeader> HeaderValues { get; set; }
 
-        [JsonPropertyName("gridValues")]
+        // [JsonPropertyName("gridValues")]
         public List<UtilityRecoveryGridReport> GridValues { get; set; } = new List<UtilityRecoveryGridReport>();
 
-        [JsonPropertyName("graphValues")]
+        // [JsonPropertyName("graphValues")]
         public List<UtilityRecoveryGraphReport> GraphValues { get; set; } = new List<UtilityRecoveryGraphReport>();
 
-        [JsonPropertyName("periodList")]
+        // [JsonPropertyName("periodList")]
         public List<string> PeriodList { get; set; }
     }
 
     public class UtilityRecoveryGridReport
     {
-        [JsonPropertyName("rowNumber")]
+        // [JsonPropertyName("rowNumber")]
         public int RowNumber { get; set; }
 
-        [JsonPropertyName("rowHeader")]
+        // [JsonPropertyName("rowHeader")]
         public string RowHeader { get; set; }
 
-        [JsonPropertyName("repType")]
+        // [JsonPropertyName("repType")]
         public string RepType { get; set; }
 
-        [JsonPropertyName("periodDetails")]
+        // [JsonPropertyName("periodDetails")]
         public List<UtilityRecoveryPeriodDetail> PeriodDetails { get; set; }
     }
 
     public class UtilityRecoveryGraphReport
     {
-        [JsonPropertyName("rowNumber")]
+        // [JsonPropertyName("rowNumber")]
         public int RowNumber { get; set; }
 
-        [JsonPropertyName("rowHeader")]
+        // [JsonPropertyName("rowHeader")]
         public string RowHeader { get; set; }
 
-        [JsonPropertyName("periodDetails")]
+        // [JsonPropertyName("periodDetails")]
         public List<UtilityRecoveryPeriodDetail> PeriodDetails { get; set; }
     }
 
     public class UtilityRecoveryPeriodDetail
     {
-        [JsonPropertyName("periodId")]
+        // [JsonPropertyName("periodId")]
         public string PeriodId { get; set; }
 
-        [JsonPropertyName("periodName")]
+        // [JsonPropertyName("periodName")]
         public string PeriodName { get; set; }
 
-        [JsonPropertyName("colValue")]
+        // [JsonPropertyName("colValue")]
         public string ColValue { get; set; }
     }
 }

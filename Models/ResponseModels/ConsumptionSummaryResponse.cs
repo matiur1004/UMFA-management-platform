@@ -4,13 +4,13 @@ namespace ClientPortal.Models.ResponseModels
 {
     public class ConsumptionSummaryResponse
     {
-        // [JsonPropertyName("headers")]
+        // // [JsonPropertyName("headers")]
         public List<ConsumptionSummaryHeader> Headers { get; set; }
 
-        // [JsonPropertyName("details")]
+        // // [JsonPropertyName("details")]
         public List<ConsumptionSummaryDetail> Details { get; set; }
 
-        // [JsonPropertyName("reportTotals")]
+        // // [JsonPropertyName("reportTotals")]
         public ConsumptionSummaryTotals ReportTotals { get; set; }
 
         public ConsumptionSummaryResponse() { }
@@ -45,37 +45,37 @@ namespace ClientPortal.Models.ResponseModels
 
     public class ConsumptionSummaryTotals
     {
-        // [JsonPropertyName("invoiceGroupTotals")]
+        // // [JsonPropertyName("invoiceGroupTotals")]
         public List<ConsumptionSummaryInvoiceGroupTotals> InvoiceGroupTotals { get; set; } = new List<ConsumptionSummaryInvoiceGroupTotals>();
 
-        // [JsonPropertyName("reportTotalsExcl")]
+        // // [JsonPropertyName("reportTotalsExcl")]
         public ConsumptionSummaryTotalDetails ReportTotalsExcl { get; set; } = new ConsumptionSummaryTotalDetails();
 
-        // [JsonPropertyName("vat")]
+        // // [JsonPropertyName("vat")]
         public double Vat { get; set; }
 
-        // [JsonPropertyName("totalIncl")]
+        // // [JsonPropertyName("totalIncl")]
         public double TotalIncl { get; set; }
     }
 
     public class ConsumptionSummaryInvoiceGroupTotals
     {
-        // [JsonPropertyName("name")]
+        // // [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        // [JsonPropertyName("totals")]
+        // // [JsonPropertyName("totals")]
         public ConsumptionSummaryTotalDetails Totals { get; set; } = new ConsumptionSummaryTotalDetails();
     }
 
     public class ConsumptionSummaryTotalDetails
     {
-        // [JsonPropertyName("consumptionExcl")]
+        // // [JsonPropertyName("consumptionExcl")]
         public double ConsumptionExcl { get; set; }
 
-        // [JsonPropertyName("basicChargeExcl")]
+        // // [JsonPropertyName("basicChargeExcl")]
         public double BasicChargeExcl { get; set; }
 
-        // [JsonPropertyName("totalExcl")]
+        // // [JsonPropertyName("totalExcl")]
         public double TotalExcl { get; set; }
     }
 }

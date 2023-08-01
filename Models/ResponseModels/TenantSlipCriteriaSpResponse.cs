@@ -4,55 +4,55 @@ namespace ClientPortal.Models.ResponseModels
 {
     public class TenantSlipCriteriaSpResponse
     {
-        [JsonPropertyName("periodLists")]
+        // [JsonPropertyName("periodLists")]
         public List<TenantSlipCriteriaPeriodList> PeriodLists { get; set; }
 
-        [JsonPropertyName("reportTypes")]
+        // [JsonPropertyName("reportTypes")]
         public List<TenantSlipCriteriaReportType> ReportTypes { get; set; }
 
-        [JsonPropertyName("fileFormats")]
+        // [JsonPropertyName("fileFormats")]
         public List<TenantSlipCriteriaFileFormat> FileFormats { get; set; }
 
-        [JsonPropertyName("fileNames")]
+        // [JsonPropertyName("fileNames")]
         public List<TenantSlipCriteriaFileName> FileNames { get; set; }
     }
 
     public class TenantSlipCriteriaPeriodList
     {
-        [JsonPropertyName("periodId")]
+        // [JsonPropertyName("periodId")]
         public int PeriodId { get; set; }
 
-        [JsonPropertyName("displayName")]
+        // [JsonPropertyName("displayName")]
         public string DisplayName { get; set; }
 
-        [JsonPropertyName("splitList")]
+        // [JsonPropertyName("splitList")]
         public string SplitList { get; set; }
     }
 
     public class TenantSlipCriteriaReportType
     {
-        [JsonPropertyName("reportTypeId")]
+        // [JsonPropertyName("reportTypeId")]
         public int ReportTypeId { get; set; }
 
-        [JsonPropertyName("reportTypeName")]
+        // [JsonPropertyName("reportTypeName")]
         public string ReportTypeName { get; set; }
     }
 
     public class TenantSlipCriteriaFileFormat
     {
-        [JsonPropertyName("id")]
+        // [JsonPropertyName("id")]
         public int Id { get; set; }
 
-        [JsonPropertyName("value")]
+        // [JsonPropertyName("value")]
         public string Value { get; set; }
 
-        [JsonPropertyName("description")]
+        // [JsonPropertyName("description")]
         public string Description { get; set; }
     }
 
     public class TenantSlipCriteriaFileName
     {
-        [JsonPropertyName("fileName")]
+        // [JsonPropertyName("fileName")]
         public string FileName { get; set; }
     }
 }

@@ -4,19 +4,19 @@ namespace ClientPortal.Models.ResponseModels
 {
     public class TenantSlipDataResponse
     {
-        [JsonPropertyName("header")]
+        // [JsonPropertyName("header")]
         public TenantSlipDataHeader? Header { get; set; }
 
-        [JsonPropertyName("details")]
+        // [JsonPropertyName("details")]
         public List<TenantSlipDataDetails> Details { get; set; }
 
-        [JsonPropertyName("meterReadings")]
+        // [JsonPropertyName("meterReadings")]
         public List<TenantSlipDataMeterReadings> MeterReadings { get; set; }
 
-        [JsonPropertyName("graphData")]
+        // [JsonPropertyName("graphData")]
         public List<TenantSlipDataGraphData> GraphData { get; set; }
 
-        [JsonPropertyName("fileName")]
+        // [JsonPropertyName("fileName")]
         public string? FileName { get; set; }
 
         public TenantSlipDataResponse() { }

@@ -4,19 +4,19 @@ namespace ClientPortal.Models.ResponseModels
 {
     public class UMFATenantsSpResponse
     {
-        [JsonPropertyName("tenants")]
+        // [JsonPropertyName("tenants")]
         public List<UMFATenant> Tenants { get; set; }
     }
 
     public class UMFATenant
     {
-        [JsonPropertyName("tenantId")]
+        // [JsonPropertyName("tenantId")]
         public int TenantId { get; set; }
 
-        [JsonPropertyName("tenantName")]
+        // [JsonPropertyName("tenantName")]
         public string TenantName { get; set; }
         
-        [JsonPropertyName("description")]
+        // [JsonPropertyName("description")]
         public string Description { get; set; }
     }
 }

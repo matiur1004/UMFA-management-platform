@@ -4,40 +4,40 @@ namespace ClientPortal.Models.ResponseModels
 {
     public class TenantSlipReportSpResponse
     {
-        [JsonPropertyName("slips")]
+        // [JsonPropertyName("slips")]
         public List<TenantSlipReport> Slips { get; set; }
     }
 
     public class TenantSlipReport
     {
-        [JsonPropertyName("tenantID")]
+        // [JsonPropertyName("tenantID")]
         public int? TenantID { get; set; }
 
-        [JsonPropertyName("accountId")]
+        // [JsonPropertyName("accountId")]
         public int? AccountId { get; set; }
 
-        [JsonPropertyName("periodID")]
+        // [JsonPropertyName("periodID")]
         public int? PeriodID { get; set; }
 
-        [JsonPropertyName("shopID")]
+        // [JsonPropertyName("shopID")]
         public int? ShopID { get; set; }
 
-        [JsonPropertyName("splitIndicator")]
+        // [JsonPropertyName("splitIndicator")]
         public int? SplitIndicator { get; set; }
 
-        [JsonPropertyName("tenantName")]
+        // [JsonPropertyName("tenantName")]
         public string? TenantName { get; set; }
 
-        [JsonPropertyName("units")]
+        // [JsonPropertyName("units")]
         public string? Units { get; set; }
 
-        [JsonPropertyName("excl")]
+        // [JsonPropertyName("excl")]
         public decimal? Excl { get; set; }
 
-        [JsonPropertyName("vat")]
+        // [JsonPropertyName("vat")]
         public decimal? Vat { get; set; }
 
-        [JsonPropertyName("incl")]
+        // [JsonPropertyName("incl")]
         public decimal? Incl { get; set; }
     }
 }

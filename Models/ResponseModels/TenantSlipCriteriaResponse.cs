@@ -4,16 +4,16 @@ namespace ClientPortal.Models.ResponseModels
 {
     public class TenantSlipCriteriaResponse
     {
-        // [JsonPropertyName("periodLists")]
+        // // [JsonPropertyName("periodLists")]
         public List<TenantSlipCriteriaPeriodList> PeriodLists { get; set; }
 
-        // [JsonPropertyName("reportTypes")]
+        // // [JsonPropertyName("reportTypes")]
         public List<TenantSlipCriteriaReportType> ReportTypes { get; set; }
 
-        // [JsonPropertyName("fileFormats")]
+        // // [JsonPropertyName("fileFormats")]
         public List<TenantSlipCriteriaFileFormat> FileFormats { get; set; }
 
-        // [JsonPropertyName("fileName")]
+        // // [JsonPropertyName("fileName")]
         public string? FileName { get; set; }
 
         public TenantSlipCriteriaResponse() { }
