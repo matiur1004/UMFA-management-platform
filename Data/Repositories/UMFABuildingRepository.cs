@@ -1,5 +1,6 @@
 ﻿using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Models.ResponseModels;
+using ClientPortal.Services;
 
 namespace ClientPortal.Data.Repositories
 {
@@ -10,48 +11,25 @@ namespace ClientPortal.Data.Repositories
         Task<UMFAPartnerResponse> GetPartnersAsync(int umfaUserId);
         Task<UMFAPeriodResponse> GetPeriodsAsync(int umfaBuildingId);
         Task<Building> AddLocalBuilding(int umfaId, string name, int partnerId, string partner, User user);
-        Task<UMFABuildingServiceResponse> GetUMFABuildingServices(int umfaBuildingId);
         Task<UMFAMeterResponse> GetMetersForBuilding(int umfaBuildingId);
     }
     public class UMFABuildingRepository : IUMFABuildingRepository
     {
         private readonly ILogger<UMFABuildingRepository> _logger;
         private readonly UmfaDBContext _context;
+        private readonly IUmfaService _umfaService;
         private readonly PortalDBContext _dbContext;
 
-        public UMFABuildingRepository(ILogger<UMFABuildingRepository> logger,
-            UmfaDBContext context, PortalDBContext dbContext)
+        public UMFABuildingRepository(
+            ILogger<UMFABuildingRepository> logger,
+            UmfaDBContext context,
+            IUmfaService umfaService,
+            PortalDBContext dbContext)
         {
             _logger = logger;
             _context = context;
             _dbContext = dbContext;
-        }
-
-        public async Task<UMFABuildingServiceResponse> GetUMFABuildingServices(int umfaBuildingId) {
-            var ret = new UMFABuildingServiceResponse();
-            try
-            {
-                var result = await _context.UMFABuildingServices.Where(bs => bs.BuildingId == umfaBuildingId).ToListAsync();
-                if (result != null && result.Count > 0)
-                {
-                    ret.Response = "Success";
-                    ret.ErrorMessage = "";
-                    ret.BuildingServices = result;
-                } else
-                {
-                    ret.Response = "Failed";
-                    ret.ErrorMessage = $"No results returned for building {umfaBuildingId}";
-                    return ret;
-                }
-                return ret;
-            }
-            catch (Exception ex)
-            {
-                ret.Response = "Error";
-                ret.ErrorMessage = ex.Message;
-                _logger.LogError("Error while getting building services for building {buildingid}", umfaBuildingId);
-                return ret;
-            }
+            _umfaService = umfaService;
         }
 
         public async Task<UMFAPeriodResponse> GetPeriodsAsync(int umfaBuildingId)
@@ -59,7 +37,7 @@ namespace ClientPortal.Data.Repositories
             var ret = new UMFAPeriodResponse(umfaBuildingId);
             try
             {
-                var result = await _context.UMFAPeriods.FromSqlRaw($"exec upPortal_GetPeriodsForBuilding {umfaBuildingId}").ToListAsync();
+                var result = await _umfaService.GetBuildingPeriods(umfaBuildingId);
                 ret.Periods = result;
                 return ret;
             }

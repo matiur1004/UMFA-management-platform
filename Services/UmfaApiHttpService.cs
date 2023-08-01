@@ -1,4 +1,5 @@
-﻿using ClientPortal.Models.RequestModels;
+﻿using ClientPortal.Data.Entities.UMFAEntities;
+using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 using ClientPortal.Settings;
 using Microsoft.Extensions.Options;
@@ -36,6 +37,8 @@ namespace ClientPortal.Services
         public Task<DashboardShopsSpResponse> GetDashboardShopDataAsync(DashboardShopsSpRequest request);
 
         public Task<FileFormatDataSpResponse> GetFileFormatData(FileFormatDataSpRequest request);
+
+        public Task<List<UMFAPeriod>> GetBuildingPeriods(int buildingId);
     }
 
 
@@ -236,6 +239,12 @@ namespace ClientPortal.Services
         {
             var response = await GetAsync("archives/fileformatdata", request);
             return JsonSerializer.Deserialize<FileFormatDataSpResponse>(response);
+        }
+
+        public async Task<List<UMFAPeriod>> GetBuildingPeriods(int buildingId)
+        {
+            var response = await GetAsync($"buildings/{buildingId}/periods");
+            return JsonSerializer.Deserialize<List<UMFAPeriod>>(response);
         }
     }
 }

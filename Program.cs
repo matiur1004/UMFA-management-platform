@@ -157,7 +157,6 @@ IConfiguration? configuration = builder.Configuration;
     services.AddScoped<IMappedMeterRepository, MappedMeterRepository>();
     services.AddScoped<IScadaRequestRepository<ScadaRequestHeader>, ScadaRequestHeaderRepository>();
     services.AddScoped<IScadaRequestRepository<ScadaRequestDetail>, ScadaRequestDetailRepository>();
-    services.AddScoped<IUmfaRepository, UmfaRepository>();
     services.AddScoped<INotificationRepository, NotificationRepository>();
     services.AddScoped<IAMRMeterTriggeredAlarmRepository, AMRMeterTriggeredAlarmRepository>();
     services.AddScoped<IArchiveRequestDetailRepository, ArchiveRequestDetailRepository>();
