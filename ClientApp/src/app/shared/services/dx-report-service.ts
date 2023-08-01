@@ -78,6 +78,20 @@ export class DXReportService {
         { Id: 4, Name: 'Utility Recovery and Expense', Description: 'Utility Recovery and Expense Report', DXReportName: 'UtilityRecoveryExpense' },
 
     ];
+
+    recoveriesItems: any[] = [{id: 1, name: 'Client Recoveries'}, {id: 2, name: 'UMFA Recovery'}];
+    expenseItems: any[] = [{id: 0, name: 'Client Expense'}, {id: 1, name: 'UMFA Bulk Reading'}, {id: 2, name: 'Council Account'}];
+    visibleItems: any[] = [
+        {name: 'Client Expense', key: 'ClientExpenseVisible'}, 
+        {name: 'Client Recovery', key: 'ClientRecoverableVisible'}, 
+        {name: 'Council Account', key: 'CouncilAccountVisible'}, 
+        {name: 'UMFA Bulk Reading', key: 'BulkReadingVisible'}, 
+        {name: 'UMFA Recovery', key: 'UmfaRecoveryVisible'}, 
+        {name: 'Potential Recovery', key: 'PotentialRecVisible'}, 
+        {name: 'Non Recoverable', key: 'NonRecVisible'}, 
+        {name: 'UMFA Reading Dates', key: 'UmfaReadingDatesVisible'}, 
+        {name: 'Council Reading Dates', key: 'CouncilReadingDatesVisible'}
+      ];
     public dxReportList$ = of(this.dxReportList);
 
     private tenantOptions: any[] = [

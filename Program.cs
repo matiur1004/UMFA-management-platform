@@ -173,12 +173,14 @@ var app = builder.Build();
 {
     if (!app.Environment.IsDevelopment())
     {
-        DevExpress.Drawing.Internal.DXDrawingEngine.ForceSkia();
+        // DevExpress.Drawing.Internal.DXDrawingEngine.ForceSkia();
         // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();
     }
     else
     {
+        app.UseSwagger();
+        app.UseSwaggerUI();
     }
 
     app.Use(async (context, next) =>
@@ -209,11 +211,6 @@ var app = builder.Build();
 
     app.MapFallbackToFile("index.html");
 
-    if (app.Environment.IsDevelopment())
-    {
-        app.UseSwagger();
-        app.UseSwaggerUI();
-    }
 }
 
 //Inject configuration options into static class used for encryption
