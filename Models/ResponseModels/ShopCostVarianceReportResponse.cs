@@ -4,76 +4,76 @@ namespace ClientPortal.Models.ResponseModels
 {
     public class ShopCostVarianceReportResponse
     {
-        [JsonPropertyName("tenantShopInvoiceGroupings")]
+        // [JsonPropertyName("tenantShopInvoiceGroupings")]
         public List<TenantShopInvoiceCostGrouping> TenantShopInvoiceGroupings { get; set; } = new List<TenantShopInvoiceCostGrouping>();
 
-        [JsonPropertyName("totals")]
+        // [JsonPropertyName("totals")]
         public List<PeriodTotalCostDetails> Totals { get; set; } = new List<PeriodTotalCostDetails>();
 
-        [JsonPropertyName("periodList")]
+        // [JsonPropertyName("periodList")]
         public List<string> PeriodList { get; set; }
     }
 
     public class TenantShopInvoiceCostGrouping
     {
-        [JsonPropertyName("group")]
+        // [JsonPropertyName("group")]
         public string Group { get; set; }
 
-        [JsonPropertyName("groupId")]
+        // [JsonPropertyName("groupId")]
         public int GroupId { get; set; }
 
-        [JsonPropertyName("shopId")]
+        // [JsonPropertyName("shopId")]
         public string ShopId { get; set; }
 
-        [JsonPropertyName("shop")]
+        // [JsonPropertyName("shop")]
         public string Shop { get; set; }
 
-        [JsonPropertyName("tenants")]
+        // [JsonPropertyName("tenants")]
         public string Tenants { get; set; }
 
-        [JsonPropertyName("occDTM")]
+        // [JsonPropertyName("occDTM")]
         public DateTime OccDTM { get; set; }
 
-        [JsonPropertyName("average")]
+        // [JsonPropertyName("average")]
         public decimal? Average { get; set; }
 
-        [JsonPropertyName("variance")]
+        // [JsonPropertyName("variance")]
         public string? Variance { get; set; }
 
-        [JsonPropertyName("recoverable")]
+        // [JsonPropertyName("recoverable")]
         public bool Recoverable { get; set; }
 
-        [JsonPropertyName("periodCostDetails")]
+        // [JsonPropertyName("periodCostDetails")]
         public List<PeriodCostDetail> PeriodCostDetails { get; set; } = new List<PeriodCostDetail>();
     }
 
     public class PeriodTotalCostDetails
     {
-        [JsonPropertyName("groupName")]
+        // [JsonPropertyName("groupName")]
         public string GroupName { get; set; }
 
-        [JsonPropertyName("groupId")]
+        // [JsonPropertyName("groupId")]
         public int GroupId { get; set; }
 
-        [JsonPropertyName("periodCostDetails")]
+        // [JsonPropertyName("periodCostDetails")]
         public List<PeriodCostDetail> PeriodCostDetails { get; set; } = new List<PeriodCostDetail>();
 
-        [JsonPropertyName("average")]
+        // [JsonPropertyName("average")]
         public decimal? Average { get; set; }
 
-        [JsonPropertyName("variance")]
+        // [JsonPropertyName("variance")]
         public string Variance { get; set; }
     }
 
     public class PeriodCostDetail
     {
-        [JsonPropertyName("periodId")]
+        // [JsonPropertyName("periodId")]
         public int PeriodId { get; set; }
 
-        [JsonPropertyName("periodName")]
+        // [JsonPropertyName("periodName")]
         public string PeriodName { get; set; }
 
-        [JsonPropertyName("cost")]
+        // [JsonPropertyName("cost")]
         public decimal? Cost { get; set; }
     }
 }

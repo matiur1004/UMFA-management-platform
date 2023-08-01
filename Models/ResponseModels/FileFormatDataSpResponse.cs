@@ -4,43 +4,43 @@ namespace ClientPortal.Models.ResponseModels
 {
     public class FileFormatDataSpResponse
     {
-        [JsonPropertyName("filesFormatData")]
+        // [JsonPropertyName("filesFormatData")]
         public List<FileFormatData> FilesFormatData { get; set; }
     }
 
     public class FileFormatData
     {
-        [JsonPropertyName("tenantName")]
+        // [JsonPropertyName("tenantName")]
         public string TenantName { get; set; }
 
-        [JsonPropertyName("tenantExportCode")]
+        // [JsonPropertyName("tenantExportCode")]
         public string TenantExportCode { get; set; }
 
-        [JsonPropertyName("primaryExportCode")]
+        // [JsonPropertyName("primaryExportCode")]
         public string PrimaryExportCode { get; set; }
 
-        [JsonPropertyName("secondaryExportCode")]
+        // [JsonPropertyName("secondaryExportCode")]
         public string SecondaryExportCode { get; set; }
 
-        [JsonPropertyName("accountNr")]
+        // [JsonPropertyName("accountNr")]
         public string AccountNr { get; set; }
 
-        [JsonPropertyName("periodName")]
+        // [JsonPropertyName("periodName")]
         public string PeriodName { get; set; }
 
-        [JsonPropertyName("shopExportCode")]
+        // [JsonPropertyName("shopExportCode")]
         public string ShopExportCode { get; set; }
 
-        [JsonPropertyName("buildingCode")]
+        // [JsonPropertyName("buildingCode")]
         public string BuildingCode { get; set; }
 
-        [JsonPropertyName("shopBuildingExportCode")]
+        // [JsonPropertyName("shopBuildingExportCode")]
         public string ShopBuildingExportCode { get; set; }
 
-        [JsonPropertyName("shopNr")]
+        // [JsonPropertyName("shopNr")]
         public string ShopNr { get; set; }
 
-        [JsonPropertyName("buildingName")]
+        // [JsonPropertyName("buildingName")]
         public string BuildingName { get; set; }
     }
 }
