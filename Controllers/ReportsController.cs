@@ -3,7 +3,6 @@ using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 using ClientPortal.Services;
-using System.Text.Json;
 
 namespace ClientPortal.Controllers
 {
@@ -14,14 +13,14 @@ namespace ClientPortal.Controllers
     {
 
         private readonly ILogger<ReportsController> _logger;
-        private readonly IUmfaReportService _umfaReportService;
+        private readonly IUmfaService _umfaService;
         private readonly IQueueService _queueService;
         private readonly IArchivesService _archivesService;
 
-        public ReportsController(ILogger<ReportsController> logger, IUmfaReportService umfaReportService, IQueueService queueService, IArchivesService archivesServices) 
+        public ReportsController(ILogger<ReportsController> logger, IUmfaService umfaReportService, IQueueService queueService, IArchivesService archivesServices) 
         {
             _logger = logger;
-            _umfaReportService = umfaReportService;
+            _umfaService = umfaReportService;
             _queueService = queueService;
             _archivesService = archivesServices;
         }
@@ -29,19 +28,19 @@ namespace ClientPortal.Controllers
         [HttpGet("UtilityRecoveryReport")]
         public async Task<ActionResult<UtilityRecoveryReportResponse>> Get([FromQuery] UtilityRecoveryReportRequest request)
         {
-            return await _umfaReportService.GetUtilityRecoveryReportAsync(request);
+            return await _umfaService.GetUtilityRecoveryReportAsync(request);
         }
 
         [HttpGet("ShopUsageVarianceReport")]
         public async Task<ActionResult<ShopUsageVarianceReportResponse>> Get([FromQuery] ShopUsageVarianceRequest request)
         {
-            return await _umfaReportService.GetShopUsageVarianceReportAsync(request);
+            return await _umfaService.GetShopUsageVarianceReportAsync(request);
         }
 
         [HttpGet("ShopCostVarianceReport")]
         public async Task<ActionResult<ShopCostVarianceReportResponse>> GetCostVariance([FromQuery] ShopUsageVarianceRequest request)
         {
-            return await _umfaReportService.GetShopCostVarianceReportAsync(request);
+            return await _umfaService.GetShopCostVarianceReportAsync(request);
         }
 
         [HttpPut("ConsumptionSummaryReport")]
@@ -52,13 +51,13 @@ namespace ClientPortal.Controllers
                 request.Shops = new List<int> { 0 };
             }
 
-            return await _umfaReportService.GetConsumptionSummaryReport(new ConsumptionSummarySpRequest(request));
+            return await _umfaService.GetConsumptionSummaryReportAsync(new ConsumptionSummarySpRequest(request));
         }
 
         [HttpGet("ConsumptionSummaryReconReport")]
         public async Task<ActionResult<ConsumptionSummaryReconResponse>> GetConsumptionSummaryRecon([FromQuery] ConsumptionSummaryReconRequest request)
         {
-            return await _umfaReportService.GetConsumptionSummaryReconReport(request);
+            return await _umfaService.GetConsumptionSummaryReconReportAsync(request);
         }
 
         [HttpPost("Archives")]
@@ -84,7 +83,7 @@ namespace ClientPortal.Controllers
             // update umfa db file formats
             try
             {
-                await _umfaReportService.UpdateReportArhivesFileFormats(new UpdateArchiveFileFormatSpRequest
+                await _umfaService.UpdateReportArhivesFileFormatsAsync(new UpdateArchiveFileFormatSpRequest
                 {
                     BuildingId = (int)request[0].BuildingId!,
                     Format = request[0].FileFormat.FileNameFormat,

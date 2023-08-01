@@ -1,5 +1,5 @@
-﻿
-using DevExpress.Xpo;
+﻿using DevExpress.Xpo;
+using System.Text.Json.Serialization;
 
 namespace ClientPortal.Data.Entities.UMFAEntities
 {

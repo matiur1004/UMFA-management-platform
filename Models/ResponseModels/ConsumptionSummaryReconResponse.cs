@@ -1,4 +1,6 @@
-﻿namespace ClientPortal.Models.ResponseModels
+﻿using System.Text.Json.Serialization;
+
+namespace ClientPortal.Models.ResponseModels
 {
     public class ConsumptionSummaryReconResponse
     {
@@ -9,6 +11,8 @@
         public List<CSReconOtherRecoveries> OtherRecoveries { get; set; }
         public List<CSReconOtherBulkMeters> OtherBulkMeters { get; set; }
         public List<CSReconOtherSummary> OtherSummaries { get; set; }
+
+        public ConsumptionSummaryReconResponse() { }
 
         public ConsumptionSummaryReconResponse(ConsumptionSummaryReconSpResponse response)
         {

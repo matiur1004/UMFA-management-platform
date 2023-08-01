@@ -12,17 +12,17 @@ namespace ClientPortal.Services
         readonly IBuildingService _buildingService;
         private readonly IUserService _userService;
         private readonly IMappedMeterService _mappedMeterService;
-        private readonly IUmfaRepository _umfaRepository;
+        private readonly IUmfaService _umfaService;
 
         public DashboardService(IPortalStatsRepository portalStats, ILogger<DashboardService> logger, IBuildingService buildingService,
-            IUserService userService, IMappedMeterService mappedMeterService, IUmfaRepository umfaRepository)
+            IUserService userService, IMappedMeterService mappedMeterService, IUmfaService umfaService)
         {
             _buildingService = buildingService;
             _userService = userService;
             _portalStats = portalStats;
             _logger = logger;
             _mappedMeterService = mappedMeterService;
-            _umfaRepository = umfaRepository;
+            _umfaService = umfaService;
         }
 
         public DashboardMainResponse GetMainDashboard(int umfaUserId)
@@ -100,7 +100,7 @@ namespace ClientPortal.Services
 
         public async Task<DashboardShopsSpResponse> GetShopDataAsync(DashboardShopsSpRequest request)
         {
-            return await _umfaRepository.GetDashboardShopDataAsync(request);
+            return await _umfaService.GetDashboardShopDataAsync(request);
         }
     }
 }

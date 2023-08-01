@@ -1,4 +1,6 @@
-﻿namespace ClientPortal.Data.Entities.UMFAEntities
+﻿using System.Text.Json.Serialization;
+
+namespace ClientPortal.Data.Entities.UMFAEntities
 {
     public class UtilityRecoveryHeader
     {

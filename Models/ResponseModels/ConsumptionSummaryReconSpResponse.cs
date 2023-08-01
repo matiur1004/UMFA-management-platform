@@ -1,4 +1,6 @@
-﻿namespace ClientPortal.Models.ResponseModels
+﻿using System.Text.Json.Serialization;
+
+namespace ClientPortal.Models.ResponseModels
 {
     public class ConsumptionSummaryReconSpResponse
     {
@@ -54,10 +56,9 @@
         public double KWHUsage { get; set; }
         public double KVAUsage { get; set; }
         public double KWHAmount { get; set; }
-        public double KVAAMOUNT { get; set; }
+        public double KVAAmount { get; set; }
         public double BCAmount { get; set; }
         public double OtherAmount { get; set; }
-
     }
 
     public class CSReconElectricitySummary

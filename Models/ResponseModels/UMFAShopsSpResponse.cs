@@ -1,4 +1,6 @@
-﻿namespace ClientPortal.Models.ResponseModels
+﻿using System.Text.Json.Serialization;
+
+namespace ClientPortal.Models.ResponseModels
 {
     public class UMFAShopsSpResponse
     {

@@ -1,4 +1,6 @@
-﻿namespace ClientPortal.Models.ResponseModels
+﻿using System.Text.Json.Serialization;
+
+namespace ClientPortal.Models.ResponseModels
 {
     public class BuildingRecoveryReport
     {
@@ -28,8 +30,8 @@
     public class PeriodDetail
     {
         public string ItemName { get; set; }
-        public decimal kWhUsage { get; set; }
-        public decimal kVAUsage { get; set; }
+        public decimal KWhUsage { get; set; }
+        public decimal KVAUsage { get; set; }
         public decimal TotalAmount { get; set; }
         public bool Recoverable { get; set; }
         public bool Highlighted { get; set; }

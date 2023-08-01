@@ -4,208 +4,208 @@ namespace ClientPortal.Models.ResponseModels
 {
     public class TenantSlipDataForArchiveSpResponse
     {
-        [JsonPropertyName("headers")]
+        // [JsonPropertyName("headers")]
         public List<TenantSlipDataForArchiveBusiness> Headers { get; set; }
 
-        [JsonPropertyName("tenantInfos")]
+        // [JsonPropertyName("tenantInfos")]
         public List<TenantSlipDataForArchiveTenantInfo> TenantInfos { get; set; }
 
-        [JsonPropertyName("shops")]
+        // [JsonPropertyName("shops")]
         public List<TenantSlipDataForArchiveShop> Shops { get; set; }
 
-        [JsonPropertyName("shopBillingInfos")]
+        // [JsonPropertyName("shopBillingInfos")]
         public List<TenantSlipDataForArchiveShopBillingInfo> ShopBillingInfos { get; set; }
 
-        [JsonPropertyName("serviceFees")]
+        // [JsonPropertyName("serviceFees")]
         public List<TenantSlipDataForArchiveServiceFee> ServiceFees { get; set; }
 
-        [JsonPropertyName("meterCharges")]
+        // [JsonPropertyName("meterCharges")]
         public List<TenantSlipDataForArchiveMeterCharge> MeterCharges { get; set; }
 
-        [JsonPropertyName("graphData")]
+        // [JsonPropertyName("graphData")]
         public List<TenantSlipDataForArchiveGraphData> GraphData { get; set; }
 
-        [JsonPropertyName("fileName")]
+        // [JsonPropertyName("fileName")]
         public string? FileName { get; set; }
     }
 
     public class TenantSlipDataForArchiveBusiness
     {
-        [JsonPropertyName("reportTypeId")]
+        // [JsonPropertyName("reportTypeId")]
         public int ReportTypeId { get; set; }
 
-        [JsonPropertyName("businessName")]
+        // [JsonPropertyName("businessName")]
         public string BusinessName { get; set; }
 
-        [JsonPropertyName("compRegNr")]
+        // [JsonPropertyName("compRegNr")]
         public string CompRegNr { get; set; }
 
-        [JsonPropertyName("postalAdd")]
+        // [JsonPropertyName("postalAdd")]
         public string PostalAdd { get; set; }
 
-        [JsonPropertyName("physicalAdd")]
+        // [JsonPropertyName("physicalAdd")]
         public string PhysicalAdd { get; set; }
 
-        [JsonPropertyName("telNo")]
+        // [JsonPropertyName("telNo")]
         public string TelNo { get; set; }
 
-        [JsonPropertyName("faxNo")]
+        // [JsonPropertyName("faxNo")]
         public string FaxNo { get; set; }
 
-        [JsonPropertyName("email")]
+        // [JsonPropertyName("email")]
         public string Email { get; set; }
 
-        [JsonPropertyName("webURL")]
+        // [JsonPropertyName("webURL")]
         public string WebURL { get; set; }
 
-        [JsonPropertyName("supplierName")]
+        // [JsonPropertyName("supplierName")]
         public string SupplierName { get; set; }
 
-        [JsonPropertyName("logoCrystalImage")]
+        // [JsonPropertyName("logoCrystalImage")]
         public byte[] LogoCrystalImage { get; set; }
     }
 
     public class TenantSlipDataForArchiveTenantInfo
     {
-        [JsonPropertyName("tenantId")]
+        // [JsonPropertyName("tenantId")]
         public int TenantId { get; set; }
 
-        [JsonPropertyName("tenantName")]
+        // [JsonPropertyName("tenantName")]
         public string TenantName { get; set; }
 
-        [JsonPropertyName("addLine1")]
+        // [JsonPropertyName("addLine1")]
         public string AddLine1 { get; set; }
 
-        [JsonPropertyName("addLine2")]
+        // [JsonPropertyName("addLine2")]
         public string AddLine2 { get; set; }
 
-        [JsonPropertyName("addLine3")]
+        // [JsonPropertyName("addLine3")]
         public string AddLine3 { get; set; }
 
-        [JsonPropertyName("addLine4")]
+        // [JsonPropertyName("addLine4")]
         public string AddLine4 { get; set; }
 
-        [JsonPropertyName("code")]
+        // [JsonPropertyName("code")]
         public string Code { get; set; }
 
-        [JsonPropertyName("vatNr")]
+        // [JsonPropertyName("vatNr")]
         public string VatNr { get; set; }
 
-        [JsonPropertyName("building")]
+        // [JsonPropertyName("building")]
         public string Building { get; set; }
 
-        [JsonPropertyName("exportCode")]
+        // [JsonPropertyName("exportCode")]
         public string ExportCode { get; set; }
 
-        [JsonPropertyName("units")]
+        // [JsonPropertyName("units")]
         public string Units { get; set; }
 
-        [JsonPropertyName("area")]
+        // [JsonPropertyName("area")]
         public double Area { get; set; }
 
-        [JsonPropertyName("comments")]
+        // [JsonPropertyName("comments")]
         public string Comments { get; set; }
     }
 
     public class TenantSlipDataForArchiveShop
     {
-        [JsonPropertyName("shopID")]
+        // [JsonPropertyName("shopID")]
         public int ShopID { get; set; }
 
-        [JsonPropertyName("shopNr")]
+        // [JsonPropertyName("shopNr")]
         public string ShopNr { get; set; }
 
-        [JsonPropertyName("shopName")]
+        // [JsonPropertyName("shopName")]
         public string ShopName { get; set; }
 
-        [JsonPropertyName("shopDescription")]
+        // [JsonPropertyName("shopDescription")]
         public string ShopDescription { get; set; }
 
-        [JsonPropertyName("shopArea")]
+        // [JsonPropertyName("shopArea")]
         public double ShopArea { get; set; }
 
-        [JsonPropertyName("shopTotExcl")]
+        // [JsonPropertyName("shopTotExcl")]
         public decimal ShopTotExcl { get; set; }
     }
 
     public class TenantSlipDataForArchiveShopBillingInfo
     {
-        [JsonPropertyName("shopID")]
+        // [JsonPropertyName("shopID")]
         public int ShopID { get; set; }
 
-        [JsonPropertyName("groupID")]
+        // [JsonPropertyName("groupID")]
         public int GroupID { get; set; }
 
-        [JsonPropertyName("groupName")]
+        // [JsonPropertyName("groupName")]
         public string GroupName { get; set; }
 
-        [JsonPropertyName("groupTotExcl")]
+        // [JsonPropertyName("groupTotExcl")]
         public decimal GroupTotExcl { get; set; }
     }
 
     public class TenantSlipDataForArchiveServiceFee
     {
-        [JsonPropertyName("shopID")]
+        // [JsonPropertyName("shopID")]
         public int ShopID { get; set; }
 
-        [JsonPropertyName("groupID")]
+        // [JsonPropertyName("groupID")]
         public int GroupID { get; set; }
 
-        [JsonPropertyName("serviceFeeName")]
+        // [JsonPropertyName("serviceFeeName")]
         public string ServiceFeeName { get; set; }
 
-        [JsonPropertyName("serviceFeeExcl")]
+        // [JsonPropertyName("serviceFeeExcl")]
         public decimal ServiceFeeExcl { get; set; }
     }
 
     public class TenantSlipDataForArchiveMeterCharge
     {
-        [JsonPropertyName("shopID")]
+        // [JsonPropertyName("shopID")]
         public int ShopID { get; set; }
 
-        [JsonPropertyName("groupID")]
+        // [JsonPropertyName("groupID")]
         public int GroupID { get; set; }
 
-        [JsonPropertyName("chargeName")]
+        // [JsonPropertyName("chargeName")]
         public string ChargeName { get; set; }
 
-        [JsonPropertyName("meterNo")]
+        // [JsonPropertyName("meterNo")]
         public string MeterNo { get; set; }
 
-        [JsonPropertyName("prevReadingDate")]
+        // [JsonPropertyName("prevReadingDate")]
         public DateTime PrevReadingDate { get; set; }
 
-        [JsonPropertyName("prevReading")]
+        // [JsonPropertyName("prevReading")]
         public string PrevReading { get; set; }
 
-        [JsonPropertyName("readingDate")]
+        // [JsonPropertyName("readingDate")]
         public DateTime ReadingDate { get; set; }
 
-        [JsonPropertyName("closingReading")]
+        // [JsonPropertyName("closingReading")]
         public double ClosingReading { get; set; }
 
-        [JsonPropertyName("usage")]
+        // [JsonPropertyName("usage")]
         public double Usage { get; set; }
 
-        [JsonPropertyName("billedUsage")]
+        // [JsonPropertyName("billedUsage")]
         public double BilledUsage { get; set; }
 
-        [JsonPropertyName("meterChargeExcl")]
+        // [JsonPropertyName("meterChargeExcl")]
         public decimal MeterChargeExcl { get; set; }
     }
 
     public class TenantSlipDataForArchiveGraphData
     {
-        [JsonPropertyName("periodID")]
+        // [JsonPropertyName("periodID")]
         public int PeriodID { get; set; }
 
-        [JsonPropertyName("periodName")]
+        // [JsonPropertyName("periodName")]
         public string PeriodName { get; set; }
 
-        [JsonPropertyName("readingShort")]
+        // [JsonPropertyName("readingShort")]
         public string ReadingShort { get; set; }
 
-        [JsonPropertyName("tenantTotExcl")]
+        // [JsonPropertyName("tenantTotExcl")]
         public double TenantTotExcl { get; set; }
     }
 }
