@@ -10,3 +10,12 @@
 // ::ng-deep .summaryReport .dx-datagrid-headers {
 //     display: none;
 // }
+::ng-deep .mat-accordion .mat-expansion-panel .mat-expansion-panel-body {
+    color: #19233C !important;
+}
+::ng-deep .dx-radiobutton {
+    font-weight: 600;
+    color: #19233C;
+    margin-bottom: 6px !important;
+    font-size: 18px;
+}

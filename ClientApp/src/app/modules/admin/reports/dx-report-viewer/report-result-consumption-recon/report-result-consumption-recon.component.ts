@@ -8,6 +8,13 @@ import { exportDataGrid as exportDataGridToExcel } from 'devextreme/excel_export
 import { exportDataGrid as exportDataGridToPdf } from 'devextreme/pdf_exporter';
 import { jsPDF } from 'jspdf';
 import { DecimalPipe } from '@angular/common';
+import { ApexChart, ApexNonAxisChartSeries } from 'ng-apexcharts';
+
+export type ChartOptions = {
+  series: ApexNonAxisChartSeries;
+  chart: ApexChart;
+  labels: any;
+};
 
 @Component({
   selector: 'report-result-consumption-recon',
@@ -16,9 +23,13 @@ import { DecimalPipe } from '@angular/common';
 })
 export class ReportResultConsumptionReconComponent implements OnInit {
 
+  dataSource: any;
   electricityRecoveriesDataSource: any;
   electricityBulkMetersDataSource: any;
   electricitySummariesDataSource: any;
+  electricityBulkMeterChart: Partial<ChartOptions>;
+  electricityRecoveryChart: any[] = [];
+  electricitySelectedValueType: string = 'kWh';
 
   otherDataSource: any;
   otherRecoveriesDataSource: any;
@@ -26,6 +37,7 @@ export class ReportResultConsumptionReconComponent implements OnInit {
   otherSummariesDataSource: any;
 
   headerInfo: any;
+  valueTypes = ['kWh', 'Rand'];
 
   @ViewChild('electricityRecoveryDataGrid') electricityRecoveryDataGrid: DxDataGridComponent;
   @ViewChild('electricityBulkMeterDataGrid') electricityBulkMeterDataGrid: DxDataGridComponent;
@@ -47,6 +59,7 @@ export class ReportResultConsumptionReconComponent implements OnInit {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: any) => {
         if(data) {
+          this.dataSource = data;
           this.headerInfo = data['ReportHeader'];  //DisplayName , PeriodInfo
           // Electricity Recoveries Report
           this.electricityRecoveriesDataSource = data['ElectricityRecoveries'].map(item => {
@@ -96,8 +109,7 @@ export class ReportResultConsumptionReconComponent implements OnInit {
           // Electricity Bulk Meters Report
           this.electricityBulkMetersDataSource = data['ElectricityBulkMeters'].map(item => {
             let result = {
-              MeterNo: item['MeterNo'],
-              Description: item['DescriptionField'],
+              MeterNo: `${item['MeterNo']} - ${item['DescriptionField']}`,
               KWHUnits: item['KWHUsage'],
               KWHRC: item['KWHAmount'],
               kVAUnits: item['KVAUsage'],
@@ -108,6 +120,8 @@ export class ReportResultConsumptionReconComponent implements OnInit {
             };
             return result;
           });
+
+          this.onChartChange('electricity', 'kWh');
 
           this.electricityBulkMetersDataSource.push({
             MeterNo: '',
@@ -173,8 +187,8 @@ export class ReportResultConsumptionReconComponent implements OnInit {
           });
 
           this.otherDataSource = [];
-          serviceTypes.forEach(service => {
-            let report = {ServiceName: service, otherRecoveriesDataSource: [], otherBulkMetersDataSource: [], otherSummariesDataSource: []};
+          serviceTypes.forEach((service, idx) => {
+            let report = {ServiceName: service, otherRecoveriesDataSource: [], otherBulkMetersDataSource: [], otherSummariesDataSource: [], otherBulkMeterChart: null};
             
             // Other Recoveries Report
             let otherRecoveriesByService = data['OtherRecoveries'].filter(item => item['ServiceName'] == service);
@@ -215,8 +229,7 @@ export class ReportResultConsumptionReconComponent implements OnInit {
             let otherBulkMetersByService = data['OtherBulkMeters'].filter(item => item['ServiceName'] == service);
             report.otherBulkMetersDataSource = otherBulkMetersByService.map(item => {
               let result = {
-                MeterNo: item['MeterNo'],
-                Description: item['DescriptionField'],
+                MeterNo: `${item['MeterNo']} - ${item['DescriptionField']}`,
                 Usage: item['Usage'],
                 Amount: item['ConsAmount'],
                 BCAmount: item['BCAmount'],
@@ -233,6 +246,14 @@ export class ReportResultConsumptionReconComponent implements OnInit {
               TotalRC: this.getTotal('TotalAmount', otherBulkMetersByService)
             })
 
+            // report.otherBulkMeterChart = {
+            //   series: [44, 55, 13, 43, 22],
+            //   chart: {
+            //     width: 380,
+            //     type: "pie"
+            //   },
+            //   labels: ["Team A", "Team B", "Team C", "Team D", "Team E"]
+            // }
             // Summaries Report
             let otherSummariesByService = data['OtherSummaries'].filter(item => item['ServiceName'] == service);
             report.otherSummariesDataSource = [];
@@ -268,6 +289,10 @@ export class ReportResultConsumptionReconComponent implements OnInit {
               TotalRC: this.getTotal('PercTotalDiff', otherSummariesByService)
             })
             this.otherDataSource.push(report);
+          })
+
+          serviceTypes.forEach((service, idx) => {
+            this.onChartChange(service, 'kWh', idx);
           })
           this._cdr.detectChanges();
         } else {
@@ -697,6 +722,113 @@ export class ReportResultConsumptionReconComponent implements OnInit {
       }
     };
     xhr.send();
+  }
+
+  onChartChange(type, value, index = 0) {    
+    if(type == 'electricity') {
+      let key = value == 'Rand' ? 'TotalAmount' : 'KWHUsage';
+      this.electricityBulkMeterChart = {
+        series: this.dataSource['ElectricityBulkMeters'].filter(item => item[key]).map(item => { return item[key]}),
+        chart: {
+          width: 400,
+          type: "pie"
+        },
+        labels: this.dataSource['ElectricityBulkMeters'].filter(item => item[key]).map(item => { return item['DescriptionField']})
+      }
+    } else {
+      let key = value == 'Rand' ? 'TotalAmount' : 'Usage';
+      let otherBulkMetersByService = this.dataSource['OtherBulkMeters'].filter(item => item['ServiceName'] == type);
+      
+      this.otherDataSource[index].otherBulkMeterChart = {
+        series: otherBulkMetersByService.filter(item => item[key]).map(item => { return item[key]}),
+        chart: {
+          width: 400,
+          type: "pie"
+        },
+        labels: otherBulkMetersByService.filter(item => item[key]).map(item => { return item['DescriptionField']})
+      }
+    }
+    this.onRecoveryChartChange(type, value, index);
+  }
+
+  onRecoveryChartChange(type, value, index = 0) {
+    if(type == 'electricity') {
+      this.electricitySelectedValueType = value;
+      let electricityCategories = [];
+      this.dataSource['ElectricityRecoveries'].forEach(item => {
+        if(item['ReconDescription'].indexOf('Common Area') > -1 && electricityCategories.indexOf('Common Area') == -1) electricityCategories.push('Common Area');
+        if(item['ReconDescription'].indexOf('Tenant') > -1 && electricityCategories.indexOf('Tenant') == -1) electricityCategories.push('Tenant');
+        if(item['ReconDescription'].indexOf('Aircon') > -1 && electricityCategories.indexOf('Aircon') == -1) electricityCategories.push('Aircon');
+
+      })
+      this.electricityRecoveryChart = [];
+      let totalRecovery = 0; let totalUnRecovery = 0;
+      electricityCategories.forEach(category => {
+        let recoveryVal = 0;  let unRecoveryVal = 0;
+        this.dataSource['ElectricityRecoveries'].forEach(item => {
+          if(item['ReconDescription'].indexOf(category) > -1 && item['ReconDescription'].indexOf('NR') == -1) {
+            recoveryVal += value == 'Rand' ? item['TotalAmt'] : item['KWHUsage'];
+          }
+          if(item['ReconDescription'].indexOf(category) > -1 && item['ReconDescription'].indexOf('NR') > -1) {
+            unRecoveryVal += value == 'Rand' ? item['TotalAmt'] : item['KWHUsage'];
+          }
+        })
+        
+        totalRecovery += recoveryVal; totalUnRecovery += unRecoveryVal;
+        this.electricityRecoveryChart.push({
+          title: category == "Common Area" ? "Common Area Electricity" : category,
+          recovery: recoveryVal,
+          unrecovery: unRecoveryVal,
+          percent: recoveryVal / (recoveryVal + unRecoveryVal)
+        })
+      })
+      this.electricityRecoveryChart.push({
+        title: 'Total',
+        recovery: totalRecovery,
+        unrecovery: totalUnRecovery,
+        percent: totalRecovery / (totalRecovery + totalUnRecovery)
+      })
+    } else {
+      this.otherDataSource[index].otherSelectedValueType = value;
+      let key = value == 'Rand' ? 'TotalAmt' : 'Usage';
+      let otherRecoveriesByService = this.dataSource['OtherRecoveries'].filter(item => item['ServiceName'] == type);
+      let electricityCategories = [];
+      otherRecoveriesByService.forEach(item => {
+        if(item['ReconDescription'].indexOf('Common Area') > -1 && electricityCategories.indexOf('Common Area') == -1) electricityCategories.push('Common Area');
+        if(item['ReconDescription'].indexOf('Tenant') > -1 && electricityCategories.indexOf('Tenant') == -1) electricityCategories.push('Tenant');
+        if(item['ReconDescription'].indexOf('Aircon') > -1 && electricityCategories.indexOf('Aircon') == -1) electricityCategories.push('Aircon');
+
+      })
+      this.otherDataSource[index].otherRecoveryChart = [];
+      let totalRecovery = 0; let totalUnRecovery = 0;
+      electricityCategories.forEach(category => {
+        let recoveryVal = 0;  let unRecoveryVal = 0;
+        otherRecoveriesByService.forEach(item => {
+          if(item['ReconDescription'].indexOf(category) > -1 && item['ReconDescription'].indexOf('NR') == -1) {
+            recoveryVal += item[key];
+          }
+          if(item['ReconDescription'].indexOf(category) > -1 && item['ReconDescription'].indexOf('NR') > -1) {
+            unRecoveryVal += item[key];
+          }
+        })
+        
+        totalRecovery += recoveryVal; totalUnRecovery += unRecoveryVal;
+        this.otherDataSource[index].otherRecoveryChart.push({
+          title: category == "Common Area" ? "Common Area " + type : category + ' ' + type,
+          recovery: recoveryVal,
+          unrecovery: unRecoveryVal,
+          percent: recoveryVal / (recoveryVal + unRecoveryVal)
+        })
+      })
+      this.otherDataSource[index].otherRecoveryChart.push({
+        title: 'Total',
+        recovery: totalRecovery,
+        unrecovery: totalUnRecovery,
+        percent: totalRecovery / (totalRecovery + totalUnRecovery)
+      })
+      
+      
+    }
   }
 
   ngOnDestroy(): void {

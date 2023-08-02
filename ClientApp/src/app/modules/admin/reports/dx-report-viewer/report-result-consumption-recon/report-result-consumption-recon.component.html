@@ -1,6 +1,6 @@
 <div class="flex flex-col gap-y-2 relative">
-    <div class="flex justify-between w-full mt-2 px-2 items-center" *ngIf="electricityRecoveriesDataSource">
-        <span class="text-lg font-semibold" >Electricity Monthly Recovery statistics Excl VAT.</span>
+    <div class="flex justify-end w-full mt-2 px-2 items-center" *ngIf="electricityRecoveriesDataSource">
+        
         <button mat-raised-button [color]="'primary'" [matMenuTriggerFor]="menu" type="button" class="dnm-btn dnm-btn-primary">
            Export
         </button>
@@ -9,208 +9,286 @@
             <button mat-menu-item (click)="onExport('pdf')">PDF</button>
         </mat-menu>
     </div>
-    <div class="flex w-full p-2" *ngIf="electricityRecoveriesDataSource">
-        <dx-data-grid
-            #electricityRecoveryDataGrid
-            [dataSource]="electricityRecoveriesDataSource"
-            [showBorders]="true"
-            [remoteOperations]="true"
-            [wordWrapEnabled]="true"
-            [hoverStateEnabled]="true"
-            (onCellPrepared)="onCellPrepared($event)"
-        >
-            <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
-            <dxo-paging [pageSize]="100"></dxo-paging>
-            <dxi-column dataField="Name" caption="Electricity Recovery" [minWidth]="200"></dxi-column>
-            <dxi-column dataField="KWHUnits" caption="KWH Units" cellTemplate="cellValueTemplate"></dxi-column>
-            <dxi-column dataField="KWHRC" caption="KWH R/C" cellTemplate="currencyValueTemplate"></dxi-column>
-            <dxi-column dataField="kVAUnits" caption="kVA Units" cellTemplate="cellValueTemplate"></dxi-column>
-            <dxi-column dataField="KVARC" caption="KVA R/C" cellTemplate="currencyValueTemplate"></dxi-column>
-            <dxi-column dataField="BasicRC" caption="Basic Charges R/C" cellTemplate="currencyValueTemplate"></dxi-column>
-            <dxi-column dataField="OtherRC" caption="Other R/C" cellTemplate="currencyValueTemplate"></dxi-column>
-            <dxi-column dataField="TotalRC" caption="Total R/C" cellTemplate="currencyValueTemplate"></dxi-column>
-            <div *dxTemplate="let data of 'currencyValueTemplate'">
-                <ng-container *ngIf="data.value != null; else emptyTemplate">
-                    R {{data.value | number : '1.2-2'}}
-                </ng-container>
-                <ng-template #emptyTemplate></ng-template>
-            </div>
-            <div *dxTemplate="let data of 'cellValueTemplate'">
-                <ng-container *ngIf="data.value != null; else emptyTemplate">
-                    {{data.value | number : '1.2-2'}}
-                </ng-container>
-                <ng-template #emptyTemplate></ng-template>
-            </div>
-        </dx-data-grid>
+    <div class="flex px-2">
+        <mat-accordion>
+            <mat-expansion-panel *ngIf="electricityRecoveriesDataSource">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <span class="text-xl font-semibold">Electricity Monthly Recovery statistics Excl VAT.</span>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="flex w-full p-2 gap-x-8" *ngIf="electricityBulkMeterChart">
+                    <div class="flex items-center">
+                        <dx-radio-group [items]="valueTypes" [value]="valueTypes[0]" (valueChange)="onChartChange('electricity', $event, 0)">
+                        </dx-radio-group>
+                    </div>                    
+                    <div class="flex flex-wrap gap-x-8 gap-y-8" style="width: 650px;">
+                        <div class="flex flex-col gap-y-2" style="width: 300px;" *ngFor="let recoveryChart of electricityRecoveryChart">
+                            <span class="font-semibold text-lg">{{recoveryChart.title}}</span>
+                            <div class="flex roundex-md" style="height: 32px;">
+                                <div class="flex justify-center items-center bg-red-400" [ngStyle]="{'width': (100 - recoveryChart.percent * 100) + '%' }"></div>
+                                <div class="flex bg-blue-400 justify-center items-center font-semibold" [ngStyle]="{'width': (recoveryChart.percent * 100) + '%' }">{{recoveryChart.percent | percent}}</div>
+                            </div>
+                            <div class="flex flex-col gap-y-1 text-lg font-semibold">
+                                <div class="flex gap-x-2 items-center">
+                                    <div class="bg-red-400 w-2 h-2 rounded-sm"></div>
+                                    <span><ng-container *ngIf="electricitySelectedValueType != 'kWh'">R</ng-container> {{recoveryChart.unrecovery | number : '1.2-2'}} (NR)</span>
+                                </div>
+                                <div class="flex gap-x-2 items-center">
+                                    <div class="bg-blue-400 w-2 h-2 rounded-sm"></div>
+                                    <span><ng-container *ngIf="electricitySelectedValueType != 'kWh'">R</ng-container> {{recoveryChart.recovery | number : '1.2-2'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <apx-chart
+                        [series]="electricityBulkMeterChart.series"
+                        [chart]="electricityBulkMeterChart.chart"
+                        [labels]="electricityBulkMeterChart.labels"
+                    ></apx-chart>
+                </div>
+                <div class="flex w-full p-2" *ngIf="electricityRecoveriesDataSource">
+                    <dx-data-grid
+                        #electricityRecoveryDataGrid
+                        [dataSource]="electricityRecoveriesDataSource"
+                        [showBorders]="true"
+                        [remoteOperations]="true"
+                        [wordWrapEnabled]="true"
+                        [hoverStateEnabled]="true"
+                        (onCellPrepared)="onCellPrepared($event)"
+                    >
+                        <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
+                        <dxo-paging [pageSize]="100"></dxo-paging>
+                        <dxi-column dataField="Name" caption="Electricity Recovery" [minWidth]="200"></dxi-column>
+                        <dxi-column dataField="KWHUnits" caption="KWH Units" cellTemplate="cellValueTemplate"></dxi-column>
+                        <dxi-column dataField="KWHRC" caption="KWH R/C" cellTemplate="currencyValueTemplate"></dxi-column>
+                        <dxi-column dataField="kVAUnits" caption="kVA Units" cellTemplate="cellValueTemplate"></dxi-column>
+                        <dxi-column dataField="KVARC" caption="KVA R/C" cellTemplate="currencyValueTemplate"></dxi-column>
+                        <dxi-column dataField="BasicRC" caption="Basic Charges R/C" cellTemplate="currencyValueTemplate"></dxi-column>
+                        <dxi-column dataField="OtherRC" caption="Other R/C" cellTemplate="currencyValueTemplate"></dxi-column>
+                        <dxi-column dataField="TotalRC" caption="Total R/C" cellTemplate="currencyValueTemplate"></dxi-column>
+                        <div *dxTemplate="let data of 'currencyValueTemplate'">
+                            <ng-container *ngIf="data.value != null; else emptyTemplate">
+                                R {{data.value | number : '1.2-2'}}
+                            </ng-container>
+                            <ng-template #emptyTemplate></ng-template>
+                        </div>
+                        <div *dxTemplate="let data of 'cellValueTemplate'">
+                            <ng-container *ngIf="data.value != null; else emptyTemplate">
+                                {{data.value | number : '1.2-2'}}
+                            </ng-container>
+                            <ng-template #emptyTemplate></ng-template>
+                        </div>
+                    </dx-data-grid>
+                </div>
+                <span class="text-md font-semibold px-2" *ngIf="electricityRecoveriesDataSource">Electricity Bulk Meter</span>
+                <div class="flex w-full p-2" *ngIf="electricityBulkMetersDataSource">
+                    <dx-data-grid
+                        #electricityBulkMeterDataGrid
+                        [dataSource]="electricityBulkMetersDataSource"
+                        [showBorders]="true"
+                        [remoteOperations]="true"
+                        [wordWrapEnabled]="true"
+                        [hoverStateEnabled]="true"
+                    >
+                        <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
+                        <dxo-paging [pageSize]="100"></dxo-paging>
+                        <dxi-column dataField="MeterNo" caption="Meter No - Description" [minWidth]="200"></dxi-column>
+                        <dxi-column dataField="KWHUnits" caption="KWH Units" cellTemplate="cellValueTemplate"></dxi-column>
+                        <dxi-column dataField="KWHRC" caption="KWH R/C" cellTemplate="currencyValueTemplate"></dxi-column>
+                        <dxi-column dataField="kVAUnits" caption="kVA Units" cellTemplate="cellValueTemplate"></dxi-column>
+                        <dxi-column dataField="KVARC" caption="KVA R/C" cellTemplate="currencyValueTemplate"></dxi-column>
+                        <dxi-column dataField="BasicRC" caption="Basic Charges R/C" cellTemplate="currencyValueTemplate"></dxi-column>
+                        <dxi-column dataField="OtherRC" caption="Other R/C" cellTemplate="currencyValueTemplate"></dxi-column>
+                        <dxi-column dataField="TotalRC" caption="Total R/C" cellTemplate="currencyValueTemplate"></dxi-column>
+                        <div *dxTemplate="let data of 'currencyValueTemplate'">
+                            <ng-container *ngIf="data.value != null; else emptyTemplate">
+                                R {{data.value | number : '1.2-2'}}
+                            </ng-container>
+                            <ng-template #emptyTemplate></ng-template>
+                        </div>
+                        <div *dxTemplate="let data of 'cellValueTemplate'">
+                            <ng-container *ngIf="data.value != null; else emptyTemplate">
+                                {{data.value | number : '1.2-2'}}
+                            </ng-container>
+                            <ng-template #emptyTemplate></ng-template>
+                        </div>
+                    </dx-data-grid>
+                </div>
+                <div class="flex flex-col w-full p-2" *ngIf="electricitySummariesDataSource">
+                    <span class="text-md font-semibold mb-2">Electricity Summary</span>
+                    <dx-data-grid
+                        #electricitySummariesDataGrid
+                        class="summaryReport"
+                        [dataSource]="electricitySummariesDataSource"
+                        [showBorders]="true"
+                        [remoteOperations]="true"
+                        [wordWrapEnabled]="true"
+                        [hoverStateEnabled]="true"
+                        (onCellPrepared)="onCellPrepared($event)"
+                    >
+                        <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
+                        <dxo-paging [pageSize]="100"></dxo-paging>
+                        <dxi-column dataField="Name" caption="" [minWidth]="240"></dxi-column>
+                        <dxi-column dataField="KWHUnits" caption="" cellTemplate="cellValueTemplate"></dxi-column>
+                        <dxi-column dataField="KWHRC" caption="" cellTemplate="currencyValueTemplate"></dxi-column>
+                        <dxi-column dataField="kVAUnits" caption="" cellTemplate="cellValueTemplate"></dxi-column>
+                        <dxi-column dataField="KVARC" caption="" cellTemplate="currencyValueTemplate"></dxi-column>
+                        <dxi-column dataField="BasicRC" caption="" cellTemplate="currencyValueTemplate"></dxi-column>
+                        <dxi-column dataField="OtherRC" caption="" cellTemplate="currencyValueTemplate"></dxi-column>
+                        <dxi-column dataField="TotalRC" caption="" cellTemplate="currencyValueTemplate"></dxi-column>
+                        <div *dxTemplate="let data of 'currencyValueTemplate'">
+                            <ng-container *ngIf="data.value != null; else emptyTemplate">
+                                R {{data.value | number : '1.2-2'}}
+                            </ng-container>
+                            <ng-template #emptyTemplate></ng-template>
+                        </div>
+                        <div *dxTemplate="let data of 'cellValueTemplate'">
+                            <ng-container *ngIf="data.value != null; else emptyTemplate">
+                                {{data.value | number : '1.2-2'}}
+                            </ng-container>
+                            <ng-template #emptyTemplate></ng-template>
+                        </div>
+                    </dx-data-grid>
+                </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel *ngFor="let item of otherDataSource; let i = index;">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <span class="text-xl font-semibold">{{item.ServiceName}} Monthly Recovery statistics Excl VAT.</span>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="flex flex-col">
+                    <div class="flex w-full p-2 gap-x-8" *ngIf="item.otherBulkMeterChart">
+                        <div class="flex items-center">
+                            <dx-radio-group [items]="valueTypes" [value]="valueTypes[0]" (valueChange)="onChartChange(item.ServiceName, $event, i)">
+                            </dx-radio-group>
+                        </div>                    
+                        <div class="flex flex-wrap gap-x-8 gap-y-8" style="width: 650px;">
+                            <div class="flex flex-col gap-y-2" style="width: 300px;" *ngFor="let recoveryChart of item.otherRecoveryChart">
+                                <span class="font-semibold text-lg">{{recoveryChart.title}}</span>
+                                <div class="flex roundex-md" style="height: 32px;">
+                                    <div class="flex justify-center items-center bg-red-400" [ngStyle]="{'width': (100 - recoveryChart.percent * 100) + '%' }"></div>
+                                    <div class="flex bg-blue-400 justify-center items-center font-semibold" [ngStyle]="{'width': (recoveryChart.percent * 100) + '%' }">{{recoveryChart.percent | percent}}</div>
+                                </div>
+                                <div class="flex flex-col gap-y-1 text-lg font-semibold">
+                                    <div class="flex gap-x-2 items-center">
+                                        <div class="bg-red-400 w-2 h-2 rounded-sm"></div>
+                                        <span><ng-container *ngIf="item.otherSelectedValueType != 'kWh'">R</ng-container> {{recoveryChart.unrecovery | number : '1.2-2'}} (NR)</span>
+                                    </div>
+                                    <div class="flex gap-x-2 items-center">
+                                        <div class="bg-blue-400 w-2 h-2 rounded-sm"></div>
+                                        <span><ng-container *ngIf="item.otherSelectedValueType != 'kWh'">R</ng-container> {{recoveryChart.recovery | number : '1.2-2'}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <apx-chart
+                            [series]="item.otherBulkMeterChart.series"
+                            [chart]="item.otherBulkMeterChart.chart"
+                            [labels]="item.otherBulkMeterChart.labels"
+                        ></apx-chart>
+                    </div>
+                    <div class="flex w-full p-2" *ngIf="item.otherRecoveriesDataSource">
+                        <dx-data-grid
+                            #otherRecoveryDataGrid
+                            [dataSource]="item.otherRecoveriesDataSource"
+                            [showBorders]="true"
+                            [remoteOperations]="true"
+                            [wordWrapEnabled]="true"
+                            [hoverStateEnabled]="true"
+                            (onCellPrepared)="onCellPrepared($event)"
+                        >
+                            <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
+                            <dxo-paging [pageSize]="100"></dxo-paging>
+                            <dxi-column dataField="Name" caption="Electricity Recovery" [minWidth]="250"></dxi-column>
+                            <dxi-column dataField="Usage" caption="Usage" cellTemplate="cellValueTemplate"></dxi-column>
+                            <dxi-column dataField="Amount" caption="Amount" cellTemplate="currencyValueTemplate"></dxi-column>
+                            <dxi-column dataField="BCAmount" caption="BC Amount" cellTemplate="currencyValueTemplate"></dxi-column>
+                            <dxi-column dataField="TotalRC" caption="Total R/C" cellTemplate="currencyValueTemplate"></dxi-column>
+                            <div *dxTemplate="let data of 'currencyValueTemplate'">
+                                <ng-container *ngIf="data.value != null; else emptyTemplate">
+                                    R {{data.value | number : '1.2-2'}}
+                                </ng-container>
+                                <ng-template #emptyTemplate></ng-template>
+                            </div>
+                            <div *dxTemplate="let data of 'cellValueTemplate'">
+                                <ng-container *ngIf="data.value != null; else emptyTemplate">
+                                    {{data.value | number : '1.2-2'}}
+                                </ng-container>
+                                <ng-template #emptyTemplate></ng-template>
+                            </div>
+                        </dx-data-grid>
+                    </div>
+                    <span class="text-md font-semibold mt-2 px-2">{{item.ServiceName}} Bulk Meter</span>
+                    <div class="flex w-full p-2" *ngIf="item.otherBulkMetersDataSource">
+                        <dx-data-grid
+                            #otherBulkMeterDataGrid
+                            [dataSource]="item.otherBulkMetersDataSource"
+                            [showBorders]="true"
+                            [remoteOperations]="true"
+                            [wordWrapEnabled]="true"
+                            [hoverStateEnabled]="true"
+                        >
+                            <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
+                            <dxo-paging [pageSize]="100"></dxo-paging>
+                            <dxi-column dataField="MeterNo" caption="Meter No - Description" [minWidth]="250"></dxi-column>
+                            <dxi-column dataField="Usage" caption="Usage" cellTemplate="cellValueTemplate"></dxi-column>
+                            <dxi-column dataField="Amount" caption="Amount" cellTemplate="currencyValueTemplate"></dxi-column>
+                            <dxi-column dataField="BCAmount" caption="BC Amount" cellTemplate="currencyValueTemplate"></dxi-column>
+                            <dxi-column dataField="TotalRC" caption="Total R/C" cellTemplate="currencyValueTemplate"></dxi-column>
+                            <div *dxTemplate="let data of 'currencyValueTemplate'">
+                                <ng-container *ngIf="data.value != null; else emptyTemplate">
+                                    R {{data.value | number : '1.2-2'}}
+                                </ng-container>
+                                <ng-template #emptyTemplate></ng-template>
+                            </div>
+                            <div *dxTemplate="let data of 'cellValueTemplate'">
+                                <ng-container *ngIf="data.value != null; else emptyTemplate">
+                                    {{data.value | number : '1.2-2'}}
+                                </ng-container>
+                                <ng-template #emptyTemplate></ng-template>
+                            </div>
+                        </dx-data-grid>
+                    </div>
+                    <div class="flex flex-col w-full p-2" *ngIf="item.otherSummariesDataSource">
+                        <span class="text-md font-semibold mb-2">{{item.ServiceName}} Summary</span>
+                        <dx-data-grid
+                            #otherSummariesDataGrid
+                            class="summaryReport"
+                            [dataSource]="item.otherSummariesDataSource"
+                            [showBorders]="true"
+                            [remoteOperations]="true"
+                            [wordWrapEnabled]="true"
+                            [hoverStateEnabled]="true"
+                            (onCellPrepared)="onCellPrepared($event)"
+                        >
+                            <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
+                            <dxo-paging [pageSize]="100"></dxo-paging>
+                            <dxi-column dataField="Name" caption="" [minWidth]="240"></dxi-column>
+                            <dxi-column dataField="Usage" caption="" cellTemplate="cellValueTemplate"></dxi-column>
+                            <dxi-column dataField="Amount" caption="" cellTemplate="currencyValueTemplate"></dxi-column>
+                            <dxi-column dataField="BCAmount" caption="" cellTemplate="currencyValueTemplate"></dxi-column>
+                            <dxi-column dataField="TotalRC" caption="" cellTemplate="currencyValueTemplate"></dxi-column>
+                            <div *dxTemplate="let data of 'currencyValueTemplate'">
+                                <ng-container *ngIf="data.value != null; else emptyTemplate">
+                                    R {{data.value | number : '1.2-2'}}
+                                </ng-container>
+                                <ng-template #emptyTemplate></ng-template>
+                            </div>
+                            <div *dxTemplate="let data of 'cellValueTemplate'">
+                                <ng-container *ngIf="data.value != null; else emptyTemplate">
+                                    {{data.value | number : '1.2-2'}}
+                                </ng-container>
+                                <ng-template #emptyTemplate></ng-template>
+                            </div>
+                        </dx-data-grid>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
     </div>
-    <span class="text-md font-semibold px-2" *ngIf="electricityRecoveriesDataSource">Electricity Bulk Meter</span>
-    <div class="flex w-full p-2" *ngIf="electricityBulkMetersDataSource">
-        <dx-data-grid
-            #electricityBulkMeterDataGrid
-            [dataSource]="electricityBulkMetersDataSource"
-            [showBorders]="true"
-            [remoteOperations]="true"
-            [wordWrapEnabled]="true"
-            [hoverStateEnabled]="true"
-        >
-            <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
-            <dxo-paging [pageSize]="100"></dxo-paging>
-            <dxi-column dataField="MeterNo" caption="Meter No" [minWidth]="100"></dxi-column>
-            <dxi-column dataField="Description" caption="Description Field" [minWidth]="200"></dxi-column>
-            <dxi-column dataField="KWHUnits" caption="KWH Units" cellTemplate="cellValueTemplate"></dxi-column>
-            <dxi-column dataField="KWHRC" caption="KWH R/C" cellTemplate="currencyValueTemplate"></dxi-column>
-            <dxi-column dataField="kVAUnits" caption="kVA Units" cellTemplate="cellValueTemplate"></dxi-column>
-            <dxi-column dataField="KVARC" caption="KVA R/C" cellTemplate="currencyValueTemplate"></dxi-column>
-            <dxi-column dataField="BasicRC" caption="Basic Charges R/C" cellTemplate="currencyValueTemplate"></dxi-column>
-            <dxi-column dataField="OtherRC" caption="Other R/C" cellTemplate="currencyValueTemplate"></dxi-column>
-            <dxi-column dataField="TotalRC" caption="Total R/C" cellTemplate="currencyValueTemplate"></dxi-column>
-            <div *dxTemplate="let data of 'currencyValueTemplate'">
-                <ng-container *ngIf="data.value != null; else emptyTemplate">
-                    R {{data.value | number : '1.2-2'}}
-                </ng-container>
-                <ng-template #emptyTemplate></ng-template>
-            </div>
-            <div *dxTemplate="let data of 'cellValueTemplate'">
-                <ng-container *ngIf="data.value != null; else emptyTemplate">
-                    {{data.value | number : '1.2-2'}}
-                </ng-container>
-                <ng-template #emptyTemplate></ng-template>
-            </div>
-        </dx-data-grid>
-    </div>
-    <div class="flex w-full p-2 mt-2" *ngIf="electricitySummariesDataSource">
-        <dx-data-grid
-            #electricitySummariesDataGrid
-            class="summaryReport"
-            [dataSource]="electricitySummariesDataSource"
-            [showBorders]="true"
-            [remoteOperations]="true"
-            [wordWrapEnabled]="true"
-            [hoverStateEnabled]="true"
-            (onCellPrepared)="onCellPrepared($event)"
-        >
-            <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
-            <dxo-paging [pageSize]="100"></dxo-paging>
-            <dxi-column dataField="Name" caption="" [minWidth]="240"></dxi-column>
-            <dxi-column dataField="KWHUnits" caption="" cellTemplate="cellValueTemplate"></dxi-column>
-            <dxi-column dataField="KWHRC" caption="" cellTemplate="currencyValueTemplate"></dxi-column>
-            <dxi-column dataField="kVAUnits" caption="" cellTemplate="cellValueTemplate"></dxi-column>
-            <dxi-column dataField="KVARC" caption="" cellTemplate="currencyValueTemplate"></dxi-column>
-            <dxi-column dataField="BasicRC" caption="" cellTemplate="currencyValueTemplate"></dxi-column>
-            <dxi-column dataField="OtherRC" caption="" cellTemplate="currencyValueTemplate"></dxi-column>
-            <dxi-column dataField="TotalRC" caption="" cellTemplate="currencyValueTemplate"></dxi-column>
-            <div *dxTemplate="let data of 'currencyValueTemplate'">
-                <ng-container *ngIf="data.value != null; else emptyTemplate">
-                    R {{data.value | number : '1.2-2'}}
-                </ng-container>
-                <ng-template #emptyTemplate></ng-template>
-            </div>
-            <div *dxTemplate="let data of 'cellValueTemplate'">
-                <ng-container *ngIf="data.value != null; else emptyTemplate">
-                    {{data.value | number : '1.2-2'}}
-                </ng-container>
-                <ng-template #emptyTemplate></ng-template>
-            </div>
-        </dx-data-grid>
-    </div>
-    <ng-container *ngIf="otherDataSource">
-        <div class="flex flex-col" *ngFor="let item of otherDataSource">
-            <span class="text-lg font-semibold mt-2 px-2">{{item.ServiceName}} Monthly Recovery statistics Excl VAT.</span>
-            <div class="flex w-full p-2" *ngIf="item.otherRecoveriesDataSource">
-                <dx-data-grid
-                    #otherRecoveryDataGrid
-                    [dataSource]="item.otherRecoveriesDataSource"
-                    [showBorders]="true"
-                    [remoteOperations]="true"
-                    [wordWrapEnabled]="true"
-                    [hoverStateEnabled]="true"
-                    (onCellPrepared)="onCellPrepared($event)"
-                >
-                    <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
-                    <dxo-paging [pageSize]="100"></dxo-paging>
-                    <dxi-column dataField="Name" caption="Electricity Recovery" [minWidth]="200"></dxi-column>
-                    <dxi-column dataField="Usage" caption="Usage" cellTemplate="cellValueTemplate"></dxi-column>
-                    <dxi-column dataField="Amount" caption="Amount" cellTemplate="currencyValueTemplate"></dxi-column>
-                    <dxi-column dataField="BCAmount" caption="BC Amount" cellTemplate="currencyValueTemplate"></dxi-column>
-                    <dxi-column dataField="TotalRC" caption="Total R/C" cellTemplate="currencyValueTemplate"></dxi-column>
-                    <div *dxTemplate="let data of 'currencyValueTemplate'">
-                        <ng-container *ngIf="data.value != null; else emptyTemplate">
-                            R {{data.value | number : '1.2-2'}}
-                        </ng-container>
-                        <ng-template #emptyTemplate></ng-template>
-                    </div>
-                    <div *dxTemplate="let data of 'cellValueTemplate'">
-                        <ng-container *ngIf="data.value != null; else emptyTemplate">
-                            {{data.value | number : '1.2-2'}}
-                        </ng-container>
-                        <ng-template #emptyTemplate></ng-template>
-                    </div>
-                </dx-data-grid>
-            </div>
-            <span class="text-md font-semibold mt-2 px-2">{{item.ServiceName}} Bulk Meter</span>
-            <div class="flex w-full p-2" *ngIf="item.otherBulkMetersDataSource">
-                <dx-data-grid
-                    #otherBulkMeterDataGrid
-                    [dataSource]="item.otherBulkMetersDataSource"
-                    [showBorders]="true"
-                    [remoteOperations]="true"
-                    [wordWrapEnabled]="true"
-                    [hoverStateEnabled]="true"
-                >
-                    <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
-                    <dxo-paging [pageSize]="100"></dxo-paging>
-                    <dxi-column dataField="MeterNo" caption="Meter No" [minWidth]="100"></dxi-column>
-                    <dxi-column dataField="Description" caption="Description Field" [minWidth]="200"></dxi-column>
-                    <dxi-column dataField="Usage" caption="Usage" cellTemplate="cellValueTemplate"></dxi-column>
-                    <dxi-column dataField="Amount" caption="Amount" cellTemplate="currencyValueTemplate"></dxi-column>
-                    <dxi-column dataField="BCAmount" caption="BC Amount" cellTemplate="currencyValueTemplate"></dxi-column>
-                    <dxi-column dataField="TotalRC" caption="Total R/C" cellTemplate="currencyValueTemplate"></dxi-column>
-                    <div *dxTemplate="let data of 'currencyValueTemplate'">
-                        <ng-container *ngIf="data.value != null; else emptyTemplate">
-                            R {{data.value | number : '1.2-2'}}
-                        </ng-container>
-                        <ng-template #emptyTemplate></ng-template>
-                    </div>
-                    <div *dxTemplate="let data of 'cellValueTemplate'">
-                        <ng-container *ngIf="data.value != null; else emptyTemplate">
-                            {{data.value | number : '1.2-2'}}
-                        </ng-container>
-                        <ng-template #emptyTemplate></ng-template>
-                    </div>
-                </dx-data-grid>
-            </div>
-            <div class="flex w-full p-2 mt-2" *ngIf="item.otherSummariesDataSource">
-                <dx-data-grid
-                    #otherSummariesDataGrid
-                    class="summaryReport"
-                    [dataSource]="item.otherSummariesDataSource"
-                    [showBorders]="true"
-                    [remoteOperations]="true"
-                    [wordWrapEnabled]="true"
-                    [hoverStateEnabled]="true"
-                    (onCellPrepared)="onCellPrepared($event)"
-                >
-                    <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
-                    <dxo-paging [pageSize]="100"></dxo-paging>
-                    <dxi-column dataField="Name" caption="" [minWidth]="240"></dxi-column>
-                    <dxi-column dataField="Usage" caption="" cellTemplate="cellValueTemplate"></dxi-column>
-                    <dxi-column dataField="Amount" caption="" cellTemplate="currencyValueTemplate"></dxi-column>
-                    <dxi-column dataField="BCAmount" caption="" cellTemplate="currencyValueTemplate"></dxi-column>
-                    <dxi-column dataField="TotalRC" caption="" cellTemplate="currencyValueTemplate"></dxi-column>
-                    <div *dxTemplate="let data of 'currencyValueTemplate'">
-                        <ng-container *ngIf="data.value != null; else emptyTemplate">
-                            R {{data.value | number : '1.2-2'}}
-                        </ng-container>
-                        <ng-template #emptyTemplate></ng-template>
-                    </div>
-                    <div *dxTemplate="let data of 'cellValueTemplate'">
-                        <ng-container *ngIf="data.value != null; else emptyTemplate">
-                            {{data.value | number : '1.2-2'}}
-                        </ng-container>
-                        <ng-template #emptyTemplate></ng-template>
-                    </div>
-                </dx-data-grid>
-            </div>
-        </div>
-    </ng-container>
+    
+    
+    
 </div>

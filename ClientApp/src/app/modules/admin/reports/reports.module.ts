@@ -9,7 +9,7 @@ import { ReportsRoutingModule } from './reports-routing.module';
 // import { AmrGraphResultComponent } from './amr-charts/amr-graph-result/amr-graph-result.component';
 
 //import DevExtreme components
-import { DxDateBoxModule, DxChartModule, DxSelectBoxModule, DxFormModule, DxValidatorModule, DxButtonModule, DxPivotGridModule, DxDataGridModule, DxDropDownBoxModule, DxTreeViewModule, DxSparklineModule } from 'devextreme-angular';
+import { DxDateBoxModule, DxChartModule, DxSelectBoxModule, DxFormModule, DxValidatorModule, DxButtonModule, DxPivotGridModule, DxDataGridModule, DxDropDownBoxModule, DxTreeViewModule, DxSparklineModule, DxRadioGroupModule } from 'devextreme-angular';
 // import { DxReportViewerComponent } from './dx-report-viewer/dx-report-viewer.component';
 
 // import { ReportSelectionComponent } from './dx-report-viewer/report-selection/report-selection.component';
@@ -75,6 +75,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
     DxDataGridModule,
     DxPivotGridModule,
     DxFormModule,
+    DxRadioGroupModule,
     DxSparklineModule,
     DxDateBoxModule,
     MatCheckboxModule,
