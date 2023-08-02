@@ -28,6 +28,9 @@ export class ReportResultConsumptionReconComponent implements OnInit {
   electricityBulkMetersDataSource: any;
   electricitySummariesDataSource: any;
   electricityBulkMeterChart: Partial<ChartOptions>;
+  electricityRecoveryChart: any[] = [];
+  electricitySelectedValueType: string = 'kWh';
+
   otherDataSource: any;
   otherRecoveriesDataSource: any;
   otherBulkMetersDataSource: any;
@@ -744,6 +747,87 @@ export class ReportResultConsumptionReconComponent implements OnInit {
         },
         labels: otherBulkMetersByService.filter(item => item[key]).map(item => { return item['DescriptionField']})
       }
+    }
+    this.onRecoveryChartChange(type, value, index);
+  }
+
+  onRecoveryChartChange(type, value, index = 0) {
+    if(type == 'electricity') {
+      this.electricitySelectedValueType = value;
+      let electricityCategories = [];
+      this.dataSource['ElectricityRecoveries'].forEach(item => {
+        if(item['ReconDescription'].indexOf('Common Area') > -1 && electricityCategories.indexOf('Common Area') == -1) electricityCategories.push('Common Area');
+        if(item['ReconDescription'].indexOf('Tenant') > -1 && electricityCategories.indexOf('Tenant') == -1) electricityCategories.push('Tenant');
+        if(item['ReconDescription'].indexOf('Aircon') > -1 && electricityCategories.indexOf('Aircon') == -1) electricityCategories.push('Aircon');
+
+      })
+      this.electricityRecoveryChart = [];
+      let totalRecovery = 0; let totalUnRecovery = 0;
+      electricityCategories.forEach(category => {
+        let recoveryVal = 0;  let unRecoveryVal = 0;
+        this.dataSource['ElectricityRecoveries'].forEach(item => {
+          if(item['ReconDescription'].indexOf(category) > -1 && item['ReconDescription'].indexOf('NR') == -1) {
+            recoveryVal += value == 'Rand' ? item['TotalAmt'] : item['KWHUsage'];
+          }
+          if(item['ReconDescription'].indexOf(category) > -1 && item['ReconDescription'].indexOf('NR') > -1) {
+            unRecoveryVal += value == 'Rand' ? item['TotalAmt'] : item['KWHUsage'];
+          }
+        })
+        
+        totalRecovery += recoveryVal; totalUnRecovery += unRecoveryVal;
+        this.electricityRecoveryChart.push({
+          title: category == "Common Area" ? "Common Area Electricity" : category,
+          recovery: recoveryVal,
+          unrecovery: unRecoveryVal,
+          percent: recoveryVal / (recoveryVal + unRecoveryVal)
+        })
+      })
+      this.electricityRecoveryChart.push({
+        title: 'Total',
+        recovery: totalRecovery,
+        unrecovery: totalUnRecovery,
+        percent: totalRecovery / (totalRecovery + totalUnRecovery)
+      })
+    } else {
+      this.otherDataSource[index].otherSelectedValueType = value;
+      let key = value == 'Rand' ? 'TotalAmt' : 'Usage';
+      let otherRecoveriesByService = this.dataSource['OtherRecoveries'].filter(item => item['ServiceName'] == type);
+      let electricityCategories = [];
+      otherRecoveriesByService.forEach(item => {
+        if(item['ReconDescription'].indexOf('Common Area') > -1 && electricityCategories.indexOf('Common Area') == -1) electricityCategories.push('Common Area');
+        if(item['ReconDescription'].indexOf('Tenant') > -1 && electricityCategories.indexOf('Tenant') == -1) electricityCategories.push('Tenant');
+        if(item['ReconDescription'].indexOf('Aircon') > -1 && electricityCategories.indexOf('Aircon') == -1) electricityCategories.push('Aircon');
+
+      })
+      this.otherDataSource[index].otherRecoveryChart = [];
+      let totalRecovery = 0; let totalUnRecovery = 0;
+      electricityCategories.forEach(category => {
+        let recoveryVal = 0;  let unRecoveryVal = 0;
+        otherRecoveriesByService.forEach(item => {
+          if(item['ReconDescription'].indexOf(category) > -1 && item['ReconDescription'].indexOf('NR') == -1) {
+            recoveryVal += item[key];
+          }
+          if(item['ReconDescription'].indexOf(category) > -1 && item['ReconDescription'].indexOf('NR') > -1) {
+            unRecoveryVal += item[key];
+          }
+        })
+        
+        totalRecovery += recoveryVal; totalUnRecovery += unRecoveryVal;
+        this.otherDataSource[index].otherRecoveryChart.push({
+          title: category == "Common Area" ? "Common Area " + type : category + ' ' + type,
+          recovery: recoveryVal,
+          unrecovery: unRecoveryVal,
+          percent: recoveryVal / (recoveryVal + unRecoveryVal)
+        })
+      })
+      this.otherDataSource[index].otherRecoveryChart.push({
+        title: 'Total',
+        recovery: totalRecovery,
+        unrecovery: totalUnRecovery,
+        percent: totalRecovery / (totalRecovery + totalUnRecovery)
+      })
+      
+      
     }
   }
 
