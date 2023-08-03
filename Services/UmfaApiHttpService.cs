@@ -34,7 +34,7 @@ namespace ClientPortal.Services
         public Task UpdateReportArhivesFileFormatsAsync(UpdateArchiveFileFormatSpRequest request);
         #endregion
 
-        public Task<DashboardShopsSpResponse> GetDashboardShopDataAsync(DashboardShopsSpRequest request);
+        public Task<List<ShopDashboardBillingDetail>> GetDashboardShopDataAsync(int buildingId);
 
         public Task<FileFormatDataSpResponse> GetFileFormatData(FileFormatDataSpRequest request);
 
@@ -223,10 +223,10 @@ namespace ClientPortal.Services
             await PostAsync("mappedmeters", request);
         }
 
-        public async Task<DashboardShopsSpResponse> GetDashboardShopDataAsync(DashboardShopsSpRequest request)
+        public async Task<List<ShopDashboardBillingDetail>> GetDashboardShopDataAsync(int buildingId)
         {
-            var response = await GetAsync("dashboard/shops", request);
-            return JsonSerializer.Deserialize<DashboardShopsSpResponse>(response);
+            var response = await GetAsync($"dashboard/buildings/{buildingId}/shops/billing-details");
+            return JsonSerializer.Deserialize<List<ShopDashboardBillingDetail>>(response);
         }
 
         public async Task<BuildingRecoveryReport> GetBuildingRecoveryReportAsync(BuildingRecoveryReportSpRequest request)

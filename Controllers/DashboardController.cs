@@ -64,13 +64,12 @@ namespace ClientPortal.Controllers
             }
         }
 
-        [HttpGet("shops")]
-        public async Task<ActionResult<DashboardShopsSpResponse>> GetShopsData([FromQuery] DashboardShopsSpRequest request)
+        [HttpGet("buildings/{buildingId:int}/shops/billing-details")]
+        public async Task<ActionResult<List<ShopDashboardBillingDetail>>> GetShopsData(int buildingId)
         {
             try
             {
-                var response = await _dbService.GetShopDataAsync(request);
-                return response;
+                return await _dbService.GetShopDataAsync(buildingId);
             }
             catch (Exception ex)
             {
