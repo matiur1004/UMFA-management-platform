@@ -16,9 +16,9 @@
                         <mat-panel-title>
                             <span>Summary Grid </span>
                             <span *ngIf="!panelOpenState" class="flex gap-x-8">
-                                <span>R {{totalGridDataSource[0]['incl'] | number : '1.2-2'}}</span> 
-                                <span>R {{totalGridDataSource[1]['incl'] | number : '1.2-2'}}</span>
-                                <span>R {{totalGridDataSource[2]['incl'] | number : '1.2-2'}}</span>
+                                <span>R {{totalGridDataSource[totalGridDataSource.length - 3]['incl'] | number : '1.2-2'}}</span> 
+                                <span>R {{totalGridDataSource[totalGridDataSource.length - 2]['incl'] | number : '1.2-2'}}</span>
+                                <span>R {{totalGridDataSource[totalGridDataSource.length - 1]['incl'] | number : '1.2-2'}}</span>
                             </span>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
