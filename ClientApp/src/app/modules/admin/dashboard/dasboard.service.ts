@@ -262,6 +262,14 @@ export class DashboardService {
     this._tenantSlipDetail.next(null);
   }
 
+  destroy() {
+    this._buildingReports.next(null);
+    this._tenantSlip.next(null);
+    this._tenantSlipDetail.next(null);
+    this._tenantSlipDownloads.next(null);
+    this._alarmTriggerDetail.next(null);
+  }
+
   cancel() {
     this.statsSubject.next(null);
   }
