@@ -98,9 +98,9 @@ namespace ClientPortal.Services
             }
         }
 
-        public async Task<DashboardShopsSpResponse> GetShopDataAsync(DashboardShopsSpRequest request)
+        public async Task<List<ShopDashboardBillingDetail>> GetShopDataAsync(int buildingId)
         {
-            return await _umfaService.GetDashboardShopDataAsync(request);
+            return await _umfaService.GetDashboardShopDataAsync(buildingId);
         }
     }
 }
