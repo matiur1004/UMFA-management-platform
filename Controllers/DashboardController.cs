@@ -64,7 +64,7 @@ namespace ClientPortal.Controllers
             }
         }
 
-        [HttpGet("buildings/{buildingId:int}/shops/billing-details")]
+        [HttpGet("buildings/{buildingId:int}/shops")]
         public async Task<ActionResult<List<ShopDashboardBillingDetail>>> GetShopsData(int buildingId)
         {
             try

@@ -225,7 +225,7 @@ namespace ClientPortal.Services
 
         public async Task<List<ShopDashboardBillingDetail>> GetDashboardShopDataAsync(int buildingId)
         {
-            var response = await GetAsync($"dashboard/buildings/{buildingId}/shops/billing-details");
+            var response = await GetAsync($"dashboard/buildings/{buildingId}/shops");
             return JsonSerializer.Deserialize<List<ShopDashboardBillingDetail>>(response);
         }
 
