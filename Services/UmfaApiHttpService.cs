@@ -34,7 +34,8 @@ namespace ClientPortal.Services
         public Task UpdateReportArhivesFileFormatsAsync(UpdateArchiveFileFormatSpRequest request);
         #endregion
 
-        public Task<List<ShopDashboardBillingDetail>> GetDashboardShopDataAsync(int buildingId);
+        public Task<List<ShopDashboardShop>> GetDashboardShopDataAsync(int buildingId);
+        public Task<ShopDashboardResponse> GetShopDashboardMainAsync(int buildingId, int shopId, int history);
 
         public Task<FileFormatDataSpResponse> GetFileFormatData(FileFormatDataSpRequest request);
 
@@ -223,10 +224,10 @@ namespace ClientPortal.Services
             await PostAsync("mappedmeters", request);
         }
 
-        public async Task<List<ShopDashboardBillingDetail>> GetDashboardShopDataAsync(int buildingId)
+        public async Task<List<ShopDashboardShop>> GetDashboardShopDataAsync(int buildingId)
         {
             var response = await GetAsync($"dashboard/buildings/{buildingId}/shops");
-            return JsonSerializer.Deserialize<List<ShopDashboardBillingDetail>>(response);
+            return JsonSerializer.Deserialize<List<ShopDashboardShop>>(response);
         }
 
         public async Task<BuildingRecoveryReport> GetBuildingRecoveryReportAsync(BuildingRecoveryReportSpRequest request)
@@ -245,6 +246,15 @@ namespace ClientPortal.Services
         {
             var response = await GetAsync($"buildings/{buildingId}/periods");
             return JsonSerializer.Deserialize<List<UMFAPeriod>>(response);
+        }
+
+        public async Task<ShopDashboardResponse> GetShopDashboardMainAsync(int buildingId, int shopId, int history)
+        {
+            var response = await GetAsync($"dashboard/buildings/{buildingId}/shops/{shopId}", new UmfaShopDashboardRequest { History = history});
+
+            var umfaDashboard = JsonSerializer.Deserialize<UmfaShopDashboardResponse>(response);
+
+            return new ShopDashboardResponse(umfaDashboard);
         }
     }
 }
