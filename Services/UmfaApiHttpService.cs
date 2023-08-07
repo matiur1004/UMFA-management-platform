@@ -40,6 +40,8 @@ namespace ClientPortal.Services
         public Task<FileFormatDataSpResponse> GetFileFormatData(FileFormatDataSpRequest request);
 
         public Task<List<UMFAPeriod>> GetBuildingPeriods(int buildingId);
+
+        public Task<List<UmfaShopDashboardBillingDetail>> GetShopDashboardBillingDetailsAsync(int buildingId, int shopId, int history);
     }
 
 
@@ -255,6 +257,14 @@ namespace ClientPortal.Services
             var umfaDashboard = JsonSerializer.Deserialize<UmfaShopDashboardResponse>(response);
 
             return new ShopDashboardResponse(umfaDashboard);
+        }
+
+        public async Task<List<UmfaShopDashboardBillingDetail>> GetShopDashboardBillingDetailsAsync(int buildingId, int shopId, int history)
+        {
+            var response = await GetAsync($"dashboard/buildings/{buildingId}/shops/{shopId}/billing-details", new UmfaShopDashboardBillingDetailsRequest { History = history });
+
+            return JsonSerializer.Deserialize<List<UmfaShopDashboardBillingDetail>>(response);
+
         }
     }
 }

@@ -94,5 +94,19 @@ namespace ClientPortal.Controllers
                 return Problem(e.Message);
             }
         }
+
+        [HttpGet("buildings/{buildingId:int}/shops/{shopId:int}/billing-details")]
+        public async Task<ActionResult<List<UmfaShopDashboardBillingDetail>>> GetDashboardShopBillingData(int buildingId, int shopId, [FromQuery, Range(1, int.MaxValue)] int history = 12)
+        {
+            try
+            {
+                return await _umfaService.GetShopDashboardBillingDetailsAsync(buildingId, shopId, history);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Could not get shop billing details");
+                return Problem(e.Message);
+            }
+        }
     }
 }
