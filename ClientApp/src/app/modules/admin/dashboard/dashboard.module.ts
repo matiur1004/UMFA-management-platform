@@ -24,6 +24,7 @@ import { TenantSlipDashboardComponent } from './tenant-slip-dashboard/tenant-sli
 import { TenantSlipDownloadsComponent } from './tenant-slip-downloads/tenant-slip-downloads.component';
 import { BuildingReportsComponent } from './building-reports/building-reports.component';
 import { ReportsModule } from '../reports/reports.module';
+import { ShopListComponent } from './shop-list/shop-list.component';
 
 @NgModule({
     declarations: [
@@ -32,7 +33,8 @@ import { ReportsModule } from '../reports/reports.module';
         TenantSlipDetailComponent,
         TenantSlipDashboardComponent,
         TenantSlipDownloadsComponent,
-        BuildingReportsComponent
+        BuildingReportsComponent,
+        ShopListComponent
     ],
     imports     : [
         CommonModule,

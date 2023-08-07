@@ -466,7 +466,19 @@
                                     <app-building-reports [reportType]="tabItem.dataSource.reportType" [buildingId]="tabItem.dataSource.buildingId" [partnerId]="tabItem.dataSource.partnerId"></app-building-reports>
                                     <!-- <app-tenant-slip-downloads></app-tenant-slip-downloads> -->
                                 </ng-template>
-                            </mat-tab>s
+                            </mat-tab>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'ShopList'">
+                            <mat-tab class="home-tab" label="{{tabItem.title}}">
+                                <ng-template mat-tab-label>
+                                    {{tabItem.title}}
+                                    <mat-icon class="icon-size-4 hover:text-red-500 ml-2" [svgIcon]="'feather:x'" (click)="removeTab(i)"></mat-icon>
+                                </ng-template>
+                                <ng-template matTabContent>
+                                    <app-shop-list [buildingId]="tabItem.dataSource.buildingId" [partnerId]="tabItem.dataSource.partnerId"></app-shop-list>
+                                    <!-- <app-tenant-slip-downloads></app-tenant-slip-downloads> -->
+                                </ng-template>
+                            </mat-tab>
                         </ng-container>
                         <ng-container *ngSwitchDefault>
                             <mat-tab class="home-tab" label="{{tabItem.title}}">

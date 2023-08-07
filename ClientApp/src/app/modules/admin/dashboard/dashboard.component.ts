@@ -357,17 +357,37 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                     this._cdr.detectChanges();
                 }
             });
-            
-        // Wip
+        
+        this._dbService.shopList$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((res) => {
+                if(res) {
+                    if(res) {
+                        console.log(res);
+                        let newTab: IHomeTab = {
+                            id: 0,
+                            title: `Shops`,
+                            type: 'ShopList',
+                            dataSource: {...res, destination: 'Detail'}
+                        };
+                        this.tabsList.push(newTab);
+                        this.selectedTab = this.tabsList.length;
+                        this._cdr.detectChanges();
+                    }
+                }
+            });
+
+        //Wip
         // let res = {
-        //     "buildingId": 2403,
-        //     "partnerId": 7,
-        //     "reportType": "Shop Costs Variances"
+        //     // "buildingId": 2403,
+        //     // "partnerId": 7,
+        //     "buildingId": null,
+        //     "partnerId": null
         // }
         // let newTab: IHomeTab = {
         //     id: 0,
-        //     title: `${res.reportType} Reports`,
-        //     type: 'BuildingReports',
+        //     title: `Shops`,
+        //     type: 'ShopList',
         //     dataSource: res
         // };
         // this.tabsList.push(newTab);
@@ -394,6 +414,23 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                     this.selectedTab = this.tabsList.length;
                     this._cdr.markForCheck();
                 });
+            } else if(type == EHomeTabType.Shops) {
+                let res = {
+                    // "buildingId": 2403,
+                    // "partnerId": 7,
+                    "buildingId": null,
+                    "partnerId": null,
+                    "destination": "Home"
+                }
+                let newTab: IHomeTab = {
+                    id: 0,
+                    title: `Shops`,
+                    type: 'ShopList',
+                    dataSource: res
+                };
+                this.tabsList.push(newTab);
+                this.selectedTab = this.tabsList.length;
+                this._cdr.markForCheck();
             } else {
                 this.tabsList.push({...newTab});
                 this.selectedTab = this.tabsList.length;
@@ -409,6 +446,10 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             this.tabsList[index]['type'] == 'TenantSlipDownloads' ||
             this.tabsList[index]['type'] == 'BuildingReports') {
             this.selectedTab = index;    
+        }
+        if(this.tabsList[index]['type'] == 'ShopList') {
+            if(this.tabsList[index]['dataSource']['destination'] == 'Home') this.selectedTab = 0;
+            else this.selectedTab = index;
         }
         this.tabsList.splice(index, 1);        
         this._cdr.markForCheck();
