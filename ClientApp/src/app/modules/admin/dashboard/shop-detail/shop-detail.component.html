@@ -1,0 +1,186 @@
+<div class="flex flex-col gap-y-6">
+    <div class="grid grid-cols-4 gap-10 w-full">
+        <div class="bg-cyan-600 col-span-1 flex flex-col flex-auto p-4 pb-2 shadow rounded-2xl overflow-hidden card cursor-pointer">
+            <div class="flex items-start justify-between text-white h-full">
+                <div class="flex flex-col w-full gap-y-1 justify-between h-full">
+                    <div class="flex w-full justify-between">
+                        <div class="flex flex-col">
+                            <div class="text-xl font-medium tracking-normal leading-6 truncate">Billing</div>
+                            <div class="text-lg tracking-normal ">
+                                Jun 23
+                            </div>
+                        </div>
+                        <mat-icon class="icon-size-10" [svgIcon]="'feather:billing'"></mat-icon>
+                    </div>
+                    <div class="flex flex-col gap-y-2">
+                        <div class="flex w-full justify-between text-md pr-4">
+                            <span>Total</span>
+                            <span>R 9,252.22</span>
+                        </div>
+                        <div class="flex flex-col overflow-auto pr-2 text-md" style="max-height: 50px;">
+                            <div class="flex justify-between">
+                                <span>C/A Electricity</span><span>R 255.22</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>C/A Electricity</span><span>R 255.22</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>C/A Electricity</span><span>R 255.22</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>C/A Electricity</span><span>R 255.22</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>C/A Electricity</span><span>R 255.22</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>C/A Electricity</span><span>R 255.22</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>C/A Electricity</span><span>R 255.22</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>C/A Electricity</span><span>R 255.22</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>C/A Electricity</span><span>R 255.22</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>                                        
+            </div>
+        </div>
+        <div class="bg-pink-500 col-span-1 flex flex-col flex-auto p-4 pb-2 shadow rounded-2xl overflow-visible card cursor-pointer">
+            <div class="flex items-start justify-between text-white h-full">
+                <div class="flex flex-col w-full gap-y-1 justify-between h-full">
+                    <div class="flex w-full justify-between">
+                        <div class="flex flex-col">
+                            <div class="text-xl font-medium tracking-normal leading-8 truncate">Occupations</div>
+                        </div>
+                        <mat-icon class="icon-size-10" [svgIcon]="'feather:occupations'"></mat-icon>
+                    </div>
+                    <div class="flex">
+                        <ng-select class="w-100"></ng-select>
+                    </div>
+                    <div class="flex justify-between text-md">
+                        <span class="">All Time Tenants</span><span>3</span>
+                    </div>
+                </div>                                        
+            </div>
+        </div>
+        <div class="bg-green-600 col-span-1 flex flex-col flex-auto p-4 pb-3 shadow rounded-2xl overflow-hidden card cursor-pointer">
+            <div class="flex items-start justify-between text-white h-full">
+                <div class="flex flex-col w-full gap-y-1 justify-between h-full">
+                    <div class="flex w-full justify-between">
+                        <div class="flex flex-col">
+                            <div class="text-xl font-medium tracking-normal leading-6 truncate">Assigned Meters</div>
+                        </div>
+                        <mat-icon class="icon-size-10" [svgIcon]="'feather:added-meters'"></mat-icon>
+                    </div>
+                    <div class="flex flex-col">
+                        <div class="flex justify-between text-md">
+                            <span class="">Shared</span><span>31</span>
+                        </div>
+                        <div class="flex justify-between text-md">
+                            <span class="">Direct</span><span>4</span>
+                        </div>
+                    </div>
+                    
+                </div>                                        
+            </div>
+        </div>
+        <div class="bg-indigo-500 col-span-1 flex flex-col flex-auto p-4 pb-2 shadow rounded-2xl overflow-hidden card cursor-pointer">
+            <div class="flex items-start justify-between text-white h-full">
+                <div class="flex flex-col w-full gap-y-1 justify-between h-full">
+                    <div class="flex w-full justify-between">
+                        <div class="flex flex-col">
+                            <div class="text-1xl font-medium tracking-normal leading-8 truncate">Readings</div>
+                        </div>
+                        <mat-icon class="icon-size-10" [svgIcon]="'feather:readings'"></mat-icon>
+                    </div>
+                    <div class="flex flex-col gap-y-1">
+                        <div class="flex justify-between text-md">
+                            <span class="">Captured</span><span>31</span>
+                        </div>
+                        <div class="flex justify-between text-md">
+                            <span class="">Mobile</span><span>4</span>
+                        </div>
+                        <div class="flex justify-between text-md">
+                            <span class="">Images Available</span><span>4</span>
+                        </div>
+                    </div>
+                </div>                                        
+            </div>
+        </div>
+    </div>
+    <div class="flex bg-card bg-card rounded-md pt-3 pb-1 px-2 gap-x-2">
+        <div class="flex flex-col w-1/2 gap-y-4">
+            <span class="text-2xl font-semibold mt-2">Billing Summary</span>
+            <div class="flex">
+                <dx-tree-map
+                    id="treemap"
+                    class="w-full"
+                    [colorizer]="options"
+                    [dataSource]="citiesPopulations"
+                >
+                    <dxo-tooltip
+                        [enabled]="true"
+                        format="thousands"
+                        [customizeTooltip]="customizeTooltip"
+                    ></dxo-tooltip>
+                </dx-tree-map>
+            </div>
+        </div>
+        <div class="flex flex-col w-1/2 gap-y-4">
+            <div class="flex justify-end">
+                <dx-select-box displayExpr="Name" valueExpr="Id" class="form-control" label="Month"
+                    placeholder="Select Month" lableMode="static" id="month" [(ngModel)]="selectedMonth"
+                    [searchEnabled]="false" searchExpr="Name" searchMode="contains" [searchTimeout]="400">
+                </dx-select-box>
+            </div>
+            <div class="flex w-full">
+                <dx-data-grid
+                    #grid
+                    [dataSource]="dataSource"
+                    [showBorders]="true"
+                    id="slip-grid-container"
+                    [hoverStateEnabled]="true"
+                >
+                    <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+                    <dxi-column dataField="Occupied" caption=""></dxi-column>
+                </dx-data-grid>
+            </div>
+        </div>
+    </div>
+    <div class="flex bg-card">
+        <apx-chart
+            class="w-full"
+            [series]="billingChartOptions.series"
+            [chart]="billingChartOptions.chart"
+            [dataLabels]="billingChartOptions.dataLabels"
+            [plotOptions]="billingChartOptions.plotOptions"
+            [yaxis]="billingChartOptions.yaxis"
+            [legend]="billingChartOptions.legend"
+            [fill]="billingChartOptions.fill"
+            [stroke]="billingChartOptions.stroke"
+            [tooltip]="billingChartOptions.tooltip"
+            [xaxis]="billingChartOptions.xaxis"
+        ></apx-chart>
+    </div>
+
+    <div class="flex bg-card">
+        <apx-chart
+            class="w-full"
+            [series]="billingChartOptions.series"
+            [chart]="billingChartOptions.chart"
+            [dataLabels]="billingChartOptions.dataLabels"
+            [plotOptions]="billingChartOptions.plotOptions"
+            [yaxis]="billingChartOptions.yaxis"
+            [legend]="billingChartOptions.legend"
+            [fill]="billingChartOptions.fill"
+            [stroke]="billingChartOptions.stroke"
+            [tooltip]="billingChartOptions.tooltip"
+            [xaxis]="billingChartOptions.xaxis"
+        ></apx-chart>
+    </div>
+</div>
