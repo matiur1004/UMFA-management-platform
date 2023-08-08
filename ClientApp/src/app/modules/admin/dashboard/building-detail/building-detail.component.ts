@@ -197,4 +197,10 @@ export class BuildingDetailComponent implements OnInit {
   onReports(reportType: string) {
     this._dbService.showReports({buildingId: this.buildingId, reportType, partnerId: this.partnerId});
   }
+
+  onDetail(type) {
+    if(type == "Shop") {
+      this._dbService.showShopList({buildingId: this.buildingId, partnerId: this.partnerId});
+    }
+  }
 }

@@ -23,6 +23,8 @@ export class DashboardService {
   private _tenantSlipData: BehaviorSubject<any> = new BehaviorSubject(null);
   private _tenantSlipDownloads: BehaviorSubject<any> = new BehaviorSubject(null);
   private _buildingReports: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _shopList: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _shops: BehaviorSubject<any> = new BehaviorSubject(null);
   
   private _reportsArchives: BehaviorSubject<any> = new BehaviorSubject(null);
   
@@ -81,6 +83,14 @@ export class DashboardService {
 
   get buildingReports$(): Observable<any> {
     return this._buildingReports.asObservable();
+  }
+
+  get shopList$(): Observable<any> {
+    return this._shopList.asObservable();
+  }
+
+  get shops$(): Observable<any> {
+    return this._shops.asObservable();
   }
   /**
      * Getter for data
@@ -238,8 +248,24 @@ export class DashboardService {
       );
   }
 
+  getShopsByBuildingId(buildingId) {
+    const url = `${CONFIG.apiURL}/Dashboard/buildings/${buildingId}/shops`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(bl => {
+          this._shops.next(bl);
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        })
+      );
+  }
+
   destroyTenantSlips() {
     this._tenantSlipsReports.next(null);
+  }
+
+  destroyShopList() {
+    
   }
 
   showTenantSlip(buildingId) {
@@ -258,6 +284,10 @@ export class DashboardService {
     this._buildingReports.next(buildingId);
   }
 
+  showShopList(data) {
+    this._shopList.next(data);
+  }
+
   destroyTenantSlipDetail() {
     this._tenantSlipDetail.next(null);
   }
@@ -268,6 +298,7 @@ export class DashboardService {
     this._tenantSlipDetail.next(null);
     this._tenantSlipDownloads.next(null);
     this._alarmTriggerDetail.next(null);
+    this._shopList.next(null);
   }
 
   cancel() {
