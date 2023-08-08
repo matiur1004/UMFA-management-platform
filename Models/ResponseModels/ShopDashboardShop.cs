@@ -1,6 +1,6 @@
 ﻿namespace ClientPortal.Models.ResponseModels
 {
-    public class ShopDashboardBillingDetail
+    public class ShopDashboardShop
     {
         public int ShopID { get; set; }
         public bool Occupied { get; set; }
