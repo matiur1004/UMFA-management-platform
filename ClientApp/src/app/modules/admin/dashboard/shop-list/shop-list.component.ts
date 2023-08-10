@@ -104,6 +104,12 @@ export class ShopListComponent implements OnInit {
     }
   }
 
+  onRowClick(event) {
+    if(event.data) {
+      this.dashboardService.showShopDetailDashboard({shopId: event.data.ShopID, buildingId: this.form.get('BuildingId').value});
+    }
+  }
+
   ngOnDestroy() {
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();

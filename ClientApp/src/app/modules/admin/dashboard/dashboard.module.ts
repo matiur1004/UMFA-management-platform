@@ -13,7 +13,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'app/shared/shared.module';
 import { DashboardComponent } from './dashboard.component';
 import { dashboardRoutes } from './dashboard.routing';
-import { DxButtonModule, DxChartModule, DxDataGridModule, DxSelectBoxModule, DxTextBoxModule, DxTreeMapModule } from 'devextreme-angular';
+import { DxButtonModule, DxChartModule, DxDataGridModule, DxDropDownBoxModule, DxSelectBoxModule, DxTextBoxModule, DxTreeMapModule, DxTreeViewModule } from 'devextreme-angular';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { BuildingDetailComponent } from './building-detail/building-detail.component';
 import { CommonModule } from '@angular/common';
@@ -59,8 +59,11 @@ import { NgSelectModule } from '@ng-select/ng-select';
         ReportsModule,
         DxDataGridModule,
         DxChartModule,
+        DxDropDownBoxModule,
+        DxTreeViewModule,
         DxButtonModule,
         DxSelectBoxModule,
+        NgApexchartsModule,
         MatTabsModule,
         NgSelectModule,
         DxTreeMapModule,

@@ -127,6 +127,10 @@ body {
       top: 0.5rem;
     }
 }
+.occupation-type.ng-select.ng-select-single .ng-select-container {
+    height: 32px !important;
+    min-height: 32px !important;
+}
 .electricity-icon {
     background-image: url('/assets/images/icons/electricity.svg');
 }
