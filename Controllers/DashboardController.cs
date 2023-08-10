@@ -136,5 +136,19 @@ namespace ClientPortal.Controllers
                 return Problem(e.Message);
             }
         }
+
+        [HttpGet("buildings/{buildingId:int}/shops/{shopId:int}/meters/{meterId:int}/readings")]
+        public async Task<ActionResult<List<UmfaShopDashboardReading>>> GetDashboardReadings(int buildingId, int shopId, int meterId, [FromQuery, Range(1, int.MaxValue)] int history = 36)
+        {
+            try
+            {
+                return await _umfaService.GetShopDashboardReadingsAsync(buildingId, shopId, meterId, history);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Could not get shop meter readings");
+                return Problem(e.Message);
+            }
+        }
     }
 }
