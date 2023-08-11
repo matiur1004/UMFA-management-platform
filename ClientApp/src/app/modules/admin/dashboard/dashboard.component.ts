@@ -345,7 +345,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((res) => {
                 if(res) {
-                    console.log(res);
                     let newTab: IHomeTab = {
                         id: 0,
                         title: `${res.reportType} Reports`,

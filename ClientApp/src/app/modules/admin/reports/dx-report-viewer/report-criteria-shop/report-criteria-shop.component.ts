@@ -62,13 +62,7 @@ export class ReportCriteriaShopComponent implements OnInit {
 
     if(this.partnerId) {
       this.form.get('partnerId').setValue(this.partnerId);
-      this.reportService.obsBuildings
-        .pipe(takeUntil(this._unsubscribeAll))
-        .subscribe((buildingList: any) => {
-          if(buildingList && buildingList.length > 0) {
-            this.reportService.selectPartner(this.partnerId);
-          }
-        });
+      this.reportService.selectPartner(this.partnerId);
       
     }
     if(this.buildingId) {

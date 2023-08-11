@@ -480,8 +480,6 @@ export class DXReportService {
     }
     
     destroyReportViewer() {
-        this.bsBuildings.next([]);
-        this.buildings = null;
         this.SelectedReportId = 0;
         this._isFormValid.next(false);
         this._consumptionSummary.next(null);
