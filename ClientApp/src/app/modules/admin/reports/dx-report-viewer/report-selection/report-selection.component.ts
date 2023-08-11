@@ -43,7 +43,6 @@ export class ReportSelectionComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   ngAfterViewInit(): void {
-    this.reportService.loadBuildings(this.userService.userValue.UmfaId);
   }
 
   selectReport() {
@@ -52,7 +51,6 @@ export class ReportSelectionComponent implements OnInit, OnDestroy, AfterViewIni
       if (this.form.valid) {
         this.reportService.setFrmValid(1, true);
         this.reportService.SelectedReportId = this.form.get('selectedReportId').value;
-        this.reportService.loadPartners(this.userService.userValue.UmfaId);
       } else this.reportService.setFrmValid(1, false);
     }
     catch (e) {

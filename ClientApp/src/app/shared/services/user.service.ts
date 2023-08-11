@@ -4,6 +4,7 @@ import { CONFIG } from "app/core/helpers";
 import { BehaviorSubject, lastValueFrom, Observable, of, throwError } from "rxjs";
 import { catchError, delay, map, take, tap } from "rxjs/operators";
 import { IAmrUser, IopUser, NotificationType, Role, UserNotification } from "../../core/models";
+import { DXReportService } from "./dx-report-service";
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -19,7 +20,10 @@ export class UserService {
   private decrSubject: BehaviorSubject<string>;
   public decr$: Observable<string>;
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private _reportService: DXReportService
+  ) {
     this.userSubject = new BehaviorSubject<IopUser>(null);
     this.user$ = this.userSubject.asObservable();
     this.decrSubject = new BehaviorSubject<string>(null);
@@ -57,6 +61,8 @@ export class UserService {
         //tap(u => console.log(`Http response from getUser: ${JSON.stringify(u)}`)),
         map(u => {
           this.userSubject.next(u);
+          this._reportService.loadPartners(u.UmfaId);
+          this._reportService.loadBuildings(u.UmfaId);
           return u;
         }),
         take(1)
