@@ -7,6 +7,7 @@ import { AuthUtils } from 'app/core/auth/auth.utils';
 import { UserService } from 'app/core/user/user.service';
 import { CONFIG } from 'app/core/helpers';
 import { IUser } from '../models';
+import { DXReportService } from '@shared/services';
 
 @Injectable()
 export class AuthService
@@ -19,7 +20,8 @@ export class AuthService
      */
     constructor(
         private _httpClient: HttpClient,
-        private _userService: UserService
+        private _userService: UserService,
+        private _reportService: DXReportService
     )
     {
         this.userSubject = new BehaviorSubject<IUser>(null);
@@ -115,6 +117,7 @@ export class AuthService
               this.accessToken = user.JwtToken;
               this.userSubject.next(user);
               localStorage.setItem('user', JSON.stringify(user));
+
               this.startRefreshTokenTimer();
               return user;
             }));

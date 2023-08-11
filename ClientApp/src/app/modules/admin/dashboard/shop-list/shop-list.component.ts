@@ -46,8 +46,6 @@ export class ShopListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.reportService.loadPartners(this.userService.userValue.UmfaId);
-    this.reportService.loadBuildings(this.userService.userValue.UmfaId);
 
     this.form = this._formBuilder.group({
       PartnerId: [null],
