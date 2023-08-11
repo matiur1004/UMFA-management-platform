@@ -384,7 +384,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                         // "buildingId": 2403,
                         // "partnerId": 7,
                         "buildingId": response['buildingId'],
-                        "shopId": response['shopId'],
+                        "shopId": response['shopId']
                     }
                     this._dbService.getShopDashboardDetail(res['buildingId'], res['shopId'])
                         .pipe(takeUntil(this._unsubscribeAll))
@@ -392,7 +392,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                             if(result) {
                                 let newTab: IHomeTab = {
                                     id: 0,
-                                    title: `Shop Detail`,
+                                    title: `${response['shopName']}`,
                                     type: 'ShopDetailDashboard',
                                     dataSource: {}
                                 };
