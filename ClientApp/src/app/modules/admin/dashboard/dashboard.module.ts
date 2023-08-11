@@ -13,7 +13,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'app/shared/shared.module';
 import { DashboardComponent } from './dashboard.component';
 import { dashboardRoutes } from './dashboard.routing';
-import { DxButtonModule, DxChartModule, DxDataGridModule, DxDropDownBoxModule, DxSelectBoxModule, DxTextBoxModule, DxTreeMapModule, DxTreeViewModule } from 'devextreme-angular';
+import { DxButtonModule, DxChartModule, DxDataGridModule, DxSelectBoxModule, DxTextBoxModule } from 'devextreme-angular';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { BuildingDetailComponent } from './building-detail/building-detail.component';
 import { CommonModule } from '@angular/common';
@@ -25,8 +25,6 @@ import { TenantSlipDownloadsComponent } from './tenant-slip-downloads/tenant-sli
 import { BuildingReportsComponent } from './building-reports/building-reports.component';
 import { ReportsModule } from '../reports/reports.module';
 import { ShopListComponent } from './shop-list/shop-list.component';
-import { ShopDetailComponent } from './shop-detail/shop-detail.component';
-import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
     declarations: [
@@ -36,8 +34,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
         TenantSlipDashboardComponent,
         TenantSlipDownloadsComponent,
         BuildingReportsComponent,
-        ShopListComponent,
-        ShopDetailComponent
+        ShopListComponent
     ],
     imports     : [
         CommonModule,
@@ -59,14 +56,9 @@ import { NgSelectModule } from '@ng-select/ng-select';
         ReportsModule,
         DxDataGridModule,
         DxChartModule,
-        DxDropDownBoxModule,
-        DxTreeViewModule,
         DxButtonModule,
         DxSelectBoxModule,
-        NgApexchartsModule,
         MatTabsModule,
-        NgSelectModule,
-        DxTreeMapModule,
         SharedModule
     ],
     exports: [

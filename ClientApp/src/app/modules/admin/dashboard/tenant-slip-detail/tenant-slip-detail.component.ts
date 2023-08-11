@@ -128,6 +128,7 @@ export class TenantSlipDetailComponent implements OnInit {
   }
 
   selectionChangedHandler() {
+    console.log(this.dataGrid.instance.getSelectedRowsData());
     this.isSelected = this.dataGrid.instance.getSelectedRowsData().length > 0;
   }
 
