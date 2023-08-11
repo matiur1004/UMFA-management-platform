@@ -108,5 +108,33 @@ namespace ClientPortal.Controllers
                 return Problem(e.Message);
             }
         }
+
+        [HttpGet("buildings/{buildingId:int}/shops/{shopId:int}/occupations")]
+        public async Task<ActionResult<List<UmfaShopDashboardOccupation>>> GetDashboardShopOccupations(int buildingId, int shopId)
+        {
+            try
+            {
+                return await _umfaService.GetShopDashboardOccupationsAsync(buildingId, shopId);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Could not get shop occupations");
+                return Problem(e.Message);
+            }
+        }
+
+        [HttpGet("buildings/{buildingId:int}/shops/{shopId:int}/assigned-meters")]
+        public async Task<ActionResult<List<UmfaShopDashboardAssignedMeter>>> GetDashboardShopAssignedMeters(int buildingId, int shopId, [FromQuery, Range(1, int.MaxValue)] int history = 6)
+        {
+            try
+            {
+                return await _umfaService.GetShopDashboardAssignedMetersAsync(buildingId, shopId, history);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Could not get shop assigned meter");
+                return Problem(e.Message);
+            }
+        }
     }
 }
