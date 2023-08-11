@@ -448,9 +448,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                     this._cdr.markForCheck();
                 });
             } else if(type == EHomeTabType.Shops) {
+                this._dbService.destroyShopList();
                 let res = {
-                    // "buildingId": 2403,
-                    // "partnerId": 7,
                     "buildingId": null,
                     "partnerId": null,
                     "destination": "Home"
@@ -482,6 +481,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             this.selectedTab = index;    
         }
         if(this.tabsList[index]['type'] == 'ShopList') {
+            this._dbService.selectedShopInfo = null;
+            this._dbService.destroyShopList();
             if(this.tabsList[index]['dataSource']['destination'] == 'Home') this.selectedTab = 0;
             else this.selectedTab = index;
         }

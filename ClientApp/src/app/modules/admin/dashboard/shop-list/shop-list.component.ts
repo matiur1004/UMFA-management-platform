@@ -51,17 +51,10 @@ export class ShopListComponent implements OnInit {
       PartnerId: [null],
       BuildingId: [null, Validators.required],
     })
-
     this.partnerList$.subscribe(res => {
       if(this.partnerId && res && res.length > 0) {
         this.form.get('PartnerId').setValue(this.partnerId);
-        this.reportService.obsBuildings
-          .pipe(takeUntil(this._unsubscribeAll))
-          .subscribe((buildingList: any) => {
-            if(buildingList && buildingList.length > 0) {
-              this.reportService.selectPartner(this.partnerId);
-            }
-          });      
+        this.reportService.selectPartner(this.partnerId);
       }
     })
     
@@ -73,15 +66,25 @@ export class ShopListComponent implements OnInit {
             return {...item, 'Occupied': item['Occupied'] ? 'Occupied' : 'Unoccupied'};
           });
           this._cdr.detectChanges();
-        } else this.dataSource = [];
+        } else {
+          this.dataSource = [];
+          this._cdr.detectChanges();
+        }
       })
 
     
-
     if(this.buildingId) {
       this.form.get('BuildingId').setValue(this.buildingId);
+      this.dashboardService.selectedShopInfo = {'buildingId': this.buildingId, 'partnerId': this.partnerId};
       this.dashboardService.getShopsByBuildingId(this.form.get('BuildingId').value).subscribe();
+    } else {
+      if(this.dashboardService.selectedShopInfo) {
+        this.form.get('PartnerId').setValue(this.dashboardService.selectedShopInfo.partnerId);
+        this.form.get('BuildingId').setValue(this.dashboardService.selectedShopInfo.buildingId);    
+      }
     }
+    
+    
   }
 
   custPartnerTemplate = (arg: any) => {
@@ -98,19 +101,21 @@ export class ShopListComponent implements OnInit {
     if(method == 'Partner') {
       this.reportService.selectPartner(this.form.get('PartnerId').value);
     } else if(method == 'Building') {
+      this.dashboardService.selectedShopInfo = {'buildingId': this.form.get('BuildingId').value, 'partnerId': this.form.get('PartnerId').value};
       this.dashboardService.getShopsByBuildingId(this.form.get('BuildingId').value).subscribe();
     }
   }
 
   onRowClick(event) {
     if(event.data) {
-      this.dashboardService.showShopDetailDashboard({shopId: event.data.ShopID, buildingId: this.form.get('BuildingId').value, shopName: event.data.ShopName});
+      if(event.data.ShopID && event.data.ShopName)
+        this.dashboardService.showShopDetailDashboard({shopId: event.data.ShopID, buildingId: this.form.get('BuildingId').value, shopName: event.data.ShopName});
     }
   }
 
   ngOnDestroy() {
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
-    this.reportService.destroyBuildingsAndPartners();
+    this.dashboardService.destroyShopList();
   }
 }

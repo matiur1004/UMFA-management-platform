@@ -32,6 +32,7 @@ export class DashboardService {
   
   public stats$: Observable<IHomePageStats>;
   public alarmTriggeredId: any;
+  public selectedShopInfo: any;
 
   private _alarmTriggerDetail: BehaviorSubject<any> = new BehaviorSubject(null);
 
@@ -292,7 +293,7 @@ export class DashboardService {
   }
 
   destroyShopList() {
-    
+    this._shops.next(null);
   }
 
   destroyShopDetail() {
