@@ -362,6 +362,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             .subscribe((res) => {
                 if(res) {
                     if(res) {
+                        console.log(res);
                         let newTab: IHomeTab = {
                             id: 0,
                             title: `Shops`,
@@ -406,8 +407,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
         // let res = {
         //     // "buildingId": 2403,
         //     // "partnerId": 7,
-        //     "buildingId": 2403,
-        //     "shopId": 62336,
+        //     "buildingId": null,
+        //     "partnerId": null
         // }
         // this._dbService.getShopDashboardDetail(res['buildingId'], res['shopId'])
         //     .pipe(takeUntil(this._unsubscribeAll))
@@ -474,8 +475,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
         if( this.tabsList[index]['type'] == 'TenantSlipDashboard' || 
             this.tabsList[index]['type'] == 'TenantSlipDetail' || 
             this.tabsList[index]['type'] == 'TenantSlipDownloads' ||
-            this.tabsList[index]['type'] == 'BuildingReports' ||
-            this.tabsList[index]['type'] == 'ShopDetailDashboard') {
+            this.tabsList[index]['type'] == 'BuildingReports') {
             this.selectedTab = index;    
         }
         if(this.tabsList[index]['type'] == 'ShopList') {
