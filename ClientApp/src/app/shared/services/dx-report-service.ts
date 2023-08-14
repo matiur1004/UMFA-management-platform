@@ -140,7 +140,7 @@ export class DXReportService {
 
     public selectPartner(partnerId: number) {
         if(this.buildings && this.buildings.length > 0) {
-            const filteredBuildings = this.buildings.filter(bld => bld.PartnerId == partnerId);
+            const filteredBuildings = this.buildings.filter(bld => bld.PartnerId == partnerId);            
             this.bsBuildings.next(filteredBuildings);
         }        
     }

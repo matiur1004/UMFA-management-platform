@@ -2083,11 +2083,7 @@ export const feather = [
     'addMeter',
     'buildings',
     'clients',
-    'electricity',
-    'billing',
-    'occupations',
-    'added-meters',
-    'readings'
+    'electricity'
 ];
 // heroicons v1.0.1 - 230 icons
 export const heroicons = [
