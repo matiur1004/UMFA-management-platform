@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { IUmfaBuilding } from '@core/models';
 import { DXReportService } from '@shared/services';
@@ -20,7 +20,7 @@ export class ReportCriteriaShopComponent implements OnInit {
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
-  constructor(private reportService: DXReportService, private _formBuilder: UntypedFormBuilder) { }
+  constructor(private reportService: DXReportService, private _formBuilder: UntypedFormBuilder, private _cdr: ChangeDetectorRef) { }
 
 
   get showPage(): boolean {
@@ -63,26 +63,14 @@ export class ReportCriteriaShopComponent implements OnInit {
     if(this.partnerId) {
       this.form.get('partnerId').setValue(this.partnerId);
       this.reportService.selectPartner(this.partnerId);
+      this._cdr.detectChanges();
       
     }
     if(this.buildingId) {
       this.form.get('buildingId').setValue(this.buildingId);
       this.reportService.loadPeriods(this.buildingId);
+      this._cdr.detectChanges();
     }
-
-    this.reportService.reportChanged$
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((res: boolean) => {
-        if(res) {
-          this.form.patchValue({
-            partnerId: null,
-            buildingId: null,
-            startPeriodId: null,
-            endPeriodId: null,
-            allTenants: 1
-          })
-        }
-      });
   }
   
   customSearch(term: string, item: any) {
