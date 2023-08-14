@@ -36,7 +36,13 @@
                         <mat-icon class="icon-size-10" [svgIcon]="'feather:occupations'"></mat-icon>
                     </div>
                     <div class="flex">
-                        <ng-select class="w-100 occupation-type" bindLabel="label" bindValue="value" [items]="tenantItems" [(ngModel)]="selectedTenantType"></ng-select>
+                        <ng-select class="occupation-type w-full" bindLabel="label" bindValue="value" [items]="tenantItems" [(ngModel)]="selectedTenantType">
+                            <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                                <div class="row" [matTooltip]="item.label" [matTooltipPosition]="'right'">
+                                    {{item['label']}}
+                                </div>
+                            </ng-template>
+                        </ng-select>
                     </div>
                     <div class="flex justify-between text-md">
                         <span class="">All Time Tenants</span><span>{{shopDetailDashboard.Occupations[0]['NoOfOccupants']}}</span>

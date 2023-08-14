@@ -25,6 +25,7 @@ export class ShopListComponent implements OnInit {
   applyFilterTypes: any;
   currentFilter: any;
   dataSource: any;
+  initiatedList = false;
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
@@ -65,26 +66,25 @@ export class ShopListComponent implements OnInit {
           this.dataSource = res.map(item => {
             return {...item, 'Occupied': item['Occupied'] ? 'Occupied' : 'Unoccupied'};
           });
-          this._cdr.detectChanges();
         } else {
           this.dataSource = [];
-          this._cdr.detectChanges();
         }
+        if(this.dataSource.length > 0) this.initiatedList = true;
+        if(!this.buildingId) {
+          if(this.dashboardService.selectedShopInfo) {
+            this.form.get('PartnerId').setValue(this.dashboardService.selectedShopInfo.partnerId);
+            this.form.get('BuildingId').setValue(this.dashboardService.selectedShopInfo.buildingId);
+          }
+        }
+        this._cdr.detectChanges();
       })
 
-    
-    if(this.buildingId) {
-      this.form.get('BuildingId').setValue(this.buildingId);
-      this.dashboardService.selectedShopInfo = {'buildingId': this.buildingId, 'partnerId': this.partnerId};
-      this.dashboardService.getShopsByBuildingId(this.form.get('BuildingId').value).subscribe();
-    } else {
-      if(this.dashboardService.selectedShopInfo) {
-        this.form.get('PartnerId').setValue(this.dashboardService.selectedShopInfo.partnerId);
-        this.form.get('BuildingId').setValue(this.dashboardService.selectedShopInfo.buildingId);    
+      if(this.buildingId) {
+        this.form.get('BuildingId').setValue(this.buildingId);
+        this.dashboardService.selectedShopInfo = {'buildingId': this.buildingId, 'partnerId': this.partnerId};
+        if(!this.dashboardService.selectedShopInfo) this.dashboardService.getShopsByBuildingId(this.form.get('BuildingId').value).subscribe();
       }
-    }
-    
-    
+      
   }
 
   custPartnerTemplate = (arg: any) => {
@@ -116,6 +116,6 @@ export class ShopListComponent implements OnInit {
   ngOnDestroy() {
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
-    this.dashboardService.destroyShopList();
+    //this.dashboardService.destroyShopList();
   }
 }
