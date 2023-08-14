@@ -104,7 +104,6 @@ export class ShopListComponent implements OnInit {
     if(method == 'Partner') {
       this.reportService.selectPartner(this.form.get('PartnerId').value);
     } else if(method == 'Building') {
-      console.log('building changed');
       this.dashboardService.selectedShopInfo = {'buildingId': this.form.get('BuildingId').value, 'partnerId': this.form.get('PartnerId').value};
       this.dashboardService.getShopsByBuildingId(this.form.get('BuildingId').value).subscribe();
     }

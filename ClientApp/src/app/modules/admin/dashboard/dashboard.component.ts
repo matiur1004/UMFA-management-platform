@@ -362,7 +362,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             .subscribe((res) => {
                 if(res) {
                     if(res) {
-                        console.log(res);
                         let newTab: IHomeTab = {
                             id: 0,
                             title: `Shops`,
@@ -386,7 +385,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                         "buildingId": response['buildingId'],
                         "shopId": response['shopId']
                     }
-                    console.log(response)
                     this._dbService.getShopDashboardDetail(res['buildingId'], res['shopId'])
                         .pipe(takeUntil(this._unsubscribeAll))
                         .subscribe(result => {
