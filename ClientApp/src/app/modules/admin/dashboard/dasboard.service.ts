@@ -27,6 +27,8 @@ export class DashboardService {
   private _shops: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopDetail: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopDetailDashboard: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _shopBilling: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _shopBillingDetail: BehaviorSubject<any> = new BehaviorSubject(null);
 
   private _reportsArchives: BehaviorSubject<any> = new BehaviorSubject(null);
   
@@ -102,6 +104,14 @@ export class DashboardService {
 
   get shopDetailDashboard$(): Observable<any> {
     return this._shopDetailDashboard.asObservable();
+  }
+
+  get shopBilling$(): Observable<any> {
+    return this._shopBilling.asObservable();
+  }
+
+  get shopBillingDetail$(): Observable<any> {
+    return this._shopBillingDetail.asObservable();
   }
 
   /**
@@ -284,6 +294,18 @@ export class DashboardService {
       );
   }
 
+  getShopDashboardBilling(buildingId, shopId, history = 12) {
+    const url = `${CONFIG.apiURL}/Dashboard/buildings/${buildingId}/shops/${shopId}/billing-details?history=${history}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(bl => {
+          this._shopBillingDetail.next(bl);
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        })
+      );
+  }
+
   showShopDetailDashboard(data) {
     this._shopDetailDashboard.next(data);
   }
@@ -322,6 +344,10 @@ export class DashboardService {
 
   destroyTenantSlipDetail() {
     this._tenantSlipDetail.next(null);
+  }
+
+  showShopBilling(data) {
+    this._shopBilling.next(data);
   }
 
   destroy() {

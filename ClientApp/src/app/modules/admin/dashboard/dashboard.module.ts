@@ -27,6 +27,7 @@ import { ReportsModule } from '../reports/reports.module';
 import { ShopListComponent } from './shop-list/shop-list.component';
 import { ShopDetailComponent } from './shop-detail/shop-detail.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { ShopBillingComponent } from './shop-billing/shop-billing.component';
 
 @NgModule({
     declarations: [
@@ -37,7 +38,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
         TenantSlipDownloadsComponent,
         BuildingReportsComponent,
         ShopListComponent,
-        ShopDetailComponent
+        ShopDetailComponent,
+        ShopBillingComponent
     ],
     imports     : [
         CommonModule,
