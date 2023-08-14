@@ -53,7 +53,9 @@ export class ShopDetailComponent implements OnInit {
     'Common Area Water': '#8b5cf6',
     'Diesel Generator': '#f59e0b',
     'KVA Electricity': '#6b21a8',
-    'KWH Electricity': '#9f1239'
+    'KWH Electricity': '#9f1239',
+    'E-Kwh': '#d946ef',
+    'Diesel Recoveries': '#a855f7'
   };
   availableGroupColors: any;
 
