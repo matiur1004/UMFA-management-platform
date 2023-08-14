@@ -66,6 +66,7 @@ export class ShopListComponent implements OnInit {
           this.dataSource = res.map(item => {
             return {...item, 'Occupied': item['Occupied'] ? 'Occupied' : 'Unoccupied'};
           });
+          this._cdr.markForCheck();
         } else {
           this.dataSource = [];
         }
@@ -76,13 +77,15 @@ export class ShopListComponent implements OnInit {
             this.form.get('BuildingId').setValue(this.dashboardService.selectedShopInfo.buildingId);
           }
         }
-        this._cdr.detectChanges();
+        
       })
 
       if(this.buildingId) {
         this.form.get('BuildingId').setValue(this.buildingId);
-        this.dashboardService.selectedShopInfo = {'buildingId': this.buildingId, 'partnerId': this.partnerId};
-        if(!this.dashboardService.selectedShopInfo) this.dashboardService.getShopsByBuildingId(this.form.get('BuildingId').value).subscribe();
+        if(!this.dashboardService.selectedShopInfo) {
+          this.dashboardService.getShopsByBuildingId(this.form.get('BuildingId').value).subscribe();
+          this.dashboardService.selectedShopInfo = {'buildingId': this.buildingId, 'partnerId': this.partnerId};
+        }
       }
       
   }
@@ -101,6 +104,7 @@ export class ShopListComponent implements OnInit {
     if(method == 'Partner') {
       this.reportService.selectPartner(this.form.get('PartnerId').value);
     } else if(method == 'Building') {
+      console.log('building changed');
       this.dashboardService.selectedShopInfo = {'buildingId': this.form.get('BuildingId').value, 'partnerId': this.form.get('PartnerId').value};
       this.dashboardService.getShopsByBuildingId(this.form.get('BuildingId').value).subscribe();
     }
