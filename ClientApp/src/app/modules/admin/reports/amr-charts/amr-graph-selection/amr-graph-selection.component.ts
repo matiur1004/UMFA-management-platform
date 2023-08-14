@@ -81,7 +81,5 @@ export class AmrGraphSelectionComponent implements OnInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.reportService.loadPartners(this.userService.userValue.UmfaId);
-    this.reportService.loadBuildings(this.userService.userValue.UmfaId);
   }
 }

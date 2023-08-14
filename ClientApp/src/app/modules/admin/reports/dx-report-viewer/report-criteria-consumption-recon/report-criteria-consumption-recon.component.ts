@@ -54,13 +54,7 @@ export class ReportCriteriaConsumptionReconComponent implements OnInit {
 
     if(this.partnerId) {
       this.form.get('PartnerId').setValue(this.partnerId);
-      this.reportService.obsBuildings
-        .pipe(takeUntil(this._unsubscribeAll))
-        .subscribe((buildingList: any) => {
-          if(buildingList && buildingList.length > 0) {
-            this.reportService.selectPartner(this.partnerId);
-          }
-        });
+      this.reportService.selectPartner(this.partnerId);
       
     }
     if(this.buildingId) {

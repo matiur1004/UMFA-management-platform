@@ -363,8 +363,8 @@ export class DXReportService {
 
     resetAll(): void {
         this.ErrorSubject.next(null);
-        this.bsBuildings.next([]);
-        this.bsPartners.next(null);
+        //this.bsBuildings.next([]);
+        //this.bsPartners.next(null);
         this.bsPeriods.next(null);
         this.bsEndPeriods.next(null);
         this.bsLoadReport.next(null);
@@ -480,8 +480,6 @@ export class DXReportService {
     }
     
     destroyReportViewer() {
-        this.bsBuildings.next([]);
-        this.buildings = null;
         this.SelectedReportId = 0;
         this._isFormValid.next(false);
         this._consumptionSummary.next(null);

@@ -25,11 +25,14 @@ export class DashboardService {
   private _buildingReports: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopList: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shops: BehaviorSubject<any> = new BehaviorSubject(null);
-  
+  private _shopDetail: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _shopDetailDashboard: BehaviorSubject<any> = new BehaviorSubject(null);
+
   private _reportsArchives: BehaviorSubject<any> = new BehaviorSubject(null);
   
   public stats$: Observable<IHomePageStats>;
   public alarmTriggeredId: any;
+  public selectedShopInfo: any;
 
   private _alarmTriggerDetail: BehaviorSubject<any> = new BehaviorSubject(null);
 
@@ -92,6 +95,15 @@ export class DashboardService {
   get shops$(): Observable<any> {
     return this._shops.asObservable();
   }
+
+  get shopDetail$(): Observable<any> {
+    return this._shopDetail.asObservable();
+  }
+
+  get shopDetailDashboard$(): Observable<any> {
+    return this._shopDetailDashboard.asObservable();
+  }
+
   /**
      * Getter for data
      */
@@ -260,12 +272,32 @@ export class DashboardService {
       );
   }
 
+  getShopDashboardDetail(buildingId, shopId, history = 36) {
+    const url = `${CONFIG.apiURL}/Dashboard/buildings/${buildingId}/shops/${shopId}?history=${history}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(bl => {
+          this._shopDetail.next(bl);
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        })
+      );
+  }
+
+  showShopDetailDashboard(data) {
+    this._shopDetailDashboard.next(data);
+  }
+
   destroyTenantSlips() {
     this._tenantSlipsReports.next(null);
   }
 
   destroyShopList() {
-    
+    this._shops.next(null);
+  }
+
+  destroyShopDetail() {
+    this._shopDetailDashboard.next(null);
   }
 
   showTenantSlip(buildingId) {

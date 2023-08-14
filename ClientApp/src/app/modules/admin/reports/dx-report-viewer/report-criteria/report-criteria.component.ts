@@ -61,12 +61,7 @@ export class ReportCriteriaComponent implements OnInit, OnDestroy {
     });
     if(this.partnerId) {
       this.form.get('partnerId').setValue(this.partnerId);
-      this.buildingList$.subscribe(buildingList => {
-        if(buildingList && buildingList.length > 0) {
-          this.reportService.selectPartner(this.partnerId);
-        }
-      })
-      
+      this.reportService.selectPartner(this.partnerId);      
     }
     if(this.buildingId) {
       this.form.get('buildingId').setValue(this.buildingId);
