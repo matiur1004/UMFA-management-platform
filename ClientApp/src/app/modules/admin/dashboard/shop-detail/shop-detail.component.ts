@@ -405,6 +405,10 @@ export class ShopDetailComponent implements OnInit {
     this.service.showShopBilling({buildingId: this.buildingId, shopId: this.shopId});
   }
 
+  onShopOccupation() {
+    this.service.showShopOccupation({buildingId: this.buildingId, shopId: this.shopId});
+  }
+  
   /**
      * On destroy
      */

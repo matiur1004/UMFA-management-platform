@@ -428,6 +428,32 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                         });
                 }
             });
+
+        this._dbService.shopOccupation$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((response) => {
+                if(response) {
+                    let res = {
+                        "buildingId": response['buildingId'],
+                        "shopId": response['shopId']
+                    }
+                    this._dbService.getShopDashboardOccupations(res['buildingId'], res['shopId'])
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe(result => {
+                            if(result) {
+                                let newTab: IHomeTab = {
+                                    id: 0,
+                                    title: `Occupations`,
+                                    type: 'ShopDashboardOccupations',
+                                    dataSource: {}
+                                };
+                                this.tabsList.push(newTab);
+                                this.selectedTab = this.tabsList.length;
+                                this._cdr.markForCheck();
+                            }
+                        });
+                }
+            });
         //Wip
         // let res = {
         //     // "buildingId": 2403,
@@ -464,6 +490,27 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
         //                 id: 0,
         //                 title: `Shop Detail`,
         //                 type: 'ShopDetailDashboard',
+        //                 dataSource: {}
+        //             };
+        //             this.tabsList.push(newTab);
+        //             this.selectedTab = this.tabsList.length;
+        //             this._cdr.detectChanges();
+        //         }
+        //     });
+        // let res = {
+        //     "buildingId": 2403,
+        //     "shopId": 62336,
+        //     // "buildingId": null,
+        //     // "partnerId": null
+        // }
+        // this._dbService.getShopDashboardOccupations(res['buildingId'], res['shopId'])
+        //     .pipe(takeUntil(this._unsubscribeAll))
+        //     .subscribe(result => {
+        //         if(result) {
+        //             let newTab: IHomeTab = {
+        //                 id: 0,
+        //                 title: `Occupations`,
+        //                 type: 'ShopDashboardOccupations',
         //                 dataSource: {}
         //             };
         //             this.tabsList.push(newTab);
@@ -522,7 +569,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             this.tabsList[index]['type'] == 'TenantSlipDetail' || 
             this.tabsList[index]['type'] == 'TenantSlipDownloads' ||
             this.tabsList[index]['type'] == 'BuildingReports' ||
-            this.tabsList[index]['type'] == 'ShopBilling') {
+            this.tabsList[index]['type'] == 'ShopBilling' ||
+            this.tabsList[index]['type'] == 'ShopDashboardOccupations') {
             this.selectedTab = index;    
         }
         if(this.tabsList[index]['type'] == 'ShopList') {

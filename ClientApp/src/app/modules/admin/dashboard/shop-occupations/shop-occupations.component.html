@@ -1,0 +1,33 @@
+<div class="flex flex-col">
+    <dx-data-grid
+        #grid
+        [dataSource]="dataSource"
+        [showBorders]="true"
+        id="slip-grid-container"
+        [hoverStateEnabled]="true"
+    >
+        <!-- <dxo-selection mode="single"></dxo-selection> -->
+        <dxo-filter-row [visible]="'true'"
+            [applyFilter]="currentFilter"></dxo-filter-row>
+        <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+        <dxo-paging [pageSize]="15"> </dxo-paging>
+        <dxo-pager
+            [visible]="true"
+            [allowedPageSizes]="allowedPageSizes"
+            [displayMode]="'compact'"
+            [showPageSizeSelector]="true"
+            [showInfo]="true"
+            [showNavigationButtons]="true"
+        >
+        </dxo-pager>
+        <dxo-search-panel
+            [visible]="true"
+            [width]="200"
+            placeholder="Search..."
+        ></dxo-search-panel>
+        <dxi-column dataField="TenantName" caption="Tennat Name" [minWidth]="100"></dxi-column>
+        <dxi-column dataField="OccupationDTM" [customizeText]="onCustomizeDateTime" caption="Occupation Date" [minWidth]="100"></dxi-column>
+        <dxi-column dataField="VacationDTM" [customizeText]="onCustomizeDateTime" caption="Vacation Date" [minWidth]="100"></dxi-column>
+        <dxi-column dataField="TenantActive" caption="Tenant Active"></dxi-column>
+    </dx-data-grid>
+</div>
