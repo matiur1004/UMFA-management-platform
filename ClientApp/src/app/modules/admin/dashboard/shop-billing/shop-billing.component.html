@@ -5,8 +5,11 @@
         [dataSource]="dataSource"
         [showBorders]="true"
         [showColumnGrandTotals]="false"
-        [height]="440"
+        [showColumnTotals]="false"
+        [height]="500"
+        [allowExpandAll]="true"
         (onCellPrepared)="cellPrepared($event)"
     >
+        <dxo-field-chooser [enabled]="false"></dxo-field-chooser>
     </dx-pivot-grid>
 </div>

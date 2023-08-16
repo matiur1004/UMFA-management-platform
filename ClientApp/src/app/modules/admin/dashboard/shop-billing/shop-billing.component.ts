@@ -3,6 +3,7 @@ import { DashboardService } from '../dasboard.service';
 import { Subject, takeUntil } from 'rxjs';
 import { AllowedPageSizes } from '@core/helpers';
 import { DecimalPipe } from '@angular/common';
+import moment from 'moment';
 
 @Component({
   selector: 'app-shop-billing',
@@ -15,7 +16,7 @@ export class ShopBillingComponent implements OnInit {
   periodList: any[] = [];
   periodIdList: any[] = [];
   tenantId: number;
-
+  monthNameList
   readonly allowedPageSizes = AllowedPageSizes;
   
   private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -33,11 +34,6 @@ export class ShopBillingComponent implements OnInit {
       .subscribe((res) => {
         if(res) {
           //this.dataSource = res;
-          this.tenantId = res[0]['TenantID'];
-          res.forEach(item => {
-            if(this.periodList.indexOf(item['PeriodName']) == -1) this.periodList.push(item['PeriodName']);
-            if(this.periodIdList.indexOf(item['PeriodID']) == -1) this.periodIdList.push(item['PeriodID']);
-          });
           this.dataSource = {
             fields: [
               {
@@ -47,16 +43,26 @@ export class ShopBillingComponent implements OnInit {
                 area: 'row',
               },
               {
-                dataField: 'PeriodName',
+                dataField: 'PeriodDate',
                 area: 'column',
+                dataType: 'date',
+                expanded: true,
+                groupName: "Date"  
               },
+              { groupName: "Date", groupInterval: "year", groupIndex: 0 },  
+
+              { groupName: "Date", groupInterval: "month", groupIndex: 1 }, 
               {
                 caption: 'Usage',
                 dataField: 'Usage',
                 dataType: 'number',
                 summaryType: 'sum',
                 customizeText: (cellInfo) => {
-                  return this.decimalPipe.transform(cellInfo.value);
+                  if(cellInfo.value) {
+                    return this.decimalPipe.transform(cellInfo.value);
+                  } else {
+                    return '0.00';
+                  }
                 },
                 area: 'data',
               },
@@ -66,13 +72,33 @@ export class ShopBillingComponent implements OnInit {
                 dataType: 'number',
                 summaryType: 'sum',
                 customizeText: (cellInfo) => {
-                  return 'R ' + this.decimalPipe.transform(cellInfo.value);
+                  if(cellInfo.value) {
+                    return 'R ' + this.decimalPipe.transform(cellInfo.value);
+                  } else {
+                    return 'R ' + '0.00';
+                  }
+                  
                 },
                 area: 'data',
               },
             ],
-            store: res
+            store: [],
+            fieldPanel: {
+              visible: false,
+              showFilterFields: false
+            },
+            allowSorting: false,
+            allowSortingBySummary: false
           }
+          this.tenantId = res[0]['TenantID'];
+          this.dataSource.store = res.map(item => {
+            if(this.periodList.indexOf(item['PeriodName']) == -1) this.periodList.push(item['PeriodName']);
+            if(this.periodIdList.indexOf(item['PeriodID']) == -1) this.periodIdList.push(item['PeriodID']);
+            if(!item['Amount']) res['Amount'] = 0;
+            item['PeriodDate'] = moment(new Date(item.PeriodName)).format('YYYY/MM/DD');
+            return item;
+          });
+          
           setTimeout(() => {
             let elements = this.elementRef.nativeElement.querySelectorAll('.total-element');
             elements.forEach( element => {
@@ -99,8 +125,8 @@ export class ShopBillingComponent implements OnInit {
         e.cellElement.innerText = "";  
         e.cellElement.innerHTML = "";  
       } else {
-        console.log(e);
-        e.cellElement.innerHTML = "<a href='javascript:void(0);' class='total-element cursor-pointer text-blue-600' periodname='"+e.cell.columnPath[0]+"'>"+e.cell.text+"</a>";
+        let periodName = moment(new Date(e.cell.columnPath[0] + '-' + e.cell.columnPath[1] + '-01')).format('MMMM YYYY');
+        e.cellElement.innerHTML = "<a href='javascript:void(0);' class='total-element cursor-pointer text-blue-600' periodname='"+periodName+"'>"+e.cell.text+"</a>";
       }
     }
   }
