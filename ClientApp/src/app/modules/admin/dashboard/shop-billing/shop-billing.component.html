@@ -1,37 +1,12 @@
 <div class="flex flex-col">
-    <dx-data-grid
-            #grid
-            [dataSource]="dataSource"
-            [showBorders]="true"
-            id="shop-billing-grid-container"
-            [hoverStateEnabled]="true"
-            [allowColumnReordering]="true"
-        >
-            <!-- <dxo-selection mode="single"></dxo-selection> -->
-            <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
-            <dxo-paging [pageSize]="15"> </dxo-paging>
-            <dxo-pager
-                [visible]="true"
-                [allowedPageSizes]="allowedPageSizes"
-                [displayMode]="'compact'"
-                [showPageSizeSelector]="true"
-                [showInfo]="true"
-                [showNavigationButtons]="true"
-            >
-            </dxo-pager>
-            <dxo-search-panel
-                [visible]="true"
-                [width]="200"
-                placeholder="Search..."
-            ></dxo-search-panel>
-            <dxi-column dataField="Tenant" caption="" [groupIndex]="0"></dxi-column>
-            <ng-container *ngFor="let period of periodList">
-                <dxi-column [dataField]="period" [caption]="period" [minWidth]="120">                    
-                </dxi-column>
-            </ng-container>
-            <!-- <dxo-summary>
-                <dxi-group-item column="ShopName" summaryType="count" displayFormat="{0}">
-                </dxi-group-item>
-            </dxo-summary> -->
-        </dx-data-grid>
+    <dx-pivot-grid
+        [dataFieldArea]="'column'"
+        [wordWrapEnabled]="false"
+        [dataSource]="dataSource"
+        [showBorders]="true"
+        [showColumnGrandTotals]="false"
+        [height]="440"
+        (onCellPrepared)="cellPrepared($event)"
+    >
+    </dx-pivot-grid>
 </div>

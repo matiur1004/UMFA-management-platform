@@ -13,10 +13,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'app/shared/shared.module';
 import { DashboardComponent } from './dashboard.component';
 import { dashboardRoutes } from './dashboard.routing';
-import { DxButtonModule, DxChartModule, DxDataGridModule, DxDropDownBoxModule, DxSelectBoxModule, DxTextBoxModule, DxTreeMapModule, DxTreeViewModule } from 'devextreme-angular';
+import { DxButtonModule, DxChartModule, DxDataGridModule, DxDropDownBoxModule, DxPivotGridModule, DxSelectBoxModule, DxTextBoxModule, DxTreeMapModule, DxTreeViewModule } from 'devextreme-angular';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { BuildingDetailComponent } from './building-detail/building-detail.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TenantSlipDetailComponent } from './tenant-slip-detail/tenant-slip-detail.component';
@@ -65,6 +65,7 @@ import { ShopBillingComponent } from './shop-billing/shop-billing.component';
         DxTreeViewModule,
         DxButtonModule,
         DxSelectBoxModule,
+        DxPivotGridModule,
         NgApexchartsModule,
         MatTabsModule,
         NgSelectModule,
@@ -73,7 +74,8 @@ import { ShopBillingComponent } from './shop-billing/shop-billing.component';
     ],
     exports: [
         ReportsModule
-    ]
+    ],
+    providers: [DecimalPipe]
 })
 export class DashboardModule
 {
