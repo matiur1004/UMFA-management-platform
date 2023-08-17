@@ -139,7 +139,7 @@
                         <ng-template #emptyTemplate></ng-template>
                     </div>
                     <div *dxTemplate="let data of 'cellGroupTemplate'">
-                        <div class="flex gap-x-2 items-center"><div class="w-3 h-3 rounded-sm" [ngStyle]="{'background-color': groupColors[data.value]}"></div> {{data.value}}</div>
+                        <div class="flex gap-x-2 items-center"><div class="w-3 h-3 rounded-sm" [ngStyle]="{'background-color': groupColors[groupList.indexOf(data.value)]}"></div> {{data.value}}</div>
                     </div>
                 </dx-data-grid>
             </div>
