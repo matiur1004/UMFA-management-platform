@@ -57,7 +57,7 @@ export class ShopDetailComponent implements OnInit {
   //   'E-Kwh': '#d946ef',
   //   'Diesel Recoveries': '#a855f7'
   // };
-  groupColors = ['#008E0E', '#452AEB', '#2FAFB7', '#C23BC4', '#6E6E6E', '#16a34a', '#C24F19', '#C8166C', '#84cc16', '#06b6d4', '#8b5cf6', '#f59e0b', '#6b21a8', '#9f1239', '#d946ef', '#a855f7'];
+  groupColors = ['#008E0E', '#452AEB', '#2FAFB7', '#C23BC4', '#6E6E6E', '#46a34a', '#C24F19', '#C8166C', '#84cc16', '#06b6d4', '#8b5cf6', '#f59e0b', '#6b21a8', '#9f1239', '#d946ef', '#a855f7'];
   availableGroupColors: any;
 
   mapOptions = {
@@ -252,7 +252,7 @@ export class ShopDetailComponent implements OnInit {
           this.setBillingUsageChart();
 
           this.availableGroupColors = this.groupList.map((groupName, idx) => this.groupColors[idx]);
-
+          console.log('sdfsdf', this.availableGroupColors)
           this.billingChartOptions.colors = this.availableGroupColors;
           this.billingChartOptions.fill.colors = this.availableGroupColors;
 
