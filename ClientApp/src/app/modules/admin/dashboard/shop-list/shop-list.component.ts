@@ -34,7 +34,6 @@ export class ShopListComponent implements OnInit {
     private reportService: DXReportService,
     private dashboardService: DashboardService,
     private _cdr: ChangeDetectorRef,
-    private userService: UserService,
   ) { 
     this.applyFilterTypes = [{
         key: 'auto',

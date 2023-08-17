@@ -35,8 +35,8 @@ export type TreemapChartOptions = {
 })
 export class ShopDetailComponent implements OnInit {
 
-  @Input() shopDetail: any;
-
+  @Input() buildingId: number;
+  @Input() shopId: number;
   selectedMonth;
 
   groupColors = {
@@ -401,6 +401,14 @@ export class ShopDetailComponent implements OnInit {
     }
   }
 
+  onShopBilling() {
+    this.service.showShopBilling({buildingId: this.buildingId, shopId: this.shopId});
+  }
+
+  onShopOccupation() {
+    this.service.showShopOccupation({buildingId: this.buildingId, shopId: this.shopId});
+  }
+  
   /**
      * On destroy
      */

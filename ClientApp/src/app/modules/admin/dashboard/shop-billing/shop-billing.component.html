@@ -1,0 +1,15 @@
+<div class="flex flex-col">
+    <dx-pivot-grid
+        [dataFieldArea]="'column'"
+        [wordWrapEnabled]="false"
+        [dataSource]="dataSource"
+        [showBorders]="true"
+        [showColumnGrandTotals]="false"
+        [showColumnTotals]="false"
+        [height]="500"
+        [allowExpandAll]="true"
+        (onCellPrepared)="cellPrepared($event)"
+    >
+        <dxo-field-chooser [enabled]="false"></dxo-field-chooser>
+    </dx-pivot-grid>
+</div>
