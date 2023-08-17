@@ -39,24 +39,25 @@ export class ShopDetailComponent implements OnInit {
   @Input() shopId: number;
   selectedMonth;
 
-  groupColors = {
-    'C/A Diesel' : '#008E0E',
-    'C/A Electricity': '#452AEB',
-    'C/A Sewer': '#2FAFB7',
-    'C/A Water': '#C23BC4',
-    'Kwh Electricity': '#6E6E6E',
-    'Kva': '#16a34a',
-    'Sewer': '#C24F19',
-    'Water': '#C8166C',
-    'Common Area Elec': '#84cc16',
-    'Common Area Sewer': '#06b6d4',
-    'Common Area Water': '#8b5cf6',
-    'Diesel Generator': '#f59e0b',
-    'KVA Electricity': '#6b21a8',
-    'KWH Electricity': '#9f1239',
-    'E-Kwh': '#d946ef',
-    'Diesel Recoveries': '#a855f7'
-  };
+  // groupColors = {
+  //   'C/A Diesel' : '#008E0E',
+  //   'C/A Electricity': '#452AEB',
+  //   'C/A Sewer': '#2FAFB7',
+  //   'C/A Water': '#C23BC4',
+  //   'Kwh Electricity': '#6E6E6E',
+  //   'Kva': '#16a34a',
+  //   'Sewer': '#C24F19',
+  //   'Water': '#C8166C',
+  //   'Common Area Elec': '#84cc16',
+  //   'Common Area Sewer': '#06b6d4',
+  //   'Common Area Water': '#8b5cf6',
+  //   'Diesel Generator': '#f59e0b',
+  //   'KVA Electricity': '#6b21a8',
+  //   'KWH Electricity': '#9f1239',
+  //   'E-Kwh': '#d946ef',
+  //   'Diesel Recoveries': '#a855f7'
+  // };
+  groupColors = ['#008E0E', '#452AEB', '#2FAFB7', '#C23BC4', '#6E6E6E', '#46a34a', '#C24F19', '#C8166C', '#84cc16', '#06b6d4', '#8b5cf6', '#f59e0b', '#6b21a8', '#9f1239', '#d946ef', '#a855f7'];
   availableGroupColors: any;
 
   mapOptions = {
@@ -250,8 +251,8 @@ export class ShopDetailComponent implements OnInit {
           this.setBillingChart()
           this.setBillingUsageChart();
 
-          this.availableGroupColors = this.groupList.map(groupName => this.groupColors[groupName]);
-
+          this.availableGroupColors = this.groupList.map((groupName, idx) => this.groupColors[idx]);
+          console.log('sdfsdf', this.availableGroupColors)
           this.billingChartOptions.colors = this.availableGroupColors;
           this.billingChartOptions.fill.colors = this.availableGroupColors;
 
@@ -328,7 +329,7 @@ export class ShopDetailComponent implements OnInit {
       billingData.push(groupData);
     })
     
-    let groupColors = this.selectedGroupsForBilling.filter(groupName => groupName != '0').map(groupName => this.groupColors[groupName]);
+    let groupColors = this.selectedGroupsForBilling.filter(groupName => groupName != '0').map((groupName, idx) => this.groupColors[idx]);
     this.billingChartOptions.colors = groupColors;
     this.billingChartOptions.fill.colors = groupColors;
     
@@ -353,7 +354,7 @@ export class ShopDetailComponent implements OnInit {
       billingUsageData.push(groupUsageData);
     })
     
-    let groupColors = this.selectedGroupsForBillingUsage.filter(groupName => groupName != '0').map(groupName => this.groupColors[groupName]);
+    let groupColors = this.selectedGroupsForBillingUsage.filter(groupName => groupName != '0').map((groupName, idx) => this.groupColors[idx]);
     
     this.billingUsageChartOptions.xaxis.categories = periodArray.map(period => moment(new Date(period)).format('MMM YY'));
     this.billingUsageChartOptions.series = billingUsageData;
