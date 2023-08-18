@@ -410,6 +410,9 @@ export class ShopDetailComponent implements OnInit {
     this.service.showShopOccupation({buildingId: this.buildingId, shopId: this.shopId});
   }
   
+  onShopAssignedMeters() {
+    this.service.showAssignedMeters({buildingId: this.buildingId, shopId: this.shopId});
+  }
   /**
      * On destroy
      */

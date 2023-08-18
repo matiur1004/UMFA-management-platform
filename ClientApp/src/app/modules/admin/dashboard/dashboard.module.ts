@@ -13,7 +13,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'app/shared/shared.module';
 import { DashboardComponent } from './dashboard.component';
 import { dashboardRoutes } from './dashboard.routing';
-import { DxButtonModule, DxChartModule, DxDataGridModule, DxDropDownBoxModule, DxPivotGridModule, DxSelectBoxModule, DxTextBoxModule, DxTreeMapModule, DxTreeViewModule } from 'devextreme-angular';
+import { DxButtonModule, DxChartModule, DxDataGridModule, DxDropDownBoxModule, DxPivotGridModule, DxSelectBoxModule, DxSparklineModule, DxTextBoxModule, DxTreeMapModule, DxTreeViewModule } from 'devextreme-angular';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { BuildingDetailComponent } from './building-detail/building-detail.component';
 import { CommonModule, DecimalPipe } from '@angular/common';
@@ -29,6 +29,7 @@ import { ShopDetailComponent } from './shop-detail/shop-detail.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ShopBillingComponent } from './shop-billing/shop-billing.component';
 import { ShopOccupationsComponent } from './shop-occupations/shop-occupations.component';
+import { ShopAssignedMetersComponent } from './shop-assigned-meters/shop-assigned-meters.component';
 
 @NgModule({
     declarations: [
@@ -41,7 +42,8 @@ import { ShopOccupationsComponent } from './shop-occupations/shop-occupations.co
         ShopListComponent,
         ShopDetailComponent,
         ShopBillingComponent,
-        ShopOccupationsComponent
+        ShopOccupationsComponent,
+        ShopAssignedMetersComponent
     ],
     imports     : [
         CommonModule,
@@ -68,6 +70,7 @@ import { ShopOccupationsComponent } from './shop-occupations/shop-occupations.co
         DxButtonModule,
         DxSelectBoxModule,
         DxPivotGridModule,
+        DxSparklineModule,
         NgApexchartsModule,
         MatTabsModule,
         NgSelectModule,

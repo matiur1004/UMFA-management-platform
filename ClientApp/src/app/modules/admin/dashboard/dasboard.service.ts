@@ -31,7 +31,9 @@ export class DashboardService {
   private _shopBillingDetail: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopOccupation: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopOccupationDetails: BehaviorSubject<any> = new BehaviorSubject(null);
-
+  private _shopAssignedMeters: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _shopAssignedMetersDetails: BehaviorSubject<any> = new BehaviorSubject(null);
+  
   private _reportsArchives: BehaviorSubject<any> = new BehaviorSubject(null);
   
   public stats$: Observable<IHomePageStats>;
@@ -122,6 +124,14 @@ export class DashboardService {
 
   get shopOccupationsDashboard$(): Observable<any> {
     return this._shopOccupationDetails.asObservable();
+  }
+
+  get shopAssignedMeters$(): Observable<any> {
+    return this._shopAssignedMeters.asObservable();
+  }
+
+  get shopAssignedMetersDashboard$(): Observable<any> {
+    return this._shopAssignedMetersDetails.asObservable();
   }
 
   /**
@@ -326,6 +336,17 @@ export class DashboardService {
       );
   }
 
+  getShopDashboardAssignedMeters(buildingId, shopId) {
+    const url = `${CONFIG.apiURL}/Dashboard/buildings/${buildingId}/shops/${shopId}/assigned-meters`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(bl => {
+          this._shopAssignedMetersDetails.next(bl);
+        })
+      );
+  }
+
   showShopDetailDashboard(data) {
     this._shopDetailDashboard.next(data);
   }
@@ -377,6 +398,15 @@ export class DashboardService {
   destroyShopOccupation() {
     this._shopOccupation.next(null);
     this._shopOccupationDetails.next(null);
+  }
+
+  showAssignedMeters(data) {
+    this._shopAssignedMeters.next(data);
+  }
+
+  destroyShopAssignedMeters() {
+    this._shopAssignedMeters.next(null);
+    this._shopAssignedMetersDetails.next(null);
   }
 
   destroy() {

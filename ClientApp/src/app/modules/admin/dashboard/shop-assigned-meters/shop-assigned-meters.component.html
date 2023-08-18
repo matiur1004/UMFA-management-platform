@@ -1,0 +1,59 @@
+<div class="flex flex-col relative">
+    <div class="flex absolute z-10 left-2">
+        <form [formGroup]="form" class="w-full">
+            <div class="grid grid-cols-4 gap-2">
+                <div class="col-span-1">
+                    <dx-select-box [items]="activeItemList" class="form-control" label="Active"
+                                   placeholder="Select.." lableMode="static" id="active"
+                                    [formControlName]="'active'" name="partner" [searchEnabled]="false">
+                    </dx-select-box>
+                </div>
+            </div>
+        </form>
+    </div>
+    <dx-data-grid
+        #grid
+        [dataSource]="dataSource"
+        [showBorders]="true"
+        id="slip-grid-container"
+        [hoverStateEnabled]="true"
+    >
+        <!-- <dxo-selection mode="single"></dxo-selection> -->
+        <dxo-filter-row [visible]="'true'"
+            [applyFilter]="currentFilter"></dxo-filter-row>
+        <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+        <dxo-paging [pageSize]="15"> </dxo-paging>
+        <dxo-pager
+            [visible]="true"
+            [allowedPageSizes]="allowedPageSizes"
+            [displayMode]="'compact'"
+            [showPageSizeSelector]="true"
+            [showInfo]="true"
+            [showNavigationButtons]="true"
+        >
+        </dxo-pager>
+        <dxo-search-panel
+            [visible]="true"
+            [width]="200"
+            placeholder="Search..."
+        ></dxo-search-panel>
+        <dxi-column dataField="Direct" caption="" [groupIndex]="0"></dxi-column>
+        <dxi-column dataField="MeterNo" caption="Meter Number" [minWidth]="100"></dxi-column>
+        <dxi-column dataField="AssType" caption="Asset Type" [minWidth]="100"></dxi-column>
+        <dxi-column dataField="InvGroup" caption="Invoice Group" [minWidth]="100"></dxi-column>
+        <dxi-column dataField="ReconCategory" caption="Recon Category" [minWidth]="100"></dxi-column>
+        <dxi-column dataField="FirstBillingDate" [customizeText]="onCustomizeDateTime" caption="Billing Start Date" [minWidth]="100"></dxi-column>
+        <dxi-column dataField="LastBillingDate" [customizeText]="onCustomizeDateTime" caption="Billing End Date" [minWidth]="100"></dxi-column>
+        <dxi-column dataField="IsActive" caption="Active"></dxi-column>
+        <dxi-column dataField="UsageHistory" caption="Billing (6 months)" [width]="160" cellTemplate="UsageHistoryGraph">
+            <div *dxTemplate="let data of 'UsageHistoryGraph'">
+                <dx-sparkline [dataSource]="data.value" type="line" argumentField="x" valueField="y" [showMinMax]="false" [pointSize]="4" width="160" [ignoreEmptyPoints]="false">
+                </dx-sparkline>
+            </div>
+        </dxi-column>
+        <dxo-summary>
+            <dxi-group-item column="ShopName" summaryType="count" displayFormat="{0}">
+            </dxi-group-item>
+        </dxo-summary>
+    </dx-data-grid>
+</div>

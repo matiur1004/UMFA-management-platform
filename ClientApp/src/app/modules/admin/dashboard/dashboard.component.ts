@@ -454,6 +454,32 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                         });
                 }
             });
+
+        this._dbService.shopAssignedMeters$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((response) => {
+                if(response) {
+                    let res = {
+                        "buildingId": response['buildingId'],
+                        "shopId": response['shopId']
+                    }
+                    this._dbService.getShopDashboardAssignedMeters(res['buildingId'], res['shopId'])
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe(result => {
+                            if(result) {
+                                let newTab: IHomeTab = {
+                                    id: 0,
+                                    title: `Assigned Meters`,
+                                    type: 'ShopDashboarAssignedMeters',
+                                    dataSource: {}
+                                };
+                                this.tabsList.push(newTab);
+                                this.selectedTab = this.tabsList.length;
+                                this._cdr.markForCheck();
+                            }
+                        });
+                }
+            });
         //Wip
         // let res = {
         //     // "buildingId": 2403,
@@ -461,14 +487,14 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
         //     "buildingId": 2403,
         //     "shopId": 62336,
         // }
-        // this._dbService.getShopDashboardBilling(res['buildingId'], res['shopId'])
+        // this._dbService.getShopDashboardAssignedMeters(res['buildingId'], res['shopId'])
         //     .pipe(takeUntil(this._unsubscribeAll))
         //     .subscribe(result => {
         //         if(result) {
         //             let newTab: IHomeTab = {
         //                 id: 0,
-        //                 title: `Billing`,
-        //                 type: 'ShopBilling',
+        //                 title: `Assigned Meters`,
+        //                 type: 'ShopDashboarAssignedMeters',
         //                 dataSource: {}
         //             };
         //             this.tabsList.push(newTab);
@@ -570,7 +596,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             this.tabsList[index]['type'] == 'TenantSlipDownloads' ||
             this.tabsList[index]['type'] == 'BuildingReports' ||
             this.tabsList[index]['type'] == 'ShopBilling' ||
-            this.tabsList[index]['type'] == 'ShopDashboardOccupations') {
+            this.tabsList[index]['type'] == 'ShopDashboardOccupations' ||
+            this.tabsList[index]['type'] == 'ShopDashboarAssignedMeters') {
             this.selectedTab = index;    
         }
         if(this.tabsList[index]['type'] == 'ShopList') {
