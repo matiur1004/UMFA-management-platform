@@ -16,7 +16,9 @@ export class ShopBillingComponent implements OnInit {
   periodList: any[] = [];
   periodIdList: any[] = [];
   tenantId: number;
-  monthNameList
+  monthNameList;
+  tenantList: any[] = [];
+
   readonly allowedPageSizes = AllowedPageSizes;
   
   private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -33,9 +35,15 @@ export class ShopBillingComponent implements OnInit {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((res) => {
         if(res) {
-          //this.dataSource = res;
           this.dataSource = {
             fields: [
+              {
+                caption: 'Region',
+                width: 120,
+                dataField: 'Tenant',
+                area: 'row',
+                expanded: true,
+              },
               {
                 caption: 'Region',
                 dataField: 'GroupName',
@@ -49,7 +57,7 @@ export class ShopBillingComponent implements OnInit {
                 expanded: true,
                 groupName: "Date"  
               },
-              { groupName: "Date", groupInterval: "year", groupIndex: 0 },  
+              { groupName: "Date", groupInterval: "year", groupIndex: 0, expandable: false },  
 
               { groupName: "Date", groupInterval: "month", groupIndex: 1 }, 
               {
@@ -94,39 +102,52 @@ export class ShopBillingComponent implements OnInit {
           this.dataSource.store = res.map(item => {
             if(this.periodList.indexOf(item['PeriodName']) == -1) this.periodList.push(item['PeriodName']);
             if(this.periodIdList.indexOf(item['PeriodID']) == -1) this.periodIdList.push(item['PeriodID']);
+            if(!this.tenantList.find(obj => obj.TenantID == item['TenantID'])) {
+              this.tenantList.push({TenantID: item['TenantID'], Tenant: item['Tenant']});
+            }
             if(!item['Amount']) res['Amount'] = 0;
             item['PeriodDate'] = moment(new Date(item.PeriodName)).format('YYYY/MM/DD');
             return item;
           });
-          
-          setTimeout(() => {
-            let elements = this.elementRef.nativeElement.querySelectorAll('.total-element');
-            elements.forEach( element => {
-              this.renderer.listen(element, "click", event => {
-                let periodName = event.target.getAttribute('periodname');
-                let periodIdx = this.periodList.indexOf(periodName);
-                let data = {
-                  tenantId: this.tenantId,
-                  shopId: [0],
-                  periodId: this.periodIdList[periodIdx],
-                  reportType: 2
-                }
-                this.service.showTenantSlipDetail(data);
-              });
-            });
-          }, 2000);          
+               
         }
       });
   }
 
-  cellPrepared(e) {  
-    if (e.cell.rowType == "GT") {
+  contentReady(e) {
+    setTimeout(() => {
+      let elements = this.elementRef.nativeElement.querySelectorAll('.total-element');
+      elements.forEach( element => {
+        this.renderer.listen(element, "click", event => {
+          let periodName = event.target.getAttribute('periodname');
+          let periodIdx = this.periodList.indexOf(periodName);
+          let tenant = this.tenantList.find(obj => obj['Tenant'] == event.target.getAttribute('tenantname'));
+          let data = {
+            tenantId: tenant['TenantID'],
+            shopId: [0],
+            periodId: this.periodIdList[periodIdx],
+            reportType: 2
+          }
+          this.service.showTenantSlipDetail(data);
+        });
+      });
+    }, 2000);
+  }
+
+  cellPrepared(e) {
+    if (e.cell.rowType == "T" || (e.cell.rowPath && e.cell.rowPath.length == 1)) {
       if (e.columnIndex % 2 == 0) {
         e.cellElement.innerText = "";  
         e.cellElement.innerHTML = "";  
       } else {
-        let periodName = moment(new Date(e.cell.columnPath[0] + '-' + e.cell.columnPath[1] + '-01')).format('MMMM YYYY');
-        e.cellElement.innerHTML = "<a href='javascript:void(0);' class='total-element cursor-pointer text-blue-600' periodname='"+periodName+"'>"+e.cell.text+"</a>";
+        if(e.cell.columnPath.length == 1) {
+          e.cellElement.innerHTML = "<a href='javascript:void(0);' class='cursor-pointer text-blue-600'>"+e.cell.text+"</a>";
+        } else {
+          let periodName = moment(new Date(e.cell.columnPath[0] + '-' + e.cell.columnPath[1] + '-01')).format('MMMM YYYY');
+          let tenantName = e.cell.rowPath[0];
+          e.cellElement.innerHTML = "<a href='javascript:void(0);' class='total-element cursor-pointer text-blue-600' tenantname='"+tenantName+"' periodname='"+periodName+"'>"+e.cell.text+"</a>";
+        }
+        
       }
     }
   }

@@ -6,9 +6,11 @@
         [showBorders]="true"
         [showColumnGrandTotals]="false"
         [showColumnTotals]="false"
-        [height]="500"
+        [showRowGrandTotals]="false"
+        id="shopBillingGrid"
         [allowExpandAll]="true"
         (onCellPrepared)="cellPrepared($event)"
+        (onContentReady)="contentReady($event)"
     >
         <dxo-field-chooser [enabled]="false"></dxo-field-chooser>
     </dx-pivot-grid>
