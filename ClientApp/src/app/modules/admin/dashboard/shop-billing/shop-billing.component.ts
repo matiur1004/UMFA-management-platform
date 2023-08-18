@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
 import { DashboardService } from '../dasboard.service';
 import { Subject, takeUntil } from 'rxjs';
 import { AllowedPageSizes } from '@core/helpers';
@@ -12,6 +12,8 @@ import moment from 'moment';
 })
 export class ShopBillingComponent implements OnInit {
 
+  @Input() shopId: number;
+  
   dataSource: any;
   periodList: any[] = [];
   periodIdList: any[] = [];
@@ -124,9 +126,9 @@ export class ShopBillingComponent implements OnInit {
           let tenant = this.tenantList.find(obj => obj['Tenant'] == event.target.getAttribute('tenantname'));
           let data = {
             tenantId: tenant['TenantID'],
-            shopId: [0],
+            shopId: this.shopId,
             periodId: this.periodIdList[periodIdx],
-            reportType: 2
+            reportType: 1
           }
           this.service.showTenantSlipDetail(data);
         });
