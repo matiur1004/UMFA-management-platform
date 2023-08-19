@@ -1,5 +1,6 @@
 ﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data.Entities.PortalEntities;
+using ClientPortal.Models.MessagingModels;
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 using ClientPortal.Services;
@@ -16,13 +17,15 @@ namespace ClientPortal.Controllers
         private readonly IUmfaService _umfaService;
         private readonly IArchivesQueueService _queueService;
         private readonly IArchivesService _archivesService;
+        private readonly IReportsService _reportsService;
 
-        public ReportsController(ILogger<ReportsController> logger, IUmfaService umfaReportService, IArchivesQueueService queueService, IArchivesService archivesServices) 
+        public ReportsController(ILogger<ReportsController> logger, IUmfaService umfaReportService, IArchivesQueueService queueService, IArchivesService archivesServices, IReportsService reportsService) 
         {
             _logger = logger;
             _umfaService = umfaReportService;
             _queueService = queueService;
             _archivesService = archivesServices;
+            _reportsService = reportsService;
         }
 
         [HttpGet("UtilityRecoveryReport")]
@@ -131,6 +134,28 @@ namespace ClientPortal.Controllers
                 return archives.OrderByDescending(a => a.CreatedDateTime).ToList();
             }
             catch(Exception e)
+            {
+                _logger.LogError(e, "Could not retrieve archived reports");
+                return Problem(e.Message);
+            }
+        }
+
+        [HttpPost("FeedbackReports")]
+        public async Task<ActionResult<FeedbackReportRequest>> CreateFeedbackReportRequest([FromBody] FeedbackReportRequestData request)
+        {
+            try
+            {
+                var reportRequest = await _reportsService.AddFeedbackReportRequest(request);
+
+                if (reportRequest == null)
+                {
+                    _logger.LogError($"Could not create request for buildingId: {request.BuildingId} periodId: {request.PeriodId}");
+                    return Problem("Something went wrong");
+                }
+
+                return reportRequest;
+            }
+            catch (Exception e)
             {
                 _logger.LogError(e, "Could not retrieve archived reports");
                 return Problem(e.Message);

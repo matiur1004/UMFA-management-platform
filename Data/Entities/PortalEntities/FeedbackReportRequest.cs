@@ -16,7 +16,8 @@ namespace ClientPortal.Data.Entities.PortalEntities
         [Required]
         public int PeriodId { get; set; }
 
-        public string Url { get; set; }
+        [Url]
+        public string? Url { get; set; }
 
         /// <summary>
         /// 1 = Requested 3 = Complete 4 = failed

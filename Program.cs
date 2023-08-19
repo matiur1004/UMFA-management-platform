@@ -150,6 +150,8 @@ IConfiguration? configuration = builder.Configuration;
     services.AddScoped<IUmfaService, UmfaApiHttpService>();
     services.AddSingleton<IArchivesQueueService, ArchivesQueueService>();
     services.AddScoped<IArchivesService, ArchivesService>();
+    services.AddScoped<IReportsService, ReportsService>();
+    services.AddSingleton<IFeedbackReportsQueueService, FeedbackReportsQueueService>();
 
     //Data components
     services.AddScoped<IPortalStatsRepository, PortalStatsRepository>();
@@ -165,6 +167,7 @@ IConfiguration? configuration = builder.Configuration;
     services.AddScoped<IArchiveRequestDetailRepository, ArchiveRequestDetailRepository>();
     services.AddScoped<IArchiveRequestHeaderRepository, ArchiveRequestHeaderRepository>();
     services.AddScoped<IArchivedReportsRepository, ArchivedReportsRepository>();
+    services.AddScoped<IFeedbackReportRequestRepository, FeedbackReportRequestRepository>();
 }
 
 var app = builder.Build();
