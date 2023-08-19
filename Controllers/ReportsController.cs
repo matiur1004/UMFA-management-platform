@@ -14,10 +14,10 @@ namespace ClientPortal.Controllers
 
         private readonly ILogger<ReportsController> _logger;
         private readonly IUmfaService _umfaService;
-        private readonly IQueueService _queueService;
+        private readonly IArchivesQueueService _queueService;
         private readonly IArchivesService _archivesService;
 
-        public ReportsController(ILogger<ReportsController> logger, IUmfaService umfaReportService, IQueueService queueService, IArchivesService archivesServices) 
+        public ReportsController(ILogger<ReportsController> logger, IUmfaService umfaReportService, IArchivesQueueService queueService, IArchivesService archivesServices) 
         {
             _logger = logger;
             _umfaService = umfaReportService;

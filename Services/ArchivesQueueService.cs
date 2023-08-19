@@ -1,27 +1,14 @@
-﻿using Azure.Storage.Queues;
-using ClientPortal.Settings;
+﻿using ClientPortal.Settings;
 using Microsoft.Extensions.Options;
 
 namespace ClientPortal.Services
 {
-    public interface IQueueService
+    public interface IArchivesQueueService : IQueueService
     {
-        Task AddMessageToQueueAsync(string queueMessage);
+
     }
-    public class ArchivesQueueService : IQueueService
+    public class ArchivesQueueService : QueueService<ArchivesQueueSettings>, IArchivesQueueService
     {
-        private readonly QueueClient _queueClient;
-
-        public ArchivesQueueService(IOptions<ArchivesQueueSettings> settings)
-        {
-            _queueClient = new QueueClient(settings.Value.ConnectionString, settings.Value.QueueName);
-            _queueClient.CreateIfNotExists();
-        }
-
-        public async Task AddMessageToQueueAsync(string queueMessage)
-        {
-            string encodedMessage = Convert.ToBase64String(Encoding.UTF8.GetBytes(queueMessage));
-            await _queueClient.SendMessageAsync(encodedMessage);
-        }
+        public ArchivesQueueService(IOptions<ArchivesQueueSettings> settings) : base(settings) { }
     }
 }

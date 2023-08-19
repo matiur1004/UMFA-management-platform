@@ -1,8 +1,6 @@
 ﻿namespace ClientPortal.Settings
 {
-    public class ArchivesQueueSettings
+    public class ArchivesQueueSettings : QueueSettings
     {
-        public string QueueName { get; set; }
-        public string ConnectionString { get; set; }
     }
 }

@@ -56,7 +56,10 @@ IConfiguration? configuration = builder.Configuration;
     services.Configure<TelegramSettings>(builder.Configuration.GetSection(nameof(TelegramSettings)));
     services.Configure<NotificationSettings>(builder.Configuration.GetSection(nameof(NotificationSettings)));
     //services.Configure<ArchivesQueueSettings>(builder.Configuration.GetSection(nameof(ArchivesQueueSettings)));
+   
     services.Configure<ArchivesQueueSettings>(builder.Configuration.GetSection("ArchivesQueueSettings"));
+    services.Configure<FeedbackReportQueueSettings>(builder.Configuration.GetSection("FeedbackReportQueueSettings"));
+
     services.Configure<UmfaApiSettings>(builder.Configuration.GetSection(nameof(UmfaApiSettings)));
 
     services.AddMvcCore();
@@ -145,7 +148,7 @@ IConfiguration? configuration = builder.Configuration;
     services.AddScoped<IScadaRequestService, ScadaRequestService>();
     services.AddScoped<IAMRMeterTriggeredAlarmService, AMRMeterTriggeredAlarmService>();
     services.AddScoped<IUmfaService, UmfaApiHttpService>();
-    services.AddSingleton<IQueueService, ArchivesQueueService>();
+    services.AddSingleton<IArchivesQueueService, ArchivesQueueService>();
     services.AddScoped<IArchivesService, ArchivesService>();
 
     //Data components
