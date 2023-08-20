@@ -4,6 +4,7 @@ using ClientPortal.Models.MessagingModels;
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 using ClientPortal.Services;
+using System.Text.Json;
 
 namespace ClientPortal.Controllers
 {
@@ -18,14 +19,16 @@ namespace ClientPortal.Controllers
         private readonly IArchivesQueueService _queueService;
         private readonly IArchivesService _archivesService;
         private readonly IReportsService _reportsService;
+        private readonly IFeedbackReportsQueueService _feedbackReportsQueueService;
 
-        public ReportsController(ILogger<ReportsController> logger, IUmfaService umfaReportService, IArchivesQueueService queueService, IArchivesService archivesServices, IReportsService reportsService) 
+        public ReportsController(ILogger<ReportsController> logger, IUmfaService umfaReportService, IArchivesQueueService queueService, IArchivesService archivesServices, IReportsService reportsService, IFeedbackReportsQueueService feedbackReportsQueueService) 
         {
             _logger = logger;
             _umfaService = umfaReportService;
             _queueService = queueService;
             _archivesService = archivesServices;
             _reportsService = reportsService;
+            _feedbackReportsQueueService = feedbackReportsQueueService;
         }
 
         [HttpGet("UtilityRecoveryReport")]
@@ -141,23 +144,36 @@ namespace ClientPortal.Controllers
         }
 
         [HttpPost("FeedbackReports")]
-        public async Task<ActionResult<FeedbackReportRequest>> CreateFeedbackReportRequest([FromBody] FeedbackReportRequestData request)
+        public async Task<ActionResult<FeedbackReportRequest>> CreateFeedbackReportRequest([FromBody] FeedbackReportRequestData request, [FromQuery] bool overwrite = false)
         {
             try
             {
-                var reportRequest = await _reportsService.AddFeedbackReportRequest(request);
+                var reportRequest = await _reportsService.GetFeedbackReportRequestAsync(request);
 
-                if (reportRequest == null)
+                if(reportRequest is null)
+                {
+                    reportRequest = await _reportsService.AddFeedbackReportRequestAsync(request);
+                }
+                else if(!overwrite && reportRequest.Status != 1) // add message to queue if status is 1 (requested)
+                {
+                    return BadRequest("Report already exists");
+                }
+
+                if(reportRequest is null)
                 {
                     _logger.LogError($"Could not create request for buildingId: {request.BuildingId} periodId: {request.PeriodId}");
                     return Problem("Something went wrong");
                 }
 
+                _logger.LogInformation("Sending feedback report queue message");
+                await _feedbackReportsQueueService.AddMessageToQueueAsync(JsonSerializer.Serialize(request));
+
+
                 return reportRequest;
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Could not retrieve archived reports");
+                _logger.LogError(e, "Could finish feedback report request");
                 return Problem(e.Message);
             }
         }

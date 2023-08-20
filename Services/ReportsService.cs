@@ -1,29 +1,29 @@
 ﻿using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Data.Repositories;
 using ClientPortal.Models.MessagingModels;
+using DevExpress.CodeParser;
 using System.Text.Json;
 
 namespace ClientPortal.Services
 {
     public interface IReportsService
     {
-        public  Task<FeedbackReportRequest> AddFeedbackReportRequest(FeedbackReportRequestData request);
+        public  Task<FeedbackReportRequest> AddFeedbackReportRequestAsync(FeedbackReportRequestData request);
+        public Task<FeedbackReportRequest> GetFeedbackReportRequestAsync(FeedbackReportRequestData request);
     }
     
     public class ReportsService : IReportsService
     {
         private readonly ILogger<ReportsService> _logger;
         private readonly IFeedbackReportRequestRepository _feedbackReportRequestRepository;
-        private readonly IFeedbackReportsQueueService _feedbackReportsQueueService;
 
-        public ReportsService(ILogger<ReportsService> loggger, IFeedbackReportRequestRepository feedbackReportRequestRepository, IFeedbackReportsQueueService feedbackReportsQueueService)
+        public ReportsService(ILogger<ReportsService> loggger, IFeedbackReportRequestRepository feedbackReportRequestRepository)
         {
             _logger = loggger;
             _feedbackReportRequestRepository = feedbackReportRequestRepository;
-            _feedbackReportsQueueService = feedbackReportsQueueService;
         }
 
-        public async Task<FeedbackReportRequest> AddFeedbackReportRequest(FeedbackReportRequestData request)
+        public async Task<FeedbackReportRequest> AddFeedbackReportRequestAsync(FeedbackReportRequestData request)
         {
             _logger.LogInformation("Adding feedback report request");
 
@@ -38,18 +38,12 @@ namespace ClientPortal.Services
                 StatusMessage = "Requested",
             });
 
-            
-            if (reportRequest != null)
-            {
-                _logger.LogInformation("Sending feedback report queue message");
-                await _feedbackReportsQueueService.AddMessageToQueueAsync(JsonSerializer.Serialize(request));
-            }
-            else
-            {
-                _logger.LogError("Request was not added to db");
-            }
-
             return reportRequest;
+        }
+
+        public async Task<FeedbackReportRequest> GetFeedbackReportRequestAsync(FeedbackReportRequestData request)
+        {
+            return (await _feedbackReportRequestRepository.GetAsync(fbr => fbr.Active && fbr.BuildingId.Equals(request.BuildingId) && fbr.PeriodId.Equals(request.PeriodId)));
         }
     }
 }
