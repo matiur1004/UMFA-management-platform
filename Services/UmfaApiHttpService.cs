@@ -2,6 +2,7 @@
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 using ClientPortal.Settings;
+using DevExpress.XtraPrinting.Shape.Native;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
 using System.Web;
@@ -48,6 +49,10 @@ namespace ClientPortal.Services
         public Task<List<UmfaShopDashboardAssignedMeter>> GetShopDashboardAssignedMetersAsync(int buildingId, int shopId, int history);
 
         public Task<List<UmfaShopDashboardReading>> GetShopDashboardReadingsAsync(int buildingId, int shopId, int meterId, int history);
+
+        public Task<UmfaFeedbackReportHeaderResponse> GetFeedbackReportHeaderAsync(UmfaFeedbackReportRequest request);
+
+        public Task<List<UmfaFeedbackReportElectricityUsage>> GetFeedbackReportElectricityUsagesAsync(UmfaFeedbackReportRequest request);
     }
 
 
@@ -292,6 +297,20 @@ namespace ClientPortal.Services
             var response = await GetAsync($"dashboard/buildings/{buildingId}/shops/{shopId}/meters/{meterId}/readings", new UmfaShopDashboardReadingsRequest { History = history });
 
             return JsonSerializer.Deserialize<List<UmfaShopDashboardReading>>(response);
+        }
+
+        public async Task<UmfaFeedbackReportHeaderResponse> GetFeedbackReportHeaderAsync(UmfaFeedbackReportRequest request)
+        {
+            var response = await GetAsync($"reports/feedbackreport/header", request);
+
+            return JsonSerializer.Deserialize<UmfaFeedbackReportHeaderResponse>(response);
+        }
+
+        public async Task<List<UmfaFeedbackReportElectricityUsage>> GetFeedbackReportElectricityUsagesAsync(UmfaFeedbackReportRequest request)
+        {
+            var response = await GetAsync($"reports/feedbackreport/electricity-usage", request);
+
+            return JsonSerializer.Deserialize<List<UmfaFeedbackReportElectricityUsage>>(response);
         }
     }
 }
