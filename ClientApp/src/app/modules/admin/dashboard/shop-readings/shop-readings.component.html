@@ -3,7 +3,7 @@
         <form [formGroup]="form" class="w-full">
             <div class="grid grid-cols-4 gap-2">
                 <div class="col-span-1">
-                    <dx-select-box [readOnly]="meterId > 0" [items]="meters" displayExpr="MeterNo" valueExpr="MeterId" class="form-control" label="Meter Number"
+                    <dx-select-box [readOnly]="meterId > 0" [items]="meters" displayExpr="MeterNo" valueExpr="BuildingServiceID" class="form-control" label="Meter Number"
                                     placeholder="Select Meter Number" lableMode="static" id="meterNo" (onValueChanged)="meterChanged($event)"
                                     [formControlName]="'meterId'" name="meterNo" [searchEnabled]="true" searchExpr="Name" searchMode="contains" [searchTimeout]="400">
                     </dx-select-box>
@@ -37,19 +37,20 @@
             [width]="200"
             placeholder="Search..."
         ></dxo-search-panel>
-        <dxi-column dataField="PeriodName" caption="Period" [minWidth]="100"></dxi-column>
-        <dxi-column dataField="PeriodStart" caption="Period Start" [customizeText]="onCustomizeDate" [minWidth]="100"></dxi-column>
-        <dxi-column dataField="PeriodEnd" caption="Period End" [customizeText]="onCustomizeDate" [minWidth]="100"></dxi-column>
-        <dxi-column dataField="PreviousReading" caption="Previous Reading" [minWidth]="100"></dxi-column>
-        <dxi-column dataField="CurrentReading" caption="Current Reading" [minWidth]="100"></dxi-column>
-        <dxi-column dataField="ReadingUsage" caption="Reading Usage" [minWidth]="100"></dxi-column>
-        <dxi-column dataField="CTRatio" caption="CT Ratio" [minWidth]="100"></dxi-column>
-        <dxi-column dataField="BillingUsage" caption="Billing Usage" [minWidth]="100"></dxi-column>
+        <dxi-column dataField="PeriodName" caption="Period" [width]="120"></dxi-column>
+        <dxi-column dataField="PeriodStart" caption="Period Start" [customizeText]="onCustomizeDate" [width]="90"></dxi-column>
+        <dxi-column dataField="PeriodEnd" caption="Period End" [customizeText]="onCustomizeDate" [width]="90"></dxi-column>
+        <dxi-column dataField="PreviousReading" caption="Previous Reading" [minWidth]="75"></dxi-column>
+        <dxi-column dataField="ReadingDate" caption="Reading Date" [minWidth]="75"></dxi-column>
+        <dxi-column dataField="CurrentReading" caption="Current Reading" [minWidth]="75"></dxi-column>
+        <dxi-column dataField="ReadingUsage" caption="Reading Usage" [minWidth]="70"></dxi-column>
+        <dxi-column dataField="CTRatio" caption="CT Ratio" [minWidth]="70"></dxi-column>
+        <dxi-column dataField="BillingUsage" caption="Billing Usage" [minWidth]="75"></dxi-column>
         <dxi-column dataField="Contribution" caption="Contribution" [minWidth]="100"></dxi-column>
         <dxi-column dataField="ReadingMethod" caption="Reading Method" [minWidth]="100"></dxi-column>
-        <dxi-column dataField="Estimated" caption="Estimated" [minWidth]="100"></dxi-column>
-        <dxi-column dataField="TotalArea" caption="Total Area" [minWidth]="100"></dxi-column>
-        <dxi-column dataField="AssignedArea" caption="Assigned Area" [minWidth]="100"></dxi-column>
+        <dxi-column dataField="Estimated" caption="Estimated" [width]="75"></dxi-column>
+        <dxi-column dataField="TotalArea" caption="Total Area" [minWidth]="90"></dxi-column>
+        <dxi-column dataField="AssignedArea" caption="Assigned Area" [minWidth]="80"></dxi-column>
         
     </dx-data-grid>
 </div>

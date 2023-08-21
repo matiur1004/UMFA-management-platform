@@ -47,7 +47,6 @@ export class ShopReadingsComponent implements OnInit {
     this.dashboardService.metersForBuilding$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((res) => {
-        console.log('meters', res);
         if(res) this.meters = res;
       });
 
@@ -55,7 +54,9 @@ export class ShopReadingsComponent implements OnInit {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((res) => {
         if(res) {
-          this.dataSource = res;
+          this.dataSource = res.map(item => {
+            return {...item, Contribution: Math.round(item['Contribution'] * 10000) / 100 + ' %'}
+          });
           this._cdr.detectChanges();
         }
       });
@@ -83,7 +84,7 @@ export class ShopReadingsComponent implements OnInit {
       // Unsubscribe from all subscriptions
       this._unsubscribeAll.next(null);
       this._unsubscribeAll.complete();
-      this.dashboardService.destroyShopOccupation();
+      this.dashboardService.destroyShopReadings();
   }
 
 }

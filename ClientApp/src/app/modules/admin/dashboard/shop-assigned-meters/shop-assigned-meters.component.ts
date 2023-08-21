@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { DashboardService } from '../dasboard.service';
 import { AllowedPageSizes } from '@core/helpers';
@@ -11,6 +11,9 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
   styleUrls: ['./shop-assigned-meters.component.scss']
 })
 export class ShopAssignedMetersComponent implements OnInit {
+
+  @Input() shopId;
+  @Input() buildingId;
 
   dataSource: any;
   applyFilterTypes: any;
@@ -44,7 +47,6 @@ export class ShopAssignedMetersComponent implements OnInit {
     this.dashboardService.shopAssignedMetersDashboard$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((res) => {
-        console.log(res);
         if(res) {
           this.allItems = res.map(item => {
             let historyVal = item.UsageHistory ? item.UsageHistory.split(", ") : [];
@@ -71,7 +73,7 @@ export class ShopAssignedMetersComponent implements OnInit {
   }
   
   onRowClick(event) {
-    //this.dashboardService.showReadings({buildingId: this.buildingId, shopId: this.shopId, meterId: null});
+    this.dashboardService.showReadings({buildingId: this.buildingId, shopId: this.shopId, meterId: event.data['BuildingServiceID']});
   }
 
   /**

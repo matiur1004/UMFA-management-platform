@@ -519,7 +519,7 @@
                                     <mat-icon class="icon-size-4 hover:text-red-500 ml-2" [svgIcon]="'feather:x'" (click)="removeTab(i)"></mat-icon>
                                 </ng-template>
                                 <ng-template matTabContent>
-                                    <app-shop-assigned-meters></app-shop-assigned-meters>
+                                    <app-shop-assigned-meters [buildingId]="tabItem.dataSource.buildingId" [shopId]="tabItem.dataSource.shopId"></app-shop-assigned-meters>
                                 </ng-template>
                             </mat-tab>
                         </ng-container>

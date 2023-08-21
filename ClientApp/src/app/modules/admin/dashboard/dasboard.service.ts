@@ -364,8 +364,8 @@ export class DashboardService {
       );
   }
 
-  getMetersForBuilding(umfaBuildingId: number): Observable<IUmfaMeter[]> {
-    const url = `${CONFIG.apiURL}${CONFIG.getAllUmfaMetersForBuilding}${umfaBuildingId}`;
+  getMetersForBuilding(buildingId: number, shopId): Observable<IUmfaMeter[]> {
+    const url = `${CONFIG.apiURL}/Dashboard/buildings/${buildingId}/shops/${shopId}/assigned-meters`;
     return this.http.get<any>(url, { withCredentials: true })
       .pipe(
         catchError(err => err),
