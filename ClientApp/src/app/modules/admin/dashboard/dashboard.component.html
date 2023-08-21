@@ -497,7 +497,7 @@
                                     <mat-icon class="icon-size-4 hover:text-red-500 ml-2" [svgIcon]="'feather:x'" (click)="removeTab(i)"></mat-icon>
                                 </ng-template>
                                 <ng-template matTabContent>
-                                    <app-shop-billing></app-shop-billing>
+                                    <app-shop-billing [shopId]="tabItem.dataSource.shopId"></app-shop-billing>
                                 </ng-template>
                             </mat-tab>
                         </ng-container>

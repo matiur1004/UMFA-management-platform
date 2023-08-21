@@ -252,7 +252,6 @@ export class ShopDetailComponent implements OnInit {
           this.setBillingUsageChart();
 
           this.availableGroupColors = this.groupList.map((groupName, idx) => this.groupColors[idx]);
-          console.log('sdfsdf', this.availableGroupColors)
           this.billingChartOptions.colors = this.availableGroupColors;
           this.billingChartOptions.fill.colors = this.availableGroupColors;
 
