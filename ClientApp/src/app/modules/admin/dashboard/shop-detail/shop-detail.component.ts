@@ -252,7 +252,6 @@ export class ShopDetailComponent implements OnInit {
           this.setBillingUsageChart();
 
           this.availableGroupColors = this.groupList.map((groupName, idx) => this.groupColors[idx]);
-          console.log('sdfsdf', this.availableGroupColors)
           this.billingChartOptions.colors = this.availableGroupColors;
           this.billingChartOptions.fill.colors = this.availableGroupColors;
 
@@ -413,6 +412,11 @@ export class ShopDetailComponent implements OnInit {
   onShopAssignedMeters() {
     this.service.showAssignedMeters({buildingId: this.buildingId, shopId: this.shopId});
   }
+
+  onShopReadings() {
+    this.service.showReadings({buildingId: this.buildingId, shopId: this.shopId, meterId: null});
+  }
+
   /**
      * On destroy
      */

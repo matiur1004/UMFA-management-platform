@@ -480,7 +480,50 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                         });
                 }
             });
+
+        this._dbService.shopReadings$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((response) => {
+                if(response) {
+                    let res = {
+                        "buildingId": response['buildingId'],
+                        "shopId": response['shopId'],
+                        'meterId': response['meterId']
+                    }
+
+                    if(!res['meterId']) {
+                        let newTab: IHomeTab = {
+                            id: 0,
+                            title: `Readings`,
+                            type: 'ShopDashboarReadings',
+                            dataSource: res
+                        };
+                        this.tabsList.push(newTab);
+                        this.selectedTab = this.tabsList.length;
+                        this._cdr.markForCheck();
+                    }
+                }
+            });
         //Wip
+        let res = {
+            "buildingId": 2531,
+            "shopId": 65469,
+            'meterId': 202168
+        }
+
+        this._dbService.getMetersForBuilding(res['buildingId'])
+            .subscribe(result => {
+                let newTab: IHomeTab = {
+                    id: 0,
+                    title: `Readings`,
+                    type: 'ShopDashboardReadings',
+                    dataSource: res
+                };
+                console.log('tabItem', res);
+                this.tabsList.push(newTab);
+                this.selectedTab = this.tabsList.length;
+                this._cdr.markForCheck();
+            });
         // let res = {
         //     // "buildingId": 2403,
         //     // "partnerId": 7,
@@ -502,48 +545,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
         //             this._cdr.detectChanges();
         //         }
         //     });
-        // let res = {
-        //     // "buildingId": 2403,
-        //     // "partnerId": 7,
-        //     "buildingId": null,
-        //     "partnerId": null
-        // }
-        // this._dbService.getShopDashboardDetail(res['buildingId'], res['shopId'])
-        //     .pipe(takeUntil(this._unsubscribeAll))
-        //     .subscribe(result => {
-        //         if(result) {
-        //             let newTab: IHomeTab = {
-        //                 id: 0,
-        //                 title: `Shop Detail`,
-        //                 type: 'ShopDetailDashboard',
-        //                 dataSource: {}
-        //             };
-        //             this.tabsList.push(newTab);
-        //             this.selectedTab = this.tabsList.length;
-        //             this._cdr.detectChanges();
-        //         }
-        //     });
-        // let res = {
-        //     "buildingId": 2403,
-        //     "shopId": 62336,
-        //     // "buildingId": null,
-        //     // "partnerId": null
-        // }
-        // this._dbService.getShopDashboardOccupations(res['buildingId'], res['shopId'])
-        //     .pipe(takeUntil(this._unsubscribeAll))
-        //     .subscribe(result => {
-        //         if(result) {
-        //             let newTab: IHomeTab = {
-        //                 id: 0,
-        //                 title: `Occupations`,
-        //                 type: 'ShopDashboardOccupations',
-        //                 dataSource: {}
-        //             };
-        //             this.tabsList.push(newTab);
-        //             this.selectedTab = this.tabsList.length;
-        //             this._cdr.detectChanges();
-        //         }
-        //     });
+        
+        
     }
 
     onDetail(type: EHomeTabType) {

@@ -70,6 +70,10 @@ export class ShopAssignedMetersComponent implements OnInit {
     return moment(new Date(cellInfo.value)).format('DD/MM/YYYY');
   }
   
+  onRowClick(event) {
+    //this.dashboardService.showReadings({buildingId: this.buildingId, shopId: this.shopId, meterId: null});
+  }
+
   /**
      * On destroy
      */

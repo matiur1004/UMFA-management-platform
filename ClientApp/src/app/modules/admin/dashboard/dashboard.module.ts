@@ -30,6 +30,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { ShopBillingComponent } from './shop-billing/shop-billing.component';
 import { ShopOccupationsComponent } from './shop-occupations/shop-occupations.component';
 import { ShopAssignedMetersComponent } from './shop-assigned-meters/shop-assigned-meters.component';
+import { ShopReadingsComponent } from './shop-readings/shop-readings.component';
 
 @NgModule({
     declarations: [
@@ -43,7 +44,8 @@ import { ShopAssignedMetersComponent } from './shop-assigned-meters/shop-assigne
         ShopDetailComponent,
         ShopBillingComponent,
         ShopOccupationsComponent,
-        ShopAssignedMetersComponent
+        ShopAssignedMetersComponent,
+        ShopReadingsComponent
     ],
     imports     : [
         CommonModule,
