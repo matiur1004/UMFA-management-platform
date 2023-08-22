@@ -199,3 +199,6 @@ body {
     background-color: #1e2849 !important;
     background-image: linear-gradient(to right, #212c4f, #202b4d, #1f2a4b, #1f294a, #1e2848);
 }
+.dx-header-row > td > .dx-datagrid-text-content:not(.dx-sort-indicator):not(.dx-header-filter-indicator){
+    white-space: normal;
+}

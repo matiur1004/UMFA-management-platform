@@ -17,6 +17,7 @@
         [showBorders]="true"
         id="slip-grid-container"
         [hoverStateEnabled]="true"
+        (onRowClick)="onRowClick($event)"
     >
         <!-- <dxo-selection mode="single"></dxo-selection> -->
         <dxo-filter-row [visible]="'true'"
