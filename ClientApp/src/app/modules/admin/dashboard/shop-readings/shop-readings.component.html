@@ -51,6 +51,12 @@
         <dxi-column dataField="Estimated" caption="Estimated" [width]="75"></dxi-column>
         <dxi-column dataField="TotalArea" caption="Total Area" [minWidth]="90"></dxi-column>
         <dxi-column dataField="AssignedArea" caption="Assigned Area" [minWidth]="80"></dxi-column>
-        
+        <dxi-column dataField="Photo" caption="Photo" [minWidth]="80" cellTemplate="cellPhotoTemplate"></dxi-column>
+        <div *dxTemplate="let data of 'cellPhotoTemplate'" class="flex justify-center items-center">
+            <ng-container *ngIf="data.value != null; else emptyTemplate">
+                <a class="" target="_blank" href="{{data.value}}"><mat-icon class="hover:text-cyan-500" [svgIcon]="'feather:image'"></mat-icon></a>
+            </ng-container>
+            <ng-template #emptyTemplate></ng-template>
+        </div>
     </dx-data-grid>
 </div>
