@@ -4,6 +4,8 @@ import { Subject, takeUntil } from 'rxjs';
 import { DashboardService } from '../dasboard.service';
 import moment from 'moment';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import DataSource from 'devextreme/data/data_source';
+import ArrayStore from 'devextreme/data/array_store';
 
 @Component({
   selector: 'app-shop-readings',
@@ -20,6 +22,8 @@ export class ShopReadingsComponent implements OnInit {
   applyFilterTypes: any;
   currentFilter: any;
   meters: any;
+  metersDataSource: DataSource;
+
   form: UntypedFormGroup;
   
   private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -47,7 +51,16 @@ export class ShopReadingsComponent implements OnInit {
     this.dashboardService.metersForBuilding$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((res) => {
-        if(res) this.meters = res;
+        if(res) {
+          this.metersDataSource = new DataSource({
+            store: new ArrayStore({
+              data: res,
+              key: 'BuildingServiceID',
+            }),
+            group: 'Direct',
+          });
+          //this.meters = res;
+        }
       });
 
     this.dashboardService.shopReadingsDashboard$

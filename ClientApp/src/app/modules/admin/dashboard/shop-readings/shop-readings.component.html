@@ -3,8 +3,8 @@
         <form [formGroup]="form" class="w-full">
             <div class="grid grid-cols-4 gap-2">
                 <div class="col-span-1">
-                    <dx-select-box [readOnly]="meterId > 0" [items]="meters" displayExpr="MeterNo" valueExpr="BuildingServiceID" class="form-control" label="Meter Number"
-                                    placeholder="Select Meter Number" lableMode="static" id="meterNo" (onValueChanged)="meterChanged($event)"
+                    <dx-select-box [readOnly]="meterId > 0" [dataSource]="metersDataSource" displayExpr="MeterNo" valueExpr="BuildingServiceID" class="form-control" label="Meter Number"
+                                    [grouped]="true" placeholder="Select Meter Number" lableMode="static" id="meterNo" (onValueChanged)="meterChanged($event)"
                                     [formControlName]="'meterId'" name="meterNo" [searchEnabled]="true" searchExpr="Name" searchMode="contains" [searchTimeout]="400">
                     </dx-select-box>
                 </div>

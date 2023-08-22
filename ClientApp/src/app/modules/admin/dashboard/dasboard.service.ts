@@ -446,6 +446,10 @@ export class DashboardService {
 
   destroyShopAssignedMeters() {
     this._shopAssignedMeters.next(null);
+    //this._shopAssignedMetersDetails.next(null);
+  }
+
+  destroyShopAssignedMeterDetails() {
     this._shopAssignedMetersDetails.next(null);
   }
 

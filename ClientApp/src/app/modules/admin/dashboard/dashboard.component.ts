@@ -611,6 +611,10 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             if(this.tabsList[index]['dataSource']['destination'] == 'Home') this.selectedTab = 0;
             else this.selectedTab = index;
         }
+        if(this.tabsList[index]['type'] == 'ShopDashboarAssignedMeters') {
+            this._dbService.destroyShopAssignedMeterDetails();
+        }
+
         this.tabsList.splice(index, 1);        
         this._cdr.markForCheck();
     }
