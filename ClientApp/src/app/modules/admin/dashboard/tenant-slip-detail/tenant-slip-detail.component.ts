@@ -94,6 +94,14 @@ export class TenantSlipDetailComponent implements OnInit {
           this._cdr.detectChanges();
         }
       });
+    
+    this.form.valueChanges.subscribe(res => {
+      this._service.selectedTenantSlipInfo = res;
+    });
+
+    if(this._service.selectedTenantSlipInfo) {
+      this.form.patchValue(this._service.selectedTenantSlipInfo);
+    }
   }
 
   valueChanged(e: any, method: string) {
@@ -128,7 +136,6 @@ export class TenantSlipDetailComponent implements OnInit {
   }
 
   selectionChangedHandler() {
-    console.log(this.dataGrid.instance.getSelectedRowsData());
     this.isSelected = this.dataGrid.instance.getSelectedRowsData().length > 0;
   }
 
@@ -162,6 +169,6 @@ export class TenantSlipDetailComponent implements OnInit {
       // Unsubscribe from all subscriptions
       this._unsubscribeAll.next(null);
       this._unsubscribeAll.complete();
-      this._service.destroyTenantSlips();
+      //this._service.destroyTenantSlips();
   }
 }
