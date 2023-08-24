@@ -243,4 +243,10 @@ export class MeterAlarmDetailComponent implements OnInit {
     if(type == 'Average Usage') return 'Average';
     return type;
   }
+
+  ngOnDestroy() {
+    this._unsubscribeAll.next(null);
+    this._unsubscribeAll.complete();
+    this._alarmConfigService.destroyMeterAlarmDetail();
+  }
 }
