@@ -44,7 +44,8 @@ export class DashboardService {
   public stats$: Observable<IHomePageStats>;
   public alarmTriggeredId: any;
   public selectedShopInfo: any;
-
+  public selectedTenantSlipInfo: any;
+  
   private _alarmTriggerDetail: BehaviorSubject<any> = new BehaviorSubject(null);
 
   constructor(
