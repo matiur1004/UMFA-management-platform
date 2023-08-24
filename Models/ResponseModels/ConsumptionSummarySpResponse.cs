@@ -74,6 +74,7 @@ namespace ClientPortal.Models.ResponseModels
 
         // // [JsonPropertyName("assArea")]
         public double AssArea { get; set; }
+        public int GroupId { get; set; }
 
         // // [JsonPropertyName("invGroup")]
         public string InvGroup { get; set; }
