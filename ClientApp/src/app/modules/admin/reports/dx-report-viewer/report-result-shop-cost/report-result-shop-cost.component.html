@@ -63,9 +63,10 @@
                     placeholder="Search..."
                 ></dxo-search-panel>
                 <dxo-filter-row [visible]="'true'" [applyFilter]="currentFilter"></dxo-filter-row>
-                <dxi-column dataField="Recoverable" caption="" [groupIndex]="0"></dxi-column>
-                <dxi-column dataField="Tenants" [groupIndex]="1"></dxi-column>
-                <dxi-column dataField="Shop" caption="Shop" [groupIndex]="2"></dxi-column>
+                <dxi-column dataField="Recoverable" caption="Recoverable" sortOrder="asc" [minWidth]="120"></dxi-column>
+                <dxi-column dataField="Tenants" caption="Tenants" [minWidth]="150"></dxi-column>
+                <dxi-column dataField="Shop" caption="Shop" [minWidth]="100"></dxi-column>
+                <dxi-column dataField="InvGroup" caption="Group Name" [minWidth]="120"></dxi-column>
 
                 <!-- <dxi-column dataField="Tenants" [minWidth]="120"></dxi-column>
                 <dxi-column dataField="Shop" [minWidth]="120"></dxi-column> -->
