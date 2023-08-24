@@ -117,7 +117,7 @@ export class ReportResultShopCostComponent implements OnInit {
       }
       
     } else if(event.rowType == 'header' || event.rowType == 'filter'){
-      if(event.columnIndex == this.periodList.length + 6 || event.columnIndex == this.periodList.length + 5) event.cellElement.style.backgroundColor = '#E8F0FE';
+      if(event.columnIndex == this.periodList.length + 6 || event.columnIndex == this.periodList.length + 7) event.cellElement.style.backgroundColor = '#E8F0FE';
       if(event.columnIndex == this.periodList.length + 4) {
         if(this.periodList[this.periodList.length - 1].indexOf('Open') > -1) {
           event.cellElement.style.backgroundColor = '#E8F0FE';
