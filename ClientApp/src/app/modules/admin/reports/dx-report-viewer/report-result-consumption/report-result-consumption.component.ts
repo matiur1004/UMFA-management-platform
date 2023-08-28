@@ -75,6 +75,7 @@ export class ReportResultConsumptionComponent implements OnInit {
           this.totalGridDataSource = [];
           if(!this.reportTotals) return;
           this.reportTotals.InvoiceGroupTotals.forEach(invoice => {
+            if(invoice['Name'] == 'Sub-Total' || invoice['Name'] == 'Total') return;
             let item = {name: invoice['Name'], excl: invoice['Totals']['ConsumptionExcl'], vat: invoice['Totals']['BasicChargeExcl'], incl: invoice['Totals']['TotalExcl']};
             this.totalGridDataSource.push(item);
           })
