@@ -16,6 +16,7 @@ namespace ClientPortal.Models.ResponseModels
 
     public class TenantShopInvoiceUsageGrouping
     {
+        public int GroupId { get; set; }
         // // [JsonPropertyName("invGroup")]
         public string InvGroup { get; set; }
 
@@ -46,6 +47,7 @@ namespace ClientPortal.Models.ResponseModels
 
     public class PeriodTotalUsageDetails
     {
+        public int GroupId { get; set; }
         // // [JsonPropertyName("invGroup")]
         public string? InvGroup { get; set; }
 

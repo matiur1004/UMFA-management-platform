@@ -1,5 +1,6 @@
 ::ng-deep #gridContainer {
     height: calc(100vh - 250px);
+    max-width: 100%;
 }
 ::ng-deep .dx-datagrid-headers table tbody tr {
     font-weight: bold;
