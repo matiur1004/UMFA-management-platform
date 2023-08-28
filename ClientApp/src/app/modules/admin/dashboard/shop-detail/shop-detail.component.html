@@ -35,17 +35,13 @@
                         </div>
                         <mat-icon class="icon-size-10" [svgIcon]="'feather:occupations'"></mat-icon>
                     </div>
-                    <div class="flex">
-                        <ng-select class="occupation-type w-full" bindLabel="label" bindValue="value" [items]="tenantItems" [(ngModel)]="selectedTenantType">
-                            <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
-                                <div class="row" [matTooltip]="item.label" [matTooltipPosition]="'right'">
-                                    {{item['label']}}
-                                </div>
-                            </ng-template>
-                        </ng-select>
-                    </div>
-                    <div class="flex justify-between text-md">
-                        <span class="">All Time Tenants</span><span>{{shopDetailDashboard.Occupations[0]['NoOfOccupants']}}</span>
+                    <div class="flex flex-col gap-y-2">
+                        <div class="flex justify-between text-sm gap-x-2">
+                            <span class="" style="min-width: 100px; max-width: 100px;">Current Tenancy</span><span class="truncate" [matTooltip]="shopDetailDashboard.Occupations[0]['LastTenantName']">{{shopDetailDashboard.Occupations[0]['LastTenantName']}}</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="">All Time Tenants</span><span>{{shopDetailDashboard.Occupations[0]['NoOfOccupants']}}</span>
+                        </div>
                     </div>
                 </div>                                        
             </div>
