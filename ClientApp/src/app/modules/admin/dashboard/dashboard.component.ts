@@ -615,6 +615,10 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             this._dbService.destroyShopAssignedMeterDetails();
         }
 
+        if(this.tabsList[index]['type'] == 'TenantSlipDetail') {
+            this._dbService.selectedTenantSlipInfo = null;
+            this._dbService.destroyTenantSlips();
+        }
         this.tabsList.splice(index, 1);        
         this._cdr.markForCheck();
     }

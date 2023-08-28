@@ -64,8 +64,10 @@
                 [dataSource]="dataSource"
                 [showBorders]="true"
                 id="gridContainer"
-                [wordWrapEnabled]="true"
+                (onCellPrepared)="onDetailCellPrepared($event)"
+                (onRowPrepared)="onDetailRowPrepared($event)"
                 [hoverStateEnabled]="true"
+                [wordWrapEnabled]="true"
             >
                 <!-- <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling> -->
                 <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
@@ -76,17 +78,14 @@
                     placeholder="Search..."
                 ></dxo-search-panel>
                 <dxo-filter-row [visible]="'true'" [applyFilter]="currentFilter"></dxo-filter-row>
-                <dxi-column dataField="Recoverable" caption="Recoverable" sortOrder="asc" [minWidth]="120"></dxi-column>
-                <dxi-column dataField="Tenant" caption="Tenant" [minWidth]="150"></dxi-column>
-                <dxi-column dataField="ShopNr" caption="Shop" [minWidth]="100"></dxi-column>
-                <dxi-column dataField="InvGroup" caption="Invoice Group" [minWidth]="120"></dxi-column>
-
-                <!-- <dxi-column dataField="Recoverable" caption="" [groupIndex]="0"></dxi-column>
-                <dxi-column dataField="Tenant" [groupIndex]="1"></dxi-column>
-                <dxi-column dataField="ShopNr" caption="Shop" [groupIndex]="2"></dxi-column>            
-                <dxi-column dataField="InvGroup" caption="Invoice Group" [groupIndex]="3"></dxi-column> -->
+                <dxi-column dataField="Recoverable" caption="Recoverable" sortOrder="asc" [minWidth]="120" [visible]="false"></dxi-column>
+                <dxi-column dataField="Tenant" caption="Tenant" [minWidth]="150" sortOrder="asc" [sortIndex]="1" [visible]="false"></dxi-column>
+                <dxi-column dataField="ShopNr" caption="Shop" [minWidth]="100" sortOrder="asc" [sortIndex]="2" [visible]="false"></dxi-column>
+                <!-- <dxi-column dataField="InvGroup" caption="Invoice Group" [minWidth]="120"></dxi-column> -->
+                <dxi-column dataField="GroupId" caption="" [minWidth]="120" [visible]="false" sortOrder="asc" [sortIndex]="3"></dxi-column>
+                
                 <dxi-column dataField="MeterNo" caption="Meter Nr" [minWidth]="140"></dxi-column>
-                <dxi-column dataField="Factor" caption="Fct" [minWidth]="50"></dxi-column>
+                <dxi-column dataField="Factor" caption="Fct" [width]="50"></dxi-column>
                 <dxi-column dataField="TotalArea" caption="Area" [minWidth]="80"></dxi-column>
                 <dxi-column dataField="AssArea" caption="Portion" [minWidth]="80"></dxi-column>
                 <dxi-column dataField="PreviousReading" caption="Prev.Reading" [minWidth]="130"></dxi-column>
