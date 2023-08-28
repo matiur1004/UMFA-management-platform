@@ -245,11 +245,15 @@ export class ReportResultConsumptionComponent implements OnInit {
         if(gridCell['rowType'] == 'data') {
           if(gridCell['data']['GroupId'] == 1){
             pdfCell.borderWidth = 0;
-            pdfCell.borderColor = '#eee';
-            pdfCell.backgroundColor = '#eee';
+            pdfCell.borderColor = '#ccc';
+            pdfCell.backgroundColor = '#ccc';
             if(gridCell.column.dataField == 'MeterNo') pdfCell.text = `Tenant: ${gridCell['data']['Tenant']}`;
             if(gridCell.column.dataField == 'PreviousReading') pdfCell.text = `Shop: ${gridCell['data']['ShopNr']}`;
           }
+          if(gridCell['data']['InvGroup'] == 'Sub-Total' || gridCell['data']['InvGroup'] == 'Total') {
+            pdfCell.backgroundColor = '#eee';
+          }
+          
         }
       }
     };
