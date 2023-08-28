@@ -37,7 +37,10 @@ export class ReportResultConsumptionReconComponent implements OnInit {
   otherSummariesDataSource: any;
 
   headerInfo: any;
-  valueTypes = ['kWh', 'Rand'];
+  valueTypes = [
+    {value: 'kWh', name: 'Usage'}, 
+    {value: 'Rand', name: 'Rand'}
+  ];
 
   @ViewChild('electricityRecoveryDataGrid') electricityRecoveryDataGrid: DxDataGridComponent;
   @ViewChild('electricityBulkMeterDataGrid') electricityBulkMeterDataGrid: DxDataGridComponent;
