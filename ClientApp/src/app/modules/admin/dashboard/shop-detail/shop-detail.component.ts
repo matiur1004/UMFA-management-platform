@@ -71,18 +71,12 @@ export class ShopDetailComponent implements OnInit {
   }]
   billingSummaryDataSource: any;
 
-  // {
-  //   value: 4470800,
-  //   name: 'Ankara',
-  //   country: 'Turkey',
-  // }, {
   dataSource: any;
   shopDetailDashboard: any;
   billingTotal: number;
   allAvailableImages: number;
 
   tenantItems: any[] = [];
-  selectedTenantType: string = 'latest';
   periodList: any[] = [];
   billingPeriodList: any[] = [];
   groupList: any[] = [];
