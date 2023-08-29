@@ -585,7 +585,7 @@ export class ReportResultConsumptionReconComponent implements OnInit {
                 if(['KWHRC', 'KVARC', 'BasicRC', 'OtherRC', 'TotalRC'].indexOf(gridCell.column.dataField) > -1) 
                   excelCell.value = `R ${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
                 if(['KWHUnits', 'kVAUnits'].indexOf(gridCell.column.dataField) > -1) 
-                  excelCell.value = `${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+                  excelCell.value = parseFloat(_this._decimalPipe.transform(Number(gridCell.value), '1.2-2'));
               }
               
             }
