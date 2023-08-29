@@ -141,15 +141,23 @@
                         <dxi-column dataField="BasicRC" caption="" cellTemplate="currencyValueTemplate"></dxi-column>
                         <dxi-column dataField="OtherRC" caption="" cellTemplate="currencyValueTemplate"></dxi-column>
                         <dxi-column dataField="TotalRC" caption="" cellTemplate="currencyValueTemplate"></dxi-column>
-                        <div *dxTemplate="let data of 'currencyValueTemplate'">
-                            <ng-container *ngIf="data.value != null; else emptyTemplate">
-                                R {{data.value | number : '1.2-2'}}
+                        <div *dxTemplate="let cellInfo of 'currencyValueTemplate'">
+                            <ng-container *ngIf="cellInfo.data.Name.indexOf('Recovery %') == -1; else percentTemplate">
+                                <ng-container *ngIf="cellInfo.value != null; else emptyTemplate">
+                                    R {{cellInfo.value | number : '1.2-2'}}
+                                </ng-container>
+                                <ng-template #emptyTemplate></ng-template>
                             </ng-container>
-                            <ng-template #emptyTemplate></ng-template>
+                            <ng-template #percentTemplate>
+                                <ng-container *ngIf="cellInfo.value != null; else emptyTemplate">
+                                    {{cellInfo.value | number : '1.2-2'}}
+                                </ng-container>
+                                <ng-template #emptyTemplate></ng-template>
+                            </ng-template>
                         </div>
-                        <div *dxTemplate="let data of 'cellValueTemplate'">
-                            <ng-container *ngIf="data.value != null; else emptyTemplate">
-                                {{data.value | number : '1.2-2'}}
+                        <div *dxTemplate="let cellInfo of 'cellValueTemplate'">
+                            <ng-container *ngIf="cellInfo.value != null; else emptyTemplate">
+                                {{cellInfo.value | number : '1.2-2'}}
                             </ng-container>
                             <ng-template #emptyTemplate></ng-template>
                         </div>
@@ -277,15 +285,23 @@
                             <dxi-column dataField="Amount" caption="" cellTemplate="currencyValueTemplate"></dxi-column>
                             <dxi-column dataField="BCAmount" caption="" cellTemplate="currencyValueTemplate"></dxi-column>
                             <dxi-column dataField="TotalRC" caption="" cellTemplate="currencyValueTemplate"></dxi-column>
-                            <div *dxTemplate="let data of 'currencyValueTemplate'">
-                                <ng-container *ngIf="data.value != null; else emptyTemplate">
-                                    R {{data.value | number : '1.2-2'}}
+                            <div *dxTemplate="let cellInfo of 'currencyValueTemplate'">
+                                <ng-container *ngIf="cellInfo.data.Name.indexOf('Recovery %') == -1; else percentTemplate">
+                                    <ng-container *ngIf="cellInfo.value != null; else emptyTemplate">
+                                        R {{cellInfo.value | number : '1.2-2'}}
+                                    </ng-container>
+                                    <ng-template #emptyTemplate></ng-template>
                                 </ng-container>
-                                <ng-template #emptyTemplate></ng-template>
+                                <ng-template #percentTemplate>
+                                    <ng-container *ngIf="cellInfo.value != null; else emptyTemplate">
+                                        {{cellInfo.value | number : '1.2-2'}}
+                                    </ng-container>
+                                    <ng-template #emptyTemplate></ng-template>
+                                </ng-template>
                             </div>
-                            <div *dxTemplate="let data of 'cellValueTemplate'">
-                                <ng-container *ngIf="data.value != null; else emptyTemplate">
-                                    {{data.value | number : '1.2-2'}}
+                            <div *dxTemplate="let cellInfo of 'cellValueTemplate'">
+                                <ng-container *ngIf="cellInfo.value != null; else emptyTemplate">
+                                    {{cellInfo.value | number : '1.2-2'}}
                                 </ng-container>
                                 <ng-template #emptyTemplate></ng-template>
                             </div>

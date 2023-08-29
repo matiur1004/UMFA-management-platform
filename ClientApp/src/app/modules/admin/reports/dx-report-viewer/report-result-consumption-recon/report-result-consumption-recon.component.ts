@@ -116,7 +116,7 @@ export class ReportResultConsumptionReconComponent implements OnInit {
               KWHUnits: item['KWHUsage'],
               KWHRC: item['KWHAmount'],
               kVAUnits: item['KVAUsage'],
-              KVARC: item['KVAAMOUNT'],
+              KVARC: item['KVAAmount'],
               BasicRC: item['BCAmount'],
               OtherRC: item['OtherAmount'],
               TotalRC: item['TotalAmount']
@@ -132,7 +132,7 @@ export class ReportResultConsumptionReconComponent implements OnInit {
             KWHUnits: this.getTotal('KWHUsage', data['ElectricityBulkMeters']),
             KWHRC: this.getTotal('KWHAmount', data['ElectricityBulkMeters']),
             kVAUnits: this.getTotal('KVAUsage', data['ElectricityBulkMeters']),
-            KVARC: this.getTotal('KVAAMOUNT', data['ElectricityBulkMeters']),
+            KVARC: this.getTotal('KVAAmount', data['ElectricityBulkMeters']),
             BasicRC: this.getTotal('BCAmount', data['ElectricityBulkMeters']),
             OtherRC: this.getTotal('OtherAmount', data['ElectricityBulkMeters']),
             TotalRC: this.getTotal('TotalAmount', data['ElectricityBulkMeters']),
@@ -403,8 +403,15 @@ export class ReportResultConsumptionReconComponent implements OnInit {
             customizeCell({ gridCell, pdfCell }) {
               pdfCell.font.style = 'bold';
               if(gridCell.rowType == 'data') {
-                if(['KWHRC', 'KVARC', 'BasicRC', 'OtherRC', 'TotalRC'].indexOf(gridCell.column.dataField) > -1) 
-                  pdfCell.text = `R ${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+                if(['KWHRC', 'KVARC', 'BasicRC', 'OtherRC', 'TotalRC'].indexOf(gridCell.column.dataField) > -1) {
+                  if(gridCell.data.Name.indexOf('Recovery %') == -1) {
+                    pdfCell.text = `R ${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+                  } else {
+                    pdfCell.text = `${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+                  }
+                  
+                }
+                  
                 if(['KWHUnits', 'kVAUnits'].indexOf(gridCell.column.dataField) > -1) 
                   pdfCell.text = `${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
               }          
@@ -504,8 +511,15 @@ export class ReportResultConsumptionReconComponent implements OnInit {
                   customizeCell({ gridCell, pdfCell }) {
                     pdfCell.font.style = 'bold';
                     if(gridCell.rowType == 'data') {
-                      if(['Amount', 'BCAmount', 'TotalRC'].indexOf(gridCell.column.dataField) > -1) 
-                        pdfCell.text = `R ${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+                      if(['Amount', 'BCAmount', 'TotalRC'].indexOf(gridCell.column.dataField) > -1){
+                        if(gridCell.data.Name.indexOf('Recovery %') == -1) {
+                          pdfCell.text = `R ${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+                        } else {
+                          pdfCell.text = `${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+                        }
+                        
+                      }
+                        
                       if(['Usage'].indexOf(gridCell.column.dataField) > -1) 
                         pdfCell.text = `${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
                     }
@@ -625,8 +639,13 @@ export class ReportResultConsumptionReconComponent implements OnInit {
                 bold: true
               };
               if(gridCell.rowType == 'data') {
-                if(['KWHRC', 'KVARC', 'BasicRC', 'OtherRC', 'TotalRC'].indexOf(gridCell.column.dataField) > -1) 
-                  excelCell.value = `R ${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+                if(['KWHRC', 'KVARC', 'BasicRC', 'OtherRC', 'TotalRC'].indexOf(gridCell.column.dataField) > -1){
+                  if(gridCell.data.Name.indexOf('Recovery %') == -1) {
+                    excelCell.value = `R ${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+                  } else {
+                    excelCell.value = `${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+                  }
+                }
                 if(['KWHUnits', 'kVAUnits'].indexOf(gridCell.column.dataField) > -1) 
                   excelCell.value = `${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
               }
@@ -707,8 +726,13 @@ export class ReportResultConsumptionReconComponent implements OnInit {
                     bold: true
                   };
                   if(gridCell.rowType == 'data') {
-                    if(['Amount', 'BCAmount', 'TotalRC'].indexOf(gridCell.column.dataField) > -1) 
-                      excelCell.value = `R ${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+                    if(['Amount', 'BCAmount', 'TotalRC'].indexOf(gridCell.column.dataField) > -1) {
+                      if(gridCell.data.Name.indexOf('Recovery %') == -1) {
+                        excelCell.value = `R ${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+                      } else {
+                        excelCell.value = `${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
+                      }
+                    }                      
                     if(['Usage'].indexOf(gridCell.column.dataField) > -1) 
                       excelCell.value = `${_this._decimalPipe.transform(Number(gridCell.value), '1.2-2')}`;
                   }
