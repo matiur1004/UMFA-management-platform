@@ -70,9 +70,9 @@ export class DXReportService {
 
     //reports
     private dxReportList: IDXReport[] = [
-        { Id: 1, Name: 'Building Recovery', Description: 'Building Recovery Report', DXReportName: 'BuildingRecovery' },
-        { Id: 5, Name: 'Consumption Summary', Description: 'Consumption Summary Report', DXReportName: 'ConsumptionSummary' },
-        { Id: 6, Name: 'Consumption Summary Recon', Description: 'Consumption Summary Recon Report', DXReportName: 'ConsumptionSummaryRecon' },
+        { Id: 6, Name: 'BRR Monthly Detailed', Description: 'BRR Monthly Detailed', DXReportName: 'ConsumptionSummaryRecon' },
+        { Id: 1, Name: 'BRR Multiple Months', Description: 'BRR Multiple Months', DXReportName: 'BuildingRecovery' },
+        { Id: 5, Name: 'Monthly Detailed Billing', Description: 'Monthly Detailed Billing', DXReportName: 'ConsumptionSummary' },        
         { Id: 3, Name: 'Shop Costs Variances', Description: 'Shop Costs Variances Report', DXReportName: 'ShopCostsVariances' },
         { Id: 2, Name: 'Shop Usage Variance', Description: 'Shop Usage Variance Report', DXReportName: 'ShopUsageVariance' },
         { Id: 4, Name: 'Utility Recovery and Expense', Description: 'Utility Recovery and Expense Report', DXReportName: 'UtilityRecoveryExpense' },
