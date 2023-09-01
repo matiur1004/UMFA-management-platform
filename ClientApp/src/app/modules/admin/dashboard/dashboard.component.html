@@ -21,8 +21,8 @@
                         <div *ngIf="stats$ | async as stats; else loading">
                             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-9 xl:grid-cols-9 gap-10 w-full">
                                 <div class="bg-gradient-to-r from-blue-500 to-blue-800 col-span-1 lg:col-span-2 flex flex-col flex-auto p-6 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100" (click)="onDetail(tabType.Buildings)">
-                                    <div class="flex items-start justify-between text-white">
-                                        <div class="flex flex-col w-full gap-y-1">
+                                    <div class="flex items-start justify-between text-white h-full">
+                                        <div class="flex flex-col w-full gap-y-1 justify-between h-full">
                                             <div class="flex w-full justify-between">
                                                 <div class="flex flex-col">
                                                     <div class="text-2xl font-medium tracking-normal leading-8 truncate">Buildings</div>
@@ -38,7 +38,7 @@
                                                     <span class="text-lg font-semibold">{{stats.BuildingStats.TotalGLA | number : '1.0-2'}}</span>
                                                 </div>
                                                 <div class="flex w-full justify-between leading-4">
-                                                    <span class="text-md">Meters</span>
+                                                    <span class="text-md">Meter Registers</span>
                                                     <span class="text-lg font-semibold">{{stats.BuildingStats.TotalNumberOfMeters | number : '1.0-2'}}</span>
                                                 </div>
                                             </div>
@@ -46,8 +46,8 @@
                                     </div>
                                 </div>
                                 <div class="bg-gradient-to-r from-amber-400 to-amber-500 col-span-1 lg:col-span-2 flex flex-col flex-auto p-6 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100" (click)="onDetail(tabType.Shops)">
-                                    <div class="flex items-start justify-between text-white">
-                                        <div class="flex flex-col w-full gap-y-1">
+                                    <div class="flex items-start justify-between text-white h-full">
+                                        <div class="flex flex-col w-full gap-y-1 justify-between h-full">
                                             <div class="flex w-full justify-between">
                                                 <div class="flex flex-col">
                                                     <div class="text-2xl font-medium tracking-normal leading-8 truncate">Shops</div>
@@ -71,8 +71,8 @@
                                     </div>
                                 </div>
                                 <div class="bg-gradient-to-r from-emerald-400 to-emerald-500 col-span-1 lg:col-span-2 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100" (click)="onDetail(tabType.Tenants)">
-                                    <div class="flex items-start justify-between text-white">
-                                        <div class="flex flex-col w-full gap-y-1">
+                                    <div class="flex items-start justify-between text-white h-full">
+                                        <div class="flex flex-col w-full gap-y-1 justify-between h-full">
                                             <div class="flex w-full justify-between">
                                                 <div class="flex flex-col">
                                                     <div class="text-2xl font-medium tracking-normal leading-8 truncate">Tenants</div>
@@ -96,8 +96,8 @@
                                     </div>
                                 </div>
                                 <div class="bg-gradient-to-r from-violet-400 to-violet-600 sm:col-span-3 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100" (click)="onDetail(tabType.Tenants)">
-                                    <div class="flex items-start justify-between text-white">
-                                        <div class="flex flex-col w-full gap-y-1">
+                                    <div class="flex items-start justify-between text-white h-full">
+                                        <div class="flex flex-col w-full gap-y-1 justify-between h-full">
                                             <div class="flex w-full justify-between">
                                                 <div class="flex flex-col">
                                                     <div class="text-2xl font-medium tracking-normal leading-8 truncate">Smart Services</div>
