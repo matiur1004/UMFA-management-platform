@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Data.Entities.UMFAEntities;
+using ClientPortal.Migrations;
 using ClientPortal.Models.ProcessAlarmsModels;
 using ClientPortal.Models.ResponseModels;
 using Dapper;
@@ -21,15 +22,19 @@ namespace ClientPortal.Data.Repositories
         private readonly UmfaDBContext _context;
         private readonly PortalDBContext _ctxPortal;
         private readonly IMapper _mapper;
+        private readonly IUMFABuildingRepository _buildingRepository;
+
 
         public PortalStatsRepository(ILogger<PortalStatsRepository> logger, 
             UmfaDBContext context, 
             PortalDBContext ctxPortal,
+            IUMFABuildingRepository buildingRepository,
             IMapper mapper)
         {
             _logger = logger;
             _context = context;
             _ctxPortal = ctxPortal;
+            _buildingRepository = buildingRepository;
             _mapper = mapper;
         }
 
@@ -48,7 +53,7 @@ namespace ClientPortal.Data.Repositories
                 DashboardTenantStat tenantStat = new();
                 List<DashboardGraphStat> graphStat = new();
 
-                string commandText = $"exec upPortal_MainDashboard {user.UmfaId}";
+                string commandText = $"exec upPortal_MainDashboard {umfaUserId}";
                 using (var results = await connection.QueryMultipleAsync(commandText))
                 {
                     if (results == null)
@@ -77,6 +82,19 @@ namespace ClientPortal.Data.Repositories
                 //    new() { PeriodName = "December 2022", TotalSales = 46739366.05M, TotalElectricityUsage = 13030128.39M, TotalWaterUsage = 104230.20M },
                 //    new() { PeriodName = "January 2023", TotalSales = 47336223.17M, TotalElectricityUsage = 12792658.64M, TotalWaterUsage = 111528.69M }
                 //};
+
+                var buildings = (await _buildingRepository.GetBuildings(umfaUserId))?.UmfaBuildings;
+
+                if(buildings is not null && buildings.Any())
+                {
+                    var amrMeters = _ctxPortal.AMRMeters.Where(am => buildings.Select(b => b.BuildingId).Contains(am.BuildingId));
+                    var alarmsConfigured = _ctxPortal.AMRMeterAlarms.Where(ac => amrMeters.Select(am => am.Id).Contains(ac.AMRMeterId));
+                    var alarmsTriggered = _ctxPortal.AMRMeterTriggeredAlarms.Where(ata => alarmsConfigured.Select(ac => ac.AMRMeterAlarmId).Contains(ata.AMRMeterAlarmId) && !ata.Acknowledged);
+
+                    stats.SmartStats.AlarmsConfigured = alarmsConfigured.Count();
+                    stats.SmartStats.AlarmsTriggered = alarmsTriggered.Count();
+                }
+
                 return stats;
             }
             catch (Exception ex)
@@ -117,6 +135,13 @@ namespace ClientPortal.Data.Repositories
                     BulkCount = first.BulkCount,
                     CouncilChkCount = first.CouncilChkCount
                 };
+
+                var amrMeters = _ctxPortal.AMRMeters.Where(am => am.BuildingId.Equals(buildingId));
+                var alarmsConfigured = _ctxPortal.AMRMeterAlarms.Where(ac => amrMeters.Select(am => am.Id).Contains(ac.AMRMeterId));
+                var alarmsTriggered = _ctxPortal.AMRMeterTriggeredAlarms.Where(ata => alarmsConfigured.Select(ac => ac.AMRMeterAlarmId).Contains(ata.AMRMeterAlarmId) && !ata.Acknowledged);
+
+                stats.SmartStats.AlarmsConfigured = alarmsConfigured.Count();
+                stats.SmartStats.AlarmsTriggered = alarmsTriggered.Count();
 
                 stats.GraphStats = new();
                 foreach (var buildingStat in BuildingDB ) 
