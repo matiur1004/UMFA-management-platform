@@ -267,11 +267,11 @@ export class ReportResultUtilityComponent implements OnInit {
           pdfCell.backgroundColor = '#BEDFE6';
         }
         if(gridCell.rowType == 'data') {
-          pdfCell.font.size = 12;
+          pdfCell.font.size = 10;
           pdfCell.font.style = 'normal';
         } else if(gridCell.rowType === 'header') {
           pdfCell.textColor = '#000';
-          pdfCell.font.size = 18;
+          pdfCell.font.size = 15;
           pdfCell.font.style = 'bold';
         }
       }
@@ -320,9 +320,10 @@ export class ReportResultUtilityComponent implements OnInit {
             // Convert the canvas to a base64 image string
             const imageData = canvas.toDataURL('image/png');
 
-            pdfDoc.text('Recovery Chart', 270, 425);
+            pdfDoc.setFontSize(18);
+            pdfDoc.text('Recovery Chart', 360, 415);
             // Add the image to the PDF
-            pdfDoc.addImage(imageData, 'PNG', 20, 430, 700, 200);
+            pdfDoc.addImage(imageData, 'PNG', 20, 430, 920, 250);
             
             iframe.style.cssText = 'display: none';
             
