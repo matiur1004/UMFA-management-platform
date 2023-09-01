@@ -147,8 +147,7 @@ export class ReportResultConsumptionComponent implements OnInit {
              };
             if(gridCell.column.dataField == 'MeterNo') excelCell.value = `Tenant: ${gridCell['data']['Tenant']}`;
             if(gridCell.column.dataField == 'PreviousReading') excelCell.value = `Shop: ${gridCell['data']['ShopNr']}`;
-          }
-          if(gridCell['data']['InvGroup'] == 'Sub-Total' || gridCell['data']['InvGroup'] == 'Total') {
+          } else if (gridCell['data']['InvGroup'] == 'Sub-Total' || gridCell['data']['InvGroup'] == 'Total') {
             excelCell.font = {bold: true};
             if(gridCell['column']['name'] == 'InvGroup' || 
                 gridCell['column']['name'] == 'Excl' || 
@@ -159,6 +158,8 @@ export class ReportResultConsumptionComponent implements OnInit {
             } else {
               excelCell.value = '';
             }
+          } else {
+            //if(!isNaN(gridCell.value)) excelCell.value = parseFloat(gridCell.value);
           }
         }
         
