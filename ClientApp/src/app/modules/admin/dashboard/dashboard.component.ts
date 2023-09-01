@@ -1,8 +1,7 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AuthService } from 'app/core/auth/auth.service';
-import { EHomeTabType, IHomeTab, CHomeTabTypeText, IWaterProfileResponse, IWaterProfileDetail } from 'app/core/models';
+import { EHomeTabType, IHomeTab, CHomeTabTypeText, IWaterProfileDetail } from 'app/core/models';
 import { BuildingService } from 'app/shared/services/building.service';
-import { ApexOptions } from 'ng-apexcharts';
 import { catchError, EMPTY, forkJoin, map, of, Subject, takeUntil, tap } from 'rxjs';
 import { DashboardService } from './dasboard.service';
 
@@ -22,6 +21,7 @@ import {
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UserService } from '@shared/services';
 
 export type ChartOptions = {
     series: ApexAxisChartSeries;
@@ -128,6 +128,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
         private _dbService: DashboardService,
         private _bldService: BuildingService,
         private _usrService: AuthService,
+        private _userService: UserService,
         private _cdr: ChangeDetectorRef,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
         private _formBuilder: FormBuilder
@@ -325,7 +326,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((data) => {
                 if(data) {
-                    this._dbService.getReportsArchives(this._usrService.userValue.Id)
+                    this._dbService.getReportsArchives(this._userService.userValue.UmfaId)
                         .subscribe(() => {
                             let newTab: IHomeTab = {
                                 id: 0,
