@@ -218,7 +218,7 @@ export class ReportResultConsumptionComponent implements OnInit {
     const lastPoint = { x: 0, y: 0 };
 
     //header
-    pdfDoc.addImage(`data:image/png;base64,${this.headerInfo['CustomLogo']}`, 'PNG', 10, 20, 150, 70);
+    pdfDoc.addImage(`data:image/png;base64,${this.headerInfo['CustomLogo']}`, 'PNG', 40, 20, 150, 70);
     pdfDoc.setTextColor(0, 0, 0);
     pdfDoc.setFontSize(16);
     pdfDoc.text(this.headerInfo['Name'], 320, 40);
@@ -243,7 +243,7 @@ export class ReportResultConsumptionComponent implements OnInit {
           lastPoint.y = rect.y + rect.h;
         }
       },
-      customizeCell: ({ gridCell, pdfCell }) => {
+      customizeCell: ({ gridCell, pdfCell }) => {        
         if(gridCell['rowType'] == 'data') {
           if(gridCell['data']['GroupId'] == 1){
             pdfCell.borderWidth = 0;
@@ -255,7 +255,6 @@ export class ReportResultConsumptionComponent implements OnInit {
           if(gridCell['data']['InvGroup'] == 'Sub-Total' || gridCell['data']['InvGroup'] == 'Total') {
             pdfCell.backgroundColor = '#eee';
           }
-          
         }
       }
     };
