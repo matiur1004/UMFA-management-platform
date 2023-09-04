@@ -176,6 +176,9 @@
                                 <span class="text-lg font-semibold">{{stats.SmartStats.CouncilChkCount}}</span>
                             </div>
                         </div>
+                        <div class="flex mt-2">
+                            <a href="javascript:void(0);" (click)="goAlarmConfiguration()" class="text-md leading-4 cursor-pointer underline">Alarms: {{stats.SmartStats.AlarmsConfigured}} Configured, {{stats.SmartStats.AlarmsTriggered}} Triggered</a>
+                        </div>
                     </div>
                 </div>
             </div>
