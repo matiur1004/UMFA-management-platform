@@ -29,6 +29,8 @@ export interface IHomePageStats {
       GeneratorCount: number;
       SolarCount: number;
       TotalSmart: number;
+      AlarmsConfigured: number;
+      AlarmsTriggered: number;
     };
     GraphStats: any[];
     Users: number

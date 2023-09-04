@@ -53,7 +53,7 @@ namespace ClientPortal.Data.Repositories
                 DashboardTenantStat tenantStat = new();
                 List<DashboardGraphStat> graphStat = new();
 
-                string commandText = $"exec upPortal_MainDashboard {umfaUserId}";
+                string commandText = $"exec upPortal_MainDashboard {user.UmfaId}";
                 using (var results = await connection.QueryMultipleAsync(commandText))
                 {
                     if (results == null)
@@ -83,7 +83,7 @@ namespace ClientPortal.Data.Repositories
                 //    new() { PeriodName = "January 2023", TotalSales = 47336223.17M, TotalElectricityUsage = 12792658.64M, TotalWaterUsage = 111528.69M }
                 //};
 
-                var buildings = (await _buildingRepository.GetBuildings(umfaUserId))?.UmfaBuildings;
+                var buildings = (await _buildingRepository.GetBuildings(user.UmfaId))?.UmfaBuildings;
 
                 if(buildings is not null && buildings.Any())
                 {
