@@ -15,6 +15,8 @@ import {
   ApexTooltip
 } from "ng-apexcharts";
 import { DashboardService } from '../dasboard.service';
+import { AlarmConfigurationService } from '@shared/services/alarm-configuration.service';
+import { Router } from '@angular/router';
 
 export type ChartOptions = {
     series: ApexAxisChartSeries;
@@ -56,6 +58,8 @@ export class BuildingDetailComponent implements OnInit {
   varianceSales: number;
   constructor(
     private _dbService: DashboardService,
+    private _alarmConfigurationService: AlarmConfigurationService,
+    private _router: Router
   ) {
     this.chartElectricityUsage = {
         series: [
@@ -202,5 +206,11 @@ export class BuildingDetailComponent implements OnInit {
     if(type == "Shop") {
       this._dbService.showShopList({buildingId: this.buildingId, partnerId: this.partnerId});
     }
+  }
+
+  goAlarmConfiguration() {
+    this._alarmConfigurationService.selectedBuilding = this.buildingId;
+    this._alarmConfigurationService.selectedPartner = this.partnerId;
+    this._router.navigate(['/admin/alarm-configuration']);
   }
 }

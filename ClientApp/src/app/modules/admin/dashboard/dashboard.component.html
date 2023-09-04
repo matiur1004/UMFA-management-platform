@@ -95,7 +95,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="bg-gradient-to-r from-violet-400 to-violet-600 sm:col-span-3 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100" (click)="onDetail(tabType.Tenants)">
+                                <div class="bg-gradient-to-r from-violet-400 to-violet-600 sm:col-span-3 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100">
                                     <div class="flex items-start justify-between text-white h-full">
                                         <div class="flex flex-col w-full gap-y-1 justify-between h-full">
                                             <div class="flex w-full justify-between">
@@ -137,6 +137,9 @@
                                                         <span class="text-md">Council Check</span>
                                                         <span class="text-lg font-semibold">{{stats.SmartStats.CouncilChkCount}}</span>
                                                     </div>
+                                                </div>
+                                                <div class="flex mt-2">
+                                                    <a [routerLink]="'/admin/alarm-configuration'" class="text-md leading-4 cursor-pointer underline">Alarms: {{stats.SmartStats.AlarmsConfigured}} Configured, {{stats.SmartStats.AlarmsTriggered}} Triggered</a>
                                                 </div>
                                             </div>
                                         </div>
