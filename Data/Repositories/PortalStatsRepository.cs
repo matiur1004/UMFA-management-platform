@@ -43,7 +43,7 @@ namespace ClientPortal.Data.Repositories
             var stats = new DashboardMainResponse();
             try
             {
-                User user = await _ctxPortal.Users.FirstOrDefaultAsync(u => u.Id == umfaUserId);
+                User user = await _ctxPortal.Users.FirstOrDefaultAsync(u => u.UmfaId == umfaUserId);
 
                 var connection = _context.Database.GetDbConnection();
                 if (connection.State == System.Data.ConnectionState.Closed)
