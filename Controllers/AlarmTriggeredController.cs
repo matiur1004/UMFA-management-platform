@@ -1,4 +1,5 @@
 ﻿using ClientPortal.Controllers.Authorization;
+using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 using ClientPortal.Services;
@@ -30,7 +31,7 @@ namespace ClientPortal.Controllers
 
             try
             {
-                var triggeredAlarmDetails = await _amrMeterTriggeredAlarmService.GetTriggeredAlarms(model.AMRMeterTriggeredAlarmId);
+                var triggeredAlarmDetails = await _amrMeterTriggeredAlarmService.GetTriggeredAlarm(model.AMRMeterTriggeredAlarmId);
                 
                 returnResult.AlarmData = triggeredAlarmDetails.AlarmTriggeredResultDataModels;
                 returnResult.AlarmInfo = triggeredAlarmDetails.AlarmTriggeredResultInfoModels.First();
@@ -90,6 +91,20 @@ namespace ClientPortal.Controllers
             }
 
             return count;
+        }
+
+        [HttpGet("")]
+        public async Task<ActionResult<List<AMRMeterTriggeredAlarmInfo>>> GetAlaramsTriggered([FromQuery] AMRTriggeredAlarmsRequest request)
+        {
+            try
+            {
+                return await _amrMeterTriggeredAlarmService.GetTriggeredAlarms(request);
+            }
+            catch(Exception e)
+            {
+                _logger.LogError(e.Message, e);
+                return Problem("Could not get triggered alarms");
+            }
         }
     }
 
