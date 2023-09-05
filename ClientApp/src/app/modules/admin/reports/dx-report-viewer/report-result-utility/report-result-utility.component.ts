@@ -6,7 +6,7 @@ import { Workbook } from 'exceljs';
 import { jsPDF } from 'jspdf';
 import { Subject, takeUntil } from 'rxjs';
 import saveAs from 'file-saver';
-import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexFill, ApexLegend, ApexStroke, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
+import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexFill, ApexGrid, ApexLegend, ApexMarkers, ApexStroke, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
 import { DxDataGridComponent } from 'devextreme-angular';
 import html2canvas from 'html2canvas';
 
@@ -24,6 +24,19 @@ export type ChartOptions = {
   legend: ApexLegend;
 };
 
+export type ChartLineOptions = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  stroke: ApexStroke;
+  dataLabels: ApexDataLabels;
+  markers: ApexMarkers;
+  colors: string[];
+  yaxis: ApexYAxis;
+  grid: ApexGrid;
+  legend: ApexLegend;
+  title: ApexTitleSubtitle;
+};
 @Component({
   selector: 'report-result-utility',
   templateUrl: './report-result-utility.component.html',
@@ -41,8 +54,10 @@ export class ReportResultUtilityComponent implements OnInit {
   headerInfo: any;
   selectedRecovery;
   selectedExpense;
-
+  chartType: string = 'Bar';
+  chartItems = ['Bar', 'Line']
   public chartOptions: Partial<ChartOptions>;
+  public chartLineOptions: Partial<ChartLineOptions>;
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -87,7 +102,45 @@ export class ReportResultUtilityComponent implements OnInit {
           }
         }
       }
-    }  
+    }
+    this.chartLineOptions = {
+      series: [
+      ],
+      chart: {
+        height: 400,
+        type: "line",
+        toolbar: {
+          show: false
+        }
+      },
+      dataLabels: {
+        enabled: true
+      },
+      stroke: {
+        curve: "smooth"
+      },
+      title: {
+        text: "",
+        align: "left"
+      },
+      grid: {
+        borderColor: "#e7e7e7",
+        row: {
+          colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
+          opacity: 0.5
+        }
+      },
+      markers: {
+        size: 3
+      },
+      xaxis: {
+        categories: []
+      },
+      yaxis: {
+        title: {
+        },
+      }
+    }
   }
 
   ngOnInit(): void {
@@ -123,6 +176,7 @@ export class ReportResultUtilityComponent implements OnInit {
           });
           this.resultsForGraph = data['GraphValues'];
           this.chartOptions.xaxis.categories = this.periodList;
+          this.chartLineOptions.xaxis.categories = this.periodList;
           let seriesData = [];
           this.resultsForGraph.forEach(item => {
             let rowData = {name: item['RowHeader'], data: []};
@@ -136,6 +190,8 @@ export class ReportResultUtilityComponent implements OnInit {
             seriesData.push(rowData);
           });
           this.chartOptions.series = seriesData;
+          this.chartLineOptions.series = seriesData;
+          
           this._cdr.detectChanges();
         } else {
           this.periodList = [];

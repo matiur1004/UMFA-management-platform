@@ -3,6 +3,7 @@ using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Data.Entities.UMFAEntities;
 using ClientPortal.Migrations;
 using ClientPortal.Models.ProcessAlarmsModels;
+using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
@@ -23,18 +24,20 @@ namespace ClientPortal.Data.Repositories
         private readonly PortalDBContext _ctxPortal;
         private readonly IMapper _mapper;
         private readonly IUMFABuildingRepository _buildingRepository;
-
+        private readonly IPortalSpRepository _portalSpRepository;
 
         public PortalStatsRepository(ILogger<PortalStatsRepository> logger, 
             UmfaDBContext context, 
             PortalDBContext ctxPortal,
             IUMFABuildingRepository buildingRepository,
+            IPortalSpRepository portalSpRepository,
             IMapper mapper)
         {
             _logger = logger;
             _context = context;
             _ctxPortal = ctxPortal;
             _buildingRepository = buildingRepository;
+            _portalSpRepository = portalSpRepository;
             _mapper = mapper;
         }
 
@@ -72,8 +75,6 @@ namespace ClientPortal.Data.Repositories
                 stats.BuildingStats = bldStat; // new() { NumberOfBuildings = 194, TotalGLA = 381729.2M, TotalNumberOfMeters = 15605 };
                 stats.ShopStats = shopStat; // new() {  NumberOfShops = 5578, OccupiedPercentage = 0.778M, TotalArea = 2262098.26M};
                 stats.TenantStats = tenantStat; // new() { NumberOfTenants = 6208, OccupiedPercentage = 0.652M, RecoverablePercentage = 0.612M };
-                stats.SmartStats = new() { TotalSmart = 7283, SolarCount = 42, GeneratorCount = 563, ConsumerElectricityCount = 6270, 
-                    ConsumerWaterCount = 191, BulkCount = 176, CouncilChkCount = 41 };
                 stats.GraphStats = graphStat; // new() { 
                 //    new() { PeriodName = "August 2022", TotalSales = 52835320.84M, TotalElectricityUsage = 12897791.42M, TotalWaterUsage = 104573.03M },
                 //    new() { PeriodName = "September 2022", TotalSales = 51580188.45M, TotalElectricityUsage = 12805219.77M, TotalWaterUsage = 104543.01M },
@@ -85,14 +86,29 @@ namespace ClientPortal.Data.Repositories
 
                 var buildings = (await _buildingRepository.GetBuildings(user.UmfaId))?.UmfaBuildings;
 
+
+
                 if(buildings is not null && buildings.Any())
                 {
-                    var amrMeters = _ctxPortal.AMRMeters.Where(am => buildings.Select(b => b.BuildingId).Contains(am.BuildingId));
+                    var buildingIds = buildings.Select(b => b.BuildingId);
+                    var amrMeters = _ctxPortal.AMRMeters.Where(am => buildingIds.Contains(am.BuildingId));
                     var alarmsConfigured = _ctxPortal.AMRMeterAlarms.Where(ac => amrMeters.Select(am => am.Id).Contains(ac.AMRMeterId));
                     var alarmsTriggered = _ctxPortal.AMRMeterTriggeredAlarms.Where(ata => alarmsConfigured.Select(ac => ac.AMRMeterAlarmId).Contains(ata.AMRMeterAlarmId) && !ata.Acknowledged);
 
-                    stats.SmartStats.AlarmsConfigured = alarmsConfigured.Count();
-                    stats.SmartStats.AlarmsTriggered = alarmsTriggered.Count();
+                    var smartServices = (await _portalSpRepository.GetSmartServices(new GetSmartServicesSpRequest())).SmartServices.Where(ss => buildingIds.Contains(ss.BuildingId));
+
+                    stats.SmartStats = new()
+                    {
+                        TotalSmart = smartServices.Sum(ss => ss.TotalSmart),
+                        SolarCount = smartServices.Sum(ss => ss.Solar),
+                        GeneratorCount = smartServices.Sum(ss => ss.Generator),
+                        ConsumerElectricityCount = smartServices.Sum(ss => ss.Electricity),
+                        ConsumerWaterCount = smartServices.Sum(ss => ss.Water),
+                        BulkCount = smartServices.Sum(ss => ss.Bulk),
+                        CouncilChkCount = smartServices.Sum(ss => ss.Council_Check),
+                        AlarmsConfigured = alarmsConfigured.Count(),
+                        AlarmsTriggered = alarmsTriggered.Count()
+                    };
                 }
 
                 return stats;
