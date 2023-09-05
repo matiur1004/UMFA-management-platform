@@ -1,4 +1,4 @@
-<div class="flex flex-col">
+<div class="flex flex-col gap-y-3">
     <dx-pivot-grid
         [dataFieldArea]="'column'"
         [wordWrapEnabled]="false"
@@ -14,4 +14,109 @@
     >
         <dxo-field-chooser [enabled]="false"></dxo-field-chooser>
     </dx-pivot-grid>
+    <div class="flex justify-end">
+        <dx-drop-down-box
+            [(value)]="selectedGroupsForBilling"
+            [inputAttr]="{ 'aria-label': 'Owner' }"
+            valueExpr="Id"
+            displayExpr="Name"
+            placeholder="Select..."
+            label="Group Name"
+            [showClearButton]="true"
+            [dataSource]="billingGroupItems">
+            <div *dxTemplate="let data of 'content'">
+                <dx-tree-view
+                    [dataSource]="billingGroupItems"
+                    dataStructure="plain"
+                    keyExpr="Id"
+                    parentIdExpr="categoryId"
+                    selectionMode="multiple"
+                    showCheckBoxesMode="normal"
+                    [selectNodesRecursive]="false"
+                    displayExpr="Name"
+                    [selectByClick]="true"
+                    (onContentReady)="onTreeViewReady($event)"
+                    (onInitialized)="onInitialized($event)"
+                    (onItemSelectionChanged)="onTreeViewSelectionChanged($event)"
+                >
+                </dx-tree-view>
+            </div>
+        </dx-drop-down-box>
+    </div>
+    <div class="flex gap-x-2">
+        <div class="flex bg-card w-1/2 relative">
+            <apx-chart
+                *ngIf="billingChartType == 'Bar'"
+                class="w-full mt-6"
+                [series]="barChartOptions.series"
+                [chart]="barChartOptions.chart"
+                [stroke]="barChartOptions.stroke"
+                [dataLabels]="barChartOptions.dataLabels"
+                [plotOptions]="barChartOptions.plotOptions"
+                [xaxis]="barChartOptions.xaxis"
+                [colors]="barChartOptions.colors"
+                [fill]="barChartOptions.fill"
+                [yaxis]="barChartOptions.yaxis"
+                [legend]="barChartOptions.legend"
+            ></apx-chart>
+            <apx-chart
+                *ngIf="billingChartType == 'Line'"
+                class="w-full mt-6"
+                [series]="lineChartOptions.series"
+                [chart]="lineChartOptions.chart"
+                [xaxis]="lineChartOptions.xaxis"
+                [stroke]="lineChartOptions.stroke"
+                [markers]="lineChartOptions.markers"
+                [grid]="lineChartOptions.grid"
+                [yaxis]="lineChartOptions.yaxis"
+                [title]="lineChartOptions.title"
+            ></apx-chart>
+            <div class="flex absolute right-2 top-2 gap-x-2">
+                <div class="p-2 graph-type-item cursor-pointer" (click)="billingChartType = 'Line'" [ngClass]="{'selected-graph-type': billingChartType == 'Line'}">
+                    <img src="/assets/images/icons/line-graph.svg" class="h-full">
+                </div>
+                <div class="border-graph"></div>
+                <div class="p-2 graph-type-item cursor-pointer" (click)="billingChartType = 'Bar'" [ngClass]="{'selected-graph-type': billingChartType == 'Bar'}">
+                    <img src="/assets/images/icons/bar-graph.svg" class="h-full">
+                </div>                
+            </div>
+        </div>
+        <div class="flex bg-card w-1/2 relative">
+            <apx-chart
+                *ngIf="usageChartType == 'Bar'"
+                class="w-full mt-6"
+                [series]="barUsageChartOptions.series"
+                [chart]="barUsageChartOptions.chart"
+                [stroke]="barUsageChartOptions.stroke"
+                [dataLabels]="barUsageChartOptions.dataLabels"
+                [plotOptions]="barUsageChartOptions.plotOptions"
+                [xaxis]="barUsageChartOptions.xaxis"
+                [colors]="barUsageChartOptions.colors"
+                [fill]="barUsageChartOptions.fill"
+                [yaxis]="barUsageChartOptions.yaxis"
+                [legend]="barUsageChartOptions.legend"
+            ></apx-chart>
+            <apx-chart
+                *ngIf="usageChartType == 'Line'"
+                class="w-full mt-6"
+                [series]="lineUsageChartOptions.series"
+                [chart]="lineUsageChartOptions.chart"
+                [xaxis]="lineUsageChartOptions.xaxis"
+                [stroke]="lineUsageChartOptions.stroke"
+                [markers]="lineUsageChartOptions.markers"
+                [grid]="lineUsageChartOptions.grid"
+                [yaxis]="lineUsageChartOptions.yaxis"
+                [title]="lineUsageChartOptions.title"
+            ></apx-chart>
+            <div class="flex absolute right-2 top-2 gap-x-2">
+                <div class="p-2 graph-type-item cursor-pointer" (click)="usageChartType = 'Line'" [ngClass]="{'selected-graph-type': usageChartType == 'Line'}">
+                    <img src="/assets/images/icons/line-graph.svg" class="h-full">
+                </div>
+                <div class="border-graph"></div>
+                <div class="p-2 graph-type-item cursor-pointer" (click)="usageChartType = 'Bar'" [ngClass]="{'selected-graph-type': usageChartType == 'Bar'}">
+                    <img src="/assets/images/icons/bar-graph.svg" class="h-full">
+                </div>                
+            </div>
+        </div>
+    </div>
 </div>
