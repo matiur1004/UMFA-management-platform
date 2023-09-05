@@ -149,6 +149,7 @@ IConfiguration? configuration = builder.Configuration;
     services.AddScoped<IArchivesService, ArchivesService>();
 
     //Data components
+    services.AddScoped<IPortalSpRepository, PortalSpRepository>();
     services.AddScoped<IPortalStatsRepository, PortalStatsRepository>();
     services.AddScoped<IAMRMeterRepository, AMRMeterRepository>();
     services.AddScoped<IUMFABuildingRepository, UMFABuildingRepository>();
