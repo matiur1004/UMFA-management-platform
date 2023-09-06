@@ -160,7 +160,7 @@ export class AmrMeterAssignmentsComponent implements OnInit {
   }
 
   onCustomizeDateTime(cellInfo) {
-    return moment(new Date(cellInfo.value)).format('YYYY-MM-DD mm:hh:ss');
+    return moment(new Date(cellInfo.value)).format('YYYY-MM-DD HH:mm:ss');
   }
 
   back() {
