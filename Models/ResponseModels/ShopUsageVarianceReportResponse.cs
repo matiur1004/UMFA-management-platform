@@ -41,6 +41,8 @@ namespace ClientPortal.Models.ResponseModels
         // // [JsonPropertyName("recoverable")]
         public bool Recoverable { get; set; }
 
+        public string Note { get; set; }
+
         // // [JsonPropertyName("periodUsageDetails")]
         public List<PeriodUsageDetail> PeriodUsageDetails { get; set; } = new List<PeriodUsageDetail>();
     }
