@@ -59,6 +59,8 @@ export class ShopBillingComponent implements OnInit {
   usageChartType = 'Bar';
   billingGroupItems = [];
   selectedGroupsForBilling;
+  groupColors = ['#008E0E', '#452AEB', '#2FAFB7', '#C23BC4', '#6E6E6E', '#46a34a', '#C24F19', '#C8166C', '#84cc16', '#06b6d4', '#8b5cf6', '#f59e0b', '#6b21a8', '#9f1239', '#d946ef', '#a855f7'];
+  availableGroupColors: any;
 
   public barChartOptions: Partial<BarChartOptions>;
   public barUsageChartOptions: Partial<BarChartOptions>;
@@ -155,7 +157,7 @@ export class ShopBillingComponent implements OnInit {
       yaxis: {
         title: {
         },
-      }
+      },
     };
     this.lineUsageChartOptions = {
       series: [
@@ -326,6 +328,7 @@ export class ShopBillingComponent implements OnInit {
             item['PeriodDate'] = moment(new Date(item.PeriodName)).format('YYYY/MM/DD');
             return item;
           });
+          this.availableGroupColors = this.groupNameList.map((groupName, idx) => this.groupColors[idx]);
           this.billingGroupItems = [{Id: '0', Name: 'All', expanded: true}];
           let selectedValue = ['0'];
           this.groupNameList.map(groupName => {
@@ -339,6 +342,10 @@ export class ShopBillingComponent implements OnInit {
             return `${period.split(' ')[0].substring(0, 3)} ${period.split(' ')[1].substring(2, 4)}`;
           });
           this.lineUsageChartOptions.xaxis.categories = this.lineChartOptions.xaxis.categories;
+          this.barChartOptions.colors = this.availableGroupColors;
+          this.lineChartOptions.colors = this.availableGroupColors;
+          this.barUsageChartOptions.colors = this.availableGroupColors;
+          this.lineUsageChartOptions.colors = this.availableGroupColors;
           this.setChart();
         }
       });

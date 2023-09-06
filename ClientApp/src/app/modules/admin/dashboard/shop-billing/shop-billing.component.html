@@ -68,6 +68,7 @@
                 [stroke]="lineChartOptions.stroke"
                 [markers]="lineChartOptions.markers"
                 [grid]="lineChartOptions.grid"
+                [colors]="barChartOptions.colors"
                 [yaxis]="lineChartOptions.yaxis"
                 [title]="lineChartOptions.title"
             ></apx-chart>
@@ -107,6 +108,7 @@
                 [grid]="lineUsageChartOptions.grid"
                 [yaxis]="lineUsageChartOptions.yaxis"
                 [title]="lineUsageChartOptions.title"
+                [colors]="barChartOptions.colors"
             ></apx-chart>
             <div class="flex absolute right-2 top-2 gap-x-2">
                 <div class="p-2 graph-type-item cursor-pointer" (click)="usageChartType = 'Line'" [ngClass]="{'selected-graph-type': usageChartType == 'Line'}">
