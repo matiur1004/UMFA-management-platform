@@ -75,5 +75,6 @@ namespace ClientPortal.Models.ResponseModels
 
         // // [JsonPropertyName("cost")]
         public decimal? Cost { get; set; }
+        public string Note { get; set; }
     }
 }

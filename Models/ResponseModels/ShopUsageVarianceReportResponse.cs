@@ -71,5 +71,6 @@ namespace ClientPortal.Models.ResponseModels
 
         // // [JsonPropertyName("usage")]
         public decimal? Usage { get; set; }
+        public string Note { get; set; }
     }
 }
