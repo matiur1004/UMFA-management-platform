@@ -19,9 +19,9 @@ namespace ClientPortal.Controllers
         }
 
         [HttpGet("getAlarmsByBuilding/{buildingId}")]
-        public ActionResult<IEnumerable<dynamic>> GetAlarmsByBuilding(int buildingId)
+        public ActionResult<IEnumerable<AlarmsPerBuildingResult>> GetAlarmsByBuilding(int buildingId)
         {
-            List<dynamic> resultList = new List<dynamic>();
+            List<AlarmsPerBuildingResult> resultList = new List<AlarmsPerBuildingResult>();
             _logger.LogInformation(1, $"Get meter alarms for building id: {buildingId} from database");
             try
             {
@@ -41,13 +41,20 @@ namespace ClientPortal.Controllers
                     {
                         while (reader.Read())
                         {
-                            dynamic result = new ExpandoObject();
-                            var dictionary = result as IDictionary<string, object>;
-
-                            for (int i = 0; i < reader.FieldCount; i++)
+                            AlarmsPerBuildingResult result = new AlarmsPerBuildingResult
                             {
-                                dictionary.Add(reader.GetName(i), reader.IsDBNull(i) ? null : reader[i]);
-                            }
+                                BuildingId = reader.IsDBNull(reader.GetOrdinal("BuildingId")) ? 0 : reader.GetInt32(reader.GetOrdinal("BuildingId")),
+                                UmfaBuildingId = reader.IsDBNull(reader.GetOrdinal("UmfaBuildingId")) ? 0 : reader.GetInt32(reader.GetOrdinal("UmfaBuildingId")),
+                                Building = reader.IsDBNull(reader.GetOrdinal("Building")) ? string.Empty : reader.GetString(reader.GetOrdinal("Building")),
+                                AMRMeterId = reader.IsDBNull(reader.GetOrdinal("AMRMeterId")) ? 0 : reader.GetInt32(reader.GetOrdinal("AMRMeterId")),
+                                MeterNo = reader.IsDBNull(reader.GetOrdinal("MeterNo")) ? string.Empty : reader.GetString(reader.GetOrdinal("MeterNo")),
+                                Description = reader.IsDBNull(reader.GetOrdinal("Description")) ? string.Empty : reader.GetString(reader.GetOrdinal("Description")),
+                                Make = reader.IsDBNull(reader.GetOrdinal("Make")) ? string.Empty : reader.GetString(reader.GetOrdinal("Make")),
+                                Model = reader.IsDBNull(reader.GetOrdinal("Model")) ? string.Empty : reader.GetString(reader.GetOrdinal("Model")),
+                                ScadaMeterNo = reader.IsDBNull(reader.GetOrdinal("ScadaMeterNo")) ? string.Empty : reader.GetString(reader.GetOrdinal("ScadaMeterNo")),
+                                Configured = reader.IsDBNull(reader.GetOrdinal("Configured")) ? string.Empty : reader.GetString(reader.GetOrdinal("Configured")),
+                                Triggered = reader.IsDBNull(reader.GetOrdinal("Triggered")) ? string.Empty : reader.GetString(reader.GetOrdinal("Triggered"))
+                            };
                             resultList.Add(result);
                         }
                     }
@@ -67,12 +74,15 @@ namespace ClientPortal.Controllers
                 _logger.LogError(1, $"No Results Found For Meters with alarms for building: {buildingId}");
             }
 
-            return Ok(resultList);
+            return resultList.DistinctBy(rl => rl.ScadaMeterNo).ToList();
         }
     }
 
     public class AlarmsPerBuildingResult
     {
+        public int BuildingId { get; set; }
+        public int UmfaBuildingId { get; set; }
+        public string Building { get; set; }
         public int AMRMeterId { get; set; }
         public string MeterNo { get; set; }
         public string Description { get; set; }
