@@ -86,7 +86,8 @@ namespace ClientPortal.Controllers
                     detailItem.AmrMeter = new AMRMeter();
                 }
             }
-            return scadaRequestDetail;
+            
+            return scadaRequestDetail.DistinctBy(sr => sr.AmrMeter.MeterSerial).ToList();
         }
 
         // PUT: ScadaRequestDetails/5
