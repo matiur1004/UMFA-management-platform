@@ -67,6 +67,8 @@ export class ReportResultShopCostComponent implements OnInit {
   }
 
   onExporting(e) {
+    e.component.beginUpdate();
+    e.component.columnOption('Note', 'visible', true);
     const workbook = new Workbook();
     const worksheet = workbook.addWorksheet('ShopCostVariance');
 
@@ -78,6 +80,9 @@ export class ReportResultShopCostComponent implements OnInit {
       workbook.xlsx.writeBuffer().then((buffer) => {
         saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'ShopCostVariance.xlsx');
       });
+    }).then(function() {
+      e.component.columnOption('Note', 'visible', false);
+      e.component.endUpdate();
     });
     e.cancel = true;
   }

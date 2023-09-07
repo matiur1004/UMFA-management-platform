@@ -69,6 +69,8 @@ export class ReportResultShopComponent implements OnInit {
   }
 
   onExport() {
+    this.dataGrid.instance.beginUpdate();
+    this.dataGrid.instance.columnOption('Note', 'visible', true);
     const workbook = new Workbook();
     const worksheet = workbook.addWorksheet('ShopUsageVariance');
     worksheet.getColumn(2).hidden = true;
@@ -87,7 +89,10 @@ export class ReportResultShopComponent implements OnInit {
         workbook.xlsx.writeBuffer().then((buffer) => {
           saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'ShopUsageVariance.xlsx');
         });
-      })
+      }).then(function() {
+        _this.dataGrid.instance.columnOption('Note', 'visible', false);
+        _this.dataGrid.instance.endUpdate();
+      });
       
     });
   }
