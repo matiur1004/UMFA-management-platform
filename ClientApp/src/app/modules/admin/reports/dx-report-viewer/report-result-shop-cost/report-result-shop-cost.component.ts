@@ -4,8 +4,26 @@ import { exportDataGrid, exportPivotGrid } from 'devextreme/excel_exporter';
 import { Workbook } from 'exceljs';
 import { Subject, takeUntil } from 'rxjs';
 import saveAs from 'file-saver';
-import PivotGridDataSource from 'devextreme/ui/pivot_grid/data_source';
 import { DxDataGridComponent } from 'devextreme-angular';
+import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexFill, ApexLegend, ApexPlotOptions, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis } from 'ng-apexcharts';
+
+export type ChartSparklineOptions = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  markers: any; //ApexMarkers;
+  stroke: any; //ApexStroke;
+  yaxis: ApexYAxis | ApexYAxis[];
+  plotOptions: ApexPlotOptions;
+  dataLabels: ApexDataLabels;
+  colors: string[];
+  labels: string[] | number[];
+  title: ApexTitleSubtitle;
+  subtitle: ApexTitleSubtitle;
+  legend: ApexLegend;
+  fill: ApexFill;
+  tooltip: ApexTooltip;
+};
 
 @Component({
   selector: 'report-result-shop-cost',
@@ -22,7 +40,43 @@ export class ReportResultShopCostComponent implements OnInit {
   periodList = [];
   applyFilterTypes: any;
   currentFilter: any;
-
+  public commonLineSparklineOptions: Partial<ChartSparklineOptions> = {
+    chart: {
+      type: "line",
+      width: 140,
+      height: 30,
+      sparkline: {
+        enabled: true
+      }
+    },
+    tooltip: {
+      fixed: {
+        enabled: false
+      },
+      x: {
+        show: false
+      },
+      y: {
+        title: {
+          formatter: function(seriesName) {
+            return "";
+          }
+        }
+      },
+      marker: {
+        show: false
+      }
+    },
+    markers: {size: 4},
+    stroke: {
+      show: true,
+      curve: 'smooth',
+      lineCap: 'butt',
+      colors: undefined,
+      width: 3,
+      dashArray: 0,       
+    }
+  };
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
   constructor(private reportService: DXReportService, private _cdr: ChangeDetectorRef) {
@@ -50,7 +104,7 @@ export class ReportResultShopCostComponent implements OnInit {
               else item[period] = 0;
               graphData.push(item[period]);
             })
-            return {...item, Recoverable: item['Recoverable'] ? 'Recoverable' : 'Unrecoverable', 'PeriodGraph': graphData};
+            return {...item, Recoverable: item['Recoverable'] ? 'Recoverable' : 'Unrecoverable', 'PeriodGraph': [{data: graphData}]};
           })
           this.totalDataSource = data['Totals'].map(item => {
             this.periodList.forEach((period, idx) => {
