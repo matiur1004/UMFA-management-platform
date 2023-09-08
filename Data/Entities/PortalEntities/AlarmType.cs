@@ -8,6 +8,7 @@
         public string AlarmDescription { get; set;}
         public bool Active { get; set;}
 
+        public ICollection<AMRMeterAlarm> AMRMeterAlarms { get; set;}
     }
 }
 
