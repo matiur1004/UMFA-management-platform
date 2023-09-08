@@ -17,6 +17,10 @@ namespace ClientPortal.Data.Entities.PortalEntities
         public DateTime? LastRunDTM { get; set; }
         [Column(TypeName = "smalldatetime")]
         public DateTime? LastDataDTM { get; set; }
-        public IEnumerable<AMRMeterTriggeredAlarm> AMRMeterTriggeredAlarms { get; set; }
+        public ICollection<AMRMeterTriggeredAlarm> AMRMeterTriggeredAlarms { get; set; }
+
+        public AlarmType AlarmType { get; set; }
+
+        public AMRMeter AMRMeter { get; set; }
     }
 }

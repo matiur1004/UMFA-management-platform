@@ -29,6 +29,10 @@ namespace ClientPortal.Data.Entities.PortalEntities
         public List<ScadaRequestDetail> ScadaRequestDetails { get; set; }
         [JsonIgnore]
         public List<ProfileData> ProfileData { get; set; }
+        [JsonIgnore]
+        public Building Building { get; set; }
+        [JsonIgnore]
+        public List<AMRMeterAlarm> AMRMeterAlarms { get; set; }
 
         public AMRMeter() { }
         public AMRMeter(AMRMeterRequest meterReq, User user, Building building)
