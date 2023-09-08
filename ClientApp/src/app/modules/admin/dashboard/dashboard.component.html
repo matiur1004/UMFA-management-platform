@@ -139,7 +139,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="flex mt-2">
-                                                    <a [routerLink]="'/admin/alarm-configuration'" class="text-md leading-4 cursor-pointer underline">Alarms: {{stats.SmartStats.AlarmsConfigured}} Configured, {{stats.SmartStats.AlarmsTriggered}} Triggered</a>
+                                                    <a href="javascript:void(0);" (click)="onDetailAlarms()" class="text-md leading-4 cursor-pointer underline">Alarms: {{stats.SmartStats.AlarmsConfigured}} Configured, {{stats.SmartStats.AlarmsTriggered}} Triggered</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -534,6 +534,17 @@
                                 </ng-template>
                                 <ng-template matTabContent>
                                     <app-shop-readings [buildingId]="tabItem.dataSource.buildingId" [shopId]="tabItem.dataSource.shopId" [meterId]="tabItem.dataSource.meterId"></app-shop-readings>
+                                </ng-template>
+                            </mat-tab>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'DashboardTriggeredAlarms'">
+                            <mat-tab class="home-tab" label="{{tabItem.title}}">
+                                <ng-template mat-tab-label>
+                                    {{tabItem.title}}
+                                    <mat-icon class="icon-size-4 hover:text-red-500 ml-2" [svgIcon]="'feather:x'" (click)="removeTab(i)"></mat-icon>
+                                </ng-template>
+                                <ng-template matTabContent>
+                                    <app-triggered-alarms [buildingId]="tabItem.dataSource.buildingId" [partnerId]="tabItem.dataSource.partnerId"></app-triggered-alarms>
                                 </ng-template>
                             </mat-tab>
                         </ng-container>

@@ -47,6 +47,7 @@ export class DashboardService {
   public selectedTenantSlipInfo: any;
   
   private _alarmTriggerDetail: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _triggeredAlarmsList: BehaviorSubject<any> = new BehaviorSubject(null);
 
   constructor(
     private router: Router, 
@@ -162,6 +163,10 @@ export class DashboardService {
   
   get alarmTriggerDetail$(): Observable<any>{
       return this._alarmTriggerDetail.asObservable();
+  }
+
+  get triggeredAlarmsList$(): Observable<any>{
+    return this._triggeredAlarmsList.asObservable();
   }
 
   getStats(userId) {
@@ -434,6 +439,10 @@ export class DashboardService {
 
   showShopOccupation(data) {
     this._shopOccupation.next(data);
+  }
+
+  showTriggeredAlarms(data) {
+    this._triggeredAlarmsList.next(data);
   }
 
   destroyShopOccupation() {

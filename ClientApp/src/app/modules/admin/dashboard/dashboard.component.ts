@@ -506,7 +506,24 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                         });
                 }
             });
+
+        this._dbService.triggeredAlarmsList$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((data) => {
+                if(data) {
+                    let newTab: IHomeTab = {
+                        id: 0,
+                        title: `Triggered Alarms`,
+                        type: 'DashboardTriggeredAlarms',
+                        dataSource: data
+                    };
+                    this.tabsList.push(newTab);
+                    this.selectedTab = this.tabsList.length;
+                    this._cdr.markForCheck();
+                }
+            });
         //Wip
+        this._dbService.showTriggeredAlarms({buildingId: null, partnerId: null});
         // let res = {
         //     "buildingId": 2531,
         //     "shopId": 65469,
@@ -696,6 +713,10 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
     
     onAcknowledge() {
         this._dbService.updateAcknowledged(this._dbService.alarmTriggeredId).subscribe();
+    }
+
+    onDetailAlarms() {
+        //this._dbService.showTriggeredAlarms({buildingId: null, partnerId: null});
     }
 
     ngAfterViewInit() {

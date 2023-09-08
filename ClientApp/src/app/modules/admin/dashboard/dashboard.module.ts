@@ -31,6 +31,7 @@ import { ShopBillingComponent } from './shop-billing/shop-billing.component';
 import { ShopOccupationsComponent } from './shop-occupations/shop-occupations.component';
 import { ShopAssignedMetersComponent } from './shop-assigned-meters/shop-assigned-meters.component';
 import { ShopReadingsComponent } from './shop-readings/shop-readings.component';
+import { TriggeredAlarmsComponent } from './triggered-alarms/triggered-alarms.component';
 
 @NgModule({
     declarations: [
@@ -45,7 +46,8 @@ import { ShopReadingsComponent } from './shop-readings/shop-readings.component';
         ShopBillingComponent,
         ShopOccupationsComponent,
         ShopAssignedMetersComponent,
-        ShopReadingsComponent
+        ShopReadingsComponent,
+        TriggeredAlarmsComponent
     ],
     imports     : [
         CommonModule,

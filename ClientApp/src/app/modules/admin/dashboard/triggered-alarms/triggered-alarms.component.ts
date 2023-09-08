@@ -6,11 +6,11 @@ import { DashboardService } from '../dasboard.service';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-shop-list',
-  templateUrl: './shop-list.component.html',
-  styleUrls: ['./shop-list.component.scss']
+  selector: 'app-triggered-alarms',
+  templateUrl: './triggered-alarms.component.html',
+  styleUrls: ['./triggered-alarms.component.scss']
 })
-export class ShopListComponent implements OnInit {
+export class TriggeredAlarmsComponent implements OnInit {
 
   readonly allowedPageSizes = AllowedPageSizes;
   
@@ -24,7 +24,6 @@ export class ShopListComponent implements OnInit {
   applyFilterTypes: any;
   currentFilter: any;
   dataSource: any;
-  initiatedList = false;
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
@@ -32,11 +31,11 @@ export class ShopListComponent implements OnInit {
     private _formBuilder: UntypedFormBuilder,
     private reportService: DXReportService,
     private dashboardService: DashboardService,
-    private _cdr: ChangeDetectorRef,
+    private _cdr: ChangeDetectorRef
   ) { 
     this.applyFilterTypes = [{
-        key: 'auto',
-        name: 'Immediately',
+      key: 'auto',
+      name: 'Immediately',
     }, {
         key: 'onClick',
         name: 'On Button Click',
@@ -45,7 +44,6 @@ export class ShopListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.form = this._formBuilder.group({
       PartnerId: [null],
       BuildingId: [null, Validators.required],
@@ -56,36 +54,27 @@ export class ShopListComponent implements OnInit {
         this.reportService.selectPartner(this.partnerId);
       }
     })
-    
+
     this.dashboardService.shops$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((res) => {
         if(res) {          
-          this.dataSource = res.map(item => {
-            return {...item, 'Occupied': item['Occupied'] ? 'Occupied' : 'Unoccupied'};
-          });
+          // this.dataSource = res.map(item => {
+          //   return {...item, 'Occupied': item['Occupied'] ? 'Occupied' : 'Unoccupied'};
+          // });
           this._cdr.markForCheck();
         } else {
           this.dataSource = [];
         }
-        if(this.dataSource.length > 0) this.initiatedList = true;
-        if(!this.buildingId) {
-          if(this.dashboardService.selectedShopInfo) {
-            this.form.get('PartnerId').setValue(this.dashboardService.selectedShopInfo.partnerId);
-            this.form.get('BuildingId').setValue(this.dashboardService.selectedShopInfo.buildingId);
-          }
-        }
+        // if(this.dataSource.length > 0) this.initiatedList = true;
+        // if(!this.buildingId) {
+        //   if(this.dashboardService.selectedShopInfo) {
+        //     this.form.get('PartnerId').setValue(this.dashboardService.selectedShopInfo.partnerId);
+        //     this.form.get('BuildingId').setValue(this.dashboardService.selectedShopInfo.buildingId);
+        //   }
+        // }
         
       })
-
-      if(this.buildingId) {
-        this.form.get('BuildingId').setValue(this.buildingId);
-        if(!this.dashboardService.selectedShopInfo) {
-          this.dashboardService.getShopsByBuildingId(this.form.get('BuildingId').value).subscribe();
-          this.dashboardService.selectedShopInfo = {'buildingId': this.buildingId, 'partnerId': this.partnerId};
-        }
-      }
-      
   }
 
   custPartnerTemplate = (arg: any) => {
@@ -103,20 +92,13 @@ export class ShopListComponent implements OnInit {
       this.reportService.selectPartner(this.form.get('PartnerId').value);
     } else if(method == 'Building') {
       this.dashboardService.selectedShopInfo = {'buildingId': this.form.get('BuildingId').value, 'partnerId': this.form.get('PartnerId').value};
-      this.dashboardService.getShopsByBuildingId(this.form.get('BuildingId').value).subscribe();
+      //this.dashboardService.getShopsByBuildingId(this.form.get('BuildingId').value).subscribe();
     }
   }
 
   onRowClick(event) {
     if(event.data) {
-      if(event.data.ShopID && event.data.ShopName)
-        this.dashboardService.showShopDetailDashboard({shopId: event.data.ShopID, buildingId: this.form.get('BuildingId').value, shopName: event.data.ShopName});
+      
     }
-  }
-
-  ngOnDestroy() {
-    this._unsubscribeAll.next(null);
-    this._unsubscribeAll.complete();
-    //this.dashboardService.destroyShopList();
   }
 }
