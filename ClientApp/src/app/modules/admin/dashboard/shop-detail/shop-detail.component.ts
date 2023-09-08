@@ -328,7 +328,7 @@ export class ShopDetailComponent implements OnInit {
     
     this.billingChartOptions.xaxis.categories = periodArray.map(period => moment(new Date(period)).format('MMM YY'));
     this.billingChartOptions.series = billingData;
-    if(this.billingChart) this.billingChart.ngOnInit();
+    //if(this.billingChart) this.billingChart.ngOnInit();
   }
 
   setBillingUsageChart() {
@@ -355,7 +355,7 @@ export class ShopDetailComponent implements OnInit {
     this.billingUsageChartOptions.colors = groupColors;
     this.billingUsageChartOptions.fill.colors = groupColors;
     
-    if(this.billingUsageChart) this.billingUsageChart.ngOnInit();
+    //if(this.billingUsageChart) this.billingUsageChart.ngOnInit();
   }
 
   setBillingSummary() {
@@ -380,7 +380,7 @@ export class ShopDetailComponent implements OnInit {
       this.billingSummaryDataSource.push({name: groupName, amount: totalByGroup, usage: totalUsageByGroup});
     })
     this.treeMapOptions.series.push({'data': billingSummaryData});
-    if(this.chart) this.chart.ngOnInit();
+    //if(this.chart) this.chart.ngOnInit();
   }
 
   onBillingMonthChange(event) {

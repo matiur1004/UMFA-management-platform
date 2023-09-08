@@ -43,6 +43,8 @@ namespace ClientPortal.Models.ResponseModels
         // // [JsonPropertyName("recoverable")]
         public bool Recoverable { get; set; }
 
+        public string Note { get; set; }
+
         // // [JsonPropertyName("periodCostDetails")]
         public List<PeriodCostDetail> PeriodCostDetails { get; set; } = new List<PeriodCostDetail>();
     }
@@ -58,7 +60,7 @@ namespace ClientPortal.Models.ResponseModels
         // // [JsonPropertyName("periodCostDetails")]
         public List<PeriodCostDetail> PeriodCostDetails { get; set; } = new List<PeriodCostDetail>();
 
-        // // [JsonPropertyName("average")]
+        // // [JsonPropertyName("average")]s
         public decimal? Average { get; set; }
 
         // // [JsonPropertyName("variance")]

@@ -70,21 +70,26 @@ namespace ClientPortal.Controllers
         }
 
         [HttpGet("userMeters/{userId}")]
-        public IActionResult GetMetersForUser(int userId)
+        public async Task<ActionResult<List<AMRMeterResponse>>> GetMetersForUser(int userId)
         {
             try
             {
                 _logger.LogInformation(1, $"Get meters for user {userId} from database");
-                var response = _amrService.GetAllMetersForUser(userId).Result;
-                if (response.Message.StartsWith("Error")) throw new Exception($"Failed to get meters for user: {userId}");
+                
+                var response = await _amrService.GetAllMetersForUser(userId);
+
+                if (response.Message.StartsWith("Error"))
+                {
+                    throw new Exception($"Failed to get meters for user: {userId}");
+                }
                 else if (response.Message == "Success")
                 {
                     _logger.LogInformation(1, $"Successfully got meters for user: {userId}");
-                    return Ok(response.AMRMeterResponses.ToList());
+                    return response.AMRMeterResponses.DistinctBy(amr => amr.MeterSerial).ToList();
                 }
                 else
                 {
-                    return Ok(new List<AMRMeterResponse>());
+                    return new List<AMRMeterResponse>();
                 }
             }
             catch (Exception ex)
@@ -182,7 +187,7 @@ namespace ClientPortal.Controllers
                 else if (response.Message == "Success")
                 {
                     _logger.LogInformation(1, $"Successfully got meters for user: {userId} and chart: {chartId}");
-                    return Ok(response.AMRMeterResponses.ToList());
+                    return Ok(response.AMRMeterResponses.DistinctBy(amr => amr.MeterSerial).ToList());
                 }
                 else
                 {
