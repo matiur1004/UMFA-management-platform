@@ -70,8 +70,14 @@
                 <dxi-column dataField="Group" caption="Group Name" [minWidth]="120"></dxi-column>
                 <dxi-column dataField="PeriodGraph" caption="Period Graph" [width]="160" cellTemplate="periodGraphTemplate">
                     <div *dxTemplate="let data of 'periodGraphTemplate'">
-                        <dx-sparkline [dataSource]="data.value" type="line" argumentField="x" valueField="y" [showMinMax]="false" [pointSize]="4" width="160" [ignoreEmptyPoints]="false">
-                        </dx-sparkline>
+                        <apx-chart
+                            class="flex justify-center"
+                            [series]="data.value"
+                            [chart]="commonLineSparklineOptions.chart"
+                            [tooltip]="commonLineSparklineOptions.tooltip"
+                            [stroke]="commonLineSparklineOptions.stroke"
+                            [markers]="commonLineSparklineOptions.markers"
+                        ></apx-chart>
                     </div>
                 </dxi-column>
                 <ng-container *ngFor="let period of periodList">
