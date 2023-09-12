@@ -12,6 +12,7 @@
         public string Building { get; set; }
         public int BuildingUmfaId { get; set; }
         public string MeterNo { get; set; }
+        public int AMRMeterId { get; set; }
         public string MeterSerial { get; set; }
         public string Description { get; set; }
         public string AlarmName { get; set; }

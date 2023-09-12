@@ -33,6 +33,7 @@ namespace ClientPortal.Data.Repositories
                 Building = b.Name,
                 BuildingUmfaId = b.UmfaId,
                 MeterNo = combined.m.MeterNo,
+                AMRMeterId = combined.m.Id,
                 MeterSerial = combined.m.MeterSerial,
                 Description = combined.m.Description,
                 AlarmName = combined.at.AlarmName,
