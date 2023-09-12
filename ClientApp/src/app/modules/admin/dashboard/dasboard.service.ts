@@ -47,8 +47,10 @@ export class DashboardService {
   public selectedTenantSlipInfo: any;
   
   private _alarmTriggerDetail: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _triggeredAlarmsPage: BehaviorSubject<any> = new BehaviorSubject(null);
   private _triggeredAlarmsList: BehaviorSubject<any> = new BehaviorSubject(null);
-
+  private _triggeredAlarmDetailPage: BehaviorSubject<any> = new BehaviorSubject(null);
+  
   constructor(
     private router: Router, 
     private http: HttpClient,
@@ -165,10 +167,18 @@ export class DashboardService {
       return this._alarmTriggerDetail.asObservable();
   }
 
+  get triggeredAlarmsPage$(): Observable<any>{
+    return this._triggeredAlarmsPage.asObservable();
+  }
+
   get triggeredAlarmsList$(): Observable<any>{
     return this._triggeredAlarmsList.asObservable();
   }
 
+  get triggeredAlarmDetailPage$(): Observable<any>{
+    return this._triggeredAlarmDetailPage.asObservable();
+  }
+  
   getStats(userId) {
     const url = `${CONFIG.apiURL}${CONFIG.dashboardStats}/${userId}`;
     return this.http.get<any>(url, { withCredentials: true })
@@ -393,6 +403,18 @@ export class DashboardService {
       );
   }
 
+  getTriggeredAlarmsList(userId, buildingId) {
+    const url = `${CONFIG.apiURL}/AlarmTriggered?umfaUserId=${userId}&umfaBuildingId=${buildingId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(bl => {
+          this._triggeredAlarmsList.next(bl);
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        })
+      );
+  }
+  
   showShopDetailDashboard(data) {
     this._shopDetailDashboard.next(data);
   }
@@ -442,7 +464,7 @@ export class DashboardService {
   }
 
   showTriggeredAlarms(data) {
-    this._triggeredAlarmsList.next(data);
+    this._triggeredAlarmsPage.next(data);
   }
 
   destroyShopOccupation() {
@@ -470,6 +492,10 @@ export class DashboardService {
   destroyShopReadings() {
     this._shopReadings.next(null);
     this._shopReadingsDetails.next(null);
+  }
+
+  showTriggeredAlarmDetail(data) {
+    this._triggeredAlarmDetailPage.next(data);
   }
 
   destroy() {

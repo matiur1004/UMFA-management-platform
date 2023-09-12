@@ -507,7 +507,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                 }
             });
 
-        this._dbService.triggeredAlarmsList$
+        this._dbService.triggeredAlarmsPage$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((data) => {
                 if(data) {
@@ -517,6 +517,23 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                         type: 'DashboardTriggeredAlarms',
                         dataSource: data
                     };
+                    this.tabsList.push(newTab);
+                    this.selectedTab = this.tabsList.length;
+                    this._cdr.markForCheck();
+                }
+            });
+
+        this._dbService.triggeredAlarmDetailPage$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((data) => {
+                if(data) {
+                    let newTab: IHomeTab = {
+                        id: 0,
+                        title: `${data.MeterNo}`,
+                        type: 'DashboardTriggeredAlarmDetail',
+                        dataSource: data
+                    };
+                    console.log(data);
                     this.tabsList.push(newTab);
                     this.selectedTab = this.tabsList.length;
                     this._cdr.markForCheck();
@@ -638,7 +655,9 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             this.tabsList[index]['type'] == 'ShopBilling' ||
             this.tabsList[index]['type'] == 'ShopDashboardOccupations' ||
             this.tabsList[index]['type'] == 'ShopDashboarAssignedMeters' || 
-            this.tabsList[index]['type'] == 'ShopDashboardReadings') {
+            this.tabsList[index]['type'] == 'ShopDashboardReadings' ||
+            this.tabsList[index]['type'] == 'DashboardTriggeredAlarms' ||
+            this.tabsList[index]['type'] == 'DashboardTriggeredAlarmDetail') {
             this.selectedTab = index;    
         }
         if(this.tabsList[index]['type'] == 'ShopList') {

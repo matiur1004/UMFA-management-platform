@@ -1,9 +1,10 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { AllowedPageSizes } from '@core/helpers';
-import { DXReportService } from '@shared/services';
+import { DXReportService, UserService } from '@shared/services';
 import { DashboardService } from '../dasboard.service';
 import { Subject, takeUntil } from 'rxjs';
+import moment from 'moment';
 
 @Component({
   selector: 'app-triggered-alarms',
@@ -31,7 +32,8 @@ export class TriggeredAlarmsComponent implements OnInit {
     private _formBuilder: UntypedFormBuilder,
     private reportService: DXReportService,
     private dashboardService: DashboardService,
-    private _cdr: ChangeDetectorRef
+    private _cdr: ChangeDetectorRef,
+    private _userService: UserService
   ) { 
     this.applyFilterTypes = [{
       key: 'auto',
@@ -55,13 +57,12 @@ export class TriggeredAlarmsComponent implements OnInit {
       }
     })
 
-    this.dashboardService.shops$
+    this.dashboardService.triggeredAlarmsList$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((res) => {
-        if(res) {          
-          // this.dataSource = res.map(item => {
-          //   return {...item, 'Occupied': item['Occupied'] ? 'Occupied' : 'Unoccupied'};
-          // });
+        if(res) {
+          console.log('dfsdf', res);
+          this.dataSource = res;
           this._cdr.markForCheck();
         } else {
           this.dataSource = [];
@@ -75,6 +76,10 @@ export class TriggeredAlarmsComponent implements OnInit {
         // }
         
       })
+
+      if(!this.buildingId) {
+        this.dashboardService.getTriggeredAlarmsList(this._userService.userValue.UmfaId, 0).subscribe();
+      }
   }
 
   custPartnerTemplate = (arg: any) => {
@@ -91,14 +96,31 @@ export class TriggeredAlarmsComponent implements OnInit {
     if(method == 'Partner') {
       this.reportService.selectPartner(this.form.get('PartnerId').value);
     } else if(method == 'Building') {
-      this.dashboardService.selectedShopInfo = {'buildingId': this.form.get('BuildingId').value, 'partnerId': this.form.get('PartnerId').value};
-      //this.dashboardService.getShopsByBuildingId(this.form.get('BuildingId').value).subscribe();
+      //this.dashboardService.selectedShopInfo = {'buildingId': this.form.get('BuildingId').value, 'partnerId': this.form.get('PartnerId').value};
+      this.dashboardService.getTriggeredAlarmsList(this._userService.userValue.UmfaId, this.form.get('BuildingId').value).subscribe();
     }
   }
 
   onRowClick(event) {
     if(event.data) {
-      
+      let rowData = {
+        "BuildingId": 3,
+        "UmfaBuildingId": 2983,
+        "Building": "The Lumiere",
+        "AMRMeterId": 216,
+        "MeterNo": "0290 C/W",
+        "Description": "4th F Units - Unit 19",
+        "Make": "Kamstrup",
+        "Model": "Multical 21",
+        "ScadaMeterNo": "57770290",
+        "Configured": "1, 2, 3, 4, 5, 6",
+        "Triggered": "1, 2"
     }
+      this.dashboardService.showTriggeredAlarmDetail(rowData);
+    }
+  }
+
+  onCustomizeDateTime(cellInfo) {
+    return moment(new Date(cellInfo.value)).format('YYYY-MM-DD HH:mm:ss');
   }
 }

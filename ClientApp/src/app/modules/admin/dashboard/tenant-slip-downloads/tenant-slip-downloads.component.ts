@@ -41,7 +41,6 @@ export class TenantSlipDownloadsComponent implements OnInit {
     this._service.reportsArchives$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((res) => {
-        console.log(res);
         if(res) this.dataSource = res;
       });
   }

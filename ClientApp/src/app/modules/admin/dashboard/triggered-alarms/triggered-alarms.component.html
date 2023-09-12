@@ -48,17 +48,16 @@
                 [width]="200"
                 placeholder="Search..."
             ></dxo-search-panel>
-            <dxi-column dataField="Occupied" caption="" [groupIndex]="0"></dxi-column>
-            <dxi-column dataField="ShopName" caption="Shop Name" [minWidth]="100"></dxi-column>
-            <dxi-column dataField="ShopNr" caption="Shop Number" [minWidth]="100"></dxi-column>
-            <dxi-column dataField="ShopDescription" caption="Shop Description" [minWidth]="150"></dxi-column>
-            <dxi-column dataField="ShopActive" caption="Active" [minWidth]="80"></dxi-column>
-            <dxi-column dataField="ShopArea" caption="Shop Area" [minWidth]="100"></dxi-column>
-            <dxi-column dataField="NoOfOccupations" caption="Number of Occupants" [minWidth]="100"></dxi-column>
-            <dxo-summary>
-                <dxi-group-item column="ShopName" summaryType="count" displayFormat="{0}">
-                </dxi-group-item>
-            </dxo-summary>
+            <dxi-column dataField="MeterNo" caption="Meter No" [width]="100"></dxi-column>
+            <dxi-column dataField="MeterSerial" caption="Meter Serial" [width]="120"></dxi-column>
+            <dxi-column dataField="Description" caption="Description"></dxi-column>
+            <dxi-column dataField="AlarmName" caption="Alarm" [width]="100"></dxi-column>
+            <dxi-column dataField="AlarmDescription" caption="Alarm Description"></dxi-column>
+            <dxi-column dataField="OccStartDTM" caption="Start" [customizeText]="onCustomizeDateTime"></dxi-column>
+            <dxi-column dataField="Threshold" caption="Threshold" [width]="80"></dxi-column>
+            <dxi-column dataField="Duration" caption="Duration" [width]="70"></dxi-column>
+            <dxi-column dataField="AverageObserved" caption="Average" [width]="70"></dxi-column>
+            <dxi-column dataField="MaximumObserved" caption="Maximum" [width]="80"></dxi-column>
         </dx-data-grid>
     </div>
 </div>
