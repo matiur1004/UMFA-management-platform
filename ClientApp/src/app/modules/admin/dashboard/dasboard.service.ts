@@ -498,12 +498,17 @@ export class DashboardService {
     this._triggeredAlarmDetailPage.next(data);
   }
 
+  destroyTriggeredAlarm() {
+    this._triggeredAlarmDetailPage.next(null);
+    this._triggeredAlarmsPage.next(null);
+  }
   destroy() {
     this._buildingReports.next(null);
     this._tenantSlip.next(null);
     this._tenantSlipDetail.next(null);
     this._tenantSlipDownloads.next(null);
     this._alarmTriggerDetail.next(null);
+    this._triggeredAlarmDetailPage.next(null);
     this._shopList.next(null);
   }
 

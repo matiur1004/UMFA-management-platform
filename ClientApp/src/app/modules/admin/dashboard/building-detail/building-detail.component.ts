@@ -211,6 +211,6 @@ export class BuildingDetailComponent implements OnInit {
   goAlarmConfiguration() {
     this._alarmConfigurationService.selectedBuilding = this.buildingId;
     this._alarmConfigurationService.selectedPartner = this.partnerId;
-    this._router.navigate(['/admin/alarm-configuration']);
+    this._dbService.showTriggeredAlarms({buildingId: this.buildingId, partnerId: this.partnerId});
   }
 }

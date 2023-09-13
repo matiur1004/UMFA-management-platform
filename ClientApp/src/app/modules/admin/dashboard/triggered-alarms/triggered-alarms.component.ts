@@ -57,11 +57,17 @@ export class TriggeredAlarmsComponent implements OnInit {
       }
     })
 
+    if(this.buildingId) {
+      this.form.get('BuildingId').setValue(this.buildingId);
+      this.dashboardService.getTriggeredAlarmsList(this._userService.userValue.UmfaId, this.buildingId).subscribe();
+    } else {
+      this.dashboardService.getTriggeredAlarmsList(this._userService.userValue.UmfaId, 0).subscribe();
+    }
+
     this.dashboardService.triggeredAlarmsList$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((res) => {
         if(res) {
-          console.log('dfsdf', res);
           this.dataSource = res;
           this._cdr.markForCheck();
         } else {
@@ -77,9 +83,7 @@ export class TriggeredAlarmsComponent implements OnInit {
         
       })
 
-      if(!this.buildingId) {
-        this.dashboardService.getTriggeredAlarmsList(this._userService.userValue.UmfaId, 0).subscribe();
-      }
+      
   }
 
   custPartnerTemplate = (arg: any) => {
@@ -103,24 +107,23 @@ export class TriggeredAlarmsComponent implements OnInit {
 
   onRowClick(event) {
     if(event.data) {
-      let rowData = {
-        "BuildingId": 3,
-        "UmfaBuildingId": 2983,
-        "Building": "The Lumiere",
-        "AMRMeterId": 216,
-        "MeterNo": "0290 C/W",
-        "Description": "4th F Units - Unit 19",
-        "Make": "Kamstrup",
-        "Model": "Multical 21",
-        "ScadaMeterNo": "57770290",
-        "Configured": "1, 2, 3, 4, 5, 6",
-        "Triggered": "1, 2"
-    }
-      this.dashboardService.showTriggeredAlarmDetail(rowData);
+      this.dashboardService.showTriggeredAlarmDetail(event.data);
+      //this.dashboardService.getAlarmTriggered(event.data.AMRMeterTriggeredAlarmId).subscribe();
     }
   }
 
   onCustomizeDateTime(cellInfo) {
     return moment(new Date(cellInfo.value)).format('YYYY-MM-DD HH:mm:ss');
+  }
+
+  /**
+     * On destroy
+     */
+  ngOnDestroy(): void
+  {
+      // Unsubscribe from all subscriptions
+      this._unsubscribeAll.next(null);
+      this._unsubscribeAll.complete();
+      this.dashboardService.destroyTriggeredAlarm();
   }
 }
