@@ -61,7 +61,7 @@ export class TriggeredAlarmsComponent implements OnInit {
       this.form.get('BuildingId').setValue(this.buildingId);
       this.dashboardService.getTriggeredAlarmsList(this._userService.userValue.UmfaId, this.buildingId).subscribe();
     } else {
-      this.dashboardService.getTriggeredAlarmsList(this._userService.userValue.UmfaId, 0).subscribe();
+      //this.dashboardService.getTriggeredAlarmsList(this._userService.userValue.UmfaId, 0).subscribe();
     }
 
     this.dashboardService.triggeredAlarmsList$
@@ -72,6 +72,12 @@ export class TriggeredAlarmsComponent implements OnInit {
           this._cdr.markForCheck();
         } else {
           this.dataSource = [];
+        }
+        if(!this.buildingId) {
+          if(this.dashboardService.selectedTriggeredAlarmInfo) {
+            this.form.get('PartnerId').setValue(this.dashboardService.selectedTriggeredAlarmInfo.partnerId);
+            this.form.get('BuildingId').setValue(this.dashboardService.selectedTriggeredAlarmInfo.buildingId);
+          }
         }
         // if(this.dataSource.length > 0) this.initiatedList = true;
         // if(!this.buildingId) {
@@ -100,7 +106,7 @@ export class TriggeredAlarmsComponent implements OnInit {
     if(method == 'Partner') {
       this.reportService.selectPartner(this.form.get('PartnerId').value);
     } else if(method == 'Building') {
-      //this.dashboardService.selectedShopInfo = {'buildingId': this.form.get('BuildingId').value, 'partnerId': this.form.get('PartnerId').value};
+      this.dashboardService.selectedTriggeredAlarmInfo = {'buildingId': this.form.get('BuildingId').value, 'partnerId': this.form.get('PartnerId').value};
       this.dashboardService.getTriggeredAlarmsList(this._userService.userValue.UmfaId, this.form.get('BuildingId').value).subscribe();
     }
   }

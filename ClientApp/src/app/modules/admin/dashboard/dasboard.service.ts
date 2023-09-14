@@ -45,7 +45,8 @@ export class DashboardService {
   public alarmTriggeredId: any;
   public selectedShopInfo: any;
   public selectedTenantSlipInfo: any;
-  
+  public selectedTriggeredAlarmInfo: any;
+
   private _alarmTriggerDetail: BehaviorSubject<any> = new BehaviorSubject(null);
   private _triggeredAlarmsPage: BehaviorSubject<any> = new BehaviorSubject(null);
   private _triggeredAlarmsList: BehaviorSubject<any> = new BehaviorSubject(null);
@@ -502,6 +503,11 @@ export class DashboardService {
     this._triggeredAlarmDetailPage.next(null);
     this._triggeredAlarmsPage.next(null);
   }
+
+  destroyTriggeredAlarmList() {
+    this._triggeredAlarmsList.next(null);
+  }
+
   destroy() {
     this._buildingReports.next(null);
     this._tenantSlip.next(null);

@@ -240,8 +240,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     ngOnInit(): void {
-        for(let i = 1; i <= 10; i++) {
-            this.minutues.push({Value: i * 30});
+        for(let i = 1; i <= 300; i++) {
+            this.minutues.push({Value: i});
         }
 
         this.form = this._formBuilder.group({
@@ -657,13 +657,18 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             this.tabsList[index]['type'] == 'ShopDashboardOccupations' ||
             this.tabsList[index]['type'] == 'ShopDashboarAssignedMeters' || 
             this.tabsList[index]['type'] == 'ShopDashboardReadings' ||
-            this.tabsList[index]['type'] == 'DashboardTriggeredAlarms' ||
             this.tabsList[index]['type'] == 'AlarmTrigger') {
             this.selectedTab = index;    
         }
         if(this.tabsList[index]['type'] == 'ShopList') {
             this._dbService.selectedShopInfo = null;
             this._dbService.destroyShopList();
+            if(this.tabsList[index]['dataSource']['destination'] == 'Home') this.selectedTab = 0;
+            else this.selectedTab = index;
+        }
+        if(this.tabsList[index]['type'] == 'DashboardTriggeredAlarms') {
+            this._dbService.selectedTriggeredAlarmInfo = null;
+            this._dbService.destroyTriggeredAlarmList();
             if(this.tabsList[index]['dataSource']['destination'] == 'Home') this.selectedTab = 0;
             else this.selectedTab = index;
         }
