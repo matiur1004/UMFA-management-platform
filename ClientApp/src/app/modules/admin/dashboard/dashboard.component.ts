@@ -530,7 +530,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                     let newTab: IHomeTab = {
                         id: 0,
                         title: `${data.MeterNo}`,
-                        type: 'AlarmTrigger'
+                        type: 'AlarmTrigger',
+                        dataSource: data
                     };
                     this.tabsList.push(newTab);
                     this.selectedTab = this.tabsList.length;
@@ -680,7 +681,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             this._dbService.selectedTenantSlipInfo = null;
             this._dbService.destroyTenantSlips();
         }
-        this.tabsList.splice(index, 1);        
+        this.tabsList.splice(index, 1);
         this._cdr.markForCheck();
     }
 

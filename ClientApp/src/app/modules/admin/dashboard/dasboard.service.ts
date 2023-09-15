@@ -283,6 +283,7 @@ export class DashboardService {
       .pipe(
         catchError(err => this.catchAuthErrors(err)),
         tap(bl => {
+          this.alarmTriggeredId = alarmTriggeredId;
           this._alarmTriggerDetail.next(bl);
           //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
         })
