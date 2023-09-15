@@ -741,6 +741,11 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
         this._dbService.updateAcknowledged(this._dbService.alarmTriggeredId).subscribe();
     }
 
+    onCancelAcknoledge() {
+        let index = this.tabsList.findIndex(obj => obj['type'] == 'AlarmTrigger');
+        this.removeTab(index);
+    }
+
     onDetailAlarms() {
         this._dbService.showTriggeredAlarms({buildingId: null, partnerId: null});
     }
