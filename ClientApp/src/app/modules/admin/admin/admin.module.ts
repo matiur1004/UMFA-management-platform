@@ -35,16 +35,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { AmrMeterAssignmentsComponent } from './amr-schedule/amr-meter-assignments/amr-meter-assignments.component';
 import { AmrMeterAssignmentEditComponent } from './amr-schedule/amr-meter-assignment-edit/amr-meter-assignment-edit.component';
 import { AlarmConfigurationComponent } from './alarm-configuration/alarm-configuration.component';
-import { MeterAlarmDetailComponent } from './meter-alarm-detail/meter-alarm-detail.component';
-import { AlarmNightFlowComponent } from './meter-alarm-detail/alarm-night-flow/alarm-night-flow.component';
-import { AlarmBurstPipeComponent } from './meter-alarm-detail/alarm-burst-pipe/alarm-burst-pipe.component';
-import { AlarmLeakDetectionComponent } from './meter-alarm-detail/alarm-leak-detection/alarm-leak-detection.component';
-import { AlarmPeakUsageComponent } from './meter-alarm-detail/alarm-peak-usage/alarm-peak-usage.component';
-import { AlarmDailyUsageComponent } from './meter-alarm-detail/alarm-daily-usage/alarm-daily-usage.component';
-import { AlarmAverageUsageComponent } from './meter-alarm-detail/alarm-average-usage/alarm-average-usage.component';
 import { UserNotificationsComponent } from './user-notifications/user-notifications.component';
 import { SetUserNotificationComponent } from './user-notifications/set-user-notification/set-user-notification.component';
 import { NotificationsPopupComponent } from './user-management/notifications-popup/notifications-popup.component';
+import { MeterAlarmDetailModule } from './meter-alarm-detail/meter-alarm-detail.module';
 
 @NgModule({
   declarations: [
@@ -65,13 +59,6 @@ import { NotificationsPopupComponent } from './user-management/notifications-pop
     AmrMeterAssignmentsComponent,
     AmrMeterAssignmentEditComponent,
     AlarmConfigurationComponent,
-    MeterAlarmDetailComponent,
-    AlarmNightFlowComponent,
-    AlarmBurstPipeComponent,
-    AlarmLeakDetectionComponent,
-    AlarmPeakUsageComponent,
-    AlarmDailyUsageComponent,
-    AlarmAverageUsageComponent,
     UserNotificationsComponent,
     SetUserNotificationComponent,
     NotificationsPopupComponent
@@ -98,6 +85,7 @@ import { NotificationsPopupComponent } from './user-management/notifications-pop
     DxChartModule,
     DxSelectBoxModule,
     DxButtonModule,
+    MeterAlarmDetailModule,
     SharedModule
   ],
   exports: [
@@ -105,6 +93,7 @@ import { NotificationsPopupComponent } from './user-management/notifications-pop
     MatSnackBarModule,
     MatButtonModule,
     MatIconModule,
+    MeterAlarmDetailModule,
   ]
 })
 export class AdminModule { }

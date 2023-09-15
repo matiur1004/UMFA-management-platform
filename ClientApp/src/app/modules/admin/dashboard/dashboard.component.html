@@ -139,7 +139,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="flex mt-2">
-                                                    <a [routerLink]="'/admin/alarm-configuration'" class="text-md leading-4 cursor-pointer underline">Alarms: {{stats.SmartStats.AlarmsConfigured}} Configured, {{stats.SmartStats.AlarmsTriggered}} Triggered</a>
+                                                    <a href="javascript:void(0);" (click)="onDetailAlarms()" class="text-md leading-4 cursor-pointer underline">Alarms: {{stats.SmartStats.AlarmsConfigured}} Configured, {{stats.SmartStats.AlarmsTriggered}} Triggered</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -390,11 +390,12 @@
                                                         <span class="text-lg font-semibold">KL</span>
                                                     </div>
                                                 </div>
-                                                <div class="flex gap-x-2">
+                                                <div class="flex gap-x-2 items-center">
                                                     <div class="text-lg font-semibold">For Duration:</div>
                                                     <dx-select-box [items]="minutues" displayExpr="Value" valueExpr="Value" class="form-control" label="Duration"
                                                         required placeholder="In Minutes" lableMode="static" name="meter" [searchEnabled]="true" [formControlName]="'Duration'">
                                                     </dx-select-box>
+                                                    <div class="text-lg font-semibold">Consecutive Profiles</div>
                                                 </div>
                                             </div>
                                             <div class="flex flex-col py-4 gap-y-2 bg-gray-200 px-4 width-fit min-w-200 mt-2">
@@ -418,7 +419,7 @@
                                                 </div>
                                             </div>
                                             <div class="flex pt-3 border-t border-gray-300 mt-2 justify-end gap-x-2">
-                                                <button routerLink="/admin" class="dnm-btn dnm-btn-cancel" type="button">Cancel</button>
+                                                <button class="dnm-btn dnm-btn-cancel" type="button" (click)="onCancelAcknoledge()">Cancel</button>
                                                 <button mat-raised-button color="primary" class="dnm-btn dnm-btn-primary" type="button" (click)="onAcknowledge()">Acknowledge</button>
                                             </div>
                                         </div>
@@ -534,6 +535,28 @@
                                 </ng-template>
                                 <ng-template matTabContent>
                                     <app-shop-readings [buildingId]="tabItem.dataSource.buildingId" [shopId]="tabItem.dataSource.shopId" [meterId]="tabItem.dataSource.meterId"></app-shop-readings>
+                                </ng-template>
+                            </mat-tab>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'DashboardTriggeredAlarms'">
+                            <mat-tab class="home-tab" label="{{tabItem.title}}">
+                                <ng-template mat-tab-label>
+                                    {{tabItem.title}}
+                                    <mat-icon class="icon-size-4 hover:text-red-500 ml-2" [svgIcon]="'feather:x'" (click)="removeTab(i)"></mat-icon>
+                                </ng-template>
+                                <ng-template matTabContent>
+                                    <app-triggered-alarms [buildingId]="tabItem.dataSource.buildingId" [partnerId]="tabItem.dataSource.partnerId"></app-triggered-alarms>
+                                </ng-template>
+                            </mat-tab>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'DashboardTriggeredAlarmDetail'">
+                            <mat-tab class="home-tab" label="{{tabItem.title}}">
+                                <ng-template mat-tab-label>
+                                    {{tabItem.title}}
+                                    <mat-icon class="icon-size-4 hover:text-red-500 ml-2" [svgIcon]="'feather:x'" (click)="removeTab(i)"></mat-icon>
+                                </ng-template>
+                                <ng-template matTabContent>
+                                    <app-meter-alarm-detail [meter]="tabItem.dataSource"></app-meter-alarm-detail>
                                 </ng-template>
                             </mat-tab>
                         </ng-container>

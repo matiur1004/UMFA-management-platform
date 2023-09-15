@@ -45,9 +45,13 @@ export class DashboardService {
   public alarmTriggeredId: any;
   public selectedShopInfo: any;
   public selectedTenantSlipInfo: any;
-  
-  private _alarmTriggerDetail: BehaviorSubject<any> = new BehaviorSubject(null);
+  public selectedTriggeredAlarmInfo: any;
 
+  private _alarmTriggerDetail: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _triggeredAlarmsPage: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _triggeredAlarmsList: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _triggeredAlarmDetailPage: BehaviorSubject<any> = new BehaviorSubject(null);
+  
   constructor(
     private router: Router, 
     private http: HttpClient,
@@ -164,6 +168,18 @@ export class DashboardService {
       return this._alarmTriggerDetail.asObservable();
   }
 
+  get triggeredAlarmsPage$(): Observable<any>{
+    return this._triggeredAlarmsPage.asObservable();
+  }
+
+  get triggeredAlarmsList$(): Observable<any>{
+    return this._triggeredAlarmsList.asObservable();
+  }
+
+  get triggeredAlarmDetailPage$(): Observable<any>{
+    return this._triggeredAlarmDetailPage.asObservable();
+  }
+  
   getStats(userId) {
     const url = `${CONFIG.apiURL}${CONFIG.dashboardStats}/${userId}`;
     return this.http.get<any>(url, { withCredentials: true })
@@ -267,6 +283,7 @@ export class DashboardService {
       .pipe(
         catchError(err => this.catchAuthErrors(err)),
         tap(bl => {
+          this.alarmTriggeredId = alarmTriggeredId;
           this._alarmTriggerDetail.next(bl);
           //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
         })
@@ -388,6 +405,18 @@ export class DashboardService {
       );
   }
 
+  getTriggeredAlarmsList(userId, buildingId) {
+    const url = `${CONFIG.apiURL}/AlarmTriggered?umfaUserId=${userId}&umfaBuildingId=${buildingId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(bl => {
+          this._triggeredAlarmsList.next(bl);
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        })
+      );
+  }
+  
   showShopDetailDashboard(data) {
     this._shopDetailDashboard.next(data);
   }
@@ -436,6 +465,10 @@ export class DashboardService {
     this._shopOccupation.next(data);
   }
 
+  showTriggeredAlarms(data) {
+    this._triggeredAlarmsPage.next(data);
+  }
+
   destroyShopOccupation() {
     this._shopOccupation.next(null);
     this._shopOccupationDetails.next(null);
@@ -463,12 +496,26 @@ export class DashboardService {
     this._shopReadingsDetails.next(null);
   }
 
+  showTriggeredAlarmDetail(data) {
+    this._triggeredAlarmDetailPage.next(data);
+  }
+
+  destroyTriggeredAlarm() {
+    this._triggeredAlarmDetailPage.next(null);
+    this._triggeredAlarmsPage.next(null);
+  }
+
+  destroyTriggeredAlarmList() {
+    this._triggeredAlarmsList.next(null);
+  }
+
   destroy() {
     this._buildingReports.next(null);
     this._tenantSlip.next(null);
     this._tenantSlipDetail.next(null);
     this._tenantSlipDownloads.next(null);
     this._alarmTriggerDetail.next(null);
+    this._triggeredAlarmDetailPage.next(null);
     this._shopList.next(null);
   }
 

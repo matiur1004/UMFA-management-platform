@@ -240,8 +240,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     ngOnInit(): void {
-        for(let i = 1; i <= 10; i++) {
-            this.minutues.push({Value: i * 30});
+        for(let i = 1; i <= 300; i++) {
+            this.minutues.push({Value: i});
         }
 
         this.form = this._formBuilder.group({
@@ -506,7 +506,43 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                         });
                 }
             });
+
+        this._dbService.triggeredAlarmsPage$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((data) => {
+                if(data) {
+                    let newTab: IHomeTab = {
+                        id: 0,
+                        title: `Triggered Alarms`,
+                        type: 'DashboardTriggeredAlarms',
+                        dataSource: data
+                    };
+                    this.tabsList.push(newTab);
+                    this.selectedTab = this.tabsList.length;
+                    this._cdr.markForCheck();
+                }
+            });
+
+        this._dbService.triggeredAlarmDetailPage$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((data) => {
+                if(data) {                    
+                    let newTab: IHomeTab = {
+                        id: 0,
+                        title: `${data.MeterNo}`,
+                        type: 'AlarmTrigger',
+                        dataSource: data
+                    };
+                    this.tabsList.push(newTab);
+                    this.selectedTab = this.tabsList.length;
+                    setTimeout(() => {
+                        this._dbService.getAlarmTriggered(data.AMRMeterTriggeredAlarmId).subscribe();
+                    }, 500);
+                    this._cdr.markForCheck();
+                }
+            });
         //Wip
+        //this._dbService.showTriggeredAlarms({buildingId: null, partnerId: null});
         // let res = {
         //     "buildingId": 2531,
         //     "shopId": 65469,
@@ -621,12 +657,19 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             this.tabsList[index]['type'] == 'ShopBilling' ||
             this.tabsList[index]['type'] == 'ShopDashboardOccupations' ||
             this.tabsList[index]['type'] == 'ShopDashboarAssignedMeters' || 
-            this.tabsList[index]['type'] == 'ShopDashboardReadings') {
+            this.tabsList[index]['type'] == 'ShopDashboardReadings' ||
+            this.tabsList[index]['type'] == 'AlarmTrigger') {
             this.selectedTab = index;    
         }
         if(this.tabsList[index]['type'] == 'ShopList') {
             this._dbService.selectedShopInfo = null;
             this._dbService.destroyShopList();
+            if(this.tabsList[index]['dataSource']['destination'] == 'Home') this.selectedTab = 0;
+            else this.selectedTab = index;
+        }
+        if(this.tabsList[index]['type'] == 'DashboardTriggeredAlarms') {
+            this._dbService.selectedTriggeredAlarmInfo = null;
+            this._dbService.destroyTriggeredAlarmList();
             if(this.tabsList[index]['dataSource']['destination'] == 'Home') this.selectedTab = 0;
             else this.selectedTab = index;
         }
@@ -638,7 +681,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             this._dbService.selectedTenantSlipInfo = null;
             this._dbService.destroyTenantSlips();
         }
-        this.tabsList.splice(index, 1);        
+        this.tabsList.splice(index, 1);
         this._cdr.markForCheck();
     }
 
@@ -696,6 +739,15 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
     
     onAcknowledge() {
         this._dbService.updateAcknowledged(this._dbService.alarmTriggeredId).subscribe();
+    }
+
+    onCancelAcknoledge() {
+        let index = this.tabsList.findIndex(obj => obj['type'] == 'AlarmTrigger');
+        this.removeTab(index);
+    }
+
+    onDetailAlarms() {
+        this._dbService.showTriggeredAlarms({buildingId: null, partnerId: null});
     }
 
     ngAfterViewInit() {
