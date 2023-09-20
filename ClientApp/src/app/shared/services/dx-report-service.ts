@@ -11,6 +11,7 @@ export class DXReportService {
     private _shopCostVariance: BehaviorSubject<any> = new BehaviorSubject(null);
     private _reportChanged: BehaviorSubject<boolean> = new BehaviorSubject(false);
     private _shopUsageVariance: BehaviorSubject<any> = new BehaviorSubject(null);
+    private _buildingRecovery: BehaviorSubject<any> = new BehaviorSubject(null);
     private _utilityRecoveryExpense: BehaviorSubject<any> = new BehaviorSubject(null);
     private _consumptionSummary: BehaviorSubject<any> = new BehaviorSubject(null);
     private _consumptionSummaryRecon: BehaviorSubject<any> = new BehaviorSubject(null);
@@ -39,6 +40,10 @@ export class DXReportService {
 
     get shopUsageVariance$(): Observable<any> {
         return this._shopUsageVariance.asObservable();
+    }
+
+    get buildingRecovery$(): Observable<any> {
+        return this._buildingRecovery.asObservable();
     }
 
     get shopCostVariance$(): Observable<any> {
@@ -384,6 +389,23 @@ export class DXReportService {
         this._reportChanged.next(true);
     }
 
+    getReportForBuildingRecovery() {
+        let url = `${CONFIG.apiURL}/Reports/`;
+        if(this.BuildingRecoveryParams.Utility == 'Electricity') url += 'BuildingRecoveryElectricity';
+        if(this.BuildingRecoveryParams.Utility == 'Water') url += 'BuildingRecoveryWater';
+        if(this.BuildingRecoveryParams.Utility == 'Sewerage') url += 'BuildingRecoverySewer';
+        if(this.BuildingRecoveryParams.Utility == 'Disel') url += 'BuildingRecoveryDisel';
+        url += `?startPeriodId=${this.BuildingRecoveryParams.StartPeriodId}&endPeriodId=${this.BuildingRecoveryParams.EndPeriodId}`;
+        
+        return this.http.get<any>(url, { withCredentials: true })
+            .pipe(
+                catchError(err => this.catchErrors(err)),
+                tap(m => {
+                    this._buildingRecovery.next(m);
+                }),
+            );
+    }
+
     getReportDataForShop() {
         const url = `${CONFIG.apiURL}/Reports/ShopUsageVarianceReport`;
         const queryParams = '?' +
@@ -459,6 +481,10 @@ export class DXReportService {
             );
     }
 
+    setBuildingRecovery(data) {
+        this._buildingRecovery.next(data);
+    }
+
     setShopUsageVariance(data) {
         this._shopUsageVariance.next(data);
     }
@@ -487,6 +513,7 @@ export class DXReportService {
         this._utilityRecoveryExpense.next(null);
         this._shopUsageVariance.next(null);
         this._shopCostVariance.next(null);
+        this._buildingRecovery.next(null);
     }
 
     destroyBuildingsAndPartners() {
