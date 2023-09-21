@@ -72,8 +72,10 @@ namespace ClientPortal.Services
                         LastName = aspUser.Surname,
                         UserName = model.UserName,
                         IsAdmin = (bool)aspUser.IsSiteAdmin,
+                        IsClient = (bool)aspUser.IsClient,
+                        IsTenant = (bool)aspUser.IsTenant,
                         PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password),
-                        RoleId = 2
+                        RoleId = (bool)aspUser.IsTenant ? 5 : (bool)aspUser.IsClient ? 4 : (bool)aspUser.IsSiteAdmin ? 1 : 2
                     };
                 }
                 else //validate the user within local db
@@ -88,17 +90,19 @@ namespace ClientPortal.Services
                         if (aspUser == null) throw new AppException($"User validation for user: {model.UserName} failed: {msg.Trim()}");
                         //else set user to fetched user
                         _logger.LogInformation("Local db data for user {UserName} is stale, replace with new.", model.UserName);
-                        newUser = true;
-                        user = new User()
-                        {
-                            Id = 0,
-                            UmfaId = aspUser.UserId,
-                            FirstName = aspUser.Name,
-                            LastName = aspUser.Surname,
-                            UserName = model.UserName,
-                            PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password),
-                            RoleId = 2
-                        };
+                        //newUser = true;
+                        //user = new User()
+                        //{
+                        user.UmfaId = aspUser.UserId;
+                        user.FirstName = aspUser.Name;
+                        user.LastName = aspUser.Surname;
+                        user.UserName = model.UserName;
+                        user.IsAdmin = (bool)aspUser.IsSiteAdmin;
+                        user.IsClient = (bool)aspUser.IsClient;
+                        user.IsTenant = (bool)aspUser.IsTenant;
+                        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
+                        if (user.RoleId != 1) user.RoleId = (bool)aspUser.IsTenant ? 5 : (bool)aspUser.IsClient ? 4 : (bool)aspUser.IsSiteAdmin ? 1 : 2;
+                        //};
                     }
                 }
 

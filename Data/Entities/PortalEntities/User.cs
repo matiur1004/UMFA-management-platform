@@ -10,6 +10,8 @@
         public string LastName { get; set; }
         public string UserName { get; set; }
         public bool IsAdmin { get; set; } = false;
+        public bool IsClient {  get; set; }
+        public bool IsTenant { get; set; }
         public int RoleId { get; set; }
         public string? NotificationEmailAddress { get; set; }
         public string? NotificationMobileNumber { get; set; }
