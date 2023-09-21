@@ -52,13 +52,13 @@ export class ReportResultComponent implements OnInit, AfterViewInit, OnDestroy {
 
           this.tenantDatasource = []; this.bulkMeterDatasource = []; this.councilDatasource = [];
           let tenantItemList =  this.dataSource.TenantReportData.Data[0]['Details'].map(obj => obj['ItemName']);
-          let bulkItemList =  this.dataSource.BulkReportData.Data[0]['Details'].filter(obj => obj['ItemName'] != 'Total').map(obj => obj['ItemName']);
-          bulkItemList.push('Total');
+          let bulkItemList =  this.dataSource.BulkReportData.Data[0]['Details'].map(obj => obj['ItemName']);
+          //bulkItemList.push('Total');
 
-          let councilItemList = this.dataSource.CouncilReportData.Data[0]['Details'].filter(obj => obj['ItemName'] != 'Total').map(obj => obj['ItemName']);
-          councilItemList.push('Total');
+          let councilItemList = this.dataSource.CouncilReportData.Data[0]['Details'].map(obj => obj['ItemName']);
+          //councilItemList.push('Total');
 
-          if(this.reportService.BuildingRecoveryParams.Utility == 'Electricity') {
+          if(this.reportService.BuildingRecoveryParams.Utility == 'Electricity' || this.reportService.BuildingRecoveryParams.Utility == 'Disel') {
             let rowData = {};
             this.periodIdList.forEach(id => {
               rowData['ItemName'] = 'Electricity Recovery';
@@ -67,7 +67,7 @@ export class ReportResultComponent implements OnInit, AfterViewInit, OnDestroy {
               rowData[id + '_total'] = 'Total R/C';
             })
             this.tenantDatasource.push(rowData);
-            this.bulkMeterDatasource.push(rowData);
+            this.bulkMeterDatasource.push({...rowData, ItemName: ''});
             this.councilDatasource.push({...rowData, ItemName: ''});
 
             tenantItemList.forEach(itemName => {
@@ -87,9 +87,16 @@ export class ReportResultComponent implements OnInit, AfterViewInit, OnDestroy {
               rowData['ItemName'] = itemName;
               this.dataSource.BulkReportData.Data.forEach(data => {
                 let detail = data['Details'].find(obj => obj['ItemName'] == itemName);
-                rowData[data['PeriodId'] + '_kwh'] = detail['KWhUsage'];
-                rowData[data['PeriodId'] + '_kva'] = detail['KVAUsage'];
-                rowData[data['PeriodId'] + '_total'] = `R ${detail['TotalAmount']}`;
+                if(detail) {
+                  rowData[data['PeriodId'] + '_kwh'] = detail['KWhUsage'];
+                  rowData[data['PeriodId'] + '_kva'] = detail['KVAUsage'];
+                  rowData[data['PeriodId'] + '_total'] = `R ${detail['TotalAmount']}`;  
+                } else {
+                  rowData[data['PeriodId'] + '_kwh'] = 0;
+                  rowData[data['PeriodId'] + '_kva'] = 0;
+                  rowData[data['PeriodId'] + '_total'] = `R 0`;
+                }
+                
               })
               this.bulkMeterDatasource.push(rowData);
             });
@@ -99,9 +106,16 @@ export class ReportResultComponent implements OnInit, AfterViewInit, OnDestroy {
               rowData['ItemName'] = itemName;
               this.dataSource.CouncilReportData.Data.forEach(data => {
                 let detail = data['Details'].find(obj => obj['ItemName'] == itemName);
-                rowData[data['PeriodId'] + '_kwh'] = detail['KWhUsage'];
-                rowData[data['PeriodId'] + '_kva'] = detail['KVAUsage'];
-                rowData[data['PeriodId'] + '_total'] = `R ${detail['TotalAmount']}`;
+                if(detail) {
+                  rowData[data['PeriodId'] + '_kwh'] = detail['KWhUsage'];
+                  rowData[data['PeriodId'] + '_kva'] = detail['KVAUsage'];
+                  rowData[data['PeriodId'] + '_total'] = `R ${detail['TotalAmount']}`;
+                } else {
+                  rowData[data['PeriodId'] + '_kwh'] = 0;
+                  rowData[data['PeriodId'] + '_kva'] = 0;
+                  rowData[data['PeriodId'] + '_total'] = `R 0`;
+                }
+                
               })
               this.councilDatasource.push(rowData);
             });
@@ -113,7 +127,7 @@ export class ReportResultComponent implements OnInit, AfterViewInit, OnDestroy {
               rowData[id + '_total'] = 'Total R/C';
             })
             this.tenantDatasource.push(rowData);
-            this.bulkMeterDatasource.push(rowData);
+            this.bulkMeterDatasource.push({...rowData, ItemName: ''});
             this.councilDatasource.push({...rowData, ItemName: ''});
 
             //KLUsage
@@ -189,7 +203,7 @@ export class ReportResultComponent implements OnInit, AfterViewInit, OnDestroy {
       if(event.data.ItemName == 'Electricity Recovery' && type == 'tenant') {
         event.cellElement.style.backgroundColor = '#ececec';
         if(event.value != 'Electricity Recovery') event.cellElement.style.textAlign = "center";
-      } else if(event.data.ItemName == 'Electricity Recovery' && type == 'bulkMeter') {
+      } else if(event.data.ItemName == '' && type == 'bulkMeter') {
         if(event.value != 'Electricity Recovery') event.cellElement.style.textAlign = "center";
       } else if(event.data.ItemName == '' && type == 'council') {
         if(event.value != '') event.cellElement.style.textAlign = "center";

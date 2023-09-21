@@ -394,7 +394,7 @@ export class DXReportService {
         if(this.BuildingRecoveryParams.Utility == 'Electricity') url += 'BuildingRecoveryElectricity';
         if(this.BuildingRecoveryParams.Utility == 'Water') url += 'BuildingRecoveryWater';
         if(this.BuildingRecoveryParams.Utility == 'Sewerage') url += 'BuildingRecoverySewer';
-        if(this.BuildingRecoveryParams.Utility == 'Disel') url += 'BuildingRecoveryDisel';
+        if(this.BuildingRecoveryParams.Utility == 'Disel') url += 'BuildingRecoveryDiesel';
         url += `?startPeriodId=${this.BuildingRecoveryParams.StartPeriodId}&endPeriodId=${this.BuildingRecoveryParams.EndPeriodId}`;
         
         return this.http.get<any>(url, { withCredentials: true })
