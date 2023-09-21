@@ -75,9 +75,16 @@ export class ReportResultComponent implements OnInit, AfterViewInit, OnDestroy {
               rowData['ItemName'] = itemName;
               this.dataSource.TenantReportData.Data.forEach(data => {
                 let detail = data['Details'].find(obj => obj['ItemName'] == itemName);
-                rowData[data['PeriodId'] + '_kwh'] = detail['KWhUsage'];
-                rowData[data['PeriodId'] + '_kva'] = detail['KVAUsage'];
-                rowData[data['PeriodId'] + '_total'] = `R ${detail['TotalAmount']}`;
+                if(detail) {
+                  rowData[data['PeriodId'] + '_kwh'] = Math.round(detail['KWhUsage'] * 100)/100;
+                  rowData[data['PeriodId'] + '_kva'] = Math.round(detail['KVAUsage'] * 100)/100;
+                  rowData[data['PeriodId'] + '_total'] = `R ` + Math.round(detail['TotalAmount'] * 100)/100;
+                } else {
+                  rowData[data['PeriodId'] + '_kwh'] = 0;
+                  rowData[data['PeriodId'] + '_kva'] = 0;
+                  rowData[data['PeriodId'] + '_total'] = `R 0`;
+                }
+                
               })
               this.tenantDatasource.push(rowData);
             })
@@ -136,8 +143,14 @@ export class ReportResultComponent implements OnInit, AfterViewInit, OnDestroy {
               rowData['ItemName'] = itemName;
               this.dataSource.TenantReportData.Data.forEach(data => {
                 let detail = data['Details'].find(obj => obj['ItemName'] == itemName);
-                rowData[data['PeriodId'] + '_KL'] = detail['KLUsage'];
-                rowData[data['PeriodId'] + '_total'] = `R ${detail['TotalAmount']}`;
+                if(detail) {
+                  rowData[data['PeriodId'] + '_KL'] = Math.round(detail['KLUsage'] * 100)/100;
+                  rowData[data['PeriodId'] + '_total'] = `R ` + Math.round(detail['TotalAmount'] * 100) / 100;  
+                } else{
+                  rowData[data['PeriodId'] + '_KL'] = 0;
+                  rowData[data['PeriodId'] + '_total'] = `R 0`;
+                }
+                
               })
               this.tenantDatasource.push(rowData);
             })
@@ -230,7 +243,7 @@ export class ReportResultComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   export(){
-    let pdfWidth = (this.reportService.BuildingRecoveryParams.Utility == 'Electricity' ? 165 : 140 ) * (this.periodList.length + 2);
+    let pdfWidth = (this.reportService.BuildingRecoveryParams.Utility == 'Electricity' || this.reportService.BuildingRecoveryParams.Utility == 'Disel' ? 165 : 140 ) * (this.periodList.length + 2);
     const pdfDoc = new jsPDF('landscape', 'px', [800, pdfWidth]);
     var logoUrl = '/assets/images/logo/logo.png';
     var xhr = new XMLHttpRequest();
