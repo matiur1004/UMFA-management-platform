@@ -2,7 +2,6 @@ import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { AllowedPageSizes } from '@core/helpers';
 import { DXReportService } from '@shared/services';
-import { UserService } from 'app/shared/services/user.service';
 import { DashboardService } from '../dasboard.service';
 import { Subject, takeUntil } from 'rxjs';
 

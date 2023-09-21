@@ -14,6 +14,7 @@
                 [wordWrapEnabled]="true"
                 [hoverStateEnabled]="true"
                 (onCellPrepared)="onCellPrepared($event)"
+                style="max-width: 100%;"
             >
                 <!-- <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling> -->
                 <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
@@ -32,8 +33,15 @@
                 <dxo-export [enabled]="true" [allowExportSelectedData]="false" [formats]="['pdf', 'excel']"></dxo-export>
             </dx-data-grid>
         </div>
+        <div class="flex justify-end">
+            <dx-select-box [items]="chartItems" class="form-control" label="Chart Type"
+                    required placeholder="Select option" lableMode="static" id="chartType"
+                    [(ngModel)]="chartType">
+                </dx-select-box>
+        </div>
         <div style="width: 100%;" style="text-align:center" *ngIf="resultsForGraph.length > 0">
             <apx-chart
+                *ngIf="chartType == 'Bar'"
                 [series]="chartOptions.series"
                 [chart]="chartOptions.chart"
                 [dataLabels]="chartOptions.dataLabels"
@@ -44,6 +52,18 @@
                 [stroke]="chartOptions.stroke"
                 [tooltip]="chartOptions.tooltip"
                 [xaxis]="chartOptions.xaxis"
+            ></apx-chart>
+            <apx-chart
+                *ngIf="chartType == 'Line'"
+                class="mr-2 pr-2"
+                [series]="chartLineOptions.series"
+                [chart]="chartLineOptions.chart"
+                [xaxis]="chartLineOptions.xaxis"
+                [stroke]="chartLineOptions.stroke"
+                [markers]="chartLineOptions.markers"
+                [grid]="chartLineOptions.grid"
+                [yaxis]="chartLineOptions.yaxis"
+                [title]="chartLineOptions.title"
             ></apx-chart>
         </div>
     </div>

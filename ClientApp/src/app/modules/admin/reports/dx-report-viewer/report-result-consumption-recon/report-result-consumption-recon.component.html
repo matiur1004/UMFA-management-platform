@@ -10,7 +10,7 @@
         </mat-menu>
     </div>
     <div class="flex px-2">
-        <mat-accordion>
+        <mat-accordion class="w-full">
             <mat-expansion-panel *ngIf="electricityRecoveriesDataSource">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
@@ -19,7 +19,7 @@
                 </mat-expansion-panel-header>
                 <div class="flex w-full p-2 gap-x-8" *ngIf="electricityBulkMeterChart">
                     <div class="flex items-center">
-                        <dx-radio-group [items]="valueTypes" [value]="valueTypes[0]" (valueChange)="onChartChange('electricity', $event, 0)">
+                        <dx-radio-group [items]="valueTypes" [valueExpr]="'value'" [displayExpr]="'name'" [value]="valueTypes[0]['value']" (valueChange)="onChartChange('electricity', $event, 0)">
                         </dx-radio-group>
                     </div>                    
                     <div class="flex flex-wrap gap-x-8 gap-y-8" style="width: 650px;">
@@ -41,11 +41,15 @@
                             </div>
                         </div>
                     </div>
-                    <apx-chart
-                        [series]="electricityBulkMeterChart.series"
-                        [chart]="electricityBulkMeterChart.chart"
-                        [labels]="electricityBulkMeterChart.labels"
-                    ></apx-chart>
+                    <div class="flex flex-col gap-y-1 items-center">
+                        <span class="text-lg font-semibold">Bulk Meter Composition</span>
+                        <apx-chart
+                            [series]="electricityBulkMeterChart.series"
+                            [chart]="electricityBulkMeterChart.chart"
+                            [labels]="electricityBulkMeterChart.labels"
+                        ></apx-chart>
+                    </div>
+                    
                 </div>
                 <div class="flex w-full p-2" *ngIf="electricityRecoveriesDataSource">
                     <dx-data-grid
@@ -137,15 +141,23 @@
                         <dxi-column dataField="BasicRC" caption="" cellTemplate="currencyValueTemplate"></dxi-column>
                         <dxi-column dataField="OtherRC" caption="" cellTemplate="currencyValueTemplate"></dxi-column>
                         <dxi-column dataField="TotalRC" caption="" cellTemplate="currencyValueTemplate"></dxi-column>
-                        <div *dxTemplate="let data of 'currencyValueTemplate'">
-                            <ng-container *ngIf="data.value != null; else emptyTemplate">
-                                R {{data.value | number : '1.2-2'}}
+                        <div *dxTemplate="let cellInfo of 'currencyValueTemplate'">
+                            <ng-container *ngIf="cellInfo.data.Name.indexOf('Recovery %') == -1; else percentTemplate">
+                                <ng-container *ngIf="cellInfo.value != null; else emptyTemplate">
+                                    R {{cellInfo.value | number : '1.2-2'}}
+                                </ng-container>
+                                <ng-template #emptyTemplate></ng-template>
                             </ng-container>
-                            <ng-template #emptyTemplate></ng-template>
+                            <ng-template #percentTemplate>
+                                <ng-container *ngIf="cellInfo.value != null; else emptyTemplate">
+                                    {{cellInfo.value | number : '1.2-2'}}
+                                </ng-container>
+                                <ng-template #emptyTemplate></ng-template>
+                            </ng-template>
                         </div>
-                        <div *dxTemplate="let data of 'cellValueTemplate'">
-                            <ng-container *ngIf="data.value != null; else emptyTemplate">
-                                {{data.value | number : '1.2-2'}}
+                        <div *dxTemplate="let cellInfo of 'cellValueTemplate'">
+                            <ng-container *ngIf="cellInfo.value != null; else emptyTemplate">
+                                {{cellInfo.value | number : '1.2-2'}}
                             </ng-container>
                             <ng-template #emptyTemplate></ng-template>
                         </div>
@@ -161,7 +173,7 @@
                 <div class="flex flex-col">
                     <div class="flex w-full p-2 gap-x-8" *ngIf="item.otherBulkMeterChart">
                         <div class="flex items-center">
-                            <dx-radio-group [items]="valueTypes" [value]="valueTypes[0]" (valueChange)="onChartChange(item.ServiceName, $event, i)">
+                            <dx-radio-group [items]="valueTypes" [valueExpr]="'value'" [displayExpr]="'name'" [value]="valueTypes[0]['value']" (valueChange)="onChartChange(item.ServiceName, $event, i)">
                             </dx-radio-group>
                         </div>                    
                         <div class="flex flex-wrap gap-x-8 gap-y-8" style="width: 650px;">
@@ -183,11 +195,14 @@
                                 </div>
                             </div>
                         </div>
-                        <apx-chart
-                            [series]="item.otherBulkMeterChart.series"
-                            [chart]="item.otherBulkMeterChart.chart"
-                            [labels]="item.otherBulkMeterChart.labels"
-                        ></apx-chart>
+                        <div class="flex flex-col gap-y-1 items-center">
+                            <span class="text-lg font-semibold">Bulk Meter Composition</span>
+                            <apx-chart
+                                [series]="item.otherBulkMeterChart.series"
+                                [chart]="item.otherBulkMeterChart.chart"
+                                [labels]="item.otherBulkMeterChart.labels"
+                            ></apx-chart>
+                        </div>
                     </div>
                     <div class="flex w-full p-2" *ngIf="item.otherRecoveriesDataSource">
                         <dx-data-grid
@@ -270,15 +285,23 @@
                             <dxi-column dataField="Amount" caption="" cellTemplate="currencyValueTemplate"></dxi-column>
                             <dxi-column dataField="BCAmount" caption="" cellTemplate="currencyValueTemplate"></dxi-column>
                             <dxi-column dataField="TotalRC" caption="" cellTemplate="currencyValueTemplate"></dxi-column>
-                            <div *dxTemplate="let data of 'currencyValueTemplate'">
-                                <ng-container *ngIf="data.value != null; else emptyTemplate">
-                                    R {{data.value | number : '1.2-2'}}
+                            <div *dxTemplate="let cellInfo of 'currencyValueTemplate'">
+                                <ng-container *ngIf="cellInfo.data.Name.indexOf('Recovery %') == -1; else percentTemplate">
+                                    <ng-container *ngIf="cellInfo.value != null; else emptyTemplate">
+                                        R {{cellInfo.value | number : '1.2-2'}}
+                                    </ng-container>
+                                    <ng-template #emptyTemplate></ng-template>
                                 </ng-container>
-                                <ng-template #emptyTemplate></ng-template>
+                                <ng-template #percentTemplate>
+                                    <ng-container *ngIf="cellInfo.value != null; else emptyTemplate">
+                                        {{cellInfo.value | number : '1.2-2'}}
+                                    </ng-container>
+                                    <ng-template #emptyTemplate></ng-template>
+                                </ng-template>
                             </div>
-                            <div *dxTemplate="let data of 'cellValueTemplate'">
-                                <ng-container *ngIf="data.value != null; else emptyTemplate">
-                                    {{data.value | number : '1.2-2'}}
+                            <div *dxTemplate="let cellInfo of 'cellValueTemplate'">
+                                <ng-container *ngIf="cellInfo.value != null; else emptyTemplate">
+                                    {{cellInfo.value | number : '1.2-2'}}
                                 </ng-container>
                                 <ng-template #emptyTemplate></ng-template>
                             </div>

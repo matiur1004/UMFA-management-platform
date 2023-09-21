@@ -154,6 +154,7 @@ IConfiguration? configuration = builder.Configuration;
     services.AddSingleton<IFeedbackReportsQueueService, FeedbackReportsQueueService>();
 
     //Data components
+    services.AddScoped<IPortalSpRepository, PortalSpRepository>();
     services.AddScoped<IPortalStatsRepository, PortalStatsRepository>();
     services.AddScoped<IAMRMeterRepository, AMRMeterRepository>();
     services.AddScoped<IUMFABuildingRepository, UMFABuildingRepository>();

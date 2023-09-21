@@ -1,0 +1,62 @@
+<div class="flex flex-col relative">
+    <div class="flex absolute z-10 left-2">
+        <form [formGroup]="form" class="w-full">
+            <div class="grid grid-cols-4 gap-2">
+                <div class="col-span-1">
+                    <dx-select-box [readOnly]="meterId > 0" [dataSource]="metersDataSource" displayExpr="MeterNo" valueExpr="BuildingServiceID" class="form-control" label="Meter Number"
+                                    [grouped]="true" placeholder="Select Meter Number" lableMode="static" id="meterNo" (onValueChanged)="meterChanged($event)"
+                                    [formControlName]="'meterId'" name="meterNo" [searchEnabled]="true" searchExpr="Name" searchMode="contains" [searchTimeout]="400">
+                    </dx-select-box>
+                </div>
+            </div>
+        </form>
+    </div>
+    <dx-data-grid
+        #grid
+        [dataSource]="dataSource"
+        [showBorders]="true"
+        id="shop-readings-container"
+        [hoverStateEnabled]="true"
+    >
+        <!-- <dxo-selection mode="single"></dxo-selection> -->
+        <dxo-filter-row [visible]="'true'"
+            [applyFilter]="currentFilter"></dxo-filter-row>
+        <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+        <dxo-paging [pageSize]="15"> </dxo-paging>
+        <dxo-pager
+            [visible]="true"
+            [allowedPageSizes]="allowedPageSizes"
+            [displayMode]="'compact'"
+            [showPageSizeSelector]="true"
+            [showInfo]="true"
+            [showNavigationButtons]="true"
+        >
+        </dxo-pager>
+        <dxo-search-panel
+            [visible]="true"
+            [width]="200"
+            placeholder="Search..."
+        ></dxo-search-panel>
+        <dxi-column dataField="PeriodName" caption="Period" [width]="120"></dxi-column>
+        <dxi-column dataField="PeriodStart" caption="Period Start" [customizeText]="onCustomizeDate" [width]="90"></dxi-column>
+        <dxi-column dataField="PeriodEnd" caption="Period End" [customizeText]="onCustomizeDate" [width]="90"></dxi-column>
+        <dxi-column dataField="PreviousReading" caption="Previous Reading" [minWidth]="75"></dxi-column>
+        <dxi-column dataField="ReadingDate" caption="Reading Date" [minWidth]="75"></dxi-column>
+        <dxi-column dataField="CurrentReading" caption="Current Reading" [minWidth]="75"></dxi-column>
+        <dxi-column dataField="ReadingUsage" caption="Reading Usage" [minWidth]="70"></dxi-column>
+        <dxi-column dataField="CTRatio" caption="CT Ratio" [minWidth]="70"></dxi-column>
+        <dxi-column dataField="BillingUsage" caption="Billing Usage" [minWidth]="75"></dxi-column>
+        <dxi-column dataField="Contribution" caption="Contribution" [minWidth]="100"></dxi-column>
+        <dxi-column dataField="ReadingMethod" caption="Reading Method" [minWidth]="100"></dxi-column>
+        <dxi-column dataField="Estimated" caption="Estimated" [width]="75"></dxi-column>
+        <dxi-column dataField="TotalArea" caption="Total Area" [minWidth]="90"></dxi-column>
+        <dxi-column dataField="AssignedArea" caption="Assigned Area" [minWidth]="80"></dxi-column>
+        <dxi-column dataField="Photo" caption="Photo" [minWidth]="80" cellTemplate="cellPhotoTemplate"></dxi-column>
+        <div *dxTemplate="let data of 'cellPhotoTemplate'" class="flex justify-center items-center">
+            <ng-container *ngIf="data.value != null; else emptyTemplate">
+                <a class="" target="_blank" href="{{data.value}}"><mat-icon class="hover:text-cyan-500" [svgIcon]="'feather:image'"></mat-icon></a>
+            </ng-container>
+            <ng-template #emptyTemplate></ng-template>
+        </div>
+    </dx-data-grid>
+</div>

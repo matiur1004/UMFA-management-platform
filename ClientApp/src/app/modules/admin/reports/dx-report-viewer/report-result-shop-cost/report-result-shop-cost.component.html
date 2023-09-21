@@ -63,17 +63,21 @@
                     placeholder="Search..."
                 ></dxo-search-panel>
                 <dxo-filter-row [visible]="'true'" [applyFilter]="currentFilter"></dxo-filter-row>
-                <dxi-column dataField="Recoverable" caption="" [groupIndex]="0"></dxi-column>
-                <dxi-column dataField="Tenants" [groupIndex]="1"></dxi-column>
-                <dxi-column dataField="Shop" caption="Shop" [groupIndex]="2"></dxi-column>
-
-                <!-- <dxi-column dataField="Tenants" [minWidth]="120"></dxi-column>
-                <dxi-column dataField="Shop" [minWidth]="120"></dxi-column> -->
+                <dxi-column dataField="Recoverable" caption="Recoverable" sortOrder="asc" [minWidth]="120" [sortIndex]="0"></dxi-column>
+                <dxi-column dataField="Tenants" caption="Tenants" [minWidth]="150" sortOrder="asc" [sortIndex]="1"></dxi-column>
+                <dxi-column dataField="Shop" caption="Shop" [minWidth]="100" sortOrder="asc" [sortIndex]="2"></dxi-column>
+                <dxi-column dataField="GroupId" caption="" [minWidth]="120" [visible]="false" sortOrder="asc" [sortIndex]="3"></dxi-column>
                 <dxi-column dataField="Group" caption="Group Name" [minWidth]="120"></dxi-column>
                 <dxi-column dataField="PeriodGraph" caption="Period Graph" [width]="160" cellTemplate="periodGraphTemplate">
                     <div *dxTemplate="let data of 'periodGraphTemplate'">
-                        <dx-sparkline [dataSource]="data.value" type="line" argumentField="x" valueField="y" [showMinMax]="false" [pointSize]="4" width="160" [ignoreEmptyPoints]="false">
-                        </dx-sparkline>
+                        <apx-chart
+                            class="flex justify-center"
+                            [series]="data.value"
+                            [chart]="commonLineSparklineOptions.chart"
+                            [tooltip]="commonLineSparklineOptions.tooltip"
+                            [stroke]="commonLineSparklineOptions.stroke"
+                            [markers]="commonLineSparklineOptions.markers"
+                        ></apx-chart>
                     </div>
                 </dxi-column>
                 <ng-container *ngFor="let period of periodList">
@@ -85,6 +89,7 @@
                     <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
                 </dxi-column>
                 <dxi-column dataField="Variance" [minWidth]="100"></dxi-column>
+                <dxi-column dataField="Note" [minWidth]="100" [visible]="false"></dxi-column>
             </dx-data-grid>
         </div>
         

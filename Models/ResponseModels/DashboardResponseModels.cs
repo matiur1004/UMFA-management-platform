@@ -42,6 +42,8 @@ namespace ClientPortal.Models.ResponseModels
         public int ConsumerWaterCount { get; set; }
         public int BulkCount { get; set; }
         public int CouncilChkCount { get; set; }
+        public int AlarmsConfigured { get; set; } = 0;
+        public int AlarmsTriggered { get; set; } = 0;
     }
 
     public class DashboardGraphStat

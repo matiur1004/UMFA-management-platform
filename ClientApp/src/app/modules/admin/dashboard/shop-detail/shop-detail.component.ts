@@ -71,18 +71,12 @@ export class ShopDetailComponent implements OnInit {
   }]
   billingSummaryDataSource: any;
 
-  // {
-  //   value: 4470800,
-  //   name: 'Ankara',
-  //   country: 'Turkey',
-  // }, {
   dataSource: any;
   shopDetailDashboard: any;
   billingTotal: number;
   allAvailableImages: number;
 
   tenantItems: any[] = [];
-  selectedTenantType: string = 'latest';
   periodList: any[] = [];
   billingPeriodList: any[] = [];
   groupList: any[] = [];
@@ -252,7 +246,6 @@ export class ShopDetailComponent implements OnInit {
           this.setBillingUsageChart();
 
           this.availableGroupColors = this.groupList.map((groupName, idx) => this.groupColors[idx]);
-          console.log('sdfsdf', this.availableGroupColors)
           this.billingChartOptions.colors = this.availableGroupColors;
           this.billingChartOptions.fill.colors = this.availableGroupColors;
 
@@ -335,7 +328,7 @@ export class ShopDetailComponent implements OnInit {
     
     this.billingChartOptions.xaxis.categories = periodArray.map(period => moment(new Date(period)).format('MMM YY'));
     this.billingChartOptions.series = billingData;
-    if(this.billingChart) this.billingChart.ngOnInit();
+    //if(this.billingChart) this.billingChart.ngOnInit();
   }
 
   setBillingUsageChart() {
@@ -362,7 +355,7 @@ export class ShopDetailComponent implements OnInit {
     this.billingUsageChartOptions.colors = groupColors;
     this.billingUsageChartOptions.fill.colors = groupColors;
     
-    if(this.billingUsageChart) this.billingUsageChart.ngOnInit();
+    //if(this.billingUsageChart) this.billingUsageChart.ngOnInit();
   }
 
   setBillingSummary() {
@@ -387,7 +380,7 @@ export class ShopDetailComponent implements OnInit {
       this.billingSummaryDataSource.push({name: groupName, amount: totalByGroup, usage: totalUsageByGroup});
     })
     this.treeMapOptions.series.push({'data': billingSummaryData});
-    if(this.chart) this.chart.ngOnInit();
+    //if(this.chart) this.chart.ngOnInit();
   }
 
   onBillingMonthChange(event) {
@@ -413,6 +406,11 @@ export class ShopDetailComponent implements OnInit {
   onShopAssignedMeters() {
     this.service.showAssignedMeters({buildingId: this.buildingId, shopId: this.shopId});
   }
+
+  onShopReadings() {
+    this.service.showReadings({buildingId: this.buildingId, shopId: this.shopId, meterId: null});
+  }
+
   /**
      * On destroy
      */

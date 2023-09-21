@@ -33,6 +33,10 @@ namespace ClientPortal.Services
         public Task<ConsumptionSummaryReconResponse> GetConsumptionSummaryReconReportAsync(ConsumptionSummaryReconRequest request);
         public Task<BuildingRecoveryReport> GetBuildingRecoveryReportAsync(BuildingRecoveryReportSpRequest request);
         public Task UpdateReportArhivesFileFormatsAsync(UpdateArchiveFileFormatSpRequest request);
+        public Task<UmfaBuildingRecoveryDataDieselResponse> GetBuildingRecoveryDieselAsync(UmfaBuildingRecoveryDataDieselSpRequest request);
+        public Task<UmfaBuildingRecoveryDataWaterResponse> GetBuildingRecoveryWaterAsync(UmfaBuildingRecoveryDataWaterSpRequest request);
+        public Task<UmfaBuildingRecoveryDataSewerResponse> GetBuildingRecoverySewerAsync(UmfaBuildingRecoveryDataSewerSpRequest request);
+        public Task<BuildingRecoveryReport> GetBuildingRecoveryElectricityAsync(BuildingRecoveryReportSpRequest request);
         #endregion
 
         public Task<List<ShopDashboardShop>> GetDashboardShopDataAsync(int buildingId);
@@ -297,6 +301,30 @@ namespace ClientPortal.Services
             var response = await GetAsync($"dashboard/buildings/{buildingId}/shops/{shopId}/meters/{meterId}/readings", new UmfaShopDashboardReadingsRequest { History = history });
 
             return JsonSerializer.Deserialize<List<UmfaShopDashboardReading>>(response);
+        }
+
+        public async Task<UmfaBuildingRecoveryDataDieselResponse> GetBuildingRecoveryDieselAsync(UmfaBuildingRecoveryDataDieselSpRequest request)
+        {
+            var response = await GetAsync("reports/buildingrecoverydiesel", request);
+            return JsonSerializer.Deserialize<UmfaBuildingRecoveryDataDieselResponse>(response);
+        }
+
+        public async Task<UmfaBuildingRecoveryDataWaterResponse> GetBuildingRecoveryWaterAsync(UmfaBuildingRecoveryDataWaterSpRequest request)
+        {
+            var response = await GetAsync("reports/buildingrecoverywater", request);
+            return JsonSerializer.Deserialize<UmfaBuildingRecoveryDataWaterResponse>(response);
+        }
+
+        public async Task<UmfaBuildingRecoveryDataSewerResponse> GetBuildingRecoverySewerAsync(UmfaBuildingRecoveryDataSewerSpRequest request)
+        {
+            var response = await GetAsync("reports/buildingrecoverysewer", request);
+            return JsonSerializer.Deserialize<UmfaBuildingRecoveryDataSewerResponse>(response);
+        }
+
+        public async Task<BuildingRecoveryReport> GetBuildingRecoveryElectricityAsync(BuildingRecoveryReportSpRequest request)
+        {
+            var response = await GetAsync("reports/buildingrecoveryelectricity", request);
+            return JsonSerializer.Deserialize<BuildingRecoveryReport>(response);
         }
 
         public async Task<UmfaFeedbackReportHeaderResponse> GetFeedbackReportHeaderAsync(UmfaFeedbackReportRequest request)

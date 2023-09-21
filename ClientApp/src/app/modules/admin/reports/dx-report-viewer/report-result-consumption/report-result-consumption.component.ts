@@ -8,6 +8,7 @@ import saveAs from 'file-saver';
 import { exportDataGrid as exportDataGridToPdf } from 'devextreme/pdf_exporter';
 import moment from 'moment';
 import { exportDataGrid, exportPivotGrid } from 'devextreme/excel_exporter';
+import html2canvas from 'html2canvas';
 @Component({
   selector: 'report-result-consumption',
   templateUrl: './report-result-consumption.component.html',
@@ -27,6 +28,7 @@ export class ReportResultConsumptionComponent implements OnInit {
   applyFilterTypes: any;
   currentFilter: any;
   panelOpenState = false;
+  allGroups: any[] = [];
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
   constructor(private reportService: DXReportService,
@@ -47,15 +49,33 @@ export class ReportResultConsumptionComponent implements OnInit {
       .subscribe((data: any) => {
         if(data) {
           this.resultsForGrid = data['Details'];
-          this.dataSource = data['Details'].map(obj => {
-            return {...obj, Tenant: `${obj['Tenant']} - ${obj['FinAccNo']}`, Recoverable: obj['Recoverable'] ? 'Recoverable' : 'Unrecoverable'};
+          this.dataSource = [];
+          let groups = [];
+          data['Details'].forEach((obj, idx) => {  
+            let filter = this.allGroups.find(item => item['GroupId'] == obj['GroupId']);
+            if(!filter) this.allGroups.push({InvGroup: obj['InvGroup'], GroupId: obj['GroupId']});
           });
+          data['Details'].forEach((obj, idx) => {  
+            if(obj['InvGroup'] == 'Sub-Total' || obj['InvGroup'] == 'Total') {
+              let filterGroup = this.allGroups.find(group => group['GroupId'] == obj['GroupId'])
+              obj = { ...obj, Factor: '', TotalArea: '', AssArea: '', PreviousReading: '', CurrentReading: '', Usage: '', TotCons: '', ShopCons: '', TotBC: '', ShopBC: filterGroup['InvGroup']};
+            }
+            obj =  {...obj, Recoverable: obj['Recoverable'] ? 'Recoverable' : 'Unrecoverable'};
+            let filterGroup = groups.find(item => item['Recoverable'] == obj['Recoverable'] && item['Tenant'] == obj['Tenant'] && item['ShopNr'] == obj['ShopNr']);
+            if(!filterGroup) {
+              groups.push({Recoverable: obj['Recoverable'], Tenant: obj['Tenant'], ShopNr: obj['ShopNr'], GroupId: 1});
+              this.dataSource.push({Recoverable: obj['Recoverable'], Tenant: obj['Tenant'], ShopNr: obj['ShopNr'], GroupId: 1});
+            }            
+            this.dataSource.push(obj);
+          });
+
           this.reportTotals = data['ReportTotals'];
           this.headerInfo = data['Headers'][0];
 
           this.totalGridDataSource = [];
           if(!this.reportTotals) return;
           this.reportTotals.InvoiceGroupTotals.forEach(invoice => {
+            if(invoice['Name'] == 'Sub-Total' || invoice['Name'] == 'Total') return;
             let item = {name: invoice['Name'], excl: invoice['Totals']['ConsumptionExcl'], vat: invoice['Totals']['BasicChargeExcl'], incl: invoice['Totals']['TotalExcl']};
             this.totalGridDataSource.push(item);
           })
@@ -117,8 +137,33 @@ export class ReportResultConsumptionComponent implements OnInit {
       topLeftCell: { row: 7, column: 1 },
       autoFilterEnabled: true,
       customizeCell({ gridCell, excelCell }) {
-
-      }
+        if(gridCell['rowType'] == 'data') {
+          if(gridCell['data']['GroupId'] == 1){
+            excelCell.style.backgroundColor = "#ececec";
+            excelCell.fill = {
+              type: 'pattern',
+              pattern: 'solid',
+              fgColor: { argb:'ececec' }
+             };
+            if(gridCell.column.dataField == 'MeterNo') excelCell.value = `Tenant: ${gridCell['data']['Tenant']}`;
+            if(gridCell.column.dataField == 'PreviousReading') excelCell.value = `Shop: ${gridCell['data']['ShopNr']}`;
+          } else if (gridCell['data']['InvGroup'] == 'Sub-Total' || gridCell['data']['InvGroup'] == 'Total') {
+            excelCell.font = {bold: true};
+            if(gridCell['column']['name'] == 'InvGroup' || 
+                gridCell['column']['name'] == 'Excl' || 
+                gridCell['column']['name'] == 'Vat' || 
+                gridCell['column']['name'] == 'Incl' || 
+                gridCell['column']['name'] == 'ShopBC') {
+              
+            } else {
+              excelCell.value = '';
+            }
+          } else {
+            //if(!isNaN(gridCell.value)) excelCell.value = parseFloat(gridCell.value);
+          }
+        }
+        
+      },
     }).then(() => {
       const totalWorksheet = workbook.addWorksheet('Total Report', {views: [{showGridLines: false}]});
       totalWorksheet.mergeCells('A1:B4');
@@ -169,11 +214,11 @@ export class ReportResultConsumptionComponent implements OnInit {
 
   onExportPdf() {
     const context = this;
-    const pdfDoc = new jsPDF('landscape', 'px', [800, 768]);
+    const pdfDoc = new jsPDF('landscape', 'px', [1000, 768]);
     const lastPoint = { x: 0, y: 0 };
 
     //header
-    pdfDoc.addImage(`data:image/png;base64,${this.headerInfo['CustomLogo']}`, 'PNG', 10, 20, 150, 70);
+    pdfDoc.addImage(`data:image/png;base64,${this.headerInfo['CustomLogo']}`, 'PNG', 40, 20, 150, 70);
     pdfDoc.setTextColor(0, 0, 0);
     pdfDoc.setFontSize(16);
     pdfDoc.text(this.headerInfo['Name'], 320, 40);
@@ -198,7 +243,19 @@ export class ReportResultConsumptionComponent implements OnInit {
           lastPoint.y = rect.y + rect.h;
         }
       },
-      customizeCell: ({ gridCell, pdfCell }) => {
+      customizeCell: ({ gridCell, pdfCell }) => {        
+        if(gridCell['rowType'] == 'data') {
+          if(gridCell['data']['GroupId'] == 1){
+            pdfCell.borderWidth = 0;
+            pdfCell.borderColor = '#ccc';
+            pdfCell.backgroundColor = '#ccc';
+            if(gridCell.column.dataField == 'MeterNo') pdfCell.text = `Tenant: ${gridCell['data']['Tenant']}`;
+            if(gridCell.column.dataField == 'PreviousReading') pdfCell.text = `Shop: ${gridCell['data']['ShopNr']}`;
+          }
+          if(gridCell['data']['InvGroup'] == 'Sub-Total' || gridCell['data']['InvGroup'] == 'Total') {
+            pdfCell.backgroundColor = '#eee';
+          }
+        }
       }
     };
 
@@ -221,7 +278,7 @@ export class ReportResultConsumptionComponent implements OnInit {
               pdfCell.font.style = 'bold';
             }
           }
-        },
+        }
       }).then(() => {
       }).then(() => {
         pdfDoc.save('Consumption Summary Report.pdf');
@@ -245,6 +302,26 @@ export class ReportResultConsumptionComponent implements OnInit {
     }
   }
 
+  onDetailRowPrepared(event) {
+    if (event.rowType === "data") {
+      if(event.data.InvGroup == 'Sub-Total' || event.data.InvGroup == 'Total') {
+        event.rowElement.style.fontWeight = 'bold';
+      } else if(event.data.GroupId == 1) {
+        event.rowElement.style.backgroundColor = '#ececec';
+      }
+    }
+  }
+
+  onDetailCellPrepared(event) {
+    if (event.rowType === "data") {
+      if(event.data.GroupId == 1) {
+        event.cellElement.style.borderColor = '#ececec';
+        event.cellElement.style.borderWidth = 0;
+        if(event.column.dataField == 'MeterNo') event.cellElement.innerHTML = `Tenant: ${event['data']['Tenant']}`;
+        if(event.column.dataField == 'CurrentReading') event.cellElement.innerHTML = `Shop: ${event['data']['ShopNr']}`;
+      }
+    }
+  }
   ngOnDestroy(): void {
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();

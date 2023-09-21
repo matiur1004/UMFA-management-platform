@@ -143,6 +143,62 @@ namespace ClientPortal.Controllers
             }
         }
 
+        [HttpGet("BuildingRecoveryDiesel")]
+        public async Task<ActionResult<UmfaBuildingRecoveryDataDieselResponse>> GetBuildingRecoveryDiesel([FromQuery] UmfaBuildingRecoveryDataDieselSpRequest request)
+        {
+            try
+            {
+                return await _umfaService.GetBuildingRecoveryDieselAsync(request);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Could not retrieve recovery reports");
+                return Problem(e.Message);
+            }
+        }
+
+        [HttpGet("BuildingRecoveryWater")]
+        public async Task<ActionResult<UmfaBuildingRecoveryDataWaterResponse>> GetBuildingRecoveryWater([FromQuery] UmfaBuildingRecoveryDataWaterSpRequest request)
+        {
+            try
+            {
+                return await _umfaService.GetBuildingRecoveryWaterAsync(request);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Could not retrieve recovery reports");
+                return Problem(e.Message);
+            }
+        }
+
+        [HttpGet("BuildingRecoverySewer")]
+        public async Task<ActionResult<UmfaBuildingRecoveryDataSewerResponse>> GetBuildingRecoverySewer([FromQuery] UmfaBuildingRecoveryDataSewerSpRequest request)
+        {
+            try
+            {
+                return await _umfaService.GetBuildingRecoverySewerAsync(request);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Could not retrieve recovery reports");
+                return Problem(e.Message);
+            }
+        }
+
+        [HttpGet("BuildingRecoveryElectricity")]
+        public async Task<ActionResult<BuildingRecoveryReport>> GetBuildingRecoverySewer([FromQuery] BuildingRecoveryReportSpRequest request)
+        {
+            try
+            {
+                return await _umfaService.GetBuildingRecoveryElectricityAsync(request);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Could not retrieve recovery reports");
+                return Problem(e.Message);
+            }
+        }
+
         [HttpPost("FeedbackReports")]
         public async Task<ActionResult<FeedbackReportRequest>> CreateFeedbackReportRequest([FromBody] FeedbackReportRequestData request, [FromQuery] bool overwrite = false)
         {

@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { IUmfaBuilding } from '@core/models';
 import { DXReportService } from '@shared/services';
@@ -14,7 +14,8 @@ export class ReportCriteriaShopComponent implements OnInit {
 
   @Input() buildingId: number;
   @Input() partnerId: number;
-  
+  @Input() reportId: number;
+
   form: UntypedFormGroup;
   buildings: IUmfaBuilding[] = [];
 
@@ -50,7 +51,7 @@ export class ReportCriteriaShopComponent implements OnInit {
     var ret = "<div class='custom-item' title='(" + datepipe.transform(arg.PeriodStart, 'yyyy/MM/dd') + " - " + datepipe.transform(arg.PeriodEnd, 'yyyy/MM/dd') + ")'>" + arg.PeriodName + "</div>";
     return ret;
   }
-
+  
   ngOnInit(): void {
     this.form = this._formBuilder.group({
       partnerId: [null],
@@ -70,6 +71,18 @@ export class ReportCriteriaShopComponent implements OnInit {
       this.form.get('buildingId').setValue(this.buildingId);
       this.reportService.loadPeriods(this.buildingId);
       this._cdr.detectChanges();
+    }
+  }
+  
+  ngOnChanges(changes: SimpleChanges){
+    if(changes.reportId && changes.reportId.currentValue) {
+      this.form = this._formBuilder.group({
+        partnerId: [null],
+        buildingId: [null, Validators.required],
+        startPeriodId: [null, Validators.required],
+        endPeriodId: [null, Validators.required],
+        allTenants: [1, Validators.required]
+      });
     }
   }
   

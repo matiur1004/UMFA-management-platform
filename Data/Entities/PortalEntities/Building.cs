@@ -13,5 +13,8 @@ namespace ClientPortal.Data.Entities.PortalEntities
         [JsonIgnore]
         public List<BuildingSupplierUtility> BuildingSupplierUtilities { get; set; }
         public List<User> Users { get; set; }
+
+        [JsonIgnore]
+        public ICollection<AMRMeter> AMRMeters { get; set; }
     }
 }

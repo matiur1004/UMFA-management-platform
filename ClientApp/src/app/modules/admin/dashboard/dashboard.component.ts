@@ -1,8 +1,7 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AuthService } from 'app/core/auth/auth.service';
-import { EHomeTabType, IHomeTab, CHomeTabTypeText, IWaterProfileResponse, IWaterProfileDetail } from 'app/core/models';
+import { EHomeTabType, IHomeTab, CHomeTabTypeText, IWaterProfileDetail } from 'app/core/models';
 import { BuildingService } from 'app/shared/services/building.service';
-import { ApexOptions } from 'ng-apexcharts';
 import { catchError, EMPTY, forkJoin, map, of, Subject, takeUntil, tap } from 'rxjs';
 import { DashboardService } from './dasboard.service';
 
@@ -22,6 +21,7 @@ import {
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UserService } from '@shared/services';
 
 export type ChartOptions = {
     series: ApexAxisChartSeries;
@@ -128,6 +128,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
         private _dbService: DashboardService,
         private _bldService: BuildingService,
         private _usrService: AuthService,
+        private _userService: UserService,
         private _cdr: ChangeDetectorRef,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
         private _formBuilder: FormBuilder
@@ -239,8 +240,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     ngOnInit(): void {
-        for(let i = 1; i <= 10; i++) {
-            this.minutues.push({Value: i * 30});
+        for(let i = 1; i <= 300; i++) {
+            this.minutues.push({Value: i});
         }
 
         this.form = this._formBuilder.group({
@@ -325,7 +326,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((data) => {
                 if(data) {
-                    this._dbService.getReportsArchives(this._usrService.userValue.Id)
+                    this._dbService.getReportsArchives(this._userService.userValue.UmfaId)
                         .subscribe(() => {
                             let newTab: IHomeTab = {
                                 id: 0,
@@ -471,7 +472,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                                     id: 0,
                                     title: `Assigned Meters`,
                                     type: 'ShopDashboarAssignedMeters',
-                                    dataSource: {}
+                                    dataSource: res
                                 };
                                 this.tabsList.push(newTab);
                                 this.selectedTab = this.tabsList.length;
@@ -480,7 +481,87 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                         });
                 }
             });
+
+        this._dbService.shopReadings$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((response) => {
+                if(response) {
+                    let res = {
+                        "buildingId": response['buildingId'],
+                        "shopId": response['shopId'],
+                        'meterId': response['meterId']
+                    }
+
+                    this._dbService.getMetersForBuilding(res['buildingId'], res['shopId'])
+                        .subscribe(result => {
+                            let newTab: IHomeTab = {
+                                id: 0,
+                                title: `Readings`,
+                                type: 'ShopDashboardReadings',
+                                dataSource: res
+                            };
+                            this.tabsList.push(newTab);
+                            this.selectedTab = this.tabsList.length;
+                            this._cdr.markForCheck();
+                        });
+                }
+            });
+
+        this._dbService.triggeredAlarmsPage$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((data) => {
+                if(data) {
+                    let newTab: IHomeTab = {
+                        id: 0,
+                        title: `Triggered Alarms`,
+                        type: 'DashboardTriggeredAlarms',
+                        dataSource: data
+                    };
+                    this.tabsList.push(newTab);
+                    this.selectedTab = this.tabsList.length;
+                    this._cdr.markForCheck();
+                }
+            });
+
+        this._dbService.triggeredAlarmDetailPage$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((data) => {
+                if(data) {                    
+                    let newTab: IHomeTab = {
+                        id: 0,
+                        title: `${data.MeterNo}`,
+                        type: 'AlarmTrigger',
+                        dataSource: data
+                    };
+                    this.tabsList.push(newTab);
+                    this.selectedTab = this.tabsList.length;
+                    setTimeout(() => {
+                        this._dbService.getAlarmTriggered(data.AMRMeterTriggeredAlarmId).subscribe();
+                    }, 500);
+                    this._cdr.markForCheck();
+                }
+            });
         //Wip
+        //this._dbService.showTriggeredAlarms({buildingId: null, partnerId: null});
+        // let res = {
+        //     "buildingId": 2531,
+        //     "shopId": 65469,
+        //     'meterId': 202168
+        // }
+
+        // this._dbService.getMetersForBuilding(res['buildingId'])
+        //     .subscribe(result => {
+        //         let newTab: IHomeTab = {
+        //             id: 0,
+        //             title: `Readings`,
+        //             type: 'ShopDashboardReadings',
+        //             dataSource: res
+        //         };
+        //         console.log('tabItem', res);
+        //         this.tabsList.push(newTab);
+        //         this.selectedTab = this.tabsList.length;
+        //         this._cdr.markForCheck();
+        //     });
         // let res = {
         //     // "buildingId": 2403,
         //     // "partnerId": 7,
@@ -502,46 +583,24 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
         //             this._cdr.detectChanges();
         //         }
         //     });
+        
         // let res = {
-        //     // "buildingId": 2403,
-        //     // "partnerId": 7,
-        //     "buildingId": null,
-        //     "partnerId": null
+        //     "buildingId": 2531,
+        //     "shopId": 65465
         // }
-        // this._dbService.getShopDashboardDetail(res['buildingId'], res['shopId'])
+        // this._dbService.getShopDashboardBilling(res['buildingId'], res['shopId'])
         //     .pipe(takeUntil(this._unsubscribeAll))
         //     .subscribe(result => {
         //         if(result) {
         //             let newTab: IHomeTab = {
-        //                 id: 0,
-        //                 title: `Shop Detail`,
-        //                 type: 'ShopDetailDashboard',
-        //                 dataSource: {}
+        //                 id: 0, 
+        //                 title: `Billing`,
+        //                 type: 'ShopBilling',
+        //                 dataSource: res
         //             };
         //             this.tabsList.push(newTab);
         //             this.selectedTab = this.tabsList.length;
-        //             this._cdr.detectChanges();
-        //         }
-        //     });
-        // let res = {
-        //     "buildingId": 2403,
-        //     "shopId": 62336,
-        //     // "buildingId": null,
-        //     // "partnerId": null
-        // }
-        // this._dbService.getShopDashboardOccupations(res['buildingId'], res['shopId'])
-        //     .pipe(takeUntil(this._unsubscribeAll))
-        //     .subscribe(result => {
-        //         if(result) {
-        //             let newTab: IHomeTab = {
-        //                 id: 0,
-        //                 title: `Occupations`,
-        //                 type: 'ShopDashboardOccupations',
-        //                 dataSource: {}
-        //             };
-        //             this.tabsList.push(newTab);
-        //             this.selectedTab = this.tabsList.length;
-        //             this._cdr.detectChanges();
+        //             this._cdr.markForCheck();
         //         }
         //     });
     }
@@ -597,7 +656,9 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             this.tabsList[index]['type'] == 'BuildingReports' ||
             this.tabsList[index]['type'] == 'ShopBilling' ||
             this.tabsList[index]['type'] == 'ShopDashboardOccupations' ||
-            this.tabsList[index]['type'] == 'ShopDashboarAssignedMeters') {
+            this.tabsList[index]['type'] == 'ShopDashboarAssignedMeters' || 
+            this.tabsList[index]['type'] == 'ShopDashboardReadings' ||
+            this.tabsList[index]['type'] == 'AlarmTrigger') {
             this.selectedTab = index;    
         }
         if(this.tabsList[index]['type'] == 'ShopList') {
@@ -606,7 +667,21 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             if(this.tabsList[index]['dataSource']['destination'] == 'Home') this.selectedTab = 0;
             else this.selectedTab = index;
         }
-        this.tabsList.splice(index, 1);        
+        if(this.tabsList[index]['type'] == 'DashboardTriggeredAlarms') {
+            this._dbService.selectedTriggeredAlarmInfo = null;
+            this._dbService.destroyTriggeredAlarmList();
+            if(this.tabsList[index]['dataSource']['destination'] == 'Home') this.selectedTab = 0;
+            else this.selectedTab = index;
+        }
+        if(this.tabsList[index]['type'] == 'ShopDashboarAssignedMeters') {
+            this._dbService.destroyShopAssignedMeterDetails();
+        }
+
+        if(this.tabsList[index]['type'] == 'TenantSlipDetail') {
+            this._dbService.selectedTenantSlipInfo = null;
+            this._dbService.destroyTenantSlips();
+        }
+        this.tabsList.splice(index, 1);
         this._cdr.markForCheck();
     }
 
@@ -664,6 +739,15 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
     
     onAcknowledge() {
         this._dbService.updateAcknowledged(this._dbService.alarmTriggeredId).subscribe();
+    }
+
+    onCancelAcknoledge() {
+        let index = this.tabsList.findIndex(obj => obj['type'] == 'AlarmTrigger');
+        this.removeTab(index);
+    }
+
+    onDetailAlarms() {
+        this._dbService.showTriggeredAlarms({buildingId: null, partnerId: null});
     }
 
     ngAfterViewInit() {

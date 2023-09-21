@@ -91,6 +91,12 @@ namespace ClientPortal.Data
 
             modelBuilder.Entity<AMRMeter>().HasOne(a => a.User).WithMany(r => r.AmrMeters).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<AMRMeter>().HasOne(a => a.MakeModel).WithMany(r => r.AMRMeters).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<AMRMeter>().HasOne(am => am.Building).WithMany(b => b.AMRMeters).OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<AMRMeterTriggeredAlarm>().HasOne(at => at.AMRMeterAlarm).WithMany(a => a.AMRMeterTriggeredAlarms).OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<AMRMeterAlarm>().HasOne(ama => ama.AlarmType).WithMany(at => at.AMRMeterAlarms).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<AMRMeterAlarm>().HasOne(ama => ama.AMRMeter).WithMany(at => at.AMRMeterAlarms).OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<AMRScadaUser>().HasOne(a => a.User).WithMany(r => r.AmrScadaUsers).OnDelete(DeleteBehavior.Restrict);
 
@@ -131,8 +137,6 @@ namespace ClientPortal.Data
             modelBuilder.Entity<TOUDayOfWeekDayType>().HasOne(dt => dt.TOUDaysOfWeek).WithMany(r => r.TOUDayOfWeekDayTypes).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<TOUDayOfWeekDayType>().HasOne(dt => dt.TOUDayType).WithMany(r => r.TOUDayOfWeekDayTypes).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<TOUDayOfWeekDayType>().HasOne(dt => dt.TOUHeader).WithMany(r => r.TOUDayOfWeekDayTypes).OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<AMRMeterTriggeredAlarm>().HasOne(at => at.AMRMeterAlarm).WithMany(a => a.AMRMeterTriggeredAlarms).OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<ArchiveRequestHeader>().HasMany(h => h.ArchiveRequestDetails).WithOne(d => d.ArchiveRequestHeader).HasForeignKey(d => d.ArchiveRequestId).OnDelete(DeleteBehavior.Restrict);
         }

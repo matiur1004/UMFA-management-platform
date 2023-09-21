@@ -41,7 +41,6 @@ export class TenantSlipDownloadsComponent implements OnInit {
     this._service.reportsArchives$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((res) => {
-        console.log(res);
         if(res) this.dataSource = res;
       });
   }
@@ -52,6 +51,6 @@ export class TenantSlipDownloadsComponent implements OnInit {
   }
 
   onCustomizeDateTime(cellInfo) {
-    return moment(new Date(cellInfo.value)).format('YYYY-MM-DD mm:hh:ss');
+    return moment(new Date(cellInfo.value)).format('YYYY-MM-DD HH:mm:ss');
   }
 }

@@ -30,6 +30,9 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { ShopBillingComponent } from './shop-billing/shop-billing.component';
 import { ShopOccupationsComponent } from './shop-occupations/shop-occupations.component';
 import { ShopAssignedMetersComponent } from './shop-assigned-meters/shop-assigned-meters.component';
+import { ShopReadingsComponent } from './shop-readings/shop-readings.component';
+import { TriggeredAlarmsComponent } from './triggered-alarms/triggered-alarms.component';
+import { MeterAlarmDetailModule } from '../admin/meter-alarm-detail/meter-alarm-detail.module';
 
 @NgModule({
     declarations: [
@@ -43,7 +46,9 @@ import { ShopAssignedMetersComponent } from './shop-assigned-meters/shop-assigne
         ShopDetailComponent,
         ShopBillingComponent,
         ShopOccupationsComponent,
-        ShopAssignedMetersComponent
+        ShopAssignedMetersComponent,
+        ShopReadingsComponent,
+        TriggeredAlarmsComponent
     ],
     imports     : [
         CommonModule,
@@ -63,6 +68,7 @@ import { ShopAssignedMetersComponent } from './shop-assigned-meters/shop-assigne
         NgApexchartsModule,
         DxTextBoxModule,
         ReportsModule,
+        MeterAlarmDetailModule,
         DxDataGridModule,
         DxChartModule,
         DxDropDownBoxModule,
@@ -78,7 +84,8 @@ import { ShopAssignedMetersComponent } from './shop-assigned-meters/shop-assigne
         SharedModule
     ],
     exports: [
-        ReportsModule
+        ReportsModule,
+        MeterAlarmDetailModule
     ],
     providers: [DecimalPipe]
 })

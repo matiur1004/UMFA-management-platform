@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
+import { IUmfaMeter } from "@core/models/umfameter.model";
 import { NotificationService } from "@shared/services";
 import { CONFIG } from "app/core/helpers";
 import { IHomePageStats } from "app/core/models";
@@ -33,15 +34,24 @@ export class DashboardService {
   private _shopOccupationDetails: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopAssignedMeters: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopAssignedMetersDetails: BehaviorSubject<any> = new BehaviorSubject(null);
-  
+  private _metersForBuilding: BehaviorSubject<any> = new BehaviorSubject(null);
+
+  private _shopReadings: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _shopReadingsDetails: BehaviorSubject<any> = new BehaviorSubject(null);
+
   private _reportsArchives: BehaviorSubject<any> = new BehaviorSubject(null);
   
   public stats$: Observable<IHomePageStats>;
   public alarmTriggeredId: any;
   public selectedShopInfo: any;
+  public selectedTenantSlipInfo: any;
+  public selectedTriggeredAlarmInfo: any;
 
   private _alarmTriggerDetail: BehaviorSubject<any> = new BehaviorSubject(null);
-
+  private _triggeredAlarmsPage: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _triggeredAlarmsList: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _triggeredAlarmDetailPage: BehaviorSubject<any> = new BehaviorSubject(null);
+  
   constructor(
     private router: Router, 
     private http: HttpClient,
@@ -134,6 +144,18 @@ export class DashboardService {
     return this._shopAssignedMetersDetails.asObservable();
   }
 
+  get shopReadings$(): Observable<any> {
+    return this._shopReadings.asObservable();
+  }
+
+  get shopReadingsDashboard$(): Observable<any> {
+    return this._shopReadingsDetails.asObservable();
+  }
+
+  get metersForBuilding$(): Observable<any> {
+    return this._metersForBuilding.asObservable();
+  }
+
   /**
      * Getter for data
      */
@@ -146,6 +168,18 @@ export class DashboardService {
       return this._alarmTriggerDetail.asObservable();
   }
 
+  get triggeredAlarmsPage$(): Observable<any>{
+    return this._triggeredAlarmsPage.asObservable();
+  }
+
+  get triggeredAlarmsList$(): Observable<any>{
+    return this._triggeredAlarmsList.asObservable();
+  }
+
+  get triggeredAlarmDetailPage$(): Observable<any>{
+    return this._triggeredAlarmDetailPage.asObservable();
+  }
+  
   getStats(userId) {
     const url = `${CONFIG.apiURL}${CONFIG.dashboardStats}/${userId}`;
     return this.http.get<any>(url, { withCredentials: true })
@@ -249,6 +283,7 @@ export class DashboardService {
       .pipe(
         catchError(err => this.catchAuthErrors(err)),
         tap(bl => {
+          this.alarmTriggeredId = alarmTriggeredId;
           this._alarmTriggerDetail.next(bl);
           //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
         })
@@ -347,6 +382,41 @@ export class DashboardService {
       );
   }
 
+  getMetersForBuilding(buildingId: number, shopId): Observable<IUmfaMeter[]> {
+    const url = `${CONFIG.apiURL}/Dashboard/buildings/${buildingId}/shops/${shopId}/assigned-meters`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => err),
+        tap(bps => {
+          this._metersForBuilding.next(bps);
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        }),
+      );
+  }
+  
+  getShopBillingsByMeter(meterId, shopId, buildingId) {
+    const url = `${CONFIG.apiURL}/Dashboard/buildings/${buildingId}/shops/${shopId}/meters/${meterId}/readings`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(bl => {
+          this._shopReadingsDetails.next(bl);
+        })
+      );
+  }
+
+  getTriggeredAlarmsList(userId, buildingId) {
+    const url = `${CONFIG.apiURL}/AlarmTriggered?umfaUserId=${userId}&umfaBuildingId=${buildingId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(bl => {
+          this._triggeredAlarmsList.next(bl);
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        })
+      );
+  }
+  
   showShopDetailDashboard(data) {
     this._shopDetailDashboard.next(data);
   }
@@ -395,6 +465,10 @@ export class DashboardService {
     this._shopOccupation.next(data);
   }
 
+  showTriggeredAlarms(data) {
+    this._triggeredAlarmsPage.next(data);
+  }
+
   destroyShopOccupation() {
     this._shopOccupation.next(null);
     this._shopOccupationDetails.next(null);
@@ -406,7 +480,33 @@ export class DashboardService {
 
   destroyShopAssignedMeters() {
     this._shopAssignedMeters.next(null);
+    //this._shopAssignedMetersDetails.next(null);
+  }
+
+  destroyShopAssignedMeterDetails() {
     this._shopAssignedMetersDetails.next(null);
+  }
+
+  showReadings(data) {
+    this._shopReadings.next(data);
+  }
+
+  destroyShopReadings() {
+    this._shopReadings.next(null);
+    this._shopReadingsDetails.next(null);
+  }
+
+  showTriggeredAlarmDetail(data) {
+    this._triggeredAlarmDetailPage.next(data);
+  }
+
+  destroyTriggeredAlarm() {
+    this._triggeredAlarmDetailPage.next(null);
+    this._triggeredAlarmsPage.next(null);
+  }
+
+  destroyTriggeredAlarmList() {
+    this._triggeredAlarmsList.next(null);
   }
 
   destroy() {
@@ -415,6 +515,7 @@ export class DashboardService {
     this._tenantSlipDetail.next(null);
     this._tenantSlipDownloads.next(null);
     this._alarmTriggerDetail.next(null);
+    this._triggeredAlarmDetailPage.next(null);
     this._shopList.next(null);
   }
 
