@@ -94,6 +94,8 @@ export class ShopDetailComponent implements OnInit {
   @ViewChild("billingChart") billingChart: ChartComponent;
   @ViewChild("billingUsageChart") billingUsageChart: ChartComponent;
 
+  billingElectricityChartType: string = 'Bar';
+
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
   constructor(

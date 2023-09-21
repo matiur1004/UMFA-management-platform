@@ -4,3 +4,16 @@
 ::ng-deep .dx-treeview-item .dx-treeview-item-content span{
     white-space: nowrap !important;
 }
+.border-graph {
+    border-right: 1px solid #c2c2c2;
+    width: 1px;
+    height: 36px;
+}
+.graph-type-item {
+    width: 45px;
+    height: 36px;
+}
+.selected-graph-type {
+    background: #ececec;
+    border-radius: 4px;
+}

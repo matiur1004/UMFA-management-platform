@@ -141,6 +141,23 @@
             </div>
         </div>
     </div>
+    <div class="grid grid-cols-2 gap-6">
+        <div class="flex flex-col bg-card relative" style="height: 400px;">
+            <div class="flex absolute left-2 top-2 gap-x-2 text-xl font-semibold">
+                Total Electricity - Billing
+            </div>
+            <div class="flex absolute right-2 top-2 gap-x-2">
+                <div class="p-2 graph-type-item cursor-pointer" (click)="billingElectricityChartType = 'Line'" [ngClass]="{'selected-graph-type': billingElectricityChartType == 'Line'}">
+                    <img src="/assets/images/icons/line-graph.svg" class="h-full">
+                </div>
+                <div class="border-graph"></div>
+                <div class="p-2 graph-type-item cursor-pointer" (click)="billingElectricityChartType = 'Bar'" [ngClass]="{'selected-graph-type': billingElectricityChartType == 'Bar'}">
+                    <img src="/assets/images/icons/bar-graph.svg" class="h-full">
+                </div>                
+            </div>
+        </div>
+        <div class="flex flex-col bg-card"></div>
+    </div>
     <div class="flex flex-col bg-card">
         <div class="flex w-full justify-between p-2">
             <span class="text-xl font-semibold">Billing</span>
