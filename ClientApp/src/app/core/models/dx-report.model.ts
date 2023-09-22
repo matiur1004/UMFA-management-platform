@@ -9,6 +9,7 @@ export interface IDXReport {
     BuildingId: number;
     StartPeriodId: number;
     EndPeriodId: number;
+    Utility: string;
   }
   
   export interface IShopUsageVarianceParams {
