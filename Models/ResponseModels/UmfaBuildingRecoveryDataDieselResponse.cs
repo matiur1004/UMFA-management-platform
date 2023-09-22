@@ -4,6 +4,7 @@
     {
         public string Title { get; set; }
         public decimal BuildingArea { get; set; }
+        public string Utility { get; set; }
         public DieselTenantReportData TenantReportData { get; set; }
         public DieselTenantReportData BulkReportData { get; set; }
         public DieselTenantReportData CouncilReportData { get; set; }
