@@ -24,6 +24,7 @@
         public int PeriodID { get; set; }
         public string PeriodName { get; set; }
         public string GroupName { get; set; }
+        public string Utility { get; set; }
         public double Usage { get; set; }
         public decimal Amount { get; set; }
     }

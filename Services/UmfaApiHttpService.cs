@@ -264,7 +264,7 @@ namespace ClientPortal.Services
 
         public async Task<ShopDashboardResponse> GetShopDashboardMainAsync(int buildingId, int shopId, int history)
         {
-            var response = await GetAsync($"dashboard/buildings/{buildingId}/shops/{shopId}", new UmfaShopDashboardRequest { History = history});
+            var response = await GetAsync($"dashboard/buildings/{buildingId}/shops/{shopId}", new UmfaShopDashboardRequest { History = history });
 
             var umfaDashboard = JsonSerializer.Deserialize<UmfaShopDashboardResponse>(response);
 
