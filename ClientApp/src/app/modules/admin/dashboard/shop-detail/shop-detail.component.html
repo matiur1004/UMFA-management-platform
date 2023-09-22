@@ -143,8 +143,8 @@
     </div>
     <div class="grid grid-cols-2 gap-6">
         <div class="flex flex-col bg-card relative" style="height: 400px;">
-            <div class="flex absolute left-2 top-2 gap-x-2 text-xl font-semibold">
-                Total Electricity - Billing
+            <div class="flex absolute left-2 top-3 gap-x-2 text-xl font-semibold">
+                <img class="graph-icon" src="/assets/images/icons/electricity_1.svg"> Total Electricity - Billing
             </div>
             <div class="flex absolute right-2 top-2 gap-x-2">
                 <div class="p-2 graph-type-item cursor-pointer" (click)="billingElectricityChartType = 'Line'" [ngClass]="{'selected-graph-type': billingElectricityChartType == 'Line'}">
@@ -155,8 +155,105 @@
                     <img src="/assets/images/icons/bar-graph.svg" class="h-full">
                 </div>                
             </div>
+            <apx-chart
+                *ngIf="billingElectricityChartType == 'Bar'"
+                class="w-full mt-6"
+                [series]="billingElectricitySeries"
+                [chart]="commonBarChartOptions.chart"
+                [stroke]="commonBarChartOptions.stroke"
+                [dataLabels]="commonBarChartOptions.dataLabels"
+                [plotOptions]="commonBarChartOptions.plotOptions"
+                [xaxis]="commonBarChartOptions.xaxis"
+                [yaxis]="commonBarChartOptions.yaxis"
+            ></apx-chart>
+            <!-- <apx-chart
+                *ngIf="billingChartType == 'Line'"
+                class="w-full mt-6"
+                [series]="lineChartOptions.series"
+                [chart]="lineChartOptions.chart"
+                [xaxis]="lineChartOptions.xaxis"
+                [stroke]="lineChartOptions.stroke"
+                [markers]="lineChartOptions.markers"
+                [grid]="lineChartOptions.grid"
+                [colors]="barChartOptions.colors"
+                [yaxis]="lineChartOptions.yaxis"
+                [title]="lineChartOptions.title"
+            ></apx-chart> -->
         </div>
-        <div class="flex flex-col bg-card"></div>
+        <div class="flex flex-col bg-card relative">
+            <div class="flex absolute left-2 top-3 gap-x-2 text-xl font-semibold">
+                <img class="graph-icon" src="/assets/images/icons/electricity_1.svg"> Total Electricity - Billing Usages
+            </div>
+            <div class="flex absolute right-2 top-2 gap-x-2">
+                <div class="p-2 graph-type-item cursor-pointer" (click)="billingUsageElectricityChartType = 'Line'" [ngClass]="{'selected-graph-type': billingUsageElectricityChartType == 'Line'}">
+                    <img src="/assets/images/icons/line-graph.svg" class="h-full">
+                </div>
+                <div class="border-graph"></div>
+                <div class="p-2 graph-type-item cursor-pointer" (click)="billingUsageElectricityChartType = 'Bar'" [ngClass]="{'selected-graph-type': billingUsageElectricityChartType == 'Bar'}">
+                    <img src="/assets/images/icons/bar-graph.svg" class="h-full">
+                </div>                
+            </div>
+        </div>
+    </div>
+    <div class="grid grid-cols-2 gap-6">
+        <div class="flex flex-col bg-card relative" style="height: 400px;">
+            <div class="flex absolute left-2 top-3 gap-x-2 text-xl font-semibold">
+                <img class="graph-icon" src="/assets/images/icons/water_1.svg"> Total Water - Billing
+            </div>
+            <div class="flex absolute right-2 top-2 gap-x-2">
+                <div class="p-2 graph-type-item cursor-pointer" (click)="billingWaterChartType = 'Line'" [ngClass]="{'selected-graph-type': billingWaterChartType == 'Line'}">
+                    <img src="/assets/images/icons/line-graph.svg" class="h-full">
+                </div>
+                <div class="border-graph"></div>
+                <div class="p-2 graph-type-item cursor-pointer" (click)="billingWaterChartType = 'Bar'" [ngClass]="{'selected-graph-type': billingWaterChartType == 'Bar'}">
+                    <img src="/assets/images/icons/bar-graph.svg" class="h-full">
+                </div>                
+            </div>
+        </div>
+        <div class="flex flex-col bg-card relative">
+            <div class="flex absolute left-2 top-3 gap-x-2 text-xl font-semibold">
+                <img class="graph-icon" src="/assets/images/icons/water_1.svg"> Total Water - Billing Usages
+            </div>
+            <div class="flex absolute right-2 top-2 gap-x-2">
+                <div class="p-2 graph-type-item cursor-pointer" (click)="billingUsageWaterChartType = 'Line'" [ngClass]="{'selected-graph-type': billingUsageWaterChartType == 'Line'}">
+                    <img src="/assets/images/icons/line-graph.svg" class="h-full">
+                </div>
+                <div class="border-graph"></div>
+                <div class="p-2 graph-type-item cursor-pointer" (click)="billingUsageWaterChartType = 'Bar'" [ngClass]="{'selected-graph-type': billingUsageWaterChartType == 'Bar'}">
+                    <img src="/assets/images/icons/bar-graph.svg" class="h-full">
+                </div>                
+            </div>
+        </div>
+    </div>
+    <div class="grid grid-cols-2 gap-6">
+        <div class="flex flex-col bg-card relative" style="height: 400px;">
+            <div class="flex absolute left-2 top-3 gap-x-2 text-xl font-semibold">
+                <img class="graph-icon" src="/assets/images/icons/sewerage.svg"> Total Sewer - Billing
+            </div>
+            <div class="flex absolute right-2 top-2 gap-x-2">
+                <div class="p-2 graph-type-item cursor-pointer" (click)="billingSewerChartType = 'Line'" [ngClass]="{'selected-graph-type': billingSewerChartType == 'Line'}">
+                    <img src="/assets/images/icons/line-graph.svg" class="h-full">
+                </div>
+                <div class="border-graph"></div>
+                <div class="p-2 graph-type-item cursor-pointer" (click)="billingSewerChartType = 'Bar'" [ngClass]="{'selected-graph-type': billingSewerChartType == 'Bar'}">
+                    <img src="/assets/images/icons/bar-graph.svg" class="h-full">
+                </div>                
+            </div>
+        </div>
+        <div class="flex flex-col bg-card relative">
+            <div class="flex absolute left-2 top-3 gap-x-2 text-xl font-semibold">
+                <img class="graph-icon" src="/assets/images/icons/sewerage.svg"> Total Sewer - Billing Usages
+            </div>
+            <div class="flex absolute right-2 top-2 gap-x-2">
+                <div class="p-2 graph-type-item cursor-pointer" (click)="billingUsageSewerChartType = 'Line'" [ngClass]="{'selected-graph-type': billingUsageSewerChartType == 'Line'}">
+                    <img src="/assets/images/icons/line-graph.svg" class="h-full">
+                </div>
+                <div class="border-graph"></div>
+                <div class="p-2 graph-type-item cursor-pointer" (click)="billingUsageSewerChartType = 'Bar'" [ngClass]="{'selected-graph-type': billingUsageSewerChartType == 'Bar'}">
+                    <img src="/assets/images/icons/bar-graph.svg" class="h-full">
+                </div>                
+            </div>
+        </div>
     </div>
     <div class="flex flex-col bg-card">
         <div class="flex w-full justify-between p-2">

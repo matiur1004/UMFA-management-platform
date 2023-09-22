@@ -38,7 +38,7 @@ export class ShopDetailComponent implements OnInit {
   @Input() buildingId: number;
   @Input() shopId: number;
   selectedMonth;
-
+  currentYear = new Date().getFullYear();
   // groupColors = {
   //   'C/A Diesel' : '#008E0E',
   //   'C/A Electricity': '#452AEB',
@@ -90,11 +90,20 @@ export class ShopDetailComponent implements OnInit {
   public billingUsageChartOptions: Partial<ChartOptions>;
   public treeMapOptions: Partial<TreemapChartOptions>;
   
+  public commonBarChartOptions: Partial<ChartOptions>;
+
   @ViewChild("treemapChart") chart: ChartComponent;
   @ViewChild("billingChart") billingChart: ChartComponent;
   @ViewChild("billingUsageChart") billingUsageChart: ChartComponent;
 
   billingElectricityChartType: string = 'Bar';
+  billingUsageElectricityChartType: string = 'Bar';
+  billingWaterChartType: string = 'Bar';
+  billingUsageWaterChartType: string = 'Bar';
+  billingSewerChartType: string = 'Bar';
+  billingUsageSewerChartType: string = 'Bar';
+
+  billingElectricitySeries = [];
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
@@ -212,6 +221,52 @@ export class ShopDetailComponent implements OnInit {
         }
       }
     }
+    this.commonBarChartOptions = {
+      series: [],
+      chart: {
+        type: "bar",
+        height: 350,
+        toolbar: {
+          show: false
+        }
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: "55%",
+          endingShape: "rounded"
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ["transparent"]
+      },
+      xaxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      },
+      yaxis: {
+        labels: {
+          formatter: function(val) {
+            return 'R ' + val;
+          } 
+        }
+      },
+      fill: {
+        opacity: 1,
+        colors: []
+      },
+      tooltip: {
+        y: {
+          formatter: function(val) {
+            return 'R ' + val;
+          }
+        }
+      }
+    }
   }
 
   ngOnInit(): void {
@@ -255,6 +310,8 @@ export class ShopDetailComponent implements OnInit {
           this.billingUsageChartOptions.fill.colors = this.availableGroupColors;
 
           this.setBillingSummary();
+
+          this.setSeriesForBillingChart();
         }
       });
   }
@@ -309,6 +366,21 @@ export class ShopDetailComponent implements OnInit {
     
   }
 
+  setSeriesForBillingChart() {
+    let series = [
+      {name: this.currentYear - 2, data: []},
+      {name: this.currentYear - 1, data: []},
+      {name: this.currentYear, data: []}
+    ];
+    series.forEach(item => {
+      this.shopDetailDashboard.PeriodBillings.forEach(billing => {
+        
+      })
+    })
+    console.log('sssseries', series);
+    this.billingElectricitySeries = series;
+  }
+
   setBillingChart() {
     let billingData = [];
     let periodArray = this.periodList.slice(-this.selectedPeriodLengthForBilling);
@@ -330,7 +402,6 @@ export class ShopDetailComponent implements OnInit {
     
     this.billingChartOptions.xaxis.categories = periodArray.map(period => moment(new Date(period)).format('MMM YY'));
     this.billingChartOptions.series = billingData;
-    //if(this.billingChart) this.billingChart.ngOnInit();
   }
 
   setBillingUsageChart() {
