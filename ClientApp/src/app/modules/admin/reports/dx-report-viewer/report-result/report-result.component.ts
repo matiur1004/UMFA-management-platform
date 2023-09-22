@@ -58,10 +58,10 @@ export class ReportResultComponent implements OnInit, AfterViewInit, OnDestroy {
           let councilItemList = this.dataSource.CouncilReportData.Data[0]['Details'].map(obj => obj['ItemName']);
           //councilItemList.push('Total');
 
-          if(this.reportService.BuildingRecoveryParams.Utility == 'Electricity' || this.reportService.BuildingRecoveryParams.Utility == 'Disel') {
+          if(this.reportService.BuildingRecoveryParams.Utility == 'Electricity' || this.reportService.BuildingRecoveryParams.Utility == 'Diesel') {
             let rowData = {};
             this.periodIdList.forEach(id => {
-              rowData['ItemName'] = 'Electricity Recovery';
+              rowData['ItemName'] = this.dataSource['Utility'] + 'Recovery';
               rowData[id + '_kwh'] = 'kWh';
               rowData[id + '_kva'] = 'kVa';
               rowData[id + '_total'] = 'Total R/C';
@@ -213,11 +213,11 @@ export class ReportResultComponent implements OnInit, AfterViewInit, OnDestroy {
     // || event.data.ItemName == 'Electricity Bulk Meter' || event.data.ItemName == 'Electricity Council Acc'
     if (event.rowType === "data") {
       if(event.columnIndex == 0) event.cellElement.style.fontWeight = 'bold';
-      if(event.data.ItemName == 'Electricity Recovery' && type == 'tenant') {
+      if(event.data.ItemName == this.reportType + ' Recovery' && type == 'tenant') {
         event.cellElement.style.backgroundColor = '#ececec';
-        if(event.value != 'Electricity Recovery') event.cellElement.style.textAlign = "center";
+        if(event.value != this.reportType + ' Recovery') event.cellElement.style.textAlign = "center";
       } else if(event.data.ItemName == '' && type == 'bulkMeter') {
-        if(event.value != 'Electricity Recovery') event.cellElement.style.textAlign = "center";
+        if(event.value != this.reportType + ' Recovery') event.cellElement.style.textAlign = "center";
       } else if(event.data.ItemName == '' && type == 'council') {
         if(event.value != '') event.cellElement.style.textAlign = "center";
       } else {
@@ -243,7 +243,7 @@ export class ReportResultComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   export(){
-    let pdfWidth = (this.reportService.BuildingRecoveryParams.Utility == 'Electricity' || this.reportService.BuildingRecoveryParams.Utility == 'Disel' ? 165 : 140 ) * (this.periodList.length + 2);
+    let pdfWidth = (this.reportService.BuildingRecoveryParams.Utility == 'Electricity' || this.reportService.BuildingRecoveryParams.Utility == 'Diesel' ? 165 : 140 ) * (this.periodList.length + 2);
     const pdfDoc = new jsPDF('landscape', 'px', [800, pdfWidth]);
     var logoUrl = '/assets/images/logo/logo.png';
     var xhr = new XMLHttpRequest();
@@ -286,7 +286,7 @@ export class ReportResultComponent implements OnInit, AfterViewInit, OnDestroy {
               } else {
                 pdfCell.textColor = "#000";
                 pdfCell.font.size = 11;
-                if(gridCell.data.ItemName == 'Electricity Recovery') {
+                if(gridCell.data.ItemName == _this.reportType + ' Recovery') {
                   pdfCell.backgroundColor = '#ececec';
                   //if(event.value != 'Electricity Recovery') event.cellElement.style.textAlign = "center";
                 }
@@ -317,7 +317,7 @@ export class ReportResultComponent implements OnInit, AfterViewInit, OnDestroy {
               } else {
                 pdfCell.textColor = "#000";
                 pdfCell.font.size = 11;
-                if(gridCell.data.ItemName == 'Electricity Recovery') {
+                if(gridCell.data.ItemName == '') {
                   pdfCell.backgroundColor = '#ececec';
                 }
               }

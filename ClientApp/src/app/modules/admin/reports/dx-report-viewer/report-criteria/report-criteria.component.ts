@@ -17,7 +17,7 @@ export class ReportCriteriaComponent implements OnInit, OnDestroy {
 
   form: UntypedFormGroup;
   buildings: IUmfaBuilding[] = [];
-  utilityListItems = ['Electricity', 'Water', 'Sewerage', 'Disel'];
+  utilityListItems = ['Electricity', 'Water', 'Sewerage', 'Diesel'];
 
   constructor(private reportService: DXReportService, private _formBuilder: UntypedFormBuilder) { }
 

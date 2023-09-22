@@ -28,7 +28,7 @@
         Export
      </button>
     </div>
-    <ng-container *ngIf="reportType == 'Electricity' || reportType == 'Disel'; else otherReportTemplate">
+    <ng-container *ngIf="reportType == 'Electricity' || reportType == 'Diesel'; else otherReportTemplate">
       <div class="flex w-full py-1">
         <dx-data-grid
           #tenantDataGrid
@@ -62,7 +62,7 @@
           [hoverStateEnabled]="true"
           style="max-width: 100%;"
           (onCellPrepared)="onCellPrepared($event, 'bulkMeter')">
-          <dxi-column [dataField]="'ItemName'" [width]="210" [caption]="'Electricity Bulk Meter'"></dxi-column>
+          <dxi-column [dataField]="'ItemName'" [width]="210" [caption]="reportType + ' Bulk Meter'"></dxi-column>
           <ng-container *ngFor="let period of periodList; let i = index;">
             <dxi-column [dataField]="periodIdList[i] + '_kwh'" [caption]="periodDetails[i]['StartDate']" [width]="90"></dxi-column>
             <dxi-column [dataField]="periodIdList[i] + '_kva'" [caption]="periodDetails[i]['EndDate']" [width]="80"></dxi-column>
@@ -81,7 +81,7 @@
           [hoverStateEnabled]="true"
           style="max-width: 100%;"
           (onCellPrepared)="onCellPrepared($event, 'council')">
-          <dxi-column [dataField]="'ItemName'" [width]="210" [caption]="'Electricity Council Acc'"></dxi-column>
+          <dxi-column [dataField]="'ItemName'" [width]="210" [caption]="reportType + ' Council Acc'"></dxi-column>
           <ng-container *ngFor="let period of periodList; let i = index;">
             <dxi-column [dataField]="periodIdList[i] + '_kwh'" [caption]="periodDetails[i]['StartDate']" [width]="90"></dxi-column>
             <dxi-column [dataField]="periodIdList[i] + '_kva'" [caption]="periodDetails[i]['EndDate']" [width]="80"></dxi-column>
