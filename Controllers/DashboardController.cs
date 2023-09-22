@@ -37,6 +37,20 @@ namespace ClientPortal.Controllers
             }
         }
 
+        [HttpGet("tenants/{umfaUserId}")]
+        public async Task<ActionResult<TenantMainDashboardResponse>> GetTenantDBStats(int umfaUserId)
+        {
+            try
+            {
+                return await _dbService.GetTenantMainDashboard(umfaUserId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while retrieving stats from service: {ex.Message}");
+                return Problem($"Error while retrieving stats from service: {ex.Message}");
+            }
+        }
+
         [HttpGet("getDBBuildingStats/{umfaBuildingId}")]
         public IActionResult GetDBBuildingStats(int umfaBuildingId)
         {

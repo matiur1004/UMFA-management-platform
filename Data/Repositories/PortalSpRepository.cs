@@ -8,6 +8,7 @@ namespace ClientPortal.Data.Repositories
     public interface IPortalSpRepository
     {
         public Task<GetSmartServicesSpResponse> GetSmartServices(GetSmartServicesSpRequest request);
+        Task<SmartServiceTenantSpResponse> GetSmartServicesForTenant(SmartServicesTenantSpRequest request);
     }
     public class PortalSpRepository : IPortalSpRepository
     {
@@ -23,6 +24,11 @@ namespace ClientPortal.Data.Repositories
         public async Task<GetSmartServicesSpResponse> GetSmartServices(GetSmartServicesSpRequest request)
         {
             return await RunStoredProcedureAsync<GetSmartServicesSpResponse, GetSmartServicesSpRequest>("spGetSmartServices", request);
+        }
+
+        public async Task<SmartServiceTenantSpResponse> GetSmartServicesForTenant(SmartServicesTenantSpRequest request)
+        {
+            return await RunStoredProcedureAsync<SmartServiceTenantSpResponse, SmartServicesTenantSpRequest>("spGetSmartServicesTenant", request);
         }
 
         private async Task<T> RunStoredProcedureAsync<T, TArgumentClass>(string procedure, TArgumentClass? args = default) where T : new()

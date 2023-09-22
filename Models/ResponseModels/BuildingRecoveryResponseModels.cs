@@ -6,6 +6,7 @@ namespace ClientPortal.Models.ResponseModels
     {
         public string Title { get; set; }
         public decimal BuildingArea { get; set; }
+        public string Utility { get; set; }
         public TenantReportData TenantReportData { get; set; }
         public TenantReportData BulkReportData { get; set; }
         public TenantReportData CouncilReportData { get; set; }
