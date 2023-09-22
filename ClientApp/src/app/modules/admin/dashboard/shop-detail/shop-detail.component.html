@@ -146,7 +146,7 @@
             <div class="flex absolute left-2 top-3 gap-x-2 text-xl font-semibold">
                 <img class="graph-icon" src="/assets/images/icons/electricity_1.svg"> Total Electricity - Billing
             </div>
-            <div class="flex absolute right-2 top-2 gap-x-2">
+            <div class="flex absolute right-2 top-2 gap-x-2 z-90">
                 <div class="p-2 graph-type-item cursor-pointer" (click)="billingElectricityChartType = 'Line'" [ngClass]="{'selected-graph-type': billingElectricityChartType == 'Line'}">
                     <img src="/assets/images/icons/line-graph.svg" class="h-full">
                 </div>
@@ -166,25 +166,24 @@
                 [xaxis]="commonBarChartOptions.xaxis"
                 [yaxis]="commonBarChartOptions.yaxis"
             ></apx-chart>
-            <!-- <apx-chart
-                *ngIf="billingChartType == 'Line'"
+            <apx-chart
+                *ngIf="billingElectricityChartType == 'Line'"
                 class="w-full mt-6"
-                [series]="lineChartOptions.series"
-                [chart]="lineChartOptions.chart"
-                [xaxis]="lineChartOptions.xaxis"
-                [stroke]="lineChartOptions.stroke"
-                [markers]="lineChartOptions.markers"
-                [grid]="lineChartOptions.grid"
-                [colors]="barChartOptions.colors"
-                [yaxis]="lineChartOptions.yaxis"
-                [title]="lineChartOptions.title"
-            ></apx-chart> -->
+                [series]="billingElectricitySeries"
+                [chart]="commonLineChartOptions.chart"
+                [xaxis]="commonLineChartOptions.xaxis"
+                [stroke]="commonLineChartOptions.stroke"
+                [markers]="commonLineChartOptions.markers"
+                [grid]="commonLineChartOptions.grid"
+                [yaxis]="commonLineChartOptions.yaxis"
+                [title]="commonLineChartOptions.title"
+            ></apx-chart>
         </div>
         <div class="flex flex-col bg-card relative">
             <div class="flex absolute left-2 top-3 gap-x-2 text-xl font-semibold">
                 <img class="graph-icon" src="/assets/images/icons/electricity_1.svg"> Total Electricity - Billing Usages
             </div>
-            <div class="flex absolute right-2 top-2 gap-x-2">
+            <div class="flex absolute right-2 top-2 gap-x-2 z-90">
                 <div class="p-2 graph-type-item cursor-pointer" (click)="billingUsageElectricityChartType = 'Line'" [ngClass]="{'selected-graph-type': billingUsageElectricityChartType == 'Line'}">
                     <img src="/assets/images/icons/line-graph.svg" class="h-full">
                 </div>
@@ -193,6 +192,29 @@
                     <img src="/assets/images/icons/bar-graph.svg" class="h-full">
                 </div>                
             </div>
+            <apx-chart
+                *ngIf="billingUsageElectricityChartType == 'Bar'"
+                class="w-full mt-6"
+                [series]="billingUsageElectricitySeries"
+                [chart]="commonBarChartOptions.chart"
+                [stroke]="commonBarChartOptions.stroke"
+                [dataLabels]="commonBarChartOptions.dataLabels"
+                [plotOptions]="commonBarChartOptions.plotOptions"
+                [xaxis]="commonBarChartOptions.xaxis"
+                [yaxis]="commonBarChartOptions.yaxis"
+            ></apx-chart>
+            <apx-chart
+                *ngIf="billingUsageElectricityChartType == 'Line'"
+                class="w-full mt-6"
+                [series]="billingUsageElectricitySeries"
+                [chart]="commonLineChartOptions.chart"
+                [xaxis]="commonLineChartOptions.xaxis"
+                [stroke]="commonLineChartOptions.stroke"
+                [markers]="commonLineChartOptions.markers"
+                [grid]="commonLineChartOptions.grid"
+                [yaxis]="commonLineChartOptions.yaxis"
+                [title]="commonLineChartOptions.title"
+            ></apx-chart>
         </div>
     </div>
     <div class="grid grid-cols-2 gap-6">
@@ -200,7 +222,7 @@
             <div class="flex absolute left-2 top-3 gap-x-2 text-xl font-semibold">
                 <img class="graph-icon" src="/assets/images/icons/water_1.svg"> Total Water - Billing
             </div>
-            <div class="flex absolute right-2 top-2 gap-x-2">
+            <div class="flex absolute right-2 top-2 gap-x-2 z-90">
                 <div class="p-2 graph-type-item cursor-pointer" (click)="billingWaterChartType = 'Line'" [ngClass]="{'selected-graph-type': billingWaterChartType == 'Line'}">
                     <img src="/assets/images/icons/line-graph.svg" class="h-full">
                 </div>
@@ -209,12 +231,35 @@
                     <img src="/assets/images/icons/bar-graph.svg" class="h-full">
                 </div>                
             </div>
+            <apx-chart
+                *ngIf="billingWaterChartType == 'Bar'"
+                class="w-full mt-6"
+                [series]="billingWaterSeries"
+                [chart]="commonBarChartOptions.chart"
+                [stroke]="commonBarChartOptions.stroke"
+                [dataLabels]="commonBarChartOptions.dataLabels"
+                [plotOptions]="commonBarChartOptions.plotOptions"
+                [xaxis]="commonBarChartOptions.xaxis"
+                [yaxis]="commonBarChartOptions.yaxis"
+            ></apx-chart>
+            <apx-chart
+                *ngIf="billingWaterChartType == 'Line'"
+                class="w-full mt-6"
+                [series]="billingWaterSeries"
+                [chart]="commonLineChartOptions.chart"
+                [xaxis]="commonLineChartOptions.xaxis"
+                [stroke]="commonLineChartOptions.stroke"
+                [markers]="commonLineChartOptions.markers"
+                [grid]="commonLineChartOptions.grid"
+                [yaxis]="commonLineChartOptions.yaxis"
+                [title]="commonLineChartOptions.title"
+            ></apx-chart>
         </div>
         <div class="flex flex-col bg-card relative">
             <div class="flex absolute left-2 top-3 gap-x-2 text-xl font-semibold">
                 <img class="graph-icon" src="/assets/images/icons/water_1.svg"> Total Water - Billing Usages
             </div>
-            <div class="flex absolute right-2 top-2 gap-x-2">
+            <div class="flex absolute right-2 top-2 gap-x-2 z-90">
                 <div class="p-2 graph-type-item cursor-pointer" (click)="billingUsageWaterChartType = 'Line'" [ngClass]="{'selected-graph-type': billingUsageWaterChartType == 'Line'}">
                     <img src="/assets/images/icons/line-graph.svg" class="h-full">
                 </div>
@@ -223,6 +268,29 @@
                     <img src="/assets/images/icons/bar-graph.svg" class="h-full">
                 </div>                
             </div>
+            <apx-chart
+                *ngIf="billingUsageWaterChartType == 'Bar'"
+                class="w-full mt-6"
+                [series]="billingUsageWaterSeries"
+                [chart]="commonBarChartOptions.chart"
+                [stroke]="commonBarChartOptions.stroke"
+                [dataLabels]="commonBarChartOptions.dataLabels"
+                [plotOptions]="commonBarChartOptions.plotOptions"
+                [xaxis]="commonBarChartOptions.xaxis"
+                [yaxis]="commonBarChartOptions.yaxis"
+            ></apx-chart>
+            <apx-chart
+                *ngIf="billingUsageWaterChartType == 'Line'"
+                class="w-full mt-6"
+                [series]="billingUsageWaterSeries"
+                [chart]="commonLineChartOptions.chart"
+                [xaxis]="commonLineChartOptions.xaxis"
+                [stroke]="commonLineChartOptions.stroke"
+                [markers]="commonLineChartOptions.markers"
+                [grid]="commonLineChartOptions.grid"
+                [yaxis]="commonLineChartOptions.yaxis"
+                [title]="commonLineChartOptions.title"
+            ></apx-chart>
         </div>
     </div>
     <div class="grid grid-cols-2 gap-6">
@@ -230,7 +298,7 @@
             <div class="flex absolute left-2 top-3 gap-x-2 text-xl font-semibold">
                 <img class="graph-icon" src="/assets/images/icons/sewerage.svg"> Total Sewer - Billing
             </div>
-            <div class="flex absolute right-2 top-2 gap-x-2">
+            <div class="flex absolute right-2 top-2 gap-x-2 z-90">
                 <div class="p-2 graph-type-item cursor-pointer" (click)="billingSewerChartType = 'Line'" [ngClass]="{'selected-graph-type': billingSewerChartType == 'Line'}">
                     <img src="/assets/images/icons/line-graph.svg" class="h-full">
                 </div>
@@ -239,12 +307,35 @@
                     <img src="/assets/images/icons/bar-graph.svg" class="h-full">
                 </div>                
             </div>
+            <apx-chart
+                *ngIf="billingSewerChartType == 'Bar'"
+                class="w-full mt-6"
+                [series]="billingSewerageSeries"
+                [chart]="commonBarChartOptions.chart"
+                [stroke]="commonBarChartOptions.stroke"
+                [dataLabels]="commonBarChartOptions.dataLabels"
+                [plotOptions]="commonBarChartOptions.plotOptions"
+                [xaxis]="commonBarChartOptions.xaxis"
+                [yaxis]="commonBarChartOptions.yaxis"
+            ></apx-chart>
+            <apx-chart
+                *ngIf="billingSewerChartType == 'Line'"
+                class="w-full mt-6"
+                [series]="billingSewerageSeries"
+                [chart]="commonLineChartOptions.chart"
+                [xaxis]="commonLineChartOptions.xaxis"
+                [stroke]="commonLineChartOptions.stroke"
+                [markers]="commonLineChartOptions.markers"
+                [grid]="commonLineChartOptions.grid"
+                [yaxis]="commonLineChartOptions.yaxis"
+                [title]="commonLineChartOptions.title"
+            ></apx-chart>
         </div>
         <div class="flex flex-col bg-card relative">
             <div class="flex absolute left-2 top-3 gap-x-2 text-xl font-semibold">
                 <img class="graph-icon" src="/assets/images/icons/sewerage.svg"> Total Sewer - Billing Usages
             </div>
-            <div class="flex absolute right-2 top-2 gap-x-2">
+            <div class="flex absolute right-2 top-2 gap-x-2 z-90">
                 <div class="p-2 graph-type-item cursor-pointer" (click)="billingUsageSewerChartType = 'Line'" [ngClass]="{'selected-graph-type': billingUsageSewerChartType == 'Line'}">
                     <img src="/assets/images/icons/line-graph.svg" class="h-full">
                 </div>
@@ -253,110 +344,29 @@
                     <img src="/assets/images/icons/bar-graph.svg" class="h-full">
                 </div>                
             </div>
+            <apx-chart
+                *ngIf="billingUsageSewerChartType == 'Bar'"
+                class="w-full mt-6"
+                [series]="billingUsageSewerageSeries"
+                [chart]="commonBarChartOptions.chart"
+                [stroke]="commonBarChartOptions.stroke"
+                [dataLabels]="commonBarChartOptions.dataLabels"
+                [plotOptions]="commonBarChartOptions.plotOptions"
+                [xaxis]="commonBarChartOptions.xaxis"
+                [yaxis]="commonBarChartOptions.yaxis"
+            ></apx-chart>
+            <apx-chart
+                *ngIf="billingUsageSewerChartType == 'Line'"
+                class="w-full mt-6"
+                [series]="billingUsageSewerageSeries"
+                [chart]="commonLineChartOptions.chart"
+                [xaxis]="commonLineChartOptions.xaxis"
+                [stroke]="commonLineChartOptions.stroke"
+                [markers]="commonLineChartOptions.markers"
+                [grid]="commonLineChartOptions.grid"
+                [yaxis]="commonLineChartOptions.yaxis"
+                [title]="commonLineChartOptions.title"
+            ></apx-chart>
         </div>
-    </div>
-    <div class="flex flex-col bg-card">
-        <div class="flex w-full justify-between p-2">
-            <span class="text-xl font-semibold">Billing</span>
-            <div class="flex gap-x-2">
-                <dx-select-box [items]="periodLengthItems" displayExpr="name" valueExpr="value" class="form-control" label="Period"
-                    placeholder="Select..." lableMode="static" id="billingPeriodLength" (valueChange)="onPeriodLengthChange('billing')" [(ngModel)]="selectedPeriodLengthForBilling">
-                </dx-select-box>
-                <dx-drop-down-box
-                    [(value)]="selectedGroupsForBilling"
-                    [inputAttr]="{ 'aria-label': 'Owner' }"
-                    valueExpr="Id"
-                    displayExpr="Name"
-                    placeholder="Select..."
-                    label="Group Name"
-                    [showClearButton]="true"
-                    [dataSource]="billingGroupItems">
-                    <div *dxTemplate="let data of 'content'">
-                        <dx-tree-view
-                          [dataSource]="billingGroupItems"
-                          dataStructure="plain"
-                          keyExpr="Id"
-                          parentIdExpr="categoryId"
-                          selectionMode="multiple"
-                          showCheckBoxesMode="normal"
-                          [selectNodesRecursive]="false"
-                          displayExpr="Name"
-                          [selectByClick]="true"
-                          (onContentReady)="onTreeViewReady($event, 'billing')"
-                          (onInitialized)="onInitialized($event)"
-                          (onItemSelectionChanged)="onTreeViewSelectionChanged($event, 'billing')"
-                        >
-                        </dx-tree-view>
-                    </div>
-                </dx-drop-down-box>
-            </div>
-        </div>
-        <apx-chart
-            class="w-full"
-            #billingChart
-            [series]="billingChartOptions.series"
-            [chart]="billingChartOptions.chart"
-            [dataLabels]="billingChartOptions.dataLabels"
-            [plotOptions]="billingChartOptions.plotOptions"
-            [yaxis]="billingChartOptions.yaxis"
-            [fill]="billingChartOptions.fill"
-            [stroke]="billingChartOptions.stroke"
-            [tooltip]="billingChartOptions.tooltip"
-            [xaxis]="billingChartOptions.xaxis"
-            [colors]="billingChartOptions.colors"
-        ></apx-chart>
-    </div>
-
-    <div class="flex flex-col bg-card">
-        <div class="flex w-full justify-between p-2">
-            <span class="text-xl font-semibold">Billing Usages</span>
-            <div class="flex gap-x-2">
-                <dx-select-box [items]="periodLengthItems" displayExpr="name" valueExpr="value" class="form-control" label="Period"
-                    placeholder="Select..." lableMode="static" id="billingUsagePeriodLength" (valueChange)="onPeriodLengthChange('billingUsage')" [(ngModel)]="selectedPeriodLengthForBilling">
-                </dx-select-box>
-                <dx-drop-down-box
-                    [(value)]="selectedGroupsForBillingUsage"
-                    [inputAttr]="{ 'aria-label': 'Owner' }"
-                    valueExpr="Id"
-                    displayExpr="Name"
-                    placeholder="Select..."
-                    label="Group Name"
-                    [showClearButton]="true"
-                    [dataSource]="billingGroupItems">
-                    <div *dxTemplate="let data of 'content'">
-                        <dx-tree-view
-                          [dataSource]="billingGroupItems"
-                          dataStructure="plain"
-                          keyExpr="Id"
-                          parentIdExpr="categoryId"
-                          selectionMode="multiple"
-                          showCheckBoxesMode="normal"
-                          [selectNodesRecursive]="false"
-                          displayExpr="Name"
-                          [selectByClick]="true"
-                          (onContentReady)="onTreeViewReady($event, 'billingUsage')"
-                          (onInitialized)="onInitialized($event)"
-                          (onItemSelectionChanged)="onTreeViewSelectionChanged($event, 'billingUsage')"
-                        >
-                        </dx-tree-view>
-                    </div>
-                </dx-drop-down-box>
-            </div>
-        </div>
-        <apx-chart
-            class="w-full"
-            #billingUsageChart
-            [series]="billingUsageChartOptions.series"
-            [chart]="billingUsageChartOptions.chart"
-            [dataLabels]="billingUsageChartOptions.dataLabels"
-            [plotOptions]="billingUsageChartOptions.plotOptions"
-            [yaxis]="billingUsageChartOptions.yaxis"
-            [legend]="billingUsageChartOptions.legend"
-            [fill]="billingUsageChartOptions.fill"
-            [stroke]="billingUsageChartOptions.stroke"
-            [tooltip]="billingUsageChartOptions.tooltip"
-            [xaxis]="billingUsageChartOptions.xaxis"
-            [colors]="billingUsageChartOptions.colors"
-        ></apx-chart>
     </div>
 </div>

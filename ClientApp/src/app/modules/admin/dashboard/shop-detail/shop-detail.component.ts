@@ -19,6 +19,23 @@ export type ChartOptions = {
   colors: any
 };
 
+export type LineChartOptions = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  dataLabels: ApexDataLabels;
+  plotOptions: ApexPlotOptions;
+  stroke: ApexStroke;
+  xaxis: ApexXAxis;
+  yaxis: ApexYAxis;
+  colors: string[];
+  fill: ApexFill;
+  legend: ApexLegend;
+  tooltip: ApexTooltip;
+  title: any;
+  grid: any;
+  markers: any;
+};
+
 export type TreemapChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -38,6 +55,7 @@ export class ShopDetailComponent implements OnInit {
   @Input() buildingId: number;
   @Input() shopId: number;
   selectedMonth;
+  monthNameList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   currentYear = new Date().getFullYear();
   // groupColors = {
   //   'C/A Diesel' : '#008E0E',
@@ -91,6 +109,7 @@ export class ShopDetailComponent implements OnInit {
   public treeMapOptions: Partial<TreemapChartOptions>;
   
   public commonBarChartOptions: Partial<ChartOptions>;
+  public commonLineChartOptions: Partial<LineChartOptions>;
 
   @ViewChild("treemapChart") chart: ChartComponent;
   @ViewChild("billingChart") billingChart: ChartComponent;
@@ -104,6 +123,11 @@ export class ShopDetailComponent implements OnInit {
   billingUsageSewerChartType: string = 'Bar';
 
   billingElectricitySeries = [];
+  billingUsageElectricitySeries = [];
+  billingWaterSeries = [];
+  billingUsageWaterSeries = [];
+  billingSewerageSeries = [];
+  billingUsageSewerageSeries = [];
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
@@ -267,6 +291,54 @@ export class ShopDetailComponent implements OnInit {
         }
       }
     }
+    this.commonLineChartOptions = {
+      series: [
+      ],
+      chart: {
+        height: 400,
+        type: "line",
+        toolbar: {
+          show: false
+        }
+      },
+      dataLabels: {
+        enabled: true
+      },
+      stroke: {
+        curve: "smooth"
+      },
+      title: {
+        text: "",
+        align: "left"
+      },
+      grid: {
+        borderColor: "#e7e7e7",
+        row: {
+          colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
+          opacity: 0.5
+        }
+      },
+      markers: {
+        size: 4
+      },
+      xaxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      },
+      yaxis: {
+        labels: {
+          formatter: function(val) {
+            return 'R ' + val;
+          } 
+        }
+      },
+      tooltip: {
+        y: {
+          formatter: function(val) {
+            return 'R ' + Math.round(Number(val) * 100) / 100;
+          }
+        }
+      }
+    };
   }
 
   ngOnInit(): void {
@@ -289,25 +361,6 @@ export class ShopDetailComponent implements OnInit {
             return {name:period, value: period}
           }).reverse();
           this.selectedMonth = this.billingPeriodList[0]['value'];
-
-          this.billingGroupItems = [{Id: '0', Name: 'All', expanded: true}];
-          let selectedValue = ['0'];
-          this.groupList.map(groupName => {
-            let item = {Id: groupName, Name: groupName, categoryId: '0'};
-            selectedValue.push(groupName);
-            this.billingGroupItems.push(item);
-          })
-          this.selectedGroupsForBilling = selectedValue;
-          this.selectedGroupsForBillingUsage = selectedValue;
-          this.setBillingChart()
-          this.setBillingUsageChart();
-
-          this.availableGroupColors = this.groupList.map((groupName, idx) => this.groupColors[idx]);
-          this.billingChartOptions.colors = this.availableGroupColors;
-          this.billingChartOptions.fill.colors = this.availableGroupColors;
-
-          this.billingUsageChartOptions.colors = this.availableGroupColors;
-          this.billingUsageChartOptions.fill.colors = this.availableGroupColors;
 
           this.setBillingSummary();
 
@@ -332,103 +385,67 @@ export class ShopDetailComponent implements OnInit {
   onlyUnique(value, index, array) {
     return array.indexOf(value) === index;
   }
-
-  onTreeViewReady(event, type) {
-    event.component.selectAll();
-    if(type == 'billing') this.selectedGroupsForBilling = event.component.getSelectedNodeKeys();
-    else this.selectedGroupsForBillingUsage = event.component.getSelectedNodeKeys();
-  }
   
-  onInitialized(event) {
-    event.component.selectAll();
-  }
-
-  onTreeViewSelectionChanged(event, type) {
-    if(event.itemData.Id == '0') {
-      if(event.itemData.selected == true) {
-        this.billingGroupItems.forEach(item => {
-          if(item['Id'] != '0') {
-            event.component.selectItem(item['Id']);
-          }
-        })
-      } else {
-        event.component.unselectAll();
-      }
-    }
-
-    if(type == 'billing') {
-      this.selectedGroupsForBilling = event.component.getSelectedNodeKeys();
-      this.setBillingChart();
-    } else {
-      this.selectedGroupsForBillingUsage = event.component.getSelectedNodeKeys();
-      this.setBillingUsageChart();
-    }
-    
-  }
-
   setSeriesForBillingChart() {
-    let series = [
-      {name: this.currentYear - 2, data: []},
-      {name: this.currentYear - 1, data: []},
-      {name: this.currentYear, data: []}
+    let billingElectricitySeries = [
+      {name: this.currentYear - 2, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
+      {name: this.currentYear - 1, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
+      {name: this.currentYear, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}
     ];
-    series.forEach(item => {
-      this.shopDetailDashboard.PeriodBillings.forEach(billing => {
-        
-      })
-    })
-    console.log('sssseries', series);
-    this.billingElectricitySeries = series;
-  }
+    let billingUsageElectricitySeries = [
+      {name: this.currentYear - 2, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
+      {name: this.currentYear - 1, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
+      {name: this.currentYear, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}
+    ];
 
-  setBillingChart() {
-    let billingData = [];
-    let periodArray = this.periodList.slice(-this.selectedPeriodLengthForBilling);
-    this.selectedGroupsForBilling.forEach(groupName => {
-      if(groupName == '0') return;
-      let groupData = {name: groupName, data: []};
-      periodArray.forEach(periodName => {
-        groupData['data'].push(this.shopDetailDashboard.PeriodBillings
-          .filter(period => period.PeriodName == periodName && period.GroupName.trim() == groupName)
-          .reduce((prev, cur) => prev + cur.Amount, 0));
-      });
+    let billingWaterSeries = [
+      {name: this.currentYear - 2, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
+      {name: this.currentYear - 1, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
+      {name: this.currentYear, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}
+    ];
 
-      billingData.push(groupData);
-    })
-    
-    let groupColors = this.selectedGroupsForBilling.filter(groupName => groupName != '0').map((groupName, idx) => this.groupColors[idx]);
-    this.billingChartOptions.colors = groupColors;
-    this.billingChartOptions.fill.colors = groupColors;
-    
-    this.billingChartOptions.xaxis.categories = periodArray.map(period => moment(new Date(period)).format('MMM YY'));
-    this.billingChartOptions.series = billingData;
-  }
+    let billingUsageWaterSeries = [
+      {name: this.currentYear - 2, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
+      {name: this.currentYear - 1, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
+      {name: this.currentYear, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}
+    ];
 
-  setBillingUsageChart() {
-    let billingUsageData = [];
-    let periodArray = this.periodList.slice(-this.selectedPeriodLengthForBilling);
-    this.selectedGroupsForBillingUsage.forEach(groupName => {
-      if(groupName == '0') return;
-      let groupUsageData = {name: groupName, data: []};
-      periodArray.forEach(periodName => {
+    let billingSewerageSeries = [
+      {name: this.currentYear - 2, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
+      {name: this.currentYear - 1, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
+      {name: this.currentYear, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}
+    ];
 
-        groupUsageData['data'].push(this.shopDetailDashboard.PeriodBillings
-          .filter(period => period.PeriodName == periodName && period.GroupName.trim() == groupName)
-          .reduce((prev, cur) => prev + cur.Usage, 0));
-      });
+    let billingUsageSewerageSeries = [
+      {name: this.currentYear - 2, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
+      {name: this.currentYear - 1, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
+      {name: this.currentYear, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}
+    ];
 
-      billingUsageData.push(groupUsageData);
-    })
-    
-    let groupColors = this.selectedGroupsForBillingUsage.filter(groupName => groupName != '0').map((groupName, idx) => this.groupColors[idx]);
-    
-    this.billingUsageChartOptions.xaxis.categories = periodArray.map(period => moment(new Date(period)).format('MMM YY'));
-    this.billingUsageChartOptions.series = billingUsageData;
-
-    this.billingUsageChartOptions.colors = groupColors;
-    this.billingUsageChartOptions.fill.colors = groupColors;
-    
-    //if(this.billingUsageChart) this.billingUsageChart.ngOnInit();
+    this.shopDetailDashboard.PeriodBillings.forEach(billing => {
+      let year = billing['PeriodName'].split(' ')[1];
+      let month = billing['PeriodName'].split(' ')[0];
+      let idx = billingElectricitySeries.findIndex(obj => obj['name'] == year);
+      let monthIdx = this.monthNameList.indexOf(month);
+      if(billing['Utility'] == 'Electricity') {        
+        billingElectricitySeries[idx]['data'][monthIdx] += billing['Amount'];
+        billingUsageElectricitySeries[idx]['data'][monthIdx] += billing['Usage'];
+      }
+      if(billing['Utility'] == 'Water') {
+        billingWaterSeries[idx]['data'][monthIdx] += billing['Amount'];
+        billingUsageWaterSeries[idx]['data'][monthIdx] += billing['Usage'];
+      }
+      if(billing['Utility'] == 'Sewerage') {
+        billingSewerageSeries[idx]['data'][monthIdx] += billing['Amount'];
+        billingUsageSewerageSeries[idx]['data'][monthIdx] += billing['Usage'];
+      }
+    });
+    this.billingElectricitySeries = billingElectricitySeries;
+    this.billingUsageElectricitySeries = billingUsageElectricitySeries;
+    this.billingWaterSeries = billingWaterSeries;
+    this.billingUsageWaterSeries = billingUsageWaterSeries;
+    this.billingSewerageSeries = billingSewerageSeries;
+    this.billingUsageSewerageSeries = billingUsageSewerageSeries;
   }
 
   setBillingSummary() {
@@ -458,14 +475,6 @@ export class ShopDetailComponent implements OnInit {
 
   onBillingMonthChange(event) {
     this.setBillingSummary();
-  }
-
-  onPeriodLengthChange(type) {
-    if(type == 'billing') {
-      this.setBillingChart();
-    } else {
-      this.setBillingUsageChart();
-    }
   }
 
   onShopBilling() {
