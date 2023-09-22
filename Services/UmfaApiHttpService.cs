@@ -52,6 +52,8 @@ namespace ClientPortal.Services
         public Task<List<UmfaShopDashboardAssignedMeter>> GetShopDashboardAssignedMetersAsync(int buildingId, int shopId, int history);
 
         public Task<List<UmfaShopDashboardReading>> GetShopDashboardReadingsAsync(int buildingId, int shopId, int meterId, int history);
+
+        public Task<UmfaMainDashboardTenantResponse> GetTenantMainDashboardAsync(int umfaId);
     }
 
 
@@ -262,7 +264,7 @@ namespace ClientPortal.Services
 
         public async Task<ShopDashboardResponse> GetShopDashboardMainAsync(int buildingId, int shopId, int history)
         {
-            var response = await GetAsync($"dashboard/buildings/{buildingId}/shops/{shopId}", new UmfaShopDashboardRequest { History = history});
+            var response = await GetAsync($"dashboard/buildings/{buildingId}/shops/{shopId}", new UmfaShopDashboardRequest { History = history });
 
             var umfaDashboard = JsonSerializer.Deserialize<UmfaShopDashboardResponse>(response);
 
@@ -320,6 +322,12 @@ namespace ClientPortal.Services
         {
             var response = await GetAsync("reports/buildingrecoveryelectricity", request);
             return JsonSerializer.Deserialize<BuildingRecoveryReport>(response);
+        }
+
+        public async Task<UmfaMainDashboardTenantResponse> GetTenantMainDashboardAsync(int umfaId)
+        {
+            var response = await GetAsync($"tenants/{umfaId}/dashboard");
+            return JsonSerializer.Deserialize<UmfaMainDashboardTenantResponse>(response);
         }
     }
 }
