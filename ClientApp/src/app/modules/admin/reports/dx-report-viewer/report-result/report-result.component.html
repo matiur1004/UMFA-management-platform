@@ -35,7 +35,6 @@
           [dataSource]="tenantDatasource"
           [showBorders]="true"
           [showRowLines]="true"
-          [wordWrapEnabled]="true"
           [hoverStateEnabled]="true"
           style="max-width: 100%;"
           (onCellPrepared)="onCellPrepared($event, 'tenant')">
@@ -44,9 +43,9 @@
           </dxi-column>
           <ng-container *ngFor="let period of periodList; let i = index;">
             <dxi-column [caption]="period">
-              <dxi-column [dataField]="periodIdList[i] + '_kwh'" [caption]="periodDetails[i]['StartDate']" [width]="90"></dxi-column>
-              <dxi-column [dataField]="periodIdList[i] + '_kva'" [caption]="periodDetails[i]['EndDate']" [width]="80"></dxi-column>
-              <dxi-column [dataField]="periodIdList[i] + '_total'" [caption]="periodDetails[i]['PeriodDays']" [width]="100"></dxi-column>
+              <dxi-column [dataField]="periodIdList[i] + '_kwh'" [caption]="periodDetails[i]['StartDate']" [minWidth]="90"></dxi-column>
+              <dxi-column [dataField]="periodIdList[i] + '_kva'" [caption]="periodDetails[i]['EndDate']" [minWidth]="80"></dxi-column>
+              <dxi-column [dataField]="periodIdList[i] + '_total'" [caption]="periodDetails[i]['PeriodDays']" [minWidth]="100"></dxi-column>
             </dxi-column>
           </ng-container>
         </dx-data-grid>
@@ -58,15 +57,14 @@
           [dataSource]="bulkMeterDatasource"
           [showBorders]="true"
           [showRowLines]="true"
-          [wordWrapEnabled]="true"
           [hoverStateEnabled]="true"
           style="max-width: 100%;"
           (onCellPrepared)="onCellPrepared($event, 'bulkMeter')">
           <dxi-column [dataField]="'ItemName'" [width]="210" [caption]="reportType + ' Bulk Meter'"></dxi-column>
           <ng-container *ngFor="let period of periodList; let i = index;">
-            <dxi-column [dataField]="periodIdList[i] + '_kwh'" [caption]="periodDetails[i]['StartDate']" [width]="90"></dxi-column>
-            <dxi-column [dataField]="periodIdList[i] + '_kva'" [caption]="periodDetails[i]['EndDate']" [width]="80"></dxi-column>
-            <dxi-column [dataField]="periodIdList[i] + '_total'" [caption]="periodDetails[i]['PeriodDays']" [width]="100"></dxi-column>
+            <dxi-column [dataField]="periodIdList[i] + '_kwh'" [caption]="periodDetails[i]['StartDate']" [minWidth]="90"></dxi-column>
+            <dxi-column [dataField]="periodIdList[i] + '_kva'" [caption]="periodDetails[i]['EndDate']" [minWidth]="80"></dxi-column>
+            <dxi-column [dataField]="periodIdList[i] + '_total'" [caption]="periodDetails[i]['PeriodDays']" [minWidth]="100"></dxi-column>
           </ng-container>
         </dx-data-grid>
       </div>
@@ -77,15 +75,14 @@
           [dataSource]="councilDatasource"
           [showBorders]="true"
           [showRowLines]="true"
-          [wordWrapEnabled]="true"
           [hoverStateEnabled]="true"
           style="max-width: 100%;"
           (onCellPrepared)="onCellPrepared($event, 'council')">
           <dxi-column [dataField]="'ItemName'" [width]="210" [caption]="reportType + ' Council Acc'"></dxi-column>
           <ng-container *ngFor="let period of periodList; let i = index;">
-            <dxi-column [dataField]="periodIdList[i] + '_kwh'" [caption]="periodDetails[i]['StartDate']" [width]="90"></dxi-column>
-            <dxi-column [dataField]="periodIdList[i] + '_kva'" [caption]="periodDetails[i]['EndDate']" [width]="80"></dxi-column>
-            <dxi-column [dataField]="periodIdList[i] + '_total'" [caption]="periodDetails[i]['PeriodDays']" [width]="100"></dxi-column>
+            <dxi-column [dataField]="periodIdList[i] + '_kwh'" [caption]="periodDetails[i]['StartDate']" [minWidth]="90"></dxi-column>
+            <dxi-column [dataField]="periodIdList[i] + '_kva'" [caption]="periodDetails[i]['EndDate']" [minWidth]="80"></dxi-column>
+            <dxi-column [dataField]="periodIdList[i] + '_total'" [caption]="periodDetails[i]['PeriodDays']" [minWidth]="100"></dxi-column>
           </ng-container>
         </dx-data-grid>
       </div>
@@ -97,7 +94,6 @@
           [dataSource]="tenantDatasource"
           [showBorders]="true"
           [showRowLines]="true"
-          [wordWrapEnabled]="true"
           [hoverStateEnabled]="true"
           style="max-width: 100%;"
           (onCellPrepared)="onCellPrepared($event, 'tenant')">
@@ -106,8 +102,8 @@
           </dxi-column>
           <ng-container *ngFor="let period of periodList; let i = index;">
             <dxi-column [caption]="period">
-              <dxi-column [dataField]="periodIdList[i] + '_KL'" [caption]="periodDetails[i]['StartDate']" [width]="130"></dxi-column>
-              <dxi-column [dataField]="periodIdList[i] + '_total'" [caption]="periodDetails[i]['PeriodDays']" [width]="120"></dxi-column>
+              <dxi-column [dataField]="periodIdList[i] + '_KL'" [caption]="periodDetails[i]['StartDate']" [minWidth]="130"></dxi-column>
+              <dxi-column [dataField]="periodIdList[i] + '_total'" [caption]="periodDetails[i]['PeriodDays']" [minWidth]="120"></dxi-column>
             </dxi-column>
           </ng-container>
         </dx-data-grid>
@@ -118,14 +114,13 @@
           [dataSource]="bulkMeterDatasource"
           [showBorders]="true"
           [showRowLines]="true"
-          [wordWrapEnabled]="true"
           [hoverStateEnabled]="true"
           style="max-width: 100%;"
           (onCellPrepared)="onCellPrepared($event, 'bulkMeter')">
           <dxi-column [dataField]="'ItemName'" [width]="210" [caption]="reportType + ' Bulk Meter'"></dxi-column>
           <ng-container *ngFor="let period of periodList; let i = index;">
-            <dxi-column [dataField]="periodIdList[i] + '_KL'" [caption]="periodDetails[i]['StartDate']" [width]="130"></dxi-column>
-            <dxi-column [dataField]="periodIdList[i] + '_total'" [caption]="periodDetails[i]['PeriodDays']" [width]="120"></dxi-column>
+            <dxi-column [dataField]="periodIdList[i] + '_KL'" [caption]="periodDetails[i]['StartDate']" [minWidth]="130"></dxi-column>
+            <dxi-column [dataField]="periodIdList[i] + '_total'" [caption]="periodDetails[i]['PeriodDays']" [minWidth]="120"></dxi-column>
           </ng-container>
         </dx-data-grid>
       </div>
@@ -136,14 +131,13 @@
           [dataSource]="councilDatasource"
           [showBorders]="true"
           [showRowLines]="true"
-          [wordWrapEnabled]="true"
           [hoverStateEnabled]="true"
           style="max-width: 100%;"
           (onCellPrepared)="onCellPrepared($event, 'council')">
           <dxi-column [dataField]="'ItemName'" [width]="210" [caption]="reportType + ' Council Acc'"></dxi-column>
           <ng-container *ngFor="let period of periodList; let i = index;">
-            <dxi-column [dataField]="periodIdList[i] + '_KL'" [caption]="periodDetails[i]['StartDate']" [width]="130"></dxi-column>
-            <dxi-column [dataField]="periodIdList[i] + '_total'" [caption]="periodDetails[i]['PeriodDays']" [width]="120"></dxi-column>
+            <dxi-column [dataField]="periodIdList[i] + '_KL'" [caption]="periodDetails[i]['StartDate']" [minWidth]="130"></dxi-column>
+            <dxi-column [dataField]="periodIdList[i] + '_total'" [caption]="periodDetails[i]['PeriodDays']" [minWidth]="120"></dxi-column>
           </ng-container>
         </dx-data-grid>
       </div>
