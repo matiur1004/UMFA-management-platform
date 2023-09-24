@@ -74,7 +74,7 @@ namespace ClientPortal.Services
 
         public Task<List<UmfaFeedbackReportVacantAmount>> GetFeedbackReportVacantKlAmountsAsync(UmfaFeedbackReportRequest request);
 
-        public Task<List<UmfaFeedbackReportVacantUsage>> GetFeedbackReportVacantKWhUsagesAsync(UmfaFeedbackReportRequest request);
+        public Task<List<UmfaFeedbackReportVacantUsage>> GetFeedbackReportVacantKwhUsagesAsync(UmfaFeedbackReportRequest request);
 
         public Task<List<UmfaFeedbackReportVacantUsage>> GetFeedbackReportVacantKlUsagesAsync(UmfaFeedbackReportRequest request);
     }
@@ -417,7 +417,7 @@ namespace ClientPortal.Services
             return JsonSerializer.Deserialize<List<UmfaFeedbackReportVacantAmount>>(response);
         }
 
-        public async Task<List<UmfaFeedbackReportVacantUsage>> GetFeedbackReportVacantKWhUsagesAsync(UmfaFeedbackReportRequest request)
+        public async Task<List<UmfaFeedbackReportVacantUsage>> GetFeedbackReportVacantKwhUsagesAsync(UmfaFeedbackReportRequest request)
         {
             var response = await GetAsync($"reports/feedbackreport/vacant/kwh/usage", request);
 
