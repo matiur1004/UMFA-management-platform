@@ -17,6 +17,8 @@ export class ReportCriteriaComponent implements OnInit, OnDestroy {
 
   form: UntypedFormGroup;
   buildings: IUmfaBuilding[] = [];
+  utilityListItems = ['Electricity', 'Water', 'Sewerage', 'Diesel'];
+
   constructor(private reportService: DXReportService, private _formBuilder: UntypedFormBuilder) { }
 
   get reportId(): number {
@@ -57,7 +59,8 @@ export class ReportCriteriaComponent implements OnInit, OnDestroy {
       partnerId: [null, Validators.required],
       buildingId: [null, Validators.required],
       startPeriodId: [null, Validators.required],
-      endPeriodId: [null, Validators.required]
+      endPeriodId: [null, Validators.required],
+      utility: ['Electricity', Validators.required]
     });
     if(this.partnerId) {
       this.form.get('partnerId').setValue(this.partnerId);
@@ -83,6 +86,7 @@ export class ReportCriteriaComponent implements OnInit, OnDestroy {
     } else if (method == 'EndPeriod') {
       this.reportService.ShowResults(false);
     }
+    this.reportService.setBuildingRecovery(null);
     this.setCriteria();
   }
 
@@ -91,7 +95,8 @@ export class ReportCriteriaComponent implements OnInit, OnDestroy {
       this.reportService.BuildingRecoveryParams = { 
         BuildingId: this.form.get('buildingId').value, 
         StartPeriodId: this.form.get('startPeriodId').value, 
-        EndPeriodId: this.form.get('endPeriodId').value
+        EndPeriodId: this.form.get('endPeriodId').value,
+        Utility: this.form.get('utility').value
       }
       this.reportService.setFrmValid(2, true);
       this.reportService.showFormValid(true);

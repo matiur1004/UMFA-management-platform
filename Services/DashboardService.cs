@@ -13,9 +13,10 @@ namespace ClientPortal.Services
         private readonly IUserService _userService;
         private readonly IMappedMeterService _mappedMeterService;
         private readonly IUmfaService _umfaService;
+        private readonly IPortalSpRepository _portalSpRepository;
 
         public DashboardService(IPortalStatsRepository portalStats, ILogger<DashboardService> logger, IBuildingService buildingService,
-            IUserService userService, IMappedMeterService mappedMeterService, IUmfaService umfaService)
+            IUserService userService, IMappedMeterService mappedMeterService, IUmfaService umfaService, IPortalSpRepository portalSpRepository)
         {
             _buildingService = buildingService;
             _userService = userService;
@@ -23,6 +24,7 @@ namespace ClientPortal.Services
             _logger = logger;
             _mappedMeterService = mappedMeterService;
             _umfaService = umfaService;
+            _portalSpRepository = portalSpRepository;
         }
 
         public DashboardMainResponse GetMainDashboard(int umfaUserId)
@@ -33,6 +35,25 @@ namespace ClientPortal.Services
                 var response = _portalStats.GetDashboardMainAsync(umfaUserId).Result;
                 if (response != null && response.Response == "Success") return response;
                 else throw new Exception($"Stats not return correctly: {response?.Response}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while getting the stats: {ex.Message}");
+                return null;
+            }
+        }
+
+        public async Task<TenantMainDashboardResponse> GetTenantMainDashboard(int umfaUserId)
+        {
+            _logger.LogInformation("Getting the stats for tenant main dashboard page...");
+            try
+            {
+                var tenantDashBoardResposne = await _umfaService.GetTenantMainDashboardAsync(umfaUserId);
+                var ids = string.Join(",", tenantDashBoardResposne.BuildingServiceIds);
+
+                var smartServicesSpResponse = await _portalSpRepository.GetSmartServicesForTenant(new SmartServicesTenantSpRequest { BuildingServiceIds = ids });
+
+                return new TenantMainDashboardResponse(tenantDashBoardResposne, smartServicesSpResponse);
             }
             catch (Exception ex)
             {
