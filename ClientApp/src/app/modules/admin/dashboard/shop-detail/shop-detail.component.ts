@@ -57,6 +57,7 @@ export class ShopDetailComponent implements OnInit {
   selectedMonth;
   monthNameList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   currentYear = new Date().getFullYear();
+  yearList = [];
   // groupColors = {
   //   'C/A Diesel' : '#008E0E',
   //   'C/A Electricity': '#452AEB',
@@ -356,7 +357,7 @@ export class ShopDetailComponent implements OnInit {
           this.allAvailableImages = this.shopDetailDashboard.Readings.reduce((prev, cur) => prev + cur.HasImages, 0);
           this.periodList = this.shopDetailDashboard.PeriodBillings.map(billing => billing.PeriodName).filter(this.onlyUnique);
           this.groupList = this.shopDetailDashboard.PeriodBillings.map(billing => billing.GroupName.trim()).filter(this.onlyUnique);
-          
+          this.yearList = this.shopDetailDashboard.PeriodBillings.map(billing => billing.PeriodName.split(' ')[1]).filter(this.onlyUnique);
           this.billingPeriodList = this.periodList.map(period => {
             return {name:period, value: period}
           }).reverse();
@@ -387,40 +388,20 @@ export class ShopDetailComponent implements OnInit {
   }
   
   setSeriesForBillingChart() {
-    let billingElectricitySeries = [
-      {name: this.currentYear - 2, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
-      {name: this.currentYear - 1, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
-      {name: this.currentYear, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}
-    ];
-    let billingUsageElectricitySeries = [
-      {name: this.currentYear - 2, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
-      {name: this.currentYear - 1, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
-      {name: this.currentYear, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}
-    ];
-
-    let billingWaterSeries = [
-      {name: this.currentYear - 2, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
-      {name: this.currentYear - 1, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
-      {name: this.currentYear, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}
-    ];
-
-    let billingUsageWaterSeries = [
-      {name: this.currentYear - 2, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
-      {name: this.currentYear - 1, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
-      {name: this.currentYear, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}
-    ];
-
-    let billingSewerageSeries = [
-      {name: this.currentYear - 2, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
-      {name: this.currentYear - 1, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
-      {name: this.currentYear, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}
-    ];
-
-    let billingUsageSewerageSeries = [
-      {name: this.currentYear - 2, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
-      {name: this.currentYear - 1, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]},
-      {name: this.currentYear, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}
-    ];
+    let billingElectricitySeries = []; 
+    let billingUsageElectricitySeries = [];
+    let billingWaterSeries = [];
+    let billingUsageWaterSeries = [];
+    let billingSewerageSeries = [];
+    let billingUsageSewerageSeries = [];
+    this.yearList.forEach(year => {
+      billingElectricitySeries.push({name: year, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]});
+      billingUsageElectricitySeries.push({name: year, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]});
+      billingWaterSeries.push({name: year, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]});
+      billingUsageWaterSeries.push({name: year, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]});
+      billingSewerageSeries.push({name: year, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]});
+      billingUsageSewerageSeries.push({name: year, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]});
+    });
 
     this.shopDetailDashboard.PeriodBillings.forEach(billing => {
       let year = billing['PeriodName'].split(' ')[1];
