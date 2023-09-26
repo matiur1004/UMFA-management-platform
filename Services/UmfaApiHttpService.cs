@@ -2,6 +2,7 @@
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 using ClientPortal.Settings;
+using DevExpress.XtraPrinting.Shape.Native;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
 using System.Web;
@@ -54,6 +55,30 @@ namespace ClientPortal.Services
         public Task<List<UmfaShopDashboardReading>> GetShopDashboardReadingsAsync(int buildingId, int shopId, int meterId, int history);
 
         public Task<UmfaMainDashboardTenantResponse> GetTenantMainDashboardAsync(int umfaId);
+
+        public Task<UmfaFeedbackReportHeaderResponse> GetFeedbackReportHeaderAsync(UmfaFeedbackReportRequest request);
+
+        public Task<List<UmfaFeedbackReportElectricityUsage>> GetFeedbackReportElectricityUsagesAsync(UmfaFeedbackReportRequest request);
+
+        public Task<List<UmfaFeedbackReportElectricityAmount>> GetFeedbackReportElectricityAmountsAsync(UmfaFeedbackReportRequest request);
+        
+        public Task<List<UmfaFeedbackReportElectricityCouncilEntry>> GetFeedbackReportElectricityCouncilAsync(UmfaFeedbackReportRequest request);
+
+        public Task<List<UmfaFeedbackReportWaterUsage>> GetFeedbackReportWaterUsagesAsync(UmfaFeedbackReportRequest request);
+        
+        public Task<List<UmfaFeedbackReportWaterAmount>> GetFeedbackReportWaterAmountsAsync(UmfaFeedbackReportRequest request);
+
+        public Task<List<UmfaFeedbackReportSewerUsage>> GetFeedbackReportSewerUsagesAsync(UmfaFeedbackReportRequest request);
+
+        public Task<List<UmfaFeedbackReportSewerAmount>> GetFeedbackReportSewerAmountsAsync(UmfaFeedbackReportRequest request);
+
+        public Task<List<UmfaFeedbackReportVacantAmount>> GetFeedbackReportVacantKwhAmountsAsync(UmfaFeedbackReportRequest request);
+
+        public Task<List<UmfaFeedbackReportVacantAmount>> GetFeedbackReportVacantKlAmountsAsync(UmfaFeedbackReportRequest request);
+
+        public Task<List<UmfaFeedbackReportVacantUsage>> GetFeedbackReportVacantKwhUsagesAsync(UmfaFeedbackReportRequest request);
+
+        public Task<List<UmfaFeedbackReportVacantUsage>> GetFeedbackReportVacantKlUsagesAsync(UmfaFeedbackReportRequest request);
     }
 
 
@@ -328,6 +353,90 @@ namespace ClientPortal.Services
         {
             var response = await GetAsync($"tenants/{umfaId}/dashboard");
             return JsonSerializer.Deserialize<UmfaMainDashboardTenantResponse>(response);
+        }
+
+        public async Task<UmfaFeedbackReportHeaderResponse> GetFeedbackReportHeaderAsync(UmfaFeedbackReportRequest request)
+        {
+            var response = await GetAsync($"reports/feedbackreport/header", request);
+
+            return JsonSerializer.Deserialize<UmfaFeedbackReportHeaderResponse>(response);
+        }
+
+        public async Task<List<UmfaFeedbackReportElectricityUsage>> GetFeedbackReportElectricityUsagesAsync(UmfaFeedbackReportRequest request)
+        {
+            var response = await GetAsync($"reports/feedbackreport/electricity-usage", request);
+
+            return JsonSerializer.Deserialize<List<UmfaFeedbackReportElectricityUsage>>(response);
+        }
+
+        public async Task<List<UmfaFeedbackReportElectricityAmount>> GetFeedbackReportElectricityAmountsAsync(UmfaFeedbackReportRequest request)
+        {
+            var response = await GetAsync($"reports/feedbackreport/electricity-amount", request);
+
+            return JsonSerializer.Deserialize<List<UmfaFeedbackReportElectricityAmount>>(response);
+        }
+
+        public async Task<List<UmfaFeedbackReportElectricityCouncilEntry>> GetFeedbackReportElectricityCouncilAsync(UmfaFeedbackReportRequest request)
+        {
+            var response = await GetAsync($"reports/feedbackreport/electricity-council", request);
+
+            return JsonSerializer.Deserialize<List<UmfaFeedbackReportElectricityCouncilEntry>>(response);
+        }
+
+        public async Task<List<UmfaFeedbackReportWaterUsage>> GetFeedbackReportWaterUsagesAsync(UmfaFeedbackReportRequest request)
+        {
+            var response = await GetAsync($"reports/feedbackreport/water-usage", request);
+
+            return JsonSerializer.Deserialize<List<UmfaFeedbackReportWaterUsage>>(response);
+        }
+
+        public async Task<List<UmfaFeedbackReportWaterAmount>> GetFeedbackReportWaterAmountsAsync(UmfaFeedbackReportRequest request)
+        {
+            var response = await GetAsync($"reports/feedbackreport/water-amount", request);
+
+            return JsonSerializer.Deserialize<List<UmfaFeedbackReportWaterAmount>>(response);
+        }
+
+        public async Task<List<UmfaFeedbackReportSewerUsage>> GetFeedbackReportSewerUsagesAsync(UmfaFeedbackReportRequest request)
+        {
+            var response = await GetAsync($"reports/feedbackreport/sewer-usage", request);
+
+            return JsonSerializer.Deserialize<List<UmfaFeedbackReportSewerUsage>>(response);
+        }
+
+        public async Task<List<UmfaFeedbackReportSewerAmount>> GetFeedbackReportSewerAmountsAsync(UmfaFeedbackReportRequest request)
+        {
+            var response = await GetAsync($"reports/feedbackreport/sewer-amount", request);
+
+            return JsonSerializer.Deserialize<List<UmfaFeedbackReportSewerAmount>>(response);
+        }
+
+        public async Task<List<UmfaFeedbackReportVacantAmount>> GetFeedbackReportVacantKwhAmountsAsync(UmfaFeedbackReportRequest request)
+        {
+            var response = await GetAsync($"reports/feedbackreport/vacant/kwh/amount", request);
+
+            return JsonSerializer.Deserialize<List<UmfaFeedbackReportVacantAmount>>(response);
+        }
+
+        public async Task<List<UmfaFeedbackReportVacantAmount>> GetFeedbackReportVacantKlAmountsAsync(UmfaFeedbackReportRequest request)
+        {
+            var response = await GetAsync($"reports/feedbackreport/vacant/kl/amount", request);
+
+            return JsonSerializer.Deserialize<List<UmfaFeedbackReportVacantAmount>>(response);
+        }
+
+        public async Task<List<UmfaFeedbackReportVacantUsage>> GetFeedbackReportVacantKwhUsagesAsync(UmfaFeedbackReportRequest request)
+        {
+            var response = await GetAsync($"reports/feedbackreport/vacant/kwh/usage", request);
+
+            return JsonSerializer.Deserialize<List<UmfaFeedbackReportVacantUsage>>(response);
+        }
+
+        public async Task<List<UmfaFeedbackReportVacantUsage>> GetFeedbackReportVacantKlUsagesAsync(UmfaFeedbackReportRequest request)
+        {
+            var response = await GetAsync($"reports/feedbackreport/vacant/kl/usage", request);
+
+            return JsonSerializer.Deserialize<List<UmfaFeedbackReportVacantUsage>>(response);
         }
     }
 }
