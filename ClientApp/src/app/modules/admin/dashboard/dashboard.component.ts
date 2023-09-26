@@ -52,16 +52,16 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
         //  this.subTimer = this.incrementTimer.subscribe();
         }),
         map(s => {
-
-            this.chartElectricityUsage.xaxis.categories = s.GraphStats.map(graph => graph.PeriodName);
-            this.chartWaterUsage.xaxis.categories = s.GraphStats.map(graph => graph.PeriodName);
-            this.chartSales.xaxis.categories = s.GraphStats.map(graph => graph.PeriodName);
+            let graphData = s.GraphStats ?? s.Stats;
+            this.chartElectricityUsage.xaxis.categories = graphData.map(graph => graph.PeriodName);
+            this.chartWaterUsage.xaxis.categories = graphData.map(graph => graph.PeriodName);
+            this.chartSales.xaxis.categories = graphData.map(graph => graph.PeriodName);
 
             let electricityUsage = {name: 'Electricity Usage', data: []};
             let waterUsage = {name: 'Water Usage', data: []};
             let sales = {name: 'Sales', data: []};
 
-            s.GraphStats.forEach(graph => {
+            graphData.forEach(graph => {
                 electricityUsage.data.push(graph['TotalElectricityUsage']);
                 waterUsage.data.push(graph['TotalWaterUsage']);
                 sales.data.push(graph['TotalSales']);
@@ -78,6 +78,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             this.varianceElectricity = electricityUsage.data[electricityUsage.data.length - 1] / ( this.totalElectricityUsage / electricityUsage.data.length ) * 100; 
             this.varianceWater = waterUsage.data[waterUsage.data.length - 1] / ( this.totalWaterUsage / waterUsage.data.length ) * 100; 
             this.varianceSales = sales.data[sales.data.length - 1] / ( this.totalSales / sales.data.length ) * 100;
+            console.log("sdfsdfsdfsdf", s);
             return s;
         }),
         catchError(err => {
@@ -124,6 +125,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
     applyFilterTypes: any;
     currentFilter: any;
 
+    isTenant: boolean = false;
+
     constructor(
         private _dbService: DashboardService,
         private _bldService: BuildingService,
@@ -133,6 +136,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
         private _fuseMediaWatcherService: FuseMediaWatcherService,
         private _formBuilder: FormBuilder
     ) {
+        this.isTenant = this._dbService.isTenant;
         this.chartElectricityUsage = {
             series: [
             ],

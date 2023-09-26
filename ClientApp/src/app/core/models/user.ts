@@ -14,6 +14,7 @@ export interface IUser {
     LastName: string;
     UserName: string;
     IsAdmin: boolean;
+    IsTenant: boolean;
     RoleId: number;
     RoleName: string;
     AmrScadaUsers?: IAmrUser[];

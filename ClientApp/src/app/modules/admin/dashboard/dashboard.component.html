@@ -19,309 +19,340 @@
                 <mat-tab label="Home">
                     <ng-template matTabContent>
                         <div *ngIf="stats$ | async as stats; else loading">
-                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-9 xl:grid-cols-9 gap-10 w-full">
-                                <div class="bg-gradient-to-r from-blue-500 to-blue-800 col-span-1 lg:col-span-2 flex flex-col flex-auto p-6 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100" (click)="onDetail(tabType.Buildings)">
-                                    <div class="flex items-start justify-between text-white h-full">
-                                        <div class="flex flex-col w-full gap-y-1 justify-between h-full">
-                                            <div class="flex w-full justify-between">
+                            <ng-container *ngIf="!isTenant; else tenantTemplate">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-9 xl:grid-cols-9 gap-10 w-full">
+                                    <div class="bg-gradient-to-r from-blue-500 to-blue-800 col-span-1 lg:col-span-2 flex flex-col flex-auto p-6 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100" (click)="onDetail(tabType.Buildings)">
+                                        <div class="flex items-start justify-between text-white h-full">
+                                            <div class="flex flex-col w-full gap-y-1 justify-between h-full">
+                                                <div class="flex w-full justify-between">
+                                                    <div class="flex flex-col">
+                                                        <div class="text-2xl font-medium tracking-normal leading-8 truncate">Buildings</div>
+                                                        <div class="text-3xl font-semibold tracking-normal ">
+                                                            {{stats.BuildingStats.NumberOfBuildings}}
+                                                        </div>
+                                                    </div>
+                                                    <mat-icon class="icon-size-10" [svgIcon]="'feather:buildings'"></mat-icon>
+                                                </div>
+                                                <div class="flex flex-col w-full gap-y-1">
+                                                    <div class="flex w-full justify-between leading-4">
+                                                        <span class="text-md">GLA</span>
+                                                        <span class="text-lg font-semibold">{{stats.BuildingStats.TotalGLA | number : '1.0-2'}}</span>
+                                                    </div>
+                                                    <div class="flex w-full justify-between leading-4">
+                                                        <span class="text-md">Meter Registers</span>
+                                                        <span class="text-lg font-semibold">{{stats.BuildingStats.TotalNumberOfMeters | number : '1.0-2'}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>                                        
+                                        </div>
+                                    </div>
+                                    <div class="bg-gradient-to-r from-amber-400 to-amber-500 col-span-1 lg:col-span-2 flex flex-col flex-auto p-6 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100" (click)="onDetail(tabType.Shops)">
+                                        <div class="flex items-start justify-between text-white h-full">
+                                            <div class="flex flex-col w-full gap-y-1 justify-between h-full">
+                                                <div class="flex w-full justify-between">
+                                                    <div class="flex flex-col">
+                                                        <div class="text-2xl font-medium tracking-normal leading-8 truncate">Shops</div>
+                                                        <div class="text-3xl font-semibold tracking-normal ">
+                                                            {{stats.ShopStats.NumberOfShops | number : '1.0-2'}}
+                                                        </div>
+                                                    </div>
+                                                    <mat-icon class="icon-size-10" [svgIcon]="'feather:clients'"></mat-icon>
+                                                </div>
+                                                <div class="flex flex-col w-full gap-y-1">
+                                                    <div class="flex w-full justify-between leading-4">
+                                                        <span class="text-md">Occupied</span>
+                                                        <span class="text-lg font-semibold">{{stats.ShopStats.OccupiedPercentage | percent : '1.0-2'}}</span>
+                                                    </div>
+                                                    <div class="flex w-full justify-between leading-4">
+                                                        <span class="text-md">Area</span>
+                                                        <span class="text-lg font-semibold">{{stats.ShopStats.TotalArea | number : '1.0-2'}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bg-gradient-to-r from-emerald-400 to-emerald-500 col-span-1 lg:col-span-2 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100" (click)="onDetail(tabType.Tenants)">
+                                        <div class="flex items-start justify-between text-white h-full">
+                                            <div class="flex flex-col w-full gap-y-1 justify-between h-full">
+                                                <div class="flex w-full justify-between">
+                                                    <div class="flex flex-col">
+                                                        <div class="text-2xl font-medium tracking-normal leading-8 truncate">Tenants</div>
+                                                        <div class="text-3xl font-semibold tracking-normal ">
+                                                            {{stats.TenantStats.NumberOfTenants | number : '1.0-2'}}
+                                                        </div>
+                                                    </div>
+                                                    <mat-icon class="icon-size-10 text-white" [svgIcon]="'feather:users'"></mat-icon>
+                                                </div>
+                                                <div class="flex flex-col w-full gap-y-1">
+                                                    <div class="flex w-full justify-between leading-4">
+                                                        <span class="text-md">Occupied</span>
+                                                        <span class="text-lg font-semibold">{{stats.TenantStats.OccupiedPercentage | percent : '1.0-2'}}</span>
+                                                    </div>
+                                                    <div class="flex w-full justify-between leading-4">
+                                                        <span class="text-md">Recovered</span>
+                                                        <span class="text-lg font-semibold">{{stats.TenantStats.RecoverablePercentage | percent : '1.0-2'}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bg-gradient-to-r from-violet-400 to-violet-600 sm:col-span-3 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100">
+                                        <div class="flex items-start justify-between text-white h-full">
+                                            <div class="flex flex-col w-full gap-y-1 justify-between h-full">
+                                                <div class="flex w-full justify-between">
+                                                    <div class="flex flex-col">
+                                                        <div class="text-2xl font-medium tracking-normal leading-8 truncate">Smart Services</div>
+                                                        <div class="text-3xl font-semibold tracking-normal ">
+                                                            {{stats.SmartStats.TotalSmart | number : '1.0-2'}}
+                                                        </div>
+                                                    </div>
+                                                    <mat-icon class="icon-size-10 text-white" [svgIcon]="'feather:users'"></mat-icon>
+                                                </div>
+                                                <div class="flex flex-col w-full gap-y-1">
+                                                    <div class="flex w-full gap-x-4">
+                                                        <div class="flex justify-between w-1/2 leading-4">
+                                                            <span class="text-md">Solar</span>
+                                                            <span class="text-lg font-semibold">{{stats.SmartStats.SolarCount}}</span>
+                                                        </div>
+                                                        <div class="flex justify-between w-1/2 leading-4">
+                                                            <span class="text-md">Generator</span>
+                                                            <span class="text-lg font-semibold">{{stats.SmartStats.GeneratorCount}}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex w-full gap-x-4">
+                                                        <div class="flex justify-between w-1/2 leading-4">
+                                                            <span class="text-md">Electricity</span>
+                                                            <span class="text-lg font-semibold">{{stats.SmartStats.ConsumerElectricityCount}}</span>
+                                                        </div>
+                                                        <div class="flex justify-between w-1/2 leading-4">
+                                                            <span class="text-md">Water</span>
+                                                            <span class="text-lg font-semibold">{{stats.SmartStats.ConsumerWaterCount}}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex w-full gap-x-4">
+                                                        <div class="flex justify-between w-1/2 leading-4">
+                                                            <span class="text-md">Bulk</span>
+                                                            <span class="text-lg font-semibold">{{stats.SmartStats.BulkCount}}</span>
+                                                        </div>
+                                                        <div class="flex justify-between w-1/2 leading-4">
+                                                            <span class="text-md">Council Check</span>
+                                                            <span class="text-lg font-semibold">{{stats.SmartStats.CouncilChkCount}}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex mt-2">
+                                                        <a href="javascript:void(0);" (click)="onDetailAlarms()" class="text-md leading-4 cursor-pointer underline">Alarms: {{stats.SmartStats.AlarmsConfigured}} Configured, {{stats.SmartStats.AlarmsTriggered}} Triggered</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 lg:grid-cols-3 mt-3 gap-x-8 gap-y-2">
+                                    <div class="col-span-1">
+                                        <div class="sm:col-span-2 flex flex-col flex-auto  bg-card shadow rounded-2xl overflow-visible">
+                                            <div class="flex flex-col px-6 pt-6 gap-y-2">
+                                                <div class="flex items-start justify-between">
+                                                    <div class="text-lg font-semibold tracking-tight leading-6 truncate">Electricity Usage - Last 6 Periods</div>
+                                                </div>
                                                 <div class="flex flex-col">
-                                                    <div class="text-2xl font-medium tracking-normal leading-8 truncate">Buildings</div>
-                                                    <div class="text-3xl font-semibold tracking-normal ">
-                                                        {{stats.BuildingStats.NumberOfBuildings}}
+                                                    <div class="text-3xl font-semibold tracking-tight leading-tight">
+                                                        {{totalElectricityUsage | number : '1.0-2'}} <span class="text-xl">kwh</span>
+                                                    </div>
+                                                    <div class="flex items-center">
+                                                        <mat-icon
+                                                            class="mr-1 icon-size-5"
+                                                            [ngClass]="{'text-green-500': varianceElectricity > 100, 'text-red-500': varianceElectricity < 100}"
+                                                            [svgIcon]="varianceElectricity > 100 ? 'heroicons_solid:trending-up' : 'heroicons_solid:trending-down'"></mat-icon>
+                                                        <div class="font-medium text-sm text-secondary leading-none whitespace-nowrap">
+                                                            Variance for last period: <span class="text-pink-500">{{varianceElectricity | number : '1.0-2'}} %</span>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <mat-icon class="icon-size-10" [svgIcon]="'feather:buildings'"></mat-icon>
                                             </div>
-                                            <div class="flex flex-col w-full gap-y-1">
-                                                <div class="flex w-full justify-between leading-4">
-                                                    <span class="text-md">GLA</span>
-                                                    <span class="text-lg font-semibold">{{stats.BuildingStats.TotalGLA | number : '1.0-2'}}</span>
-                                                </div>
-                                                <div class="flex w-full justify-between leading-4">
-                                                    <span class="text-md">Meter Registers</span>
-                                                    <span class="text-lg font-semibold">{{stats.BuildingStats.TotalNumberOfMeters | number : '1.0-2'}}</span>
-                                                </div>
+                                                
+                                            <div class="flex flex-col flex-auto w-full">
+                                                <apx-chart
+                                                    class="flex-auto w-full h-24"
+                                                    [chart]="chartElectricityUsage.chart"
+                                                    [colors]="chartElectricityUsage.colors"
+                                                    [series]="chartElectricityUsage.series"
+                                                    [stroke]="chartElectricityUsage.stroke"
+                                                    [tooltip]="chartElectricityUsage.tooltip"
+                                                    [xaxis]="chartElectricityUsage.xaxis"
+                                                    [yaxis]="chartElectricityUsage.yaxis"></apx-chart>
                                             </div>
-                                        </div>                                        
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="bg-gradient-to-r from-amber-400 to-amber-500 col-span-1 lg:col-span-2 flex flex-col flex-auto p-6 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100" (click)="onDetail(tabType.Shops)">
-                                    <div class="flex items-start justify-between text-white h-full">
-                                        <div class="flex flex-col w-full gap-y-1 justify-between h-full">
-                                            <div class="flex w-full justify-between">
+                                    <div class="col-span-1">
+                                        <div class="sm:col-span-2 flex flex-col flex-auto  bg-card shadow rounded-2xl overflow-visible">
+                                            <div class="flex flex-col px-6 pt-6 gap-y-2">
+                                                <div class="flex items-start justify-between">
+                                                    <div class="text-lg font-semibold tracking-tight leading-6 truncate">Water Usage - Last 6 Periods</div>
+                                                </div>
                                                 <div class="flex flex-col">
-                                                    <div class="text-2xl font-medium tracking-normal leading-8 truncate">Shops</div>
-                                                    <div class="text-3xl font-semibold tracking-normal ">
-                                                        {{stats.ShopStats.NumberOfShops | number : '1.0-2'}}
+                                                    <div class="text-3xl font-semibold tracking-tight leading-tight">
+                                                        {{totalWaterUsage | number : '1.0-2'}} <span class="text-xl">KL</span>
+                                                    </div>
+                                                    <div class="flex items-center">
+                                                        <mat-icon
+                                                            class="mr-1 icon-size-5"
+                                                            [ngClass]="{'text-green-500': varianceWater > 100, 'text-red-500': varianceWater < 100}"
+                                                            [svgIcon]="varianceWater > 100 ? 'heroicons_solid:trending-up' : 'heroicons_solid:trending-down'"></mat-icon>
+                                                        <div class="font-medium text-sm text-secondary leading-none whitespace-nowrap">
+                                                            Variance for last period: <span class="text-blue-500">{{varianceWater | number : '1.0-2'}} %</span>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <mat-icon class="icon-size-10" [svgIcon]="'feather:clients'"></mat-icon>
                                             </div>
-                                            <div class="flex flex-col w-full gap-y-1">
-                                                <div class="flex w-full justify-between leading-4">
-                                                    <span class="text-md">Occupied</span>
-                                                    <span class="text-lg font-semibold">{{stats.ShopStats.OccupiedPercentage | percent : '1.0-2'}}</span>
-                                                </div>
-                                                <div class="flex w-full justify-between leading-4">
-                                                    <span class="text-md">Area</span>
-                                                    <span class="text-lg font-semibold">{{stats.ShopStats.TotalArea | number : '1.0-2'}}</span>
-                                                </div>
+                                                
+                                            <div class="flex flex-col flex-auto w-full">
+                                                <apx-chart
+                                                    class="flex-auto w-full h-24"
+                                                    [chart]="chartWaterUsage.chart"
+                                                    [colors]="chartWaterUsage.colors"
+                                                    [series]="chartWaterUsage.series"
+                                                    [stroke]="chartWaterUsage.stroke"
+                                                    [tooltip]="chartWaterUsage.tooltip"
+                                                    [xaxis]="chartWaterUsage.xaxis"
+                                                    [yaxis]="chartWaterUsage.yaxis"></apx-chart>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="bg-gradient-to-r from-emerald-400 to-emerald-500 col-span-1 lg:col-span-2 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100" (click)="onDetail(tabType.Tenants)">
-                                    <div class="flex items-start justify-between text-white h-full">
-                                        <div class="flex flex-col w-full gap-y-1 justify-between h-full">
-                                            <div class="flex w-full justify-between">
+                                    <div class="col-span-1">
+                                        <div class="sm:col-span-2 flex flex-col flex-auto  bg-card shadow rounded-2xl overflow-visible">
+                                            <div class="flex flex-col px-6 pt-6 gap-y-2">
+                                                <div class="flex items-start justify-between">
+                                                    <div class="text-lg font-semibold tracking-tight leading-6 truncate">Sales - Last 6 Periods</div>
+                                                </div>
                                                 <div class="flex flex-col">
-                                                    <div class="text-2xl font-medium tracking-normal leading-8 truncate">Tenants</div>
-                                                    <div class="text-3xl font-semibold tracking-normal ">
-                                                        {{stats.TenantStats.NumberOfTenants | number : '1.0-2'}}
+                                                    <div class="text-3xl font-semibold tracking-tight leading-tight">
+                                                        R {{totalSales | number : '1.0-2'}}
+                                                    </div>
+                                                    <div class="flex items-center">
+                                                        <mat-icon
+                                                            class="mr-1 icon-size-5"
+                                                            [ngClass]="{'text-green-500': varianceSales > 100, 'text-red-500': varianceSales < 100}"
+                                                            [svgIcon]="varianceSales > 100 ? 'heroicons_solid:trending-up' : 'heroicons_solid:trending-down'"></mat-icon>
+                                                        <div class="font-medium text-sm text-secondary leading-none whitespace-nowrap">
+                                                            Variance for last period: <span class="text-emerald-500">{{varianceSales | number : '1.0-2'}} %</span>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <mat-icon class="icon-size-10 text-white" [svgIcon]="'feather:users'"></mat-icon>
                                             </div>
-                                            <div class="flex flex-col w-full gap-y-1">
-                                                <div class="flex w-full justify-between leading-4">
-                                                    <span class="text-md">Occupied</span>
-                                                    <span class="text-lg font-semibold">{{stats.TenantStats.OccupiedPercentage | percent : '1.0-2'}}</span>
-                                                </div>
-                                                <div class="flex w-full justify-between leading-4">
-                                                    <span class="text-md">Recovered</span>
-                                                    <span class="text-lg font-semibold">{{stats.TenantStats.RecoverablePercentage | percent : '1.0-2'}}</span>
-                                                </div>
+                                                
+                                            <div class="flex flex-col flex-auto w-full">
+                                                <apx-chart
+                                                    class="flex-auto w-full h-24"
+                                                    [chart]="chartSales.chart"
+                                                    [colors]="chartSales.colors"
+                                                    [series]="chartSales.series"
+                                                    [stroke]="chartSales.stroke"
+                                                    [tooltip]="chartSales.tooltip"
+                                                    [xaxis]="chartSales.xaxis"
+                                                    [yaxis]="chartSales.yaxis"></apx-chart>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="bg-gradient-to-r from-violet-400 to-violet-600 sm:col-span-3 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100">
-                                    <div class="flex items-start justify-between text-white h-full">
-                                        <div class="flex flex-col w-full gap-y-1 justify-between h-full">
-                                            <div class="flex w-full justify-between">
-                                                <div class="flex flex-col">
-                                                    <div class="text-2xl font-medium tracking-normal leading-8 truncate">Smart Services</div>
-                                                    <div class="text-3xl font-semibold tracking-normal ">
-                                                        {{stats.SmartStats.TotalSmart | number : '1.0-2'}}
-                                                    </div>
+                                <div class="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-6 mt-3">
+                                    <div class="col-span-1 lg:col-span-2 xl:col-span-3">
+                                        <div class="bg-gradient-to-r from-gray-600 to-gray-400 sm:col-span-2 flex flex-col flex-auto shadow rounded-2xl overflow-visible text-white">
+                                            <div class="flex flex-col p-2 md:p-6 gap-y-2">
+                                                <div class="flex items-start justify-between">
+                                                    <div class="text-xl font-medium tracking-tight leading-6">CO<span class="leading-3 text-sm">2</span> Emissions and requirements for off-set based on above statistics</div>
                                                 </div>
-                                                <mat-icon class="icon-size-10 text-white" [svgIcon]="'feather:users'"></mat-icon>
-                                            </div>
-                                            <div class="flex flex-col w-full gap-y-1">
-                                                <div class="flex w-full gap-x-4">
-                                                    <div class="flex justify-between w-1/2 leading-4">
-                                                        <span class="text-md">Solar</span>
-                                                        <span class="text-lg font-semibold">{{stats.SmartStats.SolarCount}}</span>
-                                                    </div>
-                                                    <div class="flex justify-between w-1/2 leading-4">
-                                                        <span class="text-md">Generator</span>
-                                                        <span class="text-lg font-semibold">{{stats.SmartStats.GeneratorCount}}</span>
-                                                    </div>
-                                                </div>
-                                                <div class="flex w-full gap-x-4">
-                                                    <div class="flex justify-between w-1/2 leading-4">
-                                                        <span class="text-md">Electricity</span>
-                                                        <span class="text-lg font-semibold">{{stats.SmartStats.ConsumerElectricityCount}}</span>
-                                                    </div>
-                                                    <div class="flex justify-between w-1/2 leading-4">
-                                                        <span class="text-md">Water</span>
-                                                        <span class="text-lg font-semibold">{{stats.SmartStats.ConsumerWaterCount}}</span>
-                                                    </div>
-                                                </div>
-                                                <div class="flex w-full gap-x-4">
-                                                    <div class="flex justify-between w-1/2 leading-4">
-                                                        <span class="text-md">Bulk</span>
-                                                        <span class="text-lg font-semibold">{{stats.SmartStats.BulkCount}}</span>
-                                                    </div>
-                                                    <div class="flex justify-between w-1/2 leading-4">
-                                                        <span class="text-md">Council Check</span>
-                                                        <span class="text-lg font-semibold">{{stats.SmartStats.CouncilChkCount}}</span>
-                                                    </div>
-                                                </div>
-                                                <div class="flex mt-2">
-                                                    <a href="javascript:void(0);" (click)="onDetailAlarms()" class="text-md leading-4 cursor-pointer underline">Alarms: {{stats.SmartStats.AlarmsConfigured}} Configured, {{stats.SmartStats.AlarmsTriggered}} Triggered</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-1 lg:grid-cols-3 mt-3 gap-x-8 gap-y-2">
-                                <div class="col-span-1">
-                                    <div class="sm:col-span-2 flex flex-col flex-auto  bg-card shadow rounded-2xl overflow-visible">
-                                        <div class="flex flex-col px-6 pt-6 gap-y-2">
-                                            <div class="flex items-start justify-between">
-                                                <div class="text-lg font-semibold tracking-tight leading-6 truncate">Electricity Usage - Last 6 Periods</div>
-                                            </div>
-                                            <div class="flex flex-col">
-                                                <div class="text-3xl font-semibold tracking-tight leading-tight">
-                                                    {{totalElectricityUsage | number : '1.0-2'}} <span class="text-xl">kwh</span>
-                                                </div>
-                                                <div class="flex items-center">
-                                                    <mat-icon
-                                                        class="mr-1 icon-size-5"
-                                                        [ngClass]="{'text-green-500': varianceElectricity > 100, 'text-red-500': varianceElectricity < 100}"
-                                                        [svgIcon]="varianceElectricity > 100 ? 'heroicons_solid:trending-up' : 'heroicons_solid:trending-down'"></mat-icon>
-                                                    <div class="font-medium text-sm text-secondary leading-none whitespace-nowrap">
-                                                        Variance for last period: <span class="text-pink-500">{{varianceElectricity | number : '1.0-2'}} %</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                            
-                                        <div class="flex flex-col flex-auto w-full">
-                                            <apx-chart
-                                                class="flex-auto w-full h-24"
-                                                [chart]="chartElectricityUsage.chart"
-                                                [colors]="chartElectricityUsage.colors"
-                                                [series]="chartElectricityUsage.series"
-                                                [stroke]="chartElectricityUsage.stroke"
-                                                [tooltip]="chartElectricityUsage.tooltip"
-                                                [xaxis]="chartElectricityUsage.xaxis"
-                                                [yaxis]="chartElectricityUsage.yaxis"></apx-chart>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-span-1">
-                                    <div class="sm:col-span-2 flex flex-col flex-auto  bg-card shadow rounded-2xl overflow-visible">
-                                        <div class="flex flex-col px-6 pt-6 gap-y-2">
-                                            <div class="flex items-start justify-between">
-                                                <div class="text-lg font-semibold tracking-tight leading-6 truncate">Water Usage - Last 6 Periods</div>
-                                            </div>
-                                            <div class="flex flex-col">
-                                                <div class="text-3xl font-semibold tracking-tight leading-tight">
-                                                    {{totalWaterUsage | number : '1.0-2'}} <span class="text-xl">KL</span>
-                                                </div>
-                                                <div class="flex items-center">
-                                                    <mat-icon
-                                                        class="mr-1 icon-size-5"
-                                                        [ngClass]="{'text-green-500': varianceWater > 100, 'text-red-500': varianceWater < 100}"
-                                                        [svgIcon]="varianceWater > 100 ? 'heroicons_solid:trending-up' : 'heroicons_solid:trending-down'"></mat-icon>
-                                                    <div class="font-medium text-sm text-secondary leading-none whitespace-nowrap">
-                                                        Variance for last period: <span class="text-blue-500">{{varianceWater | number : '1.0-2'}} %</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                            
-                                        <div class="flex flex-col flex-auto w-full">
-                                            <apx-chart
-                                                class="flex-auto w-full h-24"
-                                                [chart]="chartWaterUsage.chart"
-                                                [colors]="chartWaterUsage.colors"
-                                                [series]="chartWaterUsage.series"
-                                                [stroke]="chartWaterUsage.stroke"
-                                                [tooltip]="chartWaterUsage.tooltip"
-                                                [xaxis]="chartWaterUsage.xaxis"
-                                                [yaxis]="chartWaterUsage.yaxis"></apx-chart>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-span-1">
-                                    <div class="sm:col-span-2 flex flex-col flex-auto  bg-card shadow rounded-2xl overflow-visible">
-                                        <div class="flex flex-col px-6 pt-6 gap-y-2">
-                                            <div class="flex items-start justify-between">
-                                                <div class="text-lg font-semibold tracking-tight leading-6 truncate">Sales - Last 6 Periods</div>
-                                            </div>
-                                            <div class="flex flex-col">
-                                                <div class="text-3xl font-semibold tracking-tight leading-tight">
-                                                    R {{totalSales | number : '1.0-2'}}
-                                                </div>
-                                                <div class="flex items-center">
-                                                    <mat-icon
-                                                        class="mr-1 icon-size-5"
-                                                        [ngClass]="{'text-green-500': varianceSales > 100, 'text-red-500': varianceSales < 100}"
-                                                        [svgIcon]="varianceSales > 100 ? 'heroicons_solid:trending-up' : 'heroicons_solid:trending-down'"></mat-icon>
-                                                    <div class="font-medium text-sm text-secondary leading-none whitespace-nowrap">
-                                                        Variance for last period: <span class="text-emerald-500">{{varianceSales | number : '1.0-2'}} %</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                            
-                                        <div class="flex flex-col flex-auto w-full">
-                                            <apx-chart
-                                                class="flex-auto w-full h-24"
-                                                [chart]="chartSales.chart"
-                                                [colors]="chartSales.colors"
-                                                [series]="chartSales.series"
-                                                [stroke]="chartSales.stroke"
-                                                [tooltip]="chartSales.tooltip"
-                                                [xaxis]="chartSales.xaxis"
-                                                [yaxis]="chartSales.yaxis"></apx-chart>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-6 mt-3">
-                                <div class="col-span-1 lg:col-span-2 xl:col-span-3">
-                                    <div class="bg-gradient-to-r from-gray-600 to-gray-400 sm:col-span-2 flex flex-col flex-auto shadow rounded-2xl overflow-visible text-white">
-                                        <div class="flex flex-col p-2 md:p-6 gap-y-2">
-                                            <div class="flex items-start justify-between">
-                                                <div class="text-xl font-medium tracking-tight leading-6">CO<span class="leading-3 text-sm">2</span> Emissions and requirements for off-set based on above statistics</div>
-                                            </div>
-                                            <div class="flex justify-between gap-x-2">
-                                                <div class="flex flex-col w-full">
-                                                    <div class="grid grid-cols-3 gap-y-1 gap-x-2 text-lg" *ngIf="isMobileScreen">
-                                                        <div class="col-span-1"></div>
-                                                        <div class="col-span-1 flex gap-x-1 md:gap-x-2 electricity-lbl">
-                                                            <div class="service-icon electricity-icon"></div> Electricity
+                                                <div class="flex justify-between gap-x-2">
+                                                    <div class="flex flex-col w-full">
+                                                        <div class="grid grid-cols-3 gap-y-1 gap-x-2 text-lg" *ngIf="isMobileScreen">
+                                                            <div class="col-span-1"></div>
+                                                            <div class="col-span-1 flex gap-x-1 md:gap-x-2 electricity-lbl">
+                                                                <div class="service-icon electricity-icon"></div> Electricity
+                                                            </div>
+                                                            <div class="col-span-1 flex gap-x-1 md:gap-x-2 water-lbl">
+                                                                <div class="service-icon water-icon"></div>Water
+                                                            </div>
+                                                            
+                                                            <div class="col-span-1">
+                                                                CO<span class="leading-3 text-sm">2</span> Tonnes
+                                                            </div>
+                                                            <div class="col-span-1 text-lg md:text-xl">{{totalElectricityUsage * 0.97 / 1000 | number : '1.0-0'}}</div>
+                                                            <div class="col-span-1 text-lg md:text-xl">{{totalWaterUsage * 0.298 / 1000 | number : '1.0-0'}}</div>
+    
+                                                            <div class="col-span-1">
+                                                                Trees
+                                                            </div>
+                                                            <div class="col-span-1 text-lg md:text-xl">{{totalElectricityUsage * 0.97 / 1000 * 1000 / 27 | number : '1.0-0'}}</div>
+                                                            <div class="col-span-1 text-lg md:text-xl">{{totalWaterUsage * 0.298 / 1000 * 1000 / 27 | number : '1.0-0'}}</div>
+    
+                                                            <div class="col-span-1">
+                                                                Area-Hectare
+                                                            </div>
+                                                            <div class="col-span-1 text-lg md:text-xl">{{totalElectricityUsage * 0.97 / 1000 * 1000 / 27 / 400 | number : '1.0-0'}}</div>
+                                                            <div class="col-span-1 text-lg md:text-xl">{{totalWaterUsage * 0.298 / 1000 * 1000 / 27 / 400 | number : '1.0-0'}}</div>
+    
+                                                            <div class="col-span-1">
+                                                                Rugby Fields
+                                                            </div>
+                                                            <div class="col-span-1 text-lg md:text-xl">{{totalElectricityUsage * 0.97 / 1000 * 1000 / 27 / 400 * 1000 / 12000 | number : '1.0-0'}}</div>
+                                                            <div class="col-span-1 text-lg md:text-xl">{{totalWaterUsage * 0.298 / 1000 * 1000 / 27 / 400 * 1000 / 12000 | number : '1.0-0'}}</div>
                                                         </div>
-                                                        <div class="col-span-1 flex gap-x-1 md:gap-x-2 water-lbl">
-                                                            <div class="service-icon water-icon"></div>Water
+                                                         <div class="grid grid-cols-11 gap-2 text-lg" *ngIf="!isMobileScreen">
+                                                            <div class="col-span-3"></div>
+                                                            <div class="col-span-2">CO<span class="leading-3 text-sm">2</span> Tonnes</div>
+                                                            <div class="col-span-2">Trees</div>
+                                                            <div class="col-span-2">Area-Hectare</div>
+                                                            <div class="col-span-2">Rugby Fields</div>
+    
+                                                            <div class="col-span-3 flex gap-x-2 electricity-lbl">
+                                                                <div class="service-icon electricity-icon"></div> Electricity
+                                                            </div>                                            
+                                                            <div class="col-span-2 text-xl">{{totalElectricityUsage * 0.97 / 1000 | number : '1.0-0'}}</div>
+                                                            <div class="col-span-2 text-xl">{{totalElectricityUsage * 0.97 / 1000 * 1000 / 27 | number : '1.0-0'}}</div>
+                                                            <div class="col-span-2 text-xl">{{totalElectricityUsage * 0.97 / 1000 * 1000 / 27 / 400 | number : '1.0-0'}}</div>
+                                                            <div class="col-span-2 text-xl">{{totalElectricityUsage * 0.97 / 1000 * 1000 / 27 / 400 * 1000 / 12000 | number : '1.0-0'}}</div>
+    
+                                                            <div class="col-span-3 flex gap-x-2 water-lbl"><div class="service-icon water-icon"></div>Water</div>
+                                                            <div class="col-span-2 text-xl">{{totalWaterUsage * 0.298 / 1000 | number : '1.0-0'}}</div>
+                                                            <div class="col-span-2 text-xl">{{totalWaterUsage * 0.298 / 1000 * 1000 / 27 | number : '1.0-0'}}</div>
+                                                            <div class="col-span-2 text-xl">{{totalWaterUsage * 0.298 / 1000 * 1000 / 27 / 400 | number : '1.0-0'}}</div>
+                                                            <div class="col-span-2 text-xl">{{totalWaterUsage * 0.298 / 1000 * 1000 / 27 / 400 * 1000 / 12000 | number : '1.0-0'}}</div>
                                                         </div>
-                                                        
-                                                        <div class="col-span-1">
-                                                            CO<span class="leading-3 text-sm">2</span> Tonnes
-                                                        </div>
-                                                        <div class="col-span-1 text-lg md:text-xl">{{totalElectricityUsage * 0.97 / 1000 | number : '1.0-0'}}</div>
-                                                        <div class="col-span-1 text-lg md:text-xl">{{totalWaterUsage * 0.298 / 1000 | number : '1.0-0'}}</div>
-
-                                                        <div class="col-span-1">
-                                                            Trees
-                                                        </div>
-                                                        <div class="col-span-1 text-lg md:text-xl">{{totalElectricityUsage * 0.97 / 1000 * 1000 / 27 | number : '1.0-0'}}</div>
-                                                        <div class="col-span-1 text-lg md:text-xl">{{totalWaterUsage * 0.298 / 1000 * 1000 / 27 | number : '1.0-0'}}</div>
-
-                                                        <div class="col-span-1">
-                                                            Area-Hectare
-                                                        </div>
-                                                        <div class="col-span-1 text-lg md:text-xl">{{totalElectricityUsage * 0.97 / 1000 * 1000 / 27 / 400 | number : '1.0-0'}}</div>
-                                                        <div class="col-span-1 text-lg md:text-xl">{{totalWaterUsage * 0.298 / 1000 * 1000 / 27 / 400 | number : '1.0-0'}}</div>
-
-                                                        <div class="col-span-1">
-                                                            Rugby Fields
-                                                        </div>
-                                                        <div class="col-span-1 text-lg md:text-xl">{{totalElectricityUsage * 0.97 / 1000 * 1000 / 27 / 400 * 1000 / 12000 | number : '1.0-0'}}</div>
-                                                        <div class="col-span-1 text-lg md:text-xl">{{totalWaterUsage * 0.298 / 1000 * 1000 / 27 / 400 * 1000 / 12000 | number : '1.0-0'}}</div>
-                                                    </div>
-                                                     <div class="grid grid-cols-11 gap-2 text-lg" *ngIf="!isMobileScreen">
-                                                        <div class="col-span-3"></div>
-                                                        <div class="col-span-2">CO<span class="leading-3 text-sm">2</span> Tonnes</div>
-                                                        <div class="col-span-2">Trees</div>
-                                                        <div class="col-span-2">Area-Hectare</div>
-                                                        <div class="col-span-2">Rugby Fields</div>
-
-                                                        <div class="col-span-3 flex gap-x-2 electricity-lbl">
-                                                            <div class="service-icon electricity-icon"></div> Electricity
-                                                        </div>                                            
-                                                        <div class="col-span-2 text-xl">{{totalElectricityUsage * 0.97 / 1000 | number : '1.0-0'}}</div>
-                                                        <div class="col-span-2 text-xl">{{totalElectricityUsage * 0.97 / 1000 * 1000 / 27 | number : '1.0-0'}}</div>
-                                                        <div class="col-span-2 text-xl">{{totalElectricityUsage * 0.97 / 1000 * 1000 / 27 / 400 | number : '1.0-0'}}</div>
-                                                        <div class="col-span-2 text-xl">{{totalElectricityUsage * 0.97 / 1000 * 1000 / 27 / 400 * 1000 / 12000 | number : '1.0-0'}}</div>
-
-                                                        <div class="col-span-3 flex gap-x-2 water-lbl"><div class="service-icon water-icon"></div>Water</div>
-                                                        <div class="col-span-2 text-xl">{{totalWaterUsage * 0.298 / 1000 | number : '1.0-0'}}</div>
-                                                        <div class="col-span-2 text-xl">{{totalWaterUsage * 0.298 / 1000 * 1000 / 27 | number : '1.0-0'}}</div>
-                                                        <div class="col-span-2 text-xl">{{totalWaterUsage * 0.298 / 1000 * 1000 / 27 / 400 | number : '1.0-0'}}</div>
-                                                        <div class="col-span-2 text-xl">{{totalWaterUsage * 0.298 / 1000 * 1000 / 27 / 400 * 1000 / 12000 | number : '1.0-0'}}</div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </ng-container>
+                            <ng-template #tenantTemplate>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-9 xl:grid-cols-9 gap-10 w-full">
+                                    <div class="bg-gradient-to-r from-amber-400 to-amber-500 col-span-1 lg:col-span-2 flex flex-col flex-auto p-6 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100" (click)="onDetail(tabType.Shops)">
+                                        <div class="flex items-start justify-between text-white h-full">
+                                            <div class="flex flex-col w-full gap-y-1 justify-between h-full">
+                                                <div class="flex w-full justify-between">
+                                                    <div class="flex flex-col">
+                                                        <div class="text-2xl font-medium tracking-normal leading-8 truncate">Shops</div>
+                                                        <div class="text-3xl font-semibold tracking-normal ">
+                                                            {{stats.Shops.NumberOfShops | number : '1.0-2'}}
+                                                        </div>
+                                                    </div>
+                                                    <mat-icon class="icon-size-10" [svgIcon]="'feather:clients'"></mat-icon>
+                                                </div>
+                                                <div class="flex flex-col w-full gap-y-1">
+                                                    <div class="flex w-full justify-between leading-4">
+                                                        <span class="text-md">Occupied</span>
+                                                        <span class="text-lg font-semibold">{{stats.Shops.OccupiedPercentage | percent : '1.0-2'}}</span>
+                                                    </div>
+                                                    <div class="flex w-full justify-between leading-4">
+                                                        <span class="text-md">Area</span>
+                                                        <span class="text-lg font-semibold">{{stats.Shops.TotalArea | number : '1.0-2'}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
                         </div>
                         <ng-template #loading></ng-template>
                     </ng-template>

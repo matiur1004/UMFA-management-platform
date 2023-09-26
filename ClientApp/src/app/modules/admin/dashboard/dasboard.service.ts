@@ -46,6 +46,7 @@ export class DashboardService {
   public selectedShopInfo: any;
   public selectedTenantSlipInfo: any;
   public selectedTriggeredAlarmInfo: any;
+  public isTenant: boolean;
 
   private _alarmTriggerDetail: BehaviorSubject<any> = new BehaviorSubject(null);
   private _triggeredAlarmsPage: BehaviorSubject<any> = new BehaviorSubject(null);
@@ -182,6 +183,21 @@ export class DashboardService {
   
   getStats(userId) {
     const url = `${CONFIG.apiURL}${CONFIG.dashboardStats}/${userId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        // tap(s =>
+        //  console.log(`Http response from getStats: ${JSON.stringify(s)}`)
+        // ),
+        map(stats => {
+          this.statsSubject.next(stats);
+          return stats;
+        })
+      );
+  }
+
+  getTenantStats(userId) {
+    const url = `${CONFIG.apiURL}/Dashboard/tenants/${userId}`;
     return this.http.get<any>(url, { withCredentials: true })
       .pipe(
         catchError(err => this.catchAuthErrors(err)),
