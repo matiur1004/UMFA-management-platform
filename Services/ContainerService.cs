@@ -9,11 +9,12 @@ namespace ClientPortal.Services
         public Task AddBlobAsync(MemoryStream stream, string blobName, bool overwrite = false);
     }
 
-    public class ContainerService : IContainerService
+    public class ContainerService<TSettings> : IContainerService where TSettings : ContainerSettings
     {
-        private readonly ArchiveContainerSettings _settings;
-        private readonly ILogger<ContainerService> _logger;
-        public ContainerService(ILogger<ContainerService> logger, IOptions<ArchiveContainerSettings> options) 
+        private readonly TSettings _settings;
+        private readonly ILogger<ContainerService<TSettings>> _logger;
+
+        public ContainerService(ILogger<ContainerService<TSettings>> logger, IOptions<TSettings> options) 
         {
             _logger = logger;
             _settings = options.Value;
@@ -24,7 +25,7 @@ namespace ClientPortal.Services
             _logger.LogDebug($"Adding Blob {blobName} to container {_settings.ContainerName}");
             stream.Position = 0;
 
-            BlobClient blobClient = new BlobClient(_settings.ContainerConnection, _settings.ContainerName, blobName);
+            var blobClient = new BlobClient(_settings.ContainerConnection, _settings.ContainerName, blobName);
             await blobClient.UploadAsync(stream, overwrite);
 
             _logger.LogDebug($"Added Blob {blobName} to container {_settings.ContainerName}");

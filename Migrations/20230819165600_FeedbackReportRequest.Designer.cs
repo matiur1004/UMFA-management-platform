@@ -4,6 +4,7 @@ using ClientPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClientPortal.Migrations
 {
     [DbContext(typeof(PortalDBContext))]
-    partial class DataDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230819165600_FeedbackReportRequest")]
+    partial class FeedbackReportRequest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -144,8 +146,6 @@ namespace ClientPortal.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BuildingId");
-
                     b.HasIndex("MakeModelId");
 
                     b.HasIndex("MeterNo")
@@ -197,10 +197,6 @@ namespace ClientPortal.Migrations
                         .HasColumnType("real");
 
                     b.HasKey("AMRMeterAlarmId");
-
-                    b.HasIndex("AMRMeterId");
-
-                    b.HasIndex("AlarmTypeId");
 
                     b.ToTable("AMRMeterAlarms");
                 });
@@ -640,6 +636,7 @@ namespace ClientPortal.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Url")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("FeedbackReportRequestId");
@@ -1622,12 +1619,6 @@ namespace ClientPortal.Migrations
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsClient")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsTenant")
-                        .HasColumnType("bit");
-
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1872,12 +1863,6 @@ namespace ClientPortal.Migrations
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AMRMeter", b =>
                 {
-                    b.HasOne("ClientPortal.Data.Entities.PortalEntities.Building", "Building")
-                        .WithMany("AMRMeters")
-                        .HasForeignKey("BuildingId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("ClientPortal.Data.Entities.PortalEntities.MeterMakeModel", "MakeModel")
                         .WithMany("AMRMeters")
                         .HasForeignKey("MakeModelId")
@@ -1890,30 +1875,9 @@ namespace ClientPortal.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Building");
-
                     b.Navigation("MakeModel");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AMRMeterAlarm", b =>
-                {
-                    b.HasOne("ClientPortal.Data.Entities.PortalEntities.AMRMeter", "AMRMeter")
-                        .WithMany("AMRMeterAlarms")
-                        .HasForeignKey("AMRMeterId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("ClientPortal.Data.Entities.PortalEntities.AlarmType", "AlarmType")
-                        .WithMany("AMRMeterAlarms")
-                        .HasForeignKey("AlarmTypeId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("AMRMeter");
-
-                    b.Navigation("AlarmType");
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AMRMeterTriggeredAlarm", b =>
@@ -2209,15 +2173,8 @@ namespace ClientPortal.Migrations
                     b.Navigation("TOUSeason");
                 });
 
-            modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AlarmType", b =>
-                {
-                    b.Navigation("AMRMeterAlarms");
-                });
-
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AMRMeter", b =>
                 {
-                    b.Navigation("AMRMeterAlarms");
-
                     b.Navigation("ProfileData");
 
                     b.Navigation("ScadaRequestDetails");
@@ -2240,8 +2197,6 @@ namespace ClientPortal.Migrations
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.Building", b =>
                 {
-                    b.Navigation("AMRMeters");
-
                     b.Navigation("BuildingSupplierUtilities");
                 });
 
