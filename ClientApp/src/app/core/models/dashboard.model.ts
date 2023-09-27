@@ -11,6 +11,11 @@ export interface IHomePageStats {
     OccupiedPercentage: number;
     RecoverablePercentage: number;
   };
+  Tenants: {
+    NumberOfTenants: number;
+    OccupiedPercentage: number;
+    RecoverablePercentage: number;
+  };
   TenantSlips: {
     Tenants: number;
     Shops: number;
@@ -31,6 +36,11 @@ export interface IHomePageStats {
     TotalSmart: number;
     AlarmsConfigured: number;
     AlarmsTriggered: number;
+  };
+  SmartServices: {
+    TotalSmart: number;
+    Electricity: number;
+    Water: number;
   };
   GraphStats: any[];
   Stats: any[];

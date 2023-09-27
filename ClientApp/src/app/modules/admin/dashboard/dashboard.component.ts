@@ -64,7 +64,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             graphData.forEach(graph => {
                 electricityUsage.data.push(graph['TotalElectricityUsage']);
                 waterUsage.data.push(graph['TotalWaterUsage']);
-                sales.data.push(graph['TotalSales']);
+                if(this.isTenant) sales.data.push(graph['TotalBilled']);
+                else sales.data.push(graph['TotalSales']);
             })
 
             this.chartElectricityUsage.series = [electricityUsage];
@@ -78,7 +79,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             this.varianceElectricity = electricityUsage.data[electricityUsage.data.length - 1] / ( this.totalElectricityUsage / electricityUsage.data.length ) * 100; 
             this.varianceWater = waterUsage.data[waterUsage.data.length - 1] / ( this.totalWaterUsage / waterUsage.data.length ) * 100; 
             this.varianceSales = sales.data[sales.data.length - 1] / ( this.totalSales / sales.data.length ) * 100;
-            console.log("sdfsdfsdfsdf", s);
             return s;
         }),
         catchError(err => {
