@@ -603,6 +603,23 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
         //             this._cdr.markForCheck();
         //         }
         //     });
+        // let res = {buildingId: 2531, shopId: 65465};
+
+        // this._dbService.getShopDashboardDetail(2531, 65465)
+        //     .pipe(takeUntil(this._unsubscribeAll))
+        //     .subscribe(result => {
+        //         if(result) {
+        //             let newTab: IHomeTab = {
+        //                 id: 0, 
+        //                 title: `shopName`,
+        //                 type: 'ShopDetailDashboard',
+        //                 dataSource: res
+        //             };
+        //             this.tabsList.push(newTab);
+        //             this.selectedTab = this.tabsList.length;
+        //             this._cdr.detectChanges();
+        //         }
+        //     });
     }
 
     onDetail(type: EHomeTabType) {
