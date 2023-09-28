@@ -36,8 +36,6 @@ export class LayoutComponent implements OnInit, OnDestroy
         private _fuseConfigService: FuseConfigService,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
         private _fusePlatformService: FusePlatformService,
-        private _userService: UserService,
-        private _authService: AuthService
     )
     {
     }
