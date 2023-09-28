@@ -34,7 +34,16 @@ namespace ClientPortal.Controllers
         [HttpGet("UtilityRecoveryReport")]
         public async Task<ActionResult<UtilityRecoveryReportResponse>> Get([FromQuery] UtilityRecoveryReportRequest request)
         {
-            return await _umfaService.GetUtilityRecoveryReportAsync(request);
+            UtilityRecoveryReportResponse ret = null;
+            try
+            {
+                ret = await _umfaService.GetUtilityRecoveryReportAsync(request);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error running Utility Recovery Report: {ex.Message}");
+            }
+            return ret;
         }
 
         [HttpGet("ShopUsageVarianceReport")]

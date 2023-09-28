@@ -61,11 +61,11 @@ namespace ClientPortal.Services
         public Task<List<UmfaFeedbackReportElectricityUsage>> GetFeedbackReportElectricityUsagesAsync(UmfaFeedbackReportRequest request);
 
         public Task<List<UmfaFeedbackReportElectricityAmount>> GetFeedbackReportElectricityAmountsAsync(UmfaFeedbackReportRequest request);
-        
+
         public Task<List<UmfaFeedbackReportElectricityCouncilEntry>> GetFeedbackReportElectricityCouncilAsync(UmfaFeedbackReportRequest request);
 
         public Task<List<UmfaFeedbackReportWaterUsage>> GetFeedbackReportWaterUsagesAsync(UmfaFeedbackReportRequest request);
-        
+
         public Task<List<UmfaFeedbackReportWaterAmount>> GetFeedbackReportWaterAmountsAsync(UmfaFeedbackReportRequest request);
 
         public Task<List<UmfaFeedbackReportSewerUsage>> GetFeedbackReportSewerUsagesAsync(UmfaFeedbackReportRequest request);
@@ -85,22 +85,26 @@ namespace ClientPortal.Services
     public class UmfaApiHttpService : IUmfaService
     {
         private readonly HttpClient _httpClient;
-        public UmfaApiHttpService(IOptions<UmfaApiSettings> options) 
+        private readonly ILogger<UmfaApiHttpService> _logger;
+
+        public UmfaApiHttpService(IOptions<UmfaApiSettings> options, ILogger<UmfaApiHttpService> logger)
         {
             _httpClient = new HttpClient
             {
-                BaseAddress = new Uri(options.Value.BaseUrl)
+                BaseAddress = new Uri(options.Value.BaseUrl),
+                Timeout = TimeSpan.FromSeconds(360)
             };
+            _logger = logger;
         }
 
         private async Task<string> GetAsync(string endpoint, object? queryParams = null)
         {
             string queryString = queryParams != null ? ToQueryString(queryParams) : string.Empty;
-            
+
             HttpResponseMessage response = await _httpClient.GetAsync(endpoint + queryString);
-            
+
             response.EnsureSuccessStatusCode();
-            
+
             return await response.Content.ReadAsStringAsync();
         }
 
@@ -108,11 +112,11 @@ namespace ClientPortal.Services
         {
             string jsonData = JsonSerializer.Serialize(data);
             StringContent content = new StringContent(jsonData, Encoding.UTF8, mediaType);
-            
+
             HttpResponseMessage response = await _httpClient.PostAsync(endpoint, content);
-            
+
             response.EnsureSuccessStatusCode();
-            
+
             return await response.Content.ReadAsStringAsync();
         }
 
@@ -122,9 +126,9 @@ namespace ClientPortal.Services
             StringContent content = new StringContent(jsonData, Encoding.UTF8, mediaType);
 
             HttpResponseMessage response = await _httpClient.PutAsync(endpoint, content);
-            
+
             response.EnsureSuccessStatusCode();
-            
+
             return await response.Content.ReadAsStringAsync();
         }
 
@@ -134,23 +138,23 @@ namespace ClientPortal.Services
             {
                 string jsonData = JsonSerializer.Serialize(data);
                 StringContent content = new StringContent(jsonData, Encoding.UTF8, mediaType);
-                
+
                 HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Delete, endpoint)
                 {
                     Content = content
                 };
                 HttpResponseMessage response = await _httpClient.SendAsync(request);
-                
+
                 response.EnsureSuccessStatusCode();
-                
+
                 return await response.Content.ReadAsStringAsync();
             }
             else
             {
                 HttpResponseMessage response = await _httpClient.DeleteAsync(endpoint);
-                
+
                 response.EnsureSuccessStatusCode();
-                
+
                 return await response.Content.ReadAsStringAsync();
             }
         }
@@ -182,7 +186,7 @@ namespace ClientPortal.Services
         public async Task<TenantSlipCriteriaResponse> GetTenantSlipCriteriaAsync(TenantSlipCriteriaSpRequest request)
         {
             var response = await GetAsync("tenantSlips/criteria", request);
-            return  JsonSerializer.Deserialize<TenantSlipCriteriaResponse>(response);
+            return JsonSerializer.Deserialize<TenantSlipCriteriaResponse>(response);
         }
 
         public async Task<TenantSlipCardInfo> GetTenantSlipCardInfoAsync(TenantSlipCardInfoSpRequest request)
@@ -224,7 +228,16 @@ namespace ClientPortal.Services
         #region
         public async Task<UtilityRecoveryReportResponse> GetUtilityRecoveryReportAsync(UtilityRecoveryReportRequest request)
         {
-            var response = await GetAsync("reports/utilityrecoveryreport", request);
+            var response = "";
+            try
+            {
+                response = await GetAsync("reports/utilityrecoveryreport", request);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while getting UtilityRecoveryReport: {ex.Message}");
+                throw ex;
+            }
             return JsonSerializer.Deserialize<UtilityRecoveryReportResponse>(response);
         }
 
@@ -248,8 +261,20 @@ namespace ClientPortal.Services
 
         public async Task<ConsumptionSummaryReconResponse> GetConsumptionSummaryReconReportAsync(ConsumptionSummaryReconRequest request)
         {
-            var response = await GetAsync("reports/consumptionsummaryreconreport", request);
-            return JsonSerializer.Deserialize<ConsumptionSummaryReconResponse>(response);
+            ConsumptionSummaryReconResponse ret = null;
+            try
+            {
+                _logger.LogInformation($"Getting BRR data for Period: {request.PeriodId}");
+                var response = await GetAsync("reports/consumptionsummaryreconreport", request);
+                _logger.LogInformation($"BRR Data recieved for Period: {request.PeriodId}, now deserializing..");
+                ret = JsonSerializer.Deserialize<ConsumptionSummaryReconResponse>(response);
+                _logger.LogInformation($"Serialized success!: {ret.ToString()}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while deserializing reponse: {ex.Message}");
+            }
+            return ret;
         }
 
         public async Task UpdateReportArhivesFileFormatsAsync(UpdateArchiveFileFormatSpRequest request)
@@ -265,7 +290,17 @@ namespace ClientPortal.Services
 
         public async Task<List<ShopDashboardShop>> GetDashboardShopDataAsync(int buildingId)
         {
-            var response = await GetAsync($"dashboard/buildings/{buildingId}/shops");
+            var response = "";
+            try
+            {
+                _logger.LogInformation($"Getting shops for building {buildingId}...");
+                response = await GetAsync($"dashboard/buildings/{buildingId}/shops");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error getting shops for building {buildingId}: {ex.Message}");
+            }
+
             return JsonSerializer.Deserialize<List<ShopDashboardShop>>(response);
         }
 
