@@ -675,6 +675,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             this.tabsList[index]['type'] == 'ShopDashboardOccupations' ||
             this.tabsList[index]['type'] == 'ShopDashboarAssignedMeters' || 
             this.tabsList[index]['type'] == 'ShopDashboardReadings' ||
+            this.tabsList[index]['type'] == 'ShopDetailDashboard' ||
             this.tabsList[index]['type'] == 'AlarmTrigger') {
             this.selectedTab = index;    
         }
