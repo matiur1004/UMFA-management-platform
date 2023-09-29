@@ -1,8 +1,6 @@
 ﻿using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Data.Repositories;
 using ClientPortal.Models.MessagingModels;
-using DevExpress.CodeParser;
-using System.Text.Json;
 
 namespace ClientPortal.Services
 {
@@ -10,6 +8,7 @@ namespace ClientPortal.Services
     {
         public  Task<FeedbackReportRequest> AddFeedbackReportRequestAsync(FeedbackReportRequestData request);
         public Task<FeedbackReportRequest> GetFeedbackReportRequestAsync(FeedbackReportRequestData request);
+        public Task<FeedbackReportRequest> UpdateFeedbackReportRequestAsync(int requestId, int status, string? url = null);
     }
     
     public class ReportsService : IReportsService
@@ -44,6 +43,24 @@ namespace ClientPortal.Services
         public async Task<FeedbackReportRequest> GetFeedbackReportRequestAsync(FeedbackReportRequestData request)
         {
             return (await _feedbackReportRequestRepository.GetAsync(fbr => fbr.Active && fbr.BuildingId.Equals(request.BuildingId) && fbr.PeriodId.Equals(request.PeriodId)));
+        }
+
+        public async Task<FeedbackReportRequest> UpdateFeedbackReportRequestAsync(int requestId, int status, string? url = null)
+        {
+            var feedbackReportRequest = await _feedbackReportRequestRepository.GetAsync(requestId);
+
+            if(feedbackReportRequest is null)
+            {
+                _logger.LogError($"Could not find feedback report request {requestId}");
+                return null;
+            }
+
+            feedbackReportRequest.Status = status;
+            feedbackReportRequest.Url = url;
+
+            var updatedRequest = await _feedbackReportRequestRepository.UpdateAsync(feedbackReportRequest);
+
+            return updatedRequest;
         }
     }
 }
