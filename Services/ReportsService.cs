@@ -1,6 +1,7 @@
 ﻿using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Data.Repositories;
 using ClientPortal.Models.MessagingModels;
+using System.Security.Policy;
 
 namespace ClientPortal.Services
 {
@@ -8,7 +9,8 @@ namespace ClientPortal.Services
     {
         public  Task<FeedbackReportRequest> AddFeedbackReportRequestAsync(FeedbackReportRequestData request);
         public Task<FeedbackReportRequest> GetFeedbackReportRequestAsync(FeedbackReportRequestData request);
-        public Task<FeedbackReportRequest> UpdateFeedbackReportRequestAsync(int requestId, int status, string? url = null);
+        public Task<FeedbackReportRequest> UpdateFeedbackReportRequestCompletedAsync(int requestId, string url);
+        public Task<FeedbackReportRequest> UpdateFeedbackReportRequestFailedAsync(int requestId);
     }
     
     public class ReportsService : IReportsService
@@ -45,7 +47,7 @@ namespace ClientPortal.Services
             return (await _feedbackReportRequestRepository.GetAsync(fbr => fbr.Active && fbr.BuildingId.Equals(request.BuildingId) && fbr.PeriodId.Equals(request.PeriodId)));
         }
 
-        public async Task<FeedbackReportRequest> UpdateFeedbackReportRequestAsync(int requestId, int status, string? url = null)
+        private async Task<FeedbackReportRequest> UpdateFeedbackReportRequestAsync(int requestId, int status, string? url = null, string? statusMessage = null)
         {
             var feedbackReportRequest = await _feedbackReportRequestRepository.GetAsync(requestId);
 
@@ -57,10 +59,22 @@ namespace ClientPortal.Services
 
             feedbackReportRequest.Status = status;
             feedbackReportRequest.Url = url;
+            feedbackReportRequest.StatusMessage = statusMessage;
+            feedbackReportRequest.LastUpdateDTM = DateTime.Now;
 
             var updatedRequest = await _feedbackReportRequestRepository.UpdateAsync(feedbackReportRequest);
 
             return updatedRequest;
+        }
+
+        public async Task<FeedbackReportRequest> UpdateFeedbackReportRequestCompletedAsync(int requestId, string url)
+        {
+            return await UpdateFeedbackReportRequestAsync(requestId, 3, url, "Completed");
+        }
+
+        public async Task<FeedbackReportRequest> UpdateFeedbackReportRequestFailedAsync(int requestId)
+        {
+            return await UpdateFeedbackReportRequestAsync(requestId, 4, null, "Failed");
         }
     }
 }
