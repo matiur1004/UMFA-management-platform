@@ -177,12 +177,12 @@ namespace ClientPortal.Controllers
         }
 
         [HttpGet("userMetersChart/{userId}/{chartId}")]
-        public IActionResult GetMetersForUserChart(int userId, int chartId)
+        public IActionResult GetMetersForUserChart(int userId, int chartId, [FromQuery] bool isTenant = false)
         {
             try
             {
                 _logger.LogInformation(1, $"Get meters for user {userId} from database");
-                var response = _amrService.GetAllMetersForUserChart(userId, chartId).Result;
+                var response = _amrService.GetAllMetersForUserChart(userId, chartId, isTenant).Result;
                 if (response.Message.StartsWith("Error")) throw new Exception($"Failed to get meters for user: {userId} and chart: {chartId}");
                 else if (response.Message == "Success")
                 {

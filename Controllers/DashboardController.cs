@@ -95,6 +95,20 @@ namespace ClientPortal.Controllers
             }
         }
 
+        [HttpGet("buildings/{buildingId:int}/tenants/{umfaUserId:int}/shops")]
+        public async Task<ActionResult<List<UmfaShopDashboardTenantShop>>> GetTenantShopsData(int buildingId, int umfaUserId)
+        {
+            try
+            {
+                return await _umfaService.GetShopDashboardTenantShopsAsync(buildingId, umfaUserId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while retrieving shop data from service: {ex.Message}");
+                return Problem($"Error while retrieving shop from service: {ex.Message}");
+            }
+        }
+
         [HttpGet("buildings/{buildingId:int}/shops/{shopId:int}")]
         public async Task<ActionResult<ShopDashboardResponse>> GetDashboardShopData(int buildingId, int shopId, [FromQuery, Range(1, int.MaxValue)] int history = 12)
         {

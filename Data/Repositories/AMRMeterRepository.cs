@@ -3,6 +3,7 @@ using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Data.Entities.UMFAEntities;
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
+using ClientPortal.Services;
 using static DevExpress.Xpo.Helpers.AssociatedCollectionCriteriaHelper;
 
 namespace ClientPortal.Data.Repositories
@@ -11,7 +12,7 @@ namespace ClientPortal.Data.Repositories
     {
         Task<AMRMeterResponse> GetMeterAsync(int id);
         Task<AMRMeterResponseList> GetMetersForUserAsync(int userId);
-        Task<AMRMeterResponseList> GetMetersForUserChartAsync(int userId, int chartId);
+        Task<AMRMeterResponseList> GetMetersForUserChartAsync(int userId, int chartId, bool isTenant = false);
         Task<AMRMeterResponseList> GetMetersForUserAndBuildingAsync(int userId, int buildingId);
         Task<AMRMeterResponse> AddMeterAsync(AMRMeterUpdateRequest meter);
         Task<AMRMeterResponse> Edit(AMRMeterRequest meter, int userId);
@@ -25,13 +26,15 @@ namespace ClientPortal.Data.Repositories
         private readonly ILogger<AMRMeterRepository> _logger;
         private readonly IMapper _mapper;
         private readonly IUMFABuildingRepository _buildingRepo;
+        private readonly IUmfaService _umfaService;
 
-        public AMRMeterRepository(PortalDBContext dbContext, ILogger<AMRMeterRepository> logger, IMapper mapper, IUMFABuildingRepository buildingRepo)
+        public AMRMeterRepository(PortalDBContext dbContext, ILogger<AMRMeterRepository> logger, IMapper mapper, IUMFABuildingRepository buildingRepo, IUmfaService umfaService)
         {
             _dbContext = dbContext;
             _logger = logger;
             _mapper = mapper;
             _buildingRepo = buildingRepo;
+            _umfaService = umfaService;
         }
         public async Task<AMRMeterResponse> AddMeterAsync(AMRMeterUpdateRequest meter)
         {
@@ -191,7 +194,7 @@ namespace ClientPortal.Data.Repositories
                 throw new ApplicationException($"Error retrieving meters for user {userId}: {ex.Message}");
             }
         }
-        public async Task<AMRMeterResponseList> GetMetersForUserChartAsync(int userId, int chartId)
+        public async Task<AMRMeterResponseList> GetMetersForUserChartAsync(int userId, int chartId, bool isTenant = false)
         {
             try
             {
@@ -214,15 +217,30 @@ namespace ClientPortal.Data.Repositories
                             break;
                         }
                 }
+                
                 User? user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
-                var resp = await _buildingRepo.GetBuildings(user.UmfaId);
-                var buildings = resp.UmfaBuildings.ToList();
+                
+                var buildings = (await _buildingRepo.GetBuildings(user.UmfaId)).UmfaBuildings;
+                
                 List<int> ids = buildings.Select(b => b.BuildingId).ToList();
+               
+                var tenantMeters = new List<UmfaTenantUserMeter>();
+                if(isTenant)
+                {
+                    tenantMeters = await _umfaService.GetTenantUserMetersAsync(new UmfaTenantUserMetersRequest { UmfaUserId = user.UmfaId, IsTenant = isTenant });
+                }
+
                 AMRMeterResponseList respList = new();
                 var meters = await _dbContext.AMRMeters
                     .Include(a => a.MakeModel)
-                    .Where(a => (a.Active && a.MakeModel.UtilityId == meterMakeModelId && ids.Contains(a.BuildingId)))
-                    .ToListAsync();
+                    .Where(a =>
+                    (
+                        a.Active
+                        && a.MakeModel.UtilityId == meterMakeModelId
+                        && ids.Contains(a.BuildingId)
+                        && (!isTenant || tenantMeters.Select(tm => tm.MeterNo).Contains(a.MeterNo))
+                    )).ToListAsync();
+                
                 if (meters != null && meters.Count > 0)
                 {
                     respList.Message = "Success";

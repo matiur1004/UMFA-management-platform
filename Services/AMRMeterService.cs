@@ -9,7 +9,7 @@ namespace ClientPortal.Services
         Task<AMRMeterResponse> AddMeterAsync(AMRMeterUpdateRequest meter);
         Task<AMRMeterResponse> GetMeterAsync(int id);
         Task<AMRMeterResponseList> GetAllMetersForUser(int userId);
-        Task<AMRMeterResponseList> GetAllMetersForUserChart(int userId, int chartId);
+        Task<AMRMeterResponseList> GetAllMetersForUserChart(int userId, int chartId, bool isTenant = false);
         Task<AMRMeterResponse> EditMeterAsync(AMRMeterUpdateRequest meter);
         Task<List<UtilityResponse>> GetMakeModels();
     }
@@ -82,12 +82,12 @@ namespace ClientPortal.Services
             }
         }
 
-        public async Task<AMRMeterResponseList> GetAllMetersForUserChart(int userId, int chartId)
+        public async Task<AMRMeterResponseList> GetAllMetersForUserChart(int userId, int chartId, bool isTenant = false)
         {
             _logger.LogInformation("Getting meters for user: {userId}", userId);
             try
             {
-                var result = await _meterRepo.GetMetersForUserChartAsync(userId, chartId);
+                var result = await _meterRepo.GetMetersForUserChartAsync(userId, chartId, isTenant);
                 if (result.Message.StartsWith("Error")) throw new Exception($"Meters for user {userId} and chart {chartId} not found");
                 else return result;
             }
