@@ -9,8 +9,8 @@ namespace ClientPortal.Services
     {
         public  Task<FeedbackReportRequest> AddFeedbackReportRequestAsync(FeedbackReportRequestData request);
         public Task<FeedbackReportRequest> GetFeedbackReportRequestAsync(FeedbackReportRequestData request);
-        public Task<FeedbackReportRequest> UpdateFeedbackReportRequestCompletedAsync(int requestId, string url);
-        public Task<FeedbackReportRequest> UpdateFeedbackReportRequestFailedAsync(int requestId);
+        public Task<FeedbackReportRequest> UpdateFeedbackReportRequestCompletedAsync(int requestId, string url, string buildingName, string periodName);
+        public Task<FeedbackReportRequest> UpdateFeedbackReportRequestFailedAsync(int requestId, string buildingName, string periodName);
     }
     
     public class ReportsService : IReportsService
@@ -47,7 +47,7 @@ namespace ClientPortal.Services
             return (await _feedbackReportRequestRepository.GetAsync(fbr => fbr.Active && fbr.BuildingId.Equals(request.BuildingId) && fbr.PeriodId.Equals(request.PeriodId)));
         }
 
-        private async Task<FeedbackReportRequest> UpdateFeedbackReportRequestAsync(int requestId, int status, string? url = null, string? statusMessage = null)
+        private async Task<FeedbackReportRequest> UpdateFeedbackReportRequestAsync(int requestId, int status, string buildingName, string periodName, string? url = null, string? statusMessage = null)
         {
             var feedbackReportRequest = await _feedbackReportRequestRepository.GetAsync(requestId);
 
@@ -61,20 +61,22 @@ namespace ClientPortal.Services
             feedbackReportRequest.Url = url;
             feedbackReportRequest.StatusMessage = statusMessage;
             feedbackReportRequest.LastUpdateDTM = DateTime.Now;
+            feedbackReportRequest.BuildingName = buildingName;
+            feedbackReportRequest.PeriodName = periodName;
 
             var updatedRequest = await _feedbackReportRequestRepository.UpdateAsync(feedbackReportRequest);
 
             return updatedRequest;
         }
 
-        public async Task<FeedbackReportRequest> UpdateFeedbackReportRequestCompletedAsync(int requestId, string url)
+        public async Task<FeedbackReportRequest> UpdateFeedbackReportRequestCompletedAsync(int requestId, string url, string buildingName, string periodName)
         {
-            return await UpdateFeedbackReportRequestAsync(requestId, 3, url, "Completed");
+            return await UpdateFeedbackReportRequestAsync(requestId, 3, buildingName, periodName, url, "Completed");
         }
 
-        public async Task<FeedbackReportRequest> UpdateFeedbackReportRequestFailedAsync(int requestId)
+        public async Task<FeedbackReportRequest> UpdateFeedbackReportRequestFailedAsync(int requestId, string buildingName, string periodName)
         {
-            return await UpdateFeedbackReportRequestAsync(requestId, 4, null, "Failed");
+            return await UpdateFeedbackReportRequestAsync(requestId, 4, buildingName, periodName, null, "Failed");
         }
     }
 }
