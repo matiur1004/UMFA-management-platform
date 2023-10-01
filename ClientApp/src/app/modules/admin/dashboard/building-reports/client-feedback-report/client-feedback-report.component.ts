@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { AllowedPageSizes } from '@core/helpers';
-import { DashboardService } from '../dasboard.service';
-import { Subject, takeUntil } from 'rxjs';
+import { Component, Input, OnInit } from '@angular/core';
 import moment from 'moment';
+import { Subject, takeUntil } from 'rxjs';
+import { DashboardService } from '../../dasboard.service';
+import { AllowedPageSizes } from '@core/helpers';
 
 @Component({
-  selector: 'app-shop-occupations',
-  templateUrl: './shop-occupations.component.html',
-  styleUrls: ['./shop-occupations.component.scss']
+  selector: 'app-client-feedback-report',
+  templateUrl: './client-feedback-report.component.html',
+  styleUrls: ['./client-feedback-report.component.scss']
 })
-export class ShopOccupationsComponent implements OnInit {
+export class ClientFeedbackReportComponent implements OnInit {
 
+  @Input() buildingId;
+  
   dataSource: any;
   applyFilterTypes: any;
   currentFilter: any;
@@ -53,4 +55,5 @@ export class ShopOccupationsComponent implements OnInit {
       this._unsubscribeAll.complete();
       this.dashboardService.destroyShopOccupation();
   }
+
 }

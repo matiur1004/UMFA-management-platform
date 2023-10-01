@@ -461,8 +461,9 @@ export class DashboardService {
     this._tenantSlipDownloads.next(true);
   }
 
-  showReports(buildingId) {
-    this._buildingReports.next(buildingId);
+  showReports(data) {
+    console.log("ffffff", data);
+    this._buildingReports.next(data);
   }
 
   showShopList(data) {

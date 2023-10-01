@@ -33,6 +33,7 @@ import { ShopAssignedMetersComponent } from './shop-assigned-meters/shop-assigne
 import { ShopReadingsComponent } from './shop-readings/shop-readings.component';
 import { TriggeredAlarmsComponent } from './triggered-alarms/triggered-alarms.component';
 import { MeterAlarmDetailModule } from '../admin/meter-alarm-detail/meter-alarm-detail.module';
+import { ClientFeedbackReportComponent } from './building-reports/client-feedback-report/client-feedback-report.component';
 
 @NgModule({
     declarations: [
@@ -48,7 +49,8 @@ import { MeterAlarmDetailModule } from '../admin/meter-alarm-detail/meter-alarm-
         ShopOccupationsComponent,
         ShopAssignedMetersComponent,
         ShopReadingsComponent,
-        TriggeredAlarmsComponent
+        TriggeredAlarmsComponent,
+        ClientFeedbackReportComponent
     ],
     imports     : [
         CommonModule,
