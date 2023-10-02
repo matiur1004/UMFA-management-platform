@@ -13,8 +13,12 @@ namespace ClientPortal.Data.Entities.PortalEntities
         [Required]
         public int BuildingId { get; set; }
 
+        public string? BuildingName { get; set; }
+
         [Required]
         public int PeriodId { get; set; }
+
+        public string? PeriodName { get; set; }
 
         [Url]
         public string? Url { get; set; }
