@@ -9,6 +9,7 @@ namespace ClientPortal.Services
     {
         public  Task<FeedbackReportRequest> AddFeedbackReportRequestAsync(FeedbackReportRequestData request);
         public Task<FeedbackReportRequest> GetFeedbackReportRequestAsync(FeedbackReportRequestData request);
+        public Task<List<FeedbackReportRequest>> GetFeedbackReportsRequestAsync(int buildingId);
         public Task<FeedbackReportRequest> UpdateFeedbackReportRequestCompletedAsync(int requestId, string url, string buildingName, string periodName);
         public Task<FeedbackReportRequest> UpdateFeedbackReportRequestFailedAsync(int requestId, string buildingName, string periodName);
     }
@@ -77,6 +78,11 @@ namespace ClientPortal.Services
         public async Task<FeedbackReportRequest> UpdateFeedbackReportRequestFailedAsync(int requestId, string buildingName, string periodName)
         {
             return await UpdateFeedbackReportRequestAsync(requestId, 4, buildingName, periodName, null, "Failed");
+        }
+
+        public async Task<List<FeedbackReportRequest>> GetFeedbackReportsRequestAsync(int buildingId)
+        {
+            return await _feedbackReportRequestRepository.GetAllAsync(fbr => fbr.Active && fbr.BuildingId.Equals(buildingId));
         }
     }
 }
