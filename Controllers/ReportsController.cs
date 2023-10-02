@@ -4,6 +4,7 @@ using ClientPortal.Models.MessagingModels;
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 using ClientPortal.Services;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 
 namespace ClientPortal.Controllers
@@ -239,6 +240,28 @@ namespace ClientPortal.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e, "Could finish feedback report request");
+                return Problem(e.Message);
+            }
+        }
+
+        [HttpGet("FeedbackReports")]
+        public async Task<ActionResult<List<FeedbackReportRequest>>> GetFeedbackReportsRequest([FromQuery, Required] int buildingId)
+        {
+            try
+            {
+                var reportRequests = await _reportsService.GetFeedbackReportsRequestAsync(buildingId);
+
+                if (reportRequests is null)
+                {
+                    _logger.LogError($"Could not retrieve feedback report requests for buildingId {buildingId}");
+                    return Problem($"Could not retrieve feedback report requests for buildingId {buildingId}");
+                }
+
+                return reportRequests;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, $"Could not retrieve feedback report requests for buildingId {buildingId}");
                 return Problem(e.Message);
             }
         }
