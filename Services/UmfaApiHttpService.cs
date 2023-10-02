@@ -79,6 +79,10 @@ namespace ClientPortal.Services
         public Task<List<UmfaFeedbackReportVacantUsage>> GetFeedbackReportVacantKwhUsagesAsync(UmfaFeedbackReportRequest request);
 
         public Task<List<UmfaFeedbackReportVacantUsage>> GetFeedbackReportVacantKlUsagesAsync(UmfaFeedbackReportRequest request);
+
+        public Task<List<UmfaShopDashboardTenantShop>> GetShopDashboardTenantShopsAsync(int buildingId, int umfaUserId);
+
+        public Task<List<UmfaTenantUserMeter>> GetTenantUserMetersAsync(UmfaTenantUserMetersRequest request);
     }
 
 
@@ -472,6 +476,20 @@ namespace ClientPortal.Services
             var response = await GetAsync($"reports/feedbackreport/vacant/kl/usage", request);
 
             return JsonSerializer.Deserialize<List<UmfaFeedbackReportVacantUsage>>(response);
+        }
+
+        public async Task<List<UmfaShopDashboardTenantShop>> GetShopDashboardTenantShopsAsync(int buildingId, int umfaUserId)
+        {
+            var response = await GetAsync($"dashboard/buildings/{buildingId}/tenants/{umfaUserId}/shops");
+
+            return JsonSerializer.Deserialize<List<UmfaShopDashboardTenantShop>>(response);
+        }
+
+        public async Task<List<UmfaTenantUserMeter>> GetTenantUserMetersAsync(UmfaTenantUserMetersRequest request)
+        {
+            var response = await GetAsync($"meters", request);
+
+            return JsonSerializer.Deserialize<List<UmfaTenantUserMeter>>(response);
         }
     }
 }
