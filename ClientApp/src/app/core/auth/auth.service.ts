@@ -123,7 +123,21 @@ export class AuthService
             }));
       }
 
-    
+    revokeToken() {
+        return this._httpClient.post<any>(`${CONFIG.apiURL}${CONFIG.revokePath}`, {}, { withCredentials: true })
+          .pipe(
+            catchError(err => {
+              console.log("Error while authenticating");
+              return throwError(err);
+              //this.catchAuthErrors('refreshToken', err);
+            }),
+            tap(u => {
+              //console.log(`Http response from refreshToken: ${JSON.stringify(u)}`)
+            }),
+            map(user => {
+              return user;
+            }));
+    }
     //section for helper methods
 
     private refreshTokenTimeOut: any;
@@ -235,7 +249,6 @@ export class AuthService
         {
             return of(false);
         }
-
         // If the access token exists and it didn't expire, sign in using it
         return this.signInUsingToken();
     }

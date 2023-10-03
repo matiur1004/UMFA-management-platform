@@ -23,7 +23,7 @@ export const appRoutes: Route[] = [
     {
         path: '',
         canActivate: [NoAuthGuard],
-        canActivateChild: [NoAuthGuard],
+        //canActivateChild: [NoAuthGuard],
         component: LayoutComponent,
         data: {
             layout: 'empty'
@@ -68,7 +68,7 @@ export const appRoutes: Route[] = [
     {
         path       : '',
         canActivate: [AuthGuard],
-        canActivateChild: [AuthGuard],
+        //canActivateChild: [AuthGuard],
         component  : LayoutComponent,
         resolve    : {
             initialData: InitialDataResolver
