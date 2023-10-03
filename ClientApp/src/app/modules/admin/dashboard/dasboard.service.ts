@@ -40,6 +40,7 @@ export class DashboardService {
   private _shopReadingsDetails: BehaviorSubject<any> = new BehaviorSubject(null);
 
   private _reportsArchives: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _clientFeedbackReports: BehaviorSubject<any> = new BehaviorSubject(null);
   
   public stats$: Observable<IHomePageStats>;
   public alarmTriggeredId: any;
@@ -181,6 +182,10 @@ export class DashboardService {
     return this._triggeredAlarmDetailPage.asObservable();
   }
   
+  get clientFeedbackReports$(): Observable<any>{
+    return this._clientFeedbackReports.asObservable();
+  }
+
   getStats(userId) {
     const url = `${CONFIG.apiURL}${CONFIG.dashboardStats}/${userId}`;
     return this.http.get<any>(url, { withCredentials: true })
@@ -433,6 +438,30 @@ export class DashboardService {
       );
   }
   
+  getClientFeedbackReports(buildingId) {
+    const url = `${CONFIG.apiURL}/Reports/FeedbackReports?BuildingId=${buildingId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(res => {
+          this._clientFeedbackReports.next(res);
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        })
+      );
+  }
+
+  submitClientFeedbackReport(buildingId, periodId) {
+    const url = `${CONFIG.apiURL}/Reports/FeedbackReports`;
+    return this.http.post<any>(url, {buildingId, periodId}, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(res => {
+          this._notificationService.message('Client feedback reported successfully!');
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        })
+      );
+  }
+
   showShopDetailDashboard(data) {
     this._shopDetailDashboard.next(data);
   }
@@ -461,8 +490,8 @@ export class DashboardService {
     this._tenantSlipDownloads.next(true);
   }
 
-  showReports(buildingId) {
-    this._buildingReports.next(buildingId);
+  showReports(data) {
+    this._buildingReports.next(data);
   }
 
   showShopList(data) {
@@ -523,6 +552,10 @@ export class DashboardService {
 
   destroyTriggeredAlarmList() {
     this._triggeredAlarmsList.next(null);
+  }
+
+  destroyClientFeedbackReports() {
+    this._clientFeedbackReports.next(null);
   }
 
   destroy() {
