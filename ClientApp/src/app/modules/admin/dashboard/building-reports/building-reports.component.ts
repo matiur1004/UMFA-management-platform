@@ -18,10 +18,15 @@ export class BuildingReportsComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.reportType) {
-      this.reportService.dxReportList$.subscribe(reportList => {
-        let selectedReport = reportList.find(obj => obj.Name == this.reportType);
-        this.reportId = selectedReport.Id;
-      })
+      if(this.reportType == 'Client Feedback Report') {
+
+      } else {
+        this.reportService.dxReportList$.subscribe(reportList => {
+          let selectedReport = reportList.find(obj => obj.Name == this.reportType);
+          this.reportId = selectedReport.Id;
+        })
+      }
+      
     }
   }
 

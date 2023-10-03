@@ -1,1 +1,6 @@
-<app-dx-report-viewer [buildingReportId]="reportId" [buildingId]="buildingId" [partnerId]="partnerId"></app-dx-report-viewer>
+<ng-container *ngIf="reportType == 'Client Feedback Report'; else otherReportTemplate">
+    <app-client-feedback-report [buildingId]="buildingId"></app-client-feedback-report>
+</ng-container>
+<ng-template #otherReportTemplate>
+    <app-dx-report-viewer [buildingReportId]="reportId" [buildingId]="buildingId" [partnerId]="partnerId"></app-dx-report-viewer>
+</ng-template>

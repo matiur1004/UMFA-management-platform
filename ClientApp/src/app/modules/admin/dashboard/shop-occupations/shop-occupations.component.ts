@@ -34,7 +34,6 @@ export class ShopOccupationsComponent implements OnInit {
     this.dashboardService.shopOccupationsDashboard$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((res) => {
-        console.log(res);
         if(res) this.dataSource = res;
       });
   }
