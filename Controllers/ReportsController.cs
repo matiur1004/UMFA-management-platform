@@ -232,8 +232,8 @@ namespace ClientPortal.Controllers
                 }
 
                 _logger.LogInformation("Sending feedback report queue message");
-                await _feedbackReportsQueueService.AddMessageToQueueAsync(JsonSerializer.Serialize(request));
-
+                
+                await _feedbackReportsQueueService.AddMessageToQueueAsync( JsonSerializer.Serialize(new { RequestId = reportRequest.FeedbackReportRequestId, BuildingId = request.BuildingId, PeriodId = request.PeriodId }));
 
                 return reportRequest;
             }
