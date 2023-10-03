@@ -3,6 +3,8 @@ import moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
 import { DashboardService } from '../../dasboard.service';
 import { AllowedPageSizes } from '@core/helpers';
+import { DatePipe } from '@angular/common';
+import { DXReportService } from '@shared/services';
 
 @Component({
   selector: 'app-client-feedback-report',
@@ -13,6 +15,9 @@ export class ClientFeedbackReportComponent implements OnInit {
 
   @Input() buildingId;
   
+  periodId: any;
+  periodList$ = this.reportService.obsPeriods;
+
   dataSource: any;
   applyFilterTypes: any;
   currentFilter: any;
@@ -21,6 +26,7 @@ export class ClientFeedbackReportComponent implements OnInit {
   
   constructor(
     private dashboardService: DashboardService,
+    private reportService: DXReportService
   ) {
     this.applyFilterTypes = [{
         key: 'auto',
@@ -35,6 +41,7 @@ export class ClientFeedbackReportComponent implements OnInit {
 
   ngOnInit(): void {
     this.dashboardService.getClientFeedbackReports(this.buildingId).subscribe();
+    this.reportService.loadPeriods(this.buildingId);
     this.dashboardService.clientFeedbackReports$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((res) => {
@@ -42,6 +49,12 @@ export class ClientFeedbackReportComponent implements OnInit {
       });
   }
 
+  custPeriodTemplate = (arg: any) => {
+    const datepipe: DatePipe = new DatePipe('en-ZA');
+    var ret = "<div class='custom-item' title='(" + datepipe.transform(arg.PeriodStart, 'yyyy/MM/dd') + " - " + datepipe.transform(arg.PeriodEnd, 'yyyy/MM/dd') + ")'>" + arg.PeriodName + "</div>";
+    return ret;
+  }
+  
   onCustomizeDateTime(cellInfo) {
     if(!cellInfo.value) return 'N/A';
     return moment(new Date(cellInfo.value)).format('DD/MM/YYYY HH:mm:ss');
@@ -49,8 +62,13 @@ export class ClientFeedbackReportComponent implements OnInit {
 
   onDownload(e) {
     e.event.preventDefault();
-    console.log(e.row.data.Url);
     window.open(e.row.data.Url, "_blank");
+  }
+
+  requestReport() {
+    this.dashboardService.submitClientFeedbackReport(this.buildingId, this.periodId).subscribe(res => {
+      this.periodId = null;
+    });
   }
 
   /**
@@ -61,7 +79,7 @@ export class ClientFeedbackReportComponent implements OnInit {
       // Unsubscribe from all subscriptions
       this._unsubscribeAll.next(null);
       this._unsubscribeAll.complete();
-      this.dashboardService.destroyShopOccupation();
+      this.dashboardService.destroyClientFeedbackReports();
   }
 
 }

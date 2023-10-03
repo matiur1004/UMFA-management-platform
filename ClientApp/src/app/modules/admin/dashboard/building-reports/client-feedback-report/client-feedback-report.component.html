@@ -1,4 +1,12 @@
-<div class="flex flex-col">
+<div class="flex flex-col relative">
+    <div class="flex gap-x-2 items-end absolute" style="top: 3px; z-index: 90; left: 6px;">
+        <dx-select-box [items]="periodList$ | async" displayExpr="PeriodName" valueExpr="PeriodId" class="form-control" label="Building Period"
+            [itemTemplate]="custPeriodTemplate" required placeholder="Select Building Period" lableMode="static" id="startPeriod"
+            [(ngModel)]="periodId" name="StartPeriod"
+            [searchEnabled]="true">
+        </dx-select-box>
+        <button mat-raised-button [color]="'primary'" type="button" class="dnm-btn dnm-btn-primary" style="height: 32px; min-height: 32px; margin-bottom: 2px;" (click)="requestReport()" [disabled]="!periodId">Request Report</button>
+    </div>
     <dx-data-grid
         #grid
         [dataSource]="dataSource"

@@ -450,6 +450,18 @@ export class DashboardService {
       );
   }
 
+  submitClientFeedbackReport(buildingId, periodId) {
+    const url = `${CONFIG.apiURL}/Reports/FeedbackReports`;
+    return this.http.post<any>(url, {buildingId, periodId}, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(res => {
+          this._notificationService.message('Client feedback reported successfully!');
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        })
+      );
+  }
+
   showShopDetailDashboard(data) {
     this._shopDetailDashboard.next(data);
   }
@@ -540,6 +552,10 @@ export class DashboardService {
 
   destroyTriggeredAlarmList() {
     this._triggeredAlarmsList.next(null);
+  }
+
+  destroyClientFeedbackReports() {
+    this._clientFeedbackReports.next(null);
   }
 
   destroy() {
