@@ -30,10 +30,12 @@ export class ClientFeedbackReportComponent implements OnInit {
         name: 'On Button Click',
     }];
     this.currentFilter = this.applyFilterTypes[0].key;
+    this.onDownload = this.onDownload.bind(this);
   }
 
   ngOnInit(): void {
-    this.dashboardService.shopOccupationsDashboard$
+    this.dashboardService.getClientFeedbackReports(this.buildingId).subscribe();
+    this.dashboardService.clientFeedbackReports$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((res) => {
         if(res) this.dataSource = res;
@@ -42,7 +44,13 @@ export class ClientFeedbackReportComponent implements OnInit {
 
   onCustomizeDateTime(cellInfo) {
     if(!cellInfo.value) return 'N/A';
-    return moment(new Date(cellInfo.value)).format('DD/MM/YYYY');
+    return moment(new Date(cellInfo.value)).format('DD/MM/YYYY HH:mm:ss');
+  }
+
+  onDownload(e) {
+    e.event.preventDefault();
+    console.log(e.row.data.Url);
+    window.open(e.row.data.Url, "_blank");
   }
 
   /**

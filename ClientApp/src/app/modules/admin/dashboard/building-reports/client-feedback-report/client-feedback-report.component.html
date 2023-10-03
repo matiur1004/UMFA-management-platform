@@ -25,9 +25,16 @@
             [width]="200"
             placeholder="Search..."
         ></dxo-search-panel>
-        <dxi-column dataField="TenantName" caption="Tennat Name" [minWidth]="100"></dxi-column>
-        <dxi-column dataField="OccupationDTM" [customizeText]="onCustomizeDateTime" caption="Occupation Date" [minWidth]="100"></dxi-column>
-        <dxi-column dataField="VacationDTM" [customizeText]="onCustomizeDateTime" caption="Vacation Date" [minWidth]="100"></dxi-column>
-        <dxi-column dataField="TenantActive" caption="Tenant Active"></dxi-column>
+        <dxi-column dataField="BuildingName" caption="Building Name" [minWidth]="100"></dxi-column>
+        <dxi-column dataField="PeriodName" caption="Period Name" [minWidth]="100"></dxi-column>
+        <dxi-column dataField="StatusMessage" caption="Status" [minWidth]="140"></dxi-column>
+        <dxi-column dataField="CreatedDTM" caption="Created Date" [minWidth]="120" [customizeText]="onCustomizeDateTime"></dxi-column>
+        <dxi-column type="buttons" caption="URL">
+            <dxi-button
+                hint="Download"
+                icon="download"
+                [onClick]="onDownload"
+            ></dxi-button>
+        </dxi-column>
     </dx-data-grid>
 </div>
