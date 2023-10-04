@@ -676,6 +676,22 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                 this.tabsList.push(newTab);
                 this.selectedTab = this.tabsList.length;
                 this._cdr.markForCheck();
+            } else if(type == EHomeTabType.Tenants) {
+                this._dbService.destroyTenantsList();
+                let res = {
+                    "buildingId": null,
+                    "partnerId": null,
+                    "destination": "Home"
+                }
+                let newTab: IHomeTab = {
+                    id: 0,
+                    title: `Tenants`,
+                    type: 'TenantsList',
+                    dataSource: res
+                };
+                this.tabsList.push(newTab);
+                this.selectedTab = this.tabsList.length;
+                this._cdr.markForCheck();
             } else {
                 this.tabsList.push({...newTab});
                 this.selectedTab = this.tabsList.length;

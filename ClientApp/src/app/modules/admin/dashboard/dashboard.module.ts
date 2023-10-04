@@ -34,6 +34,7 @@ import { ShopReadingsComponent } from './shop-readings/shop-readings.component';
 import { TriggeredAlarmsComponent } from './triggered-alarms/triggered-alarms.component';
 import { MeterAlarmDetailModule } from '../admin/meter-alarm-detail/meter-alarm-detail.module';
 import { ClientFeedbackReportComponent } from './building-reports/client-feedback-report/client-feedback-report.component';
+import { TenantsListComponent } from './tenants-list/tenants-list.component';
 
 @NgModule({
     declarations: [
@@ -50,7 +51,8 @@ import { ClientFeedbackReportComponent } from './building-reports/client-feedbac
         ShopAssignedMetersComponent,
         ShopReadingsComponent,
         TriggeredAlarmsComponent,
-        ClientFeedbackReportComponent
+        ClientFeedbackReportComponent,
+        TenantsListComponent
     ],
     imports     : [
         CommonModule,

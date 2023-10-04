@@ -26,6 +26,8 @@ export class DashboardService {
   private _buildingReports: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopList: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shops: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _tenantsList: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _tenants: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopDetail: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopDetailDashboard: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopBilling: BehaviorSubject<any> = new BehaviorSubject(null);
@@ -472,6 +474,10 @@ export class DashboardService {
 
   destroyShopList() {
     this._shops.next(null);
+  }
+
+  destroyTenantsList() {
+    this._tenants.next(null);
   }
 
   destroyShopDetail() {
