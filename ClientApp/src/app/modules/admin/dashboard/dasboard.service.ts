@@ -8,7 +8,7 @@ import { IHomePageStats } from "app/core/models";
 import { Observable, throwError } from "rxjs";
 import { BehaviorSubject } from "rxjs";
 import { catchError, map, shareReplay, tap } from "rxjs/operators";
-
+import { UserService } from '@shared/services/user.service';
 
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
@@ -57,6 +57,7 @@ export class DashboardService {
   constructor(
     private router: Router, 
     private http: HttpClient,
+    private _userService: UserService,
     private _notificationService: NotificationService){
     this.statsSubject = new BehaviorSubject<IHomePageStats>(null);
     this.stats$ = this.statsSubject.asObservable();
@@ -347,7 +348,13 @@ export class DashboardService {
   }
 
   getShopsByBuildingId(buildingId) {
-    const url = `${CONFIG.apiURL}/Dashboard/buildings/${buildingId}/shops`;
+    let url;
+    if(this.isTenant) {
+      url = `${CONFIG.apiURL}/Dashboard/buildings/${buildingId}/tenants/${this._userService.userValue.UmfaId}/shops`;
+    } else {
+      url = `${CONFIG.apiURL}/Dashboard/buildings/${buildingId}/shops`;
+      
+    }
     return this.http.get<any>(url, { withCredentials: true })
       .pipe(
         catchError(err => this.catchAuthErrors(err)),

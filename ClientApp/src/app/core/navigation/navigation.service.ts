@@ -51,6 +51,7 @@ export class NavigationService
     generateNavigation(): FuseNavigationItem[]{
         let roleId = this._userService.userValue.RoleId;
         //roleId = 2;
+        let _this = this;
         const navigation: FuseNavigationItem[] = [
             {
                 id: 'dashboard',
@@ -82,7 +83,12 @@ export class NavigationService
                 title: 'Report Viewer',
                 type: 'basic',
                 link: '/reports/dxreports',
-                icon    : 'heroicons_solid:marketing',  
+                icon    : 'heroicons_solid:marketing', 
+                hidden: function(){
+                    if(_this._userService.userValue.IsTenant) return true;
+                    
+                    return false;
+                }
             },
         ]
         return navigation;
