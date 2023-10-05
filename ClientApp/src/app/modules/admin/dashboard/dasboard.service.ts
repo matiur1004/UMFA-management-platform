@@ -377,7 +377,13 @@ export class DashboardService {
   }
 
   getTenants(buildingId) {
-    const url = `${CONFIG.apiURL}/TenantDashboard/tenants?buildingId=${buildingId}&umfaUserId=${this._userService.userValue.Id}&isTenant=${this._userService.userValue.IsTenant}`;
+    let url;
+    if(this._userService.userValue.IsTenant) {
+      url = `${CONFIG.apiURL}/TenantDashboard/tenants?buildingId=${buildingId}&umfaUserId=${this._userService.userValue.UmfaId}&isTenant=true`;
+    } else {
+      url = `${CONFIG.apiURL}/TenantDashboard/tenants?buildingId=${buildingId}&umfaUserId=${this._userService.userValue.Id}&isTenant=flase`;
+    }
+    
     return this.http.get<any>(url, { withCredentials: true })
       .pipe(
         catchError(err => this.catchAuthErrors(err)),
