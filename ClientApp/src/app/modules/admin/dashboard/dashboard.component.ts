@@ -380,6 +380,24 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                 }
             });
 
+        this._dbService.tenantsList$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((res) => {
+                if(res) {
+                    if(res) {
+                        let newTab: IHomeTab = {
+                            id: 0,
+                            title: `Tenants`,
+                            type: 'TenantsList',
+                            dataSource: {...res, destination: 'Detail'}
+                        };
+                        this.tabsList.push(newTab);
+                        this.selectedTab = this.tabsList.length;
+                        this._cdr.detectChanges();
+                    }
+                }
+            });
+
         this._dbService.shopDetailDashboard$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((response) => {
@@ -717,6 +735,12 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
         if(this.tabsList[index]['type'] == 'ShopList') {
             this._dbService.selectedShopInfo = null;
             this._dbService.destroyShopList();
+            if(this.tabsList[index]['dataSource']['destination'] == 'Home') this.selectedTab = 0;
+            else this.selectedTab = index;
+        }
+        if(this.tabsList[index]['type'] == 'TenantsList') {
+            this._dbService.selectedTenantInfo = null;
+            this._dbService.destroyTenantsList();
             if(this.tabsList[index]['dataSource']['destination'] == 'Home') this.selectedTab = 0;
             else this.selectedTab = index;
         }

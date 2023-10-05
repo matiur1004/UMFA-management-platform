@@ -57,12 +57,12 @@ export class TenantsListComponent implements OnInit {
       }
     })
     
-    this.dashboardService.shops$
+    this.dashboardService.tenants$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((res) => {
         if(res) {          
           this.dataSource = res.map(item => {
-            return {...item, 'Occupied': item['Occupied'] ? 'Occupied' : 'Unoccupied'};
+            return {...item, 'Recoverable': item['Recoverable'] ? 'Recoverable' : 'Non Recoverable'};
           });
           this._cdr.markForCheck();
         } else {
@@ -70,9 +70,9 @@ export class TenantsListComponent implements OnInit {
         }
         if(this.dataSource.length > 0) this.initiatedList = true;
         if(!this.buildingId) {
-          if(this.dashboardService.selectedShopInfo) {
-            this.form.get('PartnerId').setValue(this.dashboardService.selectedShopInfo.partnerId);
-            this.form.get('BuildingId').setValue(this.dashboardService.selectedShopInfo.buildingId);
+          if(this.dashboardService.selectedTenantInfo) {
+            this.form.get('PartnerId').setValue(this.dashboardService.selectedTenantInfo.partnerId);
+            this.form.get('BuildingId').setValue(this.dashboardService.selectedTenantInfo.buildingId);
           }
         }
         
@@ -80,9 +80,9 @@ export class TenantsListComponent implements OnInit {
 
       if(this.buildingId) {
         this.form.get('BuildingId').setValue(this.buildingId);
-        if(!this.dashboardService.selectedShopInfo) {
-          this.dashboardService.getShopsByBuildingId(this.form.get('BuildingId').value).subscribe();
-          this.dashboardService.selectedShopInfo = {'buildingId': this.buildingId, 'partnerId': this.partnerId};
+        if(!this.dashboardService.selectedTenantInfo) {
+          this.dashboardService.getTenants(this.form.get('BuildingId').value).subscribe();
+          this.dashboardService.selectedTenantInfo = {'buildingId': this.buildingId, 'partnerId': this.partnerId};
         }
       }
       
@@ -102,15 +102,15 @@ export class TenantsListComponent implements OnInit {
     if(method == 'Partner') {
       this.reportService.selectPartner(this.form.get('PartnerId').value);
     } else if(method == 'Building') {
-      this.dashboardService.selectedShopInfo = {'buildingId': this.form.get('BuildingId').value, 'partnerId': this.form.get('PartnerId').value};
-      this.dashboardService.getShopsByBuildingId(this.form.get('BuildingId').value).subscribe();
+      this.dashboardService.selectedTenantInfo = {'buildingId': this.form.get('BuildingId').value, 'partnerId': this.form.get('PartnerId').value};
+      this.dashboardService.getTenants(this.form.get('BuildingId').value).subscribe();
     }
   }
 
   onRowClick(event) {
     if(event.data) {
-      if(event.data.ShopID && event.data.ShopName)
-        this.dashboardService.showShopDetailDashboard({shopId: event.data.ShopID, buildingId: this.form.get('BuildingId').value, shopName: event.data.ShopName});
+      // if(event.data.ShopID && event.data.ShopName)
+      //   this.dashboardService.showShopDetailDashboard({shopId: event.data.ShopID, buildingId: this.form.get('BuildingId').value, shopName: event.data.ShopName});
     }
   }
 

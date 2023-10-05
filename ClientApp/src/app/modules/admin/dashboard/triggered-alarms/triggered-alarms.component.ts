@@ -79,13 +79,6 @@ export class TriggeredAlarmsComponent implements OnInit {
             this.form.get('BuildingId').setValue(this.dashboardService.selectedTriggeredAlarmInfo.buildingId);
           }
         }
-        // if(this.dataSource.length > 0) this.initiatedList = true;
-        // if(!this.buildingId) {
-        //   if(this.dashboardService.selectedShopInfo) {
-        //     this.form.get('PartnerId').setValue(this.dashboardService.selectedShopInfo.partnerId);
-        //     this.form.get('BuildingId').setValue(this.dashboardService.selectedShopInfo.buildingId);
-        //   }
-        // }
         
       })
 
