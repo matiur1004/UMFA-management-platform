@@ -85,6 +85,7 @@ namespace ClientPortal.Services
         public Task<List<UmfaTenantUserMeter>> GetTenantUserMetersAsync(UmfaTenantUserMetersRequest request);
 
         public Task<List<UmfaTenantDashboardTenant>> GetTenantDashboardTenantsAsync(UmfaTenantDashboardTenantListRequest request);
+        public Task<UmfaTenantMainDashboardResponse> GetTenantMainDashboardAsync(UmfaTenantMainDashboardRequest request);
     }
 
 
@@ -499,6 +500,13 @@ namespace ClientPortal.Services
             var response = await GetAsync($"tenantdashboard/tenants", request);
 
             return JsonSerializer.Deserialize<List<UmfaTenantDashboardTenant>>(response);
+        }
+
+        public async Task<UmfaTenantMainDashboardResponse> GetTenantMainDashboardAsync(UmfaTenantMainDashboardRequest request)
+        {
+            var response = await GetAsync($"tenantdashboard/main", request);
+
+            return JsonSerializer.Deserialize<UmfaTenantMainDashboardResponse>(response);
         }
     }
 }
