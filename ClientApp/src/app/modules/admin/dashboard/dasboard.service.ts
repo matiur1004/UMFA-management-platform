@@ -605,6 +605,7 @@ export class DashboardService {
     this._alarmTriggerDetail.next(null);
     this._triggeredAlarmDetailPage.next(null);
     this._shopList.next(null);
+    this._tenantsList.next(null);
   }
 
   cancel() {
