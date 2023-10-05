@@ -381,7 +381,7 @@ export class DashboardService {
     if(this._userService.userValue.IsTenant) {
       url = `${CONFIG.apiURL}/TenantDashboard/tenants?buildingId=${buildingId}&umfaUserId=${this._userService.userValue.UmfaId}&isTenant=true`;
     } else {
-      url = `${CONFIG.apiURL}/TenantDashboard/tenants?buildingId=${buildingId}&umfaUserId=${this._userService.userValue.Id}&isTenant=flase`;
+      url = `${CONFIG.apiURL}/TenantDashboard/tenants?buildingId=${buildingId}&umfaUserId=${this._userService.userValue.Id}&isTenant=false`;
     }
     
     return this.http.get<any>(url, { withCredentials: true })
