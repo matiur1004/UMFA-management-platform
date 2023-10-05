@@ -3,14 +3,14 @@ import { Injectable } from "@angular/core";
 import { CONFIG } from "app/core/helpers";
 import { BehaviorSubject, catchError, Observable, of, tap, throwError } from "rxjs";
 import { IAmrMeter, AmrMeterUpdate, IUtility } from "../../core/models";
-
+import { UserService } from '@shared/services/user.service';
 @Injectable({ providedIn: 'root' })
 export class MeterService {
   private _meters: BehaviorSubject<any> = new BehaviorSubject([]);
   private _metersWithAlarms: BehaviorSubject<any> = new BehaviorSubject([]);
   private _detailMeterAlarm: BehaviorSubject<any> = new BehaviorSubject(null);
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private _userService: UserService) { }
 
   get meters$(): Observable<any> {
     return this._meters.asObservable();
@@ -37,7 +37,7 @@ export class MeterService {
   }
 
   getMetersForUserChart(userId: number, chartId: number): Observable<IAmrMeter[]> {
-    const url = `${CONFIG.apiURL}${CONFIG.metersForUserChart}${userId}/${chartId}`;
+    const url = `${CONFIG.apiURL}${CONFIG.metersForUserChart}${userId}/${chartId}?isTenant=${this._userService.userValue.IsTenant}`;
     return this.http.get<any>(url, { withCredentials: true })
       .pipe(
         catchError(err => this.catchErrors(err)),
