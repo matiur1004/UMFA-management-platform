@@ -1,0 +1,63 @@
+<div class="flex flex-col gap-y-2 relative">
+    <div class="flex absolute z-10 left-2">
+        <form [formGroup]="form" class="w-full">
+            <div class="grid grid-cols-4 gap-2">
+                <div class="col-span-1">
+                    <dx-select-box [readOnly]="partnerId > 0" [items]="partnerList$ | async" displayExpr="Name" valueExpr="Id" class="form-control" label="Partner"
+                                    [itemTemplate]="custPartnerTemplate" placeholder="Select Partner" lableMode="static" id="partner"
+                                    [formControlName]="'PartnerId'" name="partner" (onValueChanged)="valueChanged($event, 'Partner')"
+                                    [searchEnabled]="true" searchExpr="Name" searchMode="contains" [searchTimeout]="400">
+                    </dx-select-box>
+                </div>
+                <div class="col-span-1">
+                    <dx-select-box [readOnly]="buildingId > 0" [items]="buildingList$ | async" displayExpr="Name" valueExpr="BuildingId" class="form-control" label="Building"
+                                    [itemTemplate]="custBldTemplate" required placeholder="Select Building" lableMode="static" id="building"
+                                    [formControlName]="'BuildingId'" name="building" (onValueChanged)="valueChanged($event, 'Building')"
+                                    [searchEnabled]="true" searchExpr="Name" searchMode="contains" [searchTimeout]="400">
+                    </dx-select-box>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="flex w-full">
+        <dx-data-grid
+            #grid
+            [dataSource]="dataSource"
+            [showBorders]="true"
+            id="slip-grid-container"
+            [hoverStateEnabled]="true"
+            (onRowClick)="onRowClick($event)"
+        >
+            <!-- <dxo-selection mode="single"></dxo-selection> -->
+            <dxo-filter-row [visible]="'true'"
+                [applyFilter]="currentFilter"></dxo-filter-row>
+            <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+            <dxo-paging [pageSize]="15"> </dxo-paging>
+            <dxo-pager
+                [visible]="true"
+                [allowedPageSizes]="allowedPageSizes"
+                [displayMode]="'compact'"
+                [showPageSizeSelector]="true"
+                [showInfo]="true"
+                [showNavigationButtons]="true"
+            >
+            </dxo-pager>
+            <dxo-search-panel
+                [visible]="true"
+                [width]="200"
+                placeholder="Search..."
+            ></dxo-search-panel>
+            <dxi-column dataField="Recoverable" caption="" [groupIndex]="0" [sortOrder]="'desc'"></dxi-column>
+            <dxi-column dataField="TenantName" caption="Tenant Name" [minWidth]="100"></dxi-column>
+            <dxi-column dataField="Description" caption="Description" [minWidth]="100"></dxi-column>
+            <dxi-column dataField="ExportCode" caption="Export Code" [width]="100"></dxi-column>
+            <dxi-column dataField="ShopsLinked" caption="Shops Linked" [width]="100"></dxi-column>
+            <dxi-column dataField="ShopNumbers" caption="Linked Shop Numbers" [minWidth]="100"></dxi-column>
+            <dxo-summary>
+                <dxi-group-item column="TenantName" summaryType="count" displayFormat="{0}">
+                </dxi-group-item>
+            </dxo-summary>
+        </dx-data-grid>
+    </div>
+</div>

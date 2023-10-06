@@ -26,6 +26,8 @@ export class DashboardService {
   private _buildingReports: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopList: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shops: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _tenantsList: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _tenants: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopDetail: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopDetailDashboard: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopBilling: BehaviorSubject<any> = new BehaviorSubject(null);
@@ -45,6 +47,7 @@ export class DashboardService {
   public stats$: Observable<IHomePageStats>;
   public alarmTriggeredId: any;
   public selectedShopInfo: any;
+  public selectedTenantInfo: any;
   public selectedTenantSlipInfo: any;
   public selectedTriggeredAlarmInfo: any;
   public isTenant: boolean;
@@ -157,6 +160,14 @@ export class DashboardService {
 
   get metersForBuilding$(): Observable<any> {
     return this._metersForBuilding.asObservable();
+  }
+
+  get tenants$(): Observable<any> {
+    return this._tenants.asObservable();
+  }
+
+  get tenantsList$(): Observable<any> {
+    return this._tenantsList.asObservable();
   }
 
   /**
@@ -365,6 +376,19 @@ export class DashboardService {
       );
   }
 
+  getTenants(buildingId) {
+    let url = `${CONFIG.apiURL}/TenantDashboard/tenants?buildingId=${buildingId}&umfaUserId=${this._userService.userValue.UmfaId}&isTenant=${this._userService.userValue.IsTenant}`;
+    
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(bl => {
+          this._tenants.next(bl);
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        })
+      );
+  }
+
   getShopDashboardDetail(buildingId, shopId, history = 36) {
     const url = `${CONFIG.apiURL}/Dashboard/buildings/${buildingId}/shops/${shopId}?history=${history}`;
     return this.http.get<any>(url, { withCredentials: true })
@@ -481,6 +505,10 @@ export class DashboardService {
     this._shops.next(null);
   }
 
+  destroyTenantsList() {
+    this._tenants.next(null);
+  }
+
   destroyShopDetail() {
     this._shopDetailDashboard.next(null);
   }
@@ -503,6 +531,10 @@ export class DashboardService {
 
   showShopList(data) {
     this._shopList.next(data);
+  }
+
+  showTenantList(data) {
+    this._tenantsList.next(data);
   }
 
   destroyTenantSlipDetail() {
@@ -573,6 +605,7 @@ export class DashboardService {
     this._alarmTriggerDetail.next(null);
     this._triggeredAlarmDetailPage.next(null);
     this._shopList.next(null);
+    this._tenantsList.next(null);
   }
 
   cancel() {

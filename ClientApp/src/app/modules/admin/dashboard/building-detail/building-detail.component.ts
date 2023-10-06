@@ -205,6 +205,8 @@ export class BuildingDetailComponent implements OnInit {
   onDetail(type) {
     if(type == "Shop") {
       this._dbService.showShopList({buildingId: this.buildingId, partnerId: this.partnerId});
+    } else if(type == 'Tenants') {
+      this._dbService.showTenantList({buildingId: this.buildingId, partnerId: this.partnerId});
     }
   }
 

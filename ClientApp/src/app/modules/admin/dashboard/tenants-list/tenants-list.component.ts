@@ -1,17 +1,16 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { AllowedPageSizes } from '@core/helpers';
-import { DXReportService, UserService } from '@shared/services';
+import { DXReportService } from '@shared/services';
 import { DashboardService } from '../dasboard.service';
 import { Subject, takeUntil } from 'rxjs';
-import moment from 'moment';
+import { AllowedPageSizes } from '@core/helpers';
 
 @Component({
-  selector: 'app-triggered-alarms',
-  templateUrl: './triggered-alarms.component.html',
-  styleUrls: ['./triggered-alarms.component.scss']
+  selector: 'app-tenants-list',
+  templateUrl: './tenants-list.component.html',
+  styleUrls: ['./tenants-list.component.scss']
 })
-export class TriggeredAlarmsComponent implements OnInit {
+export class TenantsListComponent implements OnInit {
 
   readonly allowedPageSizes = AllowedPageSizes;
   
@@ -25,6 +24,7 @@ export class TriggeredAlarmsComponent implements OnInit {
   applyFilterTypes: any;
   currentFilter: any;
   dataSource: any;
+  initiatedList = false;
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
@@ -33,11 +33,10 @@ export class TriggeredAlarmsComponent implements OnInit {
     private reportService: DXReportService,
     private dashboardService: DashboardService,
     private _cdr: ChangeDetectorRef,
-    private _userService: UserService
   ) { 
     this.applyFilterTypes = [{
-      key: 'auto',
-      name: 'Immediately',
+        key: 'auto',
+        name: 'Immediately',
     }, {
         key: 'onClick',
         name: 'On Button Click',
@@ -46,6 +45,7 @@ export class TriggeredAlarmsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     this.form = this._formBuilder.group({
       PartnerId: [null],
       BuildingId: [null, Validators.required],
@@ -56,32 +56,35 @@ export class TriggeredAlarmsComponent implements OnInit {
         this.reportService.selectPartner(this.partnerId);
       }
     })
-
-    if(this.buildingId) {
-      this.form.get('BuildingId').setValue(this.buildingId);
-      this.dashboardService.getTriggeredAlarmsList(this._userService.userValue.UmfaId, this.buildingId).subscribe();
-    } else {
-      //this.dashboardService.getTriggeredAlarmsList(this._userService.userValue.UmfaId, 0).subscribe();
-    }
-
-    this.dashboardService.triggeredAlarmsList$
+    
+    this.dashboardService.tenants$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((res) => {
-        if(res) {
-          this.dataSource = res;
+        if(res) {          
+          this.dataSource = res.map(item => {
+            return {...item, 'Recoverable': item['Recoverable'] ? 'Recoverable' : 'Non Recoverable'};
+          });
           this._cdr.markForCheck();
         } else {
           this.dataSource = [];
         }
+        if(this.dataSource.length > 0) this.initiatedList = true;
         if(!this.buildingId) {
-          if(this.dashboardService.selectedTriggeredAlarmInfo) {
-            this.form.get('PartnerId').setValue(this.dashboardService.selectedTriggeredAlarmInfo.partnerId);
-            this.form.get('BuildingId').setValue(this.dashboardService.selectedTriggeredAlarmInfo.buildingId);
+          if(this.dashboardService.selectedTenantInfo) {
+            this.form.get('PartnerId').setValue(this.dashboardService.selectedTenantInfo.partnerId);
+            this.form.get('BuildingId').setValue(this.dashboardService.selectedTenantInfo.buildingId);
           }
         }
         
       })
 
+      if(this.buildingId) {
+        this.form.get('BuildingId').setValue(this.buildingId);
+        if(!this.dashboardService.selectedTenantInfo) {
+          this.dashboardService.getTenants(this.form.get('BuildingId').value).subscribe();
+          this.dashboardService.selectedTenantInfo = {'buildingId': this.buildingId, 'partnerId': this.partnerId};
+        }
+      }
       
   }
 
@@ -99,30 +102,22 @@ export class TriggeredAlarmsComponent implements OnInit {
     if(method == 'Partner') {
       this.reportService.selectPartner(this.form.get('PartnerId').value);
     } else if(method == 'Building') {
-      this.dashboardService.selectedTriggeredAlarmInfo = {'buildingId': this.form.get('BuildingId').value, 'partnerId': this.form.get('PartnerId').value};
-      this.dashboardService.getTriggeredAlarmsList(this._userService.userValue.UmfaId, this.form.get('BuildingId').value).subscribe();
+      this.dashboardService.selectedTenantInfo = {'buildingId': this.form.get('BuildingId').value, 'partnerId': this.form.get('PartnerId').value};
+      this.dashboardService.getTenants(this.form.get('BuildingId').value).subscribe();
     }
   }
 
   onRowClick(event) {
     if(event.data) {
-      this.dashboardService.showTriggeredAlarmDetail(event.data);
-      //this.dashboardService.getAlarmTriggered(event.data.AMRMeterTriggeredAlarmId).subscribe();
+      // if(event.data.ShopID && event.data.ShopName)
+      //   this.dashboardService.showShopDetailDashboard({shopId: event.data.ShopID, buildingId: this.form.get('BuildingId').value, shopName: event.data.ShopName});
     }
   }
 
-  onCustomizeDateTime(cellInfo) {
-    return moment(new Date(cellInfo.value)).format('YYYY-MM-DD HH:mm:ss');
+  ngOnDestroy() {
+    this._unsubscribeAll.next(null);
+    this._unsubscribeAll.complete();
+    //this.dashboardService.destroyShopList();
   }
 
-  /**
-     * On destroy
-     */
-  ngOnDestroy(): void
-  {
-      // Unsubscribe from all subscriptions
-      this._unsubscribeAll.next(null);
-      this._unsubscribeAll.complete();
-      this.dashboardService.destroyTriggeredAlarm();
-  }
 }
