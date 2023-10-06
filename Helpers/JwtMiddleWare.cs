@@ -16,7 +16,7 @@ namespace ClientPortal.Helpers
         {
             var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
             var userId = jwtUtils.ValidateToken(token);
-            if(userId != null)
+            if(userId != null && userId != 0)
             {
                 context.Items["User"] = userService.GetUserById(userId.Value);
             }
