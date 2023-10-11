@@ -109,6 +109,9 @@ export class TenantsListComponent implements OnInit {
 
   onRowClick(event) {
     if(event.data) {
+      console.log(event.data);
+      console.log(this.form.value);
+      this.dashboardService.showTenantDetailDashboard({buildingId: this.form.get('BuildingId').value, tenantId: event.data.TenantId, tenantName: event.data.TenantName});
       // if(event.data.ShopID && event.data.ShopName)
       //   this.dashboardService.showShopDetailDashboard({shopId: event.data.ShopID, buildingId: this.form.get('BuildingId').value, shopName: event.data.ShopName});
     }

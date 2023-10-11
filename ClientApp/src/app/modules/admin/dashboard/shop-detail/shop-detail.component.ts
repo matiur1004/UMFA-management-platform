@@ -105,7 +105,6 @@ export class ShopDetailComponent implements OnInit {
   selectedGroupsForBilling;
   selectedGroupsForBillingUsage;
 
-  public billingChartOptions: Partial<ChartOptions>;
   public billingUsageChartOptions: Partial<ChartOptions>;
   public treeMapOptions: Partial<TreemapChartOptions>;
   
@@ -160,49 +159,6 @@ export class ShopDetailComponent implements OnInit {
         }
       }
     };
-    this.billingChartOptions = {
-      series: [],
-      chart: {
-        type: "bar",
-        height: 350
-      },
-      plotOptions: {
-        bar: {
-          horizontal: false,
-          columnWidth: "55%",
-          endingShape: "rounded"
-        }
-      },
-      dataLabels: {
-        enabled: false
-      },
-      stroke: {
-        show: true,
-        width: 2,
-        colors: ["transparent"]
-      },
-      xaxis: {
-        categories: []
-      },
-      yaxis: {
-        labels: {
-          formatter: function(val) {
-            return 'R ' + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-          } 
-        }
-      },
-      fill: {
-        opacity: 1,
-        colors: []
-      },
-      tooltip: {
-        y: {
-          formatter: function(val) {
-            return 'R ' + val;
-          }
-        }
-      }
-    }
     this.billingUsageChartOptions = {
       series: [],
       chart: {

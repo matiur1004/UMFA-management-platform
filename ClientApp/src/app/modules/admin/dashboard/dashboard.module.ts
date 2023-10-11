@@ -19,6 +19,7 @@ import { BuildingDetailComponent } from './building-detail/building-detail.compo
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { TenantSlipDetailComponent } from './tenant-slip-detail/tenant-slip-detail.component';
 import { TenantSlipDashboardComponent } from './tenant-slip-dashboard/tenant-slip-dashboard.component';
 import { TenantSlipDownloadsComponent } from './tenant-slip-downloads/tenant-slip-downloads.component';
@@ -35,6 +36,7 @@ import { TriggeredAlarmsComponent } from './triggered-alarms/triggered-alarms.co
 import { MeterAlarmDetailModule } from '../admin/meter-alarm-detail/meter-alarm-detail.module';
 import { ClientFeedbackReportComponent } from './building-reports/client-feedback-report/client-feedback-report.component';
 import { TenantsListComponent } from './tenants-list/tenants-list.component';
+import { TenantDetailComponent } from './tenant-detail/tenant-detail.component';
 
 @NgModule({
     declarations: [
@@ -52,7 +54,8 @@ import { TenantsListComponent } from './tenants-list/tenants-list.component';
         ShopReadingsComponent,
         TriggeredAlarmsComponent,
         ClientFeedbackReportComponent,
-        TenantsListComponent
+        TenantsListComponent,
+        TenantDetailComponent
     ],
     imports     : [
         CommonModule,
@@ -69,6 +72,7 @@ import { TenantsListComponent } from './tenants-list/tenants-list.component';
         MatTableModule,
         MatTooltipModule,
         MatTableModule,
+        MatSlideToggleModule,
         NgApexchartsModule,
         DxTextBoxModule,
         ReportsModule,

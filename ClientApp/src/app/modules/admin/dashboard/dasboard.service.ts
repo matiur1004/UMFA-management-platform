@@ -29,7 +29,9 @@ export class DashboardService {
   private _tenantsList: BehaviorSubject<any> = new BehaviorSubject(null);
   private _tenants: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopDetail: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _tenantDetail: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopDetailDashboard: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _tenantDetailDashboard: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopBilling: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopBillingDetail: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopOccupation: BehaviorSubject<any> = new BehaviorSubject(null);
@@ -122,10 +124,18 @@ export class DashboardService {
     return this._shopDetail.asObservable();
   }
 
+  get tenantDetail$(): Observable<any> {
+    return this._tenantDetail.asObservable();
+  }
+
   get shopDetailDashboard$(): Observable<any> {
     return this._shopDetailDashboard.asObservable();
   }
 
+  get tenantDetailDashboard$(): Observable<any> {
+    return this._tenantDetailDashboard.asObservable();
+  }
+  
   get shopBilling$(): Observable<any> {
     return this._shopBilling.asObservable();
   }
@@ -401,6 +411,18 @@ export class DashboardService {
       );
   }
 
+  getTenantDashboardDetail(buildingId, tenantId, shopId = 0, includeVacant = false) {
+    const url = `${CONFIG.apiURL}/TenantDashboard/main?buildingId=${buildingId}&tenantId=${tenantId}&shopId=${shopId}&includePrevious=${includeVacant}&history=36`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(bl => {
+          this._tenantDetail.next(bl);
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        })
+      );
+  }
+  
   getShopDashboardBilling(buildingId, shopId, history = 12) {
     const url = `${CONFIG.apiURL}/Dashboard/buildings/${buildingId}/shops/${shopId}/billing-details?history=${history}`;
     return this.http.get<any>(url, { withCredentials: true })
@@ -497,6 +519,10 @@ export class DashboardService {
     this._shopDetailDashboard.next(data);
   }
 
+  showTenantDetailDashboard(data) {
+    this._tenantDetailDashboard.next(data);
+  }
+
   destroyTenantSlips() {
     this._tenantSlipsReports.next(null);
   }
@@ -511,6 +537,10 @@ export class DashboardService {
 
   destroyShopDetail() {
     this._shopDetailDashboard.next(null);
+  }
+
+  destroyTenantDetail() {
+    this._tenantDetailDashboard.next(null);
   }
 
   showTenantSlip(buildingId) {

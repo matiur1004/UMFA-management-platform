@@ -127,6 +127,35 @@ body {
       top: 0.5rem;
     }
 }
+.ng-select.ng-select-single.select-sm .ng-select-container {
+    height: 30px !important;
+    min-height: 30px !important;
+    --tw-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
+    --tw-bg-opacity: 1 !important;
+    background-color: rgba(255, 255, 255, var(--tw-bg-opacity)) !important;
+    border-color: rgba(203, 213, 225, var(--tw-border-opacity)) !important;
+    border-radius: 6px;
+    margin-top: 3px;
+    //margin-bottom: 12px;
+    .ng-value-container .ng-input {
+      top: 0.5rem;
+    }
+}
+.ng-select.ng-select-single.select-sm {
+    .ng-value-container {
+        padding-left: 4px;
+        .ng-value {
+            width: 100%;
+            font-size: 12px;
+        }
+    }
+    .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+        padding: 4px;
+        font-size: 12px;
+    }
+}
+
 .electricity-icon {
     background-image: url('/assets/images/icons/electricity.svg');
 }
