@@ -62,7 +62,7 @@
                             </ng-template>
                         </ng-select>
                         <div class="flex text-sm justify-end">
-                            <mat-slide-toggle [labelPosition]="'before'" [(ngModel)]="includeVacant" [color]="'primary'" (change)="onIncludeVacantChange($event)">Include Vacant</mat-slide-toggle>
+                            <mat-slide-toggle [labelPosition]="'before'" [(ngModel)]="includeVacant" [color]="'primary'" (change)="onIncludeVacantChange($event)">Include Previous Occupations</mat-slide-toggle>
                         </div>                        
                     </div>
                     <div class="flex justify-between text-md">
@@ -132,7 +132,8 @@
                 </div>
             </div>
             <div class="flex flex-col w-1/2 gap-y-4">
-                <div class="flex justify-end">
+                <div class="flex justify-end items-end gap-x-2">
+                    <button mat-flat-button class="detail-btn">DETAILS</button>
                     <dx-select-box [items]="billingPeriodList" displayExpr="name" valueExpr="value" class="form-control" label="Month"
                         placeholder="Select Month" lableMode="static" id="month" [(ngModel)]="selectedMonth" (valueChange)="onBillingMonthChange($event)">
                     </dx-select-box>
@@ -223,12 +224,12 @@
                     *ngIf="billingUsageElectricityChartType == 'Bar'"
                     class="w-full mt-6"
                     [series]="billingUsageElectricitySeries"
-                    [chart]="commonBarChartOptions.chart"
-                    [stroke]="commonBarChartOptions.stroke"
-                    [dataLabels]="commonBarChartOptions.dataLabels"
-                    [plotOptions]="commonBarChartOptions.plotOptions"
-                    [xaxis]="commonBarChartOptions.xaxis"
-                    [yaxis]="commonBarChartOptions.yaxis"
+                    [chart]="commonUsageBarChartOptions.chart"
+                    [stroke]="commonUsageBarChartOptions.stroke"
+                    [dataLabels]="commonUsageBarChartOptions.dataLabels"
+                    [plotOptions]="commonUsageBarChartOptions.plotOptions"
+                    [xaxis]="commonUsageBarChartOptions.xaxis"
+                    [yaxis]="commonUsageBarChartOptions.yaxis"
                 ></apx-chart>
                 <apx-chart
                     *ngIf="billingUsageElectricityChartType == 'Line'"
@@ -299,12 +300,12 @@
                     *ngIf="billingUsageWaterChartType == 'Bar'"
                     class="w-full mt-6"
                     [series]="billingUsageWaterSeries"
-                    [chart]="commonBarChartOptions.chart"
-                    [stroke]="commonBarChartOptions.stroke"
-                    [dataLabels]="commonBarChartOptions.dataLabels"
-                    [plotOptions]="commonBarChartOptions.plotOptions"
-                    [xaxis]="commonBarChartOptions.xaxis"
-                    [yaxis]="commonBarChartOptions.yaxis"
+                    [chart]="commonUsageBarChartOptions.chart"
+                    [stroke]="commonUsageBarChartOptions.stroke"
+                    [dataLabels]="commonUsageBarChartOptions.dataLabels"
+                    [plotOptions]="commonUsageBarChartOptions.plotOptions"
+                    [xaxis]="commonUsageBarChartOptions.xaxis"
+                    [yaxis]="commonUsageBarChartOptions.yaxis"
                 ></apx-chart>
                 <apx-chart
                     *ngIf="billingUsageWaterChartType == 'Line'"
@@ -375,12 +376,12 @@
                     *ngIf="billingUsageSewerChartType == 'Bar'"
                     class="w-full mt-6"
                     [series]="billingUsageSewerageSeries"
-                    [chart]="commonBarChartOptions.chart"
-                    [stroke]="commonBarChartOptions.stroke"
-                    [dataLabels]="commonBarChartOptions.dataLabels"
-                    [plotOptions]="commonBarChartOptions.plotOptions"
-                    [xaxis]="commonBarChartOptions.xaxis"
-                    [yaxis]="commonBarChartOptions.yaxis"
+                    [chart]="commonUsageBarChartOptions.chart"
+                    [stroke]="commonUsageBarChartOptions.stroke"
+                    [dataLabels]="commonUsageBarChartOptions.dataLabels"
+                    [plotOptions]="commonUsageBarChartOptions.plotOptions"
+                    [xaxis]="commonUsageBarChartOptions.xaxis"
+                    [yaxis]="commonUsageBarChartOptions.yaxis"
                 ></apx-chart>
                 <apx-chart
                     *ngIf="billingUsageSewerChartType == 'Line'"

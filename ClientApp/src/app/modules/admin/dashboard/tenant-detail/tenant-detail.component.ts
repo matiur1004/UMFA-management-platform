@@ -94,6 +94,7 @@ export class TenantDetailComponent implements OnInit {
   billingUsageSewerageSeries = [];
 
   public commonBarChartOptions: Partial<ChartOptions>;
+  public commonUsageBarChartOptions: Partial<ChartOptions>;
   public commonLineChartOptions: Partial<LineChartOptions>;
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -172,7 +173,53 @@ export class TenantDetailComponent implements OnInit {
           }
         }
       }
-    }
+    };
+    this.commonUsageBarChartOptions = {
+      series: [],
+      chart: {
+        type: "bar",
+        height: 350,
+        toolbar: {
+          show: false
+        }
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: "55%",
+          endingShape: "rounded"
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ["transparent"]
+      },
+      xaxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      },
+      yaxis: {
+        labels: {
+          formatter: function(val) {
+            return '' + val;
+          } 
+        }
+      },
+      fill: {
+        opacity: 1,
+        colors: []
+      },
+      tooltip: {
+        y: {
+          formatter: function(val) {
+            return '' + val;
+          }
+        }
+      }
+    };
     this.commonLineChartOptions = {
       series: [
       ],
@@ -255,7 +302,7 @@ export class TenantDetailComponent implements OnInit {
       });
   }
 
-  setBillingSummary(treemapUpdating = true) {
+  setBillingSummary() {
     
     let billingSummaryData = [];
     this.billingSummaryDataSource = [];
@@ -276,16 +323,15 @@ export class TenantDetailComponent implements OnInit {
       billingSummaryData.push({x: groupName, y: totalByGroup});
       this.billingSummaryDataSource.push({name: groupName, amount: totalByGroup, usage: totalUsageByGroup});
     })
-    if(treemapUpdating) {
-      this.treeMapOptions.colors = this.groupColors.slice(0, this.groupList.length);
-      this.treeMapOptions.series = [];
-      this.treeMapOptions.series.push({'data': billingSummaryData});
-    }
+    
+    this.treeMapOptions.colors = this.groupColors.slice(0, this.groupList.length);
+    this.treeMapOptions.series = [];
+    this.treeMapOptions.series.push({'data': billingSummaryData});
 
   }
 
   onBillingMonthChange(event) {
-    this.setBillingSummary(false);
+    this.setBillingSummary();
   }
 
   setSeriesForBillingChart() {
@@ -349,9 +395,9 @@ export class TenantDetailComponent implements OnInit {
      */
   ngOnDestroy(): void
   {
-      // Unsubscribe from all subscriptions
-      this._unsubscribeAll.next(null);
-      this._unsubscribeAll.complete();
-      this.service.destroyTenantDetail();
+    // Unsubscribe from all subscriptions
+    this._unsubscribeAll.next(null);
+    this._unsubscribeAll.complete();
+    this.service.destroyTenantDetail();
   }
 }
