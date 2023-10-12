@@ -425,6 +425,33 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                         });
                 }
             });
+        
+        this._dbService.tenantDetailDashboard$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((response) => {
+                if(response) {
+                    let res = {
+                        "buildingId": response['buildingId'],
+                        "tenantId": response['tenantId'],
+                        "tenantName": response['tenantName']
+                    }
+                    this._dbService.getTenantDashboardDetail(res['buildingId'], res['tenantId'])
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe(result => {
+                            if(result) {
+                                let newTab: IHomeTab = {
+                                    id: 0, 
+                                    title: `${response['tenantName']}`,
+                                    type: 'TenantDetailDashboard',
+                                    dataSource: res
+                                };
+                                this.tabsList.push(newTab);
+                                this.selectedTab = this.tabsList.length;
+                                this._cdr.detectChanges();
+                            }
+                        });
+                }
+            });
 
         this._dbService.shopBilling$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -564,6 +591,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                 }
             });
         //Wip
+        //this._dbService.showTenantDetailDashboard({buildingId: 2531, tenantId: 82879, tenantName: 'Tenant'});
         // let res = {
         //     "buildingId": 2403,
         //     "reportType": "Client Feedback Report",
@@ -729,7 +757,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             this.tabsList[index]['type'] == 'ShopDashboarAssignedMeters' || 
             this.tabsList[index]['type'] == 'ShopDashboardReadings' ||
             this.tabsList[index]['type'] == 'ShopDetailDashboard' ||
-            this.tabsList[index]['type'] == 'AlarmTrigger') {
+            this.tabsList[index]['type'] == 'AlarmTrigger' || 
+            this.tabsList[index]['type'] == 'TenantDetailDashboard') {
             this.selectedTab = index;    
         }
         if(this.tabsList[index]['type'] == 'ShopList') {

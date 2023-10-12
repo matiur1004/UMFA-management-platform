@@ -1,8 +1,7 @@
-import { Component, OnInit, Input, ChangeDetectorRef, ViewChild } from '@angular/core';
-import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexFill, ApexLegend, ApexPlotOptions, ApexStroke, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
-import { DashboardService } from '../dasboard.service';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import moment from 'moment';
+import { DashboardService } from '../dasboard.service';
+import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexFill, ApexLegend, ApexPlotOptions, ApexStroke, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -45,75 +44,40 @@ export type TreemapChartOptions = {
   legend: ApexLegend;
   colors: string[];
 }
+
 @Component({
-  selector: 'app-shop-detail',
-  templateUrl: './shop-detail.component.html',
-  styleUrls: ['./shop-detail.component.scss']
+  selector: 'app-tenant-detail',
+  templateUrl: './tenant-detail.component.html',
+  styleUrls: ['./tenant-detail.component.scss']
 })
-export class ShopDetailComponent implements OnInit {
+export class TenantDetailComponent implements OnInit {
 
   @Input() buildingId: number;
-  @Input() shopId: number;
-  selectedMonth;
-  monthNameList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  currentYear = new Date().getFullYear();
-  yearList = [];
-  // groupColors = {
-  //   'C/A Diesel' : '#008E0E',
-  //   'C/A Electricity': '#452AEB',
-  //   'C/A Sewer': '#2FAFB7',
-  //   'C/A Water': '#C23BC4',
-  //   'Kwh Electricity': '#6E6E6E',
-  //   'Kva': '#16a34a',
-  //   'Sewer': '#C24F19',
-  //   'Water': '#C8166C',
-  //   'Common Area Elec': '#84cc16',
-  //   'Common Area Sewer': '#06b6d4',
-  //   'Common Area Water': '#8b5cf6',
-  //   'Diesel Generator': '#f59e0b',
-  //   'KVA Electricity': '#6b21a8',
-  //   'KWH Electricity': '#9f1239',
-  //   'E-Kwh': '#d946ef',
-  //   'Diesel Recoveries': '#a855f7'
-  // };
-  groupColors = ['#008E0E', '#452AEB', '#2FAFB7', '#C23BC4', '#6E6E6E', '#46a34a', '#C24F19', '#C8166C', '#84cc16', '#06b6d4', '#8b5cf6', '#f59e0b', '#6b21a8', '#9f1239', '#d946ef', '#a855f7'];
-  availableGroupColors: any;
-
-  mapOptions = {
-    type: 'discrete',
-    palette: [],
-  };
-
-  billingSummaryMap: any[] = [{
-    name: '',
-    items: []
-  }]
-  billingSummaryDataSource: any;
+  @Input() tenantId: number;
+  @Input() tenantName: string;
 
   dataSource: any;
-  shopDetailDashboard: any;
+  billingSummaryDataSource: any;
+  tenantDetailDashboard: any;
+  lastPeriodName: string;
+  lastPeriodBillings: any[] = [];
   billingTotal: number;
+  shopListItems: any[] = [{value: 0, label: 'All'}];
   allAvailableImages: number;
-
-  tenantItems: any[] = [];
+  groupList: any[] = [];
   periodList: any[] = [];
   billingPeriodList: any[] = [];
-  groupList: any[] = [];
-  periodLengthItems = [{name: '12 months', value: 12}, {name: '24 months', value: 24}, {name: '36 months', value: 36}];
-  billingGroupItems = [];
-  selectedPeriodLengthForBilling = 36;
-  selectedGroupsForBilling;
-  selectedGroupsForBillingUsage;
 
-  public billingUsageChartOptions: Partial<ChartOptions>;
-  public treeMapOptions: Partial<TreemapChartOptions>;
+  monthNameList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  yearList = [];
+  availableGroupColors: any;
+  groupColors = ['#008E0E', '#452AEB', '#2FAFB7', '#C23BC4', '#6E6E6E', '#46a34a', '#C24F19', '#C8166C', '#84cc16', '#06b6d4', '#8b5cf6', '#f59e0b', '#6b21a8', '#9f1239', '#d946ef', '#a855f7'];
   
-  public commonBarChartOptions: Partial<ChartOptions>;
-  public commonLineChartOptions: Partial<LineChartOptions>;
+  selectedMonth;
 
-  @ViewChild("treemapChart") chart: ChartComponent;
-  @ViewChild("billingChart") billingChart: ChartComponent;
-  @ViewChild("billingUsageChart") billingUsageChart: ChartComponent;
+  selectedShop: number = 0;
+  includeVacant: boolean = false;
+  public treeMapOptions: Partial<TreemapChartOptions>;
 
   billingElectricityChartType: string = 'Bar';
   billingUsageElectricityChartType: string = 'Bar';
@@ -129,11 +93,16 @@ export class ShopDetailComponent implements OnInit {
   billingSewerageSeries = [];
   billingUsageSewerageSeries = [];
 
+  public commonBarChartOptions: Partial<ChartOptions>;
+  public commonUsageBarChartOptions: Partial<ChartOptions>;
+  public commonLineChartOptions: Partial<LineChartOptions>;
+
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
   constructor(
-    private service: DashboardService
-  ) {
+    private service: DashboardService,
+    private _cdr: ChangeDetectorRef
+  ) { 
     this.treeMapOptions = {
       series: [
       ],
@@ -159,49 +128,6 @@ export class ShopDetailComponent implements OnInit {
         }
       }
     };
-    this.billingUsageChartOptions = {
-      series: [],
-      chart: {
-        type: "bar",
-        height: 350
-      },
-      plotOptions: {
-        bar: {
-          horizontal: false,
-          columnWidth: "55%",
-          endingShape: "rounded"
-        }
-      },
-      dataLabels: {
-        enabled: false
-      },
-      stroke: {
-        show: true,
-        width: 2,
-        colors: ["transparent"]
-      },
-      xaxis: {
-        categories: []
-      },
-      yaxis: {
-        labels: {
-          formatter: function(val) {
-            return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-          } 
-        }
-      },
-      fill: {
-        opacity: 1,
-        colors: []
-      },
-      tooltip: {
-        y: {
-          formatter: function(val) {
-            return val + "";
-          }
-        }
-      }
-    }
     this.commonBarChartOptions = {
       series: [],
       chart: {
@@ -247,7 +173,53 @@ export class ShopDetailComponent implements OnInit {
           }
         }
       }
-    }
+    };
+    this.commonUsageBarChartOptions = {
+      series: [],
+      chart: {
+        type: "bar",
+        height: 350,
+        toolbar: {
+          show: false
+        }
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: "55%",
+          endingShape: "rounded"
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ["transparent"]
+      },
+      xaxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      },
+      yaxis: {
+        labels: {
+          formatter: function(val) {
+            return '' + val;
+          } 
+        }
+      },
+      fill: {
+        opacity: 1,
+        colors: []
+      },
+      tooltip: {
+        y: {
+          formatter: function(val) {
+            return '' + val;
+          }
+        }
+      }
+    };
     this.commonLineChartOptions = {
       series: [
       ],
@@ -299,50 +271,69 @@ export class ShopDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    this.service.shopDetail$
+    this.service.tenantDetail$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((res) => {
         if(res) {
-          this.shopDetailDashboard = res;
-          this.billingTotal = this.shopDetailDashboard.LatestPeriodBillings.reduce((prev, cur) => prev + cur.Amount, 0);
-          this.tenantItems = [
-            {value: 'latest', label: this.shopDetailDashboard.Occupations[0]['LastTenantName']},
-            {value: 'all', label: 'All'}
-          ];
-          this.allAvailableImages = this.shopDetailDashboard.Readings.reduce((prev, cur) => prev + cur.HasImages, 0);
-          this.periodList = this.shopDetailDashboard.PeriodBillings.map(billing => billing.PeriodName).filter(this.onlyUnique);
-          this.groupList = this.shopDetailDashboard.PeriodBillings.map(billing => billing.GroupName.trim()).filter(this.onlyUnique);
-          this.yearList = this.shopDetailDashboard.PeriodBillings.map(billing => billing.PeriodName.split(' ')[1]).filter(this.onlyUnique);
-          this.billingPeriodList = this.periodList.map(period => {
-            return {name:period, value: period}
-          }).reverse();
-          this.selectedMonth = this.billingPeriodList[0]['value'];
+          this.tenantDetailDashboard = res;
+          if(this.tenantDetailDashboard['BillingData'].length > 0) {
+            this.lastPeriodName = this.tenantDetailDashboard['BillingData'][this.tenantDetailDashboard['BillingData'].length - 1]['PeriodName'];
+            this.lastPeriodBillings = this.tenantDetailDashboard['BillingData'].filter(item => item['PeriodName'] == this.lastPeriodName);
+            this.billingTotal = this.lastPeriodBillings.reduce((prev, cur) => prev + cur.Amount, 0);
+            this.allAvailableImages = this.tenantDetailDashboard.ReadingsInfo.reduce((prev, cur) => prev + cur.HasImages, 0);
+            this.tenantDetailDashboard.Shops.forEach(shop => {
+              let result = {value: shop.ShopID, item: shop};
+              this.shopListItems.push(result);
+            })
+            this.groupList = this.tenantDetailDashboard.BillingData.map(billing => billing.GroupName.trim()).filter(this.onlyUnique);
+            this.periodList = this.tenantDetailDashboard.BillingData.map(billing => billing.PeriodName).filter(this.onlyUnique);
+            this.yearList = this.tenantDetailDashboard.BillingData.map(billing => billing.PeriodName.split(' ')[1]).filter(this.onlyUnique);
+            this.billingPeriodList = this.periodList.map(period => {
+              return {name:period, value: period}
+            }).reverse();
+            this.selectedMonth = this.billingPeriodList[0]['value'];
+            this.setBillingSummary();
 
-          this.setBillingSummary();
+            this.setSeriesForBillingChart();
 
-          this.setSeriesForBillingChart();
+            this._cdr.detectChanges();
+          }
         }
       });
   }
 
-  customizeTooltip(arg) {
-    const data = arg.node.data;
-    let result = null;
+  setBillingSummary() {
+    
+    let billingSummaryData = [];
+    this.billingSummaryDataSource = [];
+    
+    this.groupList.forEach(groupName => {
+      let groupData = [];
+      let groupUsageData = [];
+      groupData.push(this.tenantDetailDashboard.BillingData
+                            .filter(period => period.PeriodName == this.selectedMonth && period.GroupName.trim() == groupName)
+                            .reduce((prev, cur) => prev + cur.Amount, 0));
+      groupUsageData.push(this.tenantDetailDashboard.BillingData
+        .filter(period => period.PeriodName == this.selectedMonth && period.GroupName.trim() == groupName)
+        .reduce((prev, cur) => prev + cur.Usage, 0));
 
-    if (arg.node.isLeaf()) {
-      result = `<span class='city'>${data.name}</span> <br/>Amount: ${arg.valueText}`;
-    }
+      let totalByGroup = groupData.reduce((prev, cur) => prev + cur, 0);
+      let totalUsageByGroup = groupUsageData.reduce((prev, cur) => prev + cur, 0);
 
-    return {
-      text: result,
-    };
+      billingSummaryData.push({x: groupName, y: totalByGroup});
+      this.billingSummaryDataSource.push({name: groupName, amount: totalByGroup, usage: totalUsageByGroup});
+    })
+    
+    this.treeMapOptions.colors = this.groupColors.slice(0, this.groupList.length);
+    this.treeMapOptions.series = [];
+    this.treeMapOptions.series.push({'data': billingSummaryData});
+
   }
 
-  onlyUnique(value, index, array) {
-    return array.indexOf(value) === index;
+  onBillingMonthChange(event) {
+    this.setBillingSummary();
   }
-  
+
   setSeriesForBillingChart() {
     let billingElectricitySeries = []; 
     let billingUsageElectricitySeries = [];
@@ -350,6 +341,7 @@ export class ShopDetailComponent implements OnInit {
     let billingUsageWaterSeries = [];
     let billingSewerageSeries = [];
     let billingUsageSewerageSeries = [];
+
     this.yearList.forEach(year => {
       billingElectricitySeries.push({name: year, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]});
       billingUsageElectricitySeries.push({name: year, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]});
@@ -359,7 +351,7 @@ export class ShopDetailComponent implements OnInit {
       billingUsageSewerageSeries.push({name: year, data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]});
     });
 
-    this.shopDetailDashboard.PeriodBillings.forEach(billing => {
+    this.tenantDetailDashboard.BillingData.forEach(billing => {
       let year = billing['PeriodName'].split(' ')[1];
       let month = billing['PeriodName'].split(' ')[0];
       let idx = billingElectricitySeries.findIndex(obj => obj['name'] == year);
@@ -383,51 +375,19 @@ export class ShopDetailComponent implements OnInit {
     this.billingUsageWaterSeries = billingUsageWaterSeries;
     this.billingSewerageSeries = billingSewerageSeries;
     this.billingUsageSewerageSeries = billingUsageSewerageSeries;
+
   }
 
-  setBillingSummary() {
-    this.treeMapOptions.colors = this.availableGroupColors;
-    let billingSummaryData = [];
-    this.billingSummaryDataSource = [];
-    this.treeMapOptions.series = [];
-    this.groupList.forEach(groupName => {
-      let groupData = [];
-      let groupUsageData = [];
-      groupData.push(this.shopDetailDashboard.PeriodBillings
-                            .filter(period => period.PeriodName == this.selectedMonth && period.GroupName.trim() == groupName)
-                            .reduce((prev, cur) => prev + cur.Amount, 0));
-      groupUsageData.push(this.shopDetailDashboard.PeriodBillings
-        .filter(period => period.PeriodName == this.selectedMonth && period.GroupName.trim() == groupName)
-        .reduce((prev, cur) => prev + cur.Usage, 0));
-
-      let totalByGroup = groupData.reduce((prev, cur) => prev + cur, 0);
-      let totalUsageByGroup = groupUsageData.reduce((prev, cur) => prev + cur, 0);
-
-      billingSummaryData.push({x: groupName, y: totalByGroup});
-      this.billingSummaryDataSource.push({name: groupName, amount: totalByGroup, usage: totalUsageByGroup});
-    })
-    this.treeMapOptions.series.push({'data': billingSummaryData});
-    //if(this.chart) this.chart.ngOnInit();
+  onChangeShop(event) {
+    this.service.getTenantDashboardDetail(this.buildingId, this.tenantId, event.value, this.includeVacant).subscribe();
   }
 
-  onBillingMonthChange(event) {
-    this.setBillingSummary();
+  onIncludeVacantChange(event) {
+    this.service.getTenantDashboardDetail(this.buildingId, this.tenantId, this.selectedShop, event.checked).subscribe();
   }
 
-  onShopBilling() {
-    this.service.showShopBilling({buildingId: this.buildingId, shopId: this.shopId});
-  }
-
-  onShopOccupation() {
-    this.service.showShopOccupation({buildingId: this.buildingId, shopId: this.shopId});
-  }
-  
-  onShopAssignedMeters() {
-    this.service.showAssignedMeters({buildingId: this.buildingId, shopId: this.shopId});
-  }
-
-  onShopReadings() {
-    this.service.showReadings({buildingId: this.buildingId, shopId: this.shopId, meterId: null});
+  onlyUnique(value, index, array) {
+    return array.indexOf(value) === index;
   }
 
   /**
@@ -435,9 +395,9 @@ export class ShopDetailComponent implements OnInit {
      */
   ngOnDestroy(): void
   {
-      // Unsubscribe from all subscriptions
-      this._unsubscribeAll.next(null);
-      this._unsubscribeAll.complete();
-      this.service.destroyShopDetail();
+    // Unsubscribe from all subscriptions
+    this._unsubscribeAll.next(null);
+    this._unsubscribeAll.complete();
+    this.service.destroyTenantDetail();
   }
 }

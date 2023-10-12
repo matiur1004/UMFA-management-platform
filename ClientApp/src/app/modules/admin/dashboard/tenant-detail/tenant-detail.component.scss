@@ -1,0 +1,32 @@
+.image-item {
+    width: 40px;
+}
+::ng-deep .dxtm-tooltip {
+    z-index: 9999;
+}
+::ng-deep .dx-treeview-item .dx-treeview-item-content span{
+    white-space: nowrap !important;
+}
+.border-graph {
+    border-right: 1px solid #c2c2c2;
+    width: 1px;
+    height: 36px;
+}
+.graph-type-item {
+    width: 45px;
+    height: 36px;
+}
+.selected-graph-type {
+    background: #ececec;
+    border-radius: 4px;
+}
+.graph-icon {
+    width: 25px;
+}
+.detail-btn {
+    border: 1px solid #00b3e7;
+    height: 30px;
+    min-height: 30px;
+    color: #00b3e7 !important;
+    padding: 0 14px !important;
+}
