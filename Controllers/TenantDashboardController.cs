@@ -46,5 +46,19 @@ namespace ClientPortal.Controllers
                 return Problem("Could not return tenant main dashboard");
             }
         }
+
+        [HttpGet("main/billing-details")]
+        public async Task<ActionResult<List<UmfaTenantMainDashboardBillingDetail>>> GetTenantMainDashboardBillingDetails([FromQuery] UmfaTenantMainDashboardBillingDetailsRequest request)
+        {
+            try
+            {
+                return await _umfaService.GetTenantMainDashboardBillingDetailsAsync(request);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Could not get tenant main dashboard billing details");
+                return Problem(e.Message);
+            }
+        }
     }
 }
