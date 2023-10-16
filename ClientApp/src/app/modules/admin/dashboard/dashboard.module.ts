@@ -37,6 +37,8 @@ import { MeterAlarmDetailModule } from '../admin/meter-alarm-detail/meter-alarm-
 import { ClientFeedbackReportComponent } from './building-reports/client-feedback-report/client-feedback-report.component';
 import { TenantsListComponent } from './tenants-list/tenants-list.component';
 import { TenantDetailComponent } from './tenant-detail/tenant-detail.component';
+import { TenantBillingDetailComponent } from './tenant-billing-detail/tenant-billing-detail.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
     declarations: [
@@ -55,7 +57,8 @@ import { TenantDetailComponent } from './tenant-detail/tenant-detail.component';
         TriggeredAlarmsComponent,
         ClientFeedbackReportComponent,
         TenantsListComponent,
-        TenantDetailComponent
+        TenantDetailComponent,
+        TenantBillingDetailComponent
     ],
     imports     : [
         CommonModule,
@@ -72,6 +75,7 @@ import { TenantDetailComponent } from './tenant-detail/tenant-detail.component';
         MatTableModule,
         MatTooltipModule,
         MatTableModule,
+        MatExpansionModule,
         MatSlideToggleModule,
         NgApexchartsModule,
         DxTextBoxModule,
