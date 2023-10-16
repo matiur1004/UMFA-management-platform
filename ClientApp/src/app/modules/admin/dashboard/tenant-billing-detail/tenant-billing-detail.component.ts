@@ -39,7 +39,6 @@ export class TenantBillingDetailComponent implements OnInit {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((res) => {
         if(res) {
-          console.log(res);
           this.shopList = [];
           res.forEach(billing => {
             if(!this.shopList.find(shop => shop['ShopId'] == billing['ShopId'])) this.shopList.push({ShopId: billing['ShopId'], Shop: billing['Shop']});
@@ -74,7 +73,6 @@ export class TenantBillingDetailComponent implements OnInit {
             shop['Amount'] = totalAmountByShop;
           })
           this._cdr.detectChanges();
-          console.log(this.shopList);
         } else {
           this.shopList = [];
           this._cdr.detectChanges();
