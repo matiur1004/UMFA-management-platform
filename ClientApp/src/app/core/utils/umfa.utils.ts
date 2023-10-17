@@ -110,4 +110,15 @@ export class UmfaUtils {
     }
     return txlOption;
   }
+
+  utilityColorMapping() {
+    return {
+      'Electricity':  ['#FF0000', '#A30000', '#FFB6B6', '#DA012D', '#750000'],
+      'Water':        ['#007FFF', '#0237D7', '#89CFF0', '#0067A5', '#000080'],
+      'Sewage':       ['#BC61F5', '#613385', '#F0D8FF', '#6C0BA9', '#461257'],
+      'Gas':          ['#FFFF00', '#FFD300', '#FCFC8F', '#FFEF00', '#FFA700'],
+      'Diesel':       ['#FC6A03', '#B56727', '#FDA172'],
+      'Ad hoc':       ['#CCCCCC', '#706B6B', '#ECECEC', '#999999', '#333333']
+    }
+  }
 }
