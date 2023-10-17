@@ -45,6 +45,9 @@ export class DashboardService {
 
   private _reportsArchives: BehaviorSubject<any> = new BehaviorSubject(null);
   private _clientFeedbackReports: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _showTenantBillingDetails: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _billingDetailsForTenant: BehaviorSubject<any> = new BehaviorSubject(null);
+
   
   public stats$: Observable<IHomePageStats>;
   public alarmTriggeredId: any;
@@ -206,6 +209,14 @@ export class DashboardService {
   
   get clientFeedbackReports$(): Observable<any>{
     return this._clientFeedbackReports.asObservable();
+  }
+
+  get showTenantBillingDetails$(): Observable<any>{
+    return this._showTenantBillingDetails.asObservable();
+  }
+
+  get billingDetailsForTenant$(): Observable<any>{
+    return this._billingDetailsForTenant.asObservable();
   }
 
   getStats(userId) {
@@ -515,6 +526,20 @@ export class DashboardService {
       );
   }
 
+  getBillingDetailsForTenant(buildingId, tenantId, periodId) {
+    const url = `${CONFIG.apiURL}/TenantDashboard/main/billing-details?BuildingId=${buildingId}&TenantId=${tenantId}&PeriodId=${periodId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err =>  {
+          this._billingDetailsForTenant.next(null); return throwError(err);
+        }),
+        tap(bl => {
+          this._billingDetailsForTenant.next(bl);
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        })
+      );
+  }
+
   showShopDetailDashboard(data) {
     this._shopDetailDashboard.next(data);
   }
@@ -541,6 +566,11 @@ export class DashboardService {
 
   destroyTenantDetail() {
     this._tenantDetailDashboard.next(null);
+  }
+
+  destroyBillingDetailForTenant() {
+    this._showTenantBillingDetails.next(null);
+    this._billingDetailsForTenant.next(null);
   }
 
   showTenantSlip(buildingId) {
@@ -627,6 +657,10 @@ export class DashboardService {
     this._clientFeedbackReports.next(null);
   }
 
+  showTenantBillingDetail(data) {
+    this._showTenantBillingDetails.next(data);
+  }
+
   destroy() {
     this._buildingReports.next(null);
     this._tenantSlip.next(null);
@@ -636,6 +670,8 @@ export class DashboardService {
     this._triggeredAlarmDetailPage.next(null);
     this._shopList.next(null);
     this._tenantsList.next(null);
+    this.selectedTenantInfo = null;
+    this.selectedShopInfo = null;
   }
 
   cancel() {

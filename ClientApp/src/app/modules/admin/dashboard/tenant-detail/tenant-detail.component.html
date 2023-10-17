@@ -133,7 +133,7 @@
             </div>
             <div class="flex flex-col w-1/2 gap-y-4">
                 <div class="flex justify-end items-end gap-x-2">
-                    <button mat-flat-button class="detail-btn">DETAILS</button>
+                    <button mat-flat-button class="detail-btn" (click)="showBillingDetail()">DETAILS</button>
                     <dx-select-box [items]="billingPeriodList" displayExpr="name" valueExpr="value" class="form-control" label="Month"
                         placeholder="Select Month" lableMode="static" id="month" [(ngModel)]="selectedMonth" (valueChange)="onBillingMonthChange($event)">
                     </dx-select-box>

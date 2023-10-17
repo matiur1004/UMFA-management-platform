@@ -590,8 +590,57 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                     this._cdr.markForCheck();
                 }
             });
+
+        this._dbService.triggeredAlarmDetailPage$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((data) => {
+                if(data) {                    
+                    let newTab: IHomeTab = {
+                        id: 0,
+                        title: `${data.MeterNo}`,
+                        type: 'AlarmTrigger',
+                        dataSource: data
+                    };
+                    this.tabsList.push(newTab);
+                    this.selectedTab = this.tabsList.length;
+                    this._cdr.markForCheck();
+                }
+            });
+
+        this._dbService.showTenantBillingDetails$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((res) => {
+                if(res) {       
+                    let newTab: IHomeTab = {
+                        id: 0,
+                        title: `Billing Summary Details`,
+                        type: 'TenantBillingDetail',
+                        dataSource: res
+                    };
+                    this.tabsList.push(newTab);
+                    this.selectedTab = this.tabsList.length;
+                    
+                    this._cdr.markForCheck();
+                    // this._dbService.getBillingDetailsForTenant(res['buildingId'], res['tenantId'], res['periodId'])
+                    //     .subscribe(result => {
+                    //         let newTab: IHomeTab = {
+                    //             id: 0,
+                    //             title: `Billing Summary Details`,
+                    //             type: 'TenantBillingDetail',
+                    //             dataSource: res
+                    //         };
+                    //         this.tabsList.push(newTab);
+                    //         this.selectedTab = this.tabsList.length;
+                            
+                    //         this._cdr.markForCheck();
+                    //     }); 
+                }
+            });
         //Wip
         this._dbService.showTenantDetailDashboard({buildingId: 2531, tenantId: 82879, tenantName: 'Tenant'});
+        //this._dbService.showTenantDetailDashboard({buildingId: 2531, tenantId: 82879, tenantName: 'Tenant'});
+        //this._dbService.showTenantBillingDetail({buildingId: 2531, tenantId: 82879, periodId: 180320});
+        //this._dbService.showTenantBillingDetail({buildingId: 2403, tenantId: 91041, periodId: 179454, tenantName: 'Tenant'});
         // let res = {
         //     "buildingId": 2403,
         //     "reportType": "Client Feedback Report",
@@ -758,7 +807,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             this.tabsList[index]['type'] == 'ShopDashboardReadings' ||
             this.tabsList[index]['type'] == 'ShopDetailDashboard' ||
             this.tabsList[index]['type'] == 'AlarmTrigger' || 
-            this.tabsList[index]['type'] == 'TenantDetailDashboard') {
+            this.tabsList[index]['type'] == 'TenantDetailDashboard' ||
+            this.tabsList[index]['type'] == 'TenantBillingDetail') {
             this.selectedTab = index;    
         }
         if(this.tabsList[index]['type'] == 'ShopList') {
