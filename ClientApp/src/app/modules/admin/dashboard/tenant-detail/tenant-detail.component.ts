@@ -66,6 +66,7 @@ export class TenantDetailComponent implements OnInit {
   allAvailableImages: number;
   groupList: any[] = [];
   periodList: any[] = [];
+  periodItemList: any[] = [];
   billingPeriodList: any[] = [];
 
   monthNameList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -285,9 +286,22 @@ export class TenantDetailComponent implements OnInit {
               let result = {value: shop.ShopID, item: shop};
               this.shopListItems.push(result);
             })
-            this.groupList = this.tenantDetailDashboard.BillingData.map(billing => billing.GroupName.trim()).filter(this.onlyUnique);
-            this.periodList = this.tenantDetailDashboard.BillingData.map(billing => billing.PeriodName).filter(this.onlyUnique);
-            this.yearList = this.tenantDetailDashboard.BillingData.map(billing => billing.PeriodName.split(' ')[1]).filter(this.onlyUnique);
+            this.groupList = []; this.periodList = []; this.yearList = [];
+            this.tenantDetailDashboard.BillingData.forEach(billing => {
+              this.groupList.push(billing.GroupName.trim());
+              this.periodList.push(billing.PeriodName);
+              this.yearList.push(billing.PeriodName.split(' ')[1]);
+              if(!this.periodItemList.find(obj => obj['id'] == billing.PeriodID)) {
+                this.periodItemList.push({id: billing.PeriodID, name: billing.PeriodName});
+              }              
+            });
+            this.groupList = this.groupList.filter(this.onlyUnique);
+            this.periodList = this.periodList.filter(this.onlyUnique);
+            this.yearList = this.yearList.filter(this.onlyUnique);
+
+            // this.groupList = this.tenantDetailDashboard.BillingData.map(billing => billing.GroupName.trim()).filter(this.onlyUnique);
+            // this.periodList = this.tenantDetailDashboard.BillingData.map(billing => billing.PeriodName).filter(this.onlyUnique);
+            // this.yearList = this.tenantDetailDashboard.BillingData.map(billing => billing.PeriodName.split(' ')[1]).filter(this.onlyUnique);
             this.billingPeriodList = this.periodList.map(period => {
               return {name:period, value: period}
             }).reverse();
@@ -388,6 +402,11 @@ export class TenantDetailComponent implements OnInit {
 
   onlyUnique(value, index, array) {
     return array.indexOf(value) === index;
+  }
+
+  showBillingDetail() {
+    let period = this.periodItemList.find(period => period['name'] == this.selectedMonth);
+    this.service.showTenantBillingDetail({buildingId: this.buildingId, tenantId: this.tenantId, periodId: period['id'], tenantName: this.tenantName});
   }
 
   /**
