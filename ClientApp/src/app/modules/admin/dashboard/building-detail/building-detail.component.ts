@@ -160,6 +160,8 @@ export class BuildingDetailComponent implements OnInit {
    }
    
   ngOnInit(): void {
+    this._dbService.setTitle('Building Dashboard');
+
     if(this.stats.GraphStats) {
       this.chartElectricityUsage.xaxis.categories = this.stats.GraphStats.map(graph => graph.PeriodName);
       this.chartWaterUsage.xaxis.categories = this.stats.GraphStats.map(graph => graph.PeriodName);

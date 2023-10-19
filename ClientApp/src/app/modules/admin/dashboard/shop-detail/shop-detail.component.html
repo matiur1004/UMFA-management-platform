@@ -135,7 +135,7 @@
                         <ng-template #emptyTemplate></ng-template>
                     </div>
                     <div *dxTemplate="let data of 'cellGroupTemplate'">
-                        <div class="flex gap-x-2 items-center"><div class="w-3 h-3 rounded-sm" [ngStyle]="{'background-color': groupColors[groupList.indexOf(data.value)]}"></div> {{data.value}}</div>
+                        <div class="flex gap-x-2 items-center"><div class="w-3 h-3 rounded-sm" [ngStyle]="{'background-color': getColorFromGroupName(data.value)}"></div> {{data.value}}</div>
                     </div>
                 </dx-data-grid>
             </div>
@@ -165,6 +165,7 @@
                 [plotOptions]="commonBarChartOptions.plotOptions"
                 [xaxis]="commonBarChartOptions.xaxis"
                 [yaxis]="commonBarChartOptions.yaxis"
+                [colors]="billingElectricitySeriesColors"
             ></apx-chart>
             <apx-chart
                 *ngIf="billingElectricityChartType == 'Line'"
@@ -177,6 +178,7 @@
                 [grid]="commonLineChartOptions.grid"
                 [yaxis]="commonLineChartOptions.yaxis"
                 [title]="commonLineChartOptions.title"
+                [colors]="billingElectricitySeriesColors"
             ></apx-chart>
         </div>
         <div class="flex flex-col bg-card relative">
@@ -202,6 +204,7 @@
                 [plotOptions]="commonBarChartOptions.plotOptions"
                 [xaxis]="commonBarChartOptions.xaxis"
                 [yaxis]="commonBarChartOptions.yaxis"
+                [colors]="billingElectricitySeriesColors"
             ></apx-chart>
             <apx-chart
                 *ngIf="billingUsageElectricityChartType == 'Line'"
@@ -214,6 +217,7 @@
                 [grid]="commonLineChartOptions.grid"
                 [yaxis]="commonLineChartOptions.yaxis"
                 [title]="commonLineChartOptions.title"
+                [colors]="billingElectricitySeriesColors"
             ></apx-chart>
         </div>
     </div>
@@ -241,6 +245,7 @@
                 [plotOptions]="commonBarChartOptions.plotOptions"
                 [xaxis]="commonBarChartOptions.xaxis"
                 [yaxis]="commonBarChartOptions.yaxis"
+                [colors]="billingWaterSeriesColors"
             ></apx-chart>
             <apx-chart
                 *ngIf="billingWaterChartType == 'Line'"
@@ -253,6 +258,7 @@
                 [grid]="commonLineChartOptions.grid"
                 [yaxis]="commonLineChartOptions.yaxis"
                 [title]="commonLineChartOptions.title"
+                [colors]="billingWaterSeriesColors"
             ></apx-chart>
         </div>
         <div class="flex flex-col bg-card relative">
@@ -278,6 +284,7 @@
                 [plotOptions]="commonBarChartOptions.plotOptions"
                 [xaxis]="commonBarChartOptions.xaxis"
                 [yaxis]="commonBarChartOptions.yaxis"
+                [colors]="billingWaterSeriesColors"
             ></apx-chart>
             <apx-chart
                 *ngIf="billingUsageWaterChartType == 'Line'"
@@ -290,6 +297,7 @@
                 [grid]="commonLineChartOptions.grid"
                 [yaxis]="commonLineChartOptions.yaxis"
                 [title]="commonLineChartOptions.title"
+                [colors]="billingWaterSeriesColors"
             ></apx-chart>
         </div>
     </div>
@@ -317,6 +325,7 @@
                 [plotOptions]="commonBarChartOptions.plotOptions"
                 [xaxis]="commonBarChartOptions.xaxis"
                 [yaxis]="commonBarChartOptions.yaxis"
+                [colors]="billingSewerageSeriesColors"
             ></apx-chart>
             <apx-chart
                 *ngIf="billingSewerChartType == 'Line'"
@@ -329,6 +338,7 @@
                 [grid]="commonLineChartOptions.grid"
                 [yaxis]="commonLineChartOptions.yaxis"
                 [title]="commonLineChartOptions.title"
+                [colors]="billingSewerageSeriesColors"
             ></apx-chart>
         </div>
         <div class="flex flex-col bg-card relative">
@@ -354,6 +364,7 @@
                 [plotOptions]="commonBarChartOptions.plotOptions"
                 [xaxis]="commonBarChartOptions.xaxis"
                 [yaxis]="commonBarChartOptions.yaxis"
+                [colors]="billingSewerageSeriesColors"
             ></apx-chart>
             <apx-chart
                 *ngIf="billingUsageSewerChartType == 'Line'"
@@ -366,6 +377,7 @@
                 [grid]="commonLineChartOptions.grid"
                 [yaxis]="commonLineChartOptions.yaxis"
                 [title]="commonLineChartOptions.title"
+                [colors]="billingSewerageSeriesColors"
             ></apx-chart>
         </div>
     </div>

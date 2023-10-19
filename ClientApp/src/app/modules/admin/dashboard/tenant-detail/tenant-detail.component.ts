@@ -280,6 +280,8 @@ export class TenantDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.service.setTitle('Tenant Dashboard');
+
     this.service.tenantDetail$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((res) => {
@@ -294,7 +296,7 @@ export class TenantDetailComponent implements OnInit {
               let result = {value: shop.ShopID, item: shop};
               this.shopListItems.push(result);
             })
-            this.groupList = []; this.periodList = []; this.yearList = [];
+            this.groupList = []; this.periodList = []; this.yearList = [];this.utilityList = [];
             this.tenantDetailDashboard.BillingData.forEach(billing => {
               this.groupList.push(billing.GroupName.trim());
               this.periodList.push(billing.PeriodName);

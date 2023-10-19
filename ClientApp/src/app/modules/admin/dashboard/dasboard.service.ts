@@ -48,6 +48,7 @@ export class DashboardService {
   private _showTenantBillingDetails: BehaviorSubject<any> = new BehaviorSubject(null);
   private _billingDetailsForTenant: BehaviorSubject<any> = new BehaviorSubject(null);
 
+  private _headerText: BehaviorSubject<string> = new BehaviorSubject(null);
   
   public stats$: Observable<IHomePageStats>;
   public alarmTriggeredId: any;
@@ -69,6 +70,10 @@ export class DashboardService {
     private _notificationService: NotificationService){
     this.statsSubject = new BehaviorSubject<IHomePageStats>(null);
     this.stats$ = this.statsSubject.asObservable();
+  }
+
+  get headerText$(): Observable<any> {
+    return this._headerText.asObservable();
   }
 
   get tenantSlip$(): Observable<any> {
@@ -659,6 +664,10 @@ export class DashboardService {
 
   showTenantBillingDetail(data) {
     this._showTenantBillingDetails.next(data);
+  }
+
+  setTitle(val) {
+    this._headerText.next(val);
   }
 
   destroy() {
