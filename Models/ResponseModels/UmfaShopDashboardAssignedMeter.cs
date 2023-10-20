@@ -13,5 +13,6 @@
         public DateTime LastBillingDate { get; set; }
         public bool IsActive { get; set; }
         public string UsageHistory { get; set; }
+        public string Utility { get; set; }
     }
 }
