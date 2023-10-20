@@ -5,6 +5,7 @@ import { AllowedPageSizes } from '@core/helpers';
 import { DecimalPipe } from '@angular/common';
 import moment from 'moment';
 import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexFill, ApexLegend, ApexPlotOptions, ApexStroke, ApexTooltip, ApexXAxis, ApexYAxis } from 'ng-apexcharts';
+import { UmfaUtils } from '@core/utils/umfa.utils';
 
 export type BarChartOptions = {
   series: ApexAxisChartSeries;
@@ -55,6 +56,8 @@ export class ShopBillingComponent implements OnInit {
   tenantList: any[] = [];
   groupNameList: any[] = [];
   yearList: any[] = [];
+  utilityList: any[] = [];
+  groupsByUtility: any = {};
   billingChartType = 'Bar';
   usageChartType = 'Bar';
   billingGroupItems = [];
@@ -75,7 +78,8 @@ export class ShopBillingComponent implements OnInit {
     private service: DashboardService,
     private decimalPipe: DecimalPipe,
     private elementRef:ElementRef,
-    private renderer:Renderer2
+    private renderer:Renderer2,
+    private _utils: UmfaUtils
   ) {
     this.barChartOptions = {
       series: [        
@@ -315,6 +319,8 @@ export class ShopBillingComponent implements OnInit {
           this.dataSource.store = res.map(item => {
             if(this.periodList.indexOf(item['PeriodName']) == -1) this.periodList.push(item['PeriodName']);
             if(this.periodIdList.indexOf(item['PeriodID']) == -1) this.periodIdList.push(item['PeriodID']);
+            if(this.utilityList.indexOf(item['Utility']) == -1) this.utilityList.push(item['Utility']);
+
             if(!this.tenantList.find(obj => obj.TenantID == item['TenantID'])) {
               this.tenantList.push({TenantID: item['TenantID'], Tenant: item['Tenant']});
             }
@@ -328,7 +334,15 @@ export class ShopBillingComponent implements OnInit {
             item['PeriodDate'] = moment(new Date(item.PeriodName)).format('YYYY/MM/DD');
             return item;
           });
-          this.availableGroupColors = this.groupNameList.map((groupName, idx) => this.groupColors[idx]);
+
+          this.utilityList.forEach(utility => {
+            this.groupsByUtility[utility] = [];
+            let filteredBillings = res.filter(billing => billing['Utility'] == utility);
+            filteredBillings.forEach(billing => {
+              if(this.groupsByUtility[utility].indexOf(billing['GroupName'].trim()) == -1) this.groupsByUtility[utility].push(billing['GroupName'].trim());
+            })
+          })
+          this.availableGroupColors = this._utils.getColors(this.groupsByUtility);
           this.billingGroupItems = [{Id: '0', Name: 'All', expanded: true}];
           let selectedValue = ['0'];
           this.groupNameList.map(groupName => {
@@ -420,34 +434,42 @@ export class ShopBillingComponent implements OnInit {
     let billingLineSeriesData = [];
     let usageBarSeriesData = [];
     let usageLineSeriesData = [];
-    this.selectedGroupsForBilling.filter(obj=> obj != '0').forEach(groupName => {
-      let result = {name: groupName, data: []};
-      let lineResult = {name: groupName, data: []};
-      let usageResult = {name: groupName, data: []};
-      let usageLineResult = {name: groupName, data: []};
-      this.monthNameList.forEach(month => {
-        this.yearList.forEach(year => {
-          let filter = this.response.find(item => item['PeriodName'] == `${month} ${year}` && item['GroupName'] == groupName);
-          if(filter) result['data'].push({x: '`' + year.split('20')[1], y: filter['Amount']});
-          else result['data'].push({x: '`' + year.split('20')[1], y: 0});
+    Object.keys(this.groupsByUtility).forEach(key => {
+      this.groupsByUtility[key].forEach(groupName => {
+        this.selectedGroupsForBilling.filter(obj=> obj != '0').forEach(groupName1 => {
+          if(groupName == groupName1) {
+            let result = {name: groupName, data: []};
+            let lineResult = {name: groupName, data: []};
+            let usageResult = {name: groupName, data: []};
+            let usageLineResult = {name: groupName, data: []};
+            this.monthNameList.forEach(month => {
+              this.yearList.forEach(year => {
+                let filter = this.response.find(item => item['PeriodName'] == `${month} ${year}` && item['GroupName'] == groupName);
+                if(filter) result['data'].push({x: '`' + year.split('20')[1], y: filter['Amount']});
+                else result['data'].push({x: '`' + year.split('20')[1], y: 0});
 
-          if(filter) usageResult['data'].push({x: '`' + year.split('20')[1], y: filter['Usage']});
-          else usageResult['data'].push({x: '`' + year.split('20')[1], y: 0});
+                if(filter) usageResult['data'].push({x: '`' + year.split('20')[1], y: filter['Usage']});
+                else usageResult['data'].push({x: '`' + year.split('20')[1], y: 0});
 
-        })
-      });
+              })
+            });
 
-      this.periodList.forEach(period => {
-        let filter = this.response.find(item => item['PeriodName'] == period && item['GroupName'] == groupName);
-        if(filter) { lineResult['data'].push(filter['Amount']); usageLineResult['data'].push(filter['Usage']);}
-        else {lineResult['data'].push(0); usageLineResult['data'].push(0);}
+            this.periodList.forEach(period => {
+              let filter = this.response.find(item => item['PeriodName'] == period && item['GroupName'] == groupName);
+              if(filter) { lineResult['data'].push(filter['Amount']); usageLineResult['data'].push(filter['Usage']);}
+              else {lineResult['data'].push(0); usageLineResult['data'].push(0);}
+            })
+
+            billingBarSeriesData.push(result);
+            billingLineSeriesData.push(lineResult);
+            usageBarSeriesData.push(usageResult);
+            usageLineSeriesData.push(usageLineResult);
+          }      
+        });
       })
-
-      billingBarSeriesData.push(result);
-      billingLineSeriesData.push(lineResult);
-      usageBarSeriesData.push(usageResult);
-      usageLineSeriesData.push(usageLineResult);
     });
+
+    
     
     this.barChartOptions.series = billingBarSeriesData;
     this.lineChartOptions.series = billingLineSeriesData;
