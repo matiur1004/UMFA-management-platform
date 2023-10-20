@@ -126,6 +126,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
     currentFilter: any;
 
     isTenant: boolean = false;
+    headerText: string = '';
 
     constructor(
         private _dbService: DashboardService,
@@ -244,6 +245,14 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     ngOnInit(): void {
+        this._dbService.setTitle('Main Dashboard');
+
+        this._dbService.headerText$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((res) => {
+                if(res) {this.headerText = res;}
+            });
+            
         for(let i = 1; i <= 300; i++) {
             this.minutues.push({Value: i});
         }
@@ -638,6 +647,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             });
         //Wip
         //this._dbService.showTenantDetailDashboard({buildingId: 2531, tenantId: 82879, tenantName: 'Tenant'});
+        //this._dbService.showTenantDetailDashboard({buildingId: 2531, tenantId: 82879, tenantName: 'Tenant'});
         //this._dbService.showTenantBillingDetail({buildingId: 2531, tenantId: 82879, periodId: 180320});
         //this._dbService.showTenantBillingDetail({buildingId: 2403, tenantId: 91041, periodId: 179454, tenantName: 'Tenant'});
         // let res = {
@@ -726,7 +736,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
         //                 id: 0, 
         //                 title: `shopName`,
         //                 type: 'ShopDetailDashboard',
-        //                 dataSource: res
+        //                 dataSource: result
         //             };
         //             this.tabsList.push(newTab);
         //             this.selectedTab = this.tabsList.length;
@@ -796,6 +806,15 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
 
     removeTab(index: number) {
         this.selectedTab = index > 0 ? 1 : 0;
+        if(this.tabsList[index]['type'] == 'BuildingDetail'){
+            this._dbService.setTitle('Main Dashboard');
+        }
+        if(this.tabsList[index]['type'] == 'ShopDetailDashboard'){
+            this._dbService.setTitle('Main Dashboard');
+        }
+        if(this.tabsList[index]['type'] == 'TenantDetailDashboard'){
+            this._dbService.setTitle('Main Dashboard');
+        }
         if( this.tabsList[index]['type'] == 'TenantSlipDashboard' || 
             this.tabsList[index]['type'] == 'TenantSlipDetail' || 
             this.tabsList[index]['type'] == 'TenantSlipDownloads' ||

@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { DashboardService } from '../dasboard.service';
 import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexFill, ApexLegend, ApexPlotOptions, ApexStroke, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
+import { UmfaUtils } from '@core/utils/umfa.utils';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -55,7 +56,7 @@ export class TenantDetailComponent implements OnInit {
   @Input() buildingId: number;
   @Input() tenantId: number;
   @Input() tenantName: string;
-
+  
   dataSource: any;
   billingSummaryDataSource: any;
   tenantDetailDashboard: any;
@@ -65,6 +66,8 @@ export class TenantDetailComponent implements OnInit {
   shopListItems: any[] = [{value: 0, label: 'All'}];
   allAvailableImages: number;
   groupList: any[] = [];
+  groupsByUtility: any = {};
+  utilityList: any[] = [];
   periodList: any[] = [];
   periodItemList: any[] = [];
   billingPeriodList: any[] = [];
@@ -94,6 +97,10 @@ export class TenantDetailComponent implements OnInit {
   billingSewerageSeries = [];
   billingUsageSewerageSeries = [];
 
+  billingElectricitySeriesColors = [];
+  billingWaterSeriesColors = [];
+  billingSewerageSeriesColors = [];
+
   public commonBarChartOptions: Partial<ChartOptions>;
   public commonUsageBarChartOptions: Partial<ChartOptions>;
   public commonLineChartOptions: Partial<LineChartOptions>;
@@ -102,7 +109,8 @@ export class TenantDetailComponent implements OnInit {
   
   constructor(
     private service: DashboardService,
-    private _cdr: ChangeDetectorRef
+    private _cdr: ChangeDetectorRef,
+    private _utils: UmfaUtils
   ) { 
     this.treeMapOptions = {
       series: [
@@ -225,7 +233,7 @@ export class TenantDetailComponent implements OnInit {
       series: [
       ],
       chart: {
-        height: 400,
+        height: 350,
         type: "line",
         toolbar: {
           show: false
@@ -272,6 +280,8 @@ export class TenantDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.service.setTitle('Tenant Dashboard');
+
     this.service.tenantDetail$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((res) => {
@@ -286,22 +296,32 @@ export class TenantDetailComponent implements OnInit {
               let result = {value: shop.ShopID, item: shop};
               this.shopListItems.push(result);
             })
-            this.groupList = []; this.periodList = []; this.yearList = [];
+            this.groupList = []; this.periodList = []; this.yearList = [];this.utilityList = [];
             this.tenantDetailDashboard.BillingData.forEach(billing => {
               this.groupList.push(billing.GroupName.trim());
               this.periodList.push(billing.PeriodName);
               this.yearList.push(billing.PeriodName.split(' ')[1]);
               if(!this.periodItemList.find(obj => obj['id'] == billing.PeriodID)) {
                 this.periodItemList.push({id: billing.PeriodID, name: billing.PeriodName});
-              }              
+              }
+              this.utilityList.push(billing.Utility.trim());
             });
             this.groupList = this.groupList.filter(this.onlyUnique);
             this.periodList = this.periodList.filter(this.onlyUnique);
             this.yearList = this.yearList.filter(this.onlyUnique);
+            this.utilityList =  this.utilityList.filter(this.onlyUnique);
+            this.utilityList.forEach(utility => {
+              this.groupsByUtility[utility] = [];
+              let filteredBillings = this.tenantDetailDashboard.BillingData.filter(billing => billing['Utility'] == utility);
+              filteredBillings.forEach(billing => {
+                if(this.groupsByUtility[utility].indexOf(billing['GroupName'].trim()) == -1) this.groupsByUtility[utility].push(billing['GroupName'].trim());
+              })
+            })
 
-            // this.groupList = this.tenantDetailDashboard.BillingData.map(billing => billing.GroupName.trim()).filter(this.onlyUnique);
-            // this.periodList = this.tenantDetailDashboard.BillingData.map(billing => billing.PeriodName).filter(this.onlyUnique);
-            // this.yearList = this.tenantDetailDashboard.BillingData.map(billing => billing.PeriodName.split(' ')[1]).filter(this.onlyUnique);
+            this.billingElectricitySeriesColors = this._utils.utilityColorMapping()['Electricity'].slice(0, this.yearList.length).reverse();
+            this.billingWaterSeriesColors = this._utils.utilityColorMapping()['Water'].slice(0, this.yearList.length).reverse();
+            this.billingSewerageSeriesColors = this._utils.utilityColorMapping()['Sewerage'].slice(0, this.yearList.length).reverse();
+
             this.billingPeriodList = this.periodList.map(period => {
               return {name:period, value: period}
             }).reverse();
@@ -321,24 +341,26 @@ export class TenantDetailComponent implements OnInit {
     let billingSummaryData = [];
     this.billingSummaryDataSource = [];
     
-    this.groupList.forEach(groupName => {
-      let groupData = [];
-      let groupUsageData = [];
-      groupData.push(this.tenantDetailDashboard.BillingData
-                            .filter(period => period.PeriodName == this.selectedMonth && period.GroupName.trim() == groupName)
-                            .reduce((prev, cur) => prev + cur.Amount, 0));
-      groupUsageData.push(this.tenantDetailDashboard.BillingData
-        .filter(period => period.PeriodName == this.selectedMonth && period.GroupName.trim() == groupName)
-        .reduce((prev, cur) => prev + cur.Usage, 0));
+    Object.keys(this.groupsByUtility).forEach(key => {
+      this.groupsByUtility[key].forEach(groupName => {
+        let groupData = [];
+        let groupUsageData = [];
+        groupData.push(this.tenantDetailDashboard.BillingData
+                              .filter(period => period.PeriodName == this.selectedMonth && period.GroupName.trim() == groupName)
+                              .reduce((prev, cur) => prev + cur.Amount, 0));
+        groupUsageData.push(this.tenantDetailDashboard.BillingData
+          .filter(period => period.PeriodName == this.selectedMonth && period.GroupName.trim() == groupName)
+          .reduce((prev, cur) => prev + cur.Usage, 0));
 
-      let totalByGroup = groupData.reduce((prev, cur) => prev + cur, 0);
-      let totalUsageByGroup = groupUsageData.reduce((prev, cur) => prev + cur, 0);
+        let totalByGroup = groupData.reduce((prev, cur) => prev + cur, 0);
+        let totalUsageByGroup = groupUsageData.reduce((prev, cur) => prev + cur, 0);
 
-      billingSummaryData.push({x: groupName, y: totalByGroup});
-      this.billingSummaryDataSource.push({name: groupName, amount: totalByGroup, usage: totalUsageByGroup});
+        billingSummaryData.push({x: groupName, y: totalByGroup});
+        this.billingSummaryDataSource.push({name: groupName, amount: totalByGroup, usage: totalUsageByGroup});
+      })
     })
-    
-    this.treeMapOptions.colors = this.groupColors.slice(0, this.groupList.length);
+
+    this.treeMapOptions.colors = this._utils.getColors(this.groupsByUtility);
     this.treeMapOptions.series = [];
     this.treeMapOptions.series.push({'data': billingSummaryData});
 
@@ -409,6 +431,14 @@ export class TenantDetailComponent implements OnInit {
     this.service.showTenantBillingDetail({buildingId: this.buildingId, tenantId: this.tenantId, periodId: period['id'], tenantName: this.tenantName});
   }
 
+  getColorFromGroupName(groupName) {
+    let color = '';
+    Object.keys(this.groupsByUtility).forEach(key => {
+      let groups = this.groupsByUtility[key];
+      if(groups.indexOf(groupName) > -1) color = this._utils.utilityColorMapping()[key][groups.indexOf(groupName)];
+    })
+    return color;
+  }
   /**
      * On destroy
      */

@@ -4,7 +4,7 @@
             <div class="flex flex-col sm:flex-row flex-auto sm:items-center min-w-0 my-2 sm:my-3">
                 <div class="flex flex-auto items-center min-w-0">
                     <div class="flex flex-col min-w-0 ml-4">
-                        <div class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">Dashboard</div>
+                        <div class="text-2xl md:text-4xl font-semibold tracking-tight leading-7 md:leading-snug truncate">{{headerText}}</div>
                     </div>
                 </div>
             </div>
@@ -21,7 +21,7 @@
                         <div *ngIf="stats$ | async as stats; else loading">
                             <ng-container *ngIf="!isTenant; else tenantTemplate">
                                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-9 xl:grid-cols-9 gap-10 w-full">
-                                    <div class="bg-gradient-to-r from-blue-500 to-blue-800 col-span-1 lg:col-span-2 flex flex-col flex-auto p-6 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100" (click)="onDetail(tabType.Buildings)">
+                                    <div class="bg-gradient-to-r from-blue-500 to-blue-800 col-span-1 lg:col-span-2 flex flex-col flex-auto p-6 rounded-2xl overflow-hidden card cursor-pointer card-zoom-in" (click)="onDetail(tabType.Buildings)">
                                         <div class="flex items-start justify-between text-white h-full">
                                             <div class="flex flex-col w-full gap-y-1 justify-between h-full">
                                                 <div class="flex w-full justify-between">
@@ -46,7 +46,7 @@
                                             </div>                                        
                                         </div>
                                     </div>
-                                    <div class="bg-gradient-to-r from-amber-400 to-amber-500 col-span-1 lg:col-span-2 flex flex-col flex-auto p-6 shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100" (click)="onDetail(tabType.Shops)">
+                                    <div class="bg-gradient-to-r from-amber-400 to-amber-500 col-span-1 lg:col-span-2 flex flex-col flex-auto p-6 rounded-2xl overflow-hidden card cursor-pointer card-zoom-in" (click)="onDetail(tabType.Shops)">
                                         <div class="flex items-start justify-between text-white h-full">
                                             <div class="flex flex-col w-full gap-y-1 justify-between h-full">
                                                 <div class="flex w-full justify-between">
@@ -71,7 +71,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="bg-gradient-to-r from-emerald-400 to-emerald-500 col-span-1 lg:col-span-2 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100" (click)="onDetail(tabType.Tenants)">
+                                    <div class="bg-gradient-to-r from-emerald-400 to-emerald-500 col-span-1 lg:col-span-2 flex flex-col flex-auto p-6 bg-card rounded-2xl overflow-hidden card cursor-pointer card-zoom-in" (click)="onDetail(tabType.Tenants)">
                                         <div class="flex items-start justify-between text-white h-full">
                                             <div class="flex flex-col w-full gap-y-1 justify-between h-full">
                                                 <div class="flex w-full justify-between">
@@ -96,7 +96,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="bg-gradient-to-r from-violet-400 to-violet-600 sm:col-span-3 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden card cursor-pointer hover:bg-gray-100">
+                                    <div class="bg-gradient-to-r from-violet-400 to-violet-600 sm:col-span-3 flex flex-col flex-auto p-6 bg-card rounded-2xl overflow-hidden card cursor-pointer card-zoom-in">
                                         <div class="flex items-start justify-between text-white h-full">
                                             <div class="flex flex-col w-full gap-y-1 justify-between h-full">
                                                 <div class="flex w-full justify-between">

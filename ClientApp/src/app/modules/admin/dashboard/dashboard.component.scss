@@ -36,3 +36,8 @@
 .width-fit {
     width: fit-content;
 }
+.card-zoom-in:hover {
+    width: 101%;
+    height: 101%;
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.4);
+}

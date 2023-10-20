@@ -110,4 +110,27 @@ export class UmfaUtils {
     }
     return txlOption;
   }
+
+  utilityColorMapping() {
+    return {
+      'Electricity':  ['#FF0000', '#A30000', '#FFB6B6', '#DA012D', '#750000'],
+      'Water':        ['#007FFF', '#0237D7', '#89CFF0', '#0067A5', '#000080'],
+      'Sewerage':       ['#BC61F5', '#613385', '#F0D8FF', '#6C0BA9', '#461257'],
+      'Gas':          ['#FFFF00', '#FFD300', '#FCFC8F', '#FFEF00', '#FFA700'],
+      'Diesel':       ['#FC6A03', '#B56727', '#FDA172'],
+      'Ad hoc':       ['#CCCCCC', '#706B6B', '#ECECEC', '#999999', '#333333']
+    }
+  }
+
+  getColors(groups) {
+    let totalColors = this.utilityColorMapping();
+    let colors = [];
+    Object.keys(groups).forEach(key => {
+      let groupsByUtility = groups[key];
+      groupsByUtility.forEach((val, idx) => {
+        colors.push(totalColors[key][idx]);
+      })
+    })
+    return colors;
+  }
 }
