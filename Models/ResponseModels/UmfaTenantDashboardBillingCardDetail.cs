@@ -12,5 +12,6 @@
         public string GroupName { get; set; }
         public double Usage { get; set; }
         public decimal Amount { get; set; }
+        public string Utility { get; set; }
     }
 }
