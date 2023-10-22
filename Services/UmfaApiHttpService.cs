@@ -88,6 +88,8 @@ namespace ClientPortal.Services
         public Task<UmfaTenantMainDashboardResponse> GetTenantMainDashboardAsync(UmfaTenantMainDashboardRequest request);
         public Task<List<UmfaTenantMainDashboardBillingDetail>> GetTenantMainDashboardBillingDetailsAsync(UmfaTenantMainDashboardBillingDetailsRequest request);
         public Task<List<UmfaTenantDashboardBillingCardDetail>> GetTenantDashboardBillingCardDetailsAsync(UmfaTenantDashboardBillingCardDetailsRequest request);
+
+        public Task<List<UmfaMultiClientDump>> GetMultiClientDumpsAsync(UmfaMultiClientDumpRequest request);
     }
 
 
@@ -523,6 +525,13 @@ namespace ClientPortal.Services
             var response = await GetAsync($"tenantdashboard/billing-card-details", request);
 
             return JsonSerializer.Deserialize<List<UmfaTenantDashboardBillingCardDetail>>(response);
+        }
+
+        public async Task<List<UmfaMultiClientDump>> GetMultiClientDumpsAsync(UmfaMultiClientDumpRequest request)
+        {
+            var response = await GetAsync($"reports/clientfeedbackreport", request);
+
+            return JsonSerializer.Deserialize<List<UmfaMultiClientDump>>(response);
         }
     }
 }
