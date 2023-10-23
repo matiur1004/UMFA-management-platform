@@ -56,28 +56,14 @@ export class ShopDetailComponent implements OnInit {
   @Input() buildingId: number;
   @Input() shopId: number;
   selectedMonth;
-  monthNameList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  initMonthNameList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  initMonthAbbrList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  monthNameList = [];
+  monthAbbrList = [];
   currentYear = new Date().getFullYear();
   yearList = [];
-  // groupColors = {
-  //   'C/A Diesel' : '#008E0E',
-  //   'C/A Electricity': '#452AEB',
-  //   'C/A Sewer': '#2FAFB7',
-  //   'C/A Water': '#C23BC4',
-  //   'Kwh Electricity': '#6E6E6E',
-  //   'Kva': '#16a34a',
-  //   'Sewer': '#C24F19',
-  //   'Water': '#C8166C',
-  //   'Common Area Elec': '#84cc16',
-  //   'Common Area Sewer': '#06b6d4',
-  //   'Common Area Water': '#8b5cf6',
-  //   'Diesel Generator': '#f59e0b',
-  //   'KVA Electricity': '#6b21a8',
-  //   'KWH Electricity': '#9f1239',
-  //   'E-Kwh': '#d946ef',
-  //   'Diesel Recoveries': '#a855f7'
-  // };
-  groupColors = ['#008E0E', '#452AEB', '#2FAFB7', '#C23BC4', '#6E6E6E', '#46a34a', '#C24F19', '#C8166C', '#84cc16', '#06b6d4', '#8b5cf6', '#f59e0b', '#6b21a8', '#9f1239', '#d946ef', '#a855f7'];
+  
   availableGroupColors: any;
 
   mapOptions = {
@@ -236,7 +222,7 @@ export class ShopDetailComponent implements OnInit {
         colors: ["transparent"]
       },
       xaxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        categories: []
       },
       yaxis: {
         labels: {
@@ -288,7 +274,7 @@ export class ShopDetailComponent implements OnInit {
         size: 4
       },
       xaxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        categories: []
       },
       yaxis: {
         labels: {
@@ -321,6 +307,22 @@ export class ShopDetailComponent implements OnInit {
           ];
           this.allAvailableImages = this.shopDetailDashboard.Readings.reduce((prev, cur) => prev + cur.HasImages, 0);
           this.groupList = []; this.periodList = []; this.yearList = []; this.utilityList = [];
+          let lastMonth = this.shopDetailDashboard.PeriodBillings[this.shopDetailDashboard.PeriodBillings.length - 1]['PeriodName'].split(' ')[0];
+          let monthIdx = this.initMonthNameList.indexOf(lastMonth);
+          for(let k = monthIdx; k >=0; k--) {
+            this.monthNameList.push(this.initMonthNameList[k]);
+            this.monthAbbrList.push(this.initMonthAbbrList[k]);
+          }
+          for(let k = 11; k > monthIdx; k--) {
+            this.monthNameList.push(this.initMonthNameList[k]);
+            this.monthAbbrList.push(this.initMonthAbbrList[k]);
+          }
+          
+          this.monthNameList = this.monthNameList.reverse();
+          this.monthAbbrList = this.monthAbbrList.reverse();
+          this.commonBarChartOptions.xaxis.categories = this.monthAbbrList;
+          this.commonLineChartOptions.xaxis.categories = this.monthAbbrList;
+
           this.shopDetailDashboard.PeriodBillings.forEach(billing => {
             this.groupList.push(billing.GroupName.trim());
             this.periodList.push(billing.PeriodName);

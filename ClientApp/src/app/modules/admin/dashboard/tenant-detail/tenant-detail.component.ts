@@ -72,11 +72,14 @@ export class TenantDetailComponent implements OnInit {
   periodItemList: any[] = [];
   billingPeriodList: any[] = [];
 
-  monthNameList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  initMonthNameList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  initMonthAbbrList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  monthNameList = [];
+  monthAbbrList = [];
+
   yearList = [];
-  availableGroupColors: any;
-  groupColors = ['#008E0E', '#452AEB', '#2FAFB7', '#C23BC4', '#6E6E6E', '#46a34a', '#C24F19', '#C8166C', '#84cc16', '#06b6d4', '#8b5cf6', '#f59e0b', '#6b21a8', '#9f1239', '#d946ef', '#a855f7'];
-  
+  availableGroupColors: any;  
   selectedMonth;
 
   selectedShop: number = 0;
@@ -310,6 +313,23 @@ export class TenantDetailComponent implements OnInit {
             this.periodList = this.periodList.filter(this.onlyUnique);
             this.yearList = this.yearList.filter(this.onlyUnique);
             this.utilityList =  this.utilityList.filter(this.onlyUnique);
+            let lastMonth = this.tenantDetailDashboard.BillingData[this.tenantDetailDashboard.BillingData.length - 1]['PeriodName'].split(' ')[0];
+            let monthIdx = this.initMonthNameList.indexOf(lastMonth);
+            for(let k = monthIdx; k >=0; k--) {
+              this.monthNameList.push(this.initMonthNameList[k]);
+              this.monthAbbrList.push(this.initMonthAbbrList[k]);
+            }
+            for(let k = 11; k > monthIdx; k--) {
+              this.monthNameList.push(this.initMonthNameList[k]);
+              this.monthAbbrList.push(this.initMonthAbbrList[k]);
+            }
+
+            this.monthNameList = this.monthNameList.reverse();
+            this.monthAbbrList = this.monthAbbrList.reverse();
+
+            this.commonBarChartOptions.xaxis.categories = this.monthAbbrList;
+            this.commonLineChartOptions.xaxis.categories = this.monthAbbrList;
+
             this.utilityList.forEach(utility => {
               this.groupsByUtility[utility] = [];
               let filteredBillings = this.tenantDetailDashboard.BillingData.filter(billing => billing['Utility'] == utility);

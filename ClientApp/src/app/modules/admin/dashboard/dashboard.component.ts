@@ -647,7 +647,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             });
         //Wip
         //this._dbService.showTenantDetailDashboard({buildingId: 2531, tenantId: 82879, tenantName: 'Tenant'});
-        //this._dbService.showTenantDetailDashboard({buildingId: 2531, tenantId: 82879, tenantName: 'Tenant'});
         //this._dbService.showTenantBillingDetail({buildingId: 2531, tenantId: 82879, periodId: 180320});
         //this._dbService.showTenantBillingDetail({buildingId: 2403, tenantId: 91041, periodId: 179454, tenantName: 'Tenant'});
         // let res = {
@@ -726,7 +725,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
         //             this._cdr.markForCheck();
         //         }
         //     });
-        // let res = {buildingId: 2531, shopId: 65465};
+        //let res = {buildingId: 2531, shopId: 65465};
 
         // this._dbService.getShopDashboardDetail(2531, 65465)
         //     .pipe(takeUntil(this._unsubscribeAll))
