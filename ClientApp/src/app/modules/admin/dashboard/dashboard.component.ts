@@ -630,19 +630,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                     this.selectedTab = this.tabsList.length;
                     
                     this._cdr.markForCheck();
-                    // this._dbService.getBillingDetailsForTenant(res['buildingId'], res['tenantId'], res['periodId'])
-                    //     .subscribe(result => {
-                    //         let newTab: IHomeTab = {
-                    //             id: 0,
-                    //             title: `Billing Summary Details`,
-                    //             type: 'TenantBillingDetail',
-                    //             dataSource: res
-                    //         };
-                    //         this.tabsList.push(newTab);
-                    //         this.selectedTab = this.tabsList.length;
-                            
-                    //         this._cdr.markForCheck();
-                    //     }); 
                 }
             });
         //Wip
@@ -706,6 +693,24 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
         //         }
         //     });
         
+        // let res = {
+        //     "buildingId": 2531,
+        //     "shopId": 65465,
+        // }
+
+        // this._dbService.getMetersForBuilding(res['buildingId'], res['shopId'])
+        //     .subscribe(result => {
+        //         let newTab: IHomeTab = {
+        //             id: 0,
+        //             title: `Readings`,
+        //             type: 'ShopDashboardReadings',
+        //             dataSource: res
+        //         };
+        //         this.tabsList.push(newTab);
+        //         this.selectedTab = this.tabsList.length;
+        //         this._cdr.markForCheck();
+        //     });
+
         // let res = {
         //     "buildingId": 2531,
         //     "shopId": 65465
