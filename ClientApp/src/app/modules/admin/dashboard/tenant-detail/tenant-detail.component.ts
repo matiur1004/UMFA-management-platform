@@ -107,7 +107,8 @@ export class TenantDetailComponent implements OnInit {
   public commonBarChartOptions: Partial<ChartOptions>;
   public commonUsageBarChartOptions: Partial<ChartOptions>;
   public commonLineChartOptions: Partial<LineChartOptions>;
-
+  public commonLineUsageChartOptions: Partial<LineChartOptions>;
+  
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
   constructor(
@@ -269,6 +270,54 @@ export class TenantDetailComponent implements OnInit {
         labels: {
           formatter: function(val) {
             return 'R ' + val;
+          } 
+        }
+      },
+      tooltip: {
+        y: {
+          formatter: function(val) {
+            return 'R ' + Math.round(Number(val) * 100) / 100;
+          }
+        }
+      }
+    };
+    this.commonLineUsageChartOptions = {
+      series: [
+      ],
+      chart: {
+        height: 350,
+        type: "line",
+        toolbar: {
+          show: false
+        }
+      },
+      dataLabels: {
+        enabled: true
+      },
+      stroke: {
+        curve: "smooth"
+      },
+      title: {
+        text: "",
+        align: "left"
+      },
+      grid: {
+        borderColor: "#e7e7e7",
+        row: {
+          colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
+          opacity: 0.5
+        }
+      },
+      markers: {
+        size: 4
+      },
+      xaxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      },
+      yaxis: {
+        labels: {
+          formatter: function(val) {
+            return '' + val;
           } 
         }
       },

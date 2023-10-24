@@ -95,11 +95,12 @@ export class ShopDetailComponent implements OnInit {
   groupsByUtility: any = {};
   utilityList: any[] = [];
 
-  public billingUsageChartOptions: Partial<ChartOptions>;
   public treeMapOptions: Partial<TreemapChartOptions>;
   
   public commonBarChartOptions: Partial<ChartOptions>;
+  public commonUsageBarChartOptions: Partial<ChartOptions>;
   public commonLineChartOptions: Partial<LineChartOptions>;
+  public commonLineUsageChartOptions: Partial<LineChartOptions>;
 
   @ViewChild("treemapChart") chart: ChartComponent;
   @ViewChild("billingChart") billingChart: ChartComponent;
@@ -154,49 +155,6 @@ export class ShopDetailComponent implements OnInit {
         }
       }
     };
-    this.billingUsageChartOptions = {
-      series: [],
-      chart: {
-        type: "bar",
-        height: 350
-      },
-      plotOptions: {
-        bar: {
-          horizontal: false,
-          columnWidth: "55%",
-          endingShape: "rounded"
-        }
-      },
-      dataLabels: {
-        enabled: false
-      },
-      stroke: {
-        show: true,
-        width: 2,
-        colors: ["transparent"]
-      },
-      xaxis: {
-        categories: []
-      },
-      yaxis: {
-        labels: {
-          formatter: function(val) {
-            return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-          } 
-        }
-      },
-      fill: {
-        opacity: 1,
-        colors: []
-      },
-      tooltip: {
-        y: {
-          formatter: function(val) {
-            return val + "";
-          }
-        }
-      }
-    }
     this.commonBarChartOptions = {
       series: [],
       chart: {
@@ -242,7 +200,53 @@ export class ShopDetailComponent implements OnInit {
           }
         }
       }
-    }
+    };
+    this.commonUsageBarChartOptions = {
+      series: [],
+      chart: {
+        type: "bar",
+        height: 350,
+        toolbar: {
+          show: false
+        }
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: "55%",
+          endingShape: "rounded"
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ["transparent"]
+      },
+      xaxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      },
+      yaxis: {
+        labels: {
+          formatter: function(val) {
+            return '' + val;
+          } 
+        }
+      },
+      fill: {
+        opacity: 1,
+        colors: []
+      },
+      tooltip: {
+        y: {
+          formatter: function(val) {
+            return '' + val;
+          }
+        }
+      }
+    };
     this.commonLineChartOptions = {
       series: [
       ],
@@ -280,6 +284,54 @@ export class ShopDetailComponent implements OnInit {
         labels: {
           formatter: function(val) {
             return 'R ' + val;
+          } 
+        }
+      },
+      tooltip: {
+        y: {
+          formatter: function(val) {
+            return 'R ' + Math.round(Number(val) * 100) / 100;
+          }
+        }
+      }
+    };
+    this.commonLineUsageChartOptions = {
+      series: [
+      ],
+      chart: {
+        height: 350,
+        type: "line",
+        toolbar: {
+          show: false
+        }
+      },
+      dataLabels: {
+        enabled: true
+      },
+      stroke: {
+        curve: "smooth"
+      },
+      title: {
+        text: "",
+        align: "left"
+      },
+      grid: {
+        borderColor: "#e7e7e7",
+        row: {
+          colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
+          opacity: 0.5
+        }
+      },
+      markers: {
+        size: 4
+      },
+      xaxis: {
+        categories: []
+      },
+      yaxis: {
+        labels: {
+          formatter: function(val) {
+            return '' + val;
           } 
         }
       },
