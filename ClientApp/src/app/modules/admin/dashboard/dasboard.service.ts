@@ -439,7 +439,7 @@ export class DashboardService {
       );
   }
   
-  getShopDashboardBilling(buildingId, shopId, history = 12) {
+  getShopDashboardBilling(buildingId, shopId, history = 36) {
     const url = `${CONFIG.apiURL}/Dashboard/buildings/${buildingId}/shops/${shopId}/billing-details?history=${history}`;
     return this.http.get<any>(url, { withCredentials: true })
       .pipe(
