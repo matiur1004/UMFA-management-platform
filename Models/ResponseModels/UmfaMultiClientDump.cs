@@ -11,13 +11,14 @@
         public int ItemSort { get; set; }
         public string Item { get; set; }
         public string Month { get; set; }
-        public string StartDate { get; set; }
-        public string EndDate { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         public string PeriodDays { get; set; }
-        public double kWhUsage { get; set; }
-        public double kVAUsage { get; set; }
-        public double kLUsage { get; set; }
+        public double Usage { get; set; }
+        public double Demand { get; set; }
         public decimal TotalAmount { get; set; }
         public bool Recoverable { get; set; }
+        public string PeriodName { get; set; }
+        public double GLA { get; set; }
     }
 }
