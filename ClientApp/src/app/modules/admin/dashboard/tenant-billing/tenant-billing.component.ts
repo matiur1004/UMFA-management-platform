@@ -1,11 +1,11 @@
-import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
-import { DashboardService } from '../dasboard.service';
-import { Subject, takeUntil } from 'rxjs';
+import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
 import { AllowedPageSizes } from '@core/helpers';
+import { DashboardService } from '../dasboard.service';
 import { DecimalPipe } from '@angular/common';
-import moment from 'moment';
-import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexFill, ApexLegend, ApexPlotOptions, ApexStroke, ApexTooltip, ApexXAxis, ApexYAxis } from 'ng-apexcharts';
 import { UmfaUtils } from '@core/utils/umfa.utils';
+import { Subject, takeUntil } from 'rxjs';
+import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexFill, ApexLegend, ApexPlotOptions, ApexStroke, ApexTooltip, ApexXAxis, ApexYAxis } from 'ng-apexcharts';
+import moment from 'moment';
 
 export type BarChartOptions = {
   series: ApexAxisChartSeries;
@@ -37,21 +37,22 @@ export type LineChartOptions = {
   grid: any;
   markers: any;
 };
-@Component({
-  selector: 'app-shop-billing',
-  templateUrl: './shop-billing.component.html',
-  styleUrls: ['./shop-billing.component.scss']
-})
-export class ShopBillingComponent implements OnInit {
 
-  @Input() shopId: number;
+@Component({
+  selector: 'app-tenant-billing',
+  templateUrl: './tenant-billing.component.html',
+  styleUrls: ['./tenant-billing.component.scss']
+})
+export class TenantBillingComponent implements OnInit {
+
+  @Input() tenantId: number;
   
   dataSource: any;
   response: any;
 
   periodList: any[] = [];
   periodIdList: any[] = [];
-  tenantId: number;
+
   initMonthNameList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   initMonthAbbrList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -59,6 +60,9 @@ export class ShopBillingComponent implements OnInit {
   monthAbbrList = [];
 
   tenantList: any[] = [];
+  shopList: any[] = [];
+  shopId: number = 0;
+
   groupNameList: any[] = [];
   yearList: any[] = [];
   reverseYearList: any[] = [];
@@ -73,6 +77,8 @@ export class ShopBillingComponent implements OnInit {
 
   lineChartSeries: any = {};
   lineUsageChartSeries: any = {};
+
+  isFirstLoading: boolean = true;
 
   public barChartOptions: Partial<BarChartOptions>;
   public barUsageChartOptions: Partial<BarChartOptions>;
@@ -254,7 +260,7 @@ export class ShopBillingComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.service.shopBillingDetail$
+    this.service.tenantBillingDetail$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((res) => {
         if(res) {
@@ -327,16 +333,19 @@ export class ShopBillingComponent implements OnInit {
             allowSorting: false,
             allowSortingBySummary: false
           }
-
-          this.tenantId = res[0]['TenantID'];
+          this.shopList.push({ShopID: 0, ShopNr: 'All'});
           this.dataSource.store = res.map(item => {
             if(this.periodList.indexOf(item['PeriodName']) == -1) this.periodList.push(item['PeriodName']);
             if(this.periodIdList.indexOf(item['PeriodID']) == -1) this.periodIdList.push(item['PeriodID']);
             if(this.utilityList.indexOf(item['Utility']) == -1) this.utilityList.push(item['Utility']);
-
+            
             if(!this.tenantList.find(obj => obj.TenantID == item['TenantID'])) {
               this.tenantList.push({TenantID: item['TenantID'], Tenant: item['Tenant']});
             }
+            if(!this.shopList.find(obj => obj.ShopID == item['ShopID'])) {
+              this.shopList.push({ShopID: item['ShopID'], ShopNr: item['ShopNr']});
+            }
+
             if(!this.groupNameList.find(group => group == item['GroupName'])) {
               this.groupNameList.push(item['GroupName']);
             }
@@ -377,7 +386,6 @@ export class ShopBillingComponent implements OnInit {
             this.billingGroupItems.push(item);
           })
           this.selectedGroupsForBilling = selectedValue;
-
           this.lineChartOptions.xaxis.categories = this.monthAbbrList;
           this.lineUsageChartOptions.xaxis.categories = this.monthAbbrList;
 
@@ -409,18 +417,18 @@ export class ShopBillingComponent implements OnInit {
     setTimeout(() => {
       let elements = this.elementRef.nativeElement.querySelectorAll('.total-element');
       elements.forEach( element => {
-        this.renderer.listen(element, "click", event => {
-          let periodName = event.target.getAttribute('periodname');
-          let periodIdx = this.periodList.indexOf(periodName);
-          let tenant = this.tenantList.find(obj => obj['Tenant'] == event.target.getAttribute('tenantname'));
-          let data = {
-            tenantId: tenant['TenantID'],
-            shopId: this.shopId,
-            periodId: this.periodIdList[periodIdx],
-            reportType: 1
-          }
-          this.service.showTenantSlipDetail(data);
-        });
+        // this.renderer.listen(element, "click", event => {
+        //   let periodName = event.target.getAttribute('periodname');
+        //   let periodIdx = this.periodList.indexOf(periodName);
+        //   let tenant = this.tenantList.find(obj => obj['Tenant'] == event.target.getAttribute('tenantname'));
+        //   let data = {
+        //     tenantId: tenant['TenantID'],
+        //     shopId: this.shopId,
+        //     periodId: this.periodIdList[periodIdx],
+        //     reportType: 1
+        //   }
+        //   this.service.showTenantSlipDetail(data);
+        // });
       });
     }, 2000);
   }
@@ -470,10 +478,20 @@ export class ShopBillingComponent implements OnInit {
     
   }
 
+  shopChanged(event) {    
+    if(!this.isFirstLoading) {
+      this.setChartColors();
+      this.setChart();
+    } else this.isFirstLoading = false;    
+  }
+
   setChart() {
     let billingBarSeriesData = [];    
-    let usageBarSeriesData = [];    
-
+    let usageBarSeriesData = [];
+    let filteredResponse = [];
+    if(this.shopId != 0) {
+      filteredResponse = this.response.filter(obj => obj['ShopID'] == this.shopId)
+    } else filteredResponse = this.response;
     Object.keys(this.groupsByUtility).forEach(key => {
       this.groupsByUtility[key].forEach(groupName => {
         this.selectedGroupsForBilling.filter(obj=> obj != '0').forEach(groupName1 => {
@@ -483,14 +501,14 @@ export class ShopBillingComponent implements OnInit {
 
             this.monthNameList.forEach(month => {
               this.yearList.forEach(year => {
-                let filter = this.response.find(item => item['PeriodName'] == `${month} ${year}` && item['GroupName'] == groupName);
+                let filter = filteredResponse.find(item => item['PeriodName'] == `${month} ${year}` && item['GroupName'] == groupName);
                 if(filter) result['data'].push({x: '`' + year.split('20')[1], y: filter['Amount']});
                 else result['data'].push({x: '`' + year.split('20')[1], y: 0});
 
                 if(filter) usageResult['data'].push({x: '`' + year.split('20')[1], y: filter['Usage']});
                 else usageResult['data'].push({x: '`' + year.split('20')[1], y: 0});
               })
-            });            
+            });
 
             billingBarSeriesData.push(result);
             usageBarSeriesData.push(usageResult);
@@ -540,6 +558,7 @@ export class ShopBillingComponent implements OnInit {
       // Unsubscribe from all subscriptions
       this._unsubscribeAll.next(null);
       this._unsubscribeAll.complete();
-      this.service.showShopBilling(null);
+      this.service.showTenantBilling(null);
   }
+
 }

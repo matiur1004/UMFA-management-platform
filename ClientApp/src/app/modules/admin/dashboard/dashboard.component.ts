@@ -488,6 +488,32 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                 }
             });
 
+        this._dbService.tenantBilling$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((response) => {
+                if(response) {
+                    let res = {
+                        "buildingId": response['buildingId'],
+                        "tenantId": response['tenantId']
+                    }
+                    this._dbService.getTenantDashboardBilling(res['buildingId'], res['tenantId'])
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe(result => {
+                            if(result) {
+                                let newTab: IHomeTab = {
+                                    id: 0, 
+                                    title: `Tenant Billing`,
+                                    type: 'TenantBilling',
+                                    dataSource: res
+                                };
+                                this.tabsList.push(newTab);
+                                this.selectedTab = this.tabsList.length;
+                                this._cdr.markForCheck();
+                            }
+                        });
+                }
+            });
+            
         this._dbService.shopOccupation$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((response) => {
@@ -730,6 +756,25 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
         //             this._cdr.markForCheck();
         //         }
         //     });
+        // let res = {
+        //     "buildingId": 2531,
+        //     "tenantId": 82879
+        // }
+        // this._dbService.getTenantDashboardBilling(res['buildingId'], res['tenantId'])
+        //     .pipe(takeUntil(this._unsubscribeAll))
+        //     .subscribe(result => {
+        //         if(result) {
+        //             let newTab: IHomeTab = {
+        //                 id: 0, 
+        //                 title: `Tenant Billing`,
+        //                 type: 'TenantBilling',
+        //                 dataSource: res
+        //             };
+        //             this.tabsList.push(newTab);
+        //             this.selectedTab = this.tabsList.length;
+        //             this._cdr.markForCheck();
+        //         }
+        //     });
         //let res = {buildingId: 2531, shopId: 65465};
 
         // this._dbService.getShopDashboardDetail(2531, 65465)
@@ -830,7 +875,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             this.tabsList[index]['type'] == 'ShopDetailDashboard' ||
             this.tabsList[index]['type'] == 'AlarmTrigger' || 
             this.tabsList[index]['type'] == 'TenantDetailDashboard' ||
-            this.tabsList[index]['type'] == 'TenantBillingDetail') {
+            this.tabsList[index]['type'] == 'TenantBillingDetail' ||
+            this.tabsList[index]['type'] == 'TenantBilling') {
             this.selectedTab = index;    
         }
         if(this.tabsList[index]['type'] == 'ShopList') {
