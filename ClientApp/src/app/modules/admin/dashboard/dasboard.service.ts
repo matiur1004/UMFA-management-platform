@@ -36,6 +36,8 @@ export class DashboardService {
   private _shopBillingDetail: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopOccupation: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopOccupationDetails: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _tenantOccupation: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _tenantOccupationDetails: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopAssignedMeters: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopAssignedMetersDetails: BehaviorSubject<any> = new BehaviorSubject(null);
   private _metersForBuilding: BehaviorSubject<any> = new BehaviorSubject(null);
@@ -156,8 +158,16 @@ export class DashboardService {
     return this._shopOccupation.asObservable();
   }
 
+  get tenantOccupation$(): Observable<any> {
+    return this._tenantOccupation.asObservable();
+  }
+
   get shopOccupationsDashboard$(): Observable<any> {
     return this._shopOccupationDetails.asObservable();
+  }
+
+  get tenantOccupationsDashboard$(): Observable<any> {
+    return this._tenantOccupationDetails.asObservable();
   }
 
   get shopAssignedMeters$(): Observable<any> {
@@ -461,6 +471,17 @@ export class DashboardService {
       );
   }
 
+  getTenantDashboardOccupations(buildingId, tenantId, inCludePrev = false) {
+    const url = `${CONFIG.apiURL}/TenantDashboard/occupations?buildingId=${buildingId}&tenantId=${tenantId}&inCludePrev=${inCludePrev}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(bl => {
+          this._tenantOccupationDetails.next(bl);
+        })
+      );
+  }
+
   getShopDashboardAssignedMeters(buildingId, shopId) {
     const url = `${CONFIG.apiURL}/Dashboard/buildings/${buildingId}/shops/${shopId}/assigned-meters`;
     return this.http.get<any>(url, { withCredentials: true })
@@ -614,6 +635,10 @@ export class DashboardService {
     this._shopOccupation.next(data);
   }
 
+  showTenantOccupation(data) {
+    this._tenantOccupation.next(data);
+  }
+
   showTriggeredAlarms(data) {
     this._triggeredAlarmsPage.next(data);
   }
@@ -621,6 +646,11 @@ export class DashboardService {
   destroyShopOccupation() {
     this._shopOccupation.next(null);
     this._shopOccupationDetails.next(null);
+  }
+  
+  destroyTenantOccupation() {
+    this._tenantOccupation.next(null);
+    this._tenantOccupationDetails.next(null);
   }
 
   showAssignedMeters(data) {

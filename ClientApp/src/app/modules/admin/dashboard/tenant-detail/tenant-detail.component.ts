@@ -508,6 +508,11 @@ export class TenantDetailComponent implements OnInit {
     })
     return color;
   }
+
+  showOccupation() {
+    this.service.showTenantOccupation({buildingId: this.buildingId, tenantId: this.tenantId});
+  }
+
   /**
      * On destroy
      */
