@@ -74,5 +74,19 @@ namespace ClientPortal.Controllers
                 return Problem(e.Message);
             }
         }
+
+        [HttpGet("occupations")]
+        public async Task<ActionResult<List<UmfaTenantDashboardOccupation>>> GetTenantDashboardOccupations([FromQuery] UmfaTenantDashboardOccupationsRequest request)
+        {
+            try
+            {
+                return await _umfaService.GetTenantDashboardOccupationsAsync(request);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Could not get tenant dashboard occupations");
+                return Problem(e.Message);
+            }
+        }
     }
 }
