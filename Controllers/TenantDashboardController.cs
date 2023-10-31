@@ -88,5 +88,19 @@ namespace ClientPortal.Controllers
                 return Problem(e.Message);
             }
         }
+
+        [HttpGet("assigned-meters")]
+        public async Task<ActionResult<List<UmfaTenantDashboardAssignedMeter>>> GetTenantDashboardAssignedMeters([FromQuery] UmfaTenantDashboardAssignedMetersRequest request)
+        {
+            try
+            {
+                return await _umfaService.GetTenantDashboardAssignedMetersAsync(request);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Could not get tenant dashboard assigned meters");
+                return Problem(e.Message);
+            }
+        }
     }
 }
