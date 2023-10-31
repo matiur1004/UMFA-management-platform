@@ -1,4 +1,7 @@
-<div class="flex flex-col">
+<div class="flex flex-col relative">
+    <dx-select-box [items]="includeOptions" displayExpr="label" valueExpr="value" class="form-control absolute z-10 left-1" label="Include Previous Occupations"
+        required [(ngModel)]="includeOption" placeholder="Select..." lableMode="static" id="includeOption" name="includeOption" (onValueChanged)="valueChanged($event, 'include')" [searchEnabled]="true">
+    </dx-select-box>
     <dx-data-grid
         #grid
         [dataSource]="dataSource"

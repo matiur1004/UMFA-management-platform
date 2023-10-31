@@ -508,7 +508,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                                 };
                                 this.tabsList.push(newTab);
                                 this.selectedTab = this.tabsList.length;
-                                this._cdr.markForCheck();
+                                this._cdr.detectChanges();
                             }
                         });
                 }
@@ -522,21 +522,15 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                         "buildingId": response['buildingId'],
                         "tenantId": response['tenantId']
                     }
-                    this._dbService.getTenantDashboardOccupations(res['buildingId'], res['tenantId'])
-                        .pipe(takeUntil(this._unsubscribeAll))
-                        .subscribe(result => {
-                            if(result) {
-                                let newTab: IHomeTab = {
-                                    id: 0,
-                                    title: `Tenant Occupations`,
-                                    type: 'TenantDashboardOccupations',
-                                    dataSource: {}
-                                };
-                                this.tabsList.push(newTab);
-                                this.selectedTab = this.tabsList.length;
-                                this._cdr.markForCheck();
-                            }
-                        });
+                    let newTab: IHomeTab = {
+                        id: 0,
+                        title: `Tenant Occupations`,
+                        type: 'TenantDashboardOccupations',
+                        dataSource: res
+                    };
+                    this.tabsList.push(newTab);
+                    this.selectedTab = this.tabsList.length;
+                    this._cdr.detectChanges();
                 }
             });
 
