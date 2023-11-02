@@ -39,6 +39,7 @@ import { TenantsListComponent } from './tenants-list/tenants-list.component';
 import { TenantDetailComponent } from './tenant-detail/tenant-detail.component';
 import { TenantBillingDetailComponent } from './tenant-billing-detail/tenant-billing-detail.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { TenantBillingComponent } from './tenant-billing/tenant-billing.component';
 
 @NgModule({
     declarations: [
@@ -58,7 +59,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
         ClientFeedbackReportComponent,
         TenantsListComponent,
         TenantDetailComponent,
-        TenantBillingDetailComponent
+        TenantBillingDetailComponent,
+        TenantBillingComponent
     ],
     imports     : [
         CommonModule,
