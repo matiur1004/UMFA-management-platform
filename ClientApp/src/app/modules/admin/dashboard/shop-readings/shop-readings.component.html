@@ -1,4 +1,4 @@
-<div class="flex flex-col relative">
+<div class="flex flex-col relative bg-card">
     <div class="flex absolute z-10 left-2">
         <form [formGroup]="form" class="w-full">
             <div class="grid grid-cols-4 gap-2">
@@ -58,5 +58,51 @@
             </ng-container>
             <ng-template #emptyTemplate></ng-template>
         </div>
-    </dx-data-grid>
+    </dx-data-grid>    
+</div>
+<div class="flex bg-card mt-4" *ngIf="dataSource && dataSource.length > 0">
+    <div class="flex bg-card w-full relative flex-col">
+        <apx-chart
+            *ngIf="billingChartType == 'Bar'"
+            class="w-full mt-6"
+            [series]="barChartOptions.series"
+            [chart]="barChartOptions.chart"
+            [stroke]="barChartOptions.stroke"
+            [dataLabels]="barChartOptions.dataLabels"
+            [plotOptions]="barChartOptions.plotOptions"
+            [xaxis]="barChartOptions.xaxis"
+            [colors]="barChartOptions.colors"
+            [fill]="barChartOptions.fill"
+            [yaxis]="barChartOptions.yaxis"
+            [legend]="barChartOptions.legend"
+        ></apx-chart>
+        <ng-container *ngIf="billingChartType == 'Line'">
+            <mat-tab-group class="mt-10 line-chart-tab" (selectedIndexChange)="lineChartYearChange()">
+                <mat-tab *ngFor="let year of reverseYearList; let i = index;" label="{{year}}">
+                    <apx-chart
+                        class="w-full"
+                        [series]="lineUsageChartSeries[year]"
+                        [chart]="lineUsageChartOptions.chart"
+                        [xaxis]="lineUsageChartOptions.xaxis"
+                        [stroke]="lineUsageChartOptions.stroke"
+                        [markers]="lineUsageChartOptions.markers"
+                        [grid]="lineUsageChartOptions.grid"
+                        [colors]="barChartOptions.colors"
+                        [yaxis]="lineUsageChartOptions.yaxis"
+                        [title]="lineUsageChartOptions.title"
+                    ></apx-chart>
+                </mat-tab>
+            </mat-tab-group>                
+        </ng-container>
+        <div class="flex absolute left-3 top-3 gap-x-2 text-2xl font-semibold">Billing Usages</div>
+        <div class="flex absolute right-2 top-2 gap-x-2">
+            <div class="p-2 graph-type-item cursor-pointer" (click)="billingChartType = 'Line'" [ngClass]="{'selected-graph-type': billingChartType == 'Line'}">
+                <img src="/assets/images/icons/line-graph.svg" class="h-full">
+            </div>
+            <div class="border-graph"></div>
+            <div class="p-2 graph-type-item cursor-pointer" (click)="billingChartType = 'Bar'" [ngClass]="{'selected-graph-type': billingChartType == 'Bar'}">
+                <img src="/assets/images/icons/bar-graph.svg" class="h-full">
+            </div>                
+        </div>
+    </div>
 </div>

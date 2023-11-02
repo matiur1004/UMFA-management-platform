@@ -4,7 +4,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { AllowedPageSizes } from '@core/helpers';
 import { DecimalPipe } from '@angular/common';
 import moment from 'moment';
-import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexFill, ApexLegend, ApexPlotOptions, ApexStroke, ApexTooltip, ApexXAxis, ApexYAxis, ChartComponent } from 'ng-apexcharts';
+import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexFill, ApexLegend, ApexPlotOptions, ApexStroke, ApexTooltip, ApexXAxis, ApexYAxis } from 'ng-apexcharts';
 import { UmfaUtils } from '@core/utils/umfa.utils';
 
 export type BarChartOptions = {
@@ -52,7 +52,6 @@ export class ShopBillingComponent implements OnInit {
   periodList: any[] = [];
   periodIdList: any[] = [];
   tenantId: number;
-  //monthNameList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   initMonthNameList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   initMonthAbbrList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -356,7 +355,7 @@ export class ShopBillingComponent implements OnInit {
             this.monthNameList.push(this.initMonthNameList[k]);
             this.monthAbbrList.push(this.initMonthAbbrList[k]);
           }
-          for(let k = 11; k > monthIdx; k--) {
+          for(let k = 11; k > monthIdx; k--) {  
             this.monthNameList.push(this.initMonthNameList[k]);
             this.monthAbbrList.push(this.initMonthAbbrList[k]);
           }
@@ -487,7 +486,7 @@ export class ShopBillingComponent implements OnInit {
 
             billingBarSeriesData.push(result);
             usageBarSeriesData.push(usageResult);
-          }      
+          }
         });
       })
     });
