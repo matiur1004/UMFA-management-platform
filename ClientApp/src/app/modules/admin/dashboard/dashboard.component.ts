@@ -534,9 +534,29 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                                 };
                                 this.tabsList.push(newTab);
                                 this.selectedTab = this.tabsList.length;
-                                this._cdr.markForCheck();
+                                this._cdr.detectChanges();
                             }
                         });
+                }
+            });
+
+        this._dbService.tenantOccupation$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((response) => {
+                if(response) {
+                    let res = {
+                        "buildingId": response['buildingId'],
+                        "tenantId": response['tenantId']
+                    }
+                    let newTab: IHomeTab = {
+                        id: 0,
+                        title: `Shops Occupaied`,
+                        type: 'TenantDashboardOccupations',
+                        dataSource: res
+                    };
+                    this.tabsList.push(newTab);
+                    this.selectedTab = this.tabsList.length;
+                    this._cdr.detectChanges();
                 }
             });
 
@@ -659,139 +679,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                 }
             });
         //Wip
-        //this._dbService.showTenantDetailDashboard({buildingId: 2531, tenantId: 82879, tenantName: 'Tenant'});
-        //this._dbService.showTenantBillingDetail({buildingId: 2531, tenantId: 82879, periodId: 180320});
-        //this._dbService.showTenantBillingDetail({buildingId: 2403, tenantId: 91041, periodId: 179454, tenantName: 'Tenant'});
-        // let res = {
-        //     "buildingId": 2403,
-        //     "reportType": "Client Feedback Report",
-        //     "partnerId": 7
-        // };
-        // let newTab: IHomeTab = {
-        //     id: 0,
-        //     title: `${res.reportType} Reports`,
-        //     type: 'BuildingReports',
-        //     dataSource: res
-        // };
-        // this.tabsList.push(newTab);
-        // this.selectedTab = this.tabsList.length;
-        // this._cdr.detectChanges();
-
-        //this._dbService.showTriggeredAlarms({buildingId: null, partnerId: null});
-        // let res = {
-        //     "buildingId": 2531,
-        //     "shopId": 65469,
-        //     'meterId': 202168
-        // }
-
-        // this._dbService.getMetersForBuilding(res['buildingId'])
-        //     .subscribe(result => {
-        //         let newTab: IHomeTab = {
-        //             id: 0,
-        //             title: `Readings`,
-        //             type: 'ShopDashboardReadings',
-        //             dataSource: res
-        //         };
-        //         console.log('tabItem', res);
-        //         this.tabsList.push(newTab);
-        //         this.selectedTab = this.tabsList.length;
-        //         this._cdr.markForCheck();
-        //     });
-        // let res = {
-        //     // "buildingId": 2403,
-        //     // "partnerId": 7,
-        //     "buildingId": 2403,
-        //     "shopId": 62336,
-        // }
-        // this._dbService.getShopDashboardAssignedMeters(res['buildingId'], res['shopId'])
-        //     .pipe(takeUntil(this._unsubscribeAll))
-        //     .subscribe(result => {
-        //         if(result) {
-        //             let newTab: IHomeTab = {
-        //                 id: 0,
-        //                 title: `Assigned Meters`,
-        //                 type: 'ShopDashboarAssignedMeters',
-        //                 dataSource: {}
-        //             };
-        //             this.tabsList.push(newTab);
-        //             this.selectedTab = this.tabsList.length;
-        //             this._cdr.detectChanges();
-        //         }
-        //     });
-        
-        // let res = {
-        //     "buildingId": 2531,
-        //     "shopId": 65465,
-        // }
-
-        // this._dbService.getMetersForBuilding(res['buildingId'], res['shopId'])
-        //     .subscribe(result => {
-        //         let newTab: IHomeTab = {
-        //             id: 0,
-        //             title: `Readings`,
-        //             type: 'ShopDashboardReadings',
-        //             dataSource: res
-        //         };
-        //         this.tabsList.push(newTab);
-        //         this.selectedTab = this.tabsList.length;
-        //         this._cdr.markForCheck();
-        //     });
-
-        // let res = {
-        //     "buildingId": 2531,
-        //     "shopId": 65465
-        // }
-        // this._dbService.getShopDashboardBilling(res['buildingId'], res['shopId'])
-        //     .pipe(takeUntil(this._unsubscribeAll))
-        //     .subscribe(result => {
-        //         if(result) {
-        //             let newTab: IHomeTab = {
-        //                 id: 0, 
-        //                 title: `Billing`,
-        //                 type: 'ShopBilling',
-        //                 dataSource: res
-        //             };
-        //             this.tabsList.push(newTab);
-        //             this.selectedTab = this.tabsList.length;
-        //             this._cdr.markForCheck();
-        //         }
-        //     });
-        // let res = {
-        //     "buildingId": 2531,
-        //     "tenantId": 82879
-        // }
-        // this._dbService.getTenantDashboardBilling(res['buildingId'], res['tenantId'])
-        //     .pipe(takeUntil(this._unsubscribeAll))
-        //     .subscribe(result => {
-        //         if(result) {
-        //             let newTab: IHomeTab = {
-        //                 id: 0, 
-        //                 title: `Tenant Billing`,
-        //                 type: 'TenantBilling',
-        //                 dataSource: res
-        //             };
-        //             this.tabsList.push(newTab);
-        //             this.selectedTab = this.tabsList.length;
-        //             this._cdr.markForCheck();
-        //         }
-        //     });
-        //let res = {buildingId: 2531, shopId: 65465};
-
-        // this._dbService.getShopDashboardDetail(2531, 65465)
-        //     .pipe(takeUntil(this._unsubscribeAll))
-        //     .subscribe(result => {
-        //         if(result) {
-        //             let newTab: IHomeTab = {
-        //                 id: 0, 
-        //                 title: `shopName`,
-        //                 type: 'ShopDetailDashboard',
-        //                 dataSource: result
-        //             };
-        //             this.tabsList.push(newTab);
-        //             this.selectedTab = this.tabsList.length;
-        //             this._cdr.detectChanges();
-        //         }
-        //     });
     }
 
     onDetail(type: EHomeTabType) {
@@ -876,7 +763,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             this.tabsList[index]['type'] == 'AlarmTrigger' || 
             this.tabsList[index]['type'] == 'TenantDetailDashboard' ||
             this.tabsList[index]['type'] == 'TenantBillingDetail' ||
-            this.tabsList[index]['type'] == 'TenantBilling') {
+            this.tabsList[index]['type'] == 'TenantBilling' ||
+            this.tabsList[index]['type'] == 'TenantDashboardOccupations') {
             this.selectedTab = index;    
         }
         if(this.tabsList[index]['type'] == 'ShopList') {
