@@ -3,6 +3,8 @@
     public class UmfaTenantDashboardOccupation
     {
         public int ShopId { get; set; }
+        public string Shop {  get; set; }
+        public bool ShopActive { get; set; }
         public int TenantId { get; set; }
         public string TenantName { get; set; }
         public bool TenantActive { get; set; }
