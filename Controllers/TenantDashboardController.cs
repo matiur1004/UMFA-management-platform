@@ -102,5 +102,19 @@ namespace ClientPortal.Controllers
                 return Problem(e.Message);
             }
         }
+
+        [HttpGet("readings")]
+        public async Task<ActionResult<List<UmfaTenantDashboardReading>>> GetTenantDashboardReadings([FromQuery] UmfaTenantDashboardReadingsRequest request)
+        {
+            try
+            {
+                return await _umfaService.GetTenantDashboardReadingsAsync(request);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Could not get tenant dashboard readings");
+                return Problem(e.Message);
+            }
+        }
     }
 }

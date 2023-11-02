@@ -2,7 +2,6 @@
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 using ClientPortal.Settings;
-using DevExpress.XtraPrinting.Shape.Native;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
 using System.Web;
@@ -90,6 +89,7 @@ namespace ClientPortal.Services
         public Task<List<UmfaTenantDashboardBillingCardDetail>> GetTenantDashboardBillingCardDetailsAsync(UmfaTenantDashboardBillingCardDetailsRequest request);
         public Task<List<UmfaTenantDashboardOccupation>> GetTenantDashboardOccupationsAsync(UmfaTenantDashboardOccupationsRequest request);
         public Task<List<UmfaTenantDashboardAssignedMeter>> GetTenantDashboardAssignedMetersAsync(UmfaTenantDashboardAssignedMetersRequest request);
+        public Task<List<UmfaTenantDashboardReading>> GetTenantDashboardReadingsAsync(UmfaTenantDashboardReadingsRequest request);
     }
 
 
@@ -539,6 +539,13 @@ namespace ClientPortal.Services
             var response = await GetAsync($"tenantdashboard/assigned-meters", request);
 
             return JsonSerializer.Deserialize<List<UmfaTenantDashboardAssignedMeter>>(response);
+        }
+
+        public async Task<List<UmfaTenantDashboardReading>> GetTenantDashboardReadingsAsync(UmfaTenantDashboardReadingsRequest request)
+        {
+            var response = await GetAsync($"tenantdashboard/readings", request);
+
+            return JsonSerializer.Deserialize<List<UmfaTenantDashboardReading>>(response);
         }
     }
 }
