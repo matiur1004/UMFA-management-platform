@@ -653,7 +653,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                 }
             });
         //Wip
-        this._dbService.showTenantDetailDashboard({buildingId: 2531, tenantId: 82879, tenantName: 'Tenant'});
     }
 
     onDetail(type: EHomeTabType) {
