@@ -34,6 +34,8 @@ export class DashboardService {
   private _tenantDetailDashboard: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopBilling: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopBillingDetail: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _tenantBilling: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _tenantBillingDetail: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopOccupation: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopOccupationDetails: BehaviorSubject<any> = new BehaviorSubject(null);
   private _tenantOccupation: BehaviorSubject<any> = new BehaviorSubject(null);
@@ -154,6 +156,14 @@ export class DashboardService {
     return this._shopBillingDetail.asObservable();
   }
   
+  get tenantBilling$(): Observable<any> {
+    return this._tenantBilling.asObservable();
+  }
+
+  get tenantBillingDetail$(): Observable<any> {
+    return this._tenantBillingDetail.asObservable();
+  }
+
   get shopOccupation$(): Observable<any> {
     return this._shopOccupation.asObservable();
   }
@@ -460,6 +470,17 @@ export class DashboardService {
       );
   }
 
+  getTenantDashboardBilling(buildingId, tenantId, shopId = 0, history = 36) {
+    const url = `${CONFIG.apiURL}/TenantDashboard/billing-card-details?buildingId=${buildingId}&tenantId=${tenantId}&shopId=${shopId}&history=${history}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(bl => {
+          this._tenantBillingDetail.next(bl);
+        })
+      );
+  }
+
   getShopDashboardOccupations(buildingId, shopId) {
     const url = `${CONFIG.apiURL}/Dashboard/buildings/${buildingId}/shops/${shopId}/occupations`;
     return this.http.get<any>(url, { withCredentials: true })
@@ -629,6 +650,10 @@ export class DashboardService {
 
   showShopBilling(data) {
     this._shopBilling.next(data);
+  }
+
+  showTenantBilling(data) {
+    this._tenantBilling.next(data);
   }
 
   showShopOccupation(data) {
