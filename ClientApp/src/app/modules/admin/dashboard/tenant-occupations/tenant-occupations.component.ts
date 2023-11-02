@@ -38,7 +38,7 @@ export class TenantOccupationsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dashboardService.tenantOccupationsDashboard$
+    this.dashboardService.tenantOccupationDetails$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((res) => {
         if(res) {

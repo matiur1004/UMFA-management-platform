@@ -513,6 +513,9 @@ export class TenantDetailComponent implements OnInit {
     this.service.showTenantOccupation({buildingId: this.buildingId, tenantId: this.tenantId});
   }
 
+  showAssignedMeters() {
+    this.service.showTenantAssignedMeters({buildingId: this.buildingId, tenantId: this.tenantId});
+  }
   /**
      * On destroy
      */
