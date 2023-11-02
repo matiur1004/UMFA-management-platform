@@ -36,7 +36,7 @@
                         </div>
                         <img src="/assets/images/icons/occupation.svg" class="image-item"/>
                     </div>
-                    <div class="flex w-full flex-col">
+                    <div class="flex w-full flex-col" (click)="$event.stopPropagation()">
                         <ng-select (change)="onChangeShop($event)" [items]="shopListItems" [(ngModel)]="selectedShop" bindLabel="label" bindValue="value" [placeholder]="'Select Model'" [searchable]="false" [clearable]="false" class="w-full select-sm">
                             <ng-template ng-label-tmp let-item="item">
                                 <div class="flex justify-between">
