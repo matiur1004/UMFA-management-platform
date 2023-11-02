@@ -62,6 +62,7 @@ export class TenantBillingComponent implements OnInit {
   tenantList: any[] = [];
   shopList: any[] = [];
   shopId: number = 0;
+  tenantShopId: number = 0;
 
   groupNameList: any[] = [];
   yearList: any[] = [];
@@ -333,6 +334,7 @@ export class TenantBillingComponent implements OnInit {
             allowSorting: false,
             allowSortingBySummary: false
           }
+          this.tenantShopId = res[0]['ShopID'];
           this.shopList.push({ShopID: 0, ShopNr: 'All'});
           this.dataSource.store = res.map(item => {
             if(this.periodList.indexOf(item['PeriodName']) == -1) this.periodList.push(item['PeriodName']);
@@ -417,18 +419,19 @@ export class TenantBillingComponent implements OnInit {
     setTimeout(() => {
       let elements = this.elementRef.nativeElement.querySelectorAll('.total-element');
       elements.forEach( element => {
-        // this.renderer.listen(element, "click", event => {
-        //   let periodName = event.target.getAttribute('periodname');
-        //   let periodIdx = this.periodList.indexOf(periodName);
-        //   let tenant = this.tenantList.find(obj => obj['Tenant'] == event.target.getAttribute('tenantname'));
-        //   let data = {
-        //     tenantId: tenant['TenantID'],
-        //     shopId: this.shopId,
-        //     periodId: this.periodIdList[periodIdx],
-        //     reportType: 1
-        //   }
-        //   this.service.showTenantSlipDetail(data);
-        // });
+        this.renderer.listen(element, "click", event => {
+          let periodName = event.target.getAttribute('periodname');
+          let periodIdx = this.periodList.indexOf(periodName);
+          let tenant = this.tenantList.find(obj => obj['Tenant'] == event.target.getAttribute('tenantname'));
+          let data = {
+            tenantId: tenant['TenantID'],
+            shopId: this.tenantShopId,
+            periodId: this.periodIdList[periodIdx],
+            reportType: 1
+          }
+          console.log(data);
+          this.service.showTenantSlipDetail(data);
+        });
       });
     }, 2000);
   }
