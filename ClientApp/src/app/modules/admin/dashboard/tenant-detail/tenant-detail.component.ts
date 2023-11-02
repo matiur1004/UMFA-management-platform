@@ -509,6 +509,11 @@ export class TenantDetailComponent implements OnInit {
     return color;
   }
 
+  onTenantBilling() {
+    this.service.showTenantBilling({buildingId: this.buildingId, tenantId: this.tenantId});
+  }
+
+
   showOccupation() {
     this.service.showTenantOccupation({buildingId: this.buildingId, tenantId: this.tenantId});
   }
