@@ -586,6 +586,32 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                 }
             });
 
+        this._dbService.tenantAssignedMeters$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((response) => {
+                if(response) {
+                    let res = {
+                        "buildingId": response['buildingId'],
+                        "tenantId": response['tenantId']
+                    }
+                    this._dbService.getTenantDashboardAssignedMeters(res['buildingId'], res['tenantId'])
+                        .pipe(takeUntil(this._unsubscribeAll))
+                        .subscribe(result => {
+                            if(result) {
+                                let newTab: IHomeTab = {
+                                    id: 0,
+                                    title: `Tenant Assigned Meters`,
+                                    type: 'TenantDashboarAssignedMeters',
+                                    dataSource: res
+                                };
+                                this.tabsList.push(newTab);
+                                this.selectedTab = this.tabsList.length;
+                                this._cdr.markForCheck();
+                            }
+                        });
+                }
+            });
+
         this._dbService.shopReadings$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((response) => {
@@ -763,6 +789,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             this.tabsList[index]['type'] == 'AlarmTrigger' || 
             this.tabsList[index]['type'] == 'TenantDetailDashboard' ||
             this.tabsList[index]['type'] == 'TenantBillingDetail' ||
+            this.tabsList[index]['type'] == 'TenantDashboarAssignedMeters' ||
             this.tabsList[index]['type'] == 'TenantBilling' ||
             this.tabsList[index]['type'] == 'TenantDashboardOccupations') {
             this.selectedTab = index;    
@@ -789,6 +816,10 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             this._dbService.destroyShopAssignedMeterDetails();
         }
 
+        if(this.tabsList[index]['type'] == 'TenantDashboarAssignedMeters') {
+            this._dbService.destroyTenantAssignedMeterDetails();
+        }
+        
         if(this.tabsList[index]['type'] == 'TenantSlipDetail') {
             this._dbService.selectedTenantSlipInfo = null;
             this._dbService.destroyTenantSlips();

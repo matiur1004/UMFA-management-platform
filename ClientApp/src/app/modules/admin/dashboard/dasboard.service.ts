@@ -40,6 +40,8 @@ export class DashboardService {
   private _shopOccupationDetails: BehaviorSubject<any> = new BehaviorSubject(null);
   private _tenantOccupation: BehaviorSubject<any> = new BehaviorSubject(null);
   private _tenantOccupationDetails: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _tenantAssignedMeters: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _tenantAssignedMetersDetails: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopAssignedMeters: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopAssignedMetersDetails: BehaviorSubject<any> = new BehaviorSubject(null);
   private _metersForBuilding: BehaviorSubject<any> = new BehaviorSubject(null);
@@ -172,12 +174,20 @@ export class DashboardService {
     return this._tenantOccupation.asObservable();
   }
 
+  get tenantAssignedMeters$(): Observable<any> {
+    return this._tenantAssignedMeters.asObservable();
+  }
+
   get shopOccupationsDashboard$(): Observable<any> {
     return this._shopOccupationDetails.asObservable();
   }
 
-  get tenantOccupationsDashboard$(): Observable<any> {
+  get tenantOccupationDetails$(): Observable<any> {
     return this._tenantOccupationDetails.asObservable();
+  }
+
+  get tenantAssignedMetersDetails$(): Observable<any> {
+    return this._tenantAssignedMetersDetails.asObservable();
   }
 
   get shopAssignedMeters$(): Observable<any> {
@@ -186,6 +196,10 @@ export class DashboardService {
 
   get shopAssignedMetersDashboard$(): Observable<any> {
     return this._shopAssignedMetersDetails.asObservable();
+  }
+
+  get tenantAssignedMetersDashboard$(): Observable<any> {
+    return this._tenantAssignedMetersDetails.asObservable();
   }
 
   get shopReadings$(): Observable<any> {
@@ -514,6 +528,17 @@ export class DashboardService {
       );
   }
 
+  getTenantDashboardAssignedMeters(buildingId, tenantId, history = 6) {
+    const url = `${CONFIG.apiURL}/TenantDashboard/assigned-meters?buildingId=${buildingId}&tenantId=${tenantId}&history=${history}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(bl => {
+          this._tenantAssignedMetersDetails.next(bl);
+        })
+      );
+  }
+
   getMetersForBuilding(buildingId: number, shopId): Observable<IUmfaMeter[]> {
     const url = `${CONFIG.apiURL}/Dashboard/buildings/${buildingId}/shops/${shopId}/assigned-meters`;
     return this.http.get<any>(url, { withCredentials: true })
@@ -664,6 +689,10 @@ export class DashboardService {
     this._tenantOccupation.next(data);
   }
 
+  showTenantAssignedMeters(data) {
+    this._tenantAssignedMeters.next(data);
+  }
+
   showTriggeredAlarms(data) {
     this._triggeredAlarmsPage.next(data);
   }
@@ -687,8 +716,17 @@ export class DashboardService {
     //this._shopAssignedMetersDetails.next(null);
   }
 
+  destroyTenantAssignedMeters() {
+    this._tenantAssignedMeters.next(null);
+    //this._tenantAssignedMetersDetails.next(null);
+  }
+  
   destroyShopAssignedMeterDetails() {
     this._shopAssignedMetersDetails.next(null);
+  }
+
+  destroyTenantAssignedMeterDetails() {
+    this._tenantAssignedMetersDetails.next(null);
   }
 
   showReadings(data) {
