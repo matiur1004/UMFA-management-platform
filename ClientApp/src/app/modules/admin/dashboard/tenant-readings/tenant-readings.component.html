@@ -1,0 +1,108 @@
+<div class="flex flex-col relative bg-card">
+    <div class="flex absolute z-10 left-2">
+        <form [formGroup]="form" class="w-full">
+            <div class="grid grid-cols-4 gap-2">
+                <div class="col-span-1">
+                    <dx-select-box [readOnly]="meterId > 0" [dataSource]="metersDataSource" displayExpr="MeterNo" valueExpr="BuildingServiceID" class="form-control" label="Meter Number"
+                                    [grouped]="true" placeholder="Select Meter Number" lableMode="static" id="meterNo" (onValueChanged)="meterChanged($event)"
+                                    [formControlName]="'meterId'" name="meterNo" [searchEnabled]="true" searchExpr="Name" searchMode="contains" [searchTimeout]="400">
+                    </dx-select-box>
+                </div>
+            </div>
+        </form>
+    </div>
+    <dx-data-grid
+        #grid
+        [dataSource]="dataSource"
+        [showBorders]="true"
+        id="shop-readings-container"
+        [hoverStateEnabled]="true"
+    >
+        <!-- <dxo-selection mode="single"></dxo-selection> -->
+        <dxo-filter-row [visible]="'true'"
+            [applyFilter]="currentFilter"></dxo-filter-row>
+        <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+        <dxo-paging [pageSize]="15"> </dxo-paging>
+        <dxo-pager
+            [visible]="true"
+            [allowedPageSizes]="allowedPageSizes"
+            [displayMode]="'compact'"
+            [showPageSizeSelector]="true"
+            [showInfo]="true"
+            [showNavigationButtons]="true"
+        >
+        </dxo-pager>
+        <dxo-search-panel
+            [visible]="true"
+            [width]="200"
+            placeholder="Search..."
+        ></dxo-search-panel>
+        <dxi-column dataField="PeriodName" caption="Period" [width]="120"></dxi-column>
+        <dxi-column dataField="PeriodStart" caption="Period Start" [customizeText]="onCustomizeDate" [width]="90"></dxi-column>
+        <dxi-column dataField="PeriodEnd" caption="Period End" [customizeText]="onCustomizeDate" [width]="90"></dxi-column>
+        <dxi-column dataField="PreviousReading" caption="Previous Reading" [minWidth]="75"></dxi-column>
+        <dxi-column dataField="CurrentReadingDate" caption="Reading Date" [width]="90" [customizeText]="onCustomizeDate"></dxi-column>
+        <dxi-column dataField="CurrentReading" caption="Current Reading" [minWidth]="75"></dxi-column>
+        <dxi-column dataField="ReadingUsage" caption="Reading Usage" [minWidth]="70"></dxi-column>
+        <dxi-column dataField="CTRatio" caption="CT Ratio" [minWidth]="70"></dxi-column>
+        <dxi-column dataField="BillingUsage" caption="Billing Usage" [minWidth]="75"></dxi-column>
+        <dxi-column dataField="Contribution" caption="Contribution" [minWidth]="100"></dxi-column>
+        <dxi-column dataField="ReadingMethod" caption="Reading Method" [minWidth]="100"></dxi-column>
+        <dxi-column dataField="Estimated" caption="Estimated" [width]="75"></dxi-column>
+        <dxi-column dataField="TotalArea" caption="Total Area" [minWidth]="90"></dxi-column>
+        <dxi-column dataField="AssignedArea" caption="Assigned Area" [minWidth]="80"></dxi-column>
+        <dxi-column dataField="Photo" caption="Photo" [minWidth]="80" cellTemplate="cellPhotoTemplate"></dxi-column>
+        <div *dxTemplate="let data of 'cellPhotoTemplate'" class="flex justify-center items-center">
+            <ng-container *ngIf="data.value != null; else emptyTemplate">
+                <a class="" target="_blank" href="{{data.value}}"><mat-icon class="hover:text-cyan-500" [svgIcon]="'feather:image'"></mat-icon></a>
+            </ng-container>
+            <ng-template #emptyTemplate></ng-template>
+        </div>
+    </dx-data-grid>    
+</div>
+<div class="flex bg-card mt-4" *ngIf="dataSource && dataSource.length > 0">
+    <div class="flex bg-card w-full relative flex-col">
+        <apx-chart
+            *ngIf="billingChartType == 'Bar'"
+            class="w-full mt-6"
+            [series]="barChartOptions.series"
+            [chart]="barChartOptions.chart"
+            [stroke]="barChartOptions.stroke"
+            [dataLabels]="barChartOptions.dataLabels"
+            [plotOptions]="barChartOptions.plotOptions"
+            [xaxis]="barChartOptions.xaxis"
+            [colors]="barChartOptions.colors"
+            [fill]="barChartOptions.fill"
+            [yaxis]="barChartOptions.yaxis"
+            [legend]="barChartOptions.legend"
+        ></apx-chart>
+        <ng-container *ngIf="billingChartType == 'Line'">
+            <mat-tab-group class="mt-10 line-chart-tab" (selectedIndexChange)="lineChartYearChange()">
+                <mat-tab *ngFor="let year of reverseYearList; let i = index;" label="{{year}}">
+                    <apx-chart
+                        class="w-full"
+                        [series]="lineUsageChartSeries[year]"
+                        [chart]="lineUsageChartOptions.chart"
+                        [xaxis]="lineUsageChartOptions.xaxis"
+                        [stroke]="lineUsageChartOptions.stroke"
+                        [markers]="lineUsageChartOptions.markers"
+                        [grid]="lineUsageChartOptions.grid"
+                        [colors]="barChartOptions.colors"
+                        [yaxis]="lineUsageChartOptions.yaxis"
+                        [title]="lineUsageChartOptions.title"
+                    ></apx-chart>
+                </mat-tab>
+            </mat-tab-group>                
+        </ng-container>
+        <div class="flex absolute left-3 top-3 gap-x-2 text-2xl font-semibold">Billing Usages</div>
+        <div class="flex absolute right-2 top-2 gap-x-2">
+            <div class="p-2 graph-type-item cursor-pointer" (click)="billingChartType = 'Line'" [ngClass]="{'selected-graph-type': billingChartType == 'Line'}">
+                <img src="/assets/images/icons/line-graph.svg" class="h-full">
+            </div>
+            <div class="border-graph"></div>
+            <div class="p-2 graph-type-item cursor-pointer" (click)="billingChartType = 'Bar'" [ngClass]="{'selected-graph-type': billingChartType == 'Bar'}">
+                <img src="/assets/images/icons/bar-graph.svg" class="h-full">
+            </div>                
+        </div>
+    </div>
+</div>

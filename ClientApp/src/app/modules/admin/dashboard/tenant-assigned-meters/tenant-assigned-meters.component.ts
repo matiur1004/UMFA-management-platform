@@ -73,7 +73,7 @@ export class TenantAssignedMetersComponent implements OnInit {
   }
   
   onRowClick(event) {
-    //this.dashboardService.showReadings({buildingId: this.buildingId, shopId: this.shopId, meterId: event.data['BuildingServiceID']});
+    this.dashboardService.showTenantReadings({buildingId: this.buildingId, shopId: event.data['ShopID'], meterId: event.data['BuildingServiceID']});
   }
 
   /**

@@ -637,6 +637,31 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                 }
             });
 
+        this._dbService.tenantReadings$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((response) => {
+                if(response) {
+                    let res = {
+                        "buildingId": response['buildingId'],
+                        "shopId": response['shopId'],
+                        'meterId': response['meterId']
+                    }
+
+                    this._dbService.getMetersForBuilding(res['buildingId'], res['shopId'])
+                        .subscribe(result => {
+                            let newTab: IHomeTab = {
+                                id: 0,
+                                title: `Tenant Readings`,
+                                type: 'TenantDashboardReadings',
+                                dataSource: res
+                            };
+                            this.tabsList.push(newTab);
+                            this.selectedTab = this.tabsList.length;
+                            this._cdr.markForCheck();
+                        });
+                }
+            });
+
         this._dbService.triggeredAlarmsPage$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((data) => {

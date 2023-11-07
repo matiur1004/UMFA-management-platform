@@ -48,6 +48,8 @@ export class DashboardService {
 
   private _shopReadings: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopReadingsDetails: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _tenantReadings: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _tenantReadingsDetails: BehaviorSubject<any> = new BehaviorSubject(null);
 
   private _reportsArchives: BehaviorSubject<any> = new BehaviorSubject(null);
   private _clientFeedbackReports: BehaviorSubject<any> = new BehaviorSubject(null);
@@ -206,8 +208,16 @@ export class DashboardService {
     return this._shopReadings.asObservable();
   }
 
+  get tenantReadings$(): Observable<any> {
+    return this._tenantReadings.asObservable();
+  }
+
   get shopReadingsDashboard$(): Observable<any> {
     return this._shopReadingsDetails.asObservable();
+  }
+
+  get tenantReadingsDashboard$(): Observable<any> {
+    return this._tenantReadingsDetails.asObservable();
   }
 
   get metersForBuilding$(): Observable<any> {
@@ -562,6 +572,17 @@ export class DashboardService {
       );
   }
 
+  getTenantBillingsByMeter(meterId, shopId, buildingId, history = 36) {
+    const url = `${CONFIG.apiURL}/TenantDashboard/readings?buildingId=${buildingId}&shopId=${shopId}&buildingServiceId=${meterId}&history=${history}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(bl => {
+          this._tenantReadingsDetails.next(bl);
+        })
+      );
+  }
+
   getTriggeredAlarmsList(userId, buildingId) {
     const url = `${CONFIG.apiURL}/AlarmTriggered?umfaUserId=${userId}&umfaBuildingId=${buildingId}`;
     return this.http.get<any>(url, { withCredentials: true })
@@ -731,6 +752,10 @@ export class DashboardService {
 
   showReadings(data) {
     this._shopReadings.next(data);
+  }
+
+  showTenantReadings(data) {
+    this._tenantReadings.next(data);
   }
 
   destroyShopReadings() {
