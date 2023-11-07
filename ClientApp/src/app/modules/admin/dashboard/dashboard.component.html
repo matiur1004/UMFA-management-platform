@@ -256,7 +256,7 @@
                                 </div>
                                 <div class="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-6 mt-3">
                                     <div class="col-span-1 lg:col-span-2 xl:col-span-3">
-                                        <div class="sm:col-span-2 flex flex-col flex-auto rounded-2xl overflow-visible co2-card">
+                                        <div class="bg-gradient-to-l from-gray-600 to-gray-400 sm:col-span-2 flex flex-col flex-auto shadow rounded-2xl overflow-visible text-white">
                                             <div class="flex flex-col p-2 md:p-6 gap-y-2">
                                                 <div class="flex items-start justify-between">
                                                     <div class="text-xl font-medium tracking-tight leading-6">CO<span class="leading-3 text-sm">2</span> Emissions and requirements for off-set based on above statistics</div>
@@ -265,11 +265,11 @@
                                                     <div class="flex flex-col w-full">
                                                         <div class="grid grid-cols-3 gap-y-1 gap-x-2 text-lg" *ngIf="isMobileScreen">
                                                             <div class="col-span-1"></div>
-                                                            <div class="col-span-1 flex gap-x-1 md:gap-x-2 electricity-lbl">
-                                                                <div class="service-icon electricity-icon"></div> Electricity
+                                                            <div class="col-span-1 flex gap-x-1 md:gap-x-2">
+                                                                <div class="service-icon"><img src="/assets/images/icons/electricity.svg"/></div> Electricity
                                                             </div>
-                                                            <div class="col-span-1 flex gap-x-1 md:gap-x-2 water-lbl">
-                                                                <div class="service-icon water-icon"></div>Water
+                                                            <div class="col-span-1 flex gap-x-1 md:gap-x-2 ">
+                                                                <div class="service-icon"><img src="/assets/images/icons/water.svg"/></div>Water
                                                             </div>
                                                             
                                                             <div class="col-span-1">
@@ -303,15 +303,15 @@
                                                             <div class="col-span-2">Area-Hectare</div>
                                                             <div class="col-span-2">Rugby Fields</div>
     
-                                                            <div class="col-span-3 flex gap-x-2 electricity-lbl">
-                                                                <div class="service-icon electricity-icon"></div> Electricity
+                                                            <div class="col-span-3 flex gap-x-2">
+                                                                <div class="service-icon"><img src="/assets/images/icons/electricity.svg"/></div> Electricity
                                                             </div>                                            
                                                             <div class="col-span-2 text-xl">{{totalElectricityUsage * 0.97 / 1000 | number : '1.0-0'}}</div>
                                                             <div class="col-span-2 text-xl">{{totalElectricityUsage * 0.97 / 1000 * 1000 / 27 | number : '1.0-0'}}</div>
                                                             <div class="col-span-2 text-xl">{{totalElectricityUsage * 0.97 / 1000 * 1000 / 27 / 400 | number : '1.0-0'}}</div>
                                                             <div class="col-span-2 text-xl">{{totalElectricityUsage * 0.97 / 1000 * 1000 / 27 / 400 * 1000 / 12000 | number : '1.0-0'}}</div>
     
-                                                            <div class="col-span-3 flex gap-x-2 water-lbl"><div class="service-icon water-icon"></div>Water</div>
+                                                            <div class="col-span-3 flex gap-x-2"><div class="service-icon"><img src="/assets/images/icons/water.svg"/></div>Water</div>
                                                             <div class="col-span-2 text-xl">{{totalWaterUsage * 0.298 / 1000 | number : '1.0-0'}}</div>
                                                             <div class="col-span-2 text-xl">{{totalWaterUsage * 0.298 / 1000 * 1000 / 27 | number : '1.0-0'}}</div>
                                                             <div class="col-span-2 text-xl">{{totalWaterUsage * 0.298 / 1000 * 1000 / 27 / 400 | number : '1.0-0'}}</div>
@@ -513,7 +513,7 @@
                                 </div>
                                 <div class="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-6 mt-3">
                                     <div class="col-span-1 lg:col-span-2 xl:col-span-3">
-                                        <div class="sm:col-span-2 flex flex-col flex-auto rounded-2xl overflow-visible co2-card">
+                                        <div class="bg-gradient-to-l from-gray-600 to-gray-400 sm:col-span-2 flex flex-col flex-auto shadow rounded-2xl overflow-visible text-white">
                                             <div class="flex flex-col p-2 md:p-6 gap-y-2">
                                                 <div class="flex items-start justify-between">
                                                     <div class="text-xl font-medium tracking-tight leading-6">CO<span class="leading-3 text-sm">2</span> Emissions and requirements for off-set based on above statistics</div>
@@ -522,11 +522,11 @@
                                                     <div class="flex flex-col w-full">
                                                         <div class="grid grid-cols-3 gap-y-1 gap-x-2 text-lg" *ngIf="isMobileScreen">
                                                             <div class="col-span-1"></div>
-                                                            <div class="col-span-1 flex gap-x-1 md:gap-x-2 electricity-lbl">
-                                                                <div class="service-icon electricity-icon"></div> Electricity
+                                                            <div class="col-span-1 flex gap-x-1 md:gap-x-2">
+                                                                <div class="service-icon"><img src="/assets/images/icons/electricity.svg"/></div> Electricity
                                                             </div>
-                                                            <div class="col-span-1 flex gap-x-1 md:gap-x-2 water-lbl">
-                                                                <div class="service-icon water-icon"></div>Water
+                                                            <div class="col-span-1 flex gap-x-1 md:gap-x-2">
+                                                                <div class="service-icon"><img src="/assets/images/icons/water.svg"/></div> Water
                                                             </div>
                                                             
                                                             <div class="col-span-1">
@@ -560,15 +560,16 @@
                                                             <div class="col-span-2">Area-Hectare</div>
                                                             <div class="col-span-2">Rugby Fields</div>
     
-                                                            <div class="col-span-3 flex gap-x-2 electricity-lbl">
-                                                                <div class="service-icon electricity-icon"></div> Electricity
+                                                            <div class="col-span-3 flex gap-x-2">
+                                                                <div class="service-icon"><img src="/assets/images/icons/electricity.svg"/></div> Electricity
                                                             </div>                                            
                                                             <div class="col-span-2 text-xl">{{totalElectricityUsage * 0.97 / 1000 | number : '1.0-0'}}</div>
                                                             <div class="col-span-2 text-xl">{{totalElectricityUsage * 0.97 / 1000 * 1000 / 27 | number : '1.0-0'}}</div>
                                                             <div class="col-span-2 text-xl">{{totalElectricityUsage * 0.97 / 1000 * 1000 / 27 / 400 | number : '1.0-0'}}</div>
                                                             <div class="col-span-2 text-xl">{{totalElectricityUsage * 0.97 / 1000 * 1000 / 27 / 400 * 1000 / 12000 | number : '1.0-0'}}</div>
     
-                                                            <div class="col-span-3 flex gap-x-2 water-lbl"><div class="service-icon water-icon"></div>Water</div>
+                                                            <div class="col-span-3 flex gap-x-2">
+                                                                <div class="service-icon"><img src="/assets/images/icons/water.svg"/></div> Water</div>
                                                             <div class="col-span-2 text-xl">{{totalWaterUsage * 0.298 / 1000 | number : '1.0-0'}}</div>
                                                             <div class="col-span-2 text-xl">{{totalWaterUsage * 0.298 / 1000 * 1000 / 27 | number : '1.0-0'}}</div>
                                                             <div class="col-span-2 text-xl">{{totalWaterUsage * 0.298 / 1000 * 1000 / 27 / 400 | number : '1.0-0'}}</div>

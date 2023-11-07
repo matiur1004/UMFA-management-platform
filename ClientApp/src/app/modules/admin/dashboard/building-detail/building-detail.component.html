@@ -308,15 +308,17 @@
                                 <div class="col-span-2">Area-Hectare</div>
                                 <div class="col-span-2">Rugby Fields</div>
 
-                                <div class="col-span-3 flex gap-x-2 electricity-lbl">
-                                    <div class="service-icon electricity-icon"></div> Electricity
+                                <div class="col-span-3 flex gap-x-2">
+                                    <div class="service-icon"><img src="/assets/images/icons/electricity.svg"/></div> Electricity
                                 </div>                                                        
                                 <div class="col-span-2 text-xl">{{totalElectricityUsage * 0.97 / 1000 | number : '1.0-0'}}</div>
                                 <div class="col-span-2 text-xl">{{totalElectricityUsage * 0.97 / 1000 * 1000 / 27 | number : '1.0-0'}}</div>
                                 <div class="col-span-2 text-xl">{{totalElectricityUsage * 0.97 / 1000 * 1000 / 27 / 400 | number : '1.0-0'}}</div>
                                 <div class="col-span-2 text-xl">{{totalElectricityUsage * 0.97 / 1000 * 1000 / 27 / 400 * 1000 / 12000 | number : '1.0-0'}}</div>
 
-                                <div class="col-span-3 flex gap-x-2 water-lbl"><div class="service-icon water-icon"></div>Water</div>
+                                <div class="col-span-3 flex gap-x-2">
+                                    <div class="service-icon"><img src="/assets/images/icons/water.svg"/></div> Water
+                                </div>
                                 <div class="col-span-2 text-xl">{{totalWaterUsage * 0.298 / 1000 | number : '1.0-0'}}</div>
                                 <div class="col-span-2 text-xl">{{totalWaterUsage * 0.298 / 1000 * 1000 / 27 | number : '1.0-0'}}</div>
                                 <div class="col-span-2 text-xl">{{totalWaterUsage * 0.298 / 1000 * 1000 / 27 / 400 | number : '1.0-0'}}</div>
