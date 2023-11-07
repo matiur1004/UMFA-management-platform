@@ -42,6 +42,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { TenantOccupationsComponent } from './tenant-occupations/tenant-occupations.component';
 import { TenantAssignedMetersComponent } from './tenant-assigned-meters/tenant-assigned-meters.component';
 import { TenantBillingComponent } from './tenant-billing/tenant-billing.component';
+import { TenantReadingsComponent } from './tenant-readings/tenant-readings.component';
 
 @NgModule({
     declarations: [
@@ -65,7 +66,8 @@ import { TenantBillingComponent } from './tenant-billing/tenant-billing.componen
         TenantOccupationsComponent,
         TenantAssignedMetersComponent,
         TenantBillingComponent,
-        TenantOccupationsComponent
+        TenantOccupationsComponent,
+        TenantReadingsComponent
     ],
     imports     : [
         CommonModule,

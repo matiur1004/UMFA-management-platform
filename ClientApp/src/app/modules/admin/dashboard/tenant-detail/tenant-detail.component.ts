@@ -521,6 +521,12 @@ export class TenantDetailComponent implements OnInit {
   showAssignedMeters() {
     this.service.showTenantAssignedMeters({buildingId: this.buildingId, tenantId: this.tenantId});
   }
+
+  showReading(){
+    let shopId = this.shopListItems[1]['value'];
+    this.service.showTenantReadings({buildingId: this.buildingId, shopId: shopId, meterId: null});
+  }
+
   /**
      * On destroy
      */
