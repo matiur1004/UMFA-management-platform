@@ -53,7 +53,8 @@ namespace ClientPortal.Controllers
                                 Model = reader.IsDBNull(reader.GetOrdinal("Model")) ? string.Empty : reader.GetString(reader.GetOrdinal("Model")),
                                 ScadaMeterNo = reader.IsDBNull(reader.GetOrdinal("ScadaMeterNo")) ? string.Empty : reader.GetString(reader.GetOrdinal("ScadaMeterNo")),
                                 Configured = reader.IsDBNull(reader.GetOrdinal("Configured")) ? string.Empty : reader.GetString(reader.GetOrdinal("Configured")),
-                                Triggered = reader.IsDBNull(reader.GetOrdinal("Triggered")) ? string.Empty : reader.GetString(reader.GetOrdinal("Triggered"))
+                                Triggered = reader.IsDBNull(reader.GetOrdinal("Triggered")) ? string.Empty : reader.GetString(reader.GetOrdinal("Triggered")),
+                                SupplyType = reader.IsDBNull(reader.GetOrdinal("SupplyType")) ? string.Empty : reader.GetString(reader.GetOrdinal("SupplyType"))
                             };
                             resultList.Add(result);
                         }
@@ -91,5 +92,6 @@ namespace ClientPortal.Controllers
         public string ScadaMeterNo { get; set; }
         public string Configured { get; set; }
         public string Triggered { get; set; }
+        public string SupplyType { get; set; }
     }
 }

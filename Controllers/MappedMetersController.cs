@@ -129,8 +129,8 @@ namespace ClientPortal.Controllers
             _logger?.LogInformation($"Added MappedMeter {mappedMeter.MappedMeterId}");
 
             //Add AMRMeter
-            var aMrMeterNo = mappedMeter.MeterNo;
-            var mter = await _context.AMRMeters.Where(b => b.MeterNo == aMrMeterNo).FirstOrDefaultAsync();
+            var aMrMeterNo = mappedMeter.ScadaSerial;
+            var mter = await _context.AMRMeters.Where(b => b.MeterSerial == aMrMeterNo).FirstOrDefaultAsync();
             var amrMeterId = mter?.Id;
             if (mter == null)
             {
@@ -155,7 +155,7 @@ namespace ClientPortal.Controllers
                         Description = mappedMeter.Description,
                         Digits = 7,
                         MakeModelId = makeModelId,
-                        MeterNo = mappedMeter.MeterNo,
+                        MeterNo = mappedMeter.ScadaSerial,
                         MeterSerial = mappedMeter.ScadaSerial,
                         Phase = 3,
                         ProgFact = 1,
@@ -163,9 +163,9 @@ namespace ClientPortal.Controllers
                     };
 
                     var meterUpdateRequest = new AMRMeterUpdateRequest { UserId = mappedMeter.UserId, Meter = amrMeter };
-                    await _amRMeterService.AddMeterAsync(meterUpdateRequest);
+                    var meterReturned = await _amRMeterService.AddMeterAsync(meterUpdateRequest);
 
-                    amrMeterId = amrMeter.Id;
+                    amrMeterId = meterReturned.Id;
                     _logger?.LogInformation($"Added AMRMeter {amrMeter.Id}");
 
                 }
