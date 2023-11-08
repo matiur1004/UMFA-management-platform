@@ -7,8 +7,9 @@ namespace ClientPortal.Data.Repositories
 {
     public interface IPortalSpRepository
     {
-        public Task<GetSmartServicesSpResponse> GetSmartServices(GetSmartServicesSpRequest request);
-        Task<SmartServiceTenantSpResponse> GetSmartServicesForTenant(SmartServicesTenantSpRequest request);
+        public Task<GetSmartServicesSpResponse> GetSmartServicesAsync(GetSmartServicesSpRequest request);
+        public Task<SmartServiceTenantSpResponse> GetSmartServicesForTenantAsync(SmartServicesTenantSpRequest request);
+        public Task<AmrDemandProfileAlarmsSpResponse> GetAmrDemandProfileAlarmsAsync(AmrDemandProfileAlarmsSpRequest request);
     }
     public class PortalSpRepository : IPortalSpRepository
     {
@@ -19,16 +20,6 @@ namespace ClientPortal.Data.Repositories
         {
             _logger = logger;
             _dbContext = dbContext;
-        }
-
-        public async Task<GetSmartServicesSpResponse> GetSmartServices(GetSmartServicesSpRequest request)
-        {
-            return await RunStoredProcedureAsync<GetSmartServicesSpResponse, GetSmartServicesSpRequest>("spGetSmartServices", request);
-        }
-
-        public async Task<SmartServiceTenantSpResponse> GetSmartServicesForTenant(SmartServicesTenantSpRequest request)
-        {
-            return await RunStoredProcedureAsync<SmartServiceTenantSpResponse, SmartServicesTenantSpRequest>("spGetSmartServicesTenant", request);
         }
 
         private async Task<T> RunStoredProcedureAsync<T, TArgumentClass>(string procedure, TArgumentClass? args = default) where T : new()
@@ -126,6 +117,21 @@ namespace ClientPortal.Data.Repositories
 
                 return;
             }
+        }
+
+        public async Task<GetSmartServicesSpResponse> GetSmartServicesAsync(GetSmartServicesSpRequest request)
+        {
+            return await RunStoredProcedureAsync<GetSmartServicesSpResponse, GetSmartServicesSpRequest>("spGetSmartServices", request);
+        }
+
+        public async Task<SmartServiceTenantSpResponse> GetSmartServicesForTenantAsync(SmartServicesTenantSpRequest request)
+        {
+            return await RunStoredProcedureAsync<SmartServiceTenantSpResponse, SmartServicesTenantSpRequest>("spGetSmartServicesTenant", request);
+        }
+
+        public async Task<AmrDemandProfileAlarmsSpResponse> GetAmrDemandProfileAlarmsAsync(AmrDemandProfileAlarmsSpRequest request)
+        {
+            return await RunStoredProcedureAsync<AmrDemandProfileAlarmsSpResponse, AmrDemandProfileAlarmsSpRequest>("spGetDemandProfileAlarms", request);
         }
     }
 }

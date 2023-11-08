@@ -51,7 +51,7 @@ namespace ClientPortal.Services
                 var tenantDashBoardResposne = await _umfaService.GetTenantMainDashboardAsync(umfaUserId);
                 var ids = string.Join(",", tenantDashBoardResposne.BuildingServiceIds);
 
-                var smartServicesSpResponse = await _portalSpRepository.GetSmartServicesForTenant(new SmartServicesTenantSpRequest { BuildingServiceIds = ids });
+                var smartServicesSpResponse = await _portalSpRepository.GetSmartServicesForTenantAsync(new SmartServicesTenantSpRequest { BuildingServiceIds = ids });
 
                 return new TenantMainDashboardResponse(tenantDashBoardResposne, smartServicesSpResponse);
             }

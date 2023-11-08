@@ -83,6 +83,20 @@ namespace ClientPortal.Controllers
                 return BadRequest(new ApplicationException($"Error while getting tou headers: {ex.Message}"));
             }
         }
+
+        [HttpGet("demand-alarms-profiles")]
+        public async Task<ActionResult<AmrDemandProfileAlarmsResponse>> GetAmrDemandAlarmProfiles([FromQuery] AmrDemandProfileAlarmsSpRequest request)
+        {
+            try
+            {
+                return await _service.GetDemandProfileAlarmsAsync(request);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Error while getting demand alarm profiles: {e.Message}");
+                return Problem("Could not retrieve demand alarm profiles");
+            }
+        }
     }
 
     public class DemandQueryParameters
