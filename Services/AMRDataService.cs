@@ -5,8 +5,6 @@ using ClientPortal.DtOs;
 using ClientPortal.Models.FunctionModels;
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
-using DevExpress.XtraPrinting;
-using Microsoft.Azure.WebJobs;
 using System.Globalization;
 using System.IO.Compression;
 using System.Text.Json;
@@ -17,6 +15,7 @@ namespace ClientPortal.Services
     {
         Task<List<AMRTOUHeaderResponse>> GetTouHeaders();
         Task<DemandProfileResponse> GetDemandProfile(AMRDemandProfileRequest request);
+        Task<AmrDemandProfileAlarmsResponse> GetDemandProfileAlarmsAsync(AmrDemandProfileAlarmsSpRequest request);
         Task<AMRWaterProfileResponse> GetWaterProfile(AMRWaterProfileRequest request);
         Task<List<AmrJobToRun>> GetAmrJobsAsync(int profileDays);
         Task<bool> DetailQueueStatusChange(int detailId, int status);
@@ -34,15 +33,17 @@ namespace ClientPortal.Services
     {
         private readonly ILogger<AMRDataService> _logger;
         private readonly IAMRDataRepository _repo;
+        private readonly IPortalSpRepository _spRepo;
         private readonly IMapper _mapper;
         private readonly IScadaCalls _scadaCalls;
 
-        public AMRDataService(ILogger<AMRDataService> logger, IAMRDataRepository repo, IMapper mapper, IScadaCalls externalCalls)
+        public AMRDataService(ILogger<AMRDataService> logger, IAMRDataRepository repo, IMapper mapper, IScadaCalls externalCalls, IPortalSpRepository spRepo)
         {
             _logger = logger;
             _repo = repo;
             _mapper = mapper;
             _scadaCalls = externalCalls;
+            _spRepo = spRepo;
         }
 
         public async Task<bool> DetailQueueStatusChange(int detailId, int status)
@@ -698,6 +699,18 @@ namespace ClientPortal.Services
             //string jsonString = JsonSerializer.Serialize(message);
             int byteSize = Encoding.UTF8.GetByteCount(message);
             return byteSize;
+        }
+
+        public async Task<AmrDemandProfileAlarmsResponse> GetDemandProfileAlarmsAsync(AmrDemandProfileAlarmsSpRequest request)
+        {
+            var response =  await _spRepo.GetAmrDemandProfileAlarmsAsync(request);
+
+            if(response is null)
+            {
+                return null;
+            }
+
+            return new AmrDemandProfileAlarmsResponse(response);
         }
     }
 }

@@ -95,7 +95,7 @@ namespace ClientPortal.Data.Repositories
                     var alarmsConfigured = _ctxPortal.AMRMeterAlarms.Where(ac => amrMeters.Select(am => am.Id).Contains(ac.AMRMeterId));
                     var alarmsTriggered = _ctxPortal.AMRMeterTriggeredAlarms.Where(ata => alarmsConfigured.Select(ac => ac.AMRMeterAlarmId).Contains(ata.AMRMeterAlarmId) && !ata.Acknowledged);
 
-                    var smartServices = (await _portalSpRepository.GetSmartServices(new GetSmartServicesSpRequest())).SmartServices.Where(ss => buildingIds.Contains(ss.BuildingId));
+                    var smartServices = (await _portalSpRepository.GetSmartServicesAsync(new GetSmartServicesSpRequest())).SmartServices.Where(ss => buildingIds.Contains(ss.BuildingId));
 
                     stats.SmartStats = new()
                     {
