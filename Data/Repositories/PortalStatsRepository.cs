@@ -141,15 +141,18 @@ namespace ClientPortal.Data.Repositories
                 stats.BuildingStats = new() { NumberOfBuildings = 0, TotalGLA = first.TotalGLA, TotalNumberOfMeters = first.TotalNumberOfMeters };
                 stats.ShopStats = new() { NumberOfShops = first.NumberOfShops, OccupiedPercentage = first.ShopOccPerc, TotalArea = first.TotalArea };
                 stats.TenantStats = new() { NumberOfTenants = first.NumberOfTenants, OccupiedPercentage = first.TenOccPerc, RecoverablePercentage = first.RecoverablePercentage };
+
+                var smartServices = (await _portalSpRepository.GetSmartServicesAsync(new GetSmartServicesSpRequest() { BuildingId = buildingId })).SmartServices.Where(ss => ss.BuildingId == buildingId);
+
                 stats.SmartStats = new()
                 {
-                    TotalSmart = first.TotalSmart,
-                    SolarCount = first.SolarCount,
-                    GeneratorCount = first.GeneratorCount,
-                    ConsumerElectricityCount = first.ConsumerElectricityCount,
-                    ConsumerWaterCount = first.ConsumerWaterCount,
-                    BulkCount = first.BulkCount,
-                    CouncilChkCount = first.CouncilChkCount
+                    TotalSmart = smartServices.Sum(ss => ss.TotalSmart),
+                    SolarCount = smartServices.Sum(ss => ss.Solar),
+                    GeneratorCount = smartServices.Sum(ss => ss.Generator),
+                    ConsumerElectricityCount = smartServices.Sum(ss => ss.Electricity),
+                    ConsumerWaterCount = smartServices.Sum(ss => ss.Water),
+                    BulkCount = smartServices.Sum(ss => ss.Bulk),
+                    CouncilChkCount = smartServices.Sum(ss => ss.Council_Check),
                 };
 
                 var amrMeters = _ctxPortal.AMRMeters.Where(am => am.BuildingId.Equals(buildingId));
