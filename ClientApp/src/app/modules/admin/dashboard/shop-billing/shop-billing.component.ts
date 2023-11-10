@@ -482,7 +482,8 @@ export class ShopBillingComponent implements OnInit {
             let usageResult = {name: groupName, data: []};
 
             this.monthNameList.forEach(month => {
-              this.yearList.forEach(year => {
+              let reverseYears = this.yearList.reverse();
+              reverseYears.forEach(year => {
                 let filter = this.response.find(item => item['PeriodName'] == `${month} ${year}` && item['GroupName'] == groupName);
                 if(filter) result['data'].push({x: '`' + year.split('20')[1], y: filter['Amount']});
                 else result['data'].push({x: '`' + year.split('20')[1], y: 0});

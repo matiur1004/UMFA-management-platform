@@ -61,7 +61,7 @@
             ></apx-chart>
             <ng-container *ngIf="billingChartType == 'Line'">
                 <mat-tab-group class="mt-10 line-chart-tab" (selectedIndexChange)="lineChartYearChange()">
-                    <mat-tab *ngFor="let year of reverseYearList; let i = index;" label="{{year}}">
+                    <mat-tab *ngFor="let year of yearList; let i = index;" label="{{year}}">
                         <apx-chart
                             class="w-full"
                             [series]="lineChartSeries[year]"
@@ -105,7 +105,7 @@
             ></apx-chart>
             <ng-container *ngIf="usageChartType == 'Line'">
                 <mat-tab-group class="mt-10 line-chart-tab" (selectedIndexChange)="lineChartYearChange()">
-                    <mat-tab *ngFor="let year of reverseYearList; let i = index;" label="{{year}}">
+                    <mat-tab *ngFor="let year of yearList; let i = index;" label="{{year}}">
                         <apx-chart
                             class="w-full"
                             [series]="lineUsageChartSeries[year]"
@@ -121,19 +121,6 @@
                     </mat-tab>
                 </mat-tab-group>
             </ng-container>
-            <!-- <apx-chart
-                *ngIf="usageChartType == 'Line'"
-                class="w-full mt-6"
-                [series]="lineUsageChartOptions.series"
-                [chart]="lineUsageChartOptions.chart"
-                [xaxis]="lineUsageChartOptions.xaxis"
-                [stroke]="lineUsageChartOptions.stroke"
-                [markers]="lineUsageChartOptions.markers"
-                [grid]="lineUsageChartOptions.grid"
-                [yaxis]="lineUsageChartOptions.yaxis"
-                [title]="lineUsageChartOptions.title"
-                [colors]="barChartOptions.colors"
-            ></apx-chart> -->
             <div class="flex absolute left-3 top-3 gap-x-2 text-xl font-semibold">Usages</div>
             <div class="flex absolute right-2 top-2 gap-x-2">
                 <div class="p-2 graph-type-item cursor-pointer" (click)="usageChartType = 'Line'" [ngClass]="{'selected-graph-type': usageChartType == 'Line'}">

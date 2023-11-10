@@ -50,7 +50,7 @@
                 </div>
             </div>
         </div>
-        <div class="bg-gradient-to-r from-emerald-400 to-emerald-500 col-span-1 lg:col-span-2 flex flex-col flex-auto p-6 bg-card rounded-2xl overflow-hidden card cursor-pointer card-zoom-in" (click)="onDetail('Tenants')">
+        <div class="bg-gradient-to-r from-emerald-400 to-emerald-500 col-span-1 lg:col-span-2 flex flex-col flex-auto p-6 rounded-2xl overflow-hidden card cursor-pointer card-zoom-in" (click)="onDetail('Tenants')">
             <div class="flex items-start justify-between text-white h-full">
                 <div class="flex flex-col w-full gap-y-1 justify-between h-full">
                     <div class="flex w-full justify-between">
@@ -75,7 +75,7 @@
                 </div>
             </div>
         </div>
-        <div class="bg-gradient-to-r from-green-700 to-green-900 col-span-2 lg:col-span-3 flex flex-col flex-auto p-6 bg-card rounded-2xl overflow-hidden card cursor-pointer card-zoom-in">
+        <div class="bg-gradient-to-r from-green-700 to-green-900 col-span-2 lg:col-span-3 flex flex-col flex-auto p-6 rounded-2xl overflow-hidden card cursor-pointer card-zoom-in">
             <div class="flex items-start justify-between text-white h-full cursor-pointer">
                 <div class="flex flex-col w-full gap-y-1 justify-between h-full">
                     <div class="flex w-full justify-between">
@@ -111,7 +111,7 @@
                 </div>
             </div>
         </div>
-        <div class="bg-gradient-to-r from-violet-700 to-violet-900 col-span-2 lg:col-span-3 flex flex-col flex-auto p-6 bg-card rounded-2xl overflow-hidden card cursor-pointer card-zoom-in">
+        <div class="reports-bg col-span-2 lg:col-span-3 flex flex-col flex-auto p-6 rounded-2xl overflow-hidden card cursor-pointer card-zoom-in">
             <div class="flex items-start justify-between text-white h-full cursor-pointer">
                 <div class="flex flex-col w-full gap-y-1 justify-between h-full">
                     <div class="flex w-full justify-between">
@@ -134,7 +134,7 @@
                 </div>
             </div>
         </div>
-        <div class="bg-gradient-to-r from-violet-400 to-violet-600 sm:col-span-3 flex flex-col flex-auto p-6 bg-card rounded-2xl overflow-hidden card cursor-pointer card-zoom-in" *ngIf="isSmart">
+        <div class="bg-gradient-to-r from-violet-400 to-violet-600 sm:col-span-3 flex flex-col flex-auto p-6 rounded-2xl overflow-hidden card cursor-pointer card-zoom-in" *ngIf="isSmart">
             <div class="flex items-start justify-between text-white">
                 <div class="flex flex-col w-full gap-y-1">
                     <div class="flex w-full justify-between">
@@ -144,7 +144,7 @@
                                 {{stats.SmartStats.TotalSmart | number : '1.0-2'}}
                             </div>
                         </div>
-                        <mat-icon class="icon-size-10 text-white" [svgIcon]="'feather:users'"></mat-icon>
+                        <mat-icon class="icon-size-10 text-white"><img class="w-full" src="/assets/images/icons/smart_services.svg"/></mat-icon>
                     </div>
                     <div class="flex flex-col w-full gap-y-1">
                         <div class="flex w-full gap-x-4">
@@ -156,7 +156,7 @@
                                 <span class="text-md">Generator</span>
                                 <span class="text-lg font-semibold">{{stats.SmartStats.GeneratorCount}}</span>
                             </div>
-                        </div>
+                        </div> background-image:
                         <div class="flex w-full gap-x-4">
                             <div class="flex justify-between w-1/2 leading-4">
                                 <span class="text-md">Electricity</span>
