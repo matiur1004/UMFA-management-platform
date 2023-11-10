@@ -231,3 +231,8 @@ body {
 .dx-header-row > td > .dx-datagrid-text-content:not(.dx-sort-indicator):not(.dx-header-filter-indicator){
     white-space: normal;
 }
+.line-chart-tab {
+    &.mat-tab-group .mat-tab-body-content {
+        padding: 12px 0;
+    }
+}

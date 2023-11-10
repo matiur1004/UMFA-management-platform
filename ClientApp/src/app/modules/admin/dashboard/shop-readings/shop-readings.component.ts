@@ -70,7 +70,8 @@ export class ShopReadingsComponent implements OnInit {
   lineUsageChartSeries: any = {};
   public barChartOptions: Partial<BarChartOptions>;
   public lineUsageChartOptions: Partial<LineChartOptions>;
-
+  selectedIndex: number = 0;
+  
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   readonly allowedPageSizes = AllowedPageSizes;
   
@@ -129,7 +130,7 @@ export class ShopReadingsComponent implements OnInit {
       series: [
       ],
       chart: {
-        height: 400,
+        height: 450,
         type: "line",
         toolbar: {
           show: false

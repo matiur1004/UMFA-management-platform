@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { DXReportService } from '@shared/services';
-import { exportDataGrid, exportPivotGrid } from 'devextreme/excel_exporter';
+import { exportDataGrid } from 'devextreme/excel_exporter';
 import { Workbook } from 'exceljs';
 import { Subject, takeUntil } from 'rxjs';
 import saveAs from 'file-saver';

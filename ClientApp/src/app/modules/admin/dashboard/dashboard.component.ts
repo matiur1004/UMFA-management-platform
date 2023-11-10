@@ -730,6 +730,27 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                 }
             });
         //Wip
+        let res = {
+            // "buildingId": 2403,
+            // "partnerId": 7,
+            "buildingId": 2403,
+            "shopId": 62336,
+        }
+        this._dbService.getShopDashboardAssignedMeters(res['buildingId'], res['shopId'])
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(result => {
+                if(result) {
+                    let newTab: IHomeTab = {
+                        id: 0,
+                        title: `Assigned Meters`,
+                        type: 'ShopDashboarAssignedMeters',
+                        dataSource: {}
+                    };
+                    this.tabsList.push(newTab);
+                    this.selectedTab = this.tabsList.length;
+                    this._cdr.detectChanges();
+                }
+            });
     }
 
     onDetail(type: EHomeTabType) {

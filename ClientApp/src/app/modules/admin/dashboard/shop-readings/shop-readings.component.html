@@ -77,7 +77,7 @@
             [legend]="barChartOptions.legend"
         ></apx-chart>
         <ng-container *ngIf="billingChartType == 'Line'">
-            <mat-tab-group class="mt-10 line-chart-tab" (selectedIndexChange)="lineChartYearChange()">
+            <mat-tab-group class="mt-10 line-chart-tab" (selectedIndexChange)="selectedIndex = $event; lineChartYearChange()" [selectedIndex]="selectedIndex">
                 <mat-tab *ngFor="let year of reverseYearList; let i = index;" label="{{year}}">
                     <apx-chart
                         class="w-full"
