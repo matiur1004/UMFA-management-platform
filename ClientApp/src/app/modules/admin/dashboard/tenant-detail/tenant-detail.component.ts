@@ -378,6 +378,8 @@ export class TenantDetailComponent implements OnInit {
 
             this.commonBarChartOptions.xaxis.categories = this.monthAbbrList;
             this.commonLineChartOptions.xaxis.categories = this.monthAbbrList;
+            this.commonUsageBarChartOptions.xaxis.categories = this.monthAbbrList;
+            this.commonLineUsageChartOptions.xaxis.categories = this.monthAbbrList;
 
             this.utilityList.forEach(utility => {
               this.groupsByUtility[utility] = [];

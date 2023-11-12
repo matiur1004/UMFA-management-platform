@@ -58,7 +58,6 @@ export class ShopReadingsComponent implements OnInit {
 
   form: UntypedFormGroup;
   yearList: any[] = [];
-  reverseYearList: any[] = [];
 
   initMonthNameList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   initMonthAbbrList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -98,7 +97,8 @@ export class ShopReadingsComponent implements OnInit {
         stacked: true,
         toolbar: {
           show: false
-        }
+        },
+        offsetX: -10
       },
       dataLabels: {
         enabled: false
@@ -134,7 +134,8 @@ export class ShopReadingsComponent implements OnInit {
         type: "line",
         toolbar: {
           show: false
-        }
+        },
+        offsetX: -10
       },
       dataLabels: {
         enabled: true
@@ -204,7 +205,6 @@ export class ShopReadingsComponent implements OnInit {
             }
           });
 
-          this.reverseYearList = this.yearList.reverse();
           let lastMonth = res[res.length - 1]['PeriodName'].split(' ')[0];
           let monthIdx = this.initMonthNameList.indexOf(lastMonth);
           for(let k = monthIdx; k >=0; k--) {
@@ -283,6 +283,10 @@ export class ShopReadingsComponent implements OnInit {
     this.dashboardService.getShopBillingsByMeter(this.form.get('meterId').value, this.shopId, this.buildingId).subscribe();
   }
 
+  changeGraphType() {
+    this.barChartOptions.chart.offsetX = 0;
+    this.lineUsageChartOptions.chart.offsetX = 0;
+  }
   /**
      * On destroy
      */
