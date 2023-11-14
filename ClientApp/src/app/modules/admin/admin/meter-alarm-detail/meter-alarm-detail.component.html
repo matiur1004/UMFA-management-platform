@@ -35,7 +35,7 @@
                 <dx-chart [dataSource]="profileDataSource.Readings" [customizePoint]="customizePoint" (onPointClick)="pointClick($event)" class="w-full">
                     <dxo-title [text]="chartTitleWater" [subtitle]="chartSubTitleWater"></dxo-title>
                     <dxo-size [height]="500"></dxo-size>
-                    <dxi-series argumentField="ReadingDateString" valueField="Energy" type="bar" color="blue" name="Usage(kL)">
+                    <dxi-series argumentField="ReadingDateString" valueField="Energy" type="bar" name="Usage(kWh)" [color]="profileDataSource.Readings[0]['Color']">
                       <dxo-hover-style color="#0af5ed"></dxo-hover-style>
                     </dxi-series>
                     <dxo-argument-axis argumentType="string">
@@ -56,7 +56,7 @@
                 <dx-chart [dataSource]="profileDataSource.Detail" [customizePoint]="customizePoint" (onPointClick)="pointClick($event)" class="w-full">
                     <dxo-title [text]="chartTitleWater" [subtitle]="chartSubTitleWater"></dxo-title>
                     <dxo-size [height]="500"></dxo-size>
-                    <dxi-series argumentField="ReadingDateString" valueField="ActFlow" type="bar" color="blue" name="Usage(kL)">
+                    <dxi-series argumentField="ReadingDateString" valueField="ActFlow" type="bar" [color]="profileDataSource.Readings[0]['Color']" name="Usage(kL)">
                       <dxo-hover-style color="#0af5ed"></dxo-hover-style>
                     </dxi-series>
                     <dxo-argument-axis argumentType="string">
