@@ -82,7 +82,6 @@ export class AlarmConfigurationComponent implements OnInit {
           }
           return item;
         });
-        this.supplyTypeItems.push({value: 'Water', label: 'Water'});
         this.metersWithAlarms = this.totalMetersWithAlarms;
       })
       
