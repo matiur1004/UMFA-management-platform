@@ -198,7 +198,7 @@ export class MeterAlarmDetailComponent implements OnInit {
       this.profileDataSource = ds;
       if (ds) {
         this.chartTitleWater = `Alarm Configuration for Meter: ${this.meter.Description} (${this.meter.MeterNo})`;
-        this.chartSubTitleWater = `Usages for period: ${ds.Header.PeriodUsage.toFixed(2)}kL, Maximun flow: ${ds.Header.MaxDemand.toFixed(2)}kL at ${pipe.transform(ds.Header.MaxDemandDate, "HH:mm on dd MMM yyyy")}`;
+        this.chartSubTitleWater = `Usages for period: ${ds.Header.PeriodUsage.toFixed(2)}kWh, Maximun Demand: ${ds.Header.MaxDemand.toFixed(2)}kVA at ${pipe.transform(ds.Header.MaxDemandDate, "HH:mm on dd MMM yyyy")}`;
       }
     }
   }
