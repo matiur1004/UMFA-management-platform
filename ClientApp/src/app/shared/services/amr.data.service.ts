@@ -188,9 +188,23 @@ export class AmrDataService {
     this.bsMeterGraphProfile.next(null);
     let url = `${CONFIG.apiURL}/AMRMeterGraphs/getGraphProfile?MeterID=${meterId}&StartDate=${formatDateString(sDate)}&EndDate=${formatDateString(eDate)}`;
     url += `&NightFlowStart=${formatTimeString(nfsTime)}&NightFlowEnd=${formatTimeString(nfeTime)}&applyNightFlow=${applyNightFlow}`;
-    // let url = `${CONFIG.apiURL}${CONFIG.getWaterProfile}?MeterID=${meterId}&StartDate=${formatDateString(sDate)}&EndDate=${formatDateString(eDate)}`;
-    // url += `&NightFlowStart=${formatTimeString(nfsTime)}&NightFlowEnd=${formatTimeString(nfeTime)}`;
-    console.log('url', url);
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchErrors(err)),
+        //tap(p =>
+        //  console.log(`Http response from getDemandProfile: ${p.Status}`)
+        //),
+        map((prof: any) => {
+          this.bsMeterGraphProfile.next(prof);
+          return prof;
+        })
+      );
+  }
+
+  getMeterProfileForGraphOfElectricity(meterId: number, sDate: Date, eDate: Date, nfsTime: Time, nfeTime: Time, applyNightFlow: boolean) {
+    this.bsMeterGraphProfile.next(null);
+    let url = `${CONFIG.apiURL}/AMRData/demand-alarms-profiles?MeterId=${meterId}&SDate=${formatDateString(sDate)}&EDate=${formatDateString(eDate)}`;
+    url += `&NightFlowStart=${formatTimeString(nfsTime)}&NightFlowEnd=${formatTimeString(nfeTime)}&applyNightFlow=${applyNightFlow}`;
     return this.http.get<any>(url, { withCredentials: true })
       .pipe(
         catchError(err => this.catchErrors(err)),

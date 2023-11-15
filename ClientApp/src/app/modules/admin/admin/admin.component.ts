@@ -41,10 +41,9 @@ export class AdminComponent implements OnInit {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: any) => {
         if(data) {
-          this.detailsList.push(data);          
+          this.detailsList.push(data);
           this.selectedTab = this.detailsList.length - 1 + ( this.roleId == this.roleType.UMFAOperator ? 5 : 7 ) ;
         }
-
       });
   }
 
