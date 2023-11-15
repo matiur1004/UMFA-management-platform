@@ -61,7 +61,6 @@ export class ShopBillingComponent implements OnInit {
   tenantList: any[] = [];
   groupNameList: any[] = [];
   yearList: any[] = [];
-  reverseYearList: any[] = [];
   utilityList: any[] = [];
   groupsByUtility: any = {};
   billingChartType = 'Bar';
@@ -348,7 +347,6 @@ export class ShopBillingComponent implements OnInit {
             return item;
           });
 
-          this.reverseYearList = this.yearList.reverse();
           let lastMonth = res[res.length - 1]['PeriodName'].split(' ')[0];
           let monthIdx = this.initMonthNameList.indexOf(lastMonth);
           for(let k = monthIdx; k >=0; k--) {
@@ -482,8 +480,7 @@ export class ShopBillingComponent implements OnInit {
             let usageResult = {name: groupName, data: []};
 
             this.monthNameList.forEach(month => {
-              let reverseYears = this.yearList.reverse();
-              reverseYears.forEach(year => {
+              this.yearList.forEach(year => {
                 let filter = this.response.find(item => item['PeriodName'] == `${month} ${year}` && item['GroupName'] == groupName);
                 if(filter) result['data'].push({x: '`' + year.split('20')[1], y: filter['Amount']});
                 else result['data'].push({x: '`' + year.split('20')[1], y: 0});
