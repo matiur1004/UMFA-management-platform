@@ -38,6 +38,24 @@
                     >
                 </ng-select>
             </div>
+            <div class="flex flex-col">
+                <mat-label class="form-label"> Supply Type </mat-label>
+                <ng-select
+                    [items]="supplyTypeItems"
+                    bindLabel="label"
+                    bindValue="value"
+                    class="w-60"
+                    [placeholder]="'Supply Type'"
+                    [formControlName]="'supplyType'"
+                    [searchable]="true"
+                    [closeOnSelect]="true"
+                    [clearable]="false"
+                    [multiple]="false"
+                    [searchFn]="customSearch"
+                    (change)="onSupplyTypeChange($event)"
+                    >
+                </ng-select>
+            </div>
         </div>
         <dx-data-grid
             [dataSource]="metersWithAlarms"

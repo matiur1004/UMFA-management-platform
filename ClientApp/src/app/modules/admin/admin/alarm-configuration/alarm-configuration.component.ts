@@ -15,6 +15,7 @@ export class AlarmConfigurationComponent implements OnInit {
   
   readonly allowedPageSizes = AllowedPageSizes;
   
+  totalMetersWithAlarms: any[] = [];
   metersWithAlarms: any[] = [];
   searchForm: UntypedFormGroup;
   partners: IUmfaPartner[] = [];
@@ -23,6 +24,7 @@ export class AlarmConfigurationComponent implements OnInit {
   isSelectedAlarm: boolean = false;
   applyFilterTypes: any;
   currentFilter: any;
+  supplyTypeItems: any[] = [];
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
@@ -45,12 +47,15 @@ export class AlarmConfigurationComponent implements OnInit {
   ngOnInit(): void {
     this.searchForm = this._formBuilder.group({
       partnerId: [],
-      buildingId: []
+      buildingId: [],
+      supplyType: [null]
     });
     this._alarmConfigurationService.metersWithAlarms$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: any) => {
-        this.metersWithAlarms = data.map(item => {
+        this.supplyTypeItems = [{value: null, label: 'All'}];
+        this.totalMetersWithAlarms = data.map(item => {
+          if(!this.supplyTypeItems.find(obj => obj['value'] == item['SupplyType'])) this.supplyTypeItems.push({value: item['SupplyType'], label: item['SupplyType']});
           let configured = item['Configured'];
           let triggered = item['Triggered'];
           if(configured) {
@@ -77,6 +82,7 @@ export class AlarmConfigurationComponent implements OnInit {
           }
           return item;
         });
+        this.metersWithAlarms = this.totalMetersWithAlarms;
       })
       
     this._buildingService.buildings$
@@ -125,6 +131,15 @@ export class AlarmConfigurationComponent implements OnInit {
 
   alarmConfigTemplate() {
 
+  }
+
+  onSupplyTypeChange(event) {
+    if(event.value) {
+      this.metersWithAlarms = this.totalMetersWithAlarms.filter(obj => obj['SupplyType'] == event.value);
+    } else {
+      this.metersWithAlarms = this.totalMetersWithAlarms;
+    }
+    
   }
 
   ngOnDestroy() {
