@@ -2,12 +2,14 @@
 using ClientPortal.Data.Repositories;
 using ClientPortal.Helpers;
 using ClientPortal.Models.RequestModels;
+using ClientPortal.Models.ResponseModels;
+using ServiceStack;
 
 namespace ClientPortal.Services
 {
     public interface IScadaRequestService
     {
-        public Task<List<ScadaRequestHeader>> GetScadaRequestHeadersAsync();
+        public Task<List<ScadaRequestHeaderResponse>> GetScadaRequestHeadersAsync();
         public Task<ScadaRequestHeader> GetScadaRequestHeaderAsync(int id);
         public Task<ScadaRequestHeader> UpdateScadaRequestHeaderAsync(ScadaRequestHeaderUpdateRequest scadaRequestHeader);
         public Task<ScadaRequestHeader> AddScadaRequestHeaderAsync(ScadaRequestHeaderRequest scadaRequestHeader);
@@ -44,9 +46,9 @@ namespace ClientPortal.Services
             return await _scadaRequestHeaderRepo.GetAsync(id, nameof(ScadaRequestHeader.Id), x => x.ScadaRequestDetails);
         }
 
-        public async Task<List<ScadaRequestHeader>> GetScadaRequestHeadersAsync()
+        public async Task<List<ScadaRequestHeaderResponse>> GetScadaRequestHeadersAsync()
         {
-            return await _scadaRequestHeaderRepo.GetAllAsync(x => x.ScadaRequestDetails);
+            return (await _scadaRequestHeaderRepo.GetAllAsync(x => x.ScadaRequestDetails)).Select(x => new ScadaRequestHeaderResponse(x)).ToList();
         }
 
         public async Task<ScadaRequestHeader> UpdateScadaRequestHeaderAsync(ScadaRequestHeaderUpdateRequest scadaRequestHeader)
