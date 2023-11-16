@@ -2,6 +2,7 @@
 using ClientPortal.Data;
 using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Models.RequestModels;
+using ClientPortal.Models.ResponseModels;
 using ClientPortal.Models.ScadaRequestsForTableUpdate;
 using ClientPortal.Services;
 
@@ -25,7 +26,7 @@ namespace ClientPortal.Controllers
 
         // GET: getScadaRequestHeaders
         [HttpGet("getScadaRequestHeaders")]
-        public async Task<ActionResult<IEnumerable<ScadaRequestHeader>>> GetScadaRequestHeaders()
+        public async Task<ActionResult<IEnumerable<ScadaRequestHeaderResponse>>> GetScadaRequestHeaders()
         {
             var result = await _requestService.GetScadaRequestHeadersAsync();
             if (result == null)
