@@ -82,7 +82,9 @@ export class AlarmConfigurationComponent implements OnInit {
           }
           return item;
         });
-        this.metersWithAlarms = this.totalMetersWithAlarms;
+        this.searchForm.get('supplyType').setValue(this._alarmConfigurationService.selectedSupplyType);
+        if(!this._alarmConfigurationService.selectedSupplyType) this.metersWithAlarms = this.totalMetersWithAlarms;
+        else this.metersWithAlarms = this.totalMetersWithAlarms.filter(obj => obj['SupplyType'] == this._alarmConfigurationService.selectedSupplyType);
       })
       
     this._buildingService.buildings$
