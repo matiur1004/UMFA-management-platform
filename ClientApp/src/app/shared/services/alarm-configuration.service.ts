@@ -12,6 +12,7 @@ export class AlarmConfigurationService {
     profileInfo: any;
     selectedBuilding: number;
     selectedPartner: number;
+    selectedSupplyType: string;
     
     private _alarmMeterDetail: BehaviorSubject<any> = new BehaviorSubject(null);
     private _metersWithAlarms: BehaviorSubject<any> = new BehaviorSubject([]);
