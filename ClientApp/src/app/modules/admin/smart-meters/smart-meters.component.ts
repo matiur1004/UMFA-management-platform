@@ -16,7 +16,7 @@ export class SmartMetersComponent implements OnInit {
   roleType = RoleType;
   
   detailsList: any[] = [];
-  minimalTabLength = 6;
+  minimalTabLength = 1;
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
@@ -29,16 +29,12 @@ export class SmartMetersComponent implements OnInit {
     //this.selectedTab = 6;
     this.roleId = this._userService.userValue.RoleId;
 
-    if(this.roleId == this.roleType.UMFAOperator) {
-      this.selectedTab = this.selectedTab - 2;
-      this.minimalTabLength = 4;
-    }
     this._meterService.detailMeterAlarm$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: any) => {
         if(data) {
           this.detailsList.push(data);
-          this.selectedTab = this.detailsList.length - 1 + ( this.roleId == this.roleType.UMFAOperator ? 5 : 7 ) ;
+          this.selectedTab = this.detailsList.length - 1 + 2;
         }
       });
   }
