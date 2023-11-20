@@ -98,7 +98,6 @@ import { TenantReadingsComponent } from './tenant-readings/tenant-readings.compo
         DxSelectBoxModule,
         DxPivotGridModule,
         DxSparklineModule,
-        NgApexchartsModule,
         MatTabsModule,
         NgSelectModule,
         DxTreeMapModule,

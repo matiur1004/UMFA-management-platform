@@ -359,7 +359,6 @@ export class TenantBillingComponent implements OnInit {
             return item;
           });
 
-          this.reverseYearList = this.yearList.reverse();
           let lastMonth = res[res.length - 1]['PeriodName'].split(' ')[0];
           let monthIdx = this.initMonthNameList.indexOf(lastMonth);
           for(let k = monthIdx; k >=0; k--) {
@@ -429,7 +428,6 @@ export class TenantBillingComponent implements OnInit {
             periodId: this.periodIdList[periodIdx],
             reportType: 1
           }
-          console.log(data);
           this.service.showTenantSlipDetail(data);
         });
       });

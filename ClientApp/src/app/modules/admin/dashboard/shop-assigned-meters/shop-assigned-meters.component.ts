@@ -4,6 +4,25 @@ import { DashboardService } from '../dasboard.service';
 import { AllowedPageSizes } from '@core/helpers';
 import moment from 'moment';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexFill, ApexLegend, ApexPlotOptions, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis } from 'ng-apexcharts';
+
+export type ChartSparklineOptions = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  markers: any; //ApexMarkers;
+  stroke: any; //ApexStroke;
+  yaxis: ApexYAxis | ApexYAxis[];
+  plotOptions: ApexPlotOptions;
+  dataLabels: ApexDataLabels;
+  colors: string[];
+  labels: string[] | number[];
+  title: ApexTitleSubtitle;
+  subtitle: ApexTitleSubtitle;
+  legend: ApexLegend;
+  fill: ApexFill;
+  tooltip: ApexTooltip;
+};
 
 @Component({
   selector: 'app-shop-assigned-meters',
@@ -21,6 +40,44 @@ export class ShopAssignedMetersComponent implements OnInit {
   form: UntypedFormGroup;
   activeItemList = ['Yes', 'No', 'All'];
   allItems: any[] = [];
+
+  public commonLineSparklineOptions: Partial<ChartSparklineOptions> = {
+    chart: {
+      type: "line",
+      width: 140,
+      height: 30,
+      sparkline: {
+        enabled: true
+      }
+    },
+    tooltip: {
+      fixed: {
+        enabled: false
+      },
+      x: {
+        show: false
+      },
+      y: {
+        title: {
+          formatter: function(seriesName) {
+            return "";
+          }
+        }
+      },
+      marker: {
+        show: false
+      }
+    },
+    markers: {size: 4},
+    stroke: {
+      show: true,
+      curve: 'smooth',
+      lineCap: 'butt',
+      colors: undefined,
+      width: 3,
+      dashArray: 0,       
+    }
+  };
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   readonly allowedPageSizes = AllowedPageSizes;
@@ -51,7 +108,7 @@ export class ShopAssignedMetersComponent implements OnInit {
           this.allItems = res.map(item => {
             let historyVal = item.UsageHistory ? item.UsageHistory.split(", ") : [];
             historyVal = historyVal.map(val => Number(val));
-            return {...item, UsageHistory: historyVal};
+            return {...item, UsageHistory: [{data: historyVal}]};
           });
           this.dataSource = this.allItems;
         }
