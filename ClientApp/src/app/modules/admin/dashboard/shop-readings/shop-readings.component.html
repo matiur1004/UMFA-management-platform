@@ -77,8 +77,8 @@
             [legend]="barChartOptions.legend"
         ></apx-chart>
         <ng-container *ngIf="billingChartType == 'Line'">
-            <mat-tab-group class="mt-10 line-chart-tab" (selectedIndexChange)="lineChartYearChange()">
-                <mat-tab *ngFor="let year of reverseYearList; let i = index;" label="{{year}}">
+            <mat-tab-group class="mt-10 line-chart-tab" (selectedIndexChange)="selectedIndex = $event; lineChartYearChange()" [selectedIndex]="selectedIndex">
+                <mat-tab *ngFor="let year of yearList; let i = index;" label="{{year}}">
                     <apx-chart
                         class="w-full"
                         [series]="lineUsageChartSeries[year]"
@@ -96,11 +96,11 @@
         </ng-container>
         <div class="flex absolute left-3 top-3 gap-x-2 text-2xl font-semibold">Billing Usages</div>
         <div class="flex absolute right-2 top-2 gap-x-2">
-            <div class="p-2 graph-type-item cursor-pointer" (click)="billingChartType = 'Line'" [ngClass]="{'selected-graph-type': billingChartType == 'Line'}">
+            <div class="p-2 graph-type-item cursor-pointer" (click)="billingChartType = 'Line'; changeGraphType()" [ngClass]="{'selected-graph-type': billingChartType == 'Line'}">
                 <img src="/assets/images/icons/line-graph.svg" class="h-full">
             </div>
             <div class="border-graph"></div>
-            <div class="p-2 graph-type-item cursor-pointer" (click)="billingChartType = 'Bar'" [ngClass]="{'selected-graph-type': billingChartType == 'Bar'}">
+            <div class="p-2 graph-type-item cursor-pointer" (click)="billingChartType = 'Bar'; changeGraphType()" [ngClass]="{'selected-graph-type': billingChartType == 'Bar'}">
                 <img src="/assets/images/icons/bar-graph.svg" class="h-full">
             </div>                
         </div>

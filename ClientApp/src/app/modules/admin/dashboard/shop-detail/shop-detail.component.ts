@@ -374,6 +374,8 @@ export class ShopDetailComponent implements OnInit {
           this.monthAbbrList = this.monthAbbrList.reverse();
           this.commonBarChartOptions.xaxis.categories = this.monthAbbrList;
           this.commonLineChartOptions.xaxis.categories = this.monthAbbrList;
+          this.commonUsageBarChartOptions.xaxis.categories = this.monthAbbrList;
+          this.commonLineUsageChartOptions.xaxis.categories = this.monthAbbrList;
 
           this.shopDetailDashboard.PeriodBillings.forEach(billing => {
             this.groupList.push(billing.GroupName.trim());
