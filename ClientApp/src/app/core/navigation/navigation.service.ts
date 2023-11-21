@@ -67,6 +67,17 @@ export class NavigationService
                 link: '/admin',
                 icon    : 'feather:gear',
                 hidden: function(){    
+                    if(roleId == RoleType.UMFAAdministrator) return false;
+                    return true;
+                }
+            },
+            {
+                id: 'smart-meters',
+                title: 'Smart Meters',
+                type: 'basic',
+                link: '/smart-meters',
+                icon    : 'feather:smart-meters',
+                hidden: function(){    
                     if(roleId == RoleType.UMFAAdministrator || roleId == RoleType.UMFAOperator) return false;
                     return true;
                 }

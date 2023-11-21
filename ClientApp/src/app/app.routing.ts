@@ -77,6 +77,7 @@ export const appRoutes: Route[] = [
             {path: 'project', loadChildren: () => import('app/modules/admin/dashboard/dashboard.module').then(m => m.DashboardModule)},
             {path: 'reports', loadChildren: () => import('app/modules/admin/reports/reports.module').then(m => m.ReportsModule)},
             {path: 'admin', loadChildren: () => import('app/modules/admin/admin/admin.module').then(m => m.AdminModule)},
+            {path: 'smart-meters', loadChildren: () => import('app/modules/admin/smart-meters/smart-meters.module').then(m => m.SmartMetersModule)},
         ]
     }
 ];

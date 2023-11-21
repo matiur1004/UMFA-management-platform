@@ -9,8 +9,6 @@ import { AmrUserEditComponent } from './amr-user/amr-user-edit/amr-user-edit.com
 import { AMRMeterDetailComponent } from './amr-meter/amr-meter-detail.component';
 import { AmrMeterEditComponent } from './amr-meter/amr-meter-edit/amr-meter-edit.component';
 import { UserDataResolver } from 'app/shared/resolvers/user.resolver';
-import { MeterMappingComponent } from './meter-mapping/meter-mapping.component';
-import { MeterMappingResolver } from './meter-mapping/meter-mapping.resolver';
 import { UserManagementComponent } from './user-management/user-management.component';
 import { UserManagementResolver } from './user-management/user-management.resolver';
 import { UmfaAdministratorAuthGuard } from '@shared/infrastructures/umfa-administrator.auth.guard';
@@ -21,8 +19,6 @@ import { AmrScheduleResolver } from './amr-schedule/amr-schedule.resolver';
 import { AmrScheduleEditResolver } from './amr-schedule/amr-schedule-edit/amr-schedule-edit.resolver';
 import { AmrMeterAssignmentsComponent } from './amr-schedule/amr-meter-assignments/amr-meter-assignments.component';
 import { AmrMeterAssignmentsResolver } from './amr-schedule/amr-meter-assignments/amr-meter-assignments.resolver';
-import { AlarmConfigurationComponent } from './alarm-configuration/alarm-configuration.component';
-import { AlarmConfigurationResolver } from './alarm-configuration/alarm-configuration.resolver';
 import { UserNotificationsResolver } from './user-notifications/user-notifications.resolver';
 import { UserNotificationsComponent } from './user-notifications/user-notifications.component';
 const routes: Routes = [
@@ -57,13 +53,6 @@ const routes: Routes = [
         path: 'amrMeter/edit/:opId/:meterId', component: AmrMeterEditComponent
       },
       {
-        path: 'meterMapping', component: MeterMappingComponent,
-        canActivate: [UmfaOperatorAuthGuard],
-        resolve  : {
-          data: MeterMappingResolver
-        } 
-      },
-      {
         path: 'user-management', component: UserManagementComponent,
         canActivate: [UmfaAdministratorAuthGuard],
         resolve  : {
@@ -89,13 +78,6 @@ const routes: Routes = [
         canActivate: [UmfaOperatorAuthGuard],
         resolve  : {
           data: AmrMeterAssignmentsResolver
-        }
-      },
-      {
-        path: 'alarm-configuration', component: AlarmConfigurationComponent,
-        canActivate: [UmfaOperatorAuthGuard],
-        resolve  : {
-          data: AlarmConfigurationResolver
         }
       },
       {

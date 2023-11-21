@@ -222,6 +222,6 @@ export class BuildingDetailComponent implements OnInit {
     this._alarmConfigurationService.selectedBuilding = this.buildingId;
     this._alarmConfigurationService.selectedPartner = this.partnerId;
     this._alarmConfigurationService.selectedSupplyType = type;
-    this._router.navigateByUrl('/admin/alarm-configuration');
+    this._router.navigateByUrl('/smart-meters/alarm-configuration');
   }
 }

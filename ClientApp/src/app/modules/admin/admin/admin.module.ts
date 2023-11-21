@@ -25,7 +25,6 @@ import { MatInputModule } from '@angular/material/input';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AmrUserPasswordComponent } from './amr-user/amr-user-password/amr-user-password.component';
 import { PasswordMatchDirective } from 'app/shared/validators/password-match.directive';
-import { MeterMappingComponent } from './meter-mapping/meter-mapping.component';
 import { UserManagementComponent } from './user-management/user-management.component';
 import { RoleAddEditPopupComponent } from './user-management/role-add-edit-popup/role-add-edit-popup.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -34,7 +33,6 @@ import { AmrScheduleEditComponent } from './amr-schedule/amr-schedule-edit/amr-s
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AmrMeterAssignmentsComponent } from './amr-schedule/amr-meter-assignments/amr-meter-assignments.component';
 import { AmrMeterAssignmentEditComponent } from './amr-schedule/amr-meter-assignment-edit/amr-meter-assignment-edit.component';
-import { AlarmConfigurationComponent } from './alarm-configuration/alarm-configuration.component';
 import { UserNotificationsComponent } from './user-notifications/user-notifications.component';
 import { SetUserNotificationComponent } from './user-notifications/set-user-notification/set-user-notification.component';
 import { NotificationsPopupComponent } from './user-management/notifications-popup/notifications-popup.component';
@@ -51,14 +49,12 @@ import { MeterAlarmDetailModule } from './meter-alarm-detail/meter-alarm-detail.
     AmrMeterEditComponent,
     AmrUserPasswordComponent,
     PasswordMatchDirective,
-    MeterMappingComponent,
     UserManagementComponent,
     RoleAddEditPopupComponent,
     AmrScheduleComponent,
     AmrScheduleEditComponent,
     AmrMeterAssignmentsComponent,
     AmrMeterAssignmentEditComponent,
-    AlarmConfigurationComponent,
     UserNotificationsComponent,
     SetUserNotificationComponent,
     NotificationsPopupComponent
