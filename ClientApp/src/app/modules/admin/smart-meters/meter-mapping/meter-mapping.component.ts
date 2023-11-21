@@ -49,6 +49,8 @@ export class MeterMappingComponent implements OnInit {
     selectedScadaMeter: any;
     selectedMappedMeter: any;
     buildings: IUmfaBuilding[];
+    allBuildings: IUmfaBuilding[] = [];
+    partners: IUmfaBuilding[];
     readonly allowedPageSizes = [10, 15, 20, 50, 'All'];
     selectedRegistryControl = new FormControl();
     selectedTOUControl = new FormControl();
@@ -93,6 +95,7 @@ export class MeterMappingComponent implements OnInit {
     ngOnInit() {
         this.form = this._formBuilder.group({
             //Id: [0],
+            partnerId: [null, Validators.required],
             UmfaId: [null, Validators.required],
             UmfaMeterId: [null, Validators.required],
             ScadaMeterId: [null, Validators.required],
@@ -106,7 +109,14 @@ export class MeterMappingComponent implements OnInit {
         this.bldService.buildings$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((data: IUmfaBuilding[]) => {
+                this.allBuildings = data;
                 this.buildings = data;
+            });
+
+        this.bldService.partners$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((data: any[]) => {
+                this.partners = data;
             });
 
         this.mappedMetersService.registerTypes$
@@ -355,6 +365,10 @@ export class MeterMappingComponent implements OnInit {
             else item.Mapped = false;
             return item;
         });
+    }
+
+    onPartnerChanged(event) {
+        this.buildings = this.allBuildings.filter(obj => obj.PartnerId == event.Id);
     }
 
     ngOnDestroy(): void {
