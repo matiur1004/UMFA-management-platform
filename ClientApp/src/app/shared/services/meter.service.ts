@@ -138,6 +138,10 @@ export class MeterService {
     this._detailMeterAlarm.next(data);
   }
 
+  destroy() {
+
+  }
+  
   //catches errors
   private catchErrors(error: { error: { message: any; }; message: any; }): Observable<Response> {
     if (error && error.error && error.error.message) { //clientside error

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { RoleType } from '@core/models';
 import { MeterService, UserService } from '@shared/services';
+import { AlarmConfigurationService } from '@shared/services/alarm-configuration.service';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -20,7 +21,7 @@ export class SmartMetersComponent implements OnInit {
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
-  constructor(private router: Router, private _userService: UserService, private _meterService: MeterService) { }
+  constructor(private router: Router, private _userService: UserService, private _meterService: MeterService, private _alarmConfigurationService: AlarmConfigurationService) { }
 
   ngOnInit(): void {
     if(location.pathname.includes('meterMapping')) this.selectedTab = 0;
@@ -58,6 +59,7 @@ export class SmartMetersComponent implements OnInit {
   ngOnDestroy() {
     this.detailsList = [];
     this._meterService.onSelectMeterAlarm(null);
+    this._alarmConfigurationService.destroy();
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }

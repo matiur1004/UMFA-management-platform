@@ -229,6 +229,9 @@ export class AlarmConfigurationService {
     destroy() {
         //this._alarmMeterDetail.next(null);
         this._metersWithAlarms.next([]);
+        this.selectedBuilding = null;
+        this.selectedPartner = null;
+        this.selectedSupplyType = null;
     }
 
     destroyMeterAlarmDetail() {
