@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { formatDateString } from '@core/utils/umfa.help';
 import { AlarmConfigurationService } from '@shared/services/alarm-configuration.service';
@@ -10,7 +10,7 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrls: ['./alarm-daily-usage.component.scss']
 })
 export class AlarmDailyUsageComponent implements OnInit {
-  
+  @Input() meter;
   @Output() onChangeGraph: EventEmitter<any> = new EventEmitter<any>();
   @Output() save: EventEmitter<any> = new EventEmitter<any>();
   @Output() delete: EventEmitter<any> = new EventEmitter<any>();

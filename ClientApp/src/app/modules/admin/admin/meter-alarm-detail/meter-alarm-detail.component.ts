@@ -194,9 +194,13 @@ export class MeterAlarmDetailComponent implements OnInit {
   setDataSourceForElectricity(ds: any): void {
     var pipe = new DatePipe('en_ZA');
     if (ds) {
-      ds.Readings.forEach((det) => { det.ReadingDateString = pipe.transform(det.ReadingDate, "yyyy-MM-dd HH:mm") });
+      if(ds.MeterData) {
+        ds.Readings = ds.MeterData.map((det) => {det.ReadingDateString = pipe.transform(det.ReadingDate, "yyyy-MM-dd HH:mm"); return det; });
+      } else {
+        ds.Readings.forEach((det) => { det.ReadingDateString = pipe.transform(det.ReadingDate, "yyyy-MM-dd HH:mm") });
+      }
       this.profileDataSource = ds;
-      if (ds) {
+      if (ds && ds.Header) {
         this.chartTitleWater = `Alarm Configuration for Meter: ${this.meter.Description} (${this.meter.MeterNo})`;
         this.chartSubTitleWater = `Usages for period: ${ds.Header.PeriodUsage.toFixed(2)}kWh, Maximun Demand: ${ds.Header.MaxDemand.toFixed(2)}kVA at ${pipe.transform(ds.Header.MaxDemandDate, "HH:mm on dd MMM yyyy")}`;
       }
@@ -236,9 +240,20 @@ export class MeterAlarmDetailComponent implements OnInit {
   }
 
   onChangeGraph(data) {
-    var pipe = new DatePipe('en_ZA');
-    data.forEach((det) => { det.ReadingDateString = pipe.transform(det.ReadingDate, "yyyy-MM-dd HH:mm") });
-    this.profileDataSource.Detail = data;
+    if(this.meter['SupplyType'] == 'Electricity') {
+      var pipe = new DatePipe('en_ZA');
+      data.forEach((det) => { 
+        det.ReadingDateString = pipe.transform(det.ReadingDate, "yyyy-MM-dd HH:mm") ;
+        if(det['ActFlow']) det['Energy'] = det['ActFlow'];
+      });
+      console.log(data);
+      this.profileDataSource.Readings = data;
+    } else {
+      var pipe = new DatePipe('en_ZA');
+      data.forEach((det) => { det.ReadingDateString = pipe.transform(det.ReadingDate, "yyyy-MM-dd HH:mm") });
+      this.profileDataSource.Detail = data;
+    }
+    
   }
 
   onSave($event) {
