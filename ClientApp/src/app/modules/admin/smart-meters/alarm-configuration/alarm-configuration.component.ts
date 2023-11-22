@@ -105,6 +105,7 @@ export class AlarmConfigurationComponent implements OnInit {
     this.searchForm.valueChanges.subscribe(formValue => {
       this._alarmConfigurationService.selectedBuilding = formValue['buildingId'];
       this._alarmConfigurationService.selectedPartner = formValue['partnerId'];
+      this._alarmConfigurationService.selectedSupplyType = formValue['supplyType'];
     })
     if(this._alarmConfigurationService.selectedBuilding) {
       this._alarmConfigurationService.getAlarmsByBuilding(this._alarmConfigurationService.selectedBuilding).subscribe();
