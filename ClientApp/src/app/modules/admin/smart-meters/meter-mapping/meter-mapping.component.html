@@ -1,5 +1,35 @@
 <form class="flex flex-col w-full gap-y-2" [formGroup]="form">
-    <div class="row grid grid-cols-4 gap-x-4 gap-y-2 w-full">
+    <div class="flex flex-col bg-card p-2">
+        <div class="flex gap-x-4 flex-wrap">
+            <div class="flex flex-col">
+                <mat-label class="form-label"> Partners </mat-label>
+                <ng-select
+                    [items]="partners"
+                    bindLabel="Name"
+                    bindValue="Id"
+                    class="w-60"
+                    [placeholder]="'Select Partner'"
+                    [formControlName]="'partnerId'"
+                    [searchable]="true"
+                    [closeOnSelect]="true"
+                    [clearable]="false"
+                    [multiple]="false"
+                    [searchFn]="customBuildingSearch"
+                    (change)="onPartnerChanged($event)"
+                    >
+                </ng-select>
+            </div>
+            <div class="flex flex-col">
+                <mat-label> Buildings </mat-label>
+                <ng-select [items]="buildings" bindLabel="Name" bindValue="BuildingId" [placeholder]="'Select Building'" class="w-60"
+                           [formControlName]="'UmfaId'" [searchable]="true" [clearable]="false" [searchFn]="customBuildingSearch"
+                           (change)="selectionChanged($event)">
+                </ng-select>
+            </div>
+            
+        </div>
+    </div>
+    <!-- <div class="row grid grid-cols-4 gap-x-4 gap-y-2 w-full">
         <div class="col-span-1">
             <div class="bg-card gap-x-4 gap-y-2 p-2">
                 <mat-label> Select Building </mat-label>
@@ -9,7 +39,7 @@
                 </ng-select>
             </div>
         </div>
-    </div>
+    </div> -->
     <ng-container *ngIf="selectedBuildingId>0">
         <div class="row grid grid-cols-12 gap-x-4 gap-y-2 w-full">
             <div class="col-span-5">
