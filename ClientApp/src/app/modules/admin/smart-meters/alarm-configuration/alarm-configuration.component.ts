@@ -147,8 +147,6 @@ export class AlarmConfigurationComponent implements OnInit {
 
   ngOnDestroy() {
     if(!this.isSelectedAlarm) {
-      this._alarmConfigurationService.selectedBuilding = null;
-      this._alarmConfigurationService.selectedPartner = null;
       this._alarmConfigurationService.destroy();
     }
     this._unsubscribeAll.next(null);

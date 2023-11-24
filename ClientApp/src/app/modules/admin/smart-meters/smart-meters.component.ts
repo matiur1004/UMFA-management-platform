@@ -60,6 +60,7 @@ export class SmartMetersComponent implements OnInit {
     this.detailsList = [];
     this._meterService.onSelectMeterAlarm(null);
     this._alarmConfigurationService.destroy();
+    this._alarmConfigurationService.destroyAlarmDetails();
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }
