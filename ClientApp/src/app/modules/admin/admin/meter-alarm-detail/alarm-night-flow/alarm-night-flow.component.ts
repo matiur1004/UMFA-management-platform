@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { formatDateString, formatTimeString } from '@core/utils/umfa.help';
 import { UmfaUtils } from '@core/utils/umfa.utils';
@@ -11,7 +11,7 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrls: ['./alarm-night-flow.component.scss']
 })
 export class AlarmNightFlowComponent implements OnInit {
-
+  @Input() meter;
   @Output() onChangeGraph: EventEmitter<any> = new EventEmitter<any>();
   @Output() save: EventEmitter<any> = new EventEmitter<any>();
   @Output() delete: EventEmitter<any> = new EventEmitter<any>();
