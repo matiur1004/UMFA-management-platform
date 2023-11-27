@@ -7,7 +7,7 @@
                     <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
                         <input matInput type="text" [readonly]="true" value="{{configInfo ? configInfo.AvgDaily : ''}}"/> 
                     </mat-form-field>
-                    <span class="text-lg font-semibold">KL</span>
+                    <span class="text-lg font-semibold">{{meter['SupplyType'] == 'Electricity' ? 'kWh' : 'KL'}}</span>
                 </div>
             </div>
             <div class="flex">
@@ -16,7 +16,7 @@
                     <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
                         <input matInput type="text" [readonly]="true" value="{{configInfo ? configInfo.MaxDaily : ''}}"/> 
                     </mat-form-field>
-                    <span class="text-lg font-semibold">KL</span>
+                    <span class="text-lg font-semibold">{{meter['SupplyType'] == 'Electricity' ? 'kWh' : 'KL'}}</span>
                 </div>
             </div>
             <div class="flex">
@@ -25,7 +25,7 @@
                     <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
                         <input matInput type="text" [readonly]="true" value="{{configInfo ? configInfo.MinDaily : ''}}"/> 
                     </mat-form-field>
-                    <span class="text-lg font-semibold">KL</span>
+                    <span class="text-lg font-semibold">{{meter['SupplyType'] == 'Electricity' ? 'kWh' : 'KL'}}</span>
                 </div>
             </div>
         </div>
@@ -37,7 +37,7 @@
                         <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
                             <input matInput type="text" [formControlName]="'Threshold'"/> 
                         </mat-form-field>
-                        <span class="text-lg font-semibold">KL</span>
+                        <span class="text-lg font-semibold">{{meter['SupplyType'] == 'Electricity' ? 'kWh' : 'KL'}}</span>
                     </div>
                 </div>
                 <div class="flex h-full items-end ml-2">

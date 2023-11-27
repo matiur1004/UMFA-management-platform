@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { formatDateString, formatTimeString } from '@core/utils/umfa.help';
 import { AlarmConfigurationService } from '@shared/services/alarm-configuration.service';
@@ -10,7 +10,7 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrls: ['./alarm-peak-usage.component.scss']
 })
 export class AlarmPeakUsageComponent implements OnInit {
-
+  @Input() meter;
   @Output() onChangeGraph: EventEmitter<any> = new EventEmitter<any>();
   @Output() save: EventEmitter<any> = new EventEmitter<any>();
   @Output() delete: EventEmitter<any> = new EventEmitter<any>();
@@ -45,7 +45,6 @@ export class AlarmPeakUsageComponent implements OnInit {
     this._alarmConfigService.alarmMeterDetail$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((data: any) => {
-        console.log('sdfsdfsdf', data);
         this.alarmMeterDetail = data.find(obj => obj.AlarmTypeId == 5);
         if(this.alarmMeterDetail) {
           let startDate = new Date();

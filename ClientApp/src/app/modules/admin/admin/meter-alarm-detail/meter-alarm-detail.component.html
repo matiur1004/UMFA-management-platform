@@ -186,8 +186,8 @@
     <div class="flex pt-2 pb-3 bg-gray-200 rounded-md">
         <div class="flex flex-row flex-wrap gap-6 px-4 pb-1 border-bottom text-xl w-full">
             <div class="flex cursor-pointer hover:text-gray-500" [ngClass]="{'font-bold underline': selectedAlarmType == 'Night Flow'}" (click)="onSelectAlarmType('Night Flow')">Night Flow</div>
-            <div class="flex cursor-pointer hover:text-gray-500" [ngClass]="{'font-bold underline': selectedAlarmType == 'Burst Pipe'}" (click)="onSelectAlarmType('Burst Pipe')">Burst Pipe</div>
-            <div class="flex cursor-pointer hover:text-gray-500" [ngClass]="{'font-bold underline': selectedAlarmType == 'Leak Detection'}"(click)="onSelectAlarmType('Leak Detection')">Leak Detection</div>
+            <div class="flex cursor-pointer hover:text-gray-500" [ngClass]="{'font-bold underline': selectedAlarmType == 'Burst Pipe'}" (click)="onSelectAlarmType('Burst Pipe')" *ngIf="meter['SupplyType'] != 'Electricity'">Burst Pipe</div>
+            <div class="flex cursor-pointer hover:text-gray-500" [ngClass]="{'font-bold underline': selectedAlarmType == 'Leak Detection'}"(click)="onSelectAlarmType('Leak Detection')" *ngIf="meter['SupplyType'] != 'Electricity'">Leak Detection</div>
             <div class="flex cursor-pointer hover:text-gray-500" [ngClass]="{'font-bold underline': selectedAlarmType == 'Daily Usage'}" (click)="onSelectAlarmType('Daily Usage')">Daily Usage</div>
             <div class="flex cursor-pointer hover:text-gray-500" [ngClass]="{'font-bold underline': selectedAlarmType == 'Peak Usage'}" (click)="onSelectAlarmType('Peak Usage')">Peak Usage</div>
             <div class="flex cursor-pointer hover:text-gray-500" [ngClass]="{'font-bold underline': selectedAlarmType == 'Average Usage'}" (click)="onSelectAlarmType('Average Usage')">Average Usage</div>
@@ -213,10 +213,10 @@
             The Alarm will trigger if the average usage exceeds the threshold during the selected time range.    
         </ng-container>
     </div>
-    <app-alarm-night-flow (delete)="onDelete($event)" (save)="onSave($event)" (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Night Flow'"></app-alarm-night-flow>
+    <app-alarm-night-flow (delete)="onDelete($event)" (save)="onSave($event)" (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Night Flow'" [meter]="meter"></app-alarm-night-flow>
     <app-alarm-burst-pipe (delete)="onDelete($event)" (save)="onSave($event)" (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Burst Pipe'"></app-alarm-burst-pipe>
     <app-alarm-leak-detection (delete)="onDelete($event)" (save)="onSave($event)" (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Leak Detection'"></app-alarm-leak-detection>
-    <app-alarm-daily-usage (delete)="onDelete($event)" (save)="onSave($event)" (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Daily Usage'"></app-alarm-daily-usage>
-    <app-alarm-peak-usage (delete)="onDelete($event)" (save)="onSave($event)" (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Peak Usage'"></app-alarm-peak-usage>
-    <app-alarm-average-usage (delete)="onDelete($event)" (save)="onSave($event)" (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Average Usage'"></app-alarm-average-usage>
+    <app-alarm-daily-usage (delete)="onDelete($event)" (save)="onSave($event)" (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Daily Usage'" [meter]="meter"></app-alarm-daily-usage>
+    <app-alarm-peak-usage (delete)="onDelete($event)" (save)="onSave($event)" (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Peak Usage'" [meter]="meter"></app-alarm-peak-usage>
+    <app-alarm-average-usage (delete)="onDelete($event)" (save)="onSave($event)" (onChangeGraph)="onChangeGraph($event)" *ngIf="selectedAlarmType == 'Average Usage'" [meter]="meter"></app-alarm-average-usage>
 </div>
