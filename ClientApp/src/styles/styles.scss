@@ -239,3 +239,8 @@ body {
 .text-hover:hover {
     color: #c0c0c0;
 }
+.mat-tab-disabled {
+    .mat-tab-label-content {
+        cursor: not-allowed;
+    }
+}

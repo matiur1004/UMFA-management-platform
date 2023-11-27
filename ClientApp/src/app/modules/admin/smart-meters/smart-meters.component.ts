@@ -18,12 +18,17 @@ export class SmartMetersComponent implements OnInit {
   
   detailsList: any[] = [];
   minimalTabLength = 1;
+  meterMappingDisabled: boolean = false;
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   
   constructor(private router: Router, private _userService: UserService, private _meterService: MeterService, private _alarmConfigurationService: AlarmConfigurationService) { }
 
   ngOnInit(): void {
+    let roleId = this._userService.userValue ?  this._userService.userValue.RoleId : JSON.parse(localStorage.getItem('user')).RoleId;
+    if(roleId == RoleType.ClientAdministrator) {
+      this.meterMappingDisabled = true;
+    }
     if(location.pathname.includes('meterMapping')) this.selectedTab = 0;
     if(location.pathname.includes('alarm-configuration')) this.selectedTab = 1;
 

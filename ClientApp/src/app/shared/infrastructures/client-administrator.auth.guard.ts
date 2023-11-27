@@ -5,17 +5,17 @@ import { UserService } from '@shared/services';
 
 
 @Injectable()
-export class UmfaOperatorAuthGuard implements CanActivate {
+export class ClientAdministratorAuthGuard implements CanActivate {
 
   constructor(private router: Router, private userService: UserService) {
   }
 
   canActivate(): boolean {
     let roleId = this.userService.userValue ?  this.userService.userValue.RoleId : JSON.parse(localStorage.getItem('user')).RoleId;
-    if(roleId <= RoleType.UMFAOperator ) {
+    if(roleId <= RoleType.ClientAdministrator ) {
         return true;
     }
-    this.router.navigate(['/smart-meters/alarm-configuration']);
+    this.router.navigate(['/project']);
     return false;
   }
 }
