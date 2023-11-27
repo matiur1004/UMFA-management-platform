@@ -3,10 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { SmartMetersComponent } from './smart-meters.component';
 import { UserDataResolver } from 'app/user.resolver';
 import { MeterMappingComponent } from './meter-mapping/meter-mapping.component';
-import { UmfaOperatorAuthGuard } from '@shared/infrastructures/umfa-operator.auth.guard';
 import { MeterMappingResolver } from './meter-mapping/meter-mapping.resolver';
 import { AlarmConfigurationComponent } from './alarm-configuration/alarm-configuration.component';
 import { AlarmConfigurationResolver } from './alarm-configuration/alarm-configuration.resolver';
+import { ClientAdministratorAuthGuard } from '@shared/infrastructures/client-administrator.auth.guard';
+import { UmfaAdministratorAuthGuard } from '@shared/infrastructures/umfa-administrator.auth.guard';
+import { UmfaOperatorAuthGuard } from '@shared/infrastructures/umfa-operator.auth.guard';
 
 const routes: Routes = [
   {
@@ -14,6 +16,7 @@ const routes: Routes = [
     resolve: {
       data: UserDataResolver
     },
+    canActivate: [ClientAdministratorAuthGuard],
     children: [
       {
         path: '', redirectTo: 'meterMapping', pathMatch: 'full'
@@ -27,7 +30,7 @@ const routes: Routes = [
       },
       {
         path: 'alarm-configuration', component: AlarmConfigurationComponent,
-        canActivate: [UmfaOperatorAuthGuard],
+        canActivate: [ClientAdministratorAuthGuard],
         resolve  : {
           data: AlarmConfigurationResolver
         }
