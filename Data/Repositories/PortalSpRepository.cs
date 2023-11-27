@@ -10,6 +10,7 @@ namespace ClientPortal.Data.Repositories
         public Task<GetSmartServicesSpResponse> GetSmartServicesAsync(GetSmartServicesSpRequest request);
         public Task<SmartServiceTenantSpResponse> GetSmartServicesForTenantAsync(SmartServicesTenantSpRequest request);
         public Task<AmrDemandProfileAlarmsSpResponse> GetAmrDemandProfileAlarmsAsync(AmrDemandProfileAlarmsSpRequest request);
+        public Task<AlarmsPerBuildingSpResponse> GetAlarmsPerBuildingAsync();
     }
     public class PortalSpRepository : IPortalSpRepository
     {
@@ -51,6 +52,39 @@ namespace ClientPortal.Data.Repositories
 
                 commandText += $" {arguments}";
             }
+
+            using (var results = await connection.QueryMultipleAsync(commandText))
+            {
+                if (results == null)
+                {
+                    _logger.LogError($"Not time to run yet...");
+                    return default(T);
+                }
+
+                var combinedResult = new T();
+
+                foreach (var property in typeof(T).GetProperties())
+                {
+                    if (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
+                    {
+                        var resultType = property.PropertyType.GetGenericArguments()[0];
+                        var result = await results.ReadAsync(resultType);
+                        var resultList = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(result), property.PropertyType);
+                        property.SetValue(combinedResult, resultList);
+                    }
+                }
+
+                return combinedResult;
+            }
+        }
+
+        private async Task<T> RunStoredProcedureAsync<T>(string procedure) where T : new()
+        {
+            var connection = _dbContext.Database.GetDbConnection();
+            if (connection.State == System.Data.ConnectionState.Closed)
+                await connection.OpenAsync();
+
+            string commandText = $"exec {procedure}";
 
             using (var results = await connection.QueryMultipleAsync(commandText))
             {
@@ -132,6 +166,11 @@ namespace ClientPortal.Data.Repositories
         public async Task<AmrDemandProfileAlarmsSpResponse> GetAmrDemandProfileAlarmsAsync(AmrDemandProfileAlarmsSpRequest request)
         {
             return await RunStoredProcedureAsync<AmrDemandProfileAlarmsSpResponse, AmrDemandProfileAlarmsSpRequest>("spGetDemandProfileAlarms", request);
+        }
+
+        public async Task<AlarmsPerBuildingSpResponse> GetAlarmsPerBuildingAsync()
+        {
+            return await RunStoredProcedureAsync<AlarmsPerBuildingSpResponse>("spGetAlarmsPerBuilding");
         }
     }
 }

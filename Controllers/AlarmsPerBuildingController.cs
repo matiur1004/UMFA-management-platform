@@ -1,6 +1,7 @@
 ﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
-using System.Dynamic;
+using ClientPortal.Models.ResponseModels;
+using ClientPortal.Services;
 
 namespace ClientPortal.Controllers
 {
@@ -11,11 +12,14 @@ namespace ClientPortal.Controllers
     {
         private readonly ILogger<AlarmsPerBuildingController> _logger;
         private readonly PortalDBContext _context;
+        private readonly IAMRMeterTriggeredAlarmService _alarmService;
 
-        public AlarmsPerBuildingController(ILogger<AlarmsPerBuildingController> logger, PortalDBContext portalDBContext)
+
+        public AlarmsPerBuildingController(ILogger<AlarmsPerBuildingController> logger, PortalDBContext portalDBContext, IAMRMeterTriggeredAlarmService aMRMeterTriggeredAlarmService)
         {
             _logger = logger;
             _context = portalDBContext;
+            _alarmService = aMRMeterTriggeredAlarmService;
         }
 
         [HttpGet("getAlarmsByBuilding/{buildingId}")]
@@ -76,6 +80,20 @@ namespace ClientPortal.Controllers
             }
 
             return resultList.DistinctBy(rl => rl.ScadaMeterNo).ToList();
+        }
+
+        [HttpGet("")]
+        public async Task<ActionResult<IEnumerable<AlarmsPerBuildingEntry>>> GetAlarmsPerBuilding()
+        {
+            try
+            {
+                return await _alarmService.GetAlarmsPerBuildingAsync();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Could not get alarms per building");
+                return Problem(e.Message);
+            }
         }
     }
 
