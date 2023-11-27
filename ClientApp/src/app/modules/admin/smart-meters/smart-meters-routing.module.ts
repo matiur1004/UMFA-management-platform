@@ -7,6 +7,8 @@ import { MeterMappingResolver } from './meter-mapping/meter-mapping.resolver';
 import { AlarmConfigurationComponent } from './alarm-configuration/alarm-configuration.component';
 import { AlarmConfigurationResolver } from './alarm-configuration/alarm-configuration.resolver';
 import { ClientAdministratorAuthGuard } from '@shared/infrastructures/client-administrator.auth.guard';
+import { UmfaAdministratorAuthGuard } from '@shared/infrastructures/umfa-administrator.auth.guard';
+import { UmfaOperatorAuthGuard } from '@shared/infrastructures/umfa-operator.auth.guard';
 
 const routes: Routes = [
   {
@@ -14,13 +16,14 @@ const routes: Routes = [
     resolve: {
       data: UserDataResolver
     },
+    canActivate: [ClientAdministratorAuthGuard],
     children: [
       {
         path: '', redirectTo: 'meterMapping', pathMatch: 'full'
       },
       {
         path: 'meterMapping', component: MeterMappingComponent,
-        canActivate: [ClientAdministratorAuthGuard],
+        canActivate: [UmfaOperatorAuthGuard],
         resolve  : {
           data: MeterMappingResolver
         } 
