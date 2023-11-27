@@ -15,7 +15,7 @@ export class UmfaOperatorAuthGuard implements CanActivate {
     if(roleId <= RoleType.UMFAOperator ) {
         return true;
     }
-    this.router.navigate(['/project']);
+    this.router.navigate(['/smart-meters/alarm-configuration']);
     return false;
   }
 }
