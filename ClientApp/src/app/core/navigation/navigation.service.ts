@@ -76,7 +76,7 @@ export class NavigationService
                 title: 'Smart Meters',
                 type: 'basic',
                 link: '/smart-meters',
-                icon    : 'feather:smart-meters',
+                icon    : 'feather:smartmeters',
                 hidden: function(){    
                     if(roleId == RoleType.UMFAAdministrator || roleId == RoleType.UMFAOperator || roleId == RoleType.ClientAdministrator) return false;
                     return true;
