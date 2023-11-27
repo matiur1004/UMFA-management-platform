@@ -96,7 +96,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="bg-gradient-to-r from-violet-400 to-violet-600 sm:col-span-3 flex flex-col flex-auto p-6 rounded-2xl overflow-hidden card cursor-pointer card-zoom-in">
+                                    <div class="bg-gradient-to-r from-violet-400 to-violet-600 sm:col-span-3 flex flex-col flex-auto p-6 rounded-2xl overflow-hidden card cursor-pointer card-zoom-in" (click)="onDetail(tabType.SmartServices)">
                                         <div class="flex items-start justify-between text-white h-full">
                                             <div class="flex flex-col w-full gap-y-1 justify-between h-full">
                                                 <div class="flex w-full justify-between">
@@ -897,7 +897,18 @@
                                 </ng-template>
                             </mat-tab>
                         </ng-container>
-                        
+                        <ng-container *ngSwitchCase="'SmartBuildingsList'">
+                            <mat-tab class="home-tab" label="{{tabItem.title}}">
+                                <ng-template mat-tab-label>
+                                    {{tabItem.title}}
+                                    <mat-icon class="icon-size-4 hover:text-red-500 ml-2" [svgIcon]="'feather:x'" (click)="removeTab(i)"></mat-icon>
+                                </ng-template>
+                                <ng-template matTabContent>
+                                    <app-smart-buildings></app-smart-buildings>
+                                    <!-- <app-meter-alarm-detail [meter]="tabItem.dataSource"></app-meter-alarm-detail> -->
+                                </ng-template>
+                            </mat-tab>
+                        </ng-container>
                         <ng-container *ngSwitchDefault>
                             <mat-tab class="home-tab" label="{{tabItem.title}}">
                                 <ng-template mat-tab-label>
