@@ -4427,7 +4427,7 @@
             <path class="cls-1-2"
                     d="M12.92,4.07,11.47,6.36l-1.1,1.73h2.44L11.59,9.53l.54-1.28H9.87L12,4.07h1M14.6,3H11.38a.21.21,0,0,0-.18.11l-3,6a.2.2,0,0,0,0,.2.2.2,0,0,0,.17.09h2.07L8.19,14.72a.2.2,0,0,0,.08.25l.05,0h0a.31.31,0,0,0,.12,0l0,0L15,7.29a.2.2,0,0,0,0-.21A.2.2,0,0,0,14.8,7H12.42l2.35-3.71a.18.18,0,0,0,0-.2A.18.18,0,0,0,14.6,3Z"/>
         </svg>
-        <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet" id="smart-meters">
+        <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet" id="smartmeters">
 
             <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="currentColor" stroke="none">
                 <path d="M2365 5109 c-224 -30 -473 -136 -526 -223 -43 -70 -14 -168 61 -207

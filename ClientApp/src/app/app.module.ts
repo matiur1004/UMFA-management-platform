@@ -19,6 +19,7 @@ import { SnackBarService } from './shared/services';
 import { UmfaAdministratorAuthGuard } from '@shared/infrastructures/umfa-administrator.auth.guard';
 import { UmfaOperatorAuthGuard } from '@shared/infrastructures/umfa-operator.auth.guard';
 import {ToastrModule} from 'ngx-toastr';
+import { ClientAdministratorAuthGuard } from '@shared/infrastructures/client-administrator.auth.guard';
 
 const routerConfig: ExtraOptions = {
     preloadingStrategy       : PreloadAllModules,
@@ -57,7 +58,8 @@ const routerConfig: ExtraOptions = {
         DXReportService,
         SnackBarService,
         UmfaOperatorAuthGuard,
-        UmfaAdministratorAuthGuard
+        UmfaAdministratorAuthGuard,
+        ClientAdministratorAuthGuard
     ],
     bootstrap   : [
         AppComponent
