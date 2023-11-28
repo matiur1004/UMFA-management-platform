@@ -55,7 +55,8 @@ export class DashboardService {
   private _clientFeedbackReports: BehaviorSubject<any> = new BehaviorSubject(null);
   private _showTenantBillingDetails: BehaviorSubject<any> = new BehaviorSubject(null);
   private _billingDetailsForTenant: BehaviorSubject<any> = new BehaviorSubject(null);
-
+  private _smartBuildings: BehaviorSubject<any> = new BehaviorSubject(null);
+  
   private _headerText: BehaviorSubject<string> = new BehaviorSubject(null);
   
   public stats$: Observable<IHomePageStats>;
@@ -266,6 +267,10 @@ export class DashboardService {
 
   get billingDetailsForTenant$(): Observable<any>{
     return this._billingDetailsForTenant.asObservable();
+  }
+
+  get smartBuildings$(): Observable<any>{
+    return this._smartBuildings.asObservable();
   }
 
   getStats(userId) {
@@ -618,7 +623,7 @@ export class DashboardService {
         })
       );
   }
-
+  
   getBillingDetailsForTenant(buildingId, tenantId, periodId) {
     const url = `${CONFIG.apiURL}/TenantDashboard/main/billing-details?BuildingId=${buildingId}&TenantId=${tenantId}&PeriodId=${periodId}`;
     return this.http.get<any>(url, { withCredentials: true })
@@ -628,6 +633,19 @@ export class DashboardService {
         }),
         tap(bl => {
           this._billingDetailsForTenant.next(bl);
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        })
+      );
+  }
+
+  getSmartBuildings(userId) {
+    const url = `Dashboard/GetBuildingList/${userId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(res => {
+          let source = res.filter(item => item.IsSmart == true);
+          this._smartBuildings.next(source);
           //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
         })
       );
