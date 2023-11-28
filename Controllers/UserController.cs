@@ -22,7 +22,7 @@ namespace ClientPortal.Controllers
 
         public UserController(ILogger<UserController> logger, IUserService userService, IOptions<AppSettings> options, PortalDBContext context)
         {
-            _logger = logger;   
+            _logger = logger;
             _userService = userService;
             _options = options.Value;
             _context = context;
@@ -69,7 +69,8 @@ namespace ClientPortal.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                DeleteTokenCookie();
+                return BadRequest(new { message = "Token was In-Active - Removed" });
             }
         }
 
@@ -95,6 +96,7 @@ namespace ClientPortal.Controllers
                 return BadRequest(new { message = $"Error revoking token: {ex.Message}" });
             }
         }
+
         private void SetTokenCookie(string token)
         {
             //append the cookie with the refreshtoken to the http reponse
@@ -105,6 +107,17 @@ namespace ClientPortal.Controllers
             };
             Response.Cookies.Append("refreshToken", token, cookieOptions);
         }
+
+        private void DeleteTokenCookie()
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = DateTime.UtcNow.AddDays(-1) // Set the expiration date to yesterday
+            };
+            Response.Cookies.Append("refreshToken", "", cookieOptions);
+        }
+
 
         #endregion
 
@@ -147,7 +160,7 @@ namespace ClientPortal.Controllers
         }
 
         [HttpPost("UpdatePortalUserRole")]
-        public IActionResult UpdatePortalUserRole([FromBody]RoleUpdateModel roleUpdateModel)
+        public IActionResult UpdatePortalUserRole([FromBody] RoleUpdateModel roleUpdateModel)
         {
             try
             {
