@@ -31,7 +31,7 @@ namespace ClientPortal.Controllers
 
             try
             {
-                var triggeredAlarmDetails = await _amrMeterTriggeredAlarmService.GetTriggeredAlarm(model.AMRMeterTriggeredAlarmId);
+                var triggeredAlarmDetails = await _amrMeterTriggeredAlarmService.GetTriggeredAlarmAsync(model.AMRMeterTriggeredAlarmId);
                 
                 returnResult.AlarmData = triggeredAlarmDetails.AlarmTriggeredResultDataModels;
                 returnResult.AlarmInfo = triggeredAlarmDetails.AlarmTriggeredResultInfoModels.First();
@@ -98,7 +98,7 @@ namespace ClientPortal.Controllers
         {
             try
             {
-                return await _amrMeterTriggeredAlarmService.GetTriggeredAlarms(request);
+                return await _amrMeterTriggeredAlarmService.GetTriggeredAlarmsAsync(request);
             }
             catch(Exception e)
             {
