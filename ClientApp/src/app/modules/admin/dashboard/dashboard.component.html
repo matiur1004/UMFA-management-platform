@@ -897,7 +897,17 @@
                                 </ng-template>
                             </mat-tab>
                         </ng-container>
-                        
+                        <ng-container *ngSwitchCase="'DashboardBuildingAlarms'">
+                            <mat-tab class="home-tab" label="{{tabItem.title}}">
+                                <ng-template mat-tab-label>
+                                    {{tabItem.title}}
+                                    <mat-icon class="icon-size-4 hover:text-red-500 ml-2" [svgIcon]="'feather:x'" (click)="removeTab(i)"></mat-icon>
+                                </ng-template>
+                                <ng-template matTabContent>
+                                    <app-building-alarms></app-building-alarms>
+                                </ng-template>
+                            </mat-tab>
+                        </ng-container>
                         <ng-container *ngSwitchDefault>
                             <mat-tab class="home-tab" label="{{tabItem.title}}">
                                 <ng-template mat-tab-label>
