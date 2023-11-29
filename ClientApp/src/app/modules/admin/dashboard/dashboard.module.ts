@@ -44,6 +44,7 @@ import { TenantAssignedMetersComponent } from './tenant-assigned-meters/tenant-a
 import { TenantBillingComponent } from './tenant-billing/tenant-billing.component';
 import { TenantReadingsComponent } from './tenant-readings/tenant-readings.component';
 import { BuildingAlarmsComponent } from './building-alarms/building-alarms.component';
+import { SmartBuildingsComponent } from './smart-buildings/smart-buildings.component';
 
 @NgModule({
     declarations: [
@@ -69,7 +70,8 @@ import { BuildingAlarmsComponent } from './building-alarms/building-alarms.compo
         TenantBillingComponent,
         TenantOccupationsComponent,
         TenantReadingsComponent,
-        BuildingAlarmsComponent
+        BuildingAlarmsComponent,
+        SmartBuildingsComponent
     ],
     imports     : [
         CommonModule,

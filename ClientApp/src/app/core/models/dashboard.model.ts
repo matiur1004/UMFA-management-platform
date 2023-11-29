@@ -56,7 +56,8 @@ export interface IHomePageStats {
   export enum EHomeTabType {
     Buildings,
     Tenants,
-    Shops
+    Shops,
+    SmartServices
   }
 
   export const CHomeTabTypeText = {

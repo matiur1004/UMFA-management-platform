@@ -173,7 +173,7 @@ namespace ClientPortal.Services
                 if (!refreshToken.IsActive)
                 {
                     _logger.LogWarning("Invalid token used:- token {token}, isExpired: {IsExpired}, revoked: {RevokedDtm}", token, refreshToken.IsExpired, refreshToken.RevokedDtm);
-                    throw new AppException("Invalid token");
+                    throw new AppException("Invalid token (In-Active)");
                 }
 
                 //rotate token
