@@ -1,10 +1,11 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { AllowedPageSizes } from '@core/helpers';
-import { DXReportService, UserService } from '@shared/services';
+import { DXReportService, NotificationService, UserService } from '@shared/services';
 import { DashboardService } from '../dasboard.service';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, forkJoin, takeUntil } from 'rxjs';
 import moment from 'moment';
+import { DxDataGridComponent } from 'devextreme-angular';
 
 @Component({
   selector: 'app-triggered-alarms',
@@ -17,11 +18,17 @@ export class TriggeredAlarmsComponent implements OnInit {
   
   @Input() buildingId: number;
   @Input() partnerId: number;
-  
+  @ViewChild("grid") grid: DxDataGridComponent;
+
   form: UntypedFormGroup;
   partnerList$ = this.reportService.obsPartners;
   buildingList$ = this.reportService.obsBuildings;
   
+  selection = {
+    mode: "multiple",
+    showCheckBoxesMode: "always",
+    allowSelectAll: true
+  };
   applyFilterTypes: any;
   currentFilter: any;
   dataSource: any;
@@ -33,7 +40,8 @@ export class TriggeredAlarmsComponent implements OnInit {
     private reportService: DXReportService,
     private dashboardService: DashboardService,
     private _cdr: ChangeDetectorRef,
-    private _userService: UserService
+    private _userService: UserService,
+    private _notificationService: NotificationService
   ) { 
     this.applyFilterTypes = [{
       key: 'auto',
@@ -43,6 +51,12 @@ export class TriggeredAlarmsComponent implements OnInit {
         name: 'On Button Click',
     }];
     this.currentFilter = this.applyFilterTypes[0].key;
+  }
+
+  get validAcknowledge(): boolean {
+    if(!this.grid) return false;
+    if(this.grid.instance.getSelectedRowsData().length == 0) return false
+    return true;
   }
 
   ngOnInit(): void {
@@ -115,6 +129,23 @@ export class TriggeredAlarmsComponent implements OnInit {
     return moment(new Date(cellInfo.value)).format('YYYY-MM-DD HH:mm:ss');
   }
 
+  doAcknowledge() {
+    //AMRMeterTriggeredAlarmId
+    let apiCalls = [];
+    this.grid.instance.getSelectedRowsData().forEach(row => {
+      apiCalls.push(this.dashboardService.updateAcknowledged(row['AMRMeterTriggeredAlarmId'], false))
+    })
+    forkJoin(apiCalls)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((res) => {
+        this.dashboardService.getTriggeredAlarmsList(this._userService.userValue.UmfaId, this.buildingId).subscribe();
+        this._notificationService.message('Acknowledged successfully!');
+      })
+  }
+
+  rowSelect(event) {
+    this._cdr.detectChanges();
+  }
   /**
      * On destroy
      */

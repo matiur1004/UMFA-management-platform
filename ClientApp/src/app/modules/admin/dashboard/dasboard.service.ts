@@ -409,13 +409,13 @@ export class DashboardService {
       );
   }
 
-  updateAcknowledged(alarmTriggeredId) {
+  updateAcknowledged(alarmTriggeredId, showingAlert = true) {
     const url = `${CONFIG.apiURL}/AlarmTriggered/updateAcknowledged`;
     return this.http.post<any>(url, {AMRMeterTriggeredAlarmId: alarmTriggeredId}, { withCredentials: true })
       .pipe(
         catchError(err => this.catchAuthErrors(err)),
         tap(bl => {
-          this._notificationService.message('Acknowledged successfully!');
+          if(showingAlert) this._notificationService.message('Acknowledged successfully!');
           //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
         })
       );
