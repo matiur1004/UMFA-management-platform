@@ -43,6 +43,7 @@ import { TenantOccupationsComponent } from './tenant-occupations/tenant-occupati
 import { TenantAssignedMetersComponent } from './tenant-assigned-meters/tenant-assigned-meters.component';
 import { TenantBillingComponent } from './tenant-billing/tenant-billing.component';
 import { TenantReadingsComponent } from './tenant-readings/tenant-readings.component';
+import { BuildingAlarmsComponent } from './building-alarms/building-alarms.component';
 import { SmartBuildingsComponent } from './smart-buildings/smart-buildings.component';
 
 @NgModule({
@@ -69,6 +70,7 @@ import { SmartBuildingsComponent } from './smart-buildings/smart-buildings.compo
         TenantBillingComponent,
         TenantOccupationsComponent,
         TenantReadingsComponent,
+        BuildingAlarmsComponent,
         SmartBuildingsComponent
     ],
     imports     : [

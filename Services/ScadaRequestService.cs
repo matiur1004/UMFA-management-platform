@@ -79,7 +79,7 @@ namespace ClientPortal.Services
         }
         public async Task<ScadaRequestHeader> GetOrCreateScadaRequestHeaderDefaultAsync(int jobType, DateTime now)
         {
-            var header = await GetScadaRequestHeaderByJobTypeAndDescriptionAsync(jobType, "Default for new meters");
+            var header = await GetScadaRequestHeaderByJobTypeAndDescriptionAsync(jobType, $"Default for new meter {((jobType == 1) ? "Profiles" : "Readings")}");
 
             if (header is null)
             {
@@ -92,7 +92,7 @@ namespace ClientPortal.Services
                     LastRunDTM = null,
                     CurrentRunDTM = null,
                     JobType = jobType,
-                    Description = "Deafult for new meters",
+                    Description = $"Default for new meter {((jobType == 1) ? "Profiles" : "Readings")}",
                     Interval = 0,
                 });
             }

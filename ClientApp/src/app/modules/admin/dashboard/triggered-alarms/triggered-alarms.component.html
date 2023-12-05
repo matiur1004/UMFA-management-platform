@@ -16,6 +16,12 @@
                                     [searchEnabled]="true" searchExpr="Name" searchMode="contains" [searchTimeout]="400">
                     </dx-select-box>
                 </div>
+                <div class="col-span-1">
+                    <button mat-raised-button [color]="'primary'" type="button" [title]="'Acknowledge Selected'" class="dnm-btn dnm-btn-primary ack-btn" (click)="doAcknowledge()"
+                        [disabled]="!validAcknowledge">
+                        Acknowledge Selected
+                    </button>
+                </div>
             </div>
         </form>
     </div>
@@ -27,6 +33,8 @@
             [showBorders]="true"
             id="slip-grid-container"
             [hoverStateEnabled]="true"
+            [selection]="selection"
+            (onSelectionChanged)="rowSelect($event)"
             (onRowClick)="onRowClick($event)"
         >
             <!-- <dxo-selection mode="single"></dxo-selection> -->

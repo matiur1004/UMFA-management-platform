@@ -1,0 +1,9 @@
+.ack-btn {
+    margin-top: 6px;
+    &.mat-raised-button {
+        height: 36px;
+        min-height: 36px;
+        max-height: 36px;
+        padding: 0 18px !important;
+    }
+}

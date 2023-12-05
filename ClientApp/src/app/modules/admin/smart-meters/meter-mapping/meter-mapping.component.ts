@@ -44,7 +44,8 @@ export class MeterMappingComponent implements OnInit {
     umfaMeters: IUmfaMeter[] = [];
     scadaMeters: IScadaMeter[] = [];
     mappedMeters: IMappedMeter[] = [];
-    selectedBuildingId: 0;
+    selectedBuildingId = 0;
+    selectedPartnerId = 0;
     selectedUmfaMeter: any;
     selectedScadaMeter: any;
     selectedMappedMeter: any;
@@ -304,6 +305,7 @@ export class MeterMappingComponent implements OnInit {
                 this.umfaMeterGrid.instance.clearSelection();
                 this.scadaMeterGrid.instance.clearSelection();
                 this.form.reset();
+                this.form.get('partnerId').setValue(this.selectedPartnerId);
                 this.form.get('UmfaId').setValue(this.selectedBuildingId);
                 this.mappedMeters.push({ ...res });
                 this.umfaMeterGrid.instance.refresh();
@@ -368,6 +370,7 @@ export class MeterMappingComponent implements OnInit {
     }
 
     onPartnerChanged(event) {
+        this.selectedPartnerId = event.Id;
         this.buildings = this.allBuildings.filter(obj => obj.PartnerId == event.Id);
     }
 
