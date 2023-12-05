@@ -136,7 +136,7 @@ namespace ClientPortal.Controllers
             {
                 try
                 {
-                    var makeModelId = mappedMeter.SupplyType == "Water" ? 6 : 5;
+                    var makeModelId = mappedMeter.SupplyTypeId == 4 ? 6 : 5;
 
                     var amrMeter = new AMRMeterRequest
                     {

@@ -118,7 +118,7 @@ namespace ClientPortal.Services
                     Active = true,
                     LastRunDTM = null,
                     CurrentRunDTM = null,
-                    UpdateFrequency = meter.SupplyType.Equals("Water") ? 120 : 720,
+                    UpdateFrequency = meter.SupplyTypeId.Equals(4) ? 120 : 720,
                     LastDataDate = DateOperations.FirstDayOfPreviousMonth(now)
                 });
             }
@@ -139,7 +139,7 @@ namespace ClientPortal.Services
                     Active = true,
                     LastRunDTM = null,
                     CurrentRunDTM = null,
-                    UpdateFrequency = meter.SupplyType.Equals("Water") ? 120 : 720,
+                    UpdateFrequency = meter.SupplyTypeId.Equals(4) ? 120 : 720,
                     LastDataDate = DateOperations.FirstDayOfPreviousMonth(now)
                 });
             }
