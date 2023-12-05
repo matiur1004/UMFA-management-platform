@@ -25,9 +25,9 @@ namespace ClientPortal.Data.Entities.PortalEntities
         [NotMapped, Required]
         public int? TOUId { get; set; }
         public string TOUHeader { get; set; }
-        public string SupplyType { get; set; }
-        public string SupplyTo { get; set; }
-        public string LocationType { get; set;}
+        public int SupplyTypeId { get; set; }
+        public int SupplyToId { get; set; }
+        public int LocationTypeId { get; set;}
         public int UserId { get; set; }
 
         public void Map(MappedMeter source)
@@ -46,9 +46,9 @@ namespace ClientPortal.Data.Entities.PortalEntities
             RegisterTypeId = source.RegisterTypeId;
             TOUHeader = source.TOUHeader;
             TOUId = source.TOUId;
-            SupplyType = source.SupplyType;
-            SupplyTo = source.SupplyTo;
-            LocationType = source.LocationType;
+            SupplyTypeId = source.SupplyTypeId;
+            SupplyToId = source.SupplyToId;
+            LocationTypeId = source.LocationTypeId;
             UserId = source.UserId;
         }
     }

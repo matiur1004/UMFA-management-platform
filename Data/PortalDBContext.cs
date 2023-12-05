@@ -57,6 +57,8 @@ namespace ClientPortal.Data
         public DbSet<RegisterType> RegisterTypes { get; set; }
         public DbSet<MappedMeter> MappedMeters { get; set; }
         public DbSet<SupplyType> SupplyTypes { get; set; }
+        public DbSet<SupplyTo> SupplyTos { get; set; }
+        public DbSet<SupplyToLocationType> SupplyToLocationTypes { get; set; }
         public DbSet<MeterLocation> MeterLocations { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<NotificationType> NotificationTypes { get; set; }
@@ -139,6 +141,9 @@ namespace ClientPortal.Data
             modelBuilder.Entity<TOUDayOfWeekDayType>().HasOne(dt => dt.TOUHeader).WithMany(r => r.TOUDayOfWeekDayTypes).OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<ArchiveRequestHeader>().HasMany(h => h.ArchiveRequestDetails).WithOne(d => d.ArchiveRequestHeader).HasForeignKey(d => d.ArchiveRequestId).OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<SupplyTo>().HasOne(st => st.SupplyType).WithMany(st => st.SupplyTos).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<SupplyToLocationType>().HasOne(sl => sl.SupplyTo).WithMany(st => st.SupplyToLocationTypes).OnDelete(DeleteBehavior.Restrict);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
