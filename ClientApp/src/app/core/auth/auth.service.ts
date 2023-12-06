@@ -8,6 +8,7 @@ import { UserService } from 'app/core/user/user.service';
 import { CONFIG } from 'app/core/helpers';
 import { IUser } from '../models';
 import { DXReportService } from '@shared/services';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthService
@@ -21,6 +22,7 @@ export class AuthService
     constructor(
         private _httpClient: HttpClient,
         private _userService: UserService,
+        private _router: Router,
         private _reportService: DXReportService
     )
     {
@@ -105,8 +107,15 @@ export class AuthService
         return this._httpClient.post<any>(`${CONFIG.apiURL}${CONFIG.refreshPath}`, {}, { withCredentials: true })
           .pipe(
             catchError(err => {
-              console.log("Error while authenticating");
-              return throwError(err);
+                console.log("Error while authenticating");
+                localStorage.removeItem('accessToken');
+                localStorage.removeItem('user');
+
+                // Set the authenticated flag to false
+                this._authenticated = false;
+
+                this._router.navigate(['/sign-in']);
+                return throwError(err);
               //this.catchAuthErrors('refreshToken', err);
             }),
             tap(u => {
