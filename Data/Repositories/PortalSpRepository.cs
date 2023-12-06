@@ -11,6 +11,9 @@ namespace ClientPortal.Data.Repositories
         public Task<SmartServiceTenantSpResponse> GetSmartServicesForTenantAsync(SmartServicesTenantSpRequest request);
         public Task<AmrDemandProfileAlarmsSpResponse> GetAmrDemandProfileAlarmsAsync(AmrDemandProfileAlarmsSpRequest request);
         public Task<AlarmsPerBuildingSpResponse> GetAlarmsPerBuildingAsync();
+        public Task<SmartServicesMainWaterSpResponse> GetSmartServicesMainWaterAsync(SmartServicesMainWaterSpRequest request);
+
+        public Task<SmartServicesMainElectricitySpResponse> GetSmartServicesMainElectricityAsync(SmartServicesMainElectricitySpRequest request);
     }
     public class PortalSpRepository : IPortalSpRepository
     {
@@ -171,6 +174,16 @@ namespace ClientPortal.Data.Repositories
         public async Task<AlarmsPerBuildingSpResponse> GetAlarmsPerBuildingAsync()
         {
             return await RunStoredProcedureAsync<AlarmsPerBuildingSpResponse>("spGetAlarmsPerBuilding");
+        }
+
+        public async Task<SmartServicesMainWaterSpResponse> GetSmartServicesMainWaterAsync(SmartServicesMainWaterSpRequest request)
+        {
+            return await RunStoredProcedureAsync<SmartServicesMainWaterSpResponse, SmartServicesMainWaterSpRequest>("spDBSmartServicesMainWater", request);
+        }
+
+        public async Task<SmartServicesMainElectricitySpResponse> GetSmartServicesMainElectricityAsync(SmartServicesMainElectricitySpRequest request)
+        {
+            return await RunStoredProcedureAsync<SmartServicesMainElectricitySpResponse, SmartServicesMainElectricitySpRequest>("spDBSmartServicesMainElectricity", request);
         }
     }
 }
