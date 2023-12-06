@@ -45,6 +45,8 @@ import { TenantBillingComponent } from './tenant-billing/tenant-billing.componen
 import { TenantReadingsComponent } from './tenant-readings/tenant-readings.component';
 import { BuildingAlarmsComponent } from './building-alarms/building-alarms.component';
 import { SmartBuildingsComponent } from './smart-buildings/smart-buildings.component';
+import { SmartBuildingDetailComponent } from './smart-building-detail/smart-building-detail.component';
+import { PeriodCriteriaComponent } from './smart-building-detail/period-criteria/period-criteria.component';
 
 @NgModule({
     declarations: [
@@ -71,7 +73,9 @@ import { SmartBuildingsComponent } from './smart-buildings/smart-buildings.compo
         TenantOccupationsComponent,
         TenantReadingsComponent,
         BuildingAlarmsComponent,
-        SmartBuildingsComponent
+        SmartBuildingsComponent,
+        SmartBuildingDetailComponent,
+        PeriodCriteriaComponent
     ],
     imports     : [
         CommonModule,
