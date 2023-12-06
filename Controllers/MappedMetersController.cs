@@ -249,29 +249,7 @@ namespace ClientPortal.Controllers
         [HttpGet("getAllSupplyTypes")]
         public async Task<ActionResult<IEnumerable<SupplyType>>> GetAllSupplyTypes()
         {
-            return await _context.SupplyTypes.ToListAsync();
-        }
-
-        //SupplyTo
-        //GET: MappedMeters/getAllSuppliesTo
-        [HttpGet("getAllSuppliesTo")]
-        public async Task<ActionResult<IEnumerable<SuppliesTo>>> GetAllSuppliesTo()
-        {
-            return await _dbContext.SuppliesTo.ToListAsync();
-        }
-
-        //LocationType
-        //GET: MappedMeters/getAllLocationTypes
-        [HttpGet("getAllLocationTypes")]
-        public async Task<List<LocationType>> GetAllLocationTypes()
-        {
-            var locationTypes = await  _dbContext.LocationTypes.FromSqlRaw("SELECT t.name AS SuppliesTo, " +
-                "CASE typ.SupplyType WHEN 0 THEN 'Electricity' WHEN 1 THEN 'Water' WHEN 2 THEN 'Gas' WHEN 3 THEN 'Sewerage' " +
-                "WHEN 4 THEN 'Solar' ELSE 'AdHoc' END AS SupplyType, loc.Name AS LocationName FROM SuppliesTo t " +
-                "JOIN SuppliesToSupplyTypes typ ON (t.Id = typ.SuppliesToId)" +
-                "JOIN SuppliesToSupplyTypesLocations l ON (typ.Id = l.SuppliesToSupplyTypeId)" +
-                "JOIN SupplyToLocations loc ON (l.SupplyToLocationId = loc.Id) ORDER BY 1, 2, 3").ToListAsync();
-            return locationTypes.ToList();
+            return await _context.SupplyTypes.Include(st => st.SupplyTos).ThenInclude(sto => sto.SupplyToLocationTypes).ToListAsync();
         }
     }
 }
