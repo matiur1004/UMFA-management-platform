@@ -34,7 +34,7 @@ namespace ClientPortal.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("BuildingUser");
+                    b.ToTable("BuildingUser", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AlarmTriggerMethod", b =>
@@ -58,7 +58,7 @@ namespace ClientPortal.Migrations
 
                     b.HasKey("AlarmTriggerMethodId");
 
-                    b.ToTable("AlarmTriggerMethods");
+                    b.ToTable("AlarmTriggerMethods", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AlarmType", b =>
@@ -85,7 +85,7 @@ namespace ClientPortal.Migrations
 
                     b.HasKey("AlarmTypeId");
 
-                    b.ToTable("AlarmTypes");
+                    b.ToTable("AlarmTypes", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AMRMeter", b =>
@@ -153,7 +153,7 @@ namespace ClientPortal.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AMRMeters");
+                    b.ToTable("AMRMeters", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AMRMeterAlarm", b =>
@@ -202,7 +202,7 @@ namespace ClientPortal.Migrations
 
                     b.HasIndex("AlarmTypeId");
 
-                    b.ToTable("AMRMeterAlarms");
+                    b.ToTable("AMRMeterAlarms", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AMRMeterList", b =>
@@ -291,7 +291,7 @@ namespace ClientPortal.Migrations
 
                     b.HasIndex("AMRMeterAlarmId");
 
-                    b.ToTable("AMRMeterTriggeredAlarms");
+                    b.ToTable("AMRMeterTriggeredAlarms", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AMRScadaUser", b =>
@@ -328,7 +328,7 @@ namespace ClientPortal.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AMRScadaUsers");
+                    b.ToTable("AMRScadaUsers", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.AMRWaterProfileHeader", b =>
@@ -399,7 +399,7 @@ namespace ClientPortal.Migrations
 
                     b.HasKey("ArchivedReportId");
 
-                    b.ToTable("ArchivedReports");
+                    b.ToTable("ArchivedReports", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.ArchiveRequestDetail", b =>
@@ -446,7 +446,7 @@ namespace ClientPortal.Migrations
 
                     b.HasIndex("ArchiveRequestId");
 
-                    b.ToTable("ArchiveRequestDetails");
+                    b.ToTable("ArchiveRequestDetails", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.ArchiveRequestHeader", b =>
@@ -487,7 +487,7 @@ namespace ClientPortal.Migrations
 
                     b.HasKey("ArchiveRequestId");
 
-                    b.ToTable("ArchiveRequestHeaders");
+                    b.ToTable("ArchiveRequestHeaders", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.Building", b =>
@@ -514,7 +514,7 @@ namespace ClientPortal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Buildings");
+                    b.ToTable("Buildings", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.BuildingSupplierUtility", b =>
@@ -545,7 +545,7 @@ namespace ClientPortal.Migrations
 
                     b.HasIndex("UtilitySupplierId");
 
-                    b.ToTable("BuildingSupplierUtilities");
+                    b.ToTable("BuildingSupplierUtilities", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.DemandProfile", b =>
@@ -650,7 +650,7 @@ namespace ClientPortal.Migrations
 
                     b.HasKey("FeedbackReportRequestId");
 
-                    b.ToTable("FeedbackReportRequests");
+                    b.ToTable("FeedbackReportRequests", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.JobStatus", b =>
@@ -671,7 +671,7 @@ namespace ClientPortal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("JobStatus");
+                    b.ToTable("JobStatus", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.MappedMeter", b =>
@@ -741,7 +741,7 @@ namespace ClientPortal.Migrations
 
                     b.HasKey("MappedMeterId");
 
-                    b.ToTable("MappedMeters");
+                    b.ToTable("MappedMeters", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.MeterLocation", b =>
@@ -762,7 +762,7 @@ namespace ClientPortal.Migrations
 
                     b.HasKey("MeterLocationId");
 
-                    b.ToTable("MeterLocations");
+                    b.ToTable("MeterLocations", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.MeterMakeModel", b =>
@@ -795,7 +795,7 @@ namespace ClientPortal.Migrations
 
                     b.HasIndex("UtilityId");
 
-                    b.ToTable("MetersMakeModels");
+                    b.ToTable("MetersMakeModels", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.NotificationSendType", b =>
@@ -816,7 +816,7 @@ namespace ClientPortal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("NotificationSendTypes");
+                    b.ToTable("NotificationSendTypes", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.NotificationType", b =>
@@ -833,7 +833,7 @@ namespace ClientPortal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("NotificationTypes");
+                    b.ToTable("NotificationTypes", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.ProfileData", b =>
@@ -894,7 +894,7 @@ namespace ClientPortal.Migrations
 
                     b.HasIndex("TouHalfHourId");
 
-                    b.ToTable("ProfileData");
+                    b.ToTable("ProfileData", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.RefreshToken", b =>
@@ -941,7 +941,7 @@ namespace ClientPortal.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RefreshTokens");
+                    b.ToTable("RefreshTokens", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.RegisterType", b =>
@@ -958,7 +958,7 @@ namespace ClientPortal.Migrations
 
                     b.HasKey("RegisterTypeId");
 
-                    b.ToTable("RegisterTypes");
+                    b.ToTable("RegisterTypes", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.Role", b =>
@@ -975,7 +975,7 @@ namespace ClientPortal.Migrations
 
                     b.HasKey("RoleId");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.ScadaProfileData", b =>
@@ -1033,7 +1033,7 @@ namespace ClientPortal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ScadaProfileData");
+                    b.ToTable("ScadaProfileData", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.ScadaReadingData", b =>
@@ -1098,7 +1098,7 @@ namespace ClientPortal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("scadaReadingData");
+                    b.ToTable("scadaReadingData", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.ScadaRequestDetail", b =>
@@ -1144,7 +1144,7 @@ namespace ClientPortal.Migrations
 
                     b.HasIndex("HeaderId");
 
-                    b.ToTable("ScadaRequestDetails");
+                    b.ToTable("ScadaRequestDetails", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.ScadaRequestHeader", b =>
@@ -1185,7 +1185,7 @@ namespace ClientPortal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ScadaRequestHeaders");
+                    b.ToTable("ScadaRequestHeaders", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.ScheduleStatus", b =>
@@ -1206,7 +1206,7 @@ namespace ClientPortal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ScheduleStatus");
+                    b.ToTable("ScheduleStatus", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.SupplyTo", b =>
@@ -1231,7 +1231,7 @@ namespace ClientPortal.Migrations
 
                     b.HasIndex("SupplyTypeId");
 
-                    b.ToTable("SupplyTos");
+                    b.ToTable("SupplyTos", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.SupplyToLocationType", b =>
@@ -1256,7 +1256,7 @@ namespace ClientPortal.Migrations
 
                     b.HasIndex("SupplyToId");
 
-                    b.ToTable("SupplyToLocationTypes");
+                    b.ToTable("SupplyToLocationTypes", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.SupplyType", b =>
@@ -1276,7 +1276,7 @@ namespace ClientPortal.Migrations
 
                     b.HasKey("SupplyTypeId");
 
-                    b.ToTable("SupplyTypes");
+                    b.ToTable("SupplyTypes", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.TariffHeader", b =>
@@ -1334,7 +1334,7 @@ namespace ClientPortal.Migrations
 
                     b.HasIndex("UtilitySupplierId");
 
-                    b.ToTable("TariffHeaders");
+                    b.ToTable("TariffHeaders", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.TOUAllocation", b =>
@@ -1370,7 +1370,7 @@ namespace ClientPortal.Migrations
 
                     b.HasIndex("TariffHeaderId");
 
-                    b.ToTable("TOUAllocations");
+                    b.ToTable("TOUAllocations", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.TOUDayOfWeekDayType", b =>
@@ -1401,7 +1401,7 @@ namespace ClientPortal.Migrations
 
                     b.HasIndex("TOUHeaderId");
 
-                    b.ToTable("TOUDayOfWeekDayTypes");
+                    b.ToTable("TOUDayOfWeekDayTypes", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.TOUDaysOfWeek", b =>
@@ -1424,7 +1424,7 @@ namespace ClientPortal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TOUDaysOfWeeks");
+                    b.ToTable("TOUDaysOfWeeks", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.TOUDayType", b =>
@@ -1444,7 +1444,7 @@ namespace ClientPortal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TOUDayTypes");
+                    b.ToTable("TOUDayTypes", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.TOUHalfHour", b =>
@@ -1469,7 +1469,7 @@ namespace ClientPortal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TOUHalfHours");
+                    b.ToTable("TOUHalfHours", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.TOUHeader", b =>
@@ -1497,7 +1497,7 @@ namespace ClientPortal.Migrations
 
                     b.HasIndex("UtilitySupplierId");
 
-                    b.ToTable("TOUHeaders");
+                    b.ToTable("TOUHeaders", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.TOUProfileAssignment", b =>
@@ -1538,7 +1538,7 @@ namespace ClientPortal.Migrations
 
                     b.HasIndex("TOUSeasonId");
 
-                    b.ToTable("TOUProfileAssignments");
+                    b.ToTable("TOUProfileAssignments", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.TOURegister", b =>
@@ -1562,7 +1562,7 @@ namespace ClientPortal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TOURegisters");
+                    b.ToTable("TOURegisters", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.TOUSeason", b =>
@@ -1587,7 +1587,7 @@ namespace ClientPortal.Migrations
 
                     b.HasIndex("TOUHeaderId");
 
-                    b.ToTable("TOUSeasons");
+                    b.ToTable("TOUSeasons", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.TOUSeasonMonth", b =>
@@ -1611,7 +1611,7 @@ namespace ClientPortal.Migrations
 
                     b.HasIndex("TOUSeasonId");
 
-                    b.ToTable("TOUSeasonMonths");
+                    b.ToTable("TOUSeasonMonths", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.TriggeredAlarmNotification", b =>
@@ -1660,7 +1660,7 @@ namespace ClientPortal.Migrations
 
                     b.HasKey("TriggeredAlarmNotificationId");
 
-                    b.ToTable("TriggeredAlarmNotifications");
+                    b.ToTable("TriggeredAlarmNotifications", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.User", b =>
@@ -1710,7 +1710,7 @@ namespace ClientPortal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.UserAMRMeterActiveNotification", b =>
@@ -1744,7 +1744,7 @@ namespace ClientPortal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserAMRMeterActiveNotifications");
+                    b.ToTable("UserAMRMeterActiveNotifications", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.UserNotifications", b =>
@@ -1772,7 +1772,7 @@ namespace ClientPortal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserNotifications");
+                    b.ToTable("UserNotifications", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.UserNotificationSchedule", b =>
@@ -1826,7 +1826,7 @@ namespace ClientPortal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserNotificationSchedules");
+                    b.ToTable("UserNotificationSchedules", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.UserNotificationSummaryType", b =>
@@ -1847,7 +1847,7 @@ namespace ClientPortal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserNotificationSummaryTypes");
+                    b.ToTable("UserNotificationSummaryTypes", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.Utility", b =>
@@ -1867,7 +1867,7 @@ namespace ClientPortal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Utilities");
+                    b.ToTable("Utilities", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.UtilitySupplier", b =>
@@ -1890,7 +1890,7 @@ namespace ClientPortal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UtilitySuppliers");
+                    b.ToTable("UtilitySuppliers", (string)null);
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.WaterProfile", b =>
