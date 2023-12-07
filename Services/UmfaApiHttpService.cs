@@ -90,6 +90,8 @@ namespace ClientPortal.Services
         public Task<List<UmfaTenantDashboardOccupation>> GetTenantDashboardOccupationsAsync(UmfaTenantDashboardOccupationsRequest request);
         public Task<List<UmfaTenantDashboardAssignedMeter>> GetTenantDashboardAssignedMetersAsync(UmfaTenantDashboardAssignedMetersRequest request);
         public Task<List<UmfaTenantDashboardReading>> GetTenantDashboardReadingsAsync(UmfaTenantDashboardReadingsRequest request);
+
+        public Task<UmfaScadaConfig?> GetScadaConfigAsync(UmfaScadaConfigRequest request);
     }
 
 
@@ -546,6 +548,13 @@ namespace ClientPortal.Services
             var response = await GetAsync($"tenantdashboard/readings", request);
 
             return JsonSerializer.Deserialize<List<UmfaTenantDashboardReading>>(response);
+        }
+
+        public async Task<UmfaScadaConfig?> GetScadaConfigAsync(UmfaScadaConfigRequest request)
+        {
+            var response = await GetAsync($"users/scada-config", request);
+
+            return JsonSerializer.Deserialize<UmfaScadaConfig>(response);
         }
     }
 }
