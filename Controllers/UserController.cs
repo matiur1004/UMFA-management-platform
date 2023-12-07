@@ -189,11 +189,14 @@ namespace ClientPortal.Controllers
 
 
         [HttpGet("scada-config")]
-        public async Task<ActionResult<UmfaScadaConfig?>> GetScadaConfig([FromQuery] UmfaScadaConfigRequest request)
+        public async Task<ActionResult<UmfaScadaConfigResponse?>> GetScadaConfig([FromQuery] UmfaScadaConfigRequest request)
         {
             try
             {
-                return await _umfaService.GetScadaConfigAsync(request);
+                var res = await _umfaService.GetScadaConfigAsync(request);
+                UmfaScadaConfigResponse resp = new UmfaScadaConfigResponse() { Domain = res.Domain, ScadaUserName = res.ScadaUserName, ScadaUserPassword = res.ScadaUserPassword };
+
+                return resp;
             }
             catch (Exception e)
             {
