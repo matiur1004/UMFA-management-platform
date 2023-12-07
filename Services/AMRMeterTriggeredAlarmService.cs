@@ -13,7 +13,7 @@ namespace ClientPortal.Services
         public int? GetNotAcknowledgedTriggeredAlarmsCount(int amrMeterId);
 
         Task<List<AMRMeterTriggeredAlarmInfo>> GetTriggeredAlarmsAsync(AMRTriggeredAlarmsRequest request);
-        Task<List<AlarmsPerBuildingEntry>> GetAlarmsPerBuildingAsync();
+        Task<List<AlarmsPerBuildingEntry>> GetAlarmsPerBuildingAsync(int umfaUserId);
     }
     public class AMRMeterTriggeredAlarmService : IAMRMeterTriggeredAlarmService
     {
@@ -59,9 +59,12 @@ namespace ClientPortal.Services
             return alarms.Where(a => buildingIds.Contains(a.BuildingUmfaId)).ToList();
         }
 
-        public async Task<List<AlarmsPerBuildingEntry>> GetAlarmsPerBuildingAsync()
+        public async Task<List<AlarmsPerBuildingEntry>> GetAlarmsPerBuildingAsync(int umfaUserId)
         {
-            return (await _portalSpRepository.GetAlarmsPerBuildingAsync()).Entries;
+            var buildings = await _umfaBuildingRepository.GetBuildings(umfaUserId);
+            var allAlarams = (await _portalSpRepository.GetAlarmsPerBuildingAsync()).Entries;
+
+            return allAlarams.Where(a => buildings.UmfaBuildings.Select(b => b.BuildingId).Contains(a.BuildingId)).ToList();
         }
     }
 }
