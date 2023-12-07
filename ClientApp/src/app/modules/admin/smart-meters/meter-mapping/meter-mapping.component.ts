@@ -144,6 +144,13 @@ export class MeterMappingComponent implements OnInit {
         this.selectedBuildingId = e.BuildingId;
         this.selectedUmfaMeter = null;
         this.form.get('UmfaMeterId').setValue(null);
+        this.form.get('TimeOfUse').setValue(null);
+        this.form.get('RegisterType').setValue(null);
+        this.form.get('SupplyTypeId').setValue(null);
+        this.form.get('SupplyToId').setValue(null);
+        this.form.get('LocationTypeId').setValue(null);
+        this.form.get('Description').setValue(null);
+
         this.getMappedMetersForBuilding(e.BuildingId)
     }
 
