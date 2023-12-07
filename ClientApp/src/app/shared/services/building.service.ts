@@ -6,6 +6,7 @@ import { BehaviorSubject, map, shareReplay } from "rxjs";
 import { catchError, Observable, tap, throwError } from "rxjs";
 import { IUmfaMeter } from "app/core/models/umfameter.model";
 import { IMappedMeter } from "@core/models/mappedmeter.model";
+import { NotificationService } from "./notification.service";
 
 @Injectable({ providedIn: 'root' })
 export class BuildingService {
@@ -13,7 +14,10 @@ export class BuildingService {
   private _buildings: BehaviorSubject<IUmfaBuilding[]> = new BehaviorSubject([]);
   private _partners: BehaviorSubject<IUmfaPartner[]> = new BehaviorSubject([]);
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private _notificationService: NotificationService
+  ) { }
 
   get buildings$(): Observable<IUmfaBuilding[]> {
     return this._buildings.asObservable();
@@ -106,6 +110,7 @@ export class BuildingService {
       .pipe(
         catchError(err => this.catchErrors(err)),
         tap(bps => {
+          this._notificationService.message('Added Meter Mapping successfully!')
           //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
         }),
         map(bm => { return bm })
