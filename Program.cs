@@ -152,6 +152,8 @@ IConfiguration? configuration = builder.Configuration;
     services.AddScoped<IArchivesService, ArchivesService>();
     services.AddScoped<IReportsService, ReportsService>();
     services.AddSingleton<IFeedbackReportsQueueService, FeedbackReportsQueueService>();
+    services.AddScoped<ISmartServicesService, SmartServicesService>();
+
 
     //Data components
     services.AddScoped<IPortalSpRepository, PortalSpRepository>();

@@ -19,13 +19,15 @@ namespace ClientPortal.Controllers
         private readonly IUserService _userService;
         private readonly AppSettings _options;
         private readonly ILogger<UserController> _logger;
+        private readonly IUmfaService _umfaService;
 
-        public UserController(ILogger<UserController> logger, IUserService userService, IOptions<AppSettings> options, PortalDBContext context)
+        public UserController(ILogger<UserController> logger, IUserService userService, IOptions<AppSettings> options, PortalDBContext context, IUmfaService umfaService)
         {
             _logger = logger;
             _userService = userService;
             _options = options.Value;
             _context = context;
+            _umfaService = umfaService;
         }
 
         #region Authentication methods
@@ -185,6 +187,22 @@ namespace ClientPortal.Controllers
             }
         }
 
+
+        [HttpGet("scada-config")]
+        public async Task<ActionResult<UmfaScadaConfigResponse?>> GetScadaConfig([FromQuery] UmfaScadaConfigRequest request)
+        {
+            try
+            {
+                var res = await _umfaService.GetScadaConfigAsync(request);
+                UmfaScadaConfigResponse resp = new UmfaScadaConfigResponse() { Domain = res.Domain, ScadaUserName = res.ScadaUserName, ScadaUserPassword = res.ScadaUserPassword };
+
+                return resp;
+            }
+            catch (Exception e)
+            {
+                return Problem($"Could not get scada config for user {request.UmfaUserId}, partner {request.PartnerId}. {e.Message}");
+            }
+        }
 
         #region Private methods
         private string IpAddress()

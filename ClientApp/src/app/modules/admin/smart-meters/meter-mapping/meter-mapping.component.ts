@@ -102,9 +102,9 @@ export class MeterMappingComponent implements OnInit {
             ScadaMeterId: [null, Validators.required],
             RegisterType: [null, Validators.required],
             TimeOfUse: [null, Validators.required],
-            SupplyType: [null, Validators.required],
-            SupplyTo: [null, Validators.required],
-            LocationType: [null, Validators.required],
+            SupplyTypeId: [null, Validators.required],
+            SupplyToId: [null, Validators.required],
+            LocationTypeId: [null, Validators.required],
             Description: ['', Validators.required]
         })
         this.bldService.buildings$
@@ -138,37 +138,19 @@ export class MeterMappingComponent implements OnInit {
                 this.supplyTypes = data;
             });
 
-        this.mappedMetersService.supplyToItems$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((data: any[]) => {
-                this.supplyToItems = data;
-            });
-
-        this.mappedMetersService.locationTypes$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((data: any[]) => {
-                this.locationTypes = data;
-                this.filteredlocationTypes = data;
-            });
-
-        this.form.get('SupplyType').valueChanges.subscribe(supplyType => {
-            this.filteredlocationTypes = this.locationTypes.filter(item => item.SupplyType == supplyType);
-            if(this.form.get('SupplyTo').value) {
-                this.filteredlocationTypes = this.filteredlocationTypes.filter(item => item.SuppliesTo == this.form.get('SupplyTo').value);
-            }
-        })
-
-        this.form.get('SupplyTo').valueChanges.subscribe(supplyTo => {
-            this.filteredlocationTypes = this.locationTypes.filter(item => item.SuppliesTo == supplyTo);
-            if(this.form.get('SupplyType').value) {
-                this.filteredlocationTypes = this.filteredlocationTypes.filter(item => item.SupplyType == this.form.get('SupplyType').value);
-            }
-        })
-        //this.meters$ =  this.meterService.getMetersForUser(usr.Id);
     }
 
     selectionChanged(e: any) {
         this.selectedBuildingId = e.BuildingId;
+        this.selectedUmfaMeter = null;
+        this.form.get('UmfaMeterId').setValue(null);
+        this.form.get('TimeOfUse').setValue(null);
+        this.form.get('RegisterType').setValue(null);
+        this.form.get('SupplyTypeId').setValue(null);
+        this.form.get('SupplyToId').setValue(null);
+        this.form.get('LocationTypeId').setValue(null);
+        this.form.get('Description').setValue(null);
+
         this.getMappedMetersForBuilding(e.BuildingId)
     }
 
@@ -238,8 +220,16 @@ export class MeterMappingComponent implements OnInit {
     }
 
     getMappedMetersForBuilding(buildingId) {
-        this.bldService.getMappedMetersForBuilding(buildingId).subscribe(res => {
-            this.mappedMeters = res;
+        this.bldService.getMappedMetersForBuilding(buildingId)
+        .pipe(takeUntil(this._unsubscribeAll))
+        .subscribe(res => {
+            this.mappedMeters = res.map(obj => {
+                let supplyType = this.supplyTypes.find(item => item.SupplyTypeId == obj['SupplyTypeId']);
+                let supplyTo = supplyType['SupplyTos'].find(item => item.SupplyToId == obj['SupplyToId']);
+                let locationType = supplyTo['SupplyToLocationTypes'].find(item => item.SupplyToLocationTypeId == obj['LocationTypeId'])
+                obj = {...obj, SupplyType: supplyType['SupplyTypeName'], SupplyTo: supplyTo['SupplyToName'], Location: locationType['SupplyToLocationName']};
+                return obj;
+            });
             this.getUmfaMetersForBuilding(this.selectedBuildingId);
             this.getScadaUserDetails(this.usrService.userValue.UmfaId);
             //console.log('mapped meters', res);
@@ -291,9 +281,9 @@ export class MeterMappingComponent implements OnInit {
             'RegisterTypeId': registerTypeItem.RegisterTypeId,
             'TOUHeader': touItem.Name,
             'TOUId': touItem.Id,
-            'SupplyType': formData['SupplyType'],
-            'SupplyTo': formData['SupplyTo'],
-            'LocationType': formData['LocationType']
+            'SupplyTypeId': formData['SupplyTypeId'],
+            'SupplyToId': formData['SupplyToId'],
+            'LocationTypeId': formData['LocationTypeId']
         };
         if (this.checkExistingInMappedMeters(data)) {
             const dialogRef = this._ufUtils.fuseConfirmDialog(
@@ -307,6 +297,12 @@ export class MeterMappingComponent implements OnInit {
                 this.form.reset();
                 this.form.get('partnerId').setValue(this.selectedPartnerId);
                 this.form.get('UmfaId').setValue(this.selectedBuildingId);
+
+                let supplyType = this.supplyTypes.find(item => item.SupplyTypeId == res['SupplyTypeId']);
+                let supplyTo = supplyType['SupplyTos'].find(item => item.SupplyToId == res['SupplyToId']);
+                let locationType = supplyTo['SupplyToLocationTypes'].find(item => item.SupplyToLocationTypeId == res['LocationTypeId'])
+                res = {...res, SupplyType: supplyType['SupplyTypeName'], SupplyTo: supplyTo['SupplyToName'], Location: locationType['SupplyToLocationName']};
+
                 this.mappedMeters.push({ ...res });
                 this.umfaMeterGrid.instance.refresh();
                 this.scadaMeterGrid.instance.refresh();
@@ -371,7 +367,31 @@ export class MeterMappingComponent implements OnInit {
 
     onPartnerChanged(event) {
         this.selectedPartnerId = event.Id;
+        this.selectedBuildingId = 0;
+        this.form.reset();
+
+        this.form.get('partnerId').setValue(this.selectedPartnerId);
         this.buildings = this.allBuildings.filter(obj => obj.PartnerId == event.Id);
+    }
+
+    onSupplyTypeChanged(event) {
+        this.supplyToItems = event.SupplyTos;
+        this.form.get('SupplyToId').setValue(null);
+        this.form.get('LocationTypeId').setValue(null);
+    }
+
+    onSupplyToChanged(event) {
+        this.filteredlocationTypes = event.SupplyToLocationTypes;
+        this.form.get('LocationTypeId').setValue(null);
+    }
+    
+    getSuppplyTypeName(rowData) {
+        console.log('fff', this.supplyTypes)
+        if(this.supplyTypes) {
+            let supplyType = this.supplyTypes.find(obj => obj.SupplyTypeId == rowData['SupplyTypeId'])
+            return supplyType['SupplyTypeName'];
+        } else return '';
+        
     }
 
     ngOnDestroy(): void {

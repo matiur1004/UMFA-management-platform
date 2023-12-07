@@ -24,9 +24,13 @@
 <ng-container *ngIf="dataSource">
   <div class="flex flex-col p-2 gap-y-1">
     <div class="flex w-full justify-end">
-      <button mat-raised-button [color]="'primary'" type="button" class="dnm-btn dnm-btn-primary" (click)="export()">
+      <button mat-raised-button [color]="'primary'" [matMenuTriggerFor]="menu" type="button" class="dnm-btn dnm-btn-primary">
         Export
      </button>
+     <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="onExport('csv')">Excel</button>
+      <button mat-menu-item (click)="onExport('pdf')">PDF</button>
+    </mat-menu>
     </div>
     <ng-container *ngIf="reportType == 'Electricity' || reportType == 'Diesel'; else otherReportTemplate">
       <div class="flex w-full py-1">
