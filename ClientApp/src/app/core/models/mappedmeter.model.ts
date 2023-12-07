@@ -13,6 +13,7 @@ export interface IMappedMeter {
     RegisterType: string;
     TOUHeader: string;
     SupplyType: string;
+    SupplyTo: string;
     Location: string;
     TOUId: number;
     RegisterTypeId: number;
