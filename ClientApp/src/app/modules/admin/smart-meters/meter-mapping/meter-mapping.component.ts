@@ -147,6 +147,15 @@ export class MeterMappingComponent implements OnInit {
 
     selectionChanged(e: any) {
         this.selectedBuildingId = e.BuildingId;
+        this.selectedUmfaMeter = null;
+        this.form.get('UmfaMeterId').setValue(null);
+        this.form.get('TimeOfUse').setValue(null);
+        this.form.get('RegisterType').setValue(null);
+        this.form.get('SupplyTypeId').setValue(null);
+        this.form.get('SupplyToId').setValue(null);
+        this.form.get('LocationTypeId').setValue(null);
+        this.form.get('Description').setValue(null);
+
         this.getMappedMetersForBuilding(e.BuildingId)
     }
 
@@ -360,23 +369,26 @@ export class MeterMappingComponent implements OnInit {
     onPartnerChanged(event) {
         this.selectedPartnerId = event.Id;
         this.selectedBuildingId = 0;
-        this.form.get('UmfaId').setValue(null);
+        this.form.reset();
+        this.form.get('partnerId').setValue(this.selectedPartnerId);
         this.usrService.scadaCredential = null;
+        
         this.usrService.scadaConfig(this.selectedPartnerId, this.usrService.userValue.UmfaId)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((data: any[]) => {
                 this.buildings = this.allBuildings.filter(obj => obj.PartnerId == event.Id);
             })
-
-        
     }
 
     onSupplyTypeChanged(event) {
         this.supplyToItems = event.SupplyTos;
+        this.form.get('SupplyToId').setValue(null);
+        this.form.get('LocationTypeId').setValue(null);
     }
 
     onSupplyToChanged(event) {
         this.filteredlocationTypes = event.SupplyToLocationTypes;
+        this.form.get('LocationTypeId').setValue(null);
     }
 
     ngOnDestroy(): void {
