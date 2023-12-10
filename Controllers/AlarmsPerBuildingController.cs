@@ -2,6 +2,7 @@
 using ClientPortal.Data;
 using ClientPortal.Models.ResponseModels;
 using ClientPortal.Services;
+using System.ComponentModel.DataAnnotations;
 
 namespace ClientPortal.Controllers
 {
@@ -83,11 +84,11 @@ namespace ClientPortal.Controllers
         }
 
         [HttpGet("")]
-        public async Task<ActionResult<IEnumerable<AlarmsPerBuildingEntry>>> GetAlarmsPerBuilding()
+        public async Task<ActionResult<IEnumerable<AlarmsPerBuildingEntry>>> GetAlarmsPerBuilding([FromQuery, Required] int umfaUserId)
         {
             try
             {
-                return await _alarmService.GetAlarmsPerBuildingAsync();
+                return await _alarmService.GetAlarmsPerBuildingAsync(umfaUserId);
             }
             catch (Exception e)
             {
