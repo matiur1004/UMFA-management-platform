@@ -92,6 +92,11 @@ export class MeterMappingComponent implements OnInit {
         }];
         this.currentFilter = this.applyFilterTypes[0].key;
     }
+    
+    get isScadaEnabled() {
+        if(this.usrService.scadaCredential) return true;
+        return false;
+    }
 
     ngOnInit() {
         this.form = this._formBuilder.group({
@@ -205,15 +210,11 @@ export class MeterMappingComponent implements OnInit {
 
     async onAmrScadaUserRetrieved(aU: IAmrUser): Promise<void> {
         this.scadaUser = aU;
-        // this.scadaUserName =  this.scadaUser.ScadaUserName;
-        // this.scadaPassword = this.scadaUser.ScadaPassword;
-        this.scadaUserName = 'umfagtw.gtwadmin';
-        this.scadaPassword = 'gtwgtwumfa';
-        this.getScadaMetersForUser(this.scadaUserName, this.scadaPassword)
+        this.getScadaMetersForUser()
     }
 
-    getScadaMetersForUser(userName, userPassword) {
-        this.usrService.getScadaMetersForUser(userName, userPassword).subscribe(res => {
+    getScadaMetersForUser() {
+        this.usrService.getScadaMetersForUser().subscribe(res => {
             this.scadaMeters = res;
             this.updateScadaMeterMappedField();
         })
@@ -369,9 +370,14 @@ export class MeterMappingComponent implements OnInit {
         this.selectedPartnerId = event.Id;
         this.selectedBuildingId = 0;
         this.form.reset();
-
         this.form.get('partnerId').setValue(this.selectedPartnerId);
-        this.buildings = this.allBuildings.filter(obj => obj.PartnerId == event.Id);
+        this.usrService.scadaCredential = null;
+        
+        this.usrService.scadaConfig(this.selectedPartnerId, this.usrService.userValue.UmfaId)
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((data: any[]) => {
+                this.buildings = this.allBuildings.filter(obj => obj.PartnerId == event.Id);
+            })
     }
 
     onSupplyTypeChanged(event) {
@@ -383,15 +389,6 @@ export class MeterMappingComponent implements OnInit {
     onSupplyToChanged(event) {
         this.filteredlocationTypes = event.SupplyToLocationTypes;
         this.form.get('LocationTypeId').setValue(null);
-    }
-    
-    getSuppplyTypeName(rowData) {
-        console.log('fff', this.supplyTypes)
-        if(this.supplyTypes) {
-            let supplyType = this.supplyTypes.find(obj => obj.SupplyTypeId == rowData['SupplyTypeId'])
-            return supplyType['SupplyTypeName'];
-        } else return '';
-        
     }
 
     ngOnDestroy(): void {
