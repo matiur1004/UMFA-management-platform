@@ -19,6 +19,9 @@
         <ng-container *ngIf="selectedPeriod == 'Month'">
             <span>{{startDate | date : 'MMMM'}}</span>
         </ng-container>
+        <ng-container *ngIf="selectedPeriod == 'Year'">
+            <span>{{startDate | date : 'yyyy'}}</span>
+        </ng-container>
         <button mat-icon-button><mat-icon [svgIcon]="'feather:chevron-right'" (click)="next()"></mat-icon></button>
     </div>
     <div class="flex">

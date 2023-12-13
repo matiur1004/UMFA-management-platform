@@ -927,7 +927,7 @@
                                     <mat-icon class="icon-size-4 hover:text-red-500 ml-2" [svgIcon]="'feather:x'" (click)="removeTab(i)"></mat-icon>
                                 </ng-template>
                                 <ng-template matTabContent>
-                                    <app-smart-building-detail></app-smart-building-detail>
+                                    <app-smart-building-detail [buildingId]="tabItem.dataSource.buildingId"></app-smart-building-detail>
                                     <!-- <app-meter-alarm-detail [meter]="tabItem.dataSource"></app-meter-alarm-detail> -->
                                 </ng-template>
                             </mat-tab>

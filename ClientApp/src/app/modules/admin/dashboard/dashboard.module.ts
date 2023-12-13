@@ -13,7 +13,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'app/shared/shared.module';
 import { DashboardComponent } from './dashboard.component';
 import { dashboardRoutes } from './dashboard.routing';
-import { DxButtonModule, DxChartModule, DxDataGridModule, DxDropDownBoxModule, DxPivotGridModule, DxSelectBoxModule, DxSparklineModule, DxTextBoxModule, DxTreeMapModule, DxTreeViewModule } from 'devextreme-angular';
+import { DxButtonModule, DxChartModule, DxCircularGaugeModule, DxDataGridModule, DxDropDownBoxModule, DxPivotGridModule, DxSelectBoxModule, DxSparklineModule, DxTextBoxModule, DxTreeMapModule, DxTreeViewModule } from 'devextreme-angular';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { BuildingDetailComponent } from './building-detail/building-detail.component';
 import { CommonModule, DecimalPipe } from '@angular/common';
@@ -105,6 +105,7 @@ import { PeriodCriteriaComponent } from './smart-building-detail/period-criteria
         DxButtonModule,
         DxSelectBoxModule,
         DxPivotGridModule,
+        DxCircularGaugeModule,
         DxSparklineModule,
         MatTabsModule,
         NgSelectModule,

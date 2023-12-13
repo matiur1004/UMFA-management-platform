@@ -56,7 +56,9 @@ export class DashboardService {
   private _showTenantBillingDetails: BehaviorSubject<any> = new BehaviorSubject(null);
   private _billingDetailsForTenant: BehaviorSubject<any> = new BehaviorSubject(null);
   private _smartBuildings: BehaviorSubject<any> = new BehaviorSubject(null);
-  
+  private _smartBuildingElectricity: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _smartBuildingWater: BehaviorSubject<any> = new BehaviorSubject(null);
+
   private _headerText: BehaviorSubject<string> = new BehaviorSubject(null);
   
   public stats$: Observable<IHomePageStats>;
@@ -282,6 +284,14 @@ export class DashboardService {
 
   get smartBuildings$(): Observable<any>{
     return this._smartBuildings.asObservable();
+  }
+
+  get smartBuildingElectricity$(): Observable<any>{
+    return this._smartBuildingElectricity.asObservable();
+  }
+
+  get smartBuildingWater$(): Observable<any>{
+    return this._smartBuildingWater.asObservable();
   }
 
   getStats(userId) {
@@ -668,6 +678,28 @@ export class DashboardService {
         tap(res => {
           let source = res.filter(item => item.IsSmart == true);
           this._smartBuildings.next(source);
+        })
+      );
+  }
+
+  getElectirictyDetailForSmartBuilding({startDate, endDate, periodType, buildingId}) {
+    const url = `/SmartServices/main/electricity?startDate=${startDate}&endDate=${endDate}&periodType=${periodType}&buildingId=${buildingId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(res => {
+          this._smartBuildingElectricity.next(res);
+        })
+      );
+  }
+
+  getWaterDetailForSmartBuilding({startDate, endDate, periodType, buildingId}) {
+    const url = `/SmartServices/main/water?startDate=${startDate}&endDate=${endDate}&periodType=${periodType}&buildingId=${buildingId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(res => {
+          this._smartBuildingWater.next(res);
         })
       );
   }

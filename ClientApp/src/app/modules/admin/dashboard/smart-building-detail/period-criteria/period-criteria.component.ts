@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import moment from 'moment';
 
 @Component({
@@ -10,6 +10,8 @@ export class PeriodCriteriaComponent implements OnInit {
 
   @Input() type: string;
   
+  @Output() dateRangeChangedEvent: EventEmitter<any> = new EventEmitter<any>();
+  
   periodItems = [
     {label: 'Day', value: 'Day'},
     {label: 'Week', value: 'Week'},
@@ -17,7 +19,7 @@ export class PeriodCriteriaComponent implements OnInit {
     {label: 'Year', value: 'Year'},
   ];
 
-  selectedPeriod = 'Week';
+  selectedPeriod = 'Month';
 
   startDate: Date;
   endDate: Date;
@@ -34,9 +36,7 @@ export class PeriodCriteriaComponent implements OnInit {
     this.currentMonth = moment().month();
     this.currentDay = moment().toDate();
     this.currentYear = moment().year();
-    this.setPeriod();
-    // console.log(moment().week(48).startOf('isoWeek'));
-    // console.log(moment().month(9).startOf('month'));
+    //this.setPeriod();
   }
 
   valueChanged(event) {
@@ -81,7 +81,19 @@ export class PeriodCriteriaComponent implements OnInit {
       this.endDate = this.currentDay;
     } else if(this.selectedPeriod == 'Month') {
       this.startDate = moment().year(this.currentYear).month(this.currentMonth).startOf('month').toDate();
-      this.startDate = moment().year(this.currentYear).month(this.currentMonth).endOf('month').toDate();
+      this.endDate = moment().year(this.currentYear).month(this.currentMonth).endOf('month').toDate();
+    } else if(this.selectedPeriod == 'Year') {
+      this.startDate = moment().year(this.currentYear).startOf('year').toDate();
+      this.endDate = moment().year(this.currentYear).endOf('year').toDate();
     }
+    this.dateRangeChangedEvent.emit({startDate: this.startDate.toDateString(), endDate: this.endDate.toDateString(), periodType: this.getPeriodType()})
+  }
+
+  getPeriodType() {    
+    if(this.selectedPeriod == 'Day') return 1;
+    if(this.selectedPeriod == 'Week') return 2;
+    if(this.selectedPeriod == 'Month') return 3;
+    if(this.selectedPeriod == 'Year') return 4;
+    return 0;
   }
 }

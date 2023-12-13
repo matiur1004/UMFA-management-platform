@@ -1,102 +1,155 @@
 <div class="flex smart-services-dashboard-detail flex-col gap-y-4">
-    <div class="flex gap-x-5">
+    <div class="flex gap-x-3">
         <div class="flex w-1/2">
-            <app-period-criteria [type]="'Electricity'"></app-period-criteria>
+            <app-period-criteria [type]="'Electricity'"  (dateRangeChangedEvent)="onShowElectricityDetail($event)"></app-period-criteria>
         </div>
         <div class="flex w-1/2">
-            <app-period-criteria [type]="'Water'"></app-period-criteria>
+            <app-period-criteria [type]="'Water'"  (dateRangeChangedEvent)="onShowWaterDetail($event)"></app-period-criteria>
         </div>
     </div>
-    <div class="flex gap-x-5">
+    <div class="flex gap-x-3">
         <div class="flex bg-card flex-col py-5 px-4 rounded-md gap-y-3 w-1/2">
             <div class="flex justify-between">
                 <span class="text-2xl font-mediumbold">Statistics</span>
             </div>
-            <div class="flex flex-col text-lg font-mediumbold gap-y-1">
-                <div class="flex justify-between">
-                    <span class="text-lg">Supply authority</span>
-                    <span class="text-lg">404.17kWh</span>
+            <div class="flex flex-col text-lg font-mediumbold gap-y-1" *ngIf="electricityDetail">
+                <div class="flex justify-between" *ngFor="let statistic of electricityDetail['Statistics']">
+                    <span class="text-lg">{{statistic['SupplyToLocationName']}}</span>
+                    <span class="text-lg">{{statistic['Energy'] | number : '1.0-2'}} kWh</span>
                 </div>
-                <div class="flex justify-between">
-                    <span class="text-lg">Generator</span>
-                    <span class="text-lg">200.00kWh</span>
-                </div>
-                <div class="flex justify-between">
-                    <span class="text-lg">Solar</span>
-                    <span class="text-lg">100.00kWh</span>
-                </div>
-                <div class="flex justify-between">
-                    <span class="text-lg">Exported energy</span>
-                    <span class="text-lg">0.00kWh</span>
-                </div>
-                <div class="flex justify-between">
+                <!-- <div class="flex justify-between">
                     <span class="text-lg">Maximum demand</span>
                     <span class="text-lg">14.87kVA</span>
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="flex bg-card flex-col py-5 px-4 rounded-md gap-y-3 w-1/2">
             <div class="flex justify-between">
                 <span class="text-2xl font-mediumbold">Statistics</span>
             </div>
-            <div class="flex flex-col text-lg font-mediumbold gap-y-1">
-                <div class="flex justify-between">
-                    <span class="text-lg">Total consumption</span>
-                    <span class="text-lg">600.80KL</span>
+            <div class="flex flex-col text-lg font-mediumbold gap-y-1" *ngIf="waterDetail">
+                <div class="flex justify-between" *ngFor="let statistic of waterDetail['Statistics']">
+                    <span class="text-lg">{{statistic['SupplyToLocationName']}}</span>
+                    <span class="text-lg">{{statistic['Usage'] | number : '1.0-2'}} KL</span>
                 </div>
-                <div class="flex justify-between">
-                    <span class="text-lg">Average Usage</span>
-                    <span class="text-lg">95.22KL</span>
-                </div>
-                <div class="flex justify-between">
-                    <span class="text-lg">Max Usage</span>
-                    <span class="text-lg">125.19KL</span>
-                </div>
-                <div class="flex justify-between">
+                
+                <!-- <div class="flex justify-between">
                     <span class="text-lg">Total triggered leak alarms</span>
                     <span class="text-lg">4</span>
-                </div>
+                </div> -->
             </div>
+        </div>
+    </div>
+    <div class="flex gap-x-3">
+        <div class="flex bg-card flex-col py-2 rounded-md gap-y-3 w-1/2">
+            <span class="text-xl font-mediumbold px-4">Energy Consumption (kWh)</span>
+            <apx-chart
+                *ngIf="electricityDetail"
+                [series]="electricityConsumptionBarChartOptions.series"
+                [chart]="electricityConsumptionBarChartOptions.chart"
+                [dataLabels]="electricityConsumptionBarChartOptions.dataLabels"
+                [plotOptions]="electricityConsumptionBarChartOptions.plotOptions"
+                [responsive]="electricityConsumptionBarChartOptions.responsive"
+                [xaxis]="electricityConsumptionBarChartOptions.xaxis"
+                [yaxis]="electricityConsumptionBarChartOptions.yaxis"
+                [legend]="electricityConsumptionBarChartOptions.legend"
+                [fill]="electricityConsumptionBarChartOptions.fill"
+                [colors]="electricityConsumptionColors"
+            ></apx-chart>
+        </div>
+        <div class="flex bg-card flex-col py-2 px-4 rounded-md gap-y-3 w-1/2">
+            <span class="text-xl font-mediumbold px-4">Water Consumption (KL)</span>
+            <apx-chart
+                *ngIf="waterDetail"
+                [series]="waterConsumptionBarChartOptions.series"
+                [chart]="waterConsumptionBarChartOptions.chart"
+                [dataLabels]="waterConsumptionBarChartOptions.dataLabels"
+                [plotOptions]="waterConsumptionBarChartOptions.plotOptions"
+                [responsive]="waterConsumptionBarChartOptions.responsive"
+                [xaxis]="waterConsumptionBarChartOptions.xaxis"
+                [yaxis]="waterConsumptionBarChartOptions.yaxis"
+                [legend]="waterConsumptionBarChartOptions.legend"
+                [fill]="waterConsumptionBarChartOptions.fill"
+                [colors]="waterConsumptionColors"
+            ></apx-chart>
+        </div>
+    </div>
+    <div class="flex gap-x-3">
+        <div class="flex bg-card flex-col py-2 rounded-md gap-y-3 w-1/2">
+            <span class="text-xl font-mediumbold px-4">Power Profile</span>
+            <dx-chart [dataSource]="electricityProfileDatasource" class="w-full pr-2">
+                <dxo-size [height]="500"></dxo-size>
+                <dxi-series argumentField="ReadingDateString" valueField="Energy" name="Engery(kW)" type="area" [opacity]="1" [color]="'#750000'">
+                  <dxo-hover-style color="#750000"></dxo-hover-style>
+                </dxi-series>
+                <dxi-series argumentField="ReadingDateString" valueField="MaxDemand" name="Demand(kVA)" type="line" [color]="'#DA012D'">
+                  <dxo-hover-style color="#DA012D"></dxo-hover-style>
+                </dxi-series>
+                <dxo-tooltip [enabled]="true" [zIndex]="5000" [customizeTooltip]="customizeTooltip"></dxo-tooltip>
+                <dxo-argument-axis argumentType="string">
+                  <dxo-label displayMode="rotate" [rotationAngle]="-40"></dxo-label>
+                </dxo-argument-axis>
+                <dxo-scroll-bar [visible]="true"></dxo-scroll-bar>
+                <dxo-zoom-and-pan argumentAxis="both"></dxo-zoom-and-pan>
+                <dxo-loading-indicator [enabled]="true"></dxo-loading-indicator>
+                <dxo-legend verticalAlignment="bottom" horizontalAlignment="center" zIndex="6000"></dxo-legend>
+            </dx-chart>
+        </div>
+        <div class="flex bg-card flex-col py-2 rounded-md gap-y-3 w-1/2">
+            <span class="text-xl font-mediumbold px-4">Usage Profile</span>
+            <dx-chart [dataSource]="waterProfileDatasource" class="w-full pr-2">
+                <dxo-size [height]="500"></dxo-size>
+                <dxi-series argumentField="ReadingDateString" valueField="Usage" name="Usage(KL)" type="area" [opacity]="1" [color]="'#007FFF'">
+                  <dxo-hover-style color="#007FFF"></dxo-hover-style>
+                </dxi-series>
+                <dxo-tooltip [enabled]="true" [zIndex]="5000" [customizeTooltip]="customizeTooltip"></dxo-tooltip>
+                <dxo-argument-axis argumentType="string">
+                  <dxo-label displayMode="rotate" [rotationAngle]="-40"></dxo-label>
+                </dxo-argument-axis>
+                <dxo-scroll-bar [visible]="true"></dxo-scroll-bar>
+                <dxo-zoom-and-pan argumentAxis="both"></dxo-zoom-and-pan>
+                <dxo-loading-indicator [enabled]="true"></dxo-loading-indicator>
+                <dxo-legend verticalAlignment="bottom" horizontalAlignment="center" zIndex="6000"></dxo-legend>
+            </dx-chart>
+        </div>
+    </div>
+    <div class="flex gap-x-3">
+        <div class="flex bg-card flex-col py-2 rounded-md gap-y-3 w-1/2">
+            <span class="text-xl font-mediumbold px-4">Power Factor at Peak</span>
+            <dx-circular-gauge id="gauge" [value]="105" [subvalues]="[90]">
+                <dxo-scale [startValue]="50" [endValue]="150" [tickInterval]="10">
+                  <dxo-label [useRangeColors]="true"></dxo-label>
+                </dxo-scale>
+                <dxo-value-indicator type="triangleNeedle" color="#8FBC8F">
+                </dxo-value-indicator>
+                <dxo-subvalue-indicator type="triangleNeedle" color="#779ECB">
+                </dxo-subvalue-indicator>
+                <dxo-range-container palette="pastel">
+                  <dxi-range [startValue]="50" [endValue]="90"></dxi-range>
+                  <dxi-range [startValue]="90" [endValue]="130"></dxi-range>
+                  <dxi-range [startValue]="130" [endValue]="150"></dxi-range>
+                </dxo-range-container>
+                <dxo-geometry [startAngle]="180" [endAngle]="0" > </dxo-geometry>
+            </dx-circular-gauge>
+        </div>
+        <div class="flex bg-card flex-col py-2 rounded-md gap-y-3 w-1/2">
+            <span class="text-xl font-mediumbold px-4">Average vs Max Flow</span>
+            <dx-circular-gauge id="gauge" [value]="105" [subvalues]="[90]">
+                <dxo-scale [startValue]="50" [endValue]="150" >
+                  <dxo-label [useRangeColors]="true"></dxo-label>
+                </dxo-scale>
+                <dxo-value-indicator type="triangleNeedle" color="#8FBC8F">
+                </dxo-value-indicator>
+                <dxo-subvalue-indicator type="triangleNeedle" color="#779ECB">
+                </dxo-subvalue-indicator>
+                <dxo-range-container palette="pastel">
+                    <dxi-range [startValue]="50" [endValue]="150" [color]="'#3365A2'"></dxi-range>
+                  <!-- <dxi-range [startValue]="50" [endValue]="90"></dxi-range>
+                  <dxi-range [startValue]="90" [endValue]="130"></dxi-range>
+                  <dxi-range [startValue]="130" [endValue]="150"></dxi-range> -->
+                </dxo-range-container>
+                <dxo-geometry [startAngle]="180" [endAngle]="0"> </dxo-geometry>
+            </dx-circular-gauge>
         </div>
     </div>
 </div>
-<!-- <div class="flex gap-x-5 ">
-    <div class="flex flex-col w-1/2 gap-y-4">
-        <div class="flex">
-            <app-period-criteria [type]="'Electricity'"></app-period-criteria>
-        </div>
-        <div class="flex bg-card flex-col py-5 px-4 rounded-md gap-y-3">
-            <div class="flex justify-between">
-                <span class="text-2xl font-mediumbold">Statistics</span>
-            </div>
-            <div class="flex flex-col text-lg font-mediumbold gap-y-1">
-                <div class="flex justify-between">
-                    <span class="text-lg">Supply authority</span>
-                    <span class="text-lg">404.17kWh</span>
-                </div>
-                <div class="flex justify-between">
-                    <span class="text-lg">Generator</span>
-                    <span class="text-lg">200.00kWh</span>
-                </div>
-                <div class="flex justify-between">
-                    <span class="text-lg">Solar</span>
-                    <span class="text-lg">100.00kWh</span>
-                </div>
-                <div class="flex justify-between">
-                    <span class="text-lg">Exported energy</span>
-                    <span class="text-lg">0.00kWh</span>
-                </div>
-                <div class="flex justify-between">
-                    <span class="text-lg">Maximum demand</span>
-                    <span class="text-lg">14.87kVA</span>
-                </div>
-            </div>
-            
-        </div>
-    </div>
-    <div class="flex flex-col w-1/2">
-        <div class="flex">
-            <app-period-criteria [type]="'Water'"></app-period-criteria>
-        </div>
-    </div>
-</div> -->
