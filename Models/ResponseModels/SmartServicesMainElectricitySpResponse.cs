@@ -1,10 +1,13 @@
-﻿namespace ClientPortal.Models.ResponseModels
+﻿using ClientPortal.DtOs;
+
+namespace ClientPortal.Models.ResponseModels
 {
     public class SmartServicesMainElectricitySpResponse
     {
         public List<SmartServicesMainElectricityStatistics> Statistics { get; set; }
         public List<SmartServicesMainElectricityConsumption> Consumptions { get; set; }
         public List<SmartServicesMainElectricityProfile> ProfileData { get; set; }
+        public List<SmartServicesPowerFactor> PowerFactorData { get; set; }
     }
 
     public class SmartServicesMainElectricityStatistics
@@ -27,5 +30,14 @@
         public DateTime ReadingDate { get; set; }
         public double Energy { get; set; }
         public double MaxDemand { get; set; }
+    }
+
+    public class SmartServicesPowerFactor
+    {
+        public DateTime ReadingDate { get; set; }
+        public double Energy { get; set; }
+        public double MaxDemand { get; set; }
+        public double PowerFactor { get; set; }
+
     }
 }
