@@ -47,6 +47,7 @@ import { BuildingAlarmsComponent } from './building-alarms/building-alarms.compo
 import { SmartBuildingsComponent } from './smart-buildings/smart-buildings.component';
 import { SmartBuildingDetailComponent } from './smart-building-detail/smart-building-detail.component';
 import { PeriodCriteriaComponent } from './smart-building-detail/period-criteria/period-criteria.component';
+import { MatProgressSpinner, MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
     declarations: [
@@ -93,6 +94,7 @@ import { PeriodCriteriaComponent } from './smart-building-detail/period-criteria
         MatTooltipModule,
         MatTableModule,
         MatExpansionModule,
+        MatProgressSpinnerModule,
         MatSlideToggleModule,
         NgApexchartsModule,
         DxTextBoxModule,

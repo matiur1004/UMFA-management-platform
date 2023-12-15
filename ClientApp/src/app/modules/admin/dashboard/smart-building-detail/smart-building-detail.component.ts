@@ -10,7 +10,8 @@ import {
   ApexXAxis,
   ApexLegend,
   ApexFill,
-  ApexYAxis
+  ApexYAxis,
+  ApexTooltip
 } from "ng-apexcharts";
 import moment from 'moment';
 import { UmfaUtils } from '@core/utils/umfa.utils';
@@ -26,6 +27,7 @@ export type ChartOptions = {
   yaxis: ApexYAxis;
   legend: ApexLegend;
   fill: ApexFill;
+  tooltip: ApexTooltip;
 };
 
 export enum PeriodType {
@@ -49,6 +51,9 @@ export class SmartBuildingDetailComponent implements OnInit {
   weeksAbbr= ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
   monthsAbbr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
+  electricityLocations = [];
+  waterLocations = [];
+  
   electricityConsumptionColors = [];
   waterConsumptionColors = [];
 
@@ -60,6 +65,16 @@ export class SmartBuildingDetailComponent implements OnInit {
 
   electricityProfileDatasource: any;
   waterProfileDatasource: any;
+
+  electricityPowerFactor:number;
+
+  rangeEndValue: number;
+  tickInterval: number;
+  maxValue: number;
+  averageValue: number;
+
+  isElectricityLoading: boolean = false;
+  isWaterLoading: boolean = false;
 
   public electricityConsumptionBarChartOptions: Partial<ChartOptions>;
   public waterConsumptionBarChartOptions: Partial<ChartOptions>;
@@ -120,6 +135,35 @@ export class SmartBuildingDetailComponent implements OnInit {
       fill: {
         opacity: 1
       },
+      tooltip: {
+        custom: ({series, seriesIndex, dataPointIndex, w}) => {
+          let headerTxt = '';
+          if(this.periodOfElectricity['periodType'] == PeriodType.Month || this.periodOfElectricity['periodType'] == PeriodType.Week || this.periodOfElectricity['periodType'] == PeriodType.Day) {
+            headerTxt = moment(this.periodOfElectricity['startDate']).add(dataPointIndex, 'days').format('ddd, MMM DD, YYYY');
+          } else {
+            headerTxt = moment(this.periodOfElectricity['startDate']).add(dataPointIndex, 'months').format('MMM, YYYY');
+          }
+          let totalVal = 0;
+          let html = '<div class="flex flex-col items-center" style="color: #212121">';
+          html += '<div class="py-1.5 px-3 w-full mb-1" style="background-color: #EDEFF1;">' + 
+                    '<span class="">' + headerTxt + '</span>' + 
+                  '</div>'
+          this.electricityLocations.forEach((location, idx) => {
+            totalVal += series[idx][dataPointIndex];
+
+            html += '<div class="flex font-mediumbold gap-x-2 text-md items-center w-full px-3">' +
+                      '<div style="width: 9px; height: 9px; border-radius: 50%; background-color: '+this.electricityConsumptionColors[idx]+'"></div>' + 
+                      '<span>' + location + ': '+series[idx][dataPointIndex].toFixed(2)+'</span>' +
+                    '</div>'
+          })
+          html += '<div class="flex font-mediumbold gap-x-2 text-md items-center w-full mt-1 px-3 mb-2">' +
+                      '<div style="width: 9px; height: 9px; border-radius: 50%; background-color: white;"></div>' + 
+                      '<span>Total Energy: '+totalVal.toFixed(2)+'</span>' +
+                    '</div>'
+          html += '</div>';
+          return html;
+        }
+      }
     };
     this.waterConsumptionBarChartOptions = {
       series: [],
@@ -170,6 +214,31 @@ export class SmartBuildingDetailComponent implements OnInit {
       fill: {
         opacity: 1
       },
+      tooltip: {
+        custom: ({series, seriesIndex, dataPointIndex, w}) => {
+          let headerTxt = '';
+          if(this.periodOfWater['periodType'] == PeriodType.Month || this.periodOfWater['periodType'] == PeriodType.Week || this.periodOfWater['periodType'] == PeriodType.Day) {
+            headerTxt = moment(this.periodOfWater['startDate']).add(dataPointIndex, 'days').format('ddd, MMM DD, YYYY');
+          } else {
+            headerTxt = moment(this.periodOfWater['startDate']).add(dataPointIndex, 'months').format('MMM, YYYY');
+          }
+          let totalVal = 0;
+          let html = '<div class="flex flex-col items-center" style="color: #212121">';
+          html += '<div class="py-1.5 px-3 w-full mb-1" style="background-color: #EDEFF1;">' + 
+                    '<span class="">' + headerTxt + '</span>' + 
+                  '</div>'
+          this.waterLocations.forEach((location, idx) => {
+            totalVal += series[idx][dataPointIndex];
+
+            html += '<div class="flex font-mediumbold gap-x-2 text-md items-center w-full px-3">' +
+                      '<div style="width: 9px; height: 9px; border-radius: 50%; background-color: '+this.waterConsumptionColors[idx]+'"></div>' + 
+                      '<span>' + location + ': '+series[idx][dataPointIndex].toFixed(2)+'</span>' +
+                    '</div>'
+          })
+          html += '</div>';
+          return html;
+        }
+      }
     };
   }
 
@@ -178,10 +247,10 @@ export class SmartBuildingDetailComponent implements OnInit {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((res) => {
         if(res) {
-          console.log(res, 'electricity');
           this.electricityDetail = res;
           this.setGraphForConsumption('electricity');
           this.setGraphForProfile('electricity');
+          this.setGraphForPowerFactor();
           this._cdr.detectChanges();
         }
       })
@@ -190,13 +259,34 @@ export class SmartBuildingDetailComponent implements OnInit {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((res) => {
         if(res) {
-          console.log(res, 'water');
           this.waterDetail = res;
           this.setGraphForConsumption('water');
           this.setGraphForProfile('water');
+          this.setGraphForAverageMaxFlow();
           this._cdr.detectChanges();
         }
       })
+  }
+
+  setGraphForPowerFactor() {
+    let powerFactorData = this.electricityDetail['PowerFactorData'][0];
+    this.electricityPowerFactor = powerFactorData['PowerFactor'];
+  }
+
+  setGraphForAverageMaxFlow() {
+    this.maxValue = 0; this.averageValue = 0;
+    this.waterDetail['Statistics'].forEach(obj => {
+      if(obj['SupplyToLocationTypeId'] == 900) this.averageValue = obj['Usage'];
+      if(obj['SupplyToLocationTypeId'] == 901) this.maxValue = obj['Usage'];
+    });
+    if(this.maxValue < 10) {
+      this.rangeEndValue = Math.round(this.maxValue) + 1;  
+      this.tickInterval = this.rangeEndValue / 5;
+    } else {
+      let percentVal = Math.round(this.maxValue / 90);
+      this.rangeEndValue = percentVal * 100;
+      this.tickInterval = this.rangeEndValue / 5;
+    }
   }
 
   setGraphForProfile(type) {
@@ -207,7 +297,7 @@ export class SmartBuildingDetailComponent implements OnInit {
         if(idx > 0 && obj['ReadingDate'] == this.electricityDetail['ProfileData'][0]['ReadingDate'] && endIdx == 0) endIdx = idx;
       })
 
-      this.electricityProfileDatasource = this.electricityDetail['ProfileData'].slice(0, endIdx - 1);
+      this.electricityProfileDatasource = this.electricityDetail['ProfileData'];
       this.electricityProfileDatasource = this.electricityProfileDatasource.map(obj => {
         return {...obj, ReadingDateString: pipe.transform(obj.ReadingDate, "yyyy-MM-dd HH:mm")};
       })
@@ -216,27 +306,37 @@ export class SmartBuildingDetailComponent implements OnInit {
       this.waterDetail['ProfileData'].forEach((obj, idx) => {
         if(idx > 0 && obj['ReadingDate'] == this.waterDetail['ProfileData'][0]['ReadingDate'] && endIdx == 0) endIdx = idx;
       })
-      console.log('endIdx', endIdx)
       //Usage
-      this.waterProfileDatasource = this.waterDetail['ProfileData'].slice(0, endIdx - 1);
+      this.waterProfileDatasource = this.waterDetail['ProfileData'];
       this.waterProfileDatasource = this.waterProfileDatasource.map(obj => {
         return {...obj, ReadingDateString: pipe.transform(obj.ReadingDate, "yyyy-MM-dd HH:mm")};
       })
     }
   }
-  
-  customizeTooltip(arg: any) {
-    var ret = { text: `<strong>Name:</strong> ${arg.seriesName} <br> <strong>Value:</strong> ${arg.valueText} <br> <strong>Date and Time:</strong> ${arg.argument}` };
-    return ret;
+
+  getProfileData(type, field, index) {
+    if(type == 'electricity') {
+      return this.electricityProfileDatasource[index][field];
+    } else {
+      return this.waterProfileDatasource[index][field];
+    }
+  }
+
+  customizePowerFactorTooltip(arg: any) {
+    return {text: `${arg.value.toFixed(3)}`}
+  }
+
+  customizeMaxAvgTooltip(arg: any) {
+    return {text: `${arg.value.toFixed(3)}`}
   }
 
   setGraphForConsumption(type) {
     if(type == 'electricity') {
-      let locationsArray = [];
+      this.electricityLocations = [];
       this.electricityDetail['Consumptions'].forEach(item => {
-        if(locationsArray.indexOf(item['SupplyToLocationName']) == -1) locationsArray.push(item['SupplyToLocationName']);
+        if(this.electricityLocations.indexOf(item['SupplyToLocationName']) == -1) this.electricityLocations.push(item['SupplyToLocationName']);
       })
-      this.electricityConsumptionColors = this._utils.utilityColorMapping()['Electricity'].slice(0, locationsArray.length).reverse();
+      this.electricityConsumptionColors = this._utils.utilityColorMapping()['Electricity'].slice(0, this.electricityLocations.length).reverse();
       if(this.periodOfElectricity['periodType'] == PeriodType.Month) {
         this.electricityConsumptionBarChartOptions.xaxis.categories = [];
         for (let i = moment(this.periodOfElectricity['startDate']).toDate().getDate(); i <= moment(this.periodOfElectricity['endDate']).toDate().getDate(); i++) {
@@ -245,7 +345,7 @@ export class SmartBuildingDetailComponent implements OnInit {
         }
         
         this.electricityConsumptionBarChartOptions.series = [];
-        locationsArray.forEach(locationName => {
+        this.electricityLocations.forEach(locationName => {
           let result = {name: locationName, data: []};
           this.electricityConsumptionBarChartOptions.xaxis.categories.forEach(val => result['data'].push(0));
           
@@ -263,7 +363,7 @@ export class SmartBuildingDetailComponent implements OnInit {
         }
 
         this.electricityConsumptionBarChartOptions.series = [];
-        locationsArray.forEach(locationName => {
+        this.electricityLocations.forEach(locationName => {
           let result = {name: locationName, data: []};
           this.electricityConsumptionBarChartOptions.xaxis.categories.forEach(val => result['data'].push(0));
           
@@ -280,7 +380,7 @@ export class SmartBuildingDetailComponent implements OnInit {
         this.electricityConsumptionBarChartOptions.xaxis.categories = this.monthsAbbr;
 
         this.electricityConsumptionBarChartOptions.series = [];
-        locationsArray.forEach(locationName => {
+        this.electricityLocations.forEach(locationName => {
           let result = {name: locationName, data: []};
           this.electricityConsumptionBarChartOptions.xaxis.categories.forEach(val => result['data'].push(0));
           
@@ -297,7 +397,7 @@ export class SmartBuildingDetailComponent implements OnInit {
         this.electricityConsumptionBarChartOptions.xaxis.categories.push(date.getDate() + '/' + (date.getMonth() + 1));
 
         this.electricityConsumptionBarChartOptions.series = [];
-        locationsArray.forEach(locationName => {
+        this.electricityLocations.forEach(locationName => {
           let result = {name: locationName, data: []};
           this.electricityConsumptionBarChartOptions.xaxis.categories.forEach(val => result['data'].push(0));
           
@@ -309,12 +409,12 @@ export class SmartBuildingDetailComponent implements OnInit {
       }
       this._cdr.detectChanges();
     } else {
-      let locationsArray = [];
+      this.waterLocations = [];
       this.waterDetail['Consumptions'].forEach(item => {
-        if(locationsArray.indexOf(item['SupplyToLocationName']) == -1) locationsArray.push(item['SupplyToLocationName']);
+        if(this.waterLocations.indexOf(item['SupplyToLocationName']) == -1) this.waterLocations.push(item['SupplyToLocationName']);
       })
 
-      this.waterConsumptionColors = this._utils.utilityColorMapping()['Water'].slice(0, locationsArray.length).reverse();
+      this.waterConsumptionColors = this._utils.utilityColorMapping()['Water'].slice(0, this.waterLocations.length).reverse();
       if(this.periodOfWater['periodType'] == PeriodType.Month) {
         this.waterConsumptionBarChartOptions.xaxis.categories = [];
         for (let i = moment(this.periodOfWater['startDate']).toDate().getDate(); i <= moment(this.periodOfWater['endDate']).toDate().getDate(); i++) {
@@ -323,7 +423,7 @@ export class SmartBuildingDetailComponent implements OnInit {
         }
 
         this.waterConsumptionBarChartOptions.series = [];
-        locationsArray.forEach(locationName => {
+        this.waterLocations.forEach(locationName => {
           let result = {name: locationName, data: []};
           this.waterConsumptionBarChartOptions.xaxis.categories.forEach(val => result['data'].push(0));
           
@@ -341,7 +441,7 @@ export class SmartBuildingDetailComponent implements OnInit {
         }
 
         this.waterConsumptionBarChartOptions.series = [];
-        locationsArray.forEach(locationName => {
+        this.waterLocations.forEach(locationName => {
           let result = {name: locationName, data: []};
           this.waterConsumptionBarChartOptions.xaxis.categories.forEach(val => result['data'].push(0));
           
@@ -359,7 +459,7 @@ export class SmartBuildingDetailComponent implements OnInit {
         this.waterConsumptionBarChartOptions.xaxis.categories = this.monthsAbbr;
 
         this.waterConsumptionBarChartOptions.series = [];
-        locationsArray.forEach(locationName => {
+        this.waterLocations.forEach(locationName => {
           let result = {name: locationName, data: []};
           this.waterConsumptionBarChartOptions.xaxis.categories.forEach(val => result['data'].push(0));
           
@@ -376,7 +476,7 @@ export class SmartBuildingDetailComponent implements OnInit {
         this.waterConsumptionBarChartOptions.xaxis.categories.push(date.getDate() + '/' + (date.getMonth() + 1));
 
         this.waterConsumptionBarChartOptions.series = [];
-        locationsArray.forEach(locationName => {
+        this.waterLocations.forEach(locationName => {
           let result = {name: locationName, data: []};
           this.waterConsumptionBarChartOptions.xaxis.categories.forEach(val => result['data'].push(0));
           
@@ -394,18 +494,24 @@ export class SmartBuildingDetailComponent implements OnInit {
   onShowElectricityDetail(event) {
     let data = {...event, buildingId: this.buildingId};
     this.periodOfElectricity = event;
+    this.isElectricityLoading = true;
     this._service.getElectirictyDetailForSmartBuilding(data)
       .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((res) => {        
+      .subscribe((res) => {
+        this.isElectricityLoading = false;
+        this._cdr.detectChanges();
       })
   }
 
   onShowWaterDetail(event) {
     let data = {...event, buildingId: this.buildingId};
     this.periodOfWater = event;
+    this.isWaterLoading = true;
     this._service.getWaterDetailForSmartBuilding(data)
       .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((res) => {        
+      .subscribe((res) => {
+        this.isWaterLoading = false;
+        this._cdr.detectChanges();
       })
   }
 

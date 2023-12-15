@@ -53,7 +53,7 @@ export class PeriodCriteriaComponent implements OnInit {
       this.setPeriod();
     } else if(this.selectedPeriod == 'Month') {
       this.currentMonth--;
-      if(this.currentMonth == -1) this.currentMonth = 11;
+      if(this.currentMonth == -1) {this.currentMonth = 11; this.currentYear--;}
       this.setPeriod();
     }
   }
@@ -67,7 +67,7 @@ export class PeriodCriteriaComponent implements OnInit {
       this.setPeriod();
     } else if(this.selectedPeriod == 'Month') {
       this.currentMonth++;
-      if(this.currentMonth == 12) this.currentMonth = 0;
+      if(this.currentMonth == 12) { this.currentMonth = 0; this.currentYear++;}
       this.setPeriod();
     }
   }

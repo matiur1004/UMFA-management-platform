@@ -47,7 +47,7 @@ export class SmartBuildingsComponent implements OnInit {
 
   onRowClick(event) {
     if(event.data) {
-      console.log(event.data)
+      this.dashboardService.showSmartBuildingDetails(event.data);
     }
   }
 }

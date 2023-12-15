@@ -55,7 +55,9 @@ export class DashboardService {
   private _clientFeedbackReports: BehaviorSubject<any> = new BehaviorSubject(null);
   private _showTenantBillingDetails: BehaviorSubject<any> = new BehaviorSubject(null);
   private _billingDetailsForTenant: BehaviorSubject<any> = new BehaviorSubject(null);
+
   private _smartBuildings: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _smartBuildingDetails: BehaviorSubject<any> = new BehaviorSubject(null);  
   private _smartBuildingElectricity: BehaviorSubject<any> = new BehaviorSubject(null);
   private _smartBuildingWater: BehaviorSubject<any> = new BehaviorSubject(null);
 
@@ -284,6 +286,10 @@ export class DashboardService {
 
   get smartBuildings$(): Observable<any>{
     return this._smartBuildings.asObservable();
+  }
+
+  get smartBuildingDetails$(): Observable<any>{
+    return this._smartBuildingDetails.asObservable();
   }
 
   get smartBuildingElectricity$(): Observable<any>{
@@ -865,6 +871,10 @@ export class DashboardService {
 
   setTitle(val) {
     this._headerText.next(val);
+  }
+
+  showSmartBuildingDetails(data) {
+    this._smartBuildingDetails.next(data);
   }
 
   destroy() {

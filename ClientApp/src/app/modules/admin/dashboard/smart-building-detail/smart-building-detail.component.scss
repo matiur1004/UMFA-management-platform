@@ -1,3 +1,17 @@
 .smart-services-dashboard-detail {
     color: #212121;
 }
+.legend-item {
+    width: 9px;
+    height: 9px;
+    border-radius: 1px;
+    &.average {
+        background: #9DCDEE;
+    }
+    &.max {
+        background: #07067D;
+    }
+}
+::ng-deep .loading-spinner circle{
+    stroke: #1e2849 !important;
+}

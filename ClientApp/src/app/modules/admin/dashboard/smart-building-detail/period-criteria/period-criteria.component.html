@@ -4,7 +4,10 @@
             <img class="service-icon" src="/assets/images/icons/electricity_circle.svg"/>
         </ng-container>
         <ng-container *ngIf="type == 'Water'">
-            <img class="service-icon" src="/assets/images/icons/water_circle.svg"/>
+            <div class="service-icon flex justify-center items-center" style="background-color: #E3E5EF; width: 37px; height: 37px;">
+                <img class="" src="/assets/images/icons/water.svg" style="width: 24px;"/>
+            </div>
+            
         </ng-container>
          <span class="text-xl font-mediumbold">{{type}}</span> 
     </div>
