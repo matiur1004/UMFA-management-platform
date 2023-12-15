@@ -16,12 +16,8 @@
                 <div class="flex flex-col text-lg font-mediumbold gap-y-1" *ngIf="electricityDetail">
                     <div class="flex justify-between" *ngFor="let statistic of electricityDetail['Statistics']">
                         <span class="text-lg">{{statistic['SupplyToLocationName']}}</span>
-                        <span class="text-lg">{{statistic['Energy'] | number : '1.0-2'}} kWh</span>
+                        <span class="text-lg">{{statistic['Energy'] | number : '1.0-2'}} {{statistic['SupplyToLocationTypeId'] != 9999 ? 'kWh' : 'kVA'}}</span>
                     </div>
-                    <!-- <div class="flex justify-between">
-                        <span class="text-lg">Maximum demand</span>
-                        <span class="text-lg">14.87kVA</span>
-                    </div> -->
                 </div>
             </ng-container>
             <ng-template #loadingTemplate>
@@ -39,13 +35,8 @@
                 <div class="flex flex-col text-lg font-mediumbold gap-y-1" *ngIf="waterDetail">
                     <div class="flex justify-between" *ngFor="let statistic of waterDetail['Statistics']">
                         <span class="text-lg">{{statistic['SupplyToLocationName']}}</span>
-                        <span class="text-lg">{{statistic['Usage'] | number : '1.0-2'}} KL</span>
+                        <span class="text-lg">{{statistic['Usage'] | number : '1.0-2'}} {{statistic['SupplyToLocationTypeId'] != 902 ? 'KL' : ''}} </span>
                     </div>
-                    
-                    <!-- <div class="flex justify-between">
-                        <span class="text-lg">Total triggered leak alarms</span>
-                        <span class="text-lg">4</span>
-                    </div> -->
                 </div>
             </ng-container>
             <ng-template #loadingTemplate>
