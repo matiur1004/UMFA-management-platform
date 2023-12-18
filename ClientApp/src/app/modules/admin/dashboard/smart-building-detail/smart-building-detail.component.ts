@@ -50,6 +50,8 @@ export class SmartBuildingDetailComponent implements OnInit {
 
   weeksAbbr= ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
   monthsAbbr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  hoursAbbr = ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00','08:00', '09:00', '10:00', '11:00', '12:00', '13:00',
+                '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'];
 
   electricityLocations = [];
   waterLocations = [];
@@ -392,17 +394,22 @@ export class SmartBuildingDetailComponent implements OnInit {
           this.electricityConsumptionBarChartOptions.series.push(result);
         })
       } else if(this.periodOfElectricity['periodType'] == PeriodType.Day) {
-        this.electricityConsumptionBarChartOptions.xaxis.categories = [];
-        let date = moment(this.periodOfElectricity['startDate']).toDate();
-        this.electricityConsumptionBarChartOptions.xaxis.categories.push(date.getDate() + '/' + (date.getMonth() + 1));
+        if(this.electricityLocations.length > 0) this.electricityConsumptionBarChartOptions.xaxis.categories = this.hoursAbbr;
+        else this.electricityConsumptionBarChartOptions.xaxis.categories = [];
 
         this.electricityConsumptionBarChartOptions.series = [];
         this.electricityLocations.forEach(locationName => {
           let result = {name: locationName, data: []};
           this.electricityConsumptionBarChartOptions.xaxis.categories.forEach(val => result['data'].push(0));
           
-          let filteredByLocation = this.electricityDetail['Consumptions'].find(obj => obj['SupplyToLocationName'] == locationName);
-          if(filteredByLocation) result['data'] = [filteredByLocation['Energy']];
+          let filteredByLocation = this.electricityDetail['Consumptions'].filter(obj => obj['SupplyToLocationName'] == locationName);
+          if(filteredByLocation) {
+            this.electricityConsumptionBarChartOptions.xaxis.categories.forEach((val, idx) => {
+              let filteredByDate = filteredByLocation.find(obj => obj['Hour'] == idx);
+              if(filteredByDate) result['data'][idx] = filteredByDate['Energy'];
+            })
+          }
+          
 
           this.electricityConsumptionBarChartOptions.series.push(result);
         })
@@ -471,17 +478,22 @@ export class SmartBuildingDetailComponent implements OnInit {
           this.waterConsumptionBarChartOptions.series.push(result);
         })
       } else if(this.periodOfWater['periodType'] == PeriodType.Day) {
-        this.waterConsumptionBarChartOptions.xaxis.categories = [];
-        let date = moment(this.periodOfElectricity['startDate']).toDate();
-        this.waterConsumptionBarChartOptions.xaxis.categories.push(date.getDate() + '/' + (date.getMonth() + 1));
+        if(this.waterLocations.length > 0) this.waterConsumptionBarChartOptions.xaxis.categories = this.hoursAbbr;
+        else this.waterConsumptionBarChartOptions.xaxis.categories = [];
 
         this.waterConsumptionBarChartOptions.series = [];
         this.waterLocations.forEach(locationName => {
           let result = {name: locationName, data: []};
           this.waterConsumptionBarChartOptions.xaxis.categories.forEach(val => result['data'].push(0));
           
-          let filteredByLocation = this.waterDetail['Consumptions'].find(obj => obj['SupplyToLocationName'] == locationName);
-          if(filteredByLocation) result['data'] = [filteredByLocation['Usage']];
+          let filteredByLocation = this.waterDetail['Consumptions'].filter(obj => obj['SupplyToLocationName'] == locationName);
+          if(filteredByLocation) {
+            this.waterConsumptionBarChartOptions.xaxis.categories.forEach((val, idx) => {
+              let filteredByDate = filteredByLocation.find(obj => obj['Hour'] == idx);
+              if(filteredByDate) result['data'][idx] = filteredByDate['Usage'];
+            })
+          }
+          
 
           this.waterConsumptionBarChartOptions.series.push(result);
         })
