@@ -344,7 +344,7 @@ export class SmartBuildingDetailComponent implements OnInit {
 
       if(this.periodOfElectricity['periodType'] == PeriodType.Month) {
         this.electricityConsumptionBarChartOptions.xaxis.categories = [];
-        for (let i = moment(this.periodOfElectricity['startDate']).toDate().getDate(); i <= moment(this.periodOfElectricity['endDate']).toDate().getDate(); i++) {
+        for (let i = moment(this.periodOfElectricity['startDate']).toDate().getDate(); i <= moment(this.periodOfElectricity['endDate']).subtract(1, 'day').toDate().getDate(); i++) {
           let day = moment(this.periodOfElectricity['startDate']).add(i - 1, 'days').toDate().getDay();
           this.electricityConsumptionBarChartOptions.xaxis.categories.push([i.toString(), this.weeksAbbr[day]]);
         }
@@ -432,7 +432,7 @@ export class SmartBuildingDetailComponent implements OnInit {
       this.waterConsumptionBarChartOptions.xaxis.labels.rotateAlways = false;
       if(this.periodOfWater['periodType'] == PeriodType.Month) {
         this.waterConsumptionBarChartOptions.xaxis.categories = [];
-        for (let i = moment(this.periodOfWater['startDate']).toDate().getDate(); i <= moment(this.periodOfWater['endDate']).toDate().getDate(); i++) {
+        for (let i = moment(this.periodOfWater['startDate']).toDate().getDate(); i <= moment(this.periodOfWater['endDate']).subtract(1, 'day').toDate().getDate(); i++) {
           let day = moment(this.periodOfWater['startDate']).add(i - 1, 'days').toDate().getDay();
           this.waterConsumptionBarChartOptions.xaxis.categories.push([i.toString(), this.weeksAbbr[day]]);
         }
@@ -544,6 +544,7 @@ export class SmartBuildingDetailComponent implements OnInit {
   ngOnDestroy(): void
   {
       // Unsubscribe from all subscriptions
+      this._service.destroySmartBuilding();
       this._unsubscribeAll.next(null);
       this._unsubscribeAll.complete();
   }

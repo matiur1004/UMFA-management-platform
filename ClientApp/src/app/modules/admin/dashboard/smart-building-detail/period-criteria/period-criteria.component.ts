@@ -55,6 +55,9 @@ export class PeriodCriteriaComponent implements OnInit {
       this.currentMonth--;
       if(this.currentMonth == -1) {this.currentMonth = 11; this.currentYear--;}
       this.setPeriod();
+    }else if(this.selectedPeriod == 'Year') {
+      this.currentYear--;
+      this.setPeriod();
     }
   }
 
@@ -69,29 +72,27 @@ export class PeriodCriteriaComponent implements OnInit {
       this.currentMonth++;
       if(this.currentMonth == 12) { this.currentMonth = 0; this.currentYear++;}
       this.setPeriod();
+    } else if(this.selectedPeriod == 'Year') {
+      this.currentYear++;
+      this.setPeriod();
     }
   }
 
   setPeriod() {
     if(this.selectedPeriod == 'Week') {
       this.startDate = moment().week(this.currentWeek).startOf('isoWeek').hour(1).minute(0).second(0).toDate();
-      this.endDate = moment().week(this.currentWeek).endOf('isoWeek').hour(0).minute(59).second(59).toDate();
+      this.endDate = moment().week(this.currentWeek).endOf('isoWeek').hour(24).minute(59).second(59).toDate();
     } else if(this.selectedPeriod == 'Day') {
       this.startDate = moment(this.currentDay).hour(1).minute(0).second(0).toDate();
       this.endDate = moment(this.currentDay).add('1', 'day').hour(1).minute(0).second(0).toDate();
     } else if(this.selectedPeriod == 'Month') {
       this.startDate = moment().year(this.currentYear).month(this.currentMonth).startOf('month').hour(1).minute(0).second(0).toDate();
-      this.endDate = moment().year(this.currentYear).month(this.currentMonth).endOf('month').hour(0).minute(59).second(59).toDate();
+      this.endDate = moment().year(this.currentYear).month(this.currentMonth).endOf('month').hour(24).minute(59).second(59).toDate();
     } else if(this.selectedPeriod == 'Year') {
       this.startDate = moment().year(this.currentYear).startOf('year').toDate();
       this.endDate = moment().year(this.currentYear).endOf('year').toDate();
     }
     this.dateRangeChangedEvent.emit({startDate: this.startDate.toUTCString(), endDate: this.endDate.toUTCString(), periodType: this.getPeriodType()})
-    // if(this.selectedPeriod == 'Day') {
-    //   this.dateRangeChangedEvent.emit({startDate: this.startDate.toUTCString(), endDate: this.endDate.toUTCString(), periodType: this.getPeriodType()})
-    // } else {
-    //   this.dateRangeChangedEvent.emit({startDate: this.startDate.toDateString(), endDate: this.endDate.toDateString(), periodType: this.getPeriodType()})
-    // }
     
   }
 

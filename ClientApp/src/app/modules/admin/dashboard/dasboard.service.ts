@@ -877,6 +877,11 @@ export class DashboardService {
     this._smartBuildingDetails.next(data);
   }
 
+  destroySmartBuilding() {
+    this._smartBuildingElectricity.next(null);
+    this._smartBuildingWater.next(null);
+  }
+
   destroy() {
     this._buildingReports.next(null);
     this._tenantSlip.next(null);
