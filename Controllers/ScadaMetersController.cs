@@ -48,6 +48,7 @@ namespace ClientPortal.Controllers
 
             var result = await res.Content.ReadAsStringAsync();
             XmlDocument doc = new XmlDocument();
+            result = result.Replace(':', '-');
             doc.LoadXml(result);
 
             string jsonText = JsonConvert.SerializeXmlNode(doc);
