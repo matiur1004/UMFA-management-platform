@@ -17,8 +17,12 @@
     public class SmartServicesMainWaterConsumption
     {
         public string SupplyToLocationName { get; set; }
-        public int Month { get; set; }
-        public int Day { get; set; }
+        public int? Month { get; set; }
+        public int? Day { get; set; }
+        public int? Hour { get; set; }
+        public int? WeekDay { get; set; }
+        public string? DayOfWeek { get; set; }
+        public string? MonthShort { get; set; }
         public double Usage { get; set; }
     }
 

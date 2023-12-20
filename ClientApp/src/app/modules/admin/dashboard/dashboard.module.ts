@@ -13,7 +13,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'app/shared/shared.module';
 import { DashboardComponent } from './dashboard.component';
 import { dashboardRoutes } from './dashboard.routing';
-import { DxButtonModule, DxChartModule, DxDataGridModule, DxDropDownBoxModule, DxPivotGridModule, DxSelectBoxModule, DxSparklineModule, DxTextBoxModule, DxTreeMapModule, DxTreeViewModule } from 'devextreme-angular';
+import { DxButtonModule, DxChartModule, DxCircularGaugeModule, DxDataGridModule, DxDropDownBoxModule, DxPivotGridModule, DxSelectBoxModule, DxSparklineModule, DxTextBoxModule, DxTreeMapModule, DxTreeViewModule } from 'devextreme-angular';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { BuildingDetailComponent } from './building-detail/building-detail.component';
 import { CommonModule, DecimalPipe } from '@angular/common';
@@ -45,6 +45,9 @@ import { TenantBillingComponent } from './tenant-billing/tenant-billing.componen
 import { TenantReadingsComponent } from './tenant-readings/tenant-readings.component';
 import { BuildingAlarmsComponent } from './building-alarms/building-alarms.component';
 import { SmartBuildingsComponent } from './smart-buildings/smart-buildings.component';
+import { SmartBuildingDetailComponent } from './smart-building-detail/smart-building-detail.component';
+import { PeriodCriteriaComponent } from './smart-building-detail/period-criteria/period-criteria.component';
+import { MatProgressSpinner, MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
     declarations: [
@@ -71,7 +74,9 @@ import { SmartBuildingsComponent } from './smart-buildings/smart-buildings.compo
         TenantOccupationsComponent,
         TenantReadingsComponent,
         BuildingAlarmsComponent,
-        SmartBuildingsComponent
+        SmartBuildingsComponent,
+        SmartBuildingDetailComponent,
+        PeriodCriteriaComponent
     ],
     imports     : [
         CommonModule,
@@ -89,6 +94,7 @@ import { SmartBuildingsComponent } from './smart-buildings/smart-buildings.compo
         MatTooltipModule,
         MatTableModule,
         MatExpansionModule,
+        MatProgressSpinnerModule,
         MatSlideToggleModule,
         NgApexchartsModule,
         DxTextBoxModule,
@@ -101,6 +107,7 @@ import { SmartBuildingsComponent } from './smart-buildings/smart-buildings.compo
         DxButtonModule,
         DxSelectBoxModule,
         DxPivotGridModule,
+        DxCircularGaugeModule,
         DxSparklineModule,
         MatTabsModule,
         NgSelectModule,

@@ -750,6 +750,26 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                     this._cdr.markForCheck();
                 }
             });
+
+        this._dbService.smartBuildingDetails$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if(result) {
+                    let res = {
+                        "buildingId": result['UmfaBuildingId'],
+                    }
+                    let newTab: IHomeTab = {
+                        id: 0,
+                        title: `Smart Building Dashboard`,
+                        type: 'SmartBuildingDashboard',
+                        dataSource: res
+                    };
+                    this.tabsList.push(newTab);
+                    this.selectedTab = this.tabsList.length;
+                    
+                    this._cdr.markForCheck();
+                }
+            });
         //Wip
     }
 
@@ -853,7 +873,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             this.tabsList[index]['type'] == 'TenantDashboarAssignedMeters' ||
             this.tabsList[index]['type'] == 'TenantBilling' ||
             this.tabsList[index]['type'] == 'TenantDashboardOccupations' ||
-            this.tabsList[index]['type'] == 'TenantDashboardReadings') {
+            this.tabsList[index]['type'] == 'TenantDashboardReadings' || 
+            this.tabsList[index]['type'] == 'SmartBuildingDashboard') {
             this.selectedTab = index;    
         }
         if(this.tabsList[index]['type'] == 'ShopList') {
