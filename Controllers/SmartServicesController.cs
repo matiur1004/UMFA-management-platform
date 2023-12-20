@@ -40,8 +40,6 @@ namespace ClientPortal.Controllers
         {
             try
             {
-                if (request.StartDate == request.EndDate)
-                    request.EndDate = request.StartDate?.AddDays(1);
                 return await _ssService.GetSmartServicesMainElectricityAsync(request);
             }
             catch (Exception e)
