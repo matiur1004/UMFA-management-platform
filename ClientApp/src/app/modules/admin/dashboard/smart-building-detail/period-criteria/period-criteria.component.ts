@@ -103,4 +103,9 @@ export class PeriodCriteriaComponent implements OnInit {
     if(this.selectedPeriod == 'Year') return 4;
     return 0;
   }
+
+  getPrevDate(date: Date) {
+    date.setDate(date.getDate() - 1);
+    return date;
+  }
 }
