@@ -753,10 +753,10 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
 
         this._dbService.smartBuildingDetails$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((res) => {
-                if(res) {
+            .subscribe((result) => {
+                if(result) {
                     let res = {
-                        "buildingId": 0,
+                        "buildingId": result['UmfaBuildingId'],
                     }
                     let newTab: IHomeTab = {
                         id: 0,

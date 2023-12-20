@@ -339,6 +339,9 @@ export class SmartBuildingDetailComponent implements OnInit {
         if(this.electricityLocations.indexOf(item['SupplyToLocationName']) == -1) this.electricityLocations.push(item['SupplyToLocationName']);
       })
       this.electricityConsumptionColors = this._utils.utilityColorMapping()['Electricity'].slice(0, this.electricityLocations.length).reverse();
+      this.electricityConsumptionBarChartOptions.xaxis.labels.rotate = 0;
+      this.electricityConsumptionBarChartOptions.xaxis.labels.rotateAlways = false;
+
       if(this.periodOfElectricity['periodType'] == PeriodType.Month) {
         this.electricityConsumptionBarChartOptions.xaxis.categories = [];
         for (let i = moment(this.periodOfElectricity['startDate']).toDate().getDate(); i <= moment(this.periodOfElectricity['endDate']).toDate().getDate(); i++) {
@@ -397,6 +400,9 @@ export class SmartBuildingDetailComponent implements OnInit {
         if(this.electricityLocations.length > 0) this.electricityConsumptionBarChartOptions.xaxis.categories = this.hoursAbbr;
         else this.electricityConsumptionBarChartOptions.xaxis.categories = [];
 
+        this.electricityConsumptionBarChartOptions.xaxis.labels.rotate = -45;
+        this.electricityConsumptionBarChartOptions.xaxis.labels.rotateAlways = true;
+
         this.electricityConsumptionBarChartOptions.series = [];
         this.electricityLocations.forEach(locationName => {
           let result = {name: locationName, data: []};
@@ -422,6 +428,8 @@ export class SmartBuildingDetailComponent implements OnInit {
       })
 
       this.waterConsumptionColors = this._utils.utilityColorMapping()['Water'].slice(0, this.waterLocations.length).reverse();
+      this.waterConsumptionBarChartOptions.xaxis.labels.rotate = 0;
+      this.waterConsumptionBarChartOptions.xaxis.labels.rotateAlways = false;
       if(this.periodOfWater['periodType'] == PeriodType.Month) {
         this.waterConsumptionBarChartOptions.xaxis.categories = [];
         for (let i = moment(this.periodOfWater['startDate']).toDate().getDate(); i <= moment(this.periodOfWater['endDate']).toDate().getDate(); i++) {
@@ -480,6 +488,9 @@ export class SmartBuildingDetailComponent implements OnInit {
       } else if(this.periodOfWater['periodType'] == PeriodType.Day) {
         if(this.waterLocations.length > 0) this.waterConsumptionBarChartOptions.xaxis.categories = this.hoursAbbr;
         else this.waterConsumptionBarChartOptions.xaxis.categories = [];
+
+        this.waterConsumptionBarChartOptions.xaxis.labels.rotate = -45;
+        this.waterConsumptionBarChartOptions.xaxis.labels.rotateAlways = true;
 
         this.waterConsumptionBarChartOptions.series = [];
         this.waterLocations.forEach(locationName => {
