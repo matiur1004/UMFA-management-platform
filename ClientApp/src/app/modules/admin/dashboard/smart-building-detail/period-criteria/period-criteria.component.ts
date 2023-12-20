@@ -84,13 +84,13 @@ export class PeriodCriteriaComponent implements OnInit {
       this.endDate = moment().week(this.currentWeek).endOf('isoWeek').hour(24).minute(59).second(59).toDate();
     } else if(this.selectedPeriod == 'Day') {
       this.startDate = moment(this.currentDay).hour(1).minute(0).second(0).toDate();
-      this.endDate = moment(this.currentDay).add('1', 'day').hour(1).minute(0).second(0).toDate();
+      this.endDate = moment(this.currentDay).hour(24).minute(59).second(59).toDate();
     } else if(this.selectedPeriod == 'Month') {
       this.startDate = moment().year(this.currentYear).month(this.currentMonth).startOf('month').hour(1).minute(0).second(0).toDate();
       this.endDate = moment().year(this.currentYear).month(this.currentMonth).endOf('month').hour(24).minute(59).second(59).toDate();
     } else if(this.selectedPeriod == 'Year') {
-      this.startDate = moment().year(this.currentYear).startOf('year').toDate();
-      this.endDate = moment().year(this.currentYear).endOf('year').toDate();
+      this.startDate = moment().year(this.currentYear).startOf('year').hour(1).minute(0).second(0).toDate();
+      this.endDate = moment().year(this.currentYear).endOf('year').hour(24).minute(59).second(59).toDate();
     }
     this.dateRangeChangedEvent.emit({startDate: this.startDate.toUTCString(), endDate: this.endDate.toUTCString(), periodType: this.getPeriodType()})
     
