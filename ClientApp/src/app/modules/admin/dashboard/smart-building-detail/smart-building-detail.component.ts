@@ -140,8 +140,10 @@ export class SmartBuildingDetailComponent implements OnInit {
       tooltip: {
         custom: ({series, seriesIndex, dataPointIndex, w}) => {
           let headerTxt = '';
-          if(this.periodOfElectricity['periodType'] == PeriodType.Month || this.periodOfElectricity['periodType'] == PeriodType.Week || this.periodOfElectricity['periodType'] == PeriodType.Day) {
+          if(this.periodOfElectricity['periodType'] == PeriodType.Month || this.periodOfElectricity['periodType'] == PeriodType.Week) {
             headerTxt = moment(this.periodOfElectricity['startDate']).add(dataPointIndex, 'days').format('ddd, MMM DD, YYYY');
+          } else if(this.periodOfElectricity['periodType'] == PeriodType.Day) {
+            headerTxt = this.hoursAbbr[dataPointIndex] + ', ' + moment(this.periodOfElectricity['startDate']).format('ddd, MMM DD, YYYY');
           } else {
             headerTxt = moment(this.periodOfElectricity['startDate']).add(dataPointIndex, 'months').format('MMM, YYYY');
           }
@@ -221,6 +223,8 @@ export class SmartBuildingDetailComponent implements OnInit {
           let headerTxt = '';
           if(this.periodOfWater['periodType'] == PeriodType.Month || this.periodOfWater['periodType'] == PeriodType.Week || this.periodOfWater['periodType'] == PeriodType.Day) {
             headerTxt = moment(this.periodOfWater['startDate']).add(dataPointIndex, 'days').format('ddd, MMM DD, YYYY');
+          } else if(this.periodOfWater['periodType'] == PeriodType.Day) {
+            headerTxt = this.hoursAbbr[dataPointIndex] + ', ' + moment(this.periodOfWater['startDate']).format('ddd, MMM DD, YYYY');
           } else {
             headerTxt = moment(this.periodOfWater['startDate']).add(dataPointIndex, 'months').format('MMM, YYYY');
           }
