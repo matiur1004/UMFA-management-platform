@@ -80,19 +80,19 @@ export class PeriodCriteriaComponent implements OnInit {
 
   setPeriod() {
     if(this.selectedPeriod == 'Week') {
-      this.startDate = moment().week(this.currentWeek).startOf('isoWeek').hour(1).minute(0).second(0).toDate();
-      this.endDate = moment().week(this.currentWeek).endOf('isoWeek').hour(24).minute(59).second(59).toDate();
+      this.startDate = moment().week(this.currentWeek).startOf('isoWeek').toDate();
+      this.endDate = moment().week(this.currentWeek).endOf('isoWeek').toDate();
     } else if(this.selectedPeriod == 'Day') {
-      this.startDate = moment(this.currentDay).hour(1).minute(0).second(0).toDate();
-      this.endDate = moment(this.currentDay).add('1', 'day').hour(1).minute(0).second(0).toDate();
+      this.startDate = moment(this.currentDay).toDate();
+      this.endDate = moment(this.currentDay).toDate();
     } else if(this.selectedPeriod == 'Month') {
-      this.startDate = moment().year(this.currentYear).month(this.currentMonth).startOf('month').hour(1).minute(0).second(0).toDate();
-      this.endDate = moment().year(this.currentYear).month(this.currentMonth).endOf('month').hour(24).minute(59).second(59).toDate();
+      this.startDate = moment().year(this.currentYear).month(this.currentMonth).startOf('month').toDate();
+      this.endDate = moment().year(this.currentYear).month(this.currentMonth).endOf('month').toDate();
     } else if(this.selectedPeriod == 'Year') {
       this.startDate = moment().year(this.currentYear).startOf('year').toDate();
       this.endDate = moment().year(this.currentYear).endOf('year').toDate();
     }
-    this.dateRangeChangedEvent.emit({startDate: this.startDate.toUTCString(), endDate: this.endDate.toUTCString(), periodType: this.getPeriodType()})
+    this.dateRangeChangedEvent.emit({startDate: this.startDate.toDateString() + ' 00:00:00 GMT', endDate: this.endDate.toDateString() + ' 23:59:00 GMT', periodType: this.getPeriodType()})
     
   }
 
