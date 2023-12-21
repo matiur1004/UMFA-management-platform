@@ -14,7 +14,7 @@
     <div class="flex items-center text-lg gap-x-1">
         <button mat-icon-button><mat-icon [svgIcon]="'feather:chevron-left'" (click)="prev()"></mat-icon></button>
         <ng-container *ngIf="selectedPeriod == 'Week'">
-            <span>{{startDate | date : 'dd-MM-yyyy'}} to {{getPrevDate(endDate) | date : 'dd-MM-yyyy'}}</span>
+            <span>{{startDate | date : 'dd-MM-yyyy'}} to {{endDate | date : 'dd-MM-yyyy'}}</span>
         </ng-container>
         <ng-container *ngIf="selectedPeriod == 'Day'">
             <span>{{startDate | date : 'dd-MM-yyyy'}}</span>
