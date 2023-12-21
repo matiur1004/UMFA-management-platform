@@ -221,7 +221,7 @@ export class SmartBuildingDetailComponent implements OnInit {
       tooltip: {
         custom: ({series, seriesIndex, dataPointIndex, w}) => {
           let headerTxt = '';
-          if(this.periodOfWater['periodType'] == PeriodType.Month || this.periodOfWater['periodType'] == PeriodType.Week || this.periodOfWater['periodType'] == PeriodType.Day) {
+          if(this.periodOfWater['periodType'] == PeriodType.Month || this.periodOfWater['periodType'] == PeriodType.Week) {
             headerTxt = moment(this.periodOfWater['startDate']).add(dataPointIndex, 'days').format('ddd, MMM DD, YYYY');
           } else if(this.periodOfWater['periodType'] == PeriodType.Day) {
             headerTxt = this.hoursAbbr[dataPointIndex] + ', ' + moment(this.periodOfWater['startDate']).format('ddd, MMM DD, YYYY');
