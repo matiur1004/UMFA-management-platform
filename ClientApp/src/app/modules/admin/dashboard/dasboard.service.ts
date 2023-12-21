@@ -891,6 +891,7 @@ export class DashboardService {
     this._triggeredAlarmDetailPage.next(null);
     this._shopList.next(null);
     this._tenantsList.next(null);
+    this._smartBuildingDetails.next(null);
     this.selectedTenantInfo = null;
     this.selectedShopInfo = null;
   }
