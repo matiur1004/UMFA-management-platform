@@ -17,6 +17,9 @@ namespace ClientPortal.Data.Entities.PortalEntities
         [Required, MaxLength(50)]
         public string? EPeriod { get; set; }
 
+        [Required]
+        public int ClientId { get; set; }
+
         [Url]
         public string? Url { get; set; }
 

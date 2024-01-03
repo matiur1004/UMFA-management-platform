@@ -1,7 +1,7 @@
 ﻿using ClientPortal.Data.Entities.PortalEntities;
 using ClientPortal.Data.Repositories;
 using ClientPortal.Models.MessagingModels;
-using System.Security.Policy;
+using ClientPortal.Models.RequestModels;
 
 namespace ClientPortal.Services
 {
@@ -12,17 +12,26 @@ namespace ClientPortal.Services
         public Task<List<FeedbackReportRequest>> GetFeedbackReportsRequestAsync(int buildingId);
         public Task<FeedbackReportRequest> UpdateFeedbackReportRequestCompletedAsync(int requestId, string url, string buildingName, string periodName);
         public Task<FeedbackReportRequest> UpdateFeedbackReportRequestFailedAsync(int requestId, string buildingName, string periodName);
+
+        public Task<ClientFeedbackReportRequest> AddClientFeedbackReportRequestAsync(UmfaMultiClientDumpRequest request);
+        public Task<List<ClientFeedbackReportRequest>> GetClientFeedbackReportsRequestAsync(int clientId);
+        public Task<ClientFeedbackReportRequest> GetClientFeedbackReportRequestAsync(int id);
+        public Task<ClientFeedbackReportRequest> UpdateClientFeedbackReportRequestCompletedAsync(int requestId, string url);
+        public Task<ClientFeedbackReportRequest> UpdateClientFeedbackReportRequestFailedAsync(int requestId);
+
     }
     
     public class ReportsService : IReportsService
     {
         private readonly ILogger<ReportsService> _logger;
         private readonly IFeedbackReportRequestRepository _feedbackReportRequestRepository;
+        private readonly IClientFeedbackReportRequestRepository _clientFeedbackReportRequestRepository;
 
-        public ReportsService(ILogger<ReportsService> loggger, IFeedbackReportRequestRepository feedbackReportRequestRepository)
+        public ReportsService(ILogger<ReportsService> loggger, IFeedbackReportRequestRepository feedbackReportRequestRepository, IClientFeedbackReportRequestRepository clientFeedbackReportRequestRepository)
         {
             _logger = loggger;
             _feedbackReportRequestRepository = feedbackReportRequestRepository;
+            _clientFeedbackReportRequestRepository = clientFeedbackReportRequestRepository;
         }
 
         public async Task<FeedbackReportRequest> AddFeedbackReportRequestAsync(FeedbackReportRequestData request)
@@ -83,6 +92,64 @@ namespace ClientPortal.Services
         public async Task<List<FeedbackReportRequest>> GetFeedbackReportsRequestAsync(int buildingId)
         {
             return await _feedbackReportRequestRepository.GetAllAsync(fbr => fbr.Active && fbr.BuildingId.Equals(buildingId));
+        }
+
+        public async Task<ClientFeedbackReportRequest> AddClientFeedbackReportRequestAsync(UmfaMultiClientDumpRequest request)
+        {
+            _logger.LogInformation("Adding client feedback report request");
+
+            var reportRequest = await _clientFeedbackReportRequestRepository.AddAsync(new ClientFeedbackReportRequest
+            {
+                BuildingIds = request.BuildingIds,
+                SPeriod = request.SPeriod,
+                EPeriod = request.EPeriod,
+                CreatedDTM = DateTime.Now,
+                LastUpdateDTM = DateTime.Now,
+                Status = 1,
+                StatusMessage = "Requested",
+            });
+
+            return reportRequest;
+        }
+
+        public async Task<List<ClientFeedbackReportRequest>> GetClientFeedbackReportsRequestAsync(int clientId)
+        {
+            return await _clientFeedbackReportRequestRepository.GetAllAsync(fbr => fbr.Active && fbr.ClientId.Equals(clientId));
+        }
+
+        public async Task<ClientFeedbackReportRequest> GetClientFeedbackReportRequestAsync(int id)
+        {
+            return await _clientFeedbackReportRequestRepository.GetAsync(fbr => fbr.Active && fbr.Id.Equals(id));
+        }
+
+        public async Task<ClientFeedbackReportRequest> UpdateClientFeedbackReportRequestCompletedAsync(int requestId, string url)
+        {
+            return await UpdateClientFeedbackReportRequestAsync(requestId, 3, url, "Completed");
+        }
+
+        public async Task<ClientFeedbackReportRequest> UpdateClientFeedbackReportRequestFailedAsync(int requestId)
+        {
+            return await UpdateClientFeedbackReportRequestAsync(requestId, 4, null, "Failed");
+        }
+
+        private async Task<ClientFeedbackReportRequest> UpdateClientFeedbackReportRequestAsync(int requestId, int status, string? url = null, string? statusMessage = null)
+        {
+            var feedbackReportRequest = await GetClientFeedbackReportRequestAsync(requestId);
+
+            if (feedbackReportRequest is null)
+            {
+                _logger.LogError($"Could not find client feedback report request {requestId}");
+                return null;
+            }
+
+            feedbackReportRequest.Status = status;
+            feedbackReportRequest.Url = url;
+            feedbackReportRequest.StatusMessage = statusMessage;
+            feedbackReportRequest.LastUpdateDTM = DateTime.Now;
+
+            var updatedRequest = await _clientFeedbackReportRequestRepository.UpdateAsync(feedbackReportRequest);
+
+            return updatedRequest;
         }
     }
 }

@@ -12,5 +12,8 @@ namespace ClientPortal.Models.RequestModels
 
         [Required, MaxLength(50)]
         public string? EPeriod { get; set; }
+
+        [Required]
+        public int ClientId { get; set; }
     }
 }
