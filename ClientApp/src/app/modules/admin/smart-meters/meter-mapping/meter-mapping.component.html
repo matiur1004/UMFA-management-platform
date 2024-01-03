@@ -1,5 +1,35 @@
 <form class="flex flex-col w-full gap-y-2" [formGroup]="form">
-    <div class="row grid grid-cols-4 gap-x-4 gap-y-2 w-full">
+    <div class="flex flex-col bg-card p-2">
+        <div class="flex gap-x-4 flex-wrap">
+            <div class="flex flex-col">
+                <mat-label class="form-label"> Partners </mat-label>
+                <ng-select
+                    [items]="partners"
+                    bindLabel="Name"
+                    bindValue="Id"
+                    class="w-60"
+                    [placeholder]="'Select Partner'"
+                    [formControlName]="'partnerId'"
+                    [searchable]="true"
+                    [closeOnSelect]="true"
+                    [clearable]="false"
+                    [multiple]="false"
+                    [searchFn]="customBuildingSearch"
+                    (change)="onPartnerChanged($event)"
+                    >
+                </ng-select>
+            </div>
+            <div class="flex flex-col" *ngIf="isScadaEnabled">
+                <mat-label> Buildings </mat-label>
+                <ng-select [items]="buildings" bindLabel="Name" bindValue="BuildingId" [placeholder]="'Select Building'" class="w-60"
+                           [formControlName]="'UmfaId'" [searchable]="true" [clearable]="false" [searchFn]="customBuildingSearch"
+                           (change)="selectionChanged($event)">
+                </ng-select>
+            </div>
+            
+        </div>
+    </div>
+    <!-- <div class="row grid grid-cols-4 gap-x-4 gap-y-2 w-full">
         <div class="col-span-1">
             <div class="bg-card gap-x-4 gap-y-2 p-2">
                 <mat-label> Select Building </mat-label>
@@ -9,7 +39,7 @@
                 </ng-select>
             </div>
         </div>
-    </div>
+    </div> -->
     <ng-container *ngIf="selectedBuildingId>0">
         <div class="row grid grid-cols-12 gap-x-4 gap-y-2 w-full">
             <div class="col-span-5">
@@ -92,36 +122,36 @@
                         <mat-label class="form-label">Supply Type</mat-label>
                         <ng-select 
                             placeholder="Select Supply Type..." 
-                            [formControlName]="'SupplyType'"
+                            [formControlName]="'SupplyTypeId'"
                             [items]="supplyTypes"
                             bindLabel="SupplyTypeName"
-                            bindValue="SupplyTypeName"
+                            bindValue="SupplyTypeId"
                             [searchable]="false"
-                            [clearable]="false">
-
+                            [clearable]="false"
+                            (change)="onSupplyTypeChanged($event)">
                         </ng-select>
                     </div>
                     <div class="col-span-1">
                         <mat-label class="form-label">Supply To</mat-label>
                         <ng-select 
                             placeholder="Select Supply To..." 
-                            [formControlName]="'SupplyTo'"
+                            [formControlName]="'SupplyToId'"
                             [items]="supplyToItems"
-                            bindLabel="Name"
-                            bindValue="Name"
+                            bindLabel="SupplyToName"
+                            bindValue="SupplyToId"
                             [searchable]="false"
-                            [clearable]="false">
-
+                            [clearable]="false"
+                            (change)="onSupplyToChanged($event)">
                         </ng-select>
                     </div>
                     <div class="col-span-1">
                         <mat-label class="form-label">Location Type</mat-label>
                         <ng-select 
                             placeholder="Select Location Type..."
-                            [formControlName]="'LocationType'"
+                            [formControlName]="'LocationTypeId'"
                             [items]="filteredlocationTypes"
-                            bindLabel="LocationName"
-                            bindValue="LocationName"
+                            bindLabel="SupplyToLocationName"
+                            bindValue="SupplyToLocationTypeId"
                             [searchable]="false"
                             [clearable]="false">
                         </ng-select>
@@ -147,7 +177,7 @@
                 <div class="bg-card flex flex-col gap-y-2 p-2">
                     <div class="text-lg py-1 border-b flex">Mapped Meters</div>
                     <dx-data-grid [dataSource]="mappedMeters" id="MappedMetersGrid" [showBorders]="true"
-                                  class="grid-container" [hoverStateEnabled]="true" displayExpr="MeterNo" valueExpr="Id"
+                                  class="grid-container" [hoverStateEnabled]="true"
                                   (onRowClick)="selectMappedMeter($event)">
                         <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
                         <dxo-filter-row [visible]="'true'"
@@ -157,20 +187,19 @@
                                    [showPageSizeSelector]="true" [showInfo]="true" [showNavigationButtons]="true">
                         </dxo-pager>
                         <dxo-search-panel [visible]="true" [width]="200" placeholder="Search..."></dxo-search-panel>
-                        <dxi-column dataField="BuildingName" [width]="150"></dxi-column>
-                        <dxi-column dataField="PartnerName" [width]="120"></dxi-column>
-                        <dxi-column dataField="MeterNo" [width]="90"></dxi-column>
-                        <dxi-column dataField="Description"></dxi-column>
-                        <dxi-column dataField="ScadaSerial" [width]="140"></dxi-column>
-                        <dxi-column dataField="ScadaDescription" [width]="150"></dxi-column>
-                        <dxi-column dataField="RegisterType" [width]="120"></dxi-column>
-                        <dxi-column dataField="TOUHeader" [width]="140"></dxi-column>
-                        <dxi-column dataField="SupplyType" [width]="100"></dxi-column>
-                        <dxi-column dataField="Location" [width]="120"></dxi-column>
-                        <dxi-column type="buttons" [width]="80">
-                            <dxi-button hint="Delete"
-                                        icon="trash"
-                                        [onClick]="onRemoveMappedMeter"></dxi-button>
+                        <dxi-column dataField="BuildingName" [minWidth]="150"></dxi-column>
+                        <dxi-column dataField="PartnerName" [minWidth]="120"></dxi-column>
+                        <dxi-column dataField="MeterNo" [minWidth]="90"></dxi-column>
+                        <dxi-column dataField="Description" [minWidth]="120"></dxi-column>
+                        <dxi-column dataField="ScadaSerial" [minWidth]="140"></dxi-column>
+                        <dxi-column dataField="ScadaDescription" [minWidth]="150"></dxi-column>
+                        <dxi-column dataField="RegisterType" [minWidth]="120"></dxi-column>
+                        <dxi-column dataField="TOUHeader" [minWidth]="140"></dxi-column>
+                        <dxi-column dataField="SupplyType" [minWidth]="100"></dxi-column>
+                        <dxi-column dataField="SupplyTo" [minWidth]="100"></dxi-column>
+                        <dxi-column dataField="Location" [minWidth]="120"></dxi-column>
+                        <dxi-column type="buttons" [minWidth]="80">
+                            <dxi-button hint="Delete" icon="trash" [onClick]="onRemoveMappedMeter"></dxi-button>
                         </dxi-column>
                     </dx-data-grid>
                 </div>

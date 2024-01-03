@@ -12,6 +12,7 @@ export class AlarmConfigurationService {
     profileInfo: any;
     selectedBuilding: number;
     selectedPartner: number;
+    selectedSupplyType: string;
     
     private _alarmMeterDetail: BehaviorSubject<any> = new BehaviorSubject(null);
     private _metersWithAlarms: BehaviorSubject<any> = new BehaviorSubject([]);
@@ -228,8 +229,15 @@ export class AlarmConfigurationService {
     destroy() {
         //this._alarmMeterDetail.next(null);
         this._metersWithAlarms.next([]);
+        
     }
 
+    destroyAlarmDetails(){
+        this.selectedBuilding = null;
+        this.selectedPartner = null;
+        this.selectedSupplyType = null;
+    }
+    
     destroyMeterAlarmDetail() {
         this._alarmMeterDetail.next(null);
     }

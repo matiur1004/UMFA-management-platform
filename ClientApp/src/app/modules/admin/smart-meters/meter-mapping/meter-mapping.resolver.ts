@@ -25,8 +25,6 @@ export class MeterMappingResolver implements Resolve<boolean> {
       this._mappingMeterService.getAllRegisterTypes(),
       this._mappingMeterService.getAllTimeOfUse(),
       this._mappingMeterService.getAllSupplyTypes(),
-      this._mappingMeterService.getAllSupplyTo(),
-      this._mappingMeterService.getAllLocationTypes(),
     ]);
   }
 }

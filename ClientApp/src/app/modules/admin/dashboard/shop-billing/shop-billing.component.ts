@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, QueryList, Renderer2, ViewChildren } from '@angular/core';
 import { DashboardService } from '../dasboard.service';
 import { Subject, takeUntil } from 'rxjs';
 import { AllowedPageSizes } from '@core/helpers';
@@ -52,7 +52,12 @@ export class ShopBillingComponent implements OnInit {
   periodList: any[] = [];
   periodIdList: any[] = [];
   tenantId: number;
-  monthNameList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  initMonthNameList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  initMonthAbbrList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  monthNameList = [];
+  monthAbbrList = [];
+
   tenantList: any[] = [];
   groupNameList: any[] = [];
   yearList: any[] = [];
@@ -64,6 +69,9 @@ export class ShopBillingComponent implements OnInit {
   selectedGroupsForBilling;
   groupColors = ['#008E0E', '#452AEB', '#2FAFB7', '#C23BC4', '#6E6E6E', '#46a34a', '#C24F19', '#C8166C', '#84cc16', '#06b6d4', '#8b5cf6', '#f59e0b', '#6b21a8', '#9f1239', '#d946ef', '#a855f7'];
   availableGroupColors: any;
+
+  lineChartSeries: any = {};
+  lineUsageChartSeries: any = {};
 
   public barChartOptions: Partial<BarChartOptions>;
   public barUsageChartOptions: Partial<BarChartOptions>;
@@ -79,7 +87,8 @@ export class ShopBillingComponent implements OnInit {
     private decimalPipe: DecimalPipe,
     private elementRef:ElementRef,
     private renderer:Renderer2,
-    private _utils: UmfaUtils
+    private _utils: UmfaUtils,
+    private _cdr: ChangeDetectorRef
   ) {
     this.barChartOptions = {
       series: [        
@@ -107,22 +116,16 @@ export class ShopBillingComponent implements OnInit {
             fontSize: '10px',
             fontWeight: 700
           },
-          groups: [
-            { title: 'Jan', cols: 2 },
-            { title: 'Feb', cols: 2 },
-            { title: 'Mar', cols: 2 },
-            { title: 'Apr', cols: 2 },
-            { title: 'May', cols: 2 },
-            { title: 'Jun', cols: 2 },
-            { title: 'Jul', cols: 2 },
-            { title: 'Aug', cols: 2 },
-            { title: 'Sep', cols: 2 },
-            { title: 'Oct', cols: 2 },
-            { title: 'Nov', cols: 2 },
-            { title: 'Dec', cols: 2 },
-          ]
+          groups: []
         }
-      }
+      },
+      yaxis: {
+        labels: {
+          formatter: function(val) {
+            return 'R ' + val;
+          } 
+        }
+      },
     };
 
     this.lineChartOptions = {
@@ -159,9 +162,15 @@ export class ShopBillingComponent implements OnInit {
         categories: []
       },
       yaxis: {
-        title: {
-        },
+        labels: {
+          formatter: function(val) {
+            return 'R ' + val;
+          } 
+        }
       },
+      legend: {
+        show: false
+      }
     };
     this.lineUsageChartOptions = {
       series: [
@@ -197,9 +206,12 @@ export class ShopBillingComponent implements OnInit {
         categories: []
       },
       yaxis: {
-        title: {
-        },
-      }
+        labels: {
+          formatter: function(val) {
+            return '' + val;
+          } 
+        }
+      },
     };
     this.barUsageChartOptions = {
       series: [        
@@ -227,22 +239,16 @@ export class ShopBillingComponent implements OnInit {
             fontSize: '10px',
             fontWeight: 700
           },
-          groups: [
-            { title: 'Jan', cols: 2 },
-            { title: 'Feb', cols: 2 },
-            { title: 'Mar', cols: 2 },
-            { title: 'Apr', cols: 2 },
-            { title: 'May', cols: 2 },
-            { title: 'Jun', cols: 2 },
-            { title: 'Jul', cols: 2 },
-            { title: 'Aug', cols: 2 },
-            { title: 'Sep', cols: 2 },
-            { title: 'Oct', cols: 2 },
-            { title: 'Nov', cols: 2 },
-            { title: 'Dec', cols: 2 },
-          ]
+          groups: []
         }
-      }
+      },
+      yaxis: {
+        labels: {
+          formatter: function(val) {
+            return '' + val;
+          } 
+        }
+      },
     };
   }
 
@@ -251,6 +257,11 @@ export class ShopBillingComponent implements OnInit {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((res) => {
         if(res) {
+          res = res.sort((a, b) => {
+            if(a['PeriodID'] > b['PeriodID']) return 1;
+            if(a['PeriodID'] < b['PeriodID']) return -1;
+            return 0
+          })
           this.response = res;
           this.dataSource = {
             fields: [
@@ -315,6 +326,7 @@ export class ShopBillingComponent implements OnInit {
             allowSorting: false,
             allowSortingBySummary: false
           }
+
           this.tenantId = res[0]['TenantID'];
           this.dataSource.store = res.map(item => {
             if(this.periodList.indexOf(item['PeriodName']) == -1) this.periodList.push(item['PeriodName']);
@@ -335,14 +347,26 @@ export class ShopBillingComponent implements OnInit {
             return item;
           });
 
-          this.utilityList.forEach(utility => {
-            this.groupsByUtility[utility] = [];
-            let filteredBillings = res.filter(billing => billing['Utility'] == utility);
-            filteredBillings.forEach(billing => {
-              if(this.groupsByUtility[utility].indexOf(billing['GroupName'].trim()) == -1) this.groupsByUtility[utility].push(billing['GroupName'].trim());
-            })
-          })
-          this.availableGroupColors = this._utils.getColors(this.groupsByUtility);
+          let lastMonth = res[res.length - 1]['PeriodName'].split(' ')[0];
+          let monthIdx = this.initMonthNameList.indexOf(lastMonth);
+          for(let k = monthIdx; k >=0; k--) {
+            this.monthNameList.push(this.initMonthNameList[k]);
+            this.monthAbbrList.push(this.initMonthAbbrList[k]);
+          }
+          for(let k = 11; k > monthIdx; k--) {  
+            this.monthNameList.push(this.initMonthNameList[k]);
+            this.monthAbbrList.push(this.initMonthAbbrList[k]);
+          }
+          
+          this.monthNameList = this.monthNameList.reverse();
+          this.monthAbbrList = this.monthAbbrList.reverse();
+          
+          this.barChartOptions.xaxis.group.groups = [];
+          this.monthAbbrList.forEach(val => {
+            this.barChartOptions.xaxis.group.groups.push({title: val, cols: this.yearList.length});
+            this.barUsageChartOptions.xaxis.group.groups.push({title: val, cols: this.yearList.length});
+          });
+
           this.billingGroupItems = [{Id: '0', Name: 'All', expanded: true}];
           let selectedValue = ['0'];
           this.groupNameList.map(groupName => {
@@ -352,17 +376,31 @@ export class ShopBillingComponent implements OnInit {
           })
           this.selectedGroupsForBilling = selectedValue;
 
-          this.lineChartOptions.xaxis.categories = this.periodList.map(period => {
-            return `${period.split(' ')[0].substring(0, 3)} ${period.split(' ')[1].substring(2, 4)}`;
-          });
-          this.lineUsageChartOptions.xaxis.categories = this.lineChartOptions.xaxis.categories;
-          this.barChartOptions.colors = this.availableGroupColors;
-          this.lineChartOptions.colors = this.availableGroupColors;
-          this.barUsageChartOptions.colors = this.availableGroupColors;
-          this.lineUsageChartOptions.colors = this.availableGroupColors;
+          this.lineChartOptions.xaxis.categories = this.monthAbbrList;
+          this.lineUsageChartOptions.xaxis.categories = this.monthAbbrList;
+
+          this.setChartColors();
+
           this.setChart();
         }
       });
+  }
+
+  setChartColors() {
+    this.utilityList.forEach(utility => {
+      this.groupsByUtility[utility] = [];
+      let filteredBillings = this.response.filter(billing => billing['Utility'] == utility);
+      filteredBillings.forEach(billing => {
+        if(this.groupsByUtility[utility].indexOf(billing['GroupName'].trim()) == -1 && this.selectedGroupsForBilling.indexOf(billing['GroupName'].trim()) > -1) 
+          this.groupsByUtility[utility].push(billing['GroupName'].trim());
+      })
+    })
+    this.availableGroupColors = this._utils.getColors(this.groupsByUtility);
+
+    this.barChartOptions.colors = this.availableGroupColors;
+    this.lineChartOptions.colors = this.availableGroupColors;
+    this.barUsageChartOptions.colors = this.availableGroupColors;
+    this.lineUsageChartOptions.colors = this.availableGroupColors;
   }
 
   contentReady(e) {
@@ -425,23 +463,22 @@ export class ShopBillingComponent implements OnInit {
       }
     }
     this.selectedGroupsForBilling = event.component.getSelectedNodeKeys();
+    this.setChartColors();
     this.setChart();
     
   }
 
   setChart() {
-    let billingBarSeriesData = [];
-    let billingLineSeriesData = [];
-    let usageBarSeriesData = [];
-    let usageLineSeriesData = [];
+    let billingBarSeriesData = [];    
+    let usageBarSeriesData = [];    
+
     Object.keys(this.groupsByUtility).forEach(key => {
       this.groupsByUtility[key].forEach(groupName => {
         this.selectedGroupsForBilling.filter(obj=> obj != '0').forEach(groupName1 => {
           if(groupName == groupName1) {
             let result = {name: groupName, data: []};
-            let lineResult = {name: groupName, data: []};
             let usageResult = {name: groupName, data: []};
-            let usageLineResult = {name: groupName, data: []};
+
             this.monthNameList.forEach(month => {
               this.yearList.forEach(year => {
                 let filter = this.response.find(item => item['PeriodName'] == `${month} ${year}` && item['GroupName'] == groupName);
@@ -450,31 +487,46 @@ export class ShopBillingComponent implements OnInit {
 
                 if(filter) usageResult['data'].push({x: '`' + year.split('20')[1], y: filter['Usage']});
                 else usageResult['data'].push({x: '`' + year.split('20')[1], y: 0});
-
               })
-            });
-
-            this.periodList.forEach(period => {
-              let filter = this.response.find(item => item['PeriodName'] == period && item['GroupName'] == groupName);
-              if(filter) { lineResult['data'].push(filter['Amount']); usageLineResult['data'].push(filter['Usage']);}
-              else {lineResult['data'].push(0); usageLineResult['data'].push(0);}
-            })
+            });            
 
             billingBarSeriesData.push(result);
-            billingLineSeriesData.push(lineResult);
             usageBarSeriesData.push(usageResult);
-            usageLineSeriesData.push(usageLineResult);
-          }      
+          }
         });
       })
     });
 
-    
-    
+    this.yearList.forEach(year => {
+      let billingLineSeriesData = [];
+      let usageLineSeriesData = [];
+      Object.keys(this.groupsByUtility).forEach(key => {
+        this.groupsByUtility[key].forEach(groupName => {
+          this.selectedGroupsForBilling.filter(obj=> obj != '0').forEach(groupName1 => {
+            if(groupName == groupName1) {
+              let lineResult = {name: groupName, data: []};
+              let usageLineResult = {name: groupName, data: []};
+              this.monthNameList.forEach(month => {
+                let filter = this.response.find(item => item['PeriodName'] == `${month} ${year}` && item['GroupName'] == groupName);
+                if(filter) { lineResult['data'].push(filter['Amount']);usageLineResult['data'].push(filter['Usage']);}
+                else { lineResult['data'].push(0);usageLineResult['data'].push(0)}
+              })
+              billingLineSeriesData.push(lineResult);
+              usageLineSeriesData.push(usageLineResult);
+            }
+          })
+        })
+      })
+      this.lineChartSeries[year] = billingLineSeriesData;
+      this.lineUsageChartSeries[year] = usageLineSeriesData;
+    })
+        
     this.barChartOptions.series = billingBarSeriesData;
-    this.lineChartOptions.series = billingLineSeriesData;
     this.barUsageChartOptions.series = usageBarSeriesData;
-    this.lineUsageChartOptions.series = usageLineSeriesData;
+  }
+
+  lineChartYearChange() {
+    window.dispatchEvent(new Event('resize'));
   }
 
   ngAfterViewInit() {

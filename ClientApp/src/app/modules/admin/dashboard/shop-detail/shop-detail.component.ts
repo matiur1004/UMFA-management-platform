@@ -56,28 +56,14 @@ export class ShopDetailComponent implements OnInit {
   @Input() buildingId: number;
   @Input() shopId: number;
   selectedMonth;
-  monthNameList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  initMonthNameList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  initMonthAbbrList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  monthNameList = [];
+  monthAbbrList = [];
   currentYear = new Date().getFullYear();
   yearList = [];
-  // groupColors = {
-  //   'C/A Diesel' : '#008E0E',
-  //   'C/A Electricity': '#452AEB',
-  //   'C/A Sewer': '#2FAFB7',
-  //   'C/A Water': '#C23BC4',
-  //   'Kwh Electricity': '#6E6E6E',
-  //   'Kva': '#16a34a',
-  //   'Sewer': '#C24F19',
-  //   'Water': '#C8166C',
-  //   'Common Area Elec': '#84cc16',
-  //   'Common Area Sewer': '#06b6d4',
-  //   'Common Area Water': '#8b5cf6',
-  //   'Diesel Generator': '#f59e0b',
-  //   'KVA Electricity': '#6b21a8',
-  //   'KWH Electricity': '#9f1239',
-  //   'E-Kwh': '#d946ef',
-  //   'Diesel Recoveries': '#a855f7'
-  // };
-  groupColors = ['#008E0E', '#452AEB', '#2FAFB7', '#C23BC4', '#6E6E6E', '#46a34a', '#C24F19', '#C8166C', '#84cc16', '#06b6d4', '#8b5cf6', '#f59e0b', '#6b21a8', '#9f1239', '#d946ef', '#a855f7'];
+  
   availableGroupColors: any;
 
   mapOptions = {
@@ -109,11 +95,12 @@ export class ShopDetailComponent implements OnInit {
   groupsByUtility: any = {};
   utilityList: any[] = [];
 
-  public billingUsageChartOptions: Partial<ChartOptions>;
   public treeMapOptions: Partial<TreemapChartOptions>;
   
   public commonBarChartOptions: Partial<ChartOptions>;
+  public commonUsageBarChartOptions: Partial<ChartOptions>;
   public commonLineChartOptions: Partial<LineChartOptions>;
+  public commonLineUsageChartOptions: Partial<LineChartOptions>;
 
   @ViewChild("treemapChart") chart: ChartComponent;
   @ViewChild("billingChart") billingChart: ChartComponent;
@@ -168,11 +155,14 @@ export class ShopDetailComponent implements OnInit {
         }
       }
     };
-    this.billingUsageChartOptions = {
+    this.commonBarChartOptions = {
       series: [],
       chart: {
         type: "bar",
-        height: 350
+        height: 350,
+        toolbar: {
+          show: false
+        }
       },
       plotOptions: {
         bar: {
@@ -195,7 +185,7 @@ export class ShopDetailComponent implements OnInit {
       yaxis: {
         labels: {
           formatter: function(val) {
-            return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            return 'R ' + val;
           } 
         }
       },
@@ -206,12 +196,12 @@ export class ShopDetailComponent implements OnInit {
       tooltip: {
         y: {
           formatter: function(val) {
-            return val + "";
+            return 'R ' + val;
           }
         }
       }
-    }
-    this.commonBarChartOptions = {
+    };
+    this.commonUsageBarChartOptions = {
       series: [],
       chart: {
         type: "bar",
@@ -241,7 +231,7 @@ export class ShopDetailComponent implements OnInit {
       yaxis: {
         labels: {
           formatter: function(val) {
-            return 'R ' + val;
+            return '' + val;
           } 
         }
       },
@@ -252,11 +242,11 @@ export class ShopDetailComponent implements OnInit {
       tooltip: {
         y: {
           formatter: function(val) {
-            return 'R ' + val;
+            return '' + val;
           }
         }
       }
-    }
+    };
     this.commonLineChartOptions = {
       series: [
       ],
@@ -288,12 +278,60 @@ export class ShopDetailComponent implements OnInit {
         size: 4
       },
       xaxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        categories: []
       },
       yaxis: {
         labels: {
           formatter: function(val) {
             return 'R ' + val;
+          } 
+        }
+      },
+      tooltip: {
+        y: {
+          formatter: function(val) {
+            return 'R ' + Math.round(Number(val) * 100) / 100;
+          }
+        }
+      }
+    };
+    this.commonLineUsageChartOptions = {
+      series: [
+      ],
+      chart: {
+        height: 350,
+        type: "line",
+        toolbar: {
+          show: false
+        }
+      },
+      dataLabels: {
+        enabled: true
+      },
+      stroke: {
+        curve: "smooth"
+      },
+      title: {
+        text: "",
+        align: "left"
+      },
+      grid: {
+        borderColor: "#e7e7e7",
+        row: {
+          colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
+          opacity: 0.5
+        }
+      },
+      markers: {
+        size: 4
+      },
+      xaxis: {
+        categories: []
+      },
+      yaxis: {
+        labels: {
+          formatter: function(val) {
+            return '' + val;
           } 
         }
       },
@@ -321,6 +359,24 @@ export class ShopDetailComponent implements OnInit {
           ];
           this.allAvailableImages = this.shopDetailDashboard.Readings.reduce((prev, cur) => prev + cur.HasImages, 0);
           this.groupList = []; this.periodList = []; this.yearList = []; this.utilityList = [];
+          let lastMonth = this.shopDetailDashboard.PeriodBillings[this.shopDetailDashboard.PeriodBillings.length - 1]['PeriodName'].split(' ')[0];
+          let monthIdx = this.initMonthNameList.indexOf(lastMonth);
+          for(let k = monthIdx; k >=0; k--) {
+            this.monthNameList.push(this.initMonthNameList[k]);
+            this.monthAbbrList.push(this.initMonthAbbrList[k]);
+          }
+          for(let k = 11; k > monthIdx; k--) {
+            this.monthNameList.push(this.initMonthNameList[k]);
+            this.monthAbbrList.push(this.initMonthAbbrList[k]);
+          }
+          
+          this.monthNameList = this.monthNameList.reverse();
+          this.monthAbbrList = this.monthAbbrList.reverse();
+          this.commonBarChartOptions.xaxis.categories = this.monthAbbrList;
+          this.commonLineChartOptions.xaxis.categories = this.monthAbbrList;
+          this.commonUsageBarChartOptions.xaxis.categories = this.monthAbbrList;
+          this.commonLineUsageChartOptions.xaxis.categories = this.monthAbbrList;
+
           this.shopDetailDashboard.PeriodBillings.forEach(billing => {
             this.groupList.push(billing.GroupName.trim());
             this.periodList.push(billing.PeriodName);

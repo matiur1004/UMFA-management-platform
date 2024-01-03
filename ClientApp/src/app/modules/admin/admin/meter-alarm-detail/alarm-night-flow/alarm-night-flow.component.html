@@ -23,7 +23,7 @@
                     <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
                         <input matInput type="text" [readonly]="true" value="{{configInfo ? configInfo.IntervalAvg : ''}}"/> 
                     </mat-form-field>
-                    <span class="text-lg font-semibold">KL</span>
+                    <span class="text-lg font-semibold">{{meter['SupplyType'] == 'Electricity' ? 'kWh' : 'KL'}}</span>
                 </div>
             </div>
             <div class="flex">
@@ -32,7 +32,7 @@
                     <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
                         <input matInput type="text" [readonly]="true" value="{{configInfo ? configInfo.NFPeak : ''}}"/> 
                     </mat-form-field>
-                    <span class="text-lg font-semibold">KL</span>
+                    <span class="text-lg font-semibold">{{meter['SupplyType'] == 'Electricity' ? 'kWh' : 'KL'}}</span>
                 </div>
             </div>
             <div class="flex">
@@ -41,7 +41,7 @@
                     <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
                         <input matInput type="text" [readonly]="true" value="{{configInfo ? configInfo.NFMin : ''}}"/> 
                     </mat-form-field>
-                    <span class="text-lg font-semibold">KL</span>
+                    <span class="text-lg font-semibold">{{meter['SupplyType'] == 'Electricity' ? 'kWh' : 'KL'}}</span>
                 </div>
             </div>
             <div class="flex">
@@ -50,7 +50,7 @@
                     <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
                         <input matInput type="text" [readonly]="true" value="{{configInfo ? configInfo.TotalNightFlow : ''}}"/> 
                     </mat-form-field>
-                    <span class="text-lg font-semibold">KL</span>
+                    <span class="text-lg font-semibold">{{meter['SupplyType'] == 'Electricity' ? 'kWh' : 'KL'}}</span>
                 </div>
             </div>
         </div>
@@ -63,7 +63,7 @@
                             <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
                                 <input matInput type="text" [formControlName]="'Threshold'"/> 
                             </mat-form-field>
-                            <span class="text-lg font-semibold">KL</span>
+                            <span class="text-lg font-semibold">{{meter['SupplyType'] == 'Electricity' ? 'kWh' : 'KL'}}</span>
                         </div>
                     </div>
                     <!-- <div class="flex">
@@ -92,7 +92,7 @@
                         <mat-form-field class="fuse-mat-dense w-full" [floatLabel]="'always'">
                             <input matInput type="text" [readonly]="true" value="{{analyzeInfo ? analyzeInfo.NoOfAlarms : ''}}" /> 
                         </mat-form-field>
-                        <span class="text-lg font-semibold hidden">KL</span>
+                        <span class="text-lg font-semibold hidden">{{meter['SupplyType'] == 'Electricity' ? 'kWh' : 'KL'}}</span>
                     </div>
                 </div>
                 <div class="flex items-center">

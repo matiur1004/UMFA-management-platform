@@ -7,8 +7,13 @@ namespace ClientPortal.Data.Repositories
 {
     public interface IPortalSpRepository
     {
-        public Task<GetSmartServicesSpResponse> GetSmartServices(GetSmartServicesSpRequest request);
-        Task<SmartServiceTenantSpResponse> GetSmartServicesForTenant(SmartServicesTenantSpRequest request);
+        public Task<GetSmartServicesSpResponse> GetSmartServicesAsync(GetSmartServicesSpRequest request);
+        public Task<SmartServiceTenantSpResponse> GetSmartServicesForTenantAsync(SmartServicesTenantSpRequest request);
+        public Task<AmrDemandProfileAlarmsSpResponse> GetAmrDemandProfileAlarmsAsync(AmrDemandProfileAlarmsSpRequest request);
+        public Task<AlarmsPerBuildingSpResponse> GetAlarmsPerBuildingAsync();
+        public Task<SmartServicesMainWaterSpResponse> GetSmartServicesMainWaterAsync(SmartServicesMainWaterSpRequest request);
+
+        public Task<SmartServicesMainElectricitySpResponse> GetSmartServicesMainElectricityAsync(SmartServicesMainElectricitySpRequest request);
     }
     public class PortalSpRepository : IPortalSpRepository
     {
@@ -19,16 +24,6 @@ namespace ClientPortal.Data.Repositories
         {
             _logger = logger;
             _dbContext = dbContext;
-        }
-
-        public async Task<GetSmartServicesSpResponse> GetSmartServices(GetSmartServicesSpRequest request)
-        {
-            return await RunStoredProcedureAsync<GetSmartServicesSpResponse, GetSmartServicesSpRequest>("spGetSmartServices", request);
-        }
-
-        public async Task<SmartServiceTenantSpResponse> GetSmartServicesForTenant(SmartServicesTenantSpRequest request)
-        {
-            return await RunStoredProcedureAsync<SmartServiceTenantSpResponse, SmartServicesTenantSpRequest>("spGetSmartServicesTenant", request);
         }
 
         private async Task<T> RunStoredProcedureAsync<T, TArgumentClass>(string procedure, TArgumentClass? args = default) where T : new()
@@ -60,6 +55,39 @@ namespace ClientPortal.Data.Repositories
 
                 commandText += $" {arguments}";
             }
+
+            using (var results = await connection.QueryMultipleAsync(commandText))
+            {
+                if (results == null)
+                {
+                    _logger.LogError($"Not time to run yet...");
+                    return default(T);
+                }
+
+                var combinedResult = new T();
+
+                foreach (var property in typeof(T).GetProperties())
+                {
+                    if (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
+                    {
+                        var resultType = property.PropertyType.GetGenericArguments()[0];
+                        var result = await results.ReadAsync(resultType);
+                        var resultList = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(result), property.PropertyType);
+                        property.SetValue(combinedResult, resultList);
+                    }
+                }
+
+                return combinedResult;
+            }
+        }
+
+        private async Task<T> RunStoredProcedureAsync<T>(string procedure) where T : new()
+        {
+            var connection = _dbContext.Database.GetDbConnection();
+            if (connection.State == System.Data.ConnectionState.Closed)
+                await connection.OpenAsync();
+
+            string commandText = $"exec {procedure}";
 
             using (var results = await connection.QueryMultipleAsync(commandText))
             {
@@ -126,6 +154,36 @@ namespace ClientPortal.Data.Repositories
 
                 return;
             }
+        }
+
+        public async Task<GetSmartServicesSpResponse> GetSmartServicesAsync(GetSmartServicesSpRequest request)
+        {
+            return await RunStoredProcedureAsync<GetSmartServicesSpResponse, GetSmartServicesSpRequest>("spGetSmartServices", request);
+        }
+
+        public async Task<SmartServiceTenantSpResponse> GetSmartServicesForTenantAsync(SmartServicesTenantSpRequest request)
+        {
+            return await RunStoredProcedureAsync<SmartServiceTenantSpResponse, SmartServicesTenantSpRequest>("spGetSmartServicesTenant", request);
+        }
+
+        public async Task<AmrDemandProfileAlarmsSpResponse> GetAmrDemandProfileAlarmsAsync(AmrDemandProfileAlarmsSpRequest request)
+        {
+            return await RunStoredProcedureAsync<AmrDemandProfileAlarmsSpResponse, AmrDemandProfileAlarmsSpRequest>("spGetDemandProfileAlarms", request);
+        }
+
+        public async Task<AlarmsPerBuildingSpResponse> GetAlarmsPerBuildingAsync()
+        {
+            return await RunStoredProcedureAsync<AlarmsPerBuildingSpResponse>("spGetAlarmsPerBuilding");
+        }
+
+        public async Task<SmartServicesMainWaterSpResponse> GetSmartServicesMainWaterAsync(SmartServicesMainWaterSpRequest request)
+        {
+            return await RunStoredProcedureAsync<SmartServicesMainWaterSpResponse, SmartServicesMainWaterSpRequest>("spDBSmartServicesMainWater", request);
+        }
+
+        public async Task<SmartServicesMainElectricitySpResponse> GetSmartServicesMainElectricityAsync(SmartServicesMainElectricitySpRequest request)
+        {
+            return await RunStoredProcedureAsync<SmartServicesMainElectricitySpResponse, SmartServicesMainElectricitySpRequest>("spDBSmartServicesMainElectricity", request);
         }
     }
 }

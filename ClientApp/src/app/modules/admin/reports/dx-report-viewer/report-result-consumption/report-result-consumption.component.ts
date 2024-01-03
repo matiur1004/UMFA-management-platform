@@ -7,8 +7,7 @@ import { Subject, takeUntil } from 'rxjs';
 import saveAs from 'file-saver';
 import { exportDataGrid as exportDataGridToPdf } from 'devextreme/pdf_exporter';
 import moment from 'moment';
-import { exportDataGrid, exportPivotGrid } from 'devextreme/excel_exporter';
-import html2canvas from 'html2canvas';
+import { exportDataGrid } from 'devextreme/excel_exporter';
 @Component({
   selector: 'report-result-consumption',
   templateUrl: './report-result-consumption.component.html',

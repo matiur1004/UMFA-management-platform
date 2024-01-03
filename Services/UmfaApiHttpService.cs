@@ -2,7 +2,6 @@
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 using ClientPortal.Settings;
-using DevExpress.XtraPrinting.Shape.Native;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
 using System.Web;
@@ -88,6 +87,11 @@ namespace ClientPortal.Services
         public Task<UmfaTenantMainDashboardResponse> GetTenantMainDashboardAsync(UmfaTenantMainDashboardRequest request);
         public Task<List<UmfaTenantMainDashboardBillingDetail>> GetTenantMainDashboardBillingDetailsAsync(UmfaTenantMainDashboardBillingDetailsRequest request);
         public Task<List<UmfaTenantDashboardBillingCardDetail>> GetTenantDashboardBillingCardDetailsAsync(UmfaTenantDashboardBillingCardDetailsRequest request);
+        public Task<List<UmfaTenantDashboardOccupation>> GetTenantDashboardOccupationsAsync(UmfaTenantDashboardOccupationsRequest request);
+        public Task<List<UmfaTenantDashboardAssignedMeter>> GetTenantDashboardAssignedMetersAsync(UmfaTenantDashboardAssignedMetersRequest request);
+        public Task<List<UmfaTenantDashboardReading>> GetTenantDashboardReadingsAsync(UmfaTenantDashboardReadingsRequest request);
+
+        public Task<UmfaScadaConfig?> GetScadaConfigAsync(UmfaScadaConfigRequest request);
 
         public Task<List<UmfaMultiClientDump>> GetMultiClientDumpsAsync(UmfaMultiClientDumpRequest request);
     }
@@ -525,6 +529,34 @@ namespace ClientPortal.Services
             var response = await GetAsync($"tenantdashboard/billing-card-details", request);
 
             return JsonSerializer.Deserialize<List<UmfaTenantDashboardBillingCardDetail>>(response);
+        }
+
+        public async Task<List<UmfaTenantDashboardOccupation>> GetTenantDashboardOccupationsAsync(UmfaTenantDashboardOccupationsRequest request)
+        {
+            var response = await GetAsync($"tenantdashboard/occupations", request);
+
+            return JsonSerializer.Deserialize<List<UmfaTenantDashboardOccupation>>(response);
+        }
+
+        public async Task<List<UmfaTenantDashboardAssignedMeter>> GetTenantDashboardAssignedMetersAsync(UmfaTenantDashboardAssignedMetersRequest request)
+        {
+            var response = await GetAsync($"tenantdashboard/assigned-meters", request);
+
+            return JsonSerializer.Deserialize<List<UmfaTenantDashboardAssignedMeter>>(response);
+        }
+
+        public async Task<List<UmfaTenantDashboardReading>> GetTenantDashboardReadingsAsync(UmfaTenantDashboardReadingsRequest request)
+        {
+            var response = await GetAsync($"tenantdashboard/readings", request);
+
+            return JsonSerializer.Deserialize<List<UmfaTenantDashboardReading>>(response);
+        }
+
+        public async Task<UmfaScadaConfig?> GetScadaConfigAsync(UmfaScadaConfigRequest request)
+        {
+            var response = await GetAsync($"users/scada-config", request);
+
+            return JsonSerializer.Deserialize<UmfaScadaConfig>(response);
         }
 
         public async Task<List<UmfaMultiClientDump>> GetMultiClientDumpsAsync(UmfaMultiClientDumpRequest request)

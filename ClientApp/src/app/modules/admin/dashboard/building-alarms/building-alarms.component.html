@@ -1,0 +1,36 @@
+<div class="flex flex-col gap-y-2 relative">
+
+    <div class="flex w-full">
+        <dx-data-grid
+            #grid
+            [dataSource]="dataSource"
+            [showBorders]="true"
+            id="slip-grid-container"
+            [hoverStateEnabled]="true"
+            (onRowClick)="onRowClick($event)"
+        >
+            <!-- <dxo-selection mode="single"></dxo-selection> -->
+            <dxo-filter-row [visible]="'true'"
+                [applyFilter]="currentFilter"></dxo-filter-row>
+            <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+            <dxo-paging [pageSize]="15"> </dxo-paging>
+            <dxo-pager
+                [visible]="true"
+                [allowedPageSizes]="allowedPageSizes"
+                [displayMode]="'compact'"
+                [showPageSizeSelector]="true"
+                [showInfo]="true"
+                [showNavigationButtons]="true"
+            >
+            </dxo-pager>
+            <dxo-search-panel
+                [visible]="true"
+                [width]="200"
+                placeholder="Search..."
+            ></dxo-search-panel>
+            <dxi-column dataField="Partner" caption="Partner" [minWidth]="100"></dxi-column>
+            <dxi-column dataField="BuildingName" caption="Building" [minWidth]="100"></dxi-column>
+            <dxi-column dataField="NoOfAlarms" caption="Number of Alarms" [minWidth]="100"></dxi-column>
+        </dx-data-grid>
+    </div>
+</div>

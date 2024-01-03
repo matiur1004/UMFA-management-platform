@@ -1,6 +1,8 @@
 ﻿using ClientPortal.Controllers.Authorization;
 using ClientPortal.Data;
-using System.Dynamic;
+using ClientPortal.Models.ResponseModels;
+using ClientPortal.Services;
+using System.ComponentModel.DataAnnotations;
 
 namespace ClientPortal.Controllers
 {
@@ -11,11 +13,14 @@ namespace ClientPortal.Controllers
     {
         private readonly ILogger<AlarmsPerBuildingController> _logger;
         private readonly PortalDBContext _context;
+        private readonly IAMRMeterTriggeredAlarmService _alarmService;
 
-        public AlarmsPerBuildingController(ILogger<AlarmsPerBuildingController> logger, PortalDBContext portalDBContext)
+
+        public AlarmsPerBuildingController(ILogger<AlarmsPerBuildingController> logger, PortalDBContext portalDBContext, IAMRMeterTriggeredAlarmService aMRMeterTriggeredAlarmService)
         {
             _logger = logger;
             _context = portalDBContext;
+            _alarmService = aMRMeterTriggeredAlarmService;
         }
 
         [HttpGet("getAlarmsByBuilding/{buildingId}")]
@@ -53,7 +58,8 @@ namespace ClientPortal.Controllers
                                 Model = reader.IsDBNull(reader.GetOrdinal("Model")) ? string.Empty : reader.GetString(reader.GetOrdinal("Model")),
                                 ScadaMeterNo = reader.IsDBNull(reader.GetOrdinal("ScadaMeterNo")) ? string.Empty : reader.GetString(reader.GetOrdinal("ScadaMeterNo")),
                                 Configured = reader.IsDBNull(reader.GetOrdinal("Configured")) ? string.Empty : reader.GetString(reader.GetOrdinal("Configured")),
-                                Triggered = reader.IsDBNull(reader.GetOrdinal("Triggered")) ? string.Empty : reader.GetString(reader.GetOrdinal("Triggered"))
+                                Triggered = reader.IsDBNull(reader.GetOrdinal("Triggered")) ? string.Empty : reader.GetString(reader.GetOrdinal("Triggered")),
+                                SupplyType = reader.IsDBNull(reader.GetOrdinal("SupplyType")) ? string.Empty : reader.GetString(reader.GetOrdinal("SupplyType"))
                             };
                             resultList.Add(result);
                         }
@@ -76,6 +82,20 @@ namespace ClientPortal.Controllers
 
             return resultList.DistinctBy(rl => rl.ScadaMeterNo).ToList();
         }
+
+        [HttpGet("")]
+        public async Task<ActionResult<IEnumerable<AlarmsPerBuildingEntry>>> GetAlarmsPerBuilding([FromQuery, Required] int umfaUserId)
+        {
+            try
+            {
+                return await _alarmService.GetAlarmsPerBuildingAsync(umfaUserId);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Could not get alarms per building");
+                return Problem(e.Message);
+            }
+        }
     }
 
     public class AlarmsPerBuildingResult
@@ -91,5 +111,6 @@ namespace ClientPortal.Controllers
         public string ScadaMeterNo { get; set; }
         public string Configured { get; set; }
         public string Triggered { get; set; }
+        public string SupplyType { get; set; }
     }
 }

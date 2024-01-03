@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { IHomePageStats } from '@core/models';
-
+import { IHomePageStats, RoleType } from '@core/models';
+import { NotificationService, UserService } from '@shared/services';
 import {
   ApexAxisChartSeries,
   ApexChart,
@@ -59,7 +59,9 @@ export class BuildingDetailComponent implements OnInit {
   constructor(
     private _dbService: DashboardService,
     private _alarmConfigurationService: AlarmConfigurationService,
-    private _router: Router
+    private _router: Router,
+    private userService: UserService,
+    private _notificationService: NotificationService
   ) {
     this.chartElectricityUsage = {
         series: [
@@ -209,6 +211,8 @@ export class BuildingDetailComponent implements OnInit {
       this._dbService.showShopList({buildingId: this.buildingId, partnerId: this.partnerId});
     } else if(type == 'Tenants') {
       this._dbService.showTenantList({buildingId: this.buildingId, partnerId: this.partnerId});
+    } else if(type == 'SmartServices') {
+      this._dbService.showSmartBuildingDetails({UmfaBuildingId: this.buildingId});
     }
   }
 
@@ -216,5 +220,18 @@ export class BuildingDetailComponent implements OnInit {
     this._alarmConfigurationService.selectedBuilding = this.buildingId;
     this._alarmConfigurationService.selectedPartner = this.partnerId;
     this._dbService.showTriggeredAlarms({buildingId: this.buildingId, partnerId: this.partnerId});
+  }
+
+  goToAdminAlarmConfiguration(type) {
+    let roleId = this.userService.userValue ?  this.userService.userValue.RoleId : JSON.parse(localStorage.getItem('user')).RoleId;
+    if(roleId <= RoleType.ClientAdministrator) {
+      this._alarmConfigurationService.selectedBuilding = this.buildingId;
+      this._alarmConfigurationService.selectedPartner = this.partnerId;
+      this._alarmConfigurationService.selectedSupplyType = type;
+      this._router.navigateByUrl('/smart-meters/alarm-configuration');
+    } else {
+      this._notificationService.error('Access Denied');
+    }
+    
   }
 }

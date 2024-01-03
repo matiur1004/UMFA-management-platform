@@ -129,14 +129,14 @@ namespace ClientPortal.Controllers
             _logger?.LogInformation($"Added MappedMeter {mappedMeter.MappedMeterId}");
 
             //Add AMRMeter
-            var aMrMeterNo = mappedMeter.MeterNo;
-            var mter = await _context.AMRMeters.Where(b => b.MeterNo == aMrMeterNo).FirstOrDefaultAsync();
+            var aMrMeterNo = mappedMeter.ScadaSerial;
+            var mter = await _context.AMRMeters.Where(b => b.MeterSerial == aMrMeterNo).FirstOrDefaultAsync();
             var amrMeterId = mter?.Id;
             if (mter == null)
             {
                 try
                 {
-                    var makeModelId = mappedMeter.SupplyType == "Water" ? 6 : 5;
+                    var makeModelId = mappedMeter.SupplyTypeId == 4 ? 6 : 5;
 
                     var amrMeter = new AMRMeterRequest
                     {
@@ -155,7 +155,7 @@ namespace ClientPortal.Controllers
                         Description = mappedMeter.Description,
                         Digits = 7,
                         MakeModelId = makeModelId,
-                        MeterNo = mappedMeter.MeterNo,
+                        MeterNo = mappedMeter.ScadaSerial,
                         MeterSerial = mappedMeter.ScadaSerial,
                         Phase = 3,
                         ProgFact = 1,
@@ -163,9 +163,9 @@ namespace ClientPortal.Controllers
                     };
 
                     var meterUpdateRequest = new AMRMeterUpdateRequest { UserId = mappedMeter.UserId, Meter = amrMeter };
-                    await _amRMeterService.AddMeterAsync(meterUpdateRequest);
+                    var meterReturned = await _amRMeterService.AddMeterAsync(meterUpdateRequest);
 
-                    amrMeterId = amrMeter.Id;
+                    amrMeterId = meterReturned.Id;
                     _logger?.LogInformation($"Added AMRMeter {amrMeter.Id}");
 
                 }
@@ -249,29 +249,7 @@ namespace ClientPortal.Controllers
         [HttpGet("getAllSupplyTypes")]
         public async Task<ActionResult<IEnumerable<SupplyType>>> GetAllSupplyTypes()
         {
-            return await _context.SupplyTypes.ToListAsync();
-        }
-
-        //SupplyTo
-        //GET: MappedMeters/getAllSuppliesTo
-        [HttpGet("getAllSuppliesTo")]
-        public async Task<ActionResult<IEnumerable<SuppliesTo>>> GetAllSuppliesTo()
-        {
-            return await _dbContext.SuppliesTo.ToListAsync();
-        }
-
-        //LocationType
-        //GET: MappedMeters/getAllLocationTypes
-        [HttpGet("getAllLocationTypes")]
-        public async Task<List<LocationType>> GetAllLocationTypes()
-        {
-            var locationTypes = await  _dbContext.LocationTypes.FromSqlRaw("SELECT t.name AS SuppliesTo, " +
-                "CASE typ.SupplyType WHEN 0 THEN 'Electricity' WHEN 1 THEN 'Water' WHEN 2 THEN 'Gas' WHEN 3 THEN 'Sewerage' " +
-                "WHEN 4 THEN 'Solar' ELSE 'AdHoc' END AS SupplyType, loc.Name AS LocationName FROM SuppliesTo t " +
-                "JOIN SuppliesToSupplyTypes typ ON (t.Id = typ.SuppliesToId)" +
-                "JOIN SuppliesToSupplyTypesLocations l ON (typ.Id = l.SuppliesToSupplyTypeId)" +
-                "JOIN SupplyToLocations loc ON (l.SupplyToLocationId = loc.Id) ORDER BY 1, 2, 3").ToListAsync();
-            return locationTypes.ToList();
+            return await _context.SupplyTypes.Include(st => st.SupplyTos).ThenInclude(sto => sto.SupplyToLocationTypes).ToListAsync();
         }
     }
 }

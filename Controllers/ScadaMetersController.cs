@@ -15,11 +15,11 @@ namespace ClientPortal.Controllers
         [HttpPost("GetAsync")]
         public async Task<string> GetAsync([FromBody] GetUserAndPassword UserObj)
         {
-            var scadaUrl = "https://umfaholdings-gideon.pnpscada.com:443/reportVarious.jsp?";
+            var scadaUrl = $"https://{UserObj.Domain}-gideon.pnpscada.com:443/reportVarious.jsp?";
             var scadaUserParam = "LOGIN";
-            var scadaUserParamValue = UserObj.scadaUserName;
+            var scadaUserParamValue = $"{UserObj.Domain}.{UserObj.ScadaUserName}";
             var scadaUserPasswordParam = "PWD";
-            var scadaUserPasswordValue = UserObj.scadaUserPassword;
+            var scadaUserPasswordValue = UserObj.ScadaUserPassword;
             var scadaReportParam = "report";
             var scadaReportValue = "Meters+Properties";
             var scadaAllResultsParam = "all";
@@ -48,6 +48,7 @@ namespace ClientPortal.Controllers
 
             var result = await res.Content.ReadAsStringAsync();
             XmlDocument doc = new XmlDocument();
+            result = result.Replace(':', '-');
             doc.LoadXml(result);
 
             string jsonText = JsonConvert.SerializeXmlNode(doc);
@@ -86,7 +87,8 @@ namespace ClientPortal.Controllers
 
     public class GetUserAndPassword
     {
-        public string scadaUserName { get; set; }
-        public string scadaUserPassword { get; set; }
+        public string Domain { get; set; }
+        public string ScadaUserName { get; set; }
+        public string ScadaUserPassword { get; set; }
     }
 }

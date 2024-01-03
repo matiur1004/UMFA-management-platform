@@ -1,0 +1,36 @@
+<div class="flex flex-col relative">
+    <dx-select-box [items]="includeOptions" displayExpr="label" valueExpr="value" class="form-control absolute z-10 left-1" label="Include Previous Occupations"
+        required [(ngModel)]="includeOption" placeholder="Select..." lableMode="static" id="includeOption" name="includeOption" (onValueChanged)="valueChanged($event, 'include')" [searchEnabled]="true">
+    </dx-select-box>
+    <dx-data-grid
+        #grid
+        [dataSource]="dataSource"
+        [showBorders]="true"
+        id="slip-grid-container"
+        [hoverStateEnabled]="true"
+    >
+        <!-- <dxo-selection mode="single"></dxo-selection> -->
+        <dxo-filter-row [visible]="'true'"
+            [applyFilter]="currentFilter"></dxo-filter-row>
+        <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+        <dxo-paging [pageSize]="15"> </dxo-paging>
+        <dxo-pager
+            [visible]="true"
+            [allowedPageSizes]="allowedPageSizes"
+            [displayMode]="'compact'"
+            [showPageSizeSelector]="true"
+            [showInfo]="true"
+            [showNavigationButtons]="true"
+        >
+        </dxo-pager>
+        <dxo-search-panel
+            [visible]="true"
+            [width]="200"
+            placeholder="Search..."
+        ></dxo-search-panel>
+        <dxi-column dataField="Shop" caption="Shop" [minWidth]="100"></dxi-column>
+        <dxi-column dataField="OccupationDTM" [customizeText]="onCustomizeDateTime" caption="Occupation Date" [minWidth]="100"></dxi-column>
+        <dxi-column dataField="VacationDTM" [customizeText]="onCustomizeDateTime" caption="Vacation Date" [minWidth]="100"></dxi-column>
+        <dxi-column dataField="ShopActive" caption="Shop Active"></dxi-column>
+    </dx-data-grid>
+</div>

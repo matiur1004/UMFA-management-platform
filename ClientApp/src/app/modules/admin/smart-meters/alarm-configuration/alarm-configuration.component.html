@@ -38,6 +38,24 @@
                     >
                 </ng-select>
             </div>
+            <div class="flex flex-col">
+                <mat-label class="form-label"> Supply Type </mat-label>
+                <ng-select
+                    [items]="supplyTypeItems"
+                    bindLabel="label"
+                    bindValue="value"
+                    class="w-60"
+                    [placeholder]="'Supply Type'"
+                    [formControlName]="'supplyType'"
+                    [searchable]="true"
+                    [closeOnSelect]="true"
+                    [clearable]="false"
+                    [multiple]="false"
+                    [searchFn]="customSearch"
+                    (change)="onSupplyTypeChange($event)"
+                    >
+                </ng-select>
+            </div>
         </div>
         <dx-data-grid
             [dataSource]="metersWithAlarms"
@@ -64,7 +82,8 @@
             ></dxo-search-panel>
             <dxo-filter-row [visible]="'true'" [applyFilter]="currentFilter"></dxo-filter-row>
             <dxi-column dataField="MeterNo" caption="Meter No" [minWidth]="100"></dxi-column>
-            <dxi-column dataField="Description" [minWidth]="160"></dxi-column>
+            <dxi-column dataField="SupplyType" caption="Supply Type" [minWidth]="100"></dxi-column>            
+            <dxi-column dataField="Description" [minWidth]="200"></dxi-column>
             <dxi-column caption="Alarms Configuration" dataField="alarmConfig" [minWidth]="190" cellTemplate="alarmConfigTemplate"></dxi-column>
             <dxi-column caption="Alarms Triggered" dataField="alarmTriggered" [minWidth]="190" cellTemplate="alarmTriggerTemplate"></dxi-column>            
             <dxi-column dataField="Make" [minWidth]="100"></dxi-column>

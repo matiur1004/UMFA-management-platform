@@ -50,7 +50,7 @@
                 </div>
             </div>
         </div>
-        <div class="bg-gradient-to-r from-emerald-400 to-emerald-500 col-span-1 lg:col-span-2 flex flex-col flex-auto p-6 bg-card rounded-2xl overflow-hidden card cursor-pointer card-zoom-in" (click)="onDetail('Tenants')">
+        <div class="bg-gradient-to-r from-emerald-400 to-emerald-500 col-span-1 lg:col-span-2 flex flex-col flex-auto p-6 rounded-2xl overflow-hidden card cursor-pointer card-zoom-in" (click)="onDetail('Tenants')">
             <div class="flex items-start justify-between text-white h-full">
                 <div class="flex flex-col w-full gap-y-1 justify-between h-full">
                     <div class="flex w-full justify-between">
@@ -75,7 +75,7 @@
                 </div>
             </div>
         </div>
-        <div class="bg-gradient-to-r from-green-700 to-green-900 col-span-2 lg:col-span-3 flex flex-col flex-auto p-6 bg-card rounded-2xl overflow-hidden card cursor-pointer card-zoom-in">
+        <div class="bg-gradient-to-r from-green-700 to-green-900 col-span-2 lg:col-span-3 flex flex-col flex-auto p-6 rounded-2xl overflow-hidden card cursor-pointer card-zoom-in">
             <div class="flex items-start justify-between text-white h-full cursor-pointer">
                 <div class="flex flex-col w-full gap-y-1 justify-between h-full">
                     <div class="flex w-full justify-between">
@@ -85,7 +85,7 @@
                                 {{stats.TenantStats.NumberOfTenants | number : '1.0-2'}}
                             </div> -->
                         </div>
-                        <mat-icon class="icon-size-10 text-white" [svgIcon]="'feather:users'"></mat-icon>
+                        <mat-icon class="icon-size-10 text-white"><img class="w-full" src="/assets/images/icons/Tenant Slips.svg"/></mat-icon>
                     </div>
                     <div class="flex flex-col gap-y-1" *ngIf="stats.TenantSlips">
                         <div class="flex flex-col w-full gap-y-1" *ngIf="stats.TenantSlips">
@@ -103,15 +103,15 @@
                             </div>
                         </div>
                         <div class="flex gap-x-4 justify-center mt-1">
-                            <a class="underline" href="javascript: void(0);" (click)="onTenantSlip()">View / Archive Slips</a>
-                            <a class="underline" href="javascript: void(0);" (click)="onDownloads()">Downloads</a>
+                            <a class="underline text-hover" href="javascript: void(0);" (click)="onTenantSlip()">View / Archive Slips</a>
+                            <a class="underline text-hover" href="javascript: void(0);" (click)="onDownloads()">Downloads</a>
                         </div>
                     </div>
                     
                 </div>
             </div>
         </div>
-        <div class="bg-gradient-to-r from-violet-700 to-violet-900 col-span-2 lg:col-span-3 flex flex-col flex-auto p-6 bg-card rounded-2xl overflow-hidden card cursor-pointer card-zoom-in">
+        <div class="reports-bg col-span-2 lg:col-span-3 flex flex-col flex-auto p-6 rounded-2xl overflow-hidden card cursor-pointer card-zoom-in">
             <div class="flex items-start justify-between text-white h-full cursor-pointer">
                 <div class="flex flex-col w-full gap-y-1 justify-between h-full">
                     <div class="flex w-full justify-between">
@@ -122,19 +122,19 @@
                     </div>
                     <div class="flex flex-col gap-y-1">
                         <div class="flex flex-col w-full gap-y-1">
-                            <a class="underline" href="javascript: void(0);" (click)="onReports('BRR Monthly Detailed')">BRR Monthly Detailed</a>
-                            <a class="underline" href="javascript: void(0);" (click)="onReports('BRR Multiple Months')">BRR Multiple Months</a>
-                            <a class="underline" href="javascript: void(0);" (click)="onReports('Monthly Detailed Billing')">Monthly Detailed Billing</a>                            
-                            <a class="underline" href="javascript: void(0);" (click)="onReports('Shop Costs Variances')">Shop Costs Variance</a>
-                            <a class="underline" href="javascript: void(0);" (click)="onReports('Shop Usage Variance')">Shop Usage Variance</a>
-                            <a class="underline" href="javascript: void(0);" (click)="onReports('Utility Recovery and Expense')">Utility Recovery and Expense</a>
-                            <a class="underline" href="javascript: void(0);" (click)="onReports('Client Feedback Report')">Client Feedback Report</a>
+                            <a class="underline text-hover" href="javascript: void(0);" (click)="onReports('BRR Monthly Detailed')">BRR Monthly Detailed</a>
+                            <a class="underline text-hover" href="javascript: void(0);" (click)="onReports('BRR Multiple Months')">BRR Multiple Months</a>
+                            <a class="underline text-hover" href="javascript: void(0);" (click)="onReports('Monthly Detailed Billing')">Monthly Detailed Billing</a>                            
+                            <a class="underline text-hover" href="javascript: void(0);" (click)="onReports('Shop Costs Variances')">Shop Costs Variance</a>
+                            <a class="underline text-hover" href="javascript: void(0);" (click)="onReports('Shop Usage Variance')">Shop Usage Variance</a>
+                            <a class="underline text-hover" href="javascript: void(0);" (click)="onReports('Utility Recovery and Expense')">Utility Recovery and Expense</a>
+                            <a class="underline text-hover" href="javascript: void(0);" (click)="onReports('Client Feedback Report')">Client Feedback Report</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="bg-gradient-to-r from-violet-400 to-violet-600 sm:col-span-3 flex flex-col flex-auto p-6 bg-card rounded-2xl overflow-hidden card cursor-pointer card-zoom-in" *ngIf="isSmart">
+        <div class="bg-gradient-to-r from-violet-400 to-violet-600 sm:col-span-3 flex flex-col flex-auto p-6 rounded-2xl overflow-hidden card cursor-pointer card-zoom-in" *ngIf="isSmart" (click)="onDetail('SmartServices')">
             <div class="flex items-start justify-between text-white">
                 <div class="flex flex-col w-full gap-y-1">
                     <div class="flex w-full justify-between">
@@ -144,7 +144,7 @@
                                 {{stats.SmartStats.TotalSmart | number : '1.0-2'}}
                             </div>
                         </div>
-                        <mat-icon class="icon-size-10 text-white" [svgIcon]="'feather:users'"></mat-icon>
+                        <mat-icon class="icon-size-10 text-white"><img class="w-full" src="/assets/images/icons/smart_services.svg"/></mat-icon>
                     </div>
                     <div class="flex flex-col w-full gap-y-1">
                         <div class="flex w-full gap-x-4">
@@ -158,11 +158,11 @@
                             </div>
                         </div>
                         <div class="flex w-full gap-x-4">
-                            <div class="flex justify-between w-1/2 leading-4">
+                            <div class="flex justify-between w-1/2 leading-4 cursor-pointer underline text-hover" (click)="goToAdminAlarmConfiguration('Electricity')">
                                 <span class="text-md">Electricity</span>
                                 <span class="text-lg font-semibold">{{stats.SmartStats.ConsumerElectricityCount}}</span>
                             </div>
-                            <div class="flex justify-between w-1/2 leading-4">
+                            <div class="flex justify-between w-1/2 leading-4 cursor-pointer underline text-hover" (click)="goToAdminAlarmConfiguration('Water')">
                                 <span class="text-md">Water</span>
                                 <span class="text-lg font-semibold">{{stats.SmartStats.ConsumerWaterCount}}</span>
                             </div>
@@ -178,7 +178,7 @@
                             </div>
                         </div>
                         <div class="flex mt-2">
-                            <a href="javascript:void(0);" (click)="goAlarmConfiguration()" class="text-md leading-4 cursor-pointer underline">Alarms: {{stats.SmartStats.AlarmsConfigured}} Configured, {{stats.SmartStats.AlarmsTriggered}} Triggered</a>
+                            <a href="javascript:void(0);" (click)="goAlarmConfiguration()" class="text-md leading-4 cursor-pointer underline text-hover">Alarms: {{stats.SmartStats.AlarmsConfigured}} Configured, {{stats.SmartStats.AlarmsTriggered}} Triggered</a>
                         </div>
                     </div>
                 </div>
@@ -308,15 +308,17 @@
                                 <div class="col-span-2">Area-Hectare</div>
                                 <div class="col-span-2">Rugby Fields</div>
 
-                                <div class="col-span-3 flex gap-x-2 electricity-lbl">
-                                    <div class="service-icon electricity-icon"></div> Electricity
+                                <div class="col-span-3 flex gap-x-2">
+                                    <div class="service-icon"><img src="/assets/images/icons/electricity.svg"/></div> Electricity
                                 </div>                                                        
                                 <div class="col-span-2 text-xl">{{totalElectricityUsage * 0.97 / 1000 | number : '1.0-0'}}</div>
                                 <div class="col-span-2 text-xl">{{totalElectricityUsage * 0.97 / 1000 * 1000 / 27 | number : '1.0-0'}}</div>
                                 <div class="col-span-2 text-xl">{{totalElectricityUsage * 0.97 / 1000 * 1000 / 27 / 400 | number : '1.0-0'}}</div>
                                 <div class="col-span-2 text-xl">{{totalElectricityUsage * 0.97 / 1000 * 1000 / 27 / 400 * 1000 / 12000 | number : '1.0-0'}}</div>
 
-                                <div class="col-span-3 flex gap-x-2 water-lbl"><div class="service-icon water-icon"></div>Water</div>
+                                <div class="col-span-3 flex gap-x-2">
+                                    <div class="service-icon"><img src="/assets/images/icons/water.svg"/></div> Water
+                                </div>
                                 <div class="col-span-2 text-xl">{{totalWaterUsage * 0.298 / 1000 | number : '1.0-0'}}</div>
                                 <div class="col-span-2 text-xl">{{totalWaterUsage * 0.298 / 1000 * 1000 / 27 | number : '1.0-0'}}</div>
                                 <div class="col-span-2 text-xl">{{totalWaterUsage * 0.298 / 1000 * 1000 / 27 / 400 | number : '1.0-0'}}</div>

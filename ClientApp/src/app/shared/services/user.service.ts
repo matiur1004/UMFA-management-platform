@@ -5,6 +5,7 @@ import { BehaviorSubject, lastValueFrom, Observable, of, throwError } from "rxjs
 import { catchError, delay, map, take, tap } from "rxjs/operators";
 import { IAmrUser, IopUser, NotificationType, Role, UserNotification } from "../../core/models";
 import { DXReportService } from "./dx-report-service";
+import { NotificationService } from "./notification.service";
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -20,9 +21,12 @@ export class UserService {
   private decrSubject: BehaviorSubject<string>;
   public decr$: Observable<string>;
 
+  public scadaCredential: any = null;
+
   constructor(
     private http: HttpClient,
-    private _reportService: DXReportService
+    private _reportService: DXReportService,
+    private _notificationService: NotificationService
   ) {
     this.userSubject = new BehaviorSubject<IopUser>(null);
     this.user$ = this.userSubject.asObservable();
@@ -178,9 +182,9 @@ export class UserService {
       );
   }
 
-  getScadaMetersForUser(scadaUserName: string, scadaUserPassword: string): Observable<any> {
+  getScadaMetersForUser(): Observable<any> {
     const url = `${CONFIG.apiURL}${CONFIG.getScadaMetersForUser}`;
-    return this.http.post<any>(url, {scadaUserName, scadaUserPassword}, { withCredentials: true })
+    return this.http.post<any>(url, this.scadaCredential, { withCredentials: true })
       .pipe(
         catchError(err => this.catchErrors('getAmrScadaUser', err)),
         tap(u => {
@@ -259,6 +263,22 @@ export class UserService {
         tap(data => {})
       );
   }
+
+  scadaConfig(partnerId, umfaUserId) {
+    const url = `${CONFIG.apiURL}/user/scada-config?PartnerId=${partnerId}&UmfaUserId=${umfaUserId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => {
+          this.scadaCredential = null;
+          this._notificationService.error('No Scada Credentials has been configured for the selected Partner');
+          return this.catchErrors('scada config', err)
+        }),
+        tap(data => {
+          this.scadaCredential = data;
+        })
+      );
+  }
+
   /*
   updateProduct(product: Product): Observable<Product> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });

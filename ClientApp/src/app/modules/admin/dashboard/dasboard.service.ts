@@ -34,19 +34,32 @@ export class DashboardService {
   private _tenantDetailDashboard: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopBilling: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopBillingDetail: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _tenantBilling: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _tenantBillingDetail: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopOccupation: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopOccupationDetails: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _tenantOccupation: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _tenantOccupationDetails: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _tenantAssignedMeters: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _tenantAssignedMetersDetails: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopAssignedMeters: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopAssignedMetersDetails: BehaviorSubject<any> = new BehaviorSubject(null);
   private _metersForBuilding: BehaviorSubject<any> = new BehaviorSubject(null);
 
   private _shopReadings: BehaviorSubject<any> = new BehaviorSubject(null);
   private _shopReadingsDetails: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _tenantReadings: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _tenantReadingsDetails: BehaviorSubject<any> = new BehaviorSubject(null);
 
   private _reportsArchives: BehaviorSubject<any> = new BehaviorSubject(null);
   private _clientFeedbackReports: BehaviorSubject<any> = new BehaviorSubject(null);
   private _showTenantBillingDetails: BehaviorSubject<any> = new BehaviorSubject(null);
   private _billingDetailsForTenant: BehaviorSubject<any> = new BehaviorSubject(null);
+
+  private _smartBuildings: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _smartBuildingDetails: BehaviorSubject<any> = new BehaviorSubject(null);  
+  private _smartBuildingElectricity: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _smartBuildingWater: BehaviorSubject<any> = new BehaviorSubject(null);
 
   private _headerText: BehaviorSubject<string> = new BehaviorSubject(null);
   
@@ -63,6 +76,9 @@ export class DashboardService {
   private _triggeredAlarmsList: BehaviorSubject<any> = new BehaviorSubject(null);
   private _triggeredAlarmDetailPage: BehaviorSubject<any> = new BehaviorSubject(null);
   
+  private _buildingAlarmsPage: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  private _buildingAlarms: BehaviorSubject<any> = new BehaviorSubject(null);
+
   constructor(
     private router: Router, 
     private http: HttpClient,
@@ -152,12 +168,36 @@ export class DashboardService {
     return this._shopBillingDetail.asObservable();
   }
   
+  get tenantBilling$(): Observable<any> {
+    return this._tenantBilling.asObservable();
+  }
+
+  get tenantBillingDetail$(): Observable<any> {
+    return this._tenantBillingDetail.asObservable();
+  }
+
   get shopOccupation$(): Observable<any> {
     return this._shopOccupation.asObservable();
   }
 
+  get tenantOccupation$(): Observable<any> {
+    return this._tenantOccupation.asObservable();
+  }
+
+  get tenantAssignedMeters$(): Observable<any> {
+    return this._tenantAssignedMeters.asObservable();
+  }
+
   get shopOccupationsDashboard$(): Observable<any> {
     return this._shopOccupationDetails.asObservable();
+  }
+
+  get tenantOccupationDetails$(): Observable<any> {
+    return this._tenantOccupationDetails.asObservable();
+  }
+
+  get tenantAssignedMetersDetails$(): Observable<any> {
+    return this._tenantAssignedMetersDetails.asObservable();
   }
 
   get shopAssignedMeters$(): Observable<any> {
@@ -168,12 +208,24 @@ export class DashboardService {
     return this._shopAssignedMetersDetails.asObservable();
   }
 
+  get tenantAssignedMetersDashboard$(): Observable<any> {
+    return this._tenantAssignedMetersDetails.asObservable();
+  }
+
   get shopReadings$(): Observable<any> {
     return this._shopReadings.asObservable();
   }
 
+  get tenantReadings$(): Observable<any> {
+    return this._tenantReadings.asObservable();
+  }
+
   get shopReadingsDashboard$(): Observable<any> {
     return this._shopReadingsDetails.asObservable();
+  }
+
+  get tenantReadingsDashboard$(): Observable<any> {
+    return this._tenantReadingsDetails.asObservable();
   }
 
   get metersForBuilding$(): Observable<any> {
@@ -204,6 +256,14 @@ export class DashboardService {
     return this._triggeredAlarmsPage.asObservable();
   }
 
+  get buildingAlarmsPage$(): Observable<boolean> {
+    return this._buildingAlarmsPage.asObservable();
+  }
+
+  get buildingAlarms$(): Observable<boolean> {
+    return this._buildingAlarms.asObservable();
+  }
+
   get triggeredAlarmsList$(): Observable<any>{
     return this._triggeredAlarmsList.asObservable();
   }
@@ -222,6 +282,22 @@ export class DashboardService {
 
   get billingDetailsForTenant$(): Observable<any>{
     return this._billingDetailsForTenant.asObservable();
+  }
+
+  get smartBuildings$(): Observable<any>{
+    return this._smartBuildings.asObservable();
+  }
+
+  get smartBuildingDetails$(): Observable<any>{
+    return this._smartBuildingDetails.asObservable();
+  }
+
+  get smartBuildingElectricity$(): Observable<any>{
+    return this._smartBuildingElectricity.asObservable();
+  }
+
+  get smartBuildingWater$(): Observable<any>{
+    return this._smartBuildingWater.asObservable();
   }
 
   getStats(userId) {
@@ -349,13 +425,13 @@ export class DashboardService {
       );
   }
 
-  updateAcknowledged(alarmTriggeredId) {
+  updateAcknowledged(alarmTriggeredId, showingAlert = true) {
     const url = `${CONFIG.apiURL}/AlarmTriggered/updateAcknowledged`;
     return this.http.post<any>(url, {AMRMeterTriggeredAlarmId: alarmTriggeredId}, { withCredentials: true })
       .pipe(
         catchError(err => this.catchAuthErrors(err)),
         tap(bl => {
-          this._notificationService.message('Acknowledged successfully!');
+          if(showingAlert) this._notificationService.message('Acknowledged successfully!');
           //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
         })
       );
@@ -439,13 +515,24 @@ export class DashboardService {
       );
   }
   
-  getShopDashboardBilling(buildingId, shopId, history = 12) {
+  getShopDashboardBilling(buildingId, shopId, history = 36) {
     const url = `${CONFIG.apiURL}/Dashboard/buildings/${buildingId}/shops/${shopId}/billing-details?history=${history}`;
     return this.http.get<any>(url, { withCredentials: true })
       .pipe(
         catchError(err => this.catchAuthErrors(err)),
         tap(bl => {
           this._shopBillingDetail.next(bl);
+        })
+      );
+  }
+
+  getTenantDashboardBilling(buildingId, tenantId, shopId = 0, history = 36) {
+    const url = `${CONFIG.apiURL}/TenantDashboard/billing-card-details?buildingId=${buildingId}&tenantId=${tenantId}&shopId=${shopId}&history=${history}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(bl => {
+          this._tenantBillingDetail.next(bl);
         })
       );
   }
@@ -461,6 +548,17 @@ export class DashboardService {
       );
   }
 
+  getTenantDashboardOccupations(buildingId, tenantId, inCludePrev = false) {
+    const url = `${CONFIG.apiURL}/TenantDashboard/occupations?buildingId=${buildingId}&tenantId=${tenantId}&inCludePrev=${inCludePrev}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(bl => {
+          this._tenantOccupationDetails.next(bl);
+        })
+      );
+  }
+
   getShopDashboardAssignedMeters(buildingId, shopId) {
     const url = `${CONFIG.apiURL}/Dashboard/buildings/${buildingId}/shops/${shopId}/assigned-meters`;
     return this.http.get<any>(url, { withCredentials: true })
@@ -468,6 +566,17 @@ export class DashboardService {
         catchError(err => this.catchAuthErrors(err)),
         tap(bl => {
           this._shopAssignedMetersDetails.next(bl);
+        })
+      );
+  }
+
+  getTenantDashboardAssignedMeters(buildingId, tenantId, history = 6) {
+    const url = `${CONFIG.apiURL}/TenantDashboard/assigned-meters?buildingId=${buildingId}&tenantId=${tenantId}&history=${history}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(bl => {
+          this._tenantAssignedMetersDetails.next(bl);
         })
       );
   }
@@ -491,6 +600,17 @@ export class DashboardService {
         catchError(err => this.catchAuthErrors(err)),
         tap(bl => {
           this._shopReadingsDetails.next(bl);
+        })
+      );
+  }
+
+  getTenantBillingsByMeter(meterId, shopId, buildingId, history = 36) {
+    const url = `${CONFIG.apiURL}/TenantDashboard/readings?buildingId=${buildingId}&shopId=${shopId}&buildingServiceId=${meterId}&history=${history}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(bl => {
+          this._tenantReadingsDetails.next(bl);
         })
       );
   }
@@ -530,7 +650,7 @@ export class DashboardService {
         })
       );
   }
-
+  
   getBillingDetailsForTenant(buildingId, tenantId, periodId) {
     const url = `${CONFIG.apiURL}/TenantDashboard/main/billing-details?BuildingId=${buildingId}&TenantId=${tenantId}&PeriodId=${periodId}`;
     return this.http.get<any>(url, { withCredentials: true })
@@ -541,6 +661,51 @@ export class DashboardService {
         tap(bl => {
           this._billingDetailsForTenant.next(bl);
           //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        })
+      );
+  }
+
+  getBuildingAlarms() {
+    const url = `${CONFIG.apiURL}/AlarmsPerBuilding`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(res => {
+          this._buildingAlarms.next(res);
+        })
+      );
+  }
+
+  getSmartBuildings(userId) {
+    const url = `Dashboard/GetBuildingList/${userId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(res => {
+          let source = res.filter(item => item.IsSmart == true);
+          this._smartBuildings.next(source);
+        })
+      );
+  }
+
+  getElectirictyDetailForSmartBuilding({startDate, endDate, periodType, buildingId}) {
+    const url = `/SmartServices/main/electricity?startDate=${startDate}&endDate=${endDate}&periodType=${periodType}&buildingId=${buildingId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(res => {
+          this._smartBuildingElectricity.next(res);
+        })
+      );
+  }
+
+  getWaterDetailForSmartBuilding({startDate, endDate, periodType, buildingId}) {
+    const url = `/SmartServices/main/water?startDate=${startDate}&endDate=${endDate}&periodType=${periodType}&buildingId=${buildingId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(res => {
+          this._smartBuildingWater.next(res);
         })
       );
   }
@@ -610,17 +775,38 @@ export class DashboardService {
     this._shopBilling.next(data);
   }
 
+  showTenantBilling(data) {
+    this._tenantBilling.next(data);
+  }
+
   showShopOccupation(data) {
     this._shopOccupation.next(data);
+  }
+
+  showTenantOccupation(data) {
+    this._tenantOccupation.next(data);
+  }
+
+  showTenantAssignedMeters(data) {
+    this._tenantAssignedMeters.next(data);
   }
 
   showTriggeredAlarms(data) {
     this._triggeredAlarmsPage.next(data);
   }
 
+  showBuildingAlarms() {
+    this._buildingAlarmsPage.next(true);
+  }
+
   destroyShopOccupation() {
     this._shopOccupation.next(null);
     this._shopOccupationDetails.next(null);
+  }
+  
+  destroyTenantOccupation() {
+    this._tenantOccupation.next(null);
+    this._tenantOccupationDetails.next(null);
   }
 
   showAssignedMeters(data) {
@@ -632,12 +818,25 @@ export class DashboardService {
     //this._shopAssignedMetersDetails.next(null);
   }
 
+  destroyTenantAssignedMeters() {
+    this._tenantAssignedMeters.next(null);
+    //this._tenantAssignedMetersDetails.next(null);
+  }
+  
   destroyShopAssignedMeterDetails() {
     this._shopAssignedMetersDetails.next(null);
   }
 
+  destroyTenantAssignedMeterDetails() {
+    this._tenantAssignedMetersDetails.next(null);
+  }
+
   showReadings(data) {
     this._shopReadings.next(data);
+  }
+
+  showTenantReadings(data) {
+    this._tenantReadings.next(data);
   }
 
   destroyShopReadings() {
@@ -666,8 +865,21 @@ export class DashboardService {
     this._showTenantBillingDetails.next(data);
   }
 
+  destroyBuildingAlarms() {
+    this._buildingAlarms.next(null);
+  }
+
   setTitle(val) {
     this._headerText.next(val);
+  }
+
+  showSmartBuildingDetails(data) {
+    this._smartBuildingDetails.next(data);
+  }
+
+  destroySmartBuilding() {
+    this._smartBuildingElectricity.next(null);
+    this._smartBuildingWater.next(null);
   }
 
   destroy() {
@@ -679,6 +891,7 @@ export class DashboardService {
     this._triggeredAlarmDetailPage.next(null);
     this._shopList.next(null);
     this._tenantsList.next(null);
+    this._smartBuildingDetails.next(null);
     this.selectedTenantInfo = null;
     this.selectedShopInfo = null;
   }

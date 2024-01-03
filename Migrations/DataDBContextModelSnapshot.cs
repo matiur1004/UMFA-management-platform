@@ -696,9 +696,8 @@ namespace ClientPortal.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LocationType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("LocationTypeId")
+                        .HasColumnType("int");
 
                     b.Property<string>("MeterNo")
                         .IsRequired()
@@ -723,13 +722,11 @@ namespace ClientPortal.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SupplyTo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("SupplyToId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("SupplyType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("SupplyTypeId")
+                        .HasColumnType("int");
 
                     b.Property<string>("TOUHeader")
                         .IsRequired()
@@ -1212,6 +1209,56 @@ namespace ClientPortal.Migrations
                     b.ToTable("ScheduleStatus");
                 });
 
+            modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.SupplyTo", b =>
+                {
+                    b.Property<int>("SupplyToId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SupplyToId"), 1L, 1);
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SupplyToName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SupplyTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("SupplyToId");
+
+                    b.HasIndex("SupplyTypeId");
+
+                    b.ToTable("SupplyTos");
+                });
+
+            modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.SupplyToLocationType", b =>
+                {
+                    b.Property<int>("SupplyToLocationTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SupplyToLocationTypeId"), 1L, 1);
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("SupplyToId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SupplyToLocationName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("SupplyToLocationTypeId");
+
+                    b.HasIndex("SupplyToId");
+
+                    b.ToTable("SupplyToLocationTypes");
+                });
+
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.SupplyType", b =>
                 {
                     b.Property<int>("SupplyTypeId")
@@ -1219,6 +1266,9 @@ namespace ClientPortal.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SupplyTypeId"), 1L, 1);
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
 
                     b.Property<string>("SupplyTypeName")
                         .IsRequired()
@@ -2058,6 +2108,28 @@ namespace ClientPortal.Migrations
                     b.Navigation("Header");
                 });
 
+            modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.SupplyTo", b =>
+                {
+                    b.HasOne("ClientPortal.Data.Entities.PortalEntities.SupplyType", "SupplyType")
+                        .WithMany("SupplyTos")
+                        .HasForeignKey("SupplyTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("SupplyType");
+                });
+
+            modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.SupplyToLocationType", b =>
+                {
+                    b.HasOne("ClientPortal.Data.Entities.PortalEntities.SupplyTo", "SupplyTo")
+                        .WithMany("SupplyToLocationTypes")
+                        .HasForeignKey("SupplyToId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("SupplyTo");
+                });
+
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.TariffHeader", b =>
                 {
                     b.HasOne("ClientPortal.Data.Entities.PortalEntities.TOUHeader", "TOUHeader")
@@ -2259,6 +2331,16 @@ namespace ClientPortal.Migrations
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.ScadaRequestHeader", b =>
                 {
                     b.Navigation("ScadaRequestDetails");
+                });
+
+            modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.SupplyTo", b =>
+                {
+                    b.Navigation("SupplyToLocationTypes");
+                });
+
+            modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.SupplyType", b =>
+                {
+                    b.Navigation("SupplyTos");
                 });
 
             modelBuilder.Entity("ClientPortal.Data.Entities.PortalEntities.TariffHeader", b =>

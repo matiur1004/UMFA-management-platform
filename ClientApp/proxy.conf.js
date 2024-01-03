@@ -44,6 +44,7 @@ const PROXY_CONFIG = [
       "/Umfa",
       "/TenantSlips",
       "/TenantDashboard",
+      "/SmartServices",
    ],
     target: target,
     secure: false,

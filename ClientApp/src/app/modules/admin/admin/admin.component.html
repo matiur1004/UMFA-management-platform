@@ -5,10 +5,8 @@
                 [selectedIndex]="selectedTab">
                 <mat-tab label="AMR Users" *ngIf="roleId == roleType.UMFAAdministrator"></mat-tab>
                 <mat-tab label="User Management" *ngIf="roleId == roleType.UMFAAdministrator"></mat-tab>
-                <mat-tab label="Meter Mapping" ></mat-tab>
                 <mat-tab label="AMR Meters"></mat-tab>
                 <mat-tab label="AMR Schedule"></mat-tab>
-                <mat-tab label="Alarm Configuration"></mat-tab>
                 <mat-tab label="User Notifications"></mat-tab>
                 <ng-container *ngFor="let detail of detailsList; let i = index;">
                     <mat-tab label="Detail">

@@ -1,0 +1,140 @@
+<div class="flex flex-col gap-y-3">
+    <dx-pivot-grid
+        [dataFieldArea]="'column'"
+        [wordWrapEnabled]="false"
+        [dataSource]="dataSource"
+        [showBorders]="true"
+        [showColumnGrandTotals]="false"
+        [showColumnTotals]="false"
+        [showRowGrandTotals]="false"
+        id="tenantBillingGrid"
+        [allowExpandAll]="true"
+        (onCellPrepared)="cellPrepared($event)"
+        (onContentReady)="contentReady($event)"
+    >
+        <dxo-field-chooser [enabled]="false"></dxo-field-chooser>
+    </dx-pivot-grid>
+    <div class="flex justify-end gap-x-2">
+        <dx-select-box [items]="shopList" displayExpr="ShopNr" valueExpr="ShopID" class="form-control" label="Shop" placeholder="Select Shop" lableMode="static" id="shop"
+            name="partner" (onValueChanged)="shopChanged($event)" [(ngModel)]="shopId"
+            [searchEnabled]="true" searchExpr="Name" searchMode="contains" [searchTimeout]="400">
+        </dx-select-box>
+        <dx-drop-down-box
+            [(value)]="selectedGroupsForBilling"
+            [inputAttr]="{ 'aria-label': 'Owner' }"
+            valueExpr="Id"
+            displayExpr="Name"
+            placeholder="Select..."
+            label="Group Name"
+            [showClearButton]="true"
+            [dataSource]="billingGroupItems">
+            <div *dxTemplate="let data of 'content'">
+                <dx-tree-view
+                    [dataSource]="billingGroupItems"
+                    dataStructure="plain"
+                    keyExpr="Id"
+                    parentIdExpr="categoryId"
+                    selectionMode="multiple"
+                    showCheckBoxesMode="normal"
+                    [selectNodesRecursive]="false"
+                    displayExpr="Name"
+                    [selectByClick]="true"
+                    (onContentReady)="onTreeViewReady($event)"
+                    (onInitialized)="onInitialized($event)"
+                    (onItemSelectionChanged)="onTreeViewSelectionChanged($event)"
+                >
+                </dx-tree-view>
+            </div>
+        </dx-drop-down-box>
+    </div>
+    <div class="flex gap-x-2 justify-between">
+        <div class="flex bg-card w-1/2 relative flex-col">
+            <apx-chart
+                *ngIf="billingChartType == 'Bar'"
+                class="w-full mt-6"
+                [series]="barChartOptions.series"
+                [chart]="barChartOptions.chart"
+                [stroke]="barChartOptions.stroke"
+                [dataLabels]="barChartOptions.dataLabels"
+                [plotOptions]="barChartOptions.plotOptions"
+                [xaxis]="barChartOptions.xaxis"
+                [colors]="barChartOptions.colors"
+                [fill]="barChartOptions.fill"
+                [yaxis]="barChartOptions.yaxis"
+                [legend]="barChartOptions.legend"
+            ></apx-chart>
+            <ng-container *ngIf="billingChartType == 'Line'">
+                <mat-tab-group class="mt-10 line-chart-tab w-full" (selectedIndexChange)="lineChartYearChange()">
+                    <mat-tab *ngFor="let year of yearList; let i = index;" label="{{year}}">
+                        <apx-chart
+                            class="w-full"
+                            [series]="lineChartSeries[year]"
+                            [chart]="lineChartOptions.chart"
+                            [xaxis]="lineChartOptions.xaxis"
+                            [stroke]="lineChartOptions.stroke"
+                            [markers]="lineChartOptions.markers"
+                            [grid]="lineChartOptions.grid"
+                            [colors]="barChartOptions.colors"
+                            [yaxis]="lineChartOptions.yaxis"
+                            [title]="lineChartOptions.title"
+                        ></apx-chart>
+                    </mat-tab>
+                </mat-tab-group>                
+            </ng-container>
+            <div class="flex absolute left-3 top-3 gap-x-2 text-xl font-semibold">Billings</div>
+            <div class="flex absolute right-2 top-2 gap-x-2">
+                <div class="p-2 graph-type-item cursor-pointer" (click)="billingChartType = 'Line'" [ngClass]="{'selected-graph-type': billingChartType == 'Line'}">
+                    <img src="/assets/images/icons/line-graph.svg" class="h-full">
+                </div>
+                <div class="border-graph"></div>
+                <div class="p-2 graph-type-item cursor-pointer" (click)="billingChartType = 'Bar'" [ngClass]="{'selected-graph-type': billingChartType == 'Bar'}">
+                    <img src="/assets/images/icons/bar-graph.svg" class="h-full">
+                </div>                
+            </div>
+        </div>
+        <div class="flex bg-card w-1/2 relative">
+            <apx-chart
+                *ngIf="usageChartType == 'Bar'"
+                class="w-full mt-6"
+                [series]="barUsageChartOptions.series"
+                [chart]="barUsageChartOptions.chart"
+                [stroke]="barUsageChartOptions.stroke"
+                [dataLabels]="barUsageChartOptions.dataLabels"
+                [plotOptions]="barUsageChartOptions.plotOptions"
+                [xaxis]="barUsageChartOptions.xaxis"
+                [colors]="barUsageChartOptions.colors"
+                [fill]="barUsageChartOptions.fill"
+                [yaxis]="barUsageChartOptions.yaxis"
+                [legend]="barUsageChartOptions.legend"
+            ></apx-chart>
+            <ng-container *ngIf="usageChartType == 'Line'">
+                <mat-tab-group class="mt-10 line-chart-tab w-full" (selectedIndexChange)="lineChartYearChange()">
+                    <mat-tab *ngFor="let year of yearList; let i = index;" label="{{year}}">
+                        <apx-chart
+                            class="w-full"
+                            [series]="lineUsageChartSeries[year]"
+                            [chart]="lineUsageChartOptions.chart"
+                            [xaxis]="lineUsageChartOptions.xaxis"
+                            [stroke]="lineUsageChartOptions.stroke"
+                            [markers]="lineUsageChartOptions.markers"
+                            [grid]="lineUsageChartOptions.grid"
+                            [colors]="barChartOptions.colors"
+                            [yaxis]="lineUsageChartOptions.yaxis"
+                            [title]="lineUsageChartOptions.title"
+                        ></apx-chart>
+                    </mat-tab>
+                </mat-tab-group>
+            </ng-container>
+            <div class="flex absolute left-3 top-3 gap-x-2 text-xl font-semibold">Usages</div>
+            <div class="flex absolute right-2 top-2 gap-x-2">
+                <div class="p-2 graph-type-item cursor-pointer" (click)="usageChartType = 'Line'" [ngClass]="{'selected-graph-type': usageChartType == 'Line'}">
+                    <img src="/assets/images/icons/line-graph.svg" class="h-full">
+                </div>
+                <div class="border-graph"></div>
+                <div class="p-2 graph-type-item cursor-pointer" (click)="usageChartType = 'Bar'" [ngClass]="{'selected-graph-type': usageChartType == 'Bar'}">
+                    <img src="/assets/images/icons/bar-graph.svg" class="h-full">
+                </div>                
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,6 +1,6 @@
 <div class="flex flex-col gap-y-6" style="min-height: 300px;">
     <div class="grid grid-cols-4 gap-10 w-full" *ngIf="tenantDetailDashboard">
-        <div class="bg-cyan-600 col-span-1 flex flex-col flex-auto p-4 pb-2 rounded-2xl overflow-hidden card cursor-pointer card-zoom-in">
+        <div class="bg-cyan-600 col-span-1 flex flex-col flex-auto p-4 pb-2 rounded-2xl overflow-hidden card cursor-pointer card-zoom-in" (click)="onTenantBilling()">
             <div class="flex items-start justify-between text-white h-full">
                 <div class="flex flex-col w-full gap-y-1 justify-between h-full">
                     <div class="flex w-full justify-between">
@@ -26,17 +26,17 @@
                 </div>                                        
             </div>
         </div>
-        <div class="bg-pink-500 col-span-1 flex flex-col flex-auto p-4 pb-2 rounded-2xl overflow-visible card cursor-pointer card-zoom-in">
+        <div class="bg-pink-500 col-span-1 flex flex-col flex-auto p-4 pb-2 rounded-2xl overflow-visible card cursor-pointer card-zoom-in" (click)="showOccupation()">
             <div class="flex items-start justify-between text-white h-full">
                 <div class="flex flex-col w-full gap-y-1 justify-between h-full">
                     <div class="flex w-full justify-between cursor-pointer gap-x-1 items-start">
                         <div class="flex flex-col">
-                            <div class="text-xl font-medium tracking-normal leading-8 truncate">Occupations</div>
+                            <div class="text-xl font-medium tracking-normal leading-8 truncate">Shops Occupied</div>
                             <span class="text-md">{{tenantName}}</span>
                         </div>
                         <img src="/assets/images/icons/occupation.svg" class="image-item"/>
                     </div>
-                    <div class="flex w-full flex-col">
+                    <div class="flex w-full flex-col" (click)="$event.stopPropagation()">
                         <ng-select (change)="onChangeShop($event)" [items]="shopListItems" [(ngModel)]="selectedShop" bindLabel="label" bindValue="value" [placeholder]="'Select Model'" [searchable]="false" [clearable]="false" class="w-full select-sm">
                             <ng-template ng-label-tmp let-item="item">
                                 <div class="flex justify-between">
@@ -72,7 +72,7 @@
                 </div>                                        
             </div>
         </div>
-        <div class="bg-green-600 col-span-1 flex flex-col flex-auto p-4 pb-3 rounded-2xl overflow-hidden card cursor-pointer card-zoom-in">
+        <div class="bg-green-600 col-span-1 flex flex-col flex-auto p-4 pb-3 rounded-2xl overflow-hidden card cursor-pointer card-zoom-in" (click)="showAssignedMeters()">
             <div class="flex items-start justify-between text-white h-full">
                 <div class="flex flex-col w-full gap-y-1 justify-between h-full">
                     <div class="flex w-full justify-between">
@@ -93,14 +93,14 @@
                 </div>                                        
             </div>
         </div>
-        <div class="bg-indigo-500 col-span-1 flex flex-col flex-auto p-4 pb-2 rounded-2xl overflow-hidden card cursor-pointer card-zoom-in"> 
+        <div class="bg-indigo-500 col-span-1 flex flex-col flex-auto p-4 pb-2 rounded-2xl overflow-hidden card cursor-pointer card-zoom-in" (click)="showReading()"> 
             <div class="flex items-start justify-between text-white h-full">
                 <div class="flex flex-col w-full gap-y-1 justify-between h-full">
                     <div class="flex w-full justify-between">
                         <div class="flex flex-col">
                             <div class="text-xl font-medium tracking-normal leading-8 truncate">Readings</div>
                         </div>
-                        <img src="/assets/images/icons/billing.svg" class="image-item"/>
+                        <img src="/assets/images/icons/readings-icon.svg" class="image-item"/>
                     </div>
                     <div class="flex flex-col gap-y-1">
                         <div class="flex justify-between text-md" *ngFor="let reading of tenantDetailDashboard.ReadingsInfo">
@@ -211,7 +211,7 @@
             </div>
             <div class="flex flex-col bg-card relative">
                 <div class="flex absolute left-2 top-3 gap-x-2 text-xl font-semibold">
-                    <img class="graph-icon" src="/assets/images/icons/electricity_1.svg"> Total Electricity - Billing Usages
+                    <img class="graph-icon" src="/assets/images/icons/electricity_1.svg"> Total Electricity - Billing Usages (kWh)
                 </div>
                 <div class="flex absolute right-2 top-2 gap-x-2 z-90">
                     <div class="p-2 graph-type-item cursor-pointer" (click)="billingUsageElectricityChartType = 'Line'" [ngClass]="{'selected-graph-type': billingUsageElectricityChartType == 'Line'}">
@@ -238,13 +238,13 @@
                     *ngIf="billingUsageElectricityChartType == 'Line'"
                     class="w-full mt-6"
                     [series]="billingUsageElectricitySeries"
-                    [chart]="commonLineChartOptions.chart"
-                    [xaxis]="commonLineChartOptions.xaxis"
-                    [stroke]="commonLineChartOptions.stroke"
-                    [markers]="commonLineChartOptions.markers"
-                    [grid]="commonLineChartOptions.grid"
-                    [yaxis]="commonLineChartOptions.yaxis"
-                    [title]="commonLineChartOptions.title"
+                    [chart]="commonLineUsageChartOptions.chart"
+                    [xaxis]="commonLineUsageChartOptions.xaxis"
+                    [stroke]="commonLineUsageChartOptions.stroke"
+                    [markers]="commonLineUsageChartOptions.markers"
+                    [grid]="commonLineUsageChartOptions.grid"
+                    [yaxis]="commonLineUsageChartOptions.yaxis"
+                    [title]="commonLineUsageChartOptions.title"
                     [colors]="billingElectricitySeriesColors"
                 ></apx-chart>
             </div>
@@ -291,7 +291,7 @@
             </div>
             <div class="flex flex-col bg-card relative">
                 <div class="flex absolute left-2 top-3 gap-x-2 text-xl font-semibold">
-                    <img class="graph-icon" src="/assets/images/icons/water_1.svg"> Total Water - Billing Usages
+                    <img class="graph-icon" src="/assets/images/icons/water_1.svg"> Total Water - Billing Usages (kL)
                 </div>
                 <div class="flex absolute right-2 top-2 gap-x-2 z-90">
                     <div class="p-2 graph-type-item cursor-pointer" (click)="billingUsageWaterChartType = 'Line'" [ngClass]="{'selected-graph-type': billingUsageWaterChartType == 'Line'}">
@@ -318,13 +318,13 @@
                     *ngIf="billingUsageWaterChartType == 'Line'"
                     class="w-full mt-6"
                     [series]="billingUsageWaterSeries"
-                    [chart]="commonLineChartOptions.chart"
-                    [xaxis]="commonLineChartOptions.xaxis"
-                    [stroke]="commonLineChartOptions.stroke"
-                    [markers]="commonLineChartOptions.markers"
-                    [grid]="commonLineChartOptions.grid"
-                    [yaxis]="commonLineChartOptions.yaxis"
-                    [title]="commonLineChartOptions.title"
+                    [chart]="commonLineUsageChartOptions.chart"
+                    [xaxis]="commonLineUsageChartOptions.xaxis"
+                    [stroke]="commonLineUsageChartOptions.stroke"
+                    [markers]="commonLineUsageChartOptions.markers"
+                    [grid]="commonLineUsageChartOptions.grid"
+                    [yaxis]="commonLineUsageChartOptions.yaxis"
+                    [title]="commonLineUsageChartOptions.title"
                     [colors]="billingWaterSeriesColors"
                 ></apx-chart>
             </div>
@@ -371,7 +371,7 @@
             </div>
             <div class="flex flex-col bg-card relative">
                 <div class="flex absolute left-2 top-3 gap-x-2 text-xl font-semibold">
-                    <img class="graph-icon" src="/assets/images/icons/sewerage.svg"> Total Sewer - Billing Usages
+                    <img class="graph-icon" src="/assets/images/icons/sewerage.svg"> Total Sewer - Billing Usages (kL)
                 </div>
                 <div class="flex absolute right-2 top-2 gap-x-2 z-90">
                     <div class="p-2 graph-type-item cursor-pointer" (click)="billingUsageSewerChartType = 'Line'" [ngClass]="{'selected-graph-type': billingUsageSewerChartType == 'Line'}">
@@ -398,13 +398,13 @@
                     *ngIf="billingUsageSewerChartType == 'Line'"
                     class="w-full mt-6"
                     [series]="billingUsageSewerageSeries"
-                    [chart]="commonLineChartOptions.chart"
-                    [xaxis]="commonLineChartOptions.xaxis"
-                    [stroke]="commonLineChartOptions.stroke"
-                    [markers]="commonLineChartOptions.markers"
-                    [grid]="commonLineChartOptions.grid"
-                    [yaxis]="commonLineChartOptions.yaxis"
-                    [title]="commonLineChartOptions.title"
+                    [chart]="commonLineUsageChartOptions.chart"
+                    [xaxis]="commonLineUsageChartOptions.xaxis"
+                    [stroke]="commonLineUsageChartOptions.stroke"
+                    [markers]="commonLineUsageChartOptions.markers"
+                    [grid]="commonLineUsageChartOptions.grid"
+                    [yaxis]="commonLineUsageChartOptions.yaxis"
+                    [title]="commonLineUsageChartOptions.title"
                     [colors]="billingSewerageSeriesColors"
                 ></apx-chart>
             </div>

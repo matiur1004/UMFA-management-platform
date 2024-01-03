@@ -27,13 +27,10 @@ namespace ClientPortal.Migrations
                new[] { "SupplyTypeName" },
                new object[,]
                {
-                    {"AdHoc"},
                     {"Electricity"},
                     {"Gas"},
                     {"Sewerage"},
-                    {"Solar"},
-                    {"Water" },
-                    {"Wind"}
+                    {"Water" }
                });
         }
 

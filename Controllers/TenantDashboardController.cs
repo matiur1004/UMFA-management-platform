@@ -74,5 +74,47 @@ namespace ClientPortal.Controllers
                 return Problem(e.Message);
             }
         }
+
+        [HttpGet("occupations")]
+        public async Task<ActionResult<List<UmfaTenantDashboardOccupation>>> GetTenantDashboardOccupations([FromQuery] UmfaTenantDashboardOccupationsRequest request)
+        {
+            try
+            {
+                return await _umfaService.GetTenantDashboardOccupationsAsync(request);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Could not get tenant dashboard occupations");
+                return Problem(e.Message);
+            }
+        }
+
+        [HttpGet("assigned-meters")]
+        public async Task<ActionResult<List<UmfaTenantDashboardAssignedMeter>>> GetTenantDashboardAssignedMeters([FromQuery] UmfaTenantDashboardAssignedMetersRequest request)
+        {
+            try
+            {
+                return await _umfaService.GetTenantDashboardAssignedMetersAsync(request);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Could not get tenant dashboard assigned meters");
+                return Problem(e.Message);
+            }
+        }
+
+        [HttpGet("readings")]
+        public async Task<ActionResult<List<UmfaTenantDashboardReading>>> GetTenantDashboardReadings([FromQuery] UmfaTenantDashboardReadingsRequest request)
+        {
+            try
+            {
+                return await _umfaService.GetTenantDashboardReadingsAsync(request);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Could not get tenant dashboard readings");
+                return Problem(e.Message);
+            }
+        }
     }
 }

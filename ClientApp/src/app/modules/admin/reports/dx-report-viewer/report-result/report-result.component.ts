@@ -5,7 +5,9 @@ import { DXReportService } from 'app/shared/services/dx-report-service';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { exportDataGrid as exportDataGridToPdf } from 'devextreme/pdf_exporter';
 import jsPDF from 'jspdf';
-
+import { Workbook } from 'exceljs';
+import saveAs from 'file-saver';
+import { exportDataGrid } from 'devextreme/excel_exporter';
 @Component({
   selector: 'report-result',
   encapsulation: ViewEncapsulation.None,
@@ -242,7 +244,155 @@ export class ReportResultComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  export(){
+  onExport(type) {
+    if(type == 'pdf') this.exportPdf();
+    else this.exportCSV();
+  }
+
+  exportCSV() {
+    const workbook = new Workbook();
+    const worksheet = workbook.addWorksheet('report', {views: [{showGridLines: false}]});
+
+    worksheet.mergeCells('A1:B4');
+
+    var logoUrl = '/assets/images/logo/logo.png';
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', logoUrl, true);
+    xhr.responseType = 'blob';
+
+    //var headerInfo = this.headerInfo;
+    var _this = this;
+    xhr.onload = function (e) {
+      if(this.status === 200) {
+        var blob = this.response;
+        
+        // Create a new Image element
+        var img = new Image();
+
+        img.onload = async function () {
+          const image = workbook.addImage({
+            buffer: blob.arrayBuffer(),
+            extension: "png",
+            
+          });
+          worksheet.addImage(image, {
+            tl: { col: 0, row: 0 },
+            ext: { width: 200, height: 100 },
+          });
+
+          worksheet.mergeCells('E2:Q2');
+          worksheet.getCell('E2').value = _this.dataSource.Title;
+          worksheet.getCell('E2:Q2').font = {bold: true, size: 24};
+          
+          let cellRange =  await exportDataGrid({
+            component: _this.tenantDataGrid.instance,
+            worksheet,
+            topLeftCell: { row: 7, column: 1 },
+            autoFilterEnabled: false,
+            customizeCell({ gridCell, excelCell }) {
+              if(gridCell.rowType == 'header'){
+                excelCell.font = { size: 12 };
+                excelCell.alignment = { horizontal: 'center'};
+                if(gridCell.column.isBand) excelCell.font = { bold: true };
+                if(gridCell.column.isBand && excelCell.value == 'Total') excelCell.fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'cccccc'}};
+                if(gridCell.column.isBand && excelCell.value != 'Total' && gridCell.column.visibleIndex != 0) {
+                  excelCell.font = {color: {argb: 'ffffff'}, bold: true};
+                  excelCell.fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: '00b3e7'}};
+                }
+                if(gridCell.column.isBand && gridCell.column.visibleIndex == 0) {
+                }
+              } else {
+                excelCell.font = {color: {argb: '000000'}};
+                excelCell.font = { size: 11 };
+                if(gridCell.data.ItemName == _this.reportType + ' Recovery') {
+                  excelCell.fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'ececec'}};
+                }
+                if(gridCell.column['index'] == 1) {
+                  excelCell.font = { bold: true };
+                }
+              }
+            }
+          })
+
+          let footerRowIndex = cellRange.to.row;
+
+          cellRange =  await exportDataGrid({
+            component: _this.bulkMeterDataGrid.instance,
+            worksheet,
+            topLeftCell: { row: footerRowIndex + 4, column: 1 },
+            autoFilterEnabled: false,
+            customizeCell({ gridCell, excelCell }) {
+              if(gridCell.rowType == 'header'){
+                excelCell.font = { size: 12 };
+                excelCell.alignment = { horizontal: 'center'};
+                if(gridCell.column.isBand && excelCell.value == 'Total') {
+                  excelCell.fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'cccccc'}};
+                }
+                if(gridCell.column.isBand && excelCell.value != 'Total' && gridCell.column.visibleIndex != 0) {
+                  excelCell.font = {color: {argb: 'ffffff'}};
+                  excelCell.fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: '00b3e7'}};
+                }
+                if(gridCell.column['index'] == 0) { excelCell.font = { bold: true }; }
+                if(gridCell.column.isBand && gridCell.column.visibleIndex == 0) {
+                }
+              } else {
+                excelCell.font = {color: {argb: '000000'}};
+                excelCell.font = { size: 11 };
+                if(gridCell.data.ItemName == '') {
+                  excelCell.fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'ececec'}};
+                }
+                if(gridCell.column['index'] == 0) {
+                  excelCell.font = { bold: true };
+                }
+              }
+            }
+          })
+
+          footerRowIndex = cellRange.to.row;
+
+          cellRange =  await exportDataGrid({
+            component: _this.councilDataGrid.instance,
+            worksheet,
+            topLeftCell: { row: footerRowIndex + 4, column: 1 },
+            autoFilterEnabled: false,
+            customizeCell({ gridCell, excelCell }) {
+              if(gridCell.rowType == 'header'){
+                excelCell.font = { size: 12 };
+                excelCell.alignment = { horizontal: 'center'};
+                if(gridCell.column.isBand && excelCell.value == 'Total') excelCell.fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'cccccc'}};
+                if(gridCell.column.isBand && excelCell.value != 'Total' && gridCell.column.visibleIndex != 0) {
+                  excelCell.font = {color: {argb: 'ffffff'}};
+                  excelCell.fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: '00b3e7'}};
+                }
+                if(gridCell.column['index'] == 0) { excelCell.font = { bold: true }; }
+                if(gridCell.column.isBand && gridCell.column.visibleIndex == 0) {
+                }
+              } else {
+                excelCell.font = {color: {argb: '000000'}};
+                excelCell.font = { size: 11 };
+                if(gridCell.data.ItemName == '') {
+                  excelCell.fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'ececec'}};
+                }
+                if(gridCell.column['index'] == 0) {
+                  excelCell.font = { bold: true };
+                }
+              }
+            }
+          })
+
+          workbook.xlsx.writeBuffer().then((buffer) => {
+            saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'BRR Multiple Months.xlsx');
+          });
+        }
+        img.src = URL.createObjectURL(blob);
+      }
+    };
+    xhr.send();
+    //
+
+  }
+
+  exportPdf(){
     let pdfWidth = (this.reportService.BuildingRecoveryParams.Utility == 'Electricity' || this.reportService.BuildingRecoveryParams.Utility == 'Diesel' ? 165 : 140 ) * (this.periodList.length + 2);
     const pdfDoc = new jsPDF('landscape', 'px', [800, pdfWidth]);
     var logoUrl = '/assets/images/logo/logo.png';

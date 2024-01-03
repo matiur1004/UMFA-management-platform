@@ -2,12 +2,14 @@
 using ClientPortal.Data.Repositories;
 using ClientPortal.Helpers;
 using ClientPortal.Models.RequestModels;
+using ClientPortal.Models.ResponseModels;
+using ServiceStack;
 
 namespace ClientPortal.Services
 {
     public interface IScadaRequestService
     {
-        public Task<List<ScadaRequestHeader>> GetScadaRequestHeadersAsync();
+        public Task<List<ScadaRequestHeaderResponse>> GetScadaRequestHeadersAsync();
         public Task<ScadaRequestHeader> GetScadaRequestHeaderAsync(int id);
         public Task<ScadaRequestHeader> UpdateScadaRequestHeaderAsync(ScadaRequestHeaderUpdateRequest scadaRequestHeader);
         public Task<ScadaRequestHeader> AddScadaRequestHeaderAsync(ScadaRequestHeaderRequest scadaRequestHeader);
@@ -44,9 +46,9 @@ namespace ClientPortal.Services
             return await _scadaRequestHeaderRepo.GetAsync(id, nameof(ScadaRequestHeader.Id), x => x.ScadaRequestDetails);
         }
 
-        public async Task<List<ScadaRequestHeader>> GetScadaRequestHeadersAsync()
+        public async Task<List<ScadaRequestHeaderResponse>> GetScadaRequestHeadersAsync()
         {
-            return await _scadaRequestHeaderRepo.GetAllAsync(x => x.ScadaRequestDetails);
+            return (await _scadaRequestHeaderRepo.GetAllAsync(x => x.ScadaRequestDetails)).Select(x => new ScadaRequestHeaderResponse(x)).ToList();
         }
 
         public async Task<ScadaRequestHeader> UpdateScadaRequestHeaderAsync(ScadaRequestHeaderUpdateRequest scadaRequestHeader)
@@ -77,7 +79,7 @@ namespace ClientPortal.Services
         }
         public async Task<ScadaRequestHeader> GetOrCreateScadaRequestHeaderDefaultAsync(int jobType, DateTime now)
         {
-            var header = await GetScadaRequestHeaderByJobTypeAndDescriptionAsync(jobType, "Default for new meters");
+            var header = await GetScadaRequestHeaderByJobTypeAndDescriptionAsync(jobType, $"Default for new meter {((jobType == 1) ? "Profiles" : "Readings")}");
 
             if (header is null)
             {
@@ -90,7 +92,7 @@ namespace ClientPortal.Services
                     LastRunDTM = null,
                     CurrentRunDTM = null,
                     JobType = jobType,
-                    Description = "Deafult for new meters",
+                    Description = $"Default for new meter {((jobType == 1) ? "Profiles" : "Readings")}",
                     Interval = 0,
                 });
             }
@@ -116,7 +118,7 @@ namespace ClientPortal.Services
                     Active = true,
                     LastRunDTM = null,
                     CurrentRunDTM = null,
-                    UpdateFrequency = meter.SupplyType.Equals("Water") ? 120 : 720,
+                    UpdateFrequency = meter.SupplyTypeId.Equals(4) ? 120 : 720,
                     LastDataDate = DateOperations.FirstDayOfPreviousMonth(now)
                 });
             }
@@ -137,7 +139,7 @@ namespace ClientPortal.Services
                     Active = true,
                     LastRunDTM = null,
                     CurrentRunDTM = null,
-                    UpdateFrequency = meter.SupplyType.Equals("Water") ? 120 : 720,
+                    UpdateFrequency = meter.SupplyTypeId.Equals(4) ? 120 : 720,
                     LastDataDate = DateOperations.FirstDayOfPreviousMonth(now)
                 });
             }
