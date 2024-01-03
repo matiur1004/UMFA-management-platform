@@ -268,7 +268,7 @@ namespace ClientPortal.Controllers
             }
         }
 
-        [HttpPost("ClientFeedbackReports/")]
+        [HttpPost("ClientFeedbackReports")]
         public async Task<ActionResult<ClientFeedbackReportRequest>> CreateClientFeedbackReportRequest([FromBody] UmfaMultiClientDumpRequest request, [FromQuery] bool overwrite = false)
         {
             try
@@ -290,6 +290,28 @@ namespace ClientPortal.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e, "Could finish feedback report request");
+                return Problem(e.Message);
+            }
+        }
+
+        [HttpGet("ClientFeedbackReports")]
+        public async Task<ActionResult<List<ClientFeedbackReportRequest>>> GetClientFeedbackReportsRequest([FromQuery, Required] int clientId)
+        {
+            try
+            {
+                var reportRequests = await _reportsService.GetClientFeedbackReportsRequestAsync(clientId);
+
+                if (reportRequests is null)
+                {
+                    _logger.LogError($"Could not retrieve client feedback report requests for clientId {clientId}");
+                    return Problem($"Could not retrieve client feedback report requests for clientId {clientId}");
+                }
+
+                return reportRequests;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, $"Could not retrieve client feedback report requests for clientId {clientId}");
                 return Problem(e.Message);
             }
         }

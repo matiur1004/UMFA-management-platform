@@ -103,8 +103,10 @@ namespace ClientPortal.Services
                 BuildingIds = request.BuildingIds,
                 SPeriod = request.SPeriod,
                 EPeriod = request.EPeriod,
+                ClientId = request.ClientId,
                 CreatedDTM = DateTime.Now,
                 LastUpdateDTM = DateTime.Now,
+                Active = true,
                 Status = 1,
                 StatusMessage = "Requested",
             });
