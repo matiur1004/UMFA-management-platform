@@ -858,6 +858,9 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
         if(this.tabsList[index]['type'] == 'TenantDetailDashboard'){
             this._dbService.setTitle('Main Dashboard');
         }
+        if(this.tabsList[index]['type'] == 'SmartBuildingDashboard'){
+            this._dbService.setTitle('Main Dashboard');
+        }
         if( this.tabsList[index]['type'] == 'TenantSlipDashboard' || 
             this.tabsList[index]['type'] == 'TenantSlipDetail' || 
             this.tabsList[index]['type'] == 'TenantSlipDownloads' ||

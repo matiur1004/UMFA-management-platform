@@ -78,6 +78,8 @@ export class SmartBuildingDetailComponent implements OnInit {
   isElectricityLoading: boolean = false;
   isWaterLoading: boolean = false;
 
+  indication: string = "";
+
   public electricityConsumptionBarChartOptions: Partial<ChartOptions>;
   public waterConsumptionBarChartOptions: Partial<ChartOptions>;
 
@@ -249,6 +251,10 @@ export class SmartBuildingDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this._service.setTitle('Smart Services Dashboard');
+    this._service.smartBuildingDetails$.subscribe((data: any) => {
+      this.indication = data.PartnerName.replace(" - ", " ") + " - " + data.BuildingName;
+    });
     this._service.smartBuildingElectricity$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((res) => {
@@ -347,19 +353,21 @@ export class SmartBuildingDetailComponent implements OnInit {
       this.electricityConsumptionBarChartOptions.xaxis.labels.rotateAlways = false;
 
       if(this.periodOfElectricity['periodType'] == PeriodType.Month) {
+        let period = this.periodOfElectricity;
+        period['startDate'] = period['startDate'].replace(" GMT", "");
+        period['endDate'] = period['endDate'].replace(" GMT", "");
         this.electricityConsumptionBarChartOptions.xaxis.categories = [];
-        for (let i = moment(this.periodOfElectricity['startDate']).toDate().getDate(); i <= moment(this.periodOfElectricity['endDate']).subtract(1, 'day').toDate().getDate(); i++) {
-          let day = moment(this.periodOfElectricity['startDate']).add(i - 1, 'days').toDate().getDay();
+        for (let i = moment(period['startDate']).toDate().getDate(); i <= moment(period['endDate']).toDate().getDate(); i++) {
+          let day = moment(period['startDate']).add(i - 1, 'days').toDate().getDay();
           this.electricityConsumptionBarChartOptions.xaxis.categories.push([i.toString(), this.weeksAbbr[day]]);
-        }
-        
+        }        
         this.electricityConsumptionBarChartOptions.series = [];
         this.electricityLocations.forEach(locationName => {
           let result = {name: locationName, data: []};
-          this.electricityConsumptionBarChartOptions.xaxis.categories.forEach(val => result['data'].push(0));
-          
+          this.electricityConsumptionBarChartOptions.xaxis.categories.forEach(val => result['data'].push(0));          
           let filteredByLocation = this.electricityDetail['Consumptions'].filter(obj => obj['SupplyToLocationName'] == locationName);
           filteredByLocation.forEach(item => {
+            console.log(item);
             result['data'][item['Day'] - 1] = item['Energy'];
           })
           this.electricityConsumptionBarChartOptions.series.push(result);
@@ -435,12 +443,16 @@ export class SmartBuildingDetailComponent implements OnInit {
       this.waterConsumptionBarChartOptions.xaxis.labels.rotate = 0;
       this.waterConsumptionBarChartOptions.xaxis.labels.rotateAlways = false;
       if(this.periodOfWater['periodType'] == PeriodType.Month) {
+        let period = this.periodOfWater;
+        period['startDate'] = period['startDate'].replace(" GMT", "");
+        period['endDate'] = period['endDate'].replace(" GMT", "");
+        console.log(period)
         this.waterConsumptionBarChartOptions.xaxis.categories = [];
-        for (let i = moment(this.periodOfWater['startDate']).toDate().getDate(); i <= moment(this.periodOfWater['endDate']).subtract(1, 'day').toDate().getDate(); i++) {
-          let day = moment(this.periodOfWater['startDate']).add(i - 1, 'days').toDate().getDay();
+        for (let i = moment(period['startDate']).toDate().getDate(); i <= moment(period['endDate']).toDate().getDate(); i++) {
+          let day = moment(period['startDate']).add(i - 1, 'days').toDate().getDay();
           this.waterConsumptionBarChartOptions.xaxis.categories.push([i.toString(), this.weeksAbbr[day]]);
         }
-
+        console.log(this.waterConsumptionBarChartOptions.xaxis.categories);
         this.waterConsumptionBarChartOptions.series = [];
         this.waterLocations.forEach(locationName => {
           let result = {name: locationName, data: []};
