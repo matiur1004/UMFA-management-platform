@@ -21,8 +21,9 @@ namespace ClientPortal.Controllers
         private readonly IArchivesService _archivesService;
         private readonly IReportsService _reportsService;
         private readonly IFeedbackReportsQueueService _feedbackReportsQueueService;
+        private readonly IClientFeedbackReportQueueService _clientFeedbackReportQueueService;
 
-        public ReportsController(ILogger<ReportsController> logger, IUmfaService umfaReportService, IArchivesQueueService queueService, IArchivesService archivesServices, IReportsService reportsService, IFeedbackReportsQueueService feedbackReportsQueueService) 
+        public ReportsController(ILogger<ReportsController> logger, IUmfaService umfaReportService, IArchivesQueueService queueService, IArchivesService archivesServices, IReportsService reportsService, IFeedbackReportsQueueService feedbackReportsQueueService, IClientFeedbackReportQueueService clientFeedbackReportQueueService) 
         {
             _logger = logger;
             _umfaService = umfaReportService;
@@ -30,6 +31,7 @@ namespace ClientPortal.Controllers
             _archivesService = archivesServices;
             _reportsService = reportsService;
             _feedbackReportsQueueService = feedbackReportsQueueService;
+            _clientFeedbackReportQueueService = clientFeedbackReportQueueService;
         }
 
         [HttpGet("UtilityRecoveryReport")]
@@ -262,6 +264,54 @@ namespace ClientPortal.Controllers
             catch (Exception e)
             {
                 _logger.LogError(e, $"Could not retrieve feedback report requests for buildingId {buildingId}");
+                return Problem(e.Message);
+            }
+        }
+
+        [HttpPost("ClientFeedbackReports")]
+        public async Task<ActionResult<ClientFeedbackReportRequest>> CreateClientFeedbackReportRequest([FromBody] UmfaMultiClientDumpRequest request, [FromQuery] bool overwrite = false)
+        {
+            try
+            {
+                var reportRequest = await _reportsService.AddClientFeedbackReportRequestAsync(request);
+
+                if (reportRequest is null)
+                {
+                    _logger.LogError($"Could not create request for buildingId: {request.BuildingIds} periods: {request.SPeriod} : {request.EPeriod}");
+                    return Problem("Something went wrong");
+                }
+
+                _logger.LogInformation("Sending client feedback report queue message");
+
+                await _clientFeedbackReportQueueService.AddMessageToQueueAsync(reportRequest.Id.ToString());
+
+                return reportRequest;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Could finish feedback report request");
+                return Problem(e.Message);
+            }
+        }
+
+        [HttpGet("ClientFeedbackReports")]
+        public async Task<ActionResult<List<ClientFeedbackReportRequest>>> GetClientFeedbackReportsRequest([FromQuery, Required] int clientId)
+        {
+            try
+            {
+                var reportRequests = await _reportsService.GetClientFeedbackReportsRequestAsync(clientId);
+
+                if (reportRequests is null)
+                {
+                    _logger.LogError($"Could not retrieve client feedback report requests for clientId {clientId}");
+                    return Problem($"Could not retrieve client feedback report requests for clientId {clientId}");
+                }
+
+                return reportRequests;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, $"Could not retrieve client feedback report requests for clientId {clientId}");
                 return Problem(e.Message);
             }
         }

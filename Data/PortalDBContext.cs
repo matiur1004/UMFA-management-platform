@@ -78,6 +78,7 @@ namespace ClientPortal.Data
         public DbSet<ArchiveRequestDetail> ArchiveRequestDetails { get; set; }
         public DbSet<ArchivedReport> ArchivedReports { get; set; }
         public DbSet<FeedbackReportRequest> FeedbackReportRequests { get; set; }
+        public DbSet<ClientFeedbackReportRequest> ClientFeedbackReportRequests { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //not mapped entities

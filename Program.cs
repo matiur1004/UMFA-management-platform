@@ -59,6 +59,7 @@ IConfiguration? configuration = builder.Configuration;
    
     services.Configure<ArchivesQueueSettings>(builder.Configuration.GetSection("ArchivesQueueSettings"));
     services.Configure<FeedbackReportQueueSettings>(builder.Configuration.GetSection("FeedbackReportQueueSettings"));
+    services.Configure<ClientFeedbackReportQueueSettings>(builder.Configuration.GetSection("ClientFeedbackReportQueueSettings"));
 
     services.Configure<UmfaApiSettings>(builder.Configuration.GetSection(nameof(UmfaApiSettings)));
 
@@ -152,6 +153,7 @@ IConfiguration? configuration = builder.Configuration;
     services.AddScoped<IArchivesService, ArchivesService>();
     services.AddScoped<IReportsService, ReportsService>();
     services.AddSingleton<IFeedbackReportsQueueService, FeedbackReportsQueueService>();
+    services.AddSingleton<IClientFeedbackReportQueueService, ClientFeedbackReportQueueService>();
     services.AddScoped<ISmartServicesService, SmartServicesService>();
 
 
@@ -171,6 +173,7 @@ IConfiguration? configuration = builder.Configuration;
     services.AddScoped<IArchiveRequestHeaderRepository, ArchiveRequestHeaderRepository>();
     services.AddScoped<IArchivedReportsRepository, ArchivedReportsRepository>();
     services.AddScoped<IFeedbackReportRequestRepository, FeedbackReportRequestRepository>();
+    services.AddScoped<IClientFeedbackReportRequestRepository, ClientFeedbackReportRequestRepository>();
 }
 
 var app = builder.Build();
