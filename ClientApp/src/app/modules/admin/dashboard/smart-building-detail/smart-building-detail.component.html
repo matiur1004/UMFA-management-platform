@@ -1,5 +1,8 @@
 <div class="flex smart-services-dashboard-detail flex-col gap-y-4">
     <div class="flex gap-x-3">
+        <h1 class="font-mediumbold indication-font">{{indication}}</h1>
+    </div>
+    <div class="flex gap-x-3">
         <div class="flex w-1/2">
             <app-period-criteria [type]="'Electricity'"  (dateRangeChangedEvent)="onShowElectricityDetail($event)"></app-period-criteria>
         </div>
@@ -118,7 +121,7 @@
                     <dxo-scroll-bar [visible]="true"></dxo-scroll-bar>
                     <dxo-zoom-and-pan argumentAxis="both"></dxo-zoom-and-pan>
                     <dxo-loading-indicator [enabled]="true"></dxo-loading-indicator>
-                    <dxo-legend verticalAlignment="bottom" horizontalAlignment="center" zIndex="6000"></dxo-legend>
+                    <dxo-legend verticalAlignment="bottom" horizontalAlignment="center" zIndex="6000" itemTextPosition="right"></dxo-legend>
                     <div *dxTemplate="let info of 'content'" class="state-tooltip"style="margin-left: -18px; margin-right: -18px;">
                         <div class="flex flex-col items-center" style="color: #212121;">
                             <div class="py-1.5 px-3 w-full mb-1" style="background-color: #EDEFF1;">
@@ -158,7 +161,7 @@
                     <dxo-scroll-bar [visible]="true"></dxo-scroll-bar>
                     <dxo-zoom-and-pan argumentAxis="both"></dxo-zoom-and-pan>
                     <dxo-loading-indicator [enabled]="true"></dxo-loading-indicator>
-                    <dxo-legend verticalAlignment="bottom" horizontalAlignment="center" zIndex="6000"></dxo-legend>
+                    <dxo-legend verticalAlignment="bottom" horizontalAlignment="center" zIndex="6000" itemTextPosition="right"></dxo-legend>
                     <div *dxTemplate="let info of 'content'" class="state-tooltip"style="margin-left: -18px; margin-right: -18px;">
                         <div class="flex flex-col items-center" style="color: #212121;">
                             <div class="py-1.5 px-3 w-full mb-1" style="background-color: #EDEFF1;">
@@ -184,6 +187,12 @@
         <div class="flex bg-card flex-col pt-2 pb-4 rounded-md gap-y-3 w-1/2 relative">
             <span class="text-xl font-mediumbold px-4">Power Factor at Peak</span>
             <ng-container *ngIf="!isElectricityLoading; else loadingTemplate">
+                <div class="absolute right-2 flex font-mediumbold text-xl gap-x-3 mr-4">
+                    <div class="flex flex-col">
+                        <span>Power Factor</span>
+                        <span>{{electricityPowerFactor | number : '1.0-2'}}</span>
+                    </div>
+                </div>
                 <dx-circular-gauge id="gauge" [value]="electricityPowerFactor" class="w-2/3 mx-auto">
                     <dxo-scale [startValue]="0.7" [endValue]="1.00" [tickInterval]="0.05">
                         <dxo-label [indentFromTick]="20">
@@ -203,9 +212,9 @@
                     </dxo-tooltip>
                     <dxo-geometry [startAngle]="180" [endAngle]="0" > </dxo-geometry>
                 </dx-circular-gauge>
-                <div class="flex justify-center absolute w-full bottom-4">
+                <!-- <div class="flex justify-center absolute w-full bottom-4">
                     <span class="text-xl font-mediumbold">{{electricityPowerFactor | number : '1.0-2'}}</span>
-                </div>
+                </div> -->
             </ng-container>       
             <ng-template #loadingTemplate>
                 <div class="flex justify-center items-center min-h-40 h-full">
@@ -217,7 +226,7 @@
         <div class="flex bg-card flex-col pt-2 pb-4 rounded-md gap-y-3 w-1/2 relative">
             <span class="text-xl font-mediumbold px-4">Average vs Max Flow</span>
             <ng-container *ngIf="!isWaterLoading; else loadingTemplate">
-                <div class="absolute right-2 flex font-mediumbold text-xl gap-x-3">
+                <div class="absolute right-2 flex font-mediumbold text-xl gap-x-3 mr-4">
                     <div class="flex flex-col">
                         <span>Average</span>
                         <span>{{averageValue | number : '1.0-2'}}</span>
@@ -247,7 +256,7 @@
                     </dxo-tooltip>
                     <dxo-geometry [startAngle]="180" [endAngle]="0"> </dxo-geometry>
                 </dx-circular-gauge>
-                <div class="flex justify-center absolute w-full bottom-4 items-center gap-x-5">
+                <div class="flex justify-center absolute w-full bottom-2 items-center gap-x-5">
                     <div class="flex items-center gap-x-3">
                         <div class="legend-item average"></div>
                         <span class="text-md">Average</span>
