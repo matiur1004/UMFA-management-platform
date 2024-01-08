@@ -94,6 +94,8 @@ namespace ClientPortal.Services
         public Task<UmfaScadaConfig?> GetScadaConfigAsync(UmfaScadaConfigRequest request);
 
         public Task<List<UmfaMultiClientDump>> GetMultiClientDumpsAsync(UmfaMultiClientDumpRequest request);
+        
+        public Task<List<UmfaUserClientPartnerBuildingEntry>> GetClientPartnerBuildingsForUserAsync(UmfaUserIdRequest request);
     }
 
 
@@ -564,6 +566,13 @@ namespace ClientPortal.Services
             var response = await GetAsync($"reports/clientfeedbackreport", request);
 
             return JsonSerializer.Deserialize<List<UmfaMultiClientDump>>(response);
+        }
+
+        public async Task<List<UmfaUserClientPartnerBuildingEntry>> GetClientPartnerBuildingsForUserAsync(UmfaUserIdRequest request)
+        {
+            var response = await GetAsync($"reports/client-buildings", request);
+
+            return JsonSerializer.Deserialize<List<UmfaUserClientPartnerBuildingEntry>>(response);
         }
     }
 }

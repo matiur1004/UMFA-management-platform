@@ -315,5 +315,19 @@ namespace ClientPortal.Controllers
                 return Problem(e.Message);
             }
         }
+
+        [HttpGet("client-buildings")]
+        public async Task<ActionResult<List<UmfaUserClientPartnerBuildingEntry>>> GetClientPartnerBuildingsForUser([FromQuery, Required] int umfaUserId)
+        {
+            try
+            {
+                return await _umfaService.GetClientPartnerBuildingsForUserAsync(new UmfaUserIdRequest { UserId = umfaUserId});
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, $"Could not retrieve clientbuildings for user {umfaUserId}");
+                return Problem(e.Message);
+            }
+        }
     }
 }
