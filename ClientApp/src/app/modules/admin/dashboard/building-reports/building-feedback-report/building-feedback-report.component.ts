@@ -7,11 +7,11 @@ import { DatePipe } from '@angular/common';
 import { DXReportService } from '@shared/services';
 
 @Component({
-  selector: 'app-client-feedback-report',
-  templateUrl: './client-feedback-report.component.html',
-  styleUrls: ['./client-feedback-report.component.scss']
+  selector: 'app-building-feedback-report',
+  templateUrl: './building-feedback-report.component.html',
+  styleUrls: ['./building-feedback-report.component.scss']
 })
-export class ClientFeedbackReportComponent implements OnInit {
+export class BuildingFeedbackReportComponent implements OnInit {
 
   @Input() buildingId;
   
@@ -42,7 +42,7 @@ export class ClientFeedbackReportComponent implements OnInit {
   ngOnInit(): void {
     this.dashboardService.getClientFeedbackReports(this.buildingId).subscribe();
     this.reportService.loadPeriods(this.buildingId);
-    this.dashboardService.clientFeedbackReports$
+    this.dashboardService.buildingFeedbackReports$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((res) => {
         if(res) this.dataSource = res;

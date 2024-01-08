@@ -52,7 +52,9 @@ export class DashboardService {
   private _tenantReadingsDetails: BehaviorSubject<any> = new BehaviorSubject(null);
 
   private _reportsArchives: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _buildingFeedbackReports: BehaviorSubject<any> = new BehaviorSubject(null);
   private _clientFeedbackReports: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _clientFeedbackReportsDetails: BehaviorSubject<any> = new BehaviorSubject(null);
   private _showTenantBillingDetails: BehaviorSubject<any> = new BehaviorSubject(null);
   private _billingDetailsForTenant: BehaviorSubject<any> = new BehaviorSubject(null);
 
@@ -272,8 +274,16 @@ export class DashboardService {
     return this._triggeredAlarmDetailPage.asObservable();
   }
   
+  get buildingFeedbackReports$(): Observable<any>{
+    return this._buildingFeedbackReports.asObservable();
+  }
+
   get clientFeedbackReports$(): Observable<any>{
     return this._clientFeedbackReports.asObservable();
+  }
+
+  get clientFeedbackReportsDetails$(): Observable<any>{
+    return this._clientFeedbackReportsDetails.asObservable();
   }
 
   get showTenantBillingDetails$(): Observable<any>{
@@ -633,7 +643,7 @@ export class DashboardService {
       .pipe(
         catchError(err => this.catchAuthErrors(err)),
         tap(res => {
-          this._clientFeedbackReports.next(res);
+          this._buildingFeedbackReports.next(res);
           //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
         })
       );
@@ -858,7 +868,7 @@ export class DashboardService {
   }
 
   destroyClientFeedbackReports() {
-    this._clientFeedbackReports.next(null);
+    this._buildingFeedbackReports.next(null);
   }
 
   showTenantBillingDetail(data) {
@@ -875,6 +885,10 @@ export class DashboardService {
 
   showSmartBuildingDetails(data) {
     this._smartBuildingDetails.next(data);
+  }
+
+  showClientFeedbackReports() {
+    this._clientFeedbackReports.next(true);
   }
 
   destroySmartBuilding() {

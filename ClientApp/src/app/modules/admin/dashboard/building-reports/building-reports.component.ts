@@ -18,7 +18,7 @@ export class BuildingReportsComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.reportType) {
-      if(this.reportType == 'Client Feedback Report') {
+      if(this.reportType == 'Building Feedback') {
 
       } else {
         this.reportService.dxReportList$.subscribe(reportList => {
