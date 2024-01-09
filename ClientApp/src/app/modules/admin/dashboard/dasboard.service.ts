@@ -81,6 +81,8 @@ export class DashboardService {
   private _buildingAlarmsPage: BehaviorSubject<boolean> = new BehaviorSubject(false);
   private _buildingAlarms: BehaviorSubject<any> = new BehaviorSubject(null);
 
+  private _clientBuildings: BehaviorSubject<any> = new BehaviorSubject(null);
+
   constructor(
     private router: Router, 
     private http: HttpClient,
@@ -310,6 +312,10 @@ export class DashboardService {
     return this._smartBuildingWater.asObservable();
   }
 
+  get clientBuildings$(): Observable<any>{
+    return this._clientBuildings.asObservable();
+  }
+
   getStats(userId) {
     const url = `${CONFIG.apiURL}${CONFIG.dashboardStats}/${userId}`;
     return this.http.get<any>(url, { withCredentials: true })
@@ -471,11 +477,12 @@ export class DashboardService {
   }
 
   getClientBuildingList() {
-    const url = `${CONFIG.apiURL}/Reports/client-buildings?UmfaUserId=${this._userService.userValue.UmfaId}`;
+    const url = `${CONFIG.apiURL}/Reports/client-buildings?umfaUserId=${this._userService.userValue.UmfaId}`;
     return this.http.get<any>(url, { withCredentials: true })
       .pipe(
         catchError(err => this.catchAuthErrors(err)),
         tap(bl => {
+          this._clientBuildings.next(bl);
           //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
         })
       );
