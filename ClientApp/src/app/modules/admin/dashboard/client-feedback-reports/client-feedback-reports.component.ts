@@ -33,6 +33,7 @@ export class ClientFeedbackReportsComponent implements OnInit {
   selectedRows: any;
   checkBoxesMode: string
   isSelected: boolean = false;
+  clientFeedbackReports$: any;
   calendarOption: any= {
     maxZoomLevel: 'year', 
     minZoomLevel: 'century', 
@@ -82,7 +83,7 @@ export class ClientFeedbackReportsComponent implements OnInit {
       });
   }
 
-  valueChanged($event, value) {
+  valueChanged($event) {
 
   }
 
@@ -105,6 +106,10 @@ export class ClientFeedbackReportsComponent implements OnInit {
   }
 
   report() {
+
+  }
+
+  onDownload() {
 
   }
 
