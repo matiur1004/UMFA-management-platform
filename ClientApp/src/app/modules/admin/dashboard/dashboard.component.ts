@@ -775,15 +775,17 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result) => {
                 if(result) {
-                    let newTab: IHomeTab = {
-                        id: 0,
-                        title: `Client Feedback Reports`,
-                        type: 'ClientFeedbackReports'
-                    };
-                    this.tabsList.push(newTab);
-                    this.selectedTab = this.tabsList.length;
-                    
-                    this._cdr.markForCheck();
+                    this._dbService.getClientBuildingList().subscribe(() => {
+                        let newTab: IHomeTab = {
+                            id: 0,
+                            title: `Client Feedback Reports`,
+                            type: 'ClientFeedbackReports'
+                        };
+                        this.tabsList.push(newTab);
+                        this.selectedTab = this.tabsList.length;
+                        
+                        this._cdr.markForCheck();
+                    })
                 }
             })
         //Wip
