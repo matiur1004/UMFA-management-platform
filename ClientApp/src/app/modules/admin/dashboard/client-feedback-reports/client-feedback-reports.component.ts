@@ -1,5 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DashboardService } from '../dasboard.service';
+import { NotificationService } from '@shared/services';
+import { AllowedPageSizes } from 'app/core/helpers';
+import themes from 'devextreme/ui/themes';
+import { of, from, Observable } from 'rxjs' 
+import { DxDataGridComponent } from 'devextreme-angular';
 @Component({
   selector: 'app-client-feedback-reports',
   templateUrl: './client-feedback-reports.component.html',
@@ -7,9 +13,83 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ClientFeedbackReportsComponent implements OnInit {
 
-  constructor() { }
+  @ViewChild('grid') dataGrid: DxDataGridComponent;
+  clientList$: any
+  clientBuildings$ = of([
+  { ClientId: "68", ClientName: "Moolean Group of Componies", PartnerName:"UMFA-JWE", BuildingId:"1639", BuildingName:"DYKOR/GEAR", BuildingActive:"0" },
+  { ClientId: "68", ClientName: "Moolean Group of Componies", PartnerName:"UMFA-JWE", BuildingId:"1639", BuildingName:"DYKOR/GEAR", BuildingActive:"0" },
+  { ClientId: "68", ClientName: "Moolean Group of Componies", PartnerName:"UMFA-JWE", BuildingId:"1639", BuildingName:"DYKOR/GEAR", BuildingActive:"0" },
+  { ClientId: "68", ClientName: "Moolean Group of Componies", PartnerName:"UMFA-JWE", BuildingId:"1639", BuildingName:"DYKOR/GEAR", BuildingActive:"0" },
+  { ClientId: "68", ClientName: "Moolean Group of Componies", PartnerName:"UMFA-JWE", BuildingId:"1639", BuildingName:"DYKOR/GEAR", BuildingActive:"0" },
+  { ClientId: "68", ClientName: "Moolean Group of Componies", PartnerName:"UMFA-JWE", BuildingId:"1639", BuildingName:"DYKOR/GEAR", BuildingActive:"0" }  
+])
+  form: FormGroup;
+  startDate: any;
+  endDate: any
+  currentFilter: any;
+  applyFilterTypes: any;
+  selectedRows: any;
+  checkBoxesMode: string
+  isSelected: boolean = false;
+  public readonly allowedPageSizes= AllowedPageSizes
+  constructor(
+    private _formBuilder: FormBuilder,
+    private _dbService: DashboardService,
+    private _notificationService: NotificationService
+  ) { 
+    this.applyFilterTypes = [{
+      key: 'auto',
+      name: 'Immediately',
+  }, {
+      key: 'onClick',
+      name: 'On Button Click',
+  }];
+  this.currentFilter = this.applyFilterTypes[0].key;
+  }
+
+  get isArchiveEnabled() {
+    if(!this.isSelected) return false;
+    return true;
+  }
 
   ngOnInit(): void {
+    this.checkBoxesMode = themes.current().startsWith('material') ? 'always' : 'onClick';
+    this.form = this._formBuilder.group({
+      Client: ['', [Validators.required]],
+      StartDate: [],
+      EndDate: [],
+    });
+    this._dbService.getClientBuildingList().subscribe((clients) => {
+      console.log(clients);
+      this.clientList$ = clients;
+    })
+  }
+
+  valueChanged($event, value) {
+
+  }
+
+  dateValueChanged($event,type) {
+    if(type === 'START') {
+      console.log(this.startDate, typeof(this.startDate))
+      if(this.endDate && this.startDate?.getTime() > this.endDate.getTime()) {
+        this._notificationService.error('Start date must be prior to end date', 'Date Error');
+        this.startDate = null;
+      }
+    } else {
+      if(this.startDate && this.endDate?.getTime() < this.startDate.getTime()) {
+        this._notificationService.error('End date must be after the start date', 'Date Error');
+        this.endDate = null;
+      }
+    }
+  }
+
+  selectionChangedHandler() {
+    this.isSelected = this.dataGrid.instance.getSelectedRowsData().length > 0;
+  }
+
+  report() {
+
   }
 
 }

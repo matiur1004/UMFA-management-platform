@@ -1,3 +1,54 @@
 <div class="flex flex-col">
-    
+    <div class="flex w-full">
+        <!-- <div class="grid grid-cols-4 gap-2"> -->
+        <!-- <form [formGroup]="form" class="col-span-12"> -->
+        <div class="col-span-3">
+            <dx-select-box [items]="clientList$ | async" displayExpr="Name" valueExpr="ClientName" class="form-control"
+                label="Client" placeholder="Select Client" lableMode="static" id="client" name="client"
+                (onValueChanged)="valueChanged($event, 'Client')" [searchEnabled]="true" searchExpr="Name" name="client"
+                searchMode="contains" [searchTimeout]="400">
+            </dx-select-box>
+        </div>
+        <div class="col-span-3 ml-1">
+            <dx-date-box id="sDateId" class="form-control" placeholder="Date From" type="date" label="Start date"
+                labelMode="static" displayFormat="MMMM y" [(ngModel)]="startDate"
+                (onValueChanged)="dateValueChanged($event, 'START')" name="startDate"> </dx-date-box>
+        </div>
+        <div class="col-span-3 ml-1">
+            <dx-date-box id="sDateId" class="form-control" placeholder="Date To" type="date" label="End date"
+                [(ngModel)]="endDate" (onValueChanged)="dateValueChanged($event, 'END')" labelMode="static"
+                displayFormat="MMMM y" name="endDate">
+            </dx-date-box>
+        </div>
+        <div class="col-span-3 ml-4">
+            <button mat-raised-button color="primary" class="apply-btn dnm-btn dnm-btn-primary min-w-30"
+                (click)="report()" [disabled]="!isArchiveEnabled">Report</button>
+        </div>
+        <!-- </form> -->
+        <!-- </div> -->
+    </div>
+    <div class="flex w-full mt-2">
+
+    </div>
+    <div class="flex w-full mt-2">
+        <dx-data-grid #grid [dataSource]="clientBuildings$ | async" [showBorders]="true" class="grid-container" [hoverStateEnabled]="true"
+        (onSelectionChanged)="selectionChangedHandler()">
+            <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+            <dxo-filter-row [visible]="'true'"
+                [applyFilter]="currentFilter"></dxo-filter-row>
+            <dxo-paging [pageSize]="10"> </dxo-paging>
+            <dxo-pager [visible]="true" [allowedPageSizes]="allowedPageSizes" [displayMode]="'compact'"
+                [showPageSizeSelector]="true" [showInfo]="true" [showNavigationButtons]="true">
+            </dxo-pager>
+            <!-- <dxo-search-panel [visible]="true" [width]="200" placeholder="Search..."></dxo-search-panel> -->
+            <dxi-column dataField="Selected" caption="Select" dataType="boolean">
+                <dxo-selection mode="multiple" caption="" [selectAllMode]="'page'"
+                [showCheckBoxesMode]="checkBoxesMode"></dxo-selection>
+            </dxi-column>
+            <dxi-column caption="Client" dataField="ClientName" [width]="400"></dxi-column>
+            <dxi-column caption="Partner" dataField="PartnerName" [width]="120"></dxi-column>
+            <dxi-column caption="Building" dataField="BuildingName" [width]="400"></dxi-column>
+            <dxi-column caption="Active" dataField="BuildingActive" [width]="120"></dxi-column>
+        </dx-data-grid>
+    </div>
 </div>
