@@ -471,7 +471,18 @@ export class DashboardService {
   }
 
   getClientBuildingList() {
-    const url = `${CONFIG.apiURL}/Reports/client-buildings?UmfaUserId=${this._userService.userValue.UmfaId}`;
+    const url = `${CONFIG.apiURL}/Reports/client-buildings?UserId=${this._userService.userValue.UmfaId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(bl => {
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        })
+      );
+  }
+
+  getSpecificClientFeedbackReports(clientId) {
+    const url = `${CONFIG.apiURL}/Reports/ClientFeedbackReports?ClientId=${clientId}`;
     return this.http.get<any>(url, { withCredentials: true })
       .pipe(
         catchError(err => this.catchAuthErrors(err)),

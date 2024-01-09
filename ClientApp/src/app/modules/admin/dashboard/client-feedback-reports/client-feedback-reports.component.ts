@@ -31,6 +31,7 @@ export class ClientFeedbackReportsComponent implements OnInit {
   selectedRows: any;
   checkBoxesMode: string
   isSelected: boolean = false;
+  clientFeedbackReports$: any
   public readonly allowedPageSizes= AllowedPageSizes
   constructor(
     private _formBuilder: FormBuilder,
@@ -65,8 +66,10 @@ export class ClientFeedbackReportsComponent implements OnInit {
     })
   }
 
-  valueChanged($event, value) {
-
+  valueChanged($event) {
+    this._dbService.getSpecificClientFeedbackReports($event.target.value.ClientId).subscribe((feedbackReports) => {
+      this.clientFeedbackReports$ = feedbackReports;
+    })
   }
 
   dateValueChanged($event,type) {
@@ -90,6 +93,10 @@ export class ClientFeedbackReportsComponent implements OnInit {
 
   report() {
 
+  }
+
+  onDownload() {
+    
   }
 
 }

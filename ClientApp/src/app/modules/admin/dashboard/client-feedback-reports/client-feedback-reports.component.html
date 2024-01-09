@@ -5,7 +5,7 @@
         <div class="col-span-3">
             <dx-select-box [items]="clientList$ | async" displayExpr="Name" valueExpr="ClientName" class="form-control"
                 label="Client" placeholder="Select Client" lableMode="static" id="client" name="client"
-                (onValueChanged)="valueChanged($event, 'Client')" [searchEnabled]="true" searchExpr="Name" name="client"
+                (onValueChanged)="valueChanged($event)" [searchEnabled]="true" searchExpr="Name" name="client"
                 searchMode="contains" [searchTimeout]="400">
             </dx-select-box>
         </div>
@@ -28,7 +28,25 @@
         <!-- </div> -->
     </div>
     <div class="flex w-full mt-2">
-
+        <dx-data-grid #grid [dataSource]="clientFeedbackReports$ | async" [showBorders]="true" class="grid-container">
+            <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+            <dxo-paging [pageSize]="10"> </dxo-paging>
+            <dxo-pager [visible]="true" [allowedPageSizes]="allowedPageSizes" [displayMode]="'compact'"
+                [showPageSizeSelector]="true" [showInfo]="true" [showNavigationButtons]="true">
+            </dxo-pager>
+            <!-- <dxo-search-panel [visible]="true" [width]="200" placeholder="Search..."></dxo-search-panel> -->
+            <dxi-column dataField="CreatedDTM" caption="Create Date" [width]="200"></dxi-column>
+            <dxi-column dataField="SPeriod" caption="Start Period" [width]="300"></dxi-column>
+            <dxi-column dataField="EPeriod" caption="End Period" [width]="300"></dxi-column>
+            <dxi-column dataField="StatusMessage" caption="Status" [width]="200"></dxi-column>
+            <dxi-column type="buttons">
+                <dxi-button
+                    hint="Download"
+                    icon="download"
+                    [onClick]="onDownload"
+                ></dxi-button>
+            </dxi-column>
+        </dx-data-grid>
     </div>
     <div class="flex w-full mt-2">
         <dx-data-grid #grid [dataSource]="clientBuildings$ | async" [showBorders]="true" class="grid-container" [hoverStateEnabled]="true"
