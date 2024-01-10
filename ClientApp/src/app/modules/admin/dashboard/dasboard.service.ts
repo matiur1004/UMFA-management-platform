@@ -655,7 +655,7 @@ export class DashboardService {
       );
   }
   
-  getClientFeedbackReports(buildingId) {
+  getBuildingFeedbackReports(buildingId) {
     const url = `${CONFIG.apiURL}/Reports/FeedbackReports?BuildingId=${buildingId}`;
     return this.http.get<any>(url, { withCredentials: true })
       .pipe(
@@ -734,6 +734,28 @@ export class DashboardService {
         catchError(err => this.catchAuthErrors(err)),
         tap(res => {
           this._smartBuildingWater.next(res);
+        })
+      );
+  }
+
+  getClientFeedbackReports(clientId) {
+    const url = `/Reports/ClientFeedbackReports?ClientId=${clientId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(res => {
+          this._clientFeedbackReportsDetails.next(res);
+        })
+      );
+  }
+
+  createClientFeedbackReports(formData) {
+    const url = `/Reports/ClientFeedbackReports`;
+    return this.http.post<any>(url, formData, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(res => {
+          this._notificationService.message('Submitted successfully!');
         })
       );
   }

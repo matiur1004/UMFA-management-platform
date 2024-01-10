@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DashboardService } from '../dasboard.service';
 import { NotificationService } from '@shared/services';
@@ -6,6 +6,7 @@ import { AllowedPageSizes } from 'app/core/helpers';
 import themes from 'devextreme/ui/themes';
 import { of, from, Observable, takeUntil, Subject } from 'rxjs' 
 import { DxDataGridComponent } from 'devextreme-angular';
+import moment from 'moment';
 @Component({
   selector: 'app-client-feedback-reports',
   templateUrl: './client-feedback-reports.component.html',
@@ -13,18 +14,10 @@ import { DxDataGridComponent } from 'devextreme-angular';
 })
 export class ClientFeedbackReportsComponent implements OnInit {
 
-  @ViewChild('grid') dataGrid: DxDataGridComponent;
+  @ViewChild('clientBuildingGrid') clientBuildingGrid: DxDataGridComponent;
   clientBuildings: any
   clients: any;
 
-  clientBuildings$ = of([
-    { ClientId: "68", ClientName: "Moolean Group of Componies", PartnerName:"UMFA-JWE", BuildingId:"1639", BuildingName:"DYKOR/GEAR", BuildingActive:"0" },
-    { ClientId: "68", ClientName: "Moolean Group of Componies", PartnerName:"UMFA-JWE", BuildingId:"1639", BuildingName:"DYKOR/GEAR", BuildingActive:"0" },
-    { ClientId: "68", ClientName: "Moolean Group of Componies", PartnerName:"UMFA-JWE", BuildingId:"1639", BuildingName:"DYKOR/GEAR", BuildingActive:"0" },
-    { ClientId: "68", ClientName: "Moolean Group of Componies", PartnerName:"UMFA-JWE", BuildingId:"1639", BuildingName:"DYKOR/GEAR", BuildingActive:"0" },
-    { ClientId: "68", ClientName: "Moolean Group of Componies", PartnerName:"UMFA-JWE", BuildingId:"1639", BuildingName:"DYKOR/GEAR", BuildingActive:"0" },
-    { ClientId: "68", ClientName: "Moolean Group of Componies", PartnerName:"UMFA-JWE", BuildingId:"1639", BuildingName:"DYKOR/GEAR", BuildingActive:"0" }  
-  ])
   form: FormGroup;
   startDate: any;
   endDate: any
@@ -33,11 +26,15 @@ export class ClientFeedbackReportsComponent implements OnInit {
   selectedRows: any;
   checkBoxesMode: string
   isSelected: boolean = false;
-  clientFeedbackReports$: any;
+  clientFeedbackReports: any;
+
   calendarOption: any= {
     maxZoomLevel: 'year', 
     minZoomLevel: 'century', 
   }
+
+  clientId: number;
+
   public readonly allowedPageSizes= AllowedPageSizes
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -45,7 +42,8 @@ export class ClientFeedbackReportsComponent implements OnInit {
   constructor(
     private _formBuilder: FormBuilder,
     private _dbService: DashboardService,
-    private _notificationService: NotificationService
+    private _notificationService: NotificationService,
+    private _cdr: ChangeDetectorRef
   ) { 
     this.applyFilterTypes = [{
       key: 'auto',
@@ -59,6 +57,9 @@ export class ClientFeedbackReportsComponent implements OnInit {
 
   get isArchiveEnabled() {
     if(!this.isSelected) return false;
+    if(!this.clientId) return false;
+    if(!this.startDate) return false;
+    if(!this.endDate) return false;
     return true;
   }
 
@@ -81,10 +82,18 @@ export class ClientFeedbackReportsComponent implements OnInit {
           })
         }
       });
+
+    this._dbService.clientFeedbackReportsDetails$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((res) => {
+        if(res) {
+          this.clientFeedbackReports = res;
+        }        
+      })
   }
 
-  valueChanged($event) {
-
+  valueChanged(event) {
+    if(this.clientId) this._dbService.getClientFeedbackReports(this.clientId).subscribe();
   }
 
   dateValueChanged($event,type) {
@@ -102,15 +111,39 @@ export class ClientFeedbackReportsComponent implements OnInit {
   }
 
   selectionChangedHandler() {
-    this.isSelected = this.dataGrid.instance.getSelectedRowsData().length > 0;
+    this.isSelected = this.clientBuildingGrid.instance.getSelectedRowsData().length > 0;
   }
 
   report() {
+    let buildingIds = this.clientBuildingGrid.instance.getSelectedRowsData().map(obj => obj['BuildingId']).join(', ');
+    let formData = {
+      BuildingIds: buildingIds,
+      ClientId: this.clientId,
+      SPeriod: moment(this.startDate).format('MMMM YYYY'),
+      EPeriod: moment(this.endDate).format('MMMM YYYY')
+    }
+    this._dbService.createClientFeedbackReports(formData)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((res) => {
+        this.clientFeedbackReports.push(res);
+        this.clientId = null;
+        this.startDate = null;
+        this.endDate = null;
+        this._cdr.detectChanges();
 
+        this.clientBuildingGrid.instance.deselectAll();
+      })
+    
   }
 
-  onDownload() {
-
+  onCustomizeDateTime(cellInfo) {
+    if(!cellInfo.value) return 'N/A';
+    return moment(new Date(cellInfo.value)).format('DD/MM/YYYY HH:mm:ss');
+  }
+  
+  onDownload(e) {
+    e.event.preventDefault();
+    if(e.row.data.Url) window.open(e.row.data.Url, "_blank");
   }
 
   ngOnDestroy(): void

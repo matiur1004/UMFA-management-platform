@@ -1,9 +1,8 @@
 <div class="flex flex-col">
     <div class="flex w-full gap-x-1">
-        <!-- <div class="grid grid-cols-4 gap-2"> -->
-        <!-- <form [formGroup]="form" class="col-span-12"> -->
-        <div class="col-span-3">
-            <dx-select-box [items]="clients" displayExpr="ClientName" valueExpr="ClientId" class="form-control"
+        <div class="grid grid-cols-12 gap-2">
+        <div class="col-span-4">
+            <dx-select-box [items]="clients" displayExpr="ClientName" valueExpr="ClientId" class="form-control" [(ngModel)]="clientId"
                 label="Client" placeholder="Select Client" lableMode="static" id="client" name="client"
                 (onValueChanged)="valueChanged($event)" [searchEnabled]="true" searchExpr="Name" name="client"
                 searchMode="contains" [searchTimeout]="400">
@@ -15,31 +14,30 @@
                 (onValueChanged)="dateValueChanged($event, 'START')" name="startDate"> </dx-date-box>
         </div>
         <div class="col-span-3">
-            <dx-date-box id="sDateId" class="form-control" placeholder="Date To" type="date" label="End date"
+            <dx-date-box id="sDateId" class="form-control" placeholder="Date To" type="date" label="End date"  [calendarOptions]="{maxZoomLevel: 'year'}"
                 [(ngModel)]="endDate" (onValueChanged)="dateValueChanged($event, 'END')" labelMode="static"
                 displayFormat="MMMM y" name="endDate">
             </dx-date-box>
         </div>
-        <div class="col-span-3 ml-4">
+        <div class="col-span-2 ml-4">
             <button mat-raised-button color="primary" class="apply-btn dnm-btn dnm-btn-primary min-w-30"
-                (click)="report()" [disabled]="!isArchiveEnabled">Report</button>
+                (click)="report()" [disabled]="!isArchiveEnabled">Request Report</button>
         </div>
-        <!-- </form> -->
-        <!-- </div> -->
+        </div>
     </div>
     <div class="flex w-full mt-2">
-        <dx-data-grid #grid [dataSource]="clientFeedbackReports$ | async" [showBorders]="true" class="grid-container">
+        <dx-data-grid #grid [dataSource]="clientFeedbackReports" [showBorders]="true" class="grid-container">
             <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
             <dxo-paging [pageSize]="10"> </dxo-paging>
             <dxo-pager [visible]="true" [allowedPageSizes]="allowedPageSizes" [displayMode]="'compact'"
                 [showPageSizeSelector]="true" [showInfo]="true" [showNavigationButtons]="true">
             </dxo-pager>
             <!-- <dxo-search-panel [visible]="true" [width]="200" placeholder="Search..."></dxo-search-panel> -->
-            <dxi-column dataField="CreatedDTM" caption="Create Date" [width]="200"></dxi-column>
+            <dxi-column dataField="CreatedDTM" [customizeText]="onCustomizeDateTime" caption="Create Date" [width]="200"></dxi-column>
             <dxi-column dataField="SPeriod" caption="Start Period" [width]="300"></dxi-column>
             <dxi-column dataField="EPeriod" caption="End Period" [width]="300"></dxi-column>
             <dxi-column dataField="StatusMessage" caption="Status" [width]="200"></dxi-column>
-            <dxi-column type="buttons">
+            <dxi-column type="buttons" caption="URL">
                 <dxi-button
                     hint="Download"
                     icon="download"
@@ -49,7 +47,7 @@
         </dx-data-grid>
     </div>
     <div class="flex w-full mt-2">
-        <dx-data-grid #grid [dataSource]="clientBuildings" [showBorders]="true" class="grid-container" [hoverStateEnabled]="true" (onSelectionChanged)="selectionChangedHandler()">
+        <dx-data-grid #clientBuildingGrid [dataSource]="clientBuildings" [showBorders]="true" class="grid-container" [hoverStateEnabled]="true" (onSelectionChanged)="selectionChangedHandler()">
             <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
             <dxo-filter-row [visible]="'true'"
                 [applyFilter]="currentFilter"></dxo-filter-row>
@@ -58,14 +56,19 @@
                 [showPageSizeSelector]="true" [showInfo]="true" [showNavigationButtons]="true">
             </dxo-pager>
             <!-- <dxo-search-panel [visible]="true" [width]="200" placeholder="Search..."></dxo-search-panel> -->
-            <dxi-column dataField="Selected" caption="Select" dataType="boolean">
+            <dxo-selection
+                [selectAllMode]="'page'"
+                [showCheckBoxesMode]="checkBoxesMode"
+                mode="multiple"
+            ></dxo-selection>
+            <!-- <dxi-column dataField="Selected" caption="" dataType="boolean">
                 <dxo-selection mode="multiple" caption="" [selectAllMode]="'page'"
                 [showCheckBoxesMode]="checkBoxesMode"></dxo-selection>
-            </dxi-column>
-            <dxi-column caption="Client" dataField="ClientName" [width]="400"></dxi-column>
-            <dxi-column caption="Partner" dataField="PartnerName" [width]="120"></dxi-column>
-            <dxi-column caption="Building" dataField="BuildingName" [width]="400"></dxi-column>
-            <dxi-column caption="Active" dataField="BuildingActive" [width]="120"></dxi-column>
+            </dxi-column> -->
+            <dxi-column caption="Client" dataField="ClientName" [minWidth]="160"></dxi-column>
+            <dxi-column caption="Partner" dataField="PartnerName" [minWidth]="100"></dxi-column>
+            <dxi-column caption="Building" dataField="BuildingName" [minWidth]="200"></dxi-column>
+            <dxi-column caption="Active" dataField="BuildingActive" [width]="100"></dxi-column>
         </dx-data-grid>
     </div>
 </div>

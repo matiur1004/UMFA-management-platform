@@ -40,7 +40,7 @@ export class BuildingFeedbackReportComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dashboardService.getClientFeedbackReports(this.buildingId).subscribe();
+    this.dashboardService.getBuildingFeedbackReports(this.buildingId).subscribe();
     this.reportService.loadPeriods(this.buildingId);
     this.dashboardService.buildingFeedbackReports$
       .pipe(takeUntil(this._unsubscribeAll))
