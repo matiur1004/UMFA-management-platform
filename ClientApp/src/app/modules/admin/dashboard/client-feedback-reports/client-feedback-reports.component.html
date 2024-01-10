@@ -26,7 +26,7 @@
         </div>
     </div>
     <div class="flex w-full mt-2">
-        <dx-data-grid #grid [dataSource]="clientFeedbackReports" [showBorders]="true" class="grid-container">
+        <dx-data-grid #clientFeedbackGrid [dataSource]="clientFeedbackReports" [showBorders]="true" class="grid-container">
             <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
             <dxo-paging [pageSize]="10"> </dxo-paging>
             <dxo-pager [visible]="true" [allowedPageSizes]="allowedPageSizes" [displayMode]="'compact'"
@@ -47,7 +47,10 @@
         </dx-data-grid>
     </div>
     <div class="flex w-full mt-2">
-        <dx-data-grid #clientBuildingGrid [dataSource]="clientBuildings" [showBorders]="true" class="grid-container" [hoverStateEnabled]="true" (onSelectionChanged)="selectionChangedHandler()">
+        <span *ngIf="isSelected">{{selectedNumber}} selected</span>
+    </div>
+    <div class="flex w-full mt-2">
+        <dx-data-grid #clientBuildingGrid [dataSource]="filteredClientBuildings" [showBorders]="true" class="grid-container" [hoverStateEnabled]="true" (onSelectionChanged)="selectionChangedHandler()">
             <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
             <dxo-filter-row [visible]="'true'"
                 [applyFilter]="currentFilter"></dxo-filter-row>
@@ -57,7 +60,7 @@
             </dxo-pager>
             <!-- <dxo-search-panel [visible]="true" [width]="200" placeholder="Search..."></dxo-search-panel> -->
             <dxo-selection
-                [selectAllMode]="'page'"
+                [selectAllMode]="'allPages'"
                 [showCheckBoxesMode]="checkBoxesMode"
                 mode="multiple"
             ></dxo-selection>

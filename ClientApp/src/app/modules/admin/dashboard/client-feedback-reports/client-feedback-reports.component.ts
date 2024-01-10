@@ -15,7 +15,10 @@ import moment from 'moment';
 export class ClientFeedbackReportsComponent implements OnInit {
 
   @ViewChild('clientBuildingGrid') clientBuildingGrid: DxDataGridComponent;
+  @ViewChild('clientFeedbackGrid') clientFeedbackGrid: DxDataGridComponent;
+  
   clientBuildings: any
+  filteredClientBuildings: any
   clients: any;
 
   form: FormGroup;
@@ -27,6 +30,7 @@ export class ClientFeedbackReportsComponent implements OnInit {
   checkBoxesMode: string
   isSelected: boolean = false;
   clientFeedbackReports: any;
+  selectedNumber: any;
 
   calendarOption: any= {
     maxZoomLevel: 'year', 
@@ -93,7 +97,11 @@ export class ClientFeedbackReportsComponent implements OnInit {
   }
 
   valueChanged(event) {
-    if(this.clientId) this._dbService.getClientFeedbackReports(this.clientId).subscribe();
+    if(this.clientId) 
+      {
+        this.filteredClientBuildings = this.clientBuildings.filter(building => building.ClientId === this.clientId);
+        this._dbService.getClientFeedbackReports(this.clientId).subscribe();
+      }
   }
 
   dateValueChanged($event,type) {
@@ -112,6 +120,7 @@ export class ClientFeedbackReportsComponent implements OnInit {
 
   selectionChangedHandler() {
     this.isSelected = this.clientBuildingGrid.instance.getSelectedRowsData().length > 0;
+    this.selectedNumber = this.clientBuildingGrid.instance.getSelectedRowsData().length;
   }
 
   report() {
@@ -149,6 +158,13 @@ export class ClientFeedbackReportsComponent implements OnInit {
   ngOnDestroy(): void
   {
     // Unsubscribe from all subscriptions
+    this.clientBuildingGrid.instance.clearFilter();
+    this.clientId = null;
+    this.startDate = null;
+    this.endDate = null;
+    this.clientBuildings = [];
+    this.clientFeedbackGrid.instance.refresh();
+    this.clientFeedbackGrid.instance.pageIndex(0);
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }
