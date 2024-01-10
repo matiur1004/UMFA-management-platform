@@ -907,8 +907,18 @@ export class DashboardService {
     this._triggeredAlarmsList.next(null);
   }
 
-  destroyClientFeedbackReports() {
+  destroyBuildingFeedbackReports() {
     this._buildingFeedbackReports.next(null);
+  }
+
+  destroyClientFeedbackReports() {
+    this._clientFeedbackReports.next(null);
+  }
+
+  destroyClientFeedbackReportsDetail() {
+    this._clientBuildings.next(null);
+    this._clientFeedbackReportsDetails.next(null);
+    
   }
 
   showTenantBillingDetail(data) {

@@ -895,7 +895,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             this.tabsList[index]['type'] == 'TenantBilling' ||
             this.tabsList[index]['type'] == 'TenantDashboardOccupations' ||
             this.tabsList[index]['type'] == 'TenantDashboardReadings' || 
-            this.tabsList[index]['type'] == 'SmartBuildingDashboard') {
+            this.tabsList[index]['type'] == 'SmartBuildingDashboard' ||
+            this.tabsList[index]['type'] == 'ClientFeedbackReports') {
             this.selectedTab = index;    
         }
         if(this.tabsList[index]['type'] == 'ShopList') {
@@ -931,6 +932,10 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
         if(this.tabsList[index]['type'] == 'DashboardBuildingAlarms') {
             this._dbService.destroyBuildingAlarms();
         }
+        if(this.tabsList[index]['type'] == 'ClientFeedbackReports') {
+            this._dbService.destroyClientFeedbackReportsDetail();
+        }
+        
         this.tabsList.splice(index, 1);
         this._cdr.markForCheck();
     }

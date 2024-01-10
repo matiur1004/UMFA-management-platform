@@ -158,13 +158,7 @@ export class ClientFeedbackReportsComponent implements OnInit {
   ngOnDestroy(): void
   {
     // Unsubscribe from all subscriptions
-    this.clientBuildingGrid.instance.clearFilter();
-    this.clientId = null;
-    this.startDate = null;
-    this.endDate = null;
-    this.clientBuildings = [];
-    this.clientFeedbackGrid.instance.refresh();
-    this.clientFeedbackGrid.instance.pageIndex(0);
+    this._dbService.destroyClientFeedbackReports();
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }

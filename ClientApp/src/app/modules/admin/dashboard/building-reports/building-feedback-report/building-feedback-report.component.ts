@@ -79,7 +79,7 @@ export class BuildingFeedbackReportComponent implements OnInit {
       // Unsubscribe from all subscriptions
       this._unsubscribeAll.next(null);
       this._unsubscribeAll.complete();
-      this.dashboardService.destroyClientFeedbackReports();
+      this.dashboardService.destroyBuildingFeedbackReports();
   }
 
 }
