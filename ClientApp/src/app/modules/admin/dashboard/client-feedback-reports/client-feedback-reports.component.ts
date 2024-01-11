@@ -81,6 +81,7 @@ export class ClientFeedbackReportsComponent implements OnInit {
         if(res) {
           this.clients = [];
           this.clientBuildings = res;
+          this.clients.push({ClientId: 0, ClientName: "All"})
           this.clientBuildings.forEach(item => {
             if(!this.clients.find(obj => obj['ClientId'] == item['ClientId'])) this.clients.push({ClientId: item['ClientId'], ClientName: item['ClientName']});
           })
@@ -92,16 +93,22 @@ export class ClientFeedbackReportsComponent implements OnInit {
       .subscribe((res) => {
         if(res) {
           this.clientFeedbackReports = res;
+          this._cdr.detectChanges();
         }        
       })
   }
 
   valueChanged(event) {
-    if(this.clientId) 
-      {
-        this.filteredClientBuildings = this.clientBuildings.filter(building => building.ClientId === this.clientId);
+    // if(this.clientId) 
+    //   {
         this._dbService.getClientFeedbackReports(this.clientId).subscribe();
-      }
+        if(this.clientId === 0) {
+          this.filteredClientBuildings = this.clientBuildings;
+          return;
+        }
+        this.filteredClientBuildings = this.clientBuildings.filter(building => building.ClientId === this.clientId);
+        
+      // }
   }
 
   dateValueChanged($event,type) {

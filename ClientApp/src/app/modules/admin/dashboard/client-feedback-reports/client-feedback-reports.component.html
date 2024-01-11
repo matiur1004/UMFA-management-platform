@@ -4,7 +4,7 @@
         <div class="col-span-4">
             <dx-select-box [items]="clients" displayExpr="ClientName" valueExpr="ClientId" class="form-control" [(ngModel)]="clientId"
                 label="Client" placeholder="Select Client" lableMode="static" id="client" name="client"
-                (onValueChanged)="valueChanged($event)" [searchEnabled]="true" searchExpr="Name" name="client"
+                (onValueChanged)="valueChanged($event)" [searchEnabled]="true" searchExpr="ClientName" name="client"
                 searchMode="contains" [searchTimeout]="400">
             </dx-select-box>
         </div>
