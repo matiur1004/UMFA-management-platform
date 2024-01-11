@@ -99,8 +99,7 @@ export class ClientFeedbackReportsComponent implements OnInit {
   }
 
   valueChanged(event) {
-    // if(this.clientId) 
-    //   {
+    if(this.clientId != undefined){
         this._dbService.getClientFeedbackReports(this.clientId).subscribe();
         if(this.clientId === 0) {
           this.filteredClientBuildings = this.clientBuildings;
@@ -108,7 +107,7 @@ export class ClientFeedbackReportsComponent implements OnInit {
         }
         this.filteredClientBuildings = this.clientBuildings.filter(building => building.ClientId === this.clientId);
         
-      // }
+    }
   }
 
   dateValueChanged($event,type) {
