@@ -61,7 +61,7 @@ export class ClientFeedbackReportsComponent implements OnInit {
 
   get isArchiveEnabled() {
     if(!this.isSelected) return false;
-    if(!this.clientId) return false;
+    if(this.clientId == undefined) return false;
     if(!this.startDate) return false;
     if(!this.endDate) return false;
     return true;
