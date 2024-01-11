@@ -20,7 +20,7 @@
                     <ng-template matTabContent>
                         <div *ngIf="stats$ | async as stats; else loading">
                             <ng-container *ngIf="!isTenant; else tenantTemplate">
-                                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-9 xl:grid-cols-9 gap-10 w-full">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-11 xl:grid-cols-11 gap-10 w-full">
                                     <div class="bg-gradient-to-r from-blue-500 to-blue-800 col-span-1 lg:col-span-2 flex flex-col flex-auto p-6 rounded-2xl overflow-hidden card cursor-pointer card-zoom-in" (click)="onDetail(tabType.Buildings)">
                                         <div class="flex items-start justify-between text-white h-full">
                                             <div class="flex flex-col w-full gap-y-1 justify-between h-full">
@@ -91,6 +91,23 @@
                                                     <div class="flex w-full justify-between leading-4">
                                                         <span class="text-md">Recovered</span>
                                                         <span class="text-lg font-semibold">{{stats.TenantStats.RecoverablePercentage | percent : '1.0-2'}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="reports-bg col-span-1 lg:col-span-2 flex flex-col flex-auto p-6 rounded-2xl overflow-hidden card cursor-pointer card-zoom-in" *ngIf="!isTenant">
+                                        <div class="flex items-start justify-between text-white h-full cursor-pointer">
+                                            <div class="flex flex-col w-full gap-y-1 justify-between h-full">
+                                                <div class="flex w-full justify-between">
+                                                    <div class="flex flex-col">
+                                                        <div class="text-2xl font-medium tracking-normal leading-8 truncate">Reports</div>
+                                                    </div>
+                                                    <mat-icon class="icon-size-10 text-white" [svgIcon]="'heroicons_solid:marketing'"></mat-icon>
+                                                </div>
+                                                <div class="flex flex-col gap-y-1">
+                                                    <div class="flex flex-col w-full gap-y-1">
+                                                        <a class="underline text-hover" href="javascript: void(0);" (click)="onReports()">Client Feedback Report</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -928,7 +945,17 @@
                                 </ng-template>
                                 <ng-template matTabContent>
                                     <app-smart-building-detail [buildingId]="tabItem.dataSource.buildingId"></app-smart-building-detail>
-                                    <!-- <app-meter-alarm-detail [meter]="tabItem.dataSource"></app-meter-alarm-detail> -->
+                                </ng-template>
+                            </mat-tab>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'ClientFeedbackReports'">
+                            <mat-tab class="home-tab" label="{{tabItem.title}}">
+                                <ng-template mat-tab-label>
+                                    {{tabItem.title}}
+                                    <mat-icon class="icon-size-4 hover:text-red-500 ml-2" [svgIcon]="'feather:x'" (click)="removeTab(i)"></mat-icon>
+                                </ng-template>
+                                <ng-template matTabContent>
+                                    <app-client-feedback-reports></app-client-feedback-reports>
                                 </ng-template>
                             </mat-tab>
                         </ng-container>

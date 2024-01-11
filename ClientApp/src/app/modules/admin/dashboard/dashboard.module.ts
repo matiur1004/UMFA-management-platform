@@ -13,7 +13,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'app/shared/shared.module';
 import { DashboardComponent } from './dashboard.component';
 import { dashboardRoutes } from './dashboard.routing';
-import { DxButtonModule, DxChartModule, DxCircularGaugeModule, DxDataGridModule, DxDropDownBoxModule, DxPivotGridModule, DxSelectBoxModule, DxSparklineModule, DxTextBoxModule, DxTreeMapModule, DxTreeViewModule } from 'devextreme-angular';
+import { DxButtonModule, DxDateBoxModule, DxChartModule, DxCircularGaugeModule, DxDataGridModule, DxDropDownBoxModule, DxPivotGridModule, DxSelectBoxModule, DxSparklineModule, DxTextBoxModule, DxTreeMapModule, DxTreeViewModule } from 'devextreme-angular';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { BuildingDetailComponent } from './building-detail/building-detail.component';
 import { CommonModule, DecimalPipe } from '@angular/common';
@@ -34,7 +34,6 @@ import { ShopAssignedMetersComponent } from './shop-assigned-meters/shop-assigne
 import { ShopReadingsComponent } from './shop-readings/shop-readings.component';
 import { TriggeredAlarmsComponent } from './triggered-alarms/triggered-alarms.component';
 import { MeterAlarmDetailModule } from '../admin/meter-alarm-detail/meter-alarm-detail.module';
-import { ClientFeedbackReportComponent } from './building-reports/client-feedback-report/client-feedback-report.component';
 import { TenantsListComponent } from './tenants-list/tenants-list.component';
 import { TenantDetailComponent } from './tenant-detail/tenant-detail.component';
 import { TenantBillingDetailComponent } from './tenant-billing-detail/tenant-billing-detail.component';
@@ -47,7 +46,10 @@ import { BuildingAlarmsComponent } from './building-alarms/building-alarms.compo
 import { SmartBuildingsComponent } from './smart-buildings/smart-buildings.component';
 import { SmartBuildingDetailComponent } from './smart-building-detail/smart-building-detail.component';
 import { PeriodCriteriaComponent } from './smart-building-detail/period-criteria/period-criteria.component';
-import { MatProgressSpinner, MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { BuildingFeedbackReportComponent } from './building-reports/building-feedback-report/building-feedback-report.component';
+import { ClientFeedbackReportsComponent } from './client-feedback-reports/client-feedback-reports.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [
@@ -64,7 +66,7 @@ import { MatProgressSpinner, MatProgressSpinnerModule } from '@angular/material/
         ShopAssignedMetersComponent,
         ShopReadingsComponent,
         TriggeredAlarmsComponent,
-        ClientFeedbackReportComponent,
+        BuildingFeedbackReportComponent,
         TenantsListComponent,
         TenantDetailComponent,
         TenantBillingDetailComponent,
@@ -76,10 +78,12 @@ import { MatProgressSpinner, MatProgressSpinnerModule } from '@angular/material/
         BuildingAlarmsComponent,
         SmartBuildingsComponent,
         SmartBuildingDetailComponent,
-        PeriodCriteriaComponent
+        PeriodCriteriaComponent,
+        ClientFeedbackReportsComponent
     ],
     imports     : [
         CommonModule,
+        FormsModule,
         RouterModule.forChild(dashboardRoutes),
         MatButtonModule,
         MatButtonToggleModule,
@@ -102,6 +106,7 @@ import { MatProgressSpinner, MatProgressSpinnerModule } from '@angular/material/
         MeterAlarmDetailModule,
         DxDataGridModule,
         DxChartModule,
+        DxDateBoxModule,
         DxDropDownBoxModule,
         DxTreeViewModule,
         DxButtonModule,

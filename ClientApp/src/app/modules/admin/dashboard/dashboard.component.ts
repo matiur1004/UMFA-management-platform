@@ -770,6 +770,24 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                     this._cdr.markForCheck();
                 }
             });
+
+        this._dbService.clientFeedbackReports$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if(result) {
+                    this._dbService.getClientBuildingList().subscribe(() => {
+                        let newTab: IHomeTab = {
+                            id: 0,
+                            title: `Client Feedback Reports`,
+                            type: 'ClientFeedbackReports'
+                        };
+                        this.tabsList.push(newTab);
+                        this.selectedTab = this.tabsList.length;
+                        
+                        this._cdr.markForCheck();
+                    })
+                }
+            })
         //Wip
     }
 
@@ -877,7 +895,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             this.tabsList[index]['type'] == 'TenantBilling' ||
             this.tabsList[index]['type'] == 'TenantDashboardOccupations' ||
             this.tabsList[index]['type'] == 'TenantDashboardReadings' || 
-            this.tabsList[index]['type'] == 'SmartBuildingDashboard') {
+            this.tabsList[index]['type'] == 'SmartBuildingDashboard' ||
+            this.tabsList[index]['type'] == 'ClientFeedbackReports') {
             this.selectedTab = index;    
         }
         if(this.tabsList[index]['type'] == 'ShopList') {
@@ -913,6 +932,10 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
         if(this.tabsList[index]['type'] == 'DashboardBuildingAlarms') {
             this._dbService.destroyBuildingAlarms();
         }
+        if(this.tabsList[index]['type'] == 'ClientFeedbackReports') {
+            this._dbService.destroyClientFeedbackReportsDetail();
+        }
+        
         this.tabsList.splice(index, 1);
         this._cdr.markForCheck();
     }
@@ -980,6 +1003,10 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
 
     onDetailAlarms() {
         this._dbService.showBuildingAlarms();
+    }
+
+    onReports() {
+        this._dbService.showClientFeedbackReports();
     }
 
     ngAfterViewInit() {

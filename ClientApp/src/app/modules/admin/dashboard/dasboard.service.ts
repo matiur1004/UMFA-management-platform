@@ -52,7 +52,9 @@ export class DashboardService {
   private _tenantReadingsDetails: BehaviorSubject<any> = new BehaviorSubject(null);
 
   private _reportsArchives: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _buildingFeedbackReports: BehaviorSubject<any> = new BehaviorSubject(null);
   private _clientFeedbackReports: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _clientFeedbackReportsDetails: BehaviorSubject<any> = new BehaviorSubject(null);
   private _showTenantBillingDetails: BehaviorSubject<any> = new BehaviorSubject(null);
   private _billingDetailsForTenant: BehaviorSubject<any> = new BehaviorSubject(null);
 
@@ -78,6 +80,8 @@ export class DashboardService {
   
   private _buildingAlarmsPage: BehaviorSubject<boolean> = new BehaviorSubject(false);
   private _buildingAlarms: BehaviorSubject<any> = new BehaviorSubject(null);
+
+  private _clientBuildings: BehaviorSubject<any> = new BehaviorSubject(null);
 
   constructor(
     private router: Router, 
@@ -272,8 +276,16 @@ export class DashboardService {
     return this._triggeredAlarmDetailPage.asObservable();
   }
   
+  get buildingFeedbackReports$(): Observable<any>{
+    return this._buildingFeedbackReports.asObservable();
+  }
+
   get clientFeedbackReports$(): Observable<any>{
     return this._clientFeedbackReports.asObservable();
+  }
+
+  get clientFeedbackReportsDetails$(): Observable<any>{
+    return this._clientFeedbackReportsDetails.asObservable();
   }
 
   get showTenantBillingDetails$(): Observable<any>{
@@ -298,6 +310,10 @@ export class DashboardService {
 
   get smartBuildingWater$(): Observable<any>{
     return this._smartBuildingWater.asObservable();
+  }
+
+  get clientBuildings$(): Observable<any>{
+    return this._clientBuildings.asObservable();
   }
 
   getStats(userId) {
@@ -455,6 +471,18 @@ export class DashboardService {
       .pipe(
         catchError(err => this.catchAuthErrors(err)),
         tap(bl => {
+          //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
+        })
+      );
+  }
+
+  getClientBuildingList() {
+    const url = `${CONFIG.apiURL}/Reports/client-buildings?umfaUserId=${this._userService.userValue.UmfaId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(bl => {
+          this._clientBuildings.next(bl);
           //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
         })
       );
@@ -627,13 +655,13 @@ export class DashboardService {
       );
   }
   
-  getClientFeedbackReports(buildingId) {
+  getBuildingFeedbackReports(buildingId) {
     const url = `${CONFIG.apiURL}/Reports/FeedbackReports?BuildingId=${buildingId}`;
     return this.http.get<any>(url, { withCredentials: true })
       .pipe(
         catchError(err => this.catchAuthErrors(err)),
         tap(res => {
-          this._clientFeedbackReports.next(res);
+          this._buildingFeedbackReports.next(res);
           //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
         })
       );
@@ -706,6 +734,28 @@ export class DashboardService {
         catchError(err => this.catchAuthErrors(err)),
         tap(res => {
           this._smartBuildingWater.next(res);
+        })
+      );
+  }
+
+  getClientFeedbackReports(clientId) {
+    const url = `/Reports/ClientFeedbackReports?ClientId=${clientId}`;
+    return this.http.get<any>(url, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(res => {
+          this._clientFeedbackReportsDetails.next(res);
+        })
+      );
+  }
+
+  createClientFeedbackReports(formData) {
+    const url = `/Reports/ClientFeedbackReports`;
+    return this.http.post<any>(url, formData, { withCredentials: true })
+      .pipe(
+        catchError(err => this.catchAuthErrors(err)),
+        tap(res => {
+          this._notificationService.message('Submitted successfully!');
         })
       );
   }
@@ -857,8 +907,18 @@ export class DashboardService {
     this._triggeredAlarmsList.next(null);
   }
 
+  destroyBuildingFeedbackReports() {
+    this._buildingFeedbackReports.next(null);
+  }
+
   destroyClientFeedbackReports() {
     this._clientFeedbackReports.next(null);
+  }
+
+  destroyClientFeedbackReportsDetail() {
+    this._clientBuildings.next(null);
+    this._clientFeedbackReportsDetails.next(null);
+    
   }
 
   showTenantBillingDetail(data) {
@@ -875,6 +935,10 @@ export class DashboardService {
 
   showSmartBuildingDetails(data) {
     this._smartBuildingDetails.next(data);
+  }
+
+  showClientFeedbackReports() {
+    this._clientFeedbackReports.next(true);
   }
 
   destroySmartBuilding() {

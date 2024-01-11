@@ -116,7 +116,10 @@ namespace ClientPortal.Services
 
         public async Task<List<ClientFeedbackReportRequest>> GetClientFeedbackReportsRequestAsync(int clientId)
         {
-            return await _clientFeedbackReportRequestRepository.GetAllAsync(fbr => fbr.Active && fbr.ClientId.Equals(clientId));
+            if (clientId == 0)
+                return await _clientFeedbackReportRequestRepository.GetAllAsync(fbr => fbr.Active);
+            else
+                return await _clientFeedbackReportRequestRepository.GetAllAsync(fbr => fbr.Active && fbr.ClientId.Equals(clientId));
         }
 
         public async Task<ClientFeedbackReportRequest> GetClientFeedbackReportRequestAsync(int id)
