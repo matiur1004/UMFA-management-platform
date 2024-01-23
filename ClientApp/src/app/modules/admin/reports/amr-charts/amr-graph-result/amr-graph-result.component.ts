@@ -124,7 +124,7 @@ export class AmrGraphResultComponent implements OnInit, OnDestroy {
       if (ds) {
         var flowDate = pipe.transform(ds.Header.MaxFlowDate, "HH:mm on dd MMM yyyy");
         this.chartTitleWater = `Water Profile for Meter: ${ds.Header.Description} (${ds.Header.MeterNo})`;
-        this.chartSubTitleWater = `Usages for period: ${ds.Header.PeriodUsage.toFixed(2)}kL, Maximun flow: ${ds.Header.MaxFlow.toFixed(2)}kL at ${flowDate}`;
+        this.chartSubTitleWater = `Usages for period: ${ds.Header.PeriodUsage.toFixed(2)}kL, Maximum flow: ${ds.Header.MaxFlow.toFixed(2)}kL at ${flowDate}`;
       } else {
         this.chartTitleWater = 'Water Profile';
         this.chartSubTitleWater = '';
