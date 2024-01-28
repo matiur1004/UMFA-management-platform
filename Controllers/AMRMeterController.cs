@@ -69,6 +69,32 @@ namespace ClientPortal.Controllers
             }
         }
 
+        [HttpPut("meter/schedules")]
+        public async Task<ActionResult<ScadaRequestDetail>> MoveSchedule(MoveMeterScheduleRequest request)
+        {
+            try
+            {
+                _logger.LogInformation($"Get meter with id {request.MeterId} from database");
+
+                var updatedDetail = await _amrService.MoveMeterSchedule(request);
+                if (updatedDetail == null)
+                {
+                    
+                    return NotFound();
+                }
+
+                _logger.LogInformation($"Successfully update meter schedule: {request.MeterId}");
+                
+                return updatedDetail;
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError($"Something went wrong updating schedule for {request.MeterId}: {ex.Message}");
+                return Problem($"Something went wrong updating schedule for {request.MeterId}");
+            }
+        }
+
+
         [HttpGet("userMeters/{userId}")]
         public async Task<ActionResult<List<AMRMeterResponse>>> GetMetersForUser(int userId)
         {

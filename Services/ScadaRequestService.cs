@@ -22,6 +22,7 @@ namespace ClientPortal.Services
         public Task<ScadaRequestDetail> GetScadaRequestDetailAsync(int id);
         public Task<ScadaRequestDetail> GetScadaRequestDetailAsyncByJobTypeAndAmrMeterIdAsync(int jobType, int amrMeterId);
         public Task<ScadaRequestDetail> UpdateScadaRequestDetailAsync(ScadaRequestDetailUpdateRequest scadaRequestDetail);
+        public Task<ScadaRequestDetail> UpdateScadaRequestDetailAsync(ScadaRequestDetail scadaRequestDetail);
         public Task<ScadaRequestDetail> AddScadaRequestDetailAsync(ScadaRequestDetailRequest scadaRequestDetail);
         public Task<ScadaRequestDetail> RemoveScadaRequestDetailAsync(int id);
     }
@@ -164,6 +165,11 @@ namespace ClientPortal.Services
             detail.Map(scadaRequestDetail);
 
             return await _scadaRequestDetailRepo.UpdateAsync(detail);
+        }
+
+        public async Task<ScadaRequestDetail> UpdateScadaRequestDetailAsync(ScadaRequestDetail scadaRequestDetail)
+        {
+            return await _scadaRequestDetailRepo.UpdateAsync(scadaRequestDetail);
         }
 
         public async Task<ScadaRequestDetail> AddScadaRequestDetailAsync(ScadaRequestDetailRequest scadaRequestDetail)

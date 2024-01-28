@@ -1,4 +1,5 @@
-﻿using ClientPortal.Data.Repositories;
+﻿using ClientPortal.Data.Entities.PortalEntities;
+using ClientPortal.Data.Repositories;
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
 
@@ -12,6 +13,8 @@ namespace ClientPortal.Services
         Task<AMRMeterResponseList> GetAllMetersForUserChart(int userId, int chartId, bool isTenant = false);
         Task<AMRMeterResponse> EditMeterAsync(AMRMeterUpdateRequest meter);
         Task<List<UtilityResponse>> GetMakeModels();
+
+        Task<ScadaRequestDetail?> MoveMeterSchedule(MoveMeterScheduleRequest request);
     }
 
     public class AMRMeterService : IAMRMeterService
@@ -135,6 +138,17 @@ namespace ClientPortal.Services
                 _logger.LogError("Error while retrieving makes and models: {Message}", ex.Message);
                 throw new ApplicationException($"Error while retrieving makes and models: {ex.Message}");
             }
+        }
+
+        public async Task<ScadaRequestDetail?> MoveMeterSchedule(MoveMeterScheduleRequest request)
+        {
+            var detail = await _scadaRequestService.GetScadaRequestDetailAsyncByJobTypeAndAmrMeterIdAsync((int)request.JobType!, (int)request.MeterId!);
+
+            if (detail == null) return null;
+
+            detail.HeaderId = (int)request.NewScheduleId!;
+
+            return await _scadaRequestService.UpdateScadaRequestDetailAsync(detail);
         }
     }
 }
