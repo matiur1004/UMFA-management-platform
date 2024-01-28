@@ -18,11 +18,13 @@ namespace ClientPortal.Services
     {
         private readonly ILogger<AMRMeterService> _logger;
         private readonly IAMRMeterRepository _meterRepo;
+        private readonly IScadaRequestService _scadaRequestService;
 
-        public AMRMeterService(ILogger<AMRMeterService> logger, IAMRMeterRepository meterRepo)
+        public AMRMeterService(ILogger<AMRMeterService> logger, IAMRMeterRepository meterRepo, IScadaRequestService scadaRequestService)
         {
             _logger = logger;
             _meterRepo = meterRepo;
+            _scadaRequestService = scadaRequestService;
         }
 
         public async Task<AMRMeterResponse> EditMeterAsync(AMRMeterUpdateRequest updMeter)
@@ -103,9 +105,14 @@ namespace ClientPortal.Services
             _logger.LogInformation("Getting meter with id: {id}", id);
             try
             {
-                var result = await _meterRepo.GetMeterAsync(id);
-                if (result != null) return result;
-                else throw new Exception($"Meter for id {id} not found");
+                var meter = await _meterRepo.GetMeterAsync(id);
+                
+                if (meter is null) throw new Exception($"Meter for id {id} not found");
+
+                var detailProfile = await _scadaRequestService.GetScadaRequestDetailAsyncByJobTypeAndAmrMeterIdAsync(1, id);
+                var detailReading = await _scadaRequestService.GetScadaRequestDetailAsyncByJobTypeAndAmrMeterIdAsync(2, id);
+
+                return new AMRMeterResponse(meter, detailProfile, detailReading);
             }
             catch (Exception ex)
             {

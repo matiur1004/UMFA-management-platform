@@ -49,16 +49,16 @@ namespace ClientPortal.Controllers
         }
 
         [HttpGet("meter/{id}")]
-        public IActionResult GetMeter(int id)
+        public async Task<ActionResult<AMRMeterResponse>> GetMeter(int id)
         {
             try
             {
                 _logger.LogInformation($"Get meter with id {id} from database");
-                var response = _amrService.GetMeterAsync(id).Result;
+                var response = await _amrService.GetMeterAsync(id);
                 if (response != null)
                 {
                     _logger.LogInformation($"Successfully got meter: {response.Id}");
-                    return Ok(response);
+                    return response;
                 }
                 else throw new Exception($"Failed to get meter: {id}");
             }

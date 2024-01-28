@@ -182,7 +182,7 @@ namespace ClientPortal.Services
         
         public async Task<ScadaRequestDetail> GetScadaRequestDetailAsyncByJobTypeAndAmrMeterIdAsync(int jobType, int amrMeterId)
         {
-            return await _scadaRequestDetailRepo.GetAsync(x => x.AmrMeterId.Equals(amrMeterId) && x.Header.JobType.Equals(jobType), x => x.Header);
+            return await _scadaRequestDetailRepo.GetAsync(x => x.Active && x.AmrMeterId.Equals(amrMeterId) && x.Header.JobType.Equals(jobType), x => x.Header);
         }
 
         
