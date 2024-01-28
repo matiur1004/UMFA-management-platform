@@ -48,7 +48,7 @@ namespace ClientPortal.Services
 
         public async Task<List<ScadaRequestHeaderResponse>> GetScadaRequestHeadersAsync()
         {
-            return (await _scadaRequestHeaderRepo.GetAllAsync(x => x.ScadaRequestDetails)).Select(x => new ScadaRequestHeaderResponse(x)).ToList();
+            return (await _scadaRequestHeaderRepo.GetAllAsync(x => x.Active, x => x.ScadaRequestDetails)).Select(x => new ScadaRequestHeaderResponse(x)).ToList();
         }
 
         public async Task<ScadaRequestHeader> UpdateScadaRequestHeaderAsync(ScadaRequestHeaderUpdateRequest scadaRequestHeader)
