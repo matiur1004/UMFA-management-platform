@@ -47,7 +47,7 @@ namespace ClientPortal.Controllers
         }
 
         [HttpGet("getDemandProfile")]
-        public IActionResult GetDemandProfile([FromQuery] DemandQueryParameters p)
+        public ActionResult<DemandProfileResponse> GetDemandProfile([FromQuery] DemandQueryParameters p)
         {
             try
             {

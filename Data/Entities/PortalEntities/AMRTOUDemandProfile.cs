@@ -19,6 +19,12 @@ namespace ClientPortal.Data.Entities.PortalEntities
         public decimal PeriodUsage { get; set; }
         [Column(TypeName = "decimal(18, 4)")]
         public decimal DataPercentage { get; set; }
+        public double PeakUsage { get; set; }
+        public double StandardUsage { get; set; }
+        public double OffPeakUsage { get; set; }
+        public double PeakDemand { get; set; }
+        public double StandardDemand { get; set; }
+        public double OffPeakDemand { get; set; }
         public List<DemandProfile> Profile { get; set; }
     }
 
