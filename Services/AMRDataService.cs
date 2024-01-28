@@ -477,16 +477,7 @@ namespace ClientPortal.Services
             {
                 List<AmrJobToRun> jobs = new();
 
-                var headers = await _repo.GetJobsToRunAsync();
-
-                var headers2Proccess = new List<ScadaRequestHeader>();
-                int detailCnt = 0;
-                foreach(var header in headers)
-                {
-                    detailCnt = header.ScadaRequestDetails.Count;
-                    headers2Proccess.Add(header);
-                    //if (detailCnt >= maxDetailCount) break;
-                }
+                var headers2Proccess = (await _repo.GetJobsToRunAsync()).Where(h => h.ScadaRequestDetails.Count > 0).ToList();
 
                 if (headers2Proccess != null && headers2Proccess.Count > 0)
                 {
