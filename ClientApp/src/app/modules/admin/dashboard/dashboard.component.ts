@@ -682,7 +682,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((data) => {
                 if(data) {
-                    this._dbService.getBuildingAlarms()
+                    this._dbService.getBuildingAlarms(this._usrService.userValue.Id)
                         .pipe(takeUntil(this._unsubscribeAll))
                         .subscribe(result => {
                             let newTab: IHomeTab = {
