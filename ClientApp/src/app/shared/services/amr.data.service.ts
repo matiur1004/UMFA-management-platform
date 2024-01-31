@@ -55,6 +55,11 @@ export class AmrDataService {
     this.bsProfChart.next(show);
   }
 
+  private bsDemandDataSource: BehaviorSubject<IDemandProfileResponse>;
+  public obsDemandDataSource: Observable<IDemandProfileResponse>;
+  private bsWaterDataSource: BehaviorSubject<IWaterProfileResponse>;
+  public obsWaterDataSource: Observable<IWaterProfileResponse>;
+
   private bsSelectedChart: BehaviorSubject<IAmrChart>;
   public obsSelectedChart: Observable<IAmrChart>;
   private bsProfChart: BehaviorSubject<boolean>;
@@ -101,6 +106,11 @@ export class AmrDataService {
 
     this.bsMeterGraphProfile = new BehaviorSubject<any>(null);
     this.obsMeterGraphProfile$ = this.bsMeterGraphProfile.asObservable();
+
+    this.bsDemandDataSource = new BehaviorSubject<IDemandProfileResponse>(null);
+    this.obsDemandDataSource = this.bsDemandDataSource.asObservable();
+    this.bsWaterDataSource = new BehaviorSubject<IWaterProfileResponse>(null);
+    this.obsWaterDataSource = this.bsWaterDataSource.asObservable();
   }
 
   //common methods
@@ -130,6 +140,22 @@ export class AmrDataService {
   public get DemandProfileValue(): IDemandProfileResponse { return this.bsDemSubject.value; }
 
   public get TouHeaders(): ITouHeader[] { return this.bsTouHeaderSub.value; }
+
+  sendDemandDataSource(ds: IDemandProfileResponse) {
+    return this.bsDemandDataSource.next(ds);
+  }
+
+  getDemandDataSource() {
+    return this.obsDemandDataSource;
+  }
+
+  sendWaterDataSource(ds: IWaterProfileResponse) {
+    return this.bsWaterDataSource.next(ds);
+  }
+
+  getWaterDataSource() {
+    return this.obsWaterDataSource;
+  }
 
   getDemandProfile(meterId: number, sDate: Date, eDate: Date, touHeaderId: number) {
     this.bsDemSubject.next(null);
