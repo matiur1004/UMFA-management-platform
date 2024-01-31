@@ -1,8 +1,12 @@
 <div *ngIf="showReport; else hiddenDiv" style="overflow: visible !important; background-color: #f8f9fa;">
   <div *ngIf="!loading; else spinIt" style="overflow: visible !important; background-color: #f8f9fa;">
     <div *ngIf="ChartId == 1 && demandDataSource" style="width: 80vw; overflow: visible !important; background-color: #f8f9fa;">
+      <div class="flex flex-col justify-center w-full items-center mt-4">
+        <span class="text-2xl">{{chartTitleDemand}}</span>
+        <span class="">{{chartSubTitleDemand}}</span>
+        <span class="">{{chartSubSubTitleDemand}}</span>
+      </div>
       <dx-chart [dataSource]="demandDataSource.Detail" [customizePoint]="customizePoint" (onPointClick)="pointClick($event)">
-        <dxo-title [text]="chartTitleDemand" [subtitle]="chartSubTitleDemand"></dxo-title>
         <dxo-size [height]="500"></dxo-size>
         <dxi-series argumentField="ReadingDateString" valueField="Demand" type="bar" color="green" name="Demand(kVA)">
           <dxo-hover-style color="#0af5ed"></dxo-hover-style>
@@ -25,8 +29,12 @@
       </dx-chart>
     </div>
     <div *ngIf="ChartId == 2 && waterDataSource" style="height: 79vh; width: 80vw; overflow: visible !important; background-color: #f8f9fa;">
+      <div class="flex flex-col justify-center w-full items-center mt-4">
+        <span class="text-2xl">{{chartTitleWater}}</span>
+        <span class="">{{chartSubTitleWater}}</span>
+        <span class="">{{chartSubSubTitleDemand}}</span>
+      </div>
       <dx-chart [dataSource]="waterDataSource.Detail" [customizePoint]="customizePoint" (onPointClick)="pointClick($event)">
-        <dxo-title [text]="chartTitleWater" [subtitle]="chartSubTitleWater"></dxo-title>
         <dxo-size [height]="500"></dxo-size>
         <dxi-series argumentField="ReadingDateString" valueField="ActFlow" type="bar" color="blue" name="Usage(kL)">
           <dxo-hover-style color="#0af5ed"></dxo-hover-style>
@@ -46,6 +54,37 @@
       </dx-chart>
     </div>
   </div>
+</div>
+
+<div style="visibility:'hidden'">
+  <dx-data-grid #totalDataGrid *ngIf="demandDataSource" [dataSource]="demandDataSource.Detail" [showBorders]="true"
+    [remoteOperations]="true" [wordWrapEnabled]="true" [hoverStateEnabled]="true">
+    <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
+    <dxo-paging [pageSize]="100"></dxo-paging>
+    <dxi-column dataField="ShortName" caption="Short Name"></dxi-column>
+    <dxi-column dataField="ReadingDateString" caption="Reading Date">
+    </dxi-column>
+    <dxi-column dataField="ReActEnergy" caption="Re Act Energy">
+    </dxi-column>
+    <dxi-column dataField="Demand" caption="Demand">
+    </dxi-column>
+    <dxi-column dataField="Calculated" caption="Calculated">
+    </dxi-column>
+    <dxi-column dataField="ActEnergy" caption="Act Energy">
+    </dxi-column>
+    <dxo-export [enabled]="true" [allowExportSelectedData]="false" [formats]="['pdf', 'excel']"></dxo-export>
+  </dx-data-grid>
+  <dx-data-grid #totalDataGrid *ngIf="waterDataSource" [dataSource]="waterDataSource.Detail" [showBorders]="true" 
+    [remoteOperations]="true" [wordWrapEnabled]="true" [hoverStateEnabled]="true">
+    <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
+    <dxo-paging [pageSize]="100"></dxo-paging>
+    <dxi-column dataField="ActFlow" caption="Act Flow"></dxi-column>
+    <dxi-column dataField="ReadingDateString" caption="Reading Date">
+    </dxi-column>
+    <dxi-column dataField="Calculated" caption="Calculated">
+    </dxi-column>
+    <dxo-export [enabled]="true" [allowExportSelectedData]="false" [formats]="['pdf', 'excel']"></dxo-export>
+  </dx-data-grid>
 </div>
 
 <ng-template #spinIt>

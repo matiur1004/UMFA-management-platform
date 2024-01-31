@@ -1,26 +1,3 @@
-<!-- 
-<div class="alert alert-danger" *ngIf="localErrMsg$ | async as err" style="margin: 30px 0px 0px 0px">
-  {{ err }}
-</div>
-
-<div style="min-height: 90vh;">
-  <div class="row" style="box-shadow: -3px -36px 14px -29px rgba(0,0,0,0.41) inset; padding: 30px 0 20px 0;">
-    <div class="row">
-      <div class="col-3" style="padding-right: 0 !important;"><amr-graphselection></amr-graphselection></div>
-      <div *ngIf="selectedId > 0" class="col-9" style="padding: 0 !important;"><amr-graphcriteria></amr-graphcriteria></div>
-    </div>
-    <div class="row" style="margin-top: 10px; width: 95%; margin-left: 30px; padding: 0;">
-      <button class="btn btn-primary mr-1" type="button"
-              [title]="(frmsValid) ? 'Show Chart' : 'Disabled until the form data is valid'"
-              [disabled]="!frmsValid && !params" (click)="showChart($event);">
-        {{ frmsValid ? 'Show Chart' : 'Disabled until the criteria is valid' }}
-      </button>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col"><amr-graphresult></amr-graphresult></div>
-  </div>
-</div> -->
 <div class="alert alert-danger" *ngIf="localErrMsg$ | async as err" style="margin: 30px 0px 0px 0px">
   {{ err }}
 </div>
@@ -40,42 +17,11 @@
         [disabled]="!frmsValid && !params" (click)="showChart($event);">Show Chart</button>
       <button mat-raised-button [color]="'primary'" type="button"
         [title]="(frmsValid) ? 'Show Chart' : 'Disabled until the criteria is valid'" class="dnm-btn dnm-btn-primary"
-        [disabled]="!frmsValid && !params" (click)="onExport()">Download Data</button>
+        [disabled]="(!frmsValid && !params) || !enabledDownload" (click)="onExport()">Download Data</button>
     </div>
   </div>
-  <div class="flex w-full justify-center">
+  <div class="flex w-full justify-center overflow-hidden graph-container">
     <amr-graphresult></amr-graphresult>
   </div>
-  <div style="visibility:'hidden'">
-    <dx-data-grid #totalDataGrid *ngIf="dataType === 'Demand'" [dataSource]="totalGridDataSource" [showBorders]="true" (onExporting)="onExport()"
-      [remoteOperations]="true" [wordWrapEnabled]="true" [hoverStateEnabled]="true"
-      (onRowPrepared)="onRowPrepared($event)" (onCellPrepared)="onCellPrepared($event)">
-      <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
-      <dxo-paging [pageSize]="100"></dxo-paging>
-      <dxi-column dataField="ShortName" caption="Short Name"></dxi-column>
-      <dxi-column dataField="ReadingDateString" caption="Reading Date">
-      </dxi-column>
-      <dxi-column dataField="ReActEnergy" caption="Re Act Energy">
-      </dxi-column>
-      <dxi-column dataField="Demand" caption="Demand">
-      </dxi-column>
-      <dxi-column dataField="Calculated" caption="Calculated">
-      </dxi-column>
-      <dxi-column dataField="ActEnergy" caption="Act Energy">
-      </dxi-column>
-      <dxo-export [enabled]="true" [allowExportSelectedData]="false" [formats]="['pdf', 'excel']"></dxo-export>
-    </dx-data-grid>
-    <dx-data-grid #totalDataGrid *ngIf="dataType === 'Water'" [dataSource]="totalGridDataSource" [showBorders]="true" (onExporting)="onExport()"
-      [remoteOperations]="true" [wordWrapEnabled]="true" [hoverStateEnabled]="true"
-      (onRowPrepared)="onRowPrepared($event)" (onCellPrepared)="onCellPrepared($event)">
-      <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
-      <dxo-paging [pageSize]="100"></dxo-paging>
-      <dxi-column dataField="ActFlow" caption="Act Flow"></dxi-column>
-      <dxi-column dataField="ReadingDateString" caption="Reading Date">
-      </dxi-column>
-      <dxi-column dataField="Calculated" caption="Calculated">
-      </dxi-column>
-      <dxo-export [enabled]="true" [allowExportSelectedData]="false" [formats]="['pdf', 'excel']"></dxo-export>
-    </dx-data-grid>
-  </div>
+  
 </div>

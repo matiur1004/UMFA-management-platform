@@ -18,7 +18,6 @@ export class AmrGraphSelectionComponent implements OnInit, OnDestroy {
   chartList$ = this.amrService.amrChartList$
     .pipe(
       tap(c => {
-        //console.log("Chart List retrieved");
       }),
       map(ch => {
         this.amrCharts = ch;
@@ -36,8 +35,6 @@ export class AmrGraphSelectionComponent implements OnInit, OnDestroy {
   constructor(
     private amrService: AmrDataService,
     private _formBuilder: UntypedFormBuilder,
-    private reportService: DXReportService,
-    private userService: UserService,
   ) { }
 
   ngOnInit(): void {
@@ -68,16 +65,6 @@ export class AmrGraphSelectionComponent implements OnInit, OnDestroy {
     this.amrService.setFrmValid(2, false);
     this.amrService.SelectedChart = null;
     this.selectChart();
-  //   if (e.value) {
-  //     if (e.previousValue && e.value != e.previousValue) {
-  //       this.amrService.displayChart(false);
-  //       this.amrService.setFrmValid(1, false);
-  //       this.amrService.setFrmValid(2, false);
-  //       this.amrService.SelectedChart = null;
-  //     }
-  //     this.selectChart(frm);
-  //   }
-
   }
 
   ngAfterViewInit() {

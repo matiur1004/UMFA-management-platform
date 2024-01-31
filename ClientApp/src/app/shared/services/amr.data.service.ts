@@ -26,6 +26,9 @@ export class AmrDataService {
     this.bsSelectedChart.next(value);
   }
 
+  private _download: BehaviorSubject<any> = new BehaviorSubject(false);
+  private _result: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
   private frmSelectValid: boolean = false;
   private frmCriteriaValid: boolean = false;
 
@@ -54,11 +57,6 @@ export class AmrDataService {
   public displayChart(show: boolean): void {
     this.bsProfChart.next(show);
   }
-
-  private bsDemandDataSource: BehaviorSubject<IDemandProfileResponse>;
-  public obsDemandDataSource: Observable<IDemandProfileResponse>;
-  private bsWaterDataSource: BehaviorSubject<IWaterProfileResponse>;
-  public obsWaterDataSource: Observable<IWaterProfileResponse>;
 
   private bsSelectedChart: BehaviorSubject<IAmrChart>;
   public obsSelectedChart: Observable<IAmrChart>;
@@ -90,6 +88,14 @@ export class AmrDataService {
   private bsMeterGraphProfile: BehaviorSubject<any>;
   public obsMeterGraphProfile$: Observable<any>;
 
+  get download$(): Observable<boolean>{
+    return this._download.asObservable();
+  }
+
+  get result$(): Observable<boolean>{
+    return this._result.asObservable();
+  }
+
   constructor(private router: Router, private http: HttpClient) {
     this.bsSelectedChart = new BehaviorSubject<IAmrChart>(null);
     this.obsSelectedChart = this.bsSelectedChart.asObservable();
@@ -107,10 +113,6 @@ export class AmrDataService {
     this.bsMeterGraphProfile = new BehaviorSubject<any>(null);
     this.obsMeterGraphProfile$ = this.bsMeterGraphProfile.asObservable();
 
-    this.bsDemandDataSource = new BehaviorSubject<IDemandProfileResponse>(null);
-    this.obsDemandDataSource = this.bsDemandDataSource.asObservable();
-    this.bsWaterDataSource = new BehaviorSubject<IWaterProfileResponse>(null);
-    this.obsWaterDataSource = this.bsWaterDataSource.asObservable();
   }
 
   //common methods
@@ -123,6 +125,8 @@ export class AmrDataService {
     this.bsProfChart.next(null);
     this.bsDemSubject.next(null);
     this.bsTouHeaderSub.next(null);
+    this._download.next(false);
+    this._result.next(false);
   }
 
   catchErrors(error: { error: { message: any; }; message: any; }): Observable<Response> {
@@ -141,20 +145,12 @@ export class AmrDataService {
 
   public get TouHeaders(): ITouHeader[] { return this.bsTouHeaderSub.value; }
 
-  sendDemandDataSource(ds: IDemandProfileResponse) {
-    return this.bsDemandDataSource.next(ds);
+  showResult(status: boolean) {
+    this._result.next(status);
   }
 
-  getDemandDataSource() {
-    return this.obsDemandDataSource;
-  }
-
-  sendWaterDataSource(ds: IWaterProfileResponse) {
-    return this.bsWaterDataSource.next(ds);
-  }
-
-  getWaterDataSource() {
-    return this.obsWaterDataSource;
+  downloadData() {
+    this._download.next(true);
   }
 
   getDemandProfile(meterId: number, sDate: Date, eDate: Date, touHeaderId: number) {
