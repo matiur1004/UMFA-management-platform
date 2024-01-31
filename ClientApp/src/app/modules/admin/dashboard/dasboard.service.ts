@@ -693,8 +693,8 @@ export class DashboardService {
       );
   }
 
-  getBuildingAlarms() {
-    const url = `${CONFIG.apiURL}/AlarmsPerBuilding`;
+  getBuildingAlarms(userId) {
+    const url = `${CONFIG.apiURL}/AlarmsPerBuilding/?umfaUserId=${userId}`;
     return this.http.get<any>(url, { withCredentials: true })
       .pipe(
         catchError(err => this.catchAuthErrors(err)),

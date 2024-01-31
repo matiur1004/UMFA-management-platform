@@ -13,6 +13,12 @@ namespace ClientPortal.Models.ResponseModels
         public DateTime MaxDemandDate { get; set; }
         public decimal PeriodUsage { get; set; }
         public decimal DataPercentage { get; set; }
+        public double PeakUsage { get; set; }
+        public double StandardUsage { get; set; }
+        public double OffPeakUsage { get; set; }
+        public double PeakDemand {  get; set; }
+        public double StandardDemand { get; set; }
+        public double OffPeakDemand { get; set; }
     }
 
     [Serializable]
@@ -25,6 +31,7 @@ namespace ClientPortal.Models.ResponseModels
         public decimal ReActEnergy { get; set; }
         public bool Calculated { get; set; }
         public string Color { get; set; }
+
     }
 
     [Serializable]
