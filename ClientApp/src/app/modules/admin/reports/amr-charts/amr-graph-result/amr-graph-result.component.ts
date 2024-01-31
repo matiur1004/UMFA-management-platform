@@ -67,9 +67,14 @@ export class AmrGraphResultComponent implements OnInit, OnDestroy {
         if (prof) {
           if (prof.Status == 'Error') {
             this.dataService.setError(`Error getting data: ${prof.ErrorMessage}`);
-          } else
+          } else {
+            this.dataService.sendDemandDataSource(prof);
             this.setDataSourceDemand(prof);
-        } else this.setDataSourceDemand(prof);
+          }
+        } else { 
+          this.dataService.sendDemandDataSource(prof);
+          this.setDataSourceDemand(prof);
+        }
       })
     );
 
@@ -110,9 +115,14 @@ export class AmrGraphResultComponent implements OnInit, OnDestroy {
         if (prof) {
           if (prof.Status == 'Error') {
             this.dataService.setError(`Error getting data: ${prof.ErrorMessage}`);
-          } else
+          } else {
+            this.dataService.sendWaterDataSource(prof);
             this.setDataSourceWater(prof);
-        } else this.setDataSourceWater(prof);
+          }
+        } else {
+          this.dataService.sendWaterDataSource(prof);
+          this.setDataSourceWater(prof);
+        }
       })
     );
 
