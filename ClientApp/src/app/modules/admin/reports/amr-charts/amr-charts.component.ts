@@ -25,9 +25,10 @@ export class AmrChartsComponent implements OnInit, OnDestroy {
   localErrMsg$ = this.errorMessageSubject.asObservable();
 
   headerInfo: any;
+  dataType: string;
 
   supError: Subscription;
-  totalGridDataSource: any;
+  totalGridDataSource = [];
 
   get frmsValid(): boolean {
     return this.amrService.IsFrmsValid();
@@ -52,11 +53,15 @@ export class AmrChartsComponent implements OnInit, OnDestroy {
     );
     this.amrService.getDemandDataSource().subscribe((demandDataSource) => {
       this.totalGridDataSource = demandDataSource?.Detail;
-      console.log(demandDataSource);
+      if( this.totalGridDataSource && this.totalGridDataSource.length > 0 ) {
+        this.dataType = "Demand"
+      }
     })
     this.amrService.getWaterDataSource().subscribe((waterDataSource) => {
       this.totalGridDataSource = waterDataSource?.Detail;
-      console.log(waterDataSource);
+      if( this.totalGridDataSource && this.totalGridDataSource.length > 0 ) {
+        this.dataType = "Water"
+      }
     })
   }
 
@@ -66,7 +71,6 @@ export class AmrChartsComponent implements OnInit, OnDestroy {
   }
 
   showChart(e: any) {
-    console.log('showChart');
     this.amrService.displayChart(true);
   }
 
@@ -97,12 +101,14 @@ export class AmrChartsComponent implements OnInit, OnDestroy {
       component: _this.totalDataGrid.instance,
       worksheet: worksheet,
       autoFilterEnabled: true,
-      customizeCell({ gridCell, excelCell }) {
-        excelCell.width = 200; // Set the desired column width
+      customizeCell(option) {
+        option.excelCell.alignment = { horizontal: 'center'};  
+        option.excelCell.width = 200; // Set the desired column width
       }
     }).then(() => {
+      let fileName = this.dataType === "Demand" ? 'Demand Data Summary Report.xlsx' : 'Water Data Summary Report.xlsx'
       workbook.xlsx.writeBuffer().then((buffer) => {
-        saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'Demand Data Summary Report.xlsx');
+        saveAs(new Blob([buffer], { type: 'application/octet-stream' }), fileName);
       });
     })
   }

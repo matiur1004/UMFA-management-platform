@@ -46,35 +46,36 @@
   <div class="flex w-full justify-center">
     <amr-graphresult></amr-graphresult>
   </div>
-  <div style="display:'none'">
-    <dx-data-grid #totalDataGrid [dataSource]="totalGridDataSource" [showBorders]="true" (onExporting)="onExport()"
+  <div style="visibility:'hidden'">
+    <dx-data-grid #totalDataGrid *ngIf="dataType === 'Demand'" [dataSource]="totalGridDataSource" [showBorders]="true" (onExporting)="onExport()"
       [remoteOperations]="true" [wordWrapEnabled]="true" [hoverStateEnabled]="true"
       (onRowPrepared)="onRowPrepared($event)" (onCellPrepared)="onCellPrepared($event)">
       <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
       <dxo-paging [pageSize]="100"></dxo-paging>
       <dxi-column dataField="ShortName" caption="Short Name" [minWidth]="120"></dxi-column>
       <dxi-column dataField="ReadingDateString" caption="Reading Date" [minWidth]="200">
-        <!-- <dxo-format type="fixedPoint" [precision]="2"></dxo-format> -->
       </dxi-column>
       <dxi-column dataField="ReActEnergy" caption="Re Act Energy" [minWidth]="120">
-        <!-- <dxo-format type="fixedPoint" [precision]="2"></dxo-format> -->
       </dxi-column>
       <dxi-column dataField="Demand" caption="Demand" [minWidth]="120">
-        <!-- <dxo-format type="fixedPoint" [precision]="2"></dxo-format> -->
       </dxi-column>
       <dxi-column dataField="Calculated" caption="Calculated" [minWidth]="120">
-        <!-- <dxo-format type="fixedPoint" [precision]="2"></dxo-format> -->
       </dxi-column>
       <dxi-column dataField="ActEnergy" caption="Act Energy" [minWidth]="120">
-        <!-- <dxo-format type="fixedPoint" [precision]="2"></dxo-format> -->
       </dxi-column>
       <dxo-export [enabled]="true" [allowExportSelectedData]="false" [formats]="['pdf', 'excel']"></dxo-export>
-      <!-- <div *dxTemplate="let data of 'cellValueTemplate'">
-          <ng-container *ngIf="data.value != null; else emptyTemplate">
-              R {{data.value | number : '1.2-2'}}
-          </ng-container>
-          <ng-template #emptyTemplate></ng-template>
-      </div> -->
+    </dx-data-grid>
+    <dx-data-grid #totalDataGrid *ngIf="dataType === 'Water'" [dataSource]="totalGridDataSource" [showBorders]="true" (onExporting)="onExport()"
+      [remoteOperations]="true" [wordWrapEnabled]="true" [hoverStateEnabled]="true"
+      (onRowPrepared)="onRowPrepared($event)" (onCellPrepared)="onCellPrepared($event)">
+      <dxo-scrolling mode="virtual" rowRenderingMode="virtual"></dxo-scrolling>
+      <dxo-paging [pageSize]="100"></dxo-paging>
+      <dxi-column dataField="ActFlow" caption="Act Flow" [minWidth]="120"></dxi-column>
+      <dxi-column dataField="ReadingDateString" caption="Reading Date" [minWidth]="200">
+      </dxi-column>
+      <dxi-column dataField="Calculated" caption="Calculated" [minWidth]="120">
+      </dxi-column>
+      <dxo-export [enabled]="true" [allowExportSelectedData]="false" [formats]="['pdf', 'excel']"></dxo-export>
     </dx-data-grid>
   </div>
 </div>
