@@ -96,14 +96,34 @@ export class AmrChartsComponent implements OnInit, OnDestroy {
   onExportExcel() {
     const workbook = new Workbook();
     const worksheet = workbook.addWorksheet('Report', { views: [{ showGridLines: false }] });
+    if( this.dataType === 'Demand' ) {
+      worksheet.mergeCells('A1:F1');
+      worksheet.mergeCells('A2:F2');
+      worksheet.getCell('A1').value = "Peak - 1000 kWh, Standard - 1000 kWh, Off-Peak - 1000 kWh, Total 100000 kWh";
+      worksheet.getCell('A1:F1').font = {bold: true, size: 16};
+      worksheet.getCell('A1').alignment  = {vertical: 'middle', horizontal: 'center'};
+      worksheet.getCell('A2').value = "Peak - 1000 kVA, Standard - 1000 kVA, Off-Peak - 1000 kVA, Max 100000 kVA on 1/31/2024 07:00";
+      worksheet.getCell('A2:F2').font = {bold: true, size: 16};
+      worksheet.getCell('A2').alignment  = {vertical: 'middle', horizontal: 'center'};
+    } else {
+      worksheet.mergeCells('A1:C1');
+      worksheet.mergeCells('A2:C2');
+      worksheet.getCell('A1').value = "Peak - 1000 kWh, Standard - 1000 kWh, Off-Peak - 1000 kWh, Total 100000 kWh";
+      worksheet.getCell('A1:C1').font = {bold: true, size: 16};
+      worksheet.getCell('A1').alignment  = {vertical: 'middle', horizontal: 'center'};
+      worksheet.getCell('A2').value = "Peak - 1000 kVA, Standard - 1000 kVA, Off-Peak - 1000 kVA, Max 100000 kVA on 1/31/2024 07:00";
+      worksheet.getCell('A2:C2').font = {bold: true, size: 16};
+      worksheet.getCell('A2').alignment  = {vertical: 'middle', horizontal: 'center'};
+    }
+    
     var _this = this;
     exportDataGrid({
       component: _this.totalDataGrid.instance,
       worksheet: worksheet,
       autoFilterEnabled: true,
-      customizeCell(option) {
-        option.excelCell.alignment = { horizontal: 'center'};  
-        option.excelCell.width = 200; // Set the desired column width
+      topLeftCell: { row: 3, column: 1 },
+      customizeCell({ gridCell, excelCell }) {
+        excelCell.alignment = { horizontal: 'center'};  
       }
     }).then(() => {
       let fileName = this.dataType === "Demand" ? 'Demand Data Summary Report.xlsx' : 'Water Data Summary Report.xlsx'
