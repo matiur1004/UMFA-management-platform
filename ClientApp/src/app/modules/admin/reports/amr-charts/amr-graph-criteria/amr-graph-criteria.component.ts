@@ -101,7 +101,7 @@ export class AmrGraphCriteriaComponent implements OnInit, OnDestroy {
       }
       if (e.element.id == 'sDateId' && !e.previousValue) {
         let dt: Date = new Date(e.value);
-        dt.setHours(0, 30, 0);
+        dt.setHours(0, 0, 0);
         this.sTime = new Date(dt);
         dt.setDate(dt.getDate() + 7);
         dt.setHours(0, 0, 0);

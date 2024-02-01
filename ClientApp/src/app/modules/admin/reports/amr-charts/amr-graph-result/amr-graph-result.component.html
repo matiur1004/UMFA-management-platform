@@ -1,9 +1,9 @@
 <div *ngIf="showReport; else hiddenDiv" style="overflow: visible !important; background-color: #f8f9fa;">
   <div *ngIf="!loading; else spinIt" style="overflow: visible !important; background-color: #f8f9fa;">
     <div *ngIf="ChartId == 1 && demandDataSource" style="width: 80vw; overflow: visible !important; background-color: #f8f9fa;">
-      <div class="flex flex-col justify-center w-full items-center mt-4">
-        <span class="text-2xl">{{chartTitleDemand}}</span>
-        <span class="">{{chartSubTitleDemand}}</span>
+      <div class="flex flex-col justify-center w-full items-center mt-4 font-light">
+        <span class="text-3xl">{{chartTitleDemand}}</span>
+        <span class="mt-1">{{chartSubTitleDemand}}</span>
         <span class="">{{chartSubSubTitleDemand}}</span>
       </div>
       <dx-chart [dataSource]="demandDataSource.Detail" [customizePoint]="customizePoint" (onPointClick)="pointClick($event)">
@@ -29,10 +29,9 @@
       </dx-chart>
     </div>
     <div *ngIf="ChartId == 2 && waterDataSource" style="height: 79vh; width: 80vw; overflow: visible !important; background-color: #f8f9fa;">
-      <div class="flex flex-col justify-center w-full items-center mt-4">
-        <span class="text-2xl">{{chartTitleWater}}</span>
-        <span class="">{{chartSubTitleWater}}</span>
-        <span class="">{{chartSubSubTitleDemand}}</span>
+      <div class="flex flex-col justify-center w-full items-center mt-4 font-light">
+        <span class="text-3xl">{{chartTitleWater}}</span>
+        <span class="mt-1">{{chartSubTitleWater}}</span>
       </div>
       <dx-chart [dataSource]="waterDataSource.Detail" [customizePoint]="customizePoint" (onPointClick)="pointClick($event)">
         <dxo-size [height]="500"></dxo-size>
