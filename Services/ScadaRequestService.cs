@@ -22,6 +22,7 @@ namespace ClientPortal.Services
         public Task<ScadaRequestDetail> GetScadaRequestDetailAsync(int id);
         public Task<ScadaRequestDetail> GetScadaRequestDetailAsyncByJobTypeAndAmrMeterIdAsync(int jobType, int amrMeterId);
         public Task<ScadaRequestDetail> UpdateScadaRequestDetailAsync(ScadaRequestDetailUpdateRequest scadaRequestDetail);
+        public Task<ScadaRequestDetail> UpdateScadaRequestDetailAsync(ScadaRequestDetail scadaRequestDetail);
         public Task<ScadaRequestDetail> AddScadaRequestDetailAsync(ScadaRequestDetailRequest scadaRequestDetail);
         public Task<ScadaRequestDetail> RemoveScadaRequestDetailAsync(int id);
     }
@@ -48,7 +49,7 @@ namespace ClientPortal.Services
 
         public async Task<List<ScadaRequestHeaderResponse>> GetScadaRequestHeadersAsync()
         {
-            return (await _scadaRequestHeaderRepo.GetAllAsync(x => x.ScadaRequestDetails)).Select(x => new ScadaRequestHeaderResponse(x)).ToList();
+            return (await _scadaRequestHeaderRepo.GetAllAsync(x => x.Active, x => x.ScadaRequestDetails)).Select(x => new ScadaRequestHeaderResponse(x)).ToList();
         }
 
         public async Task<ScadaRequestHeader> UpdateScadaRequestHeaderAsync(ScadaRequestHeaderUpdateRequest scadaRequestHeader)
@@ -166,6 +167,11 @@ namespace ClientPortal.Services
             return await _scadaRequestDetailRepo.UpdateAsync(detail);
         }
 
+        public async Task<ScadaRequestDetail> UpdateScadaRequestDetailAsync(ScadaRequestDetail scadaRequestDetail)
+        {
+            return await _scadaRequestDetailRepo.UpdateAsync(scadaRequestDetail);
+        }
+
         public async Task<ScadaRequestDetail> AddScadaRequestDetailAsync(ScadaRequestDetailRequest scadaRequestDetail)
         {
             var detail = new ScadaRequestDetail();
@@ -182,7 +188,7 @@ namespace ClientPortal.Services
         
         public async Task<ScadaRequestDetail> GetScadaRequestDetailAsyncByJobTypeAndAmrMeterIdAsync(int jobType, int amrMeterId)
         {
-            return await _scadaRequestDetailRepo.GetAsync(x => x.AmrMeterId.Equals(amrMeterId) && x.Header.JobType.Equals(jobType), x => x.Header);
+            return await _scadaRequestDetailRepo.GetAsync(x => x.Active && x.AmrMeterId.Equals(amrMeterId) && x.Header.JobType.Equals(jobType), x => x.Header, x => x.AmrScadaUser, x => x.AmrMeter);
         }
 
         

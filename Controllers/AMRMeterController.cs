@@ -49,16 +49,16 @@ namespace ClientPortal.Controllers
         }
 
         [HttpGet("meter/{id}")]
-        public IActionResult GetMeter(int id)
+        public async Task<ActionResult<AMRMeterResponse>> GetMeter(int id)
         {
             try
             {
                 _logger.LogInformation($"Get meter with id {id} from database");
-                var response = _amrService.GetMeterAsync(id).Result;
+                var response = await _amrService.GetMeterAsync(id);
                 if (response != null)
                 {
                     _logger.LogInformation($"Successfully got meter: {response.Id}");
-                    return Ok(response);
+                    return response;
                 }
                 else throw new Exception($"Failed to get meter: {id}");
             }
@@ -68,6 +68,57 @@ namespace ClientPortal.Controllers
                 return BadRequest(new ApplicationException(ex.Message));
             }
         }
+
+        [HttpPut("meter/schedules")]
+        public async Task<ActionResult<ScadaRequestDetail>> MoveSchedule(MoveMeterScheduleRequest request)
+        {
+            try
+            {
+                _logger.LogInformation($"Update meter with id {request.MeterId} schedule");
+
+                var updatedDetail = await _amrService.MoveMeterSchedule(request);
+                if (updatedDetail == null)
+                {
+                    
+                    return NotFound();
+                }
+
+                _logger.LogInformation($"Successfully update meter schedule: {request.MeterId}");
+                
+                return updatedDetail;
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError($"Something went wrong updating schedule for {request.MeterId}: {ex.Message}");
+                return Problem($"Something went wrong updating schedule for {request.MeterId}");
+            }
+        }
+
+        [HttpPost("meter/jobs")]
+        public async Task<IActionResult> RunJobForMeter(RunAmrMeterJobRequest request)
+        {
+            try
+            {
+                _logger.LogInformation($"Run job for meter with id {request.MeterId} from database");
+
+                var success = await _amrService.RunAmrMeterJob(request);
+                if (!success)
+                {
+                    _logger?.LogError($"Something went wrong running job for {request.MeterId}");
+                    return NotFound();
+                }
+
+                _logger.LogInformation($"Successfully running meter job: {request.MeterId}");
+
+                return Accepted();
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError($"Something went wrong running job for {request.MeterId}: {ex.Message}");
+                return Problem($"Something went wrong updating schedule for {request.MeterId}");
+            }
+        }
+
 
         [HttpGet("userMeters/{userId}")]
         public async Task<ActionResult<List<AMRMeterResponse>>> GetMetersForUser(int userId)

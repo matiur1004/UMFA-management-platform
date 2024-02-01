@@ -10,7 +10,7 @@ namespace ClientPortal.Data.Repositories
 {
     public interface IAMRMeterRepository
     {
-        Task<AMRMeterResponse> GetMeterAsync(int id);
+        Task<AMRMeter> GetMeterAsync(int id);
         Task<AMRMeterResponseList> GetMetersForUserAsync(int userId);
         Task<AMRMeterResponseList> GetMetersForUserChartAsync(int userId, int chartId, bool isTenant = false);
         Task<AMRMeterResponseList> GetMetersForUserAndBuildingAsync(int userId, int buildingId);
@@ -132,7 +132,7 @@ namespace ClientPortal.Data.Repositories
             }
         }
 
-        public async Task<AMRMeterResponse> GetMeterAsync(int id)
+        public async Task<AMRMeter> GetMeterAsync(int id)
         {
             //_logger.LogInformation($"Retrieving meter with id {id}");
             try
@@ -143,8 +143,7 @@ namespace ClientPortal.Data.Repositories
                     .FirstOrDefaultAsync(m => m.Id == id);
                 if (meter != null)
                 {
-                    var ret = _mapper.Map<AMRMeterResponse>(meter);
-                    return ret;
+                    return meter;
                 }
                 else throw new ApplicationException($"meter with id {id} not found");
             }

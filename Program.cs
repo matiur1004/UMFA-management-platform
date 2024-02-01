@@ -60,6 +60,8 @@ IConfiguration? configuration = builder.Configuration;
     services.Configure<ArchivesQueueSettings>(builder.Configuration.GetSection("ArchivesQueueSettings"));
     services.Configure<FeedbackReportQueueSettings>(builder.Configuration.GetSection("FeedbackReportQueueSettings"));
     services.Configure<ClientFeedbackReportQueueSettings>(builder.Configuration.GetSection("ClientFeedbackReportQueueSettings"));
+    services.Configure<AmrProfileJobsQueueSettings>(builder.Configuration.GetSection("AmrProfileJobsQueueSettings"));
+    services.Configure<AmrReadingsJobsQueueSettings>(builder.Configuration.GetSection("AmrReadingsJobsQueueSettings"));
 
     services.Configure<UmfaApiSettings>(builder.Configuration.GetSection(nameof(UmfaApiSettings)));
 
@@ -155,7 +157,8 @@ IConfiguration? configuration = builder.Configuration;
     services.AddSingleton<IFeedbackReportsQueueService, FeedbackReportsQueueService>();
     services.AddSingleton<IClientFeedbackReportQueueService, ClientFeedbackReportQueueService>();
     services.AddScoped<ISmartServicesService, SmartServicesService>();
-
+    services.AddSingleton<IAmrProfileJobsQueueService, AmrProfileJobsQueueService>();
+    services.AddSingleton<IAmrReadingsJobsQueueService, AmrReadingsJobsQueueService>();
 
     //Data components
     services.AddScoped<IPortalSpRepository, PortalSpRepository>();
