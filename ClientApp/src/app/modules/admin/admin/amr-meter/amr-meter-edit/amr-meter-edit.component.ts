@@ -5,6 +5,7 @@ import { DialogConstants } from 'app/core/helpers';
 import { DialogService } from 'app/shared/services/dialog.service';
 import { BuildingService, MeterService, SnackBarService, UserService } from 'app/shared/services';
 import { AmrMeterUpdate, IAmrMeter, IMeterMakeModel, IUmfaBuilding, IUtility } from 'app/core/models';
+import { AMRScheduleService } from '@shared/services/amr-schedule.service';
 
 @Component({
   templateUrl: './amr-meter-edit.component.html',
@@ -27,11 +28,15 @@ export class AmrMeterEditComponent implements OnInit {
   errMessage: string;
 
   form: UntypedFormGroup;
+  profileForm: UntypedFormGroup;
+  readingForm: UntypedFormGroup;
+
   phaseItems = [{Label: 'Single', Id: 1}, {Label: 'Dual', Id: 2}, {Label: 'Three', Id: 3}];
 
   constructor(private route: ActivatedRoute,
     private router: Router,
     private meterService: MeterService,
+    private amrService: AMRScheduleService,
     private sbService: SnackBarService,
     private bldService: BuildingService,
     private usrService: UserService,
@@ -46,6 +51,8 @@ export class AmrMeterEditComponent implements OnInit {
         this.getUtilities();
         this.getBuildings();
         this.initForm();
+        this.initProfileForm();
+        this.initReadingForm();
       },
       error: err => this.errMessage = err
     });
@@ -75,7 +82,7 @@ export class AmrMeterEditComponent implements OnInit {
     this.utils = utils;
     if (this.amrMeter.Id == 0) this.changeUtil(this.utils[0].Id);
     else {
-      this.makes = this.utils.find(u => u.Id == this.amrMeter.UtilityId).MakeModels;
+      this.makes = (this.utils.find(u => u.Id == this.amrMeter.UtilityId)) ? this.utils.find(u => u.Id == this.amrMeter.UtilityId).MakeModels : [];
       this.makeItems = []; 
       this.modelItems = [];
       this.makes.forEach(item => {
@@ -129,18 +136,47 @@ export class AmrMeterEditComponent implements OnInit {
       MeterSerial: [null, [Validators.required]]
     });
 
+    this.profileForm = this._formBuilder.group({
+      HeaderId: [],
+      ScheduleName: [null, [Validators.required]],
+      LastRunDate: [null, [Validators.required]],
+      LastDataDate: [null, [Validators.required]]
+    })
+
+    this.readingForm = this._formBuilder.group({
+      HeaderId: [],
+      ScheduleName: [null, [Validators.required]],
+      LastRunDate: [null, [Validators.required]],
+      LastDataDate: [null, [Validators.required]]
+    })
     this.route.paramMap.subscribe(
       (params) => {
         this.opUsrId = +params.get('opId');
         const id = +params.get('meterId');
         this.getAmrMeter(id);
       });
+
+    this.amrService.getScadaRequestHeaders().subscribe(res => {
+      // filter by job type 1
+      // filte by job type 2
+    })
   }
 
   initForm() {
-    console.log(this.amrMeter);
     if(this.amrMeter) {
       this.form.patchValue(this.amrMeter);
+    }
+  }
+
+  initProfileForm() {
+    if(this.amrMeter) {
+      this.profileForm.patchValue(this.amrMeter.ScadaProfilesDetails);
+    }
+  }
+
+  initReadingForm(){
+    if(this.amrMeter) {
+      this.readingForm.patchValue(this.amrMeter.ScadaReadingsDetails);
     }
   }
 

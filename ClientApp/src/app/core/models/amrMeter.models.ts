@@ -20,6 +20,8 @@ export interface IAmrMeter {
     MeterSerial: string;
     UtilityId: number;
     Utility: string;
+    ScadaProfilesDetails?: any;
+    ScadaReadingsDetails?: any;
   }
   
   export class AmrMeterUpdate {
