@@ -6,6 +6,8 @@ import { DialogService } from 'app/shared/services/dialog.service';
 import { BuildingService, MeterService, SnackBarService, UserService } from 'app/shared/services';
 import { AmrMeterUpdate, IAmrMeter, IMeterMakeModel, IUmfaBuilding, IUtility } from 'app/core/models';
 import { AMRScheduleService } from '@shared/services/amr-schedule.service';
+import { UmfaUtils } from '@core/utils/umfa.utils';
+import { CONFIRM_MODAL_CONFIG } from '@core/config/modal.config';
 
 @Component({
   templateUrl: './amr-meter-edit.component.html',
@@ -41,7 +43,8 @@ export class AmrMeterEditComponent implements OnInit {
     private bldService: BuildingService,
     private usrService: UserService,
     private dialogService: DialogService,
-    private _formBuilder: UntypedFormBuilder
+    private _formBuilder: UntypedFormBuilder,
+    private _util: UmfaUtils
   ) { }
 
   getAmrMeter(id: number): void {
@@ -160,6 +163,12 @@ export class AmrMeterEditComponent implements OnInit {
       // filter by job type 1
       // filte by job type 2
     })
+
+    // this._util.fuseConfirmDialog(
+    //   CONFIRM_MODAL_CONFIG,
+    //   '',
+    //   `Are you sure you want to delete the selected station?`
+    // );
   }
 
   initForm() {
