@@ -36,6 +36,12 @@ export interface IAmrChart {
     MaxDemandDate: Date;
     PeriodUsage: number;
     DataPercentage: number;
+    PeakUsage: number;
+    StandardUsage: number;
+    OffPeakUsage: number;
+    PeakDemand: number;
+    StandardDemand: number;
+    OffPeakDemand: number;
   }
   
   export interface IDemandProfileDetail {

@@ -1,8 +1,12 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AmrDataService } from 'app/shared/services/amr.data.service';
-import { catchError, map, Subscription, tap, throwError } from 'rxjs';
+import { catchError, map, Subject, Subscription, takeUntil, tap, throwError } from 'rxjs';
 import { IDemandProfileResponse, IWaterProfileResponse } from '../../../../../core/models';
+import saveAs from 'file-saver';
+import { exportDataGrid } from 'devextreme/excel_exporter';
+import { Workbook } from 'exceljs';
+import { DxDataGridComponent } from 'devextreme-angular';
 
 @Component({
   selector: 'amr-graphresult',
@@ -11,6 +15,8 @@ import { IDemandProfileResponse, IWaterProfileResponse } from '../../../../../co
 })
 export class AmrGraphResultComponent implements OnInit, OnDestroy {
 
+  @ViewChild('totalDataGrid') totalDataGrid: DxDataGridComponent;
+  
   //common properties
   loading = false;
   showReport = false;
@@ -51,6 +57,7 @@ export class AmrGraphResultComponent implements OnInit, OnDestroy {
   demandDataSource: IDemandProfileResponse;
   chartTitleDemand: string = 'Demand Profile';
   chartSubTitleDemand: string = '';
+  chartSubSubTitleDemand: string = '';
 
   private subDem: Subscription;
 
@@ -67,9 +74,14 @@ export class AmrGraphResultComponent implements OnInit, OnDestroy {
         if (prof) {
           if (prof.Status == 'Error') {
             this.dataService.setError(`Error getting data: ${prof.ErrorMessage}`);
-          } else
+          } else {
             this.setDataSourceDemand(prof);
-        } else this.setDataSourceDemand(prof);
+            this.dataService.showResult(true);
+          }
+        } else { 
+          this.setDataSourceDemand(prof);
+          this.dataService.showResult(false);
+        }
       })
     );
 
@@ -79,9 +91,10 @@ export class AmrGraphResultComponent implements OnInit, OnDestroy {
       ds.Detail.forEach((det) => { det.ReadingDateString = pipe.transform(det.ReadingDate, "yyyy-MM-dd HH:mm") });
       this.demandDataSource = ds;
       if (ds) {
-        var kVADate = pipe.transform(ds.Header.MaxDemandDate, "HH:mm on dd MMM yyyy");
+        var kVADate = pipe.transform(ds.Header.MaxDemandDate, "HH:mm dd MMM yyyy");
         this.chartTitleDemand = `Demand Profile for Meter: ${ds.Header.Description} (${ds.Header.MeterNo})`;
-        this.chartSubTitleDemand = `Usages for period: ${ds.Header.PeriodUsage.toFixed(2)}kWh, ${ds.Header.MaxDemand.toFixed(2)}kVA at ${kVADate}`;
+        this.chartSubTitleDemand = `Usages for selected period: Peak - ${ds.Header.PeakUsage.toFixed(2)}kWh, ${ds.Header.StandardUsage.toFixed(2)}kWh, Off-Peak - ${ds.Header.OffPeakUsage.toFixed(2)}kWh, Total ${ds.Header.PeriodUsage.toFixed(2)}kWh`;
+        this.chartSubSubTitleDemand = `Peak Demand for period: Peak - ${ds.Header.PeakDemand.toFixed(2)} kVA, Standard - ${ds.Header.StandardDemand.toFixed(2)} kVA, Off-Peak - ${ds.Header.OffPeakDemand.toFixed(2)} kVA, Max ${(ds.Header.MaxDemand).toFixed(2)} kVA on ${kVADate}`;
       } else {
         this.chartTitleDemand = 'Demand Profile';
         this.chartSubTitleDemand = '';
@@ -96,7 +109,8 @@ export class AmrGraphResultComponent implements OnInit, OnDestroy {
   chartSubTitleWater: string = '';
 
   private subWater: Subscription;
-
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
+  
   obsWaterProfile$ = this.dataService.obsWaterProfile$
     .pipe(
       tap(p => {
@@ -110,9 +124,14 @@ export class AmrGraphResultComponent implements OnInit, OnDestroy {
         if (prof) {
           if (prof.Status == 'Error') {
             this.dataService.setError(`Error getting data: ${prof.ErrorMessage}`);
-          } else
+          } else {
             this.setDataSourceWater(prof);
-        } else this.setDataSourceWater(prof);
+            this.dataService.showResult(true);
+          }
+        } else {
+          this.setDataSourceWater(prof);
+          this.dataService.showResult(false);
+        }
       })
     );
 
@@ -122,7 +141,7 @@ export class AmrGraphResultComponent implements OnInit, OnDestroy {
       ds.Detail.forEach((det) => { det.ReadingDateString = pipe.transform(det.ReadingDate, "yyyy-MM-dd HH:mm") });
       this.waterDataSource = ds;
       if (ds) {
-        var flowDate = pipe.transform(ds.Header.MaxFlowDate, "HH:mm on dd MMM yyyy");
+        var flowDate = pipe.transform(ds.Header.MaxFlowDate, "HH:mm dd MMM yyyy");
         this.chartTitleWater = `Water Profile for Meter: ${ds.Header.Description} (${ds.Header.MeterNo})`;
         this.chartSubTitleWater = `Usages for period: ${ds.Header.PeriodUsage.toFixed(2)}kL, Maximum flow: ${ds.Header.MaxFlow.toFixed(2)}kL at ${flowDate}`;
       } else {
@@ -138,12 +157,66 @@ export class AmrGraphResultComponent implements OnInit, OnDestroy {
     this.subDem = this.obsDemProfile$.subscribe();
     this.subWater = this.obsWaterProfile$.subscribe();
     this.subRunit = this.obsRunit$.subscribe();
+
+    this.dataService.download$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((res: boolean) => {
+        if(res) {
+          this.onExportExcel();
+        }
+      });
   }
 
   ngOnDestroy(): void {
+    this._unsubscribeAll.next(null);
+    this._unsubscribeAll.complete();
     this.subDem.unsubscribe();
     this.subWater.unsubscribe();
     this.subRunit.unsubscribe();
+  }
+
+  onExportExcel() {
+    const workbook = new Workbook();
+    const worksheet = workbook.addWorksheet('Report', { views: [{ showGridLines: false }] });
+    if( this.ChartId == 1 ) {
+      worksheet.mergeCells('A1:F1');
+      worksheet.mergeCells('A2:F2');
+      worksheet.mergeCells('A3:F3');
+      worksheet.getCell('A1').value = this.chartTitleDemand;
+      worksheet.getCell('A1:F1').font = {bold: true, size: 16};
+      worksheet.getCell('A1').alignment  = {vertical: 'middle', horizontal: 'center'};
+      worksheet.getCell('A2').value = this.chartSubTitleDemand;
+      worksheet.getCell('A2:F2').font = {bold: true, size: 14};
+      worksheet.getCell('A2').alignment  = {vertical: 'middle', horizontal: 'center'};
+      worksheet.getCell('A3').value = this.chartSubSubTitleDemand;
+      worksheet.getCell('A3:F3').font = {bold: true, size: 14};
+      worksheet.getCell('A3').alignment  = {vertical: 'middle', horizontal: 'center'};
+    } else {
+      worksheet.mergeCells('A1:C1');
+      worksheet.mergeCells('A2:C2');
+      worksheet.getCell('A1').value = this.chartTitleWater;
+      worksheet.getCell('A1:C1').font = {bold: true, size: 16};
+      worksheet.getCell('A1').alignment  = {vertical: 'middle', horizontal: 'center'};
+      worksheet.getCell('A2').value = this.chartSubTitleWater;
+      worksheet.getCell('A2:C2').font = {bold: true, size: 14};
+      worksheet.getCell('A2').alignment  = {vertical: 'middle', horizontal: 'center'};
+    }
+    
+    var _this = this;
+    exportDataGrid({
+      component: _this.totalDataGrid.instance,
+      worksheet: worksheet,
+      autoFilterEnabled: true,
+      topLeftCell: { row: this.ChartId == 1 ? 4 : 3, column: 1 },
+      customizeCell({ gridCell, excelCell }) {
+        excelCell.alignment = { horizontal: 'center'};  
+      }
+    }).then(() => {
+      let fileName = this.ChartId == 1 ? 'Demand Data Summary Report.xlsx' : 'Water Data Summary Report.xlsx'
+      workbook.xlsx.writeBuffer().then((buffer) => {
+        saveAs(new Blob([buffer], { type: 'application/octet-stream' }), fileName);
+      });
+    })
   }
 
   Runit(): void {
