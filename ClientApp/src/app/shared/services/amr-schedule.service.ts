@@ -214,7 +214,7 @@ export class AMRScheduleService {
       .pipe(
         catchError(err => this.catchErrors(err)),
         tap(res => {
-          this.notificationService.message('ACCEPTED');
+          this.notificationService.message('Successfully Downloaded!');
         })
       )
     }
