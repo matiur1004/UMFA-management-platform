@@ -195,11 +195,14 @@
                         <dxi-column dataField="ScadaDescription" [minWidth]="150"></dxi-column>
                         <dxi-column dataField="RegisterType" [minWidth]="120"></dxi-column>
                         <dxi-column dataField="TOUHeader" [minWidth]="140"></dxi-column>
-                        <dxi-column dataField="SupplyType" [minWidth]="100"></dxi-column>
-                        <dxi-column dataField="SupplyTo" [minWidth]="100"></dxi-column>
+                        <dxi-column dataField="SupplyType" [minWidth]="80"></dxi-column>
+                        <dxi-column dataField="SupplyTo" [minWidth]="80"></dxi-column>
                         <dxi-column dataField="Location" [minWidth]="120"></dxi-column>
-                        <dxi-column type="buttons" [minWidth]="80">
+                        <dxi-column type="buttons" [minWidth]="60">
                             <dxi-button hint="Delete" icon="trash" [onClick]="onRemoveMappedMeter"></dxi-button>
+                        </dxi-column>
+                        <dxi-column type="buttons" [minWidth]="60">
+                            <dxi-button hint="Edit" icon="edit" [onClick]="onRemoveMappedMeter"></dxi-button>
                         </dxi-column>
                     </dx-data-grid>
                 </div>
