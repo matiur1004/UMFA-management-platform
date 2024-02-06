@@ -14,8 +14,8 @@
 }
 
 @font-face {
-    font-family: Gotham Light;
-    src: data-uri("../assets/fonts/Gotham/Gotham-Light.otf");
+    font-family: "Gotham Light";
+    src: url("../assets/fonts/Gotham/Gotham-Light.otf");
 }
 
 @font-face {
@@ -26,7 +26,10 @@
     font-weight: 550 !important;
 }
 body {
-    font-family: 'Gotham Medium', Arial, sans-serif;;
+    font-family: 'Gotham Medium', Arial, sans-serif;
+}
+.font-light {
+    font-family: 'Gotham Light', Arial, sans-serif;
 }
 .mat-tab-group .mat-tab-body {
     overflow: visible !important;
