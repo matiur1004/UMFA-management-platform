@@ -118,15 +118,14 @@ namespace ClientPortal.Controllers
         {
             //add building if not exist
             // TODO add building server
+            
             var bldng = await _context.Buildings.Where(b => b.UmfaId == mappedMeter.BuildingId).FirstOrDefaultAsync();
+            
             if (bldng == null)
             {
                 bldng = new() { UmfaId = mappedMeter.BuildingId, Name = mappedMeter.BuildingName, PartnerId = mappedMeter.PartnerId, Partner = mappedMeter.PartnerName };
                 _context.Buildings.Add(bldng);
             }
-            _context.MappedMeters.Add(mappedMeter);
-            await _context.SaveChangesAsync();
-            _logger?.LogInformation($"Added MappedMeter {mappedMeter.MappedMeterId}");
 
             //Add AMRMeter
             var aMrMeterNo = mappedMeter.ScadaSerial;
@@ -181,19 +180,55 @@ namespace ClientPortal.Controllers
             // End Add AMRMeter
 
             // add scada request headers & details for new meter
-            if(amrMeterId is not null)
+           
+
+            try
             {
-                await _scadaRequestService.HandleNewMappedMeterAsync(mappedMeter, (int)amrMeterId);
+                if (amrMeterId is not null)
+                {
+                    await _scadaRequestService.HandleNewMappedMeterAsync(mappedMeter, (int)amrMeterId);
+                }
+                else
+                {
+                    return BadRequest($"ERROR: Could not add AMRMeter {aMrMeterNo}");
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
+                return BadRequest($"ERROR: Could not add schedule for {amrMeterId}");
             }
 
-            // sync umfa db
-            try 
-            { 
-                await _mappedMetersService.AddUmfaMappedMeterAsync(mappedMeter);
+            try
+            {
+                var addedMeter = _context.MappedMeters.Add(mappedMeter);
+
+                await _context.SaveChangesAsync();
+
+                _logger?.LogInformation($"Added MappedMeter {mappedMeter.MappedMeterId}");
+
+                // sync umfa db
+                try
+                {
+                    if (addedMeter is not null)
+                    {
+                        await _mappedMetersService.AddUmfaMappedMeterAsync(mappedMeter);
+                    }
+                    else
+                    {
+                        return BadRequest("Could not add");
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, "Could not sync Umfa Db");
+                }
             }
             catch(Exception e)
             {
-                _logger.LogError(e, "Could not sync Umfa Db");
+                _logger.LogError(e, e.Message);
+                return BadRequest($"ERROR: Could not add mapped meter for {mappedMeter.MappedMeterId}");
             }
 
             return CreatedAtAction("PostMappedMeter", new { id = mappedMeter.MappedMeterId }, mappedMeter);

@@ -63,6 +63,7 @@ export class AmrGraphCriteriaComponent implements OnInit, OnDestroy {
           this.meterId = null;
           this.touHeaderId = null;
           this.amrService.DemChartParams = null;
+          this.amrService.showResult(false);
           this.amrService.setFrmValid(2, false);
         } else {
           if (c.Id == 1) {
@@ -94,10 +95,13 @@ export class AmrGraphCriteriaComponent implements OnInit, OnDestroy {
 
   valueChangedDemand(e: any, frm: NgForm) {
     if (e.value) {
-      if (e.previousValue && e.value != e.previousValue) this.amrService.displayChart(false);
+      if (e.previousValue && e.value != e.previousValue) {
+        this.amrService.displayChart(false);
+        this.amrService.showResult(false);
+      }
       if (e.element.id == 'sDateId' && !e.previousValue) {
         let dt: Date = new Date(e.value);
-        dt.setHours(0, 30, 0);
+        dt.setHours(0, 0, 0);
         this.sTime = new Date(dt);
         dt.setDate(dt.getDate() + 7);
         dt.setHours(0, 0, 0);

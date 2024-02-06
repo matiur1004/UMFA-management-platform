@@ -1,6 +1,9 @@
-﻿using ClientPortal.Data.Repositories;
+﻿using ClientPortal.Data.Entities.PortalEntities;
+using ClientPortal.Data.Repositories;
+using ClientPortal.DtOs;
 using ClientPortal.Models.RequestModels;
 using ClientPortal.Models.ResponseModels;
+using System.Text.Json;
 
 namespace ClientPortal.Services
 {
@@ -12,17 +15,27 @@ namespace ClientPortal.Services
         Task<AMRMeterResponseList> GetAllMetersForUserChart(int userId, int chartId, bool isTenant = false);
         Task<AMRMeterResponse> EditMeterAsync(AMRMeterUpdateRequest meter);
         Task<List<UtilityResponse>> GetMakeModels();
+
+        Task<ScadaRequestDetail?> MoveMeterSchedule(MoveMeterScheduleRequest request);
+
+        Task<bool> RunAmrMeterJob(RunAmrMeterJobRequest request);
     }
 
     public class AMRMeterService : IAMRMeterService
     {
         private readonly ILogger<AMRMeterService> _logger;
         private readonly IAMRMeterRepository _meterRepo;
+        private readonly IScadaRequestService _scadaRequestService;
+        private readonly IAmrProfileJobsQueueService _amrProfileJobsQueueService;
+        private readonly IAmrReadingsJobsQueueService _amrReadingsJobsQueueService;
 
-        public AMRMeterService(ILogger<AMRMeterService> logger, IAMRMeterRepository meterRepo)
+        public AMRMeterService(ILogger<AMRMeterService> logger, IAMRMeterRepository meterRepo, IScadaRequestService scadaRequestService, IAmrProfileJobsQueueService amrProfileJobsQueueService, IAmrReadingsJobsQueueService amrReadingsJobsQueueService)
         {
             _logger = logger;
             _meterRepo = meterRepo;
+            _scadaRequestService = scadaRequestService;
+            _amrProfileJobsQueueService = amrProfileJobsQueueService;
+            _amrReadingsJobsQueueService = amrReadingsJobsQueueService;
         }
 
         public async Task<AMRMeterResponse> EditMeterAsync(AMRMeterUpdateRequest updMeter)
@@ -103,9 +116,14 @@ namespace ClientPortal.Services
             _logger.LogInformation("Getting meter with id: {id}", id);
             try
             {
-                var result = await _meterRepo.GetMeterAsync(id);
-                if (result != null) return result;
-                else throw new Exception($"Meter for id {id} not found");
+                var meter = await _meterRepo.GetMeterAsync(id);
+                
+                if (meter is null) throw new Exception($"Meter for id {id} not found");
+
+                var detailProfile = await _scadaRequestService.GetScadaRequestDetailAsyncByJobTypeAndAmrMeterIdAsync(1, id);
+                var detailReading = await _scadaRequestService.GetScadaRequestDetailAsyncByJobTypeAndAmrMeterIdAsync(2, id);
+
+                return new AMRMeterResponse(meter, detailProfile, detailReading);
             }
             catch (Exception ex)
             {
@@ -128,6 +146,54 @@ namespace ClientPortal.Services
                 _logger.LogError("Error while retrieving makes and models: {Message}", ex.Message);
                 throw new ApplicationException($"Error while retrieving makes and models: {ex.Message}");
             }
+        }
+
+        public async Task<ScadaRequestDetail?> MoveMeterSchedule(MoveMeterScheduleRequest request)
+        {
+            var detail = await _scadaRequestService.GetScadaRequestDetailAsyncByJobTypeAndAmrMeterIdAsync((int)request.JobType!, (int)request.MeterId!);
+
+            if (detail == null) return null;
+
+            detail.HeaderId = (int)request.NewScheduleId!;
+
+            return await _scadaRequestService.UpdateScadaRequestDetailAsync(detail);
+        }
+
+        public async Task<bool> RunAmrMeterJob(RunAmrMeterJobRequest request)
+        {
+            var detail = await _scadaRequestService.GetScadaRequestDetailAsyncByJobTypeAndAmrMeterIdAsync((int)request.JobType!, (int)request.MeterId!);
+
+            if(detail is null) return false;
+
+            var jobs = new List<AmrJobToRun>();
+
+            var fromDate = detail.LastDataDate ?? new DateTime(DateTime.UtcNow.Year, 1, 1);
+
+            jobs.Add(new AmrJobToRun
+            {
+                HeaderId = detail.Header.Id,
+                DetailId = detail.Id,
+                CommsId = detail.AmrMeter.CommsId,
+                Key1 = detail.AmrMeter.MeterSerial,
+                SqdUrl = detail.AmrScadaUser.SgdUrl,
+                ProfileName = detail.AmrScadaUser.ProfileName,
+                ScadaUserName = detail.AmrScadaUser.ScadaUserName,
+                ScadaPassword = detail.AmrScadaUser.ScadaPassword,
+                JobType = detail.Header.JobType,
+                FromDate = fromDate,
+                ToDate = fromDate.AddDays(7),
+            });
+
+            if(request.JobType == 1)
+            {
+                await _amrProfileJobsQueueService.AddMessageToQueueAsync(JsonSerializer.Serialize(jobs));
+            }
+            else if (request.JobType == 2)
+            {
+                await _amrReadingsJobsQueueService.AddMessageToQueueAsync(JsonSerializer.Serialize(jobs));
+            }
+
+            return true;
         }
     }
 }
