@@ -522,11 +522,14 @@ export class ShopDetailComponent implements OnInit {
 
   getColorFromGroupName(groupName) {
     let color = '';
-    Object.keys(this.groupsByUtility).forEach(key => {
-      let groups = this.groupsByUtility[key];
-      if(groups.indexOf(groupName) > -1) color = this._utils.utilityColorMapping()[key][groups.indexOf(groupName)];
-    })
-    return color;
+    if(this.groupsByUtility) {
+      Object.keys(this.groupsByUtility).forEach(key => {
+        let groups = this.groupsByUtility[key];
+        if(groups.indexOf(groupName) > -1) color = this._utils.utilityColorMapping()[key][groups.indexOf(groupName)];
+      })
+      return color;
+    }
+    return "#000000";
   }
 
   /**
