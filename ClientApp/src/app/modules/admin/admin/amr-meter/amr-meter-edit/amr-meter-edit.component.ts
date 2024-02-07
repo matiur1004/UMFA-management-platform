@@ -244,10 +244,14 @@ export class AmrMeterEditComponent implements OnInit {
         let formData = {
           MeterId: this.MeterId,
           NewScheduleId: selectedEntity.Id,
-          JobType: 1
+          JobType: type === "PROFILE" ? 1 : 2,
         }
-        this.amrService.moveToDifferentSchedule(formData).subscribe((newScada) => {
-          this.form.patchValue(newScada.AmrMeter);
+        this.amrService.moveToDifferentSchedule(formData).subscribe((data) => {
+          if(data) {
+            this.getAmrMeter(this.MeterId);
+            this.isProfileScheduleShow = false;
+            this.isReadingScheduleShow = false
+          }
         });
       } else {
       
@@ -282,27 +286,6 @@ export class AmrMeterEditComponent implements OnInit {
     })
     
   }
-
-  // selectReadingSchedule(readingScheduleId) {
-  //   const readingScheduleDescription = this.readingSchedules.find(s => s.Id == readingScheduleId).Description;
-  //   const dialogRef = this._util.fuseConfirmDialog(
-  //     CONFIRM_MODAL_CONFIG,
-  //     '',
-  //     `Are you sure you want to move to ${readingScheduleDescription}?`
-  //   );
-  //   dialogRef.afterClosed().subscribe((result) => {
-  //     if(result == 'confirmed') {
-  //       let formData = {
-  //         MeterId: this.MeterId,
-  //         NewScheduleId: readingScheduleId,
-  //         JobType: 1
-  //       }
-  //       this.amrService.moveToDifferentSchedule(formData).subscribe();
-  //     } else {
-      
-  //     }
-  //   })
-  // }
 
   async saveAmrMeter() {
     if(!this.form.valid) {

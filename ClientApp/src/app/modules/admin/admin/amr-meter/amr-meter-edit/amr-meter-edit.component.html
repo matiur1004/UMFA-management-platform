@@ -156,7 +156,7 @@
       <button mat-raised-button color="primary" class="dnm-btn dnm-btn-primary" (click)="showProfileScheduleList()">Move To</button>
     </div>
     <div class="col-span-1">
-      <mat-label [style.visibility]="isProfileScheduleShow ? 'visible' : 'hidden'" class="form-label"> Select Profile </mat-label>
+      <mat-label [style.visibility]="isProfileScheduleShow ? 'visible' : 'hidden'" class="form-label"> Profile Schedule </mat-label>
       <ng-select
           [items]="profileSchedules"
           bindLabel="Description"
@@ -169,7 +169,7 @@
           >
       </ng-select>
     </div>
-    <div class="cop-span-1 flex items-end justify-center" [style.visibility]="isProfileScheduleShow ? 'visible' : 'hidden'">
+    <div class="cop-span-1 flex items-end justify-center">
       <button mat-raised-button color="primary" class="dnm-btn dnm-btn-primary" (click)="downloadedSchedule(1)">Download Now</button>
     </div>
   </div>
@@ -197,7 +197,7 @@
       <button mat-raised-button color="primary" class="dnm-btn dnm-btn-primary" (click)="showReadingScheduleList()">Move To</button>
     </div>
     <div class="col-span-1">
-      <mat-label [style.visibility]="isReadingScheduleShow ? 'visible' : 'hidden'" class="form-label"> Select Reading </mat-label>
+      <mat-label [style.visibility]="isReadingScheduleShow ? 'visible' : 'hidden'" class="form-label"> Readings Schedule </mat-label>
       <ng-select
           [items]="readingSchedules"
           bindLabel="Description"
@@ -210,7 +210,7 @@
           >
       </ng-select>
     </div>
-    <div class="cop-span-1 flex items-end justify-center" [style.visibility]="isReadingScheduleShow ? 'visible' : 'hidden'">
+    <div class="cop-span-1 flex items-end justify-center">
       <button mat-raised-button color="primary" class="dnm-btn dnm-btn-primary" (click)="downloadedSchedule(2)">Download Now</button>
     </div>
   </div>
