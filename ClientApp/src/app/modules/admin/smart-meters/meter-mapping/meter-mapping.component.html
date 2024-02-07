@@ -9,7 +9,7 @@
                     bindValue="Id"
                     class="w-60"
                     [placeholder]="'Select Partner'"
-                    [formControlName]="'partnerId'"
+                    [formControlName]="'PartnerId'"
                     [searchable]="true"
                     [closeOnSelect]="true"
                     [clearable]="false"
@@ -47,7 +47,7 @@
                     <div class="text-lg py-1 border-b flex"><mat-icon>developer_board</mat-icon> UMFA Meters</div>
                     <dx-data-grid [dataSource]="umfaMeters" id="umfaMetersGrid" keyExpr="MeterId"
                                   [selectedRowKeys]="[]" [showBorders]="true" class="grid-container" [hoverStateEnabled]="true"
-                                  (onRowClick)="selectUmfaMeter($event)" (onRowPrepared)="onUmfaMeterRowPrepared($event)" #umfaMeterTable>
+                                  (onRowClick)="selectUmfaMeter($event)" (onRowPrepared)="onUmfaMeterRowPrepared($event)" [disabled]="isRowEditing" #umfaMeterTable>
                         <dxo-scrolling rowRenderingMode="virtual"></dxo-scrolling>
                         <dxo-filter-row [visible]="'true'"
                                         [applyFilter]="currentFilter"></dxo-filter-row>
@@ -72,7 +72,7 @@
                     <div class="text-lg py-1 border-b flex"><mat-icon>developer_board</mat-icon> AMR Scada Meters</div>
                     <dx-data-grid [dataSource]="scadaMeters" id="scadaMetersGrid" [showBorders]="true"
                                   class="grid-container" [hoverStateEnabled]="true" keyExpr="Serial" [selectedRowKeys]="[]"
-                                  (onRowClick)="selectScadaMeter($event)" (onRowPrepared)="onScadaMeterRowPrepared($event)" #scadaMeterTable>
+                                  (onRowClick)="selectScadaMeter($event)" (onRowPrepared)="onScadaMeterRowPrepared($event)" [disabled]="isRowEditing" #scadaMeterTable>
                         <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
                         <dxo-filter-row [visible]="'true'"
                                         [applyFilter]="currentFilter"></dxo-filter-row>
@@ -163,9 +163,13 @@
                         </mat-form-field>
                     </div>
                     <div style="align-items: center;">
-                        <button mat-raised-button color="primary" class="dnm-btn dnm-btn-primary" [disabled]="!form.valid" (click)="addMeterMapping()">
+                        <button *ngIf="!isRowEditing" mat-raised-button color="primary" class="dnm-btn dnm-btn-primary" [disabled]="!form.valid" (click)="addMeterMapping()">
                             <mat-icon [svgIcon]="'feather:addMeter'" class="mr-1"></mat-icon>
                             Add Meter Mapping
+                        </button>
+                        <button *ngIf="isRowEditing" mat-raised-button color="primary" class="dnm-btn dnm-btn-primary" (click)="updateMeterMapping()">
+                            <mat-icon [svgIcon]="'feather:addMeter'" class="mr-1"></mat-icon>
+                            Edit Meter Mapping
                         </button>
                     </div>
 
@@ -202,7 +206,7 @@
                             <dxi-button hint="Delete" icon="trash" [onClick]="onRemoveMappedMeter"></dxi-button>
                         </dxi-column>
                         <dxi-column type="buttons" [minWidth]="60">
-                            <dxi-button hint="Edit" icon="edit" [onClick]="onRemoveMappedMeter"></dxi-button>
+                            <dxi-button hint="Edit" icon="edit" [onClick]="onEditMappedMeter"></dxi-button>                            
                         </dxi-column>
                     </dx-data-grid>
                 </div>

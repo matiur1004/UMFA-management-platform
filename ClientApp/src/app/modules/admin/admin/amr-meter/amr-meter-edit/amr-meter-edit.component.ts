@@ -138,7 +138,6 @@ export class AmrMeterEditComponent implements OnInit {
   }
 
   initForm() {
-    console.log(this.amrMeter);
     if(this.amrMeter) {
       this.form.patchValue(this.amrMeter);
     }
