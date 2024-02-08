@@ -4,7 +4,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DialogConstants } from 'app/core/helpers';
 import { DialogService } from 'app/shared/services/dialog.service';
 import { BuildingService, MeterService, SnackBarService, UserService } from 'app/shared/services';
-import { AmrMeterUpdate, IAmrMeter, IMeterMakeModel, IUmfaBuilding, IUtility } from 'app/core/models';
+import { AmrMeterUpdate, IAmrMeter, IMeterMakeModel, IScadaRequestHeader, IUmfaBuilding, IUtility } from 'app/core/models';
+import { AMRScheduleService } from '@shared/services/amr-schedule.service';
+import { UmfaUtils } from '@core/utils/umfa.utils';
+import { CONFIRM_MODAL_CONFIG } from '@core/config/modal.config';
+import { DatePipe } from '@angular/common';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   templateUrl: './amr-meter-edit.component.html',
@@ -23,20 +28,35 @@ export class AmrMeterEditComponent implements OnInit {
   makes: IMeterMakeModel[];
   makeItems: any[];
   modelItems: any[];
+  MeterId: number;
 
   errMessage: string;
 
   form: UntypedFormGroup;
+  profileForm: UntypedFormGroup;
+  readingForm: UntypedFormGroup;
+
+  isProfileScheduleShow: boolean = false;
+  isReadingScheduleShow: boolean = false;
+
+  allSchedules: any[]
+  profileSchedules: any[]
+  readingSchedules: any[]
+
   phaseItems = [{Label: 'Single', Id: 1}, {Label: 'Dual', Id: 2}, {Label: 'Three', Id: 3}];
+
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(private route: ActivatedRoute,
     private router: Router,
     private meterService: MeterService,
+    private amrService: AMRScheduleService,
     private sbService: SnackBarService,
     private bldService: BuildingService,
     private usrService: UserService,
     private dialogService: DialogService,
-    private _formBuilder: UntypedFormBuilder
+    private _formBuilder: UntypedFormBuilder,
+    private _util: UmfaUtils
   ) { }
 
   getAmrMeter(id: number): void {
@@ -46,6 +66,8 @@ export class AmrMeterEditComponent implements OnInit {
         this.getUtilities();
         this.getBuildings();
         this.initForm();
+        this.initProfileForm();
+        this.initReadingForm();
       },
       error: err => this.errMessage = err
     });
@@ -75,7 +97,7 @@ export class AmrMeterEditComponent implements OnInit {
     this.utils = utils;
     if (this.amrMeter.Id == 0) this.changeUtil(this.utils[0].Id);
     else {
-      this.makes = this.utils.find(u => u.Id == this.amrMeter.UtilityId).MakeModels;
+      this.makes = (this.utils.find(u => u.Id == this.amrMeter.UtilityId)) ? this.utils.find(u => u.Id == this.amrMeter.UtilityId).MakeModels : [];
       this.makeItems = []; 
       this.modelItems = [];
       this.makes.forEach(item => {
@@ -129,18 +151,52 @@ export class AmrMeterEditComponent implements OnInit {
       MeterSerial: [null, [Validators.required]]
     });
 
+    this.profileForm = this._formBuilder.group({
+      HeaderId: [],
+      ScheduleName: [null, [Validators.required]],
+      LastRunDate: [null, [Validators.required]],
+      LastDataDate: [null, [Validators.required]]
+    })
+
+    this.readingForm = this._formBuilder.group({
+      HeaderId: [],
+      ScheduleName: [null, [Validators.required]],
+      LastRunDate: [null, [Validators.required]],
+      LastDataDate: [null, [Validators.required]]
+    })
     this.route.paramMap.subscribe(
       (params) => {
         this.opUsrId = +params.get('opId');
-        const id = +params.get('meterId');
-        this.getAmrMeter(id);
+        this.MeterId = +params.get('meterId');
+        this.getAmrMeter(this.MeterId);
       });
+
+    this.amrService.getScadaRequestHeaders().subscribe(res => {
+      this.allSchedules = res;
+    })
   }
 
   initForm() {
-    console.log(this.amrMeter);
     if(this.amrMeter) {
       this.form.patchValue(this.amrMeter);
+    }
+  }
+
+  initProfileForm() {
+    if(this.amrMeter) {
+      var pipe = new DatePipe('en_ZA');
+      this.profileForm.patchValue(this.amrMeter.ScadaProfilesDetails);
+      this.profileForm.get('LastRunDate').setValue(pipe.transform( this.profileForm.get('LastRunDate').value,"yyyy-MM-dd HH:mm"));
+      this.profileForm.get('LastDataDate').setValue(pipe.transform( this.profileForm.get('LastDataDate').value,"yyyy-MM-dd HH:mm"));
+    }
+  }
+
+  initReadingForm(){
+    if(this.amrMeter) {
+      var pipe = new DatePipe('en_ZA');
+      this.readingForm.patchValue(this.amrMeter.ScadaReadingsDetails);
+      this.readingForm.get('LastRunDate').setValue(pipe.transform( this.readingForm.get('LastRunDate').value,"yyyy-MM-dd HH:mm"));
+      this.readingForm.get('LastDataDate').setValue(pipe.transform( this.readingForm.get('LastDataDate').value,"yyyy-MM-dd HH:mm"));
     }
   }
 
@@ -167,6 +223,68 @@ export class AmrMeterEditComponent implements OnInit {
     this.amrMeter.UtilityId = util.Id;
     this.amrMeter.Utility = util.Name;
     this.changeMakeModel(this.makes[0].Id);
+  }
+
+  showProfileScheduleList(): void {
+    if(this.allSchedules) {
+      this.profileSchedules = this.allSchedules.filter(p => p.JobType == 1);
+      this.isProfileScheduleShow = true;
+    }
+  }
+
+  selectSchedule(selectedEntity, type): void {
+    const description = type === "PROFILE" ? this.profileSchedules.find(s => s.Id == selectedEntity.Id).Description : this.readingSchedules.find(s => s.Id == selectedEntity.Id).Description;
+    const dialogRef = this._util.fuseConfirmDialog(
+      CONFIRM_MODAL_CONFIG,
+      '',
+      `Are you sure you want to move to ${description}?`
+    );
+    dialogRef.afterClosed().subscribe((result) => {
+      if(result == 'confirmed') {
+        let formData = {
+          MeterId: this.MeterId,
+          NewScheduleId: selectedEntity.Id,
+          JobType: type === "PROFILE" ? 1 : 2,
+        }
+        this.amrService.moveToDifferentSchedule(formData).subscribe((data) => {
+          if(data) {
+            this.getAmrMeter(this.MeterId);
+            this.isProfileScheduleShow = false;
+            this.isReadingScheduleShow = false
+          }
+        });
+      } else {
+      
+      }
+    })
+  }
+
+  showReadingScheduleList(): void {
+    if(this.allSchedules) {
+      this.readingSchedules = this.allSchedules.filter(p => p.JobType == 2);
+      this.isReadingScheduleShow = true;
+    }
+  }
+
+  downloadedSchedule(JobType): void {
+    
+    const dialogRef = this._util.fuseConfirmDialog(
+      CONFIRM_MODAL_CONFIG,
+      '',
+      `Are you sure you want to download ${JobType === 1 ? 'Profile': 'Reading'} schedules?`
+    );
+    dialogRef.afterClosed().subscribe((result) => {
+      if(result == 'confirmed') {
+        let formData = {
+          MeterId: this.MeterId,
+          JobType: JobType
+        }
+        this.amrService.downloadSchedules(formData).subscribe();
+      } else {
+      
+      }
+    })
+    
   }
 
   async saveAmrMeter() {
@@ -236,6 +354,11 @@ export class AmrMeterEditComponent implements OnInit {
       },
       error: err => this.errMessage = err,
     });
+  }
+
+  ngOnDestory() {
+    this._unsubscribeAll.next(null);
+    this._unsubscribeAll.complete();
   }
 
 }
