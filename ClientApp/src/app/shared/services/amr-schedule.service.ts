@@ -15,6 +15,7 @@ export class AMRScheduleService {
     private _scheduleStatus: BehaviorSubject<any> = new BehaviorSubject([]);
     private _jobStatus: BehaviorSubject<any> = new BehaviorSubject([]);
     private _meters: BehaviorSubject<any> = new BehaviorSubject([]);
+    private _newScada: BehaviorSubject<any> = new BehaviorSubject({});
 
     constructor(private http: HttpClient, private notificationService: NotificationService,) { }
 
@@ -194,6 +195,28 @@ export class AMRScheduleService {
             this._meters.next(res);
           })
         );
+    }
+
+    moveToDifferentSchedule(formData) {
+      const url = `${CONFIG.apiURL}/AMRMeter/meter/schedules`;
+      return this.http.put<any>(url, formData, { withCredentials: true})
+      .pipe(
+        catchError(err => this.catchErrors(err)),
+        tap(res => {
+          this._newScada.next(res);
+        })
+      )
+    }
+
+    downloadSchedules(formData) {
+      const url = `${CONFIG.apiURL}/AMRMeter/meter/jobs`
+      return this.http.post<any>(url, formData, { withCredentials: true})
+      .pipe(
+        catchError(err => this.catchErrors(err)),
+        tap(res => {
+          this.notificationService.message('Successfully Downloaded!');
+        })
+      )
     }
 
     //catches errors

@@ -132,6 +132,95 @@
       </mat-form-field>
     </div>
   </div>
+  <div class="row grid grid-cols-4 gap-x-4 w-full border-t border-gray-300 pt-3 pb-2" [formGroup]="profileForm">
+    <div class="col-span-4 mb-3">
+      <span class="text-xl">Profile Schedule</span>
+    </div>
+    <div class="col-span-1">
+      <mat-form-field class="fuse-mat-dense w-full readonly-field" [floatLabel]="'always'">
+          <mat-label class="form-label">Schedule Name</mat-label>
+          <input matInput [formControlName]="'ScheduleName'" [placeholder]="'Schedule Name'"/>
+      </mat-form-field>
+    </div>
+    <div class="col-span-1">
+      <mat-form-field class="fuse-mat-dense w-full readonly-field" [floatLabel]="'always'">
+          <mat-label class="form-label">Last Run</mat-label>
+          <input matInput [formControlName]="'LastRunDate'" [placeholder]="'Last Run'"/>
+      </mat-form-field>
+    </div>
+    <div class="col-span-1">
+      <mat-form-field class="fuse-mat-dense w-full readonly-field" [floatLabel]="'always'">
+          <mat-label class="form-label">Latest Data</mat-label>
+          <input matInput [formControlName]="'LastDataDate'" [placeholder]="'Latest Data'"/>
+      </mat-form-field>
+    </div>
+    <div class="col-span-1"></div>
+    <div class="col-span-1 flex items-end justify-center">
+      <button mat-raised-button color="primary" class="dnm-btn dnm-btn-primary" (click)="showProfileScheduleList()">Move To</button>
+    </div>
+    <div class="col-span-1">
+      <mat-label [style.visibility]="isProfileScheduleShow ? 'visible' : 'hidden'" class="form-label"> Profile Schedule </mat-label>
+      <ng-select
+          [items]="profileSchedules"
+          bindLabel="Description"
+          bindValue="Id"
+          [placeholder]="'Select Profile Schedule'"
+          [searchable]="false"
+          [clearable]="false"
+          [style.visibility]="isProfileScheduleShow ? 'visible' : 'hidden'"
+          (change)="selectSchedule($event, 'PROFILE')"
+          >
+      </ng-select>
+    </div>
+    <div class="cop-span-1 flex items-end justify-center">
+      <button mat-raised-button color="primary" class="dnm-btn dnm-btn-primary" (click)="downloadedSchedule(1)">Download Now</button>
+    </div>
+  </div>
+  <div class="row grid grid-cols-4 gap-x-4 w-full border-t border-gray-300 pt-3 pb-2" [formGroup]="readingForm">
+    <div class="col-span-4 mb-3">
+      <span class="text-xl">Readings Schedule</span>
+    </div>
+    <div class="col-span-1">
+      <mat-form-field class="fuse-mat-dense w-full readonly-field" [floatLabel]="'always'">
+          <mat-label class="form-label">Schedule Name</mat-label>
+          <input matInput [formControlName]="'ScheduleName'" [placeholder]="'Schedule Name'"/>
+      </mat-form-field>
+    </div>
+    <div class="col-span-1">
+      <mat-form-field class="fuse-mat-dense w-full readonly-field" [floatLabel]="'always'">
+          <mat-label class="form-label">Last Run</mat-label>
+          <input matInput [formControlName]="'LastRunDate'" [placeholder]="'Last Run'"/>
+      </mat-form-field>
+    </div>
+    <div class="col-span-1">
+      <mat-form-field class="fuse-mat-dense w-full readonly-field" [floatLabel]="'always'">
+          <mat-label class="form-label">Latest Data</mat-label>
+          <input matInput [formControlName]="'LastDataDate'" [placeholder]="'Latest Data'"/>
+      </mat-form-field>
+    </div>
+    <div class="col-span-1"></div>
+    
+    <div class="col-span-1 flex items-end justify-center">
+      <button mat-raised-button color="primary" class="dnm-btn dnm-btn-primary" (click)="showReadingScheduleList()">Move To</button>
+    </div>
+    <div class="col-span-1">
+      <mat-label [style.visibility]="isReadingScheduleShow ? 'visible' : 'hidden'" class="form-label"> Readings Schedule </mat-label>
+      <ng-select
+          [items]="readingSchedules"
+          bindLabel="Description"
+          bindValue="Id"
+          [placeholder]="'Select Reading Schedule'"
+          [searchable]="false"
+          [clearable]="false"
+          [style.visibility]="isReadingScheduleShow ? 'visible' : 'hidden'"
+          (change)="selectSchedule($event, 'READING')"
+          >
+      </ng-select>
+    </div>
+    <div class="cop-span-1 flex items-end justify-center">
+      <button mat-raised-button color="primary" class="dnm-btn dnm-btn-primary" (click)="downloadedSchedule(2)">Download Now</button>
+    </div>
+  </div>
   <div class="pt-3 px-4 border-t border-gray-300 text-gray-600 flex justify-end gap-x-4">
     <button *ngIf="amrMeter && amrMeter.Id > 0" class="dnm-btn dnm-btn-delete" type="button" (click)="deleteAmrMeter()">Delete</button>
     <button routerLink="/admin/amrMeter" class="dnm-btn dnm-btn-cancel" type="button">Cancel</button>

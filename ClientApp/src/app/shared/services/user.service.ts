@@ -175,7 +175,10 @@ export class UserService {
     const url = `${CONFIG.apiURL}${CONFIG.getAmrScadaUser}${id}`;
     return this.http.get<any>(url, { withCredentials: true })
       .pipe(
-        catchError(err => this.catchErrors('getAmrScadaUser', err)),
+        catchError(err => {
+          this._notificationService.error("Get Amr Scada User Failed!");
+          return this.catchErrors('getAmrScadaUser', err)
+        }),
         tap(u => {
           //console.log(`Http response from getAmrScadaUser: ${JSON.stringify(u)}`)
         })

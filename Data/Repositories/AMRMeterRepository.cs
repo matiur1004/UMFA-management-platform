@@ -42,7 +42,7 @@ namespace ClientPortal.Data.Repositories
             try
             {
                 var user = await _dbContext.Users.FindAsync(meter.UserId);
-                var building = await _dbContext.Buildings.FirstOrDefaultAsync(b => b.UmfaId == meter.Meter.UmfaId && b.Users.Contains(user));
+                var building = await _dbContext.Buildings.FirstOrDefaultAsync(b => b.UmfaId == meter.Meter.UmfaId);
                 if (building == null)
                 {
                     UMFABuildingResponse resp = await _buildingRepo.GetBuilding(meter.UserId, meter.Meter.UmfaId);
