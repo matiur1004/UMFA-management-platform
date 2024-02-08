@@ -118,7 +118,8 @@ export class UmfaUtils {
       'Sewerage':       ['#BC61F5', '#613385', '#F0D8FF', '#6C0BA9', '#461257'],
       'Gas':          ['#FFFF00', '#FFD300', '#FCFC8F', '#FFEF00', '#FFA700'],
       'Diesel':       ['#FC6A03', '#B56727', '#FDA172'],
-      'Ad hoc':       ['#CCCCCC', '#706B6B', '#ECECEC', '#999999', '#333333']
+      'Ad hoc':       ['#CCCCCC', '#706B6B', '#ECECEC', '#999999', '#333333'],
+      'Other':        ['#FFEE00', '#EEFF33']  
     }
   }
 

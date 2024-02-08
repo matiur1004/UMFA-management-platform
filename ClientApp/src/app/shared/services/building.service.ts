@@ -84,7 +84,10 @@ export class BuildingService {
     const url = `${CONFIG.apiURL}${CONFIG.getAllUmfaMetersForBuilding}${umfaBuildingId}`;
     return this.http.get<any>(url, { withCredentials: true })
       .pipe(
-        catchError(err => this.catchErrors(err)),
+        catchError(err => {
+          this._notificationService.error("Get Meter Failed!");
+          return this.catchErrors(err)
+        }),
         tap(bps => {
           //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
         }),
@@ -96,7 +99,10 @@ export class BuildingService {
     const url = `${CONFIG.apiURL}/MappedMeters/GetAllMappedMetersForBuilding/${umfaBuildingId}`;
     return this.http.get<any>(url, { withCredentials: true })
       .pipe(
-        catchError(err => this.catchErrors(err)),
+        catchError(err => {
+          this._notificationService.error("Get Meter Mapping Failed!");
+          return this.catchErrors(err)
+        }),
         tap(bps => {
           //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
         }),
@@ -108,7 +114,9 @@ export class BuildingService {
     const url = `${CONFIG.apiURL}/MappedMeters/AddMappedMeter`;
     return this.http.post<any>(url, data, { withCredentials: true })
       .pipe(
-        catchError(err => this.catchErrors(err)),
+        catchError(err => {
+          this._notificationService.error("Added Meter Failed!"); 
+          return this.catchErrors(err)}),
         tap(bps => {
           this._notificationService.message('Added Meter Mapping successfully!')
           //console.log(`Http response from getBuildingsForUser: ${m.length} buildings retrieved`)
