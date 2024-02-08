@@ -45,8 +45,8 @@
             <div class="col-span-5">
                 <div class="bg-card flex flex-col gap-y-2 p-2">
                     <div class="text-lg py-1 border-b flex"><mat-icon>developer_board</mat-icon> UMFA Meters</div>
-                    <dx-data-grid [dataSource]="umfaMeters" id="umfaMetersGrid" keyExpr="MeterId"
-                                  [focusedRowIndex]="focusedMeterRowIndex" [focusedRowEnabled]="true" [showBorders]="true" class="grid-container" [hoverStateEnabled]="true"
+                    <dx-data-grid [dataSource]="umfaMeters" id="umfaMetersGrid" keyExpr="MeterNo"
+                                  [focusedRowKey]="focusedMeterRowKey" [focusedRowEnabled]="true" [showBorders]="true" class="grid-container" [hoverStateEnabled]="true"
                                   (onRowClick)="selectUmfaMeter($event)" (onRowPrepared)="onUmfaMeterRowPrepared($event)" #umfaMeterTable>
                         <dxo-scrolling rowRenderingMode="virtual"></dxo-scrolling>
                         <dxo-filter-row [visible]="'true'"
@@ -71,7 +71,9 @@
                 <div class="bg-card p-2 flex flex-col gap-y-2">
                     <div class="text-lg py-1 border-b flex"><mat-icon>developer_board</mat-icon> AMR Scada Meters</div>
                     <dx-data-grid [dataSource]="scadaMeters" id="scadaMetersGrid" [showBorders]="true"
-                                  class="grid-container" [hoverStateEnabled]="true" keyExpr="Serial" [selectedRowKeys]="[]"
+                                  class="grid-container" 
+                                  [focusedRowKey]="focusedScadaRowKey" [focusedRowEnabled]="true"
+                                  [hoverStateEnabled]="true" keyExpr="Serial" [selectedRowKeys]="[]"
                                   (onRowClick)="selectScadaMeter($event)" (onRowPrepared)="onScadaMeterRowPrepared($event)" #scadaMeterTable>
                         <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
                         <dxo-filter-row [visible]="'true'"
@@ -167,7 +169,7 @@
                             <mat-icon [svgIcon]="'feather:addMeter'" class="mr-1"></mat-icon>
                             Add Meter Mapping
                         </button>
-                        <button *ngIf="isRowEditing" mat-raised-button color="primary" class="dnm-btn dnm-btn-primary" (click)="updateMeterMapping()">
+                        <button *ngIf="isRowEditing" mat-raised-button color="primary" class="dnm-btn dnm-btn-primary" [disabled]="!isValidateUpdated" (click)="updateMeterMapping()">
                             <mat-icon [svgIcon]="'feather:addMeter'" class="mr-1"></mat-icon>
                             Edit Meter Mapping
                         </button>

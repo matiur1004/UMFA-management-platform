@@ -27,7 +27,6 @@ import { IAmrUser } from 'app/core/models';
 import { IScadaMeter } from 'app/core/models/scadameter.model';
 import { IMappedMeter } from 'app/core/models/mappedmeter.model';
 import { DxDataGridComponent } from 'devextreme-angular';
-import dxDataGrid from 'devextreme/ui/data_grid';
 import { ALERT_MODAL_CONFIG, CONFIRM_MODAL_CONFIG } from '@core/config/modal.config';
 import { UmfaUtils } from '@core/utils/umfa.utils';
 
@@ -77,8 +76,8 @@ export class MeterMappingComponent implements OnInit {
     isRowEditing: boolean = false;
     editedMappedMeterData: any
 
-    focusedMeterRowIndex: number;
-    focusedScadaRowIndex: number;
+    focusedMeterRowKey: string;
+    focusedScadaRowKey: string;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -108,7 +107,6 @@ export class MeterMappingComponent implements OnInit {
     }
 
     ngOnInit() {
-        // this.umfaMeters.pageIndex
         this.form = this._formBuilder.group({
             //Id: [0],
             PartnerId: [null, Validators.required],
@@ -331,8 +329,7 @@ export class MeterMappingComponent implements OnInit {
             let formData = { ...this.editedMappedMeterData, ...this.MappedMeterData };
             this.mappedMetersService.updateMappedMeter(formData, this.editedMappedMeterData.MappedMeterId).subscribe((res) => {
                 this.mappedMeters.map(mm => {
-                    if (mm.BuildingServiceId == this.editedMappedMeterData.BuildingServiceId) {
-                        console.log("wefefefef", mm, this.MappedMeterData)
+                    if (mm.BuildingServiceId == this.editedMappedMeterData?.BuildingServiceId) {
                         mm.RegisterType = this.MappedMeterData.RegisterType;
                         mm.TOUHeader = this.MappedMeterData.TOUHeader;
                         mm.SupplyType = this.MappedMeterData.SupplyType;
@@ -343,6 +340,8 @@ export class MeterMappingComponent implements OnInit {
                         mm['LocationTypeId'] = this.MappedMeterData.LocationTypeId;
                         mm.Description = this.MappedMeterData.Description;
                         this.editedMappedMeterData = null;
+                        this.focusedMeterRowKey = null;
+                        this.focusedScadaRowKey = null;
                         this.isRowEditing = false;
                         this.initializeSelectionField();
                     }
@@ -394,22 +393,13 @@ export class MeterMappingComponent implements OnInit {
 
     onEditMappedMeter(e) {
         e.event.preventDefault();
+        this.focusedMeterRowKey = null;
+        this.focusedScadaRowKey = null;
         this.editedMappedMeterData = e.row.data;
         let rowData = e.row.data;
         this.isRowEditing = true;
-        for( let i = 0; i < this.umfaMeters.length; i++ ) {
-            if(this.umfaMeters[i].MeterNo === rowData.MeterNo) {
-                this.focusedMeterRowIndex = i;
-                break;
-            }
-        }
-        for( let i = 0; i < this.scadaMeters.length; i++ ) {
-            if(this.scadaMeters[i].Serial === rowData.ScadaSerial) {
-                this.focusedMeterRowIndex = i;
-                break;
-            }
-        }
-        // this.form.patchValue(rowData);
+        this.focusedMeterRowKey = rowData.MeterNo;
+        this.focusedScadaRowKey = rowData.ScadaSerial;
         this.form.get('TimeOfUse').setValue(this.timeOfUses.find(tm => tm.Name == rowData.TOUHeader).Id);
         this.form.get('RegisterType').setValue(this.registerTypes.find(rt => rt.RegisterTypeName == rowData.RegisterType).RegisterTypeId);
         this.form.get('ScadaMeterId').setValue(rowData.ScadaSerial)
@@ -437,6 +427,15 @@ export class MeterMappingComponent implements OnInit {
             TOUId: this.form.value['TimeOfUse'],
             RegisterTypeId: this.form.value['RegisterType']
         }
+    }
+
+    get isValidateUpdated() {
+        return this.form.value['RegisterType'] 
+            && this.form.value['TimeOfUse'] 
+            && this.form.value['SupplyTypeId'] 
+            && this.form.value['SupplyToId'] 
+            && this.form.value['LocationTypeId'] 
+            && this.form.value['Description']
     }
 
     updateScadaMeterMappedField() {
