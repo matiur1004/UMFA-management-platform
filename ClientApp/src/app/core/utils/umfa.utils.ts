@@ -119,7 +119,7 @@ export class UmfaUtils {
       'Gas':          ['#FFFF00', '#FFD300', '#FCFC8F', '#FFEF00', '#FFA700'],
       'Diesel':       ['#FC6A03', '#B56727', '#FDA172'],
       'Ad hoc':       ['#CCCCCC', '#706B6B', '#ECECEC', '#999999', '#333333'],
-      'Other':        ['#FFEE00', '#EEFF33']
+      'Other':        ['#FFEE00', '#EEFF33']  
     }
   }
 
