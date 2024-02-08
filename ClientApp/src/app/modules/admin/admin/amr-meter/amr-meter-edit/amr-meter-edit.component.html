@@ -133,6 +133,9 @@
     </div>
   </div>
   <div class="row grid grid-cols-4 gap-x-4 w-full border-t border-gray-300 pt-3 pb-2" [formGroup]="profileForm">
+    <div class="col-span-4 mb-3">
+      <span class="text-xl">Profile Schedule</span>
+    </div>
     <div class="col-span-1">
       <mat-form-field class="fuse-mat-dense w-full readonly-field" [floatLabel]="'always'">
           <mat-label class="form-label">Schedule Name</mat-label>
@@ -174,6 +177,9 @@
     </div>
   </div>
   <div class="row grid grid-cols-4 gap-x-4 w-full border-t border-gray-300 pt-3 pb-2" [formGroup]="readingForm">
+    <div class="col-span-4 mb-3">
+      <span class="text-xl">Readings Schedule</span>
+    </div>
     <div class="col-span-1">
       <mat-form-field class="fuse-mat-dense w-full readonly-field" [floatLabel]="'always'">
           <mat-label class="form-label">Schedule Name</mat-label>
@@ -193,6 +199,7 @@
       </mat-form-field>
     </div>
     <div class="col-span-1"></div>
+    
     <div class="col-span-1 flex items-end justify-center">
       <button mat-raised-button color="primary" class="dnm-btn dnm-btn-primary" (click)="showReadingScheduleList()">Move To</button>
     </div>
