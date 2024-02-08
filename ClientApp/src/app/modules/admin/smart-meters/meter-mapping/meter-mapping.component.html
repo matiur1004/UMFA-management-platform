@@ -46,8 +46,8 @@
                 <div class="bg-card flex flex-col gap-y-2 p-2">
                     <div class="text-lg py-1 border-b flex"><mat-icon>developer_board</mat-icon> UMFA Meters</div>
                     <dx-data-grid [dataSource]="umfaMeters" id="umfaMetersGrid" keyExpr="MeterId"
-                                  [selectedRowKeys]="[]" [showBorders]="true" class="grid-container" [hoverStateEnabled]="true"
-                                  (onRowClick)="selectUmfaMeter($event)" (onRowPrepared)="onUmfaMeterRowPrepared($event)" [disabled]="isRowEditing" #umfaMeterTable>
+                                  [focusedRowIndex]="focusedMeterRowIndex" [focusedRowEnabled]="true" [showBorders]="true" class="grid-container" [hoverStateEnabled]="true"
+                                  (onRowClick)="selectUmfaMeter($event)" (onRowPrepared)="onUmfaMeterRowPrepared($event)" #umfaMeterTable>
                         <dxo-scrolling rowRenderingMode="virtual"></dxo-scrolling>
                         <dxo-filter-row [visible]="'true'"
                                         [applyFilter]="currentFilter"></dxo-filter-row>
@@ -72,7 +72,7 @@
                     <div class="text-lg py-1 border-b flex"><mat-icon>developer_board</mat-icon> AMR Scada Meters</div>
                     <dx-data-grid [dataSource]="scadaMeters" id="scadaMetersGrid" [showBorders]="true"
                                   class="grid-container" [hoverStateEnabled]="true" keyExpr="Serial" [selectedRowKeys]="[]"
-                                  (onRowClick)="selectScadaMeter($event)" (onRowPrepared)="onScadaMeterRowPrepared($event)" [disabled]="isRowEditing" #scadaMeterTable>
+                                  (onRowClick)="selectScadaMeter($event)" (onRowPrepared)="onScadaMeterRowPrepared($event)" #scadaMeterTable>
                         <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
                         <dxo-filter-row [visible]="'true'"
                                         [applyFilter]="currentFilter"></dxo-filter-row>
@@ -182,7 +182,8 @@
                     <div class="text-lg py-1 border-b flex">Mapped Meters</div>
                     <dx-data-grid [dataSource]="mappedMeters" id="MappedMetersGrid" [showBorders]="true"
                                   class="grid-container" [hoverStateEnabled]="true"
-                                  (onRowClick)="selectMappedMeter($event)">
+                                  (onRowClick)="selectMappedMeter($event)"
+                                  [autoNavigateToFocusedRow]="true">
                         <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
                         <dxo-filter-row [visible]="'true'"
                                         [applyFilter]="currentFilter"></dxo-filter-row>

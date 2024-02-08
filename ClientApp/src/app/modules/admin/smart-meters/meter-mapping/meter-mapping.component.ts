@@ -6,6 +6,7 @@ import {
     enableProdMode,
     OnInit,
     ViewChild,
+    ChangeDetectorRef
 } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { IUmfaBuilding, IopUser } from 'app/core/models';
@@ -76,6 +77,9 @@ export class MeterMappingComponent implements OnInit {
     isRowEditing: boolean = false;
     editedMappedMeterData: any
 
+    focusedMeterRowIndex: number;
+    focusedScadaRowIndex: number;
+
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     constructor(
@@ -84,6 +88,7 @@ export class MeterMappingComponent implements OnInit {
         private usrService: UserService,
         private _formBuilder: UntypedFormBuilder,
         private _ufUtils: UmfaUtils,
+        private _cdr: ChangeDetectorRef
     ) {
         this.onRemoveMappedMeter = this.onRemoveMappedMeter.bind(this);
         this.onEditMappedMeter = this.onEditMappedMeter.bind(this);
@@ -103,6 +108,7 @@ export class MeterMappingComponent implements OnInit {
     }
 
     ngOnInit() {
+        // this.umfaMeters.pageIndex
         this.form = this._formBuilder.group({
             //Id: [0],
             PartnerId: [null, Validators.required],
@@ -321,27 +327,29 @@ export class MeterMappingComponent implements OnInit {
     }
 
     updateMeterMapping() {
-        let formData = { ...this.editedMappedMeterData, ...this.MappedMeterData };
-        this.mappedMetersService.updateMappedMeter(formData, this.editedMappedMeterData.MappedMeterId).subscribe((res) => {
-            this.mappedMeters.map(mm => {
-                if (mm.BuildingServiceId == this.editedMappedMeterData.BuildingServiceId) {
-                    console.log("wefefefef", mm, this.MappedMeterData)
-                    mm.RegisterType = this.MappedMeterData.RegisterType;
-                    mm.TOUHeader = this.MappedMeterData.TOUHeader;
-                    mm.SupplyType = this.MappedMeterData.SupplyType;
-                    mm['SupplyTypeId'] = this.MappedMeterData.SupplyTypeId
-                    mm.SupplyTo = this.MappedMeterData.SupplyTo;
-                    mm['SupplyToId'] = this.MappedMeterData.SupplyToId;
-                    mm.Location = this.MappedMeterData.LocationType;
-                    mm['LocationTypeId'] = this.MappedMeterData.LocationTypeId;
-                    mm.Description = this.MappedMeterData.Description;
-                    this.editedMappedMeterData = null;
-                    this.isRowEditing = false;
-                    this.initializeSelectionField();
-                }
-            })
+        if (this.editedMappedMeterData) {
+            let formData = { ...this.editedMappedMeterData, ...this.MappedMeterData };
+            this.mappedMetersService.updateMappedMeter(formData, this.editedMappedMeterData.MappedMeterId).subscribe((res) => {
+                this.mappedMeters.map(mm => {
+                    if (mm.BuildingServiceId == this.editedMappedMeterData.BuildingServiceId) {
+                        console.log("wefefefef", mm, this.MappedMeterData)
+                        mm.RegisterType = this.MappedMeterData.RegisterType;
+                        mm.TOUHeader = this.MappedMeterData.TOUHeader;
+                        mm.SupplyType = this.MappedMeterData.SupplyType;
+                        mm['SupplyTypeId'] = this.MappedMeterData.SupplyTypeId
+                        mm.SupplyTo = this.MappedMeterData.SupplyTo;
+                        mm['SupplyToId'] = this.MappedMeterData.SupplyToId;
+                        mm.Location = this.MappedMeterData.LocationType;
+                        mm['LocationTypeId'] = this.MappedMeterData.LocationTypeId;
+                        mm.Description = this.MappedMeterData.Description;
+                        this.editedMappedMeterData = null;
+                        this.isRowEditing = false;
+                        this.initializeSelectionField();
+                    }
+                })
 
-        })
+            })
+        }
     }
 
     checkExistingInMappedMeters(data) {
@@ -389,6 +397,18 @@ export class MeterMappingComponent implements OnInit {
         this.editedMappedMeterData = e.row.data;
         let rowData = e.row.data;
         this.isRowEditing = true;
+        for( let i = 0; i < this.umfaMeters.length; i++ ) {
+            if(this.umfaMeters[i].MeterNo === rowData.MeterNo) {
+                this.focusedMeterRowIndex = i;
+                break;
+            }
+        }
+        for( let i = 0; i < this.scadaMeters.length; i++ ) {
+            if(this.scadaMeters[i].Serial === rowData.ScadaSerial) {
+                this.focusedMeterRowIndex = i;
+                break;
+            }
+        }
         // this.form.patchValue(rowData);
         this.form.get('TimeOfUse').setValue(this.timeOfUses.find(tm => tm.Name == rowData.TOUHeader).Id);
         this.form.get('RegisterType').setValue(this.registerTypes.find(rt => rt.RegisterTypeName == rowData.RegisterType).RegisterTypeId);
