@@ -31,7 +31,7 @@ namespace ClientPortal.Services
 
         private string BuildNotificationMessage(NotificationToSend notification)
         {
-            var returnUrl = $"{_settings.ReturnBaseUrl}ClientPortal/alarm_triggered/{notification.AMRMeterTriggeredAlarmId}";
+            var returnUrl = $"{_settings.ReturnBaseUrl}project/alarm-triggered/{notification.AMRMeterTriggeredAlarmId}";
 
             var msg = $"Dear {notification.FirstName},\r\n" +
                 $"UMFA ClientPortal Alarm\r\n" +
