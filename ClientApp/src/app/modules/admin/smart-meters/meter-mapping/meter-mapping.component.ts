@@ -6,6 +6,7 @@ import {
     enableProdMode,
     OnInit,
     ViewChild,
+    ChangeDetectorRef
 } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { IUmfaBuilding, IopUser } from 'app/core/models';
@@ -26,7 +27,6 @@ import { IAmrUser } from 'app/core/models';
 import { IScadaMeter } from 'app/core/models/scadameter.model';
 import { IMappedMeter } from 'app/core/models/mappedmeter.model';
 import { DxDataGridComponent } from 'devextreme-angular';
-import dxDataGrid from 'devextreme/ui/data_grid';
 import { ALERT_MODAL_CONFIG, CONFIRM_MODAL_CONFIG } from '@core/config/modal.config';
 import { UmfaUtils } from '@core/utils/umfa.utils';
 
@@ -73,6 +73,12 @@ export class MeterMappingComponent implements OnInit {
     locationTypes: any[] = [];
     filteredlocationTypes: any[] = [];
 
+    isRowEditing: boolean = false;
+    editedMappedMeterData: any
+
+    focusedMeterRowKey: string;
+    focusedScadaRowKey: string;
+
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     constructor(
@@ -80,9 +86,11 @@ export class MeterMappingComponent implements OnInit {
         private mappedMetersService: MeterMappingService,
         private usrService: UserService,
         private _formBuilder: UntypedFormBuilder,
-        private _ufUtils: UmfaUtils
+        private _ufUtils: UmfaUtils,
+        private _cdr: ChangeDetectorRef
     ) {
         this.onRemoveMappedMeter = this.onRemoveMappedMeter.bind(this);
+        this.onEditMappedMeter = this.onEditMappedMeter.bind(this);
         this.applyFilterTypes = [{
             key: 'auto',
             name: 'Immediately',
@@ -92,16 +100,16 @@ export class MeterMappingComponent implements OnInit {
         }];
         this.currentFilter = this.applyFilterTypes[0].key;
     }
-    
+
     get isScadaEnabled() {
-        if(this.usrService.scadaCredential) return true;
+        if (this.usrService.scadaCredential) return true;
         return false;
     }
 
     ngOnInit() {
         this.form = this._formBuilder.group({
             //Id: [0],
-            partnerId: [null, Validators.required],
+            PartnerId: [null, Validators.required],
             UmfaId: [null, Validators.required],
             UmfaMeterId: [null, Validators.required],
             ScadaMeterId: [null, Validators.required],
@@ -148,6 +156,12 @@ export class MeterMappingComponent implements OnInit {
     selectionChanged(e: any) {
         this.selectedBuildingId = e.BuildingId;
         this.selectedUmfaMeter = null;
+        this.initializeSelectionField();
+
+        this.getMappedMetersForBuilding(e.BuildingId)
+    }
+
+    initializeSelectionField() {
         this.form.get('UmfaMeterId').setValue(null);
         this.form.get('TimeOfUse').setValue(null);
         this.form.get('RegisterType').setValue(null);
@@ -155,8 +169,6 @@ export class MeterMappingComponent implements OnInit {
         this.form.get('SupplyToId').setValue(null);
         this.form.get('LocationTypeId').setValue(null);
         this.form.get('Description').setValue(null);
-
-        this.getMappedMetersForBuilding(e.BuildingId)
     }
 
     getUmfaMetersForBuilding(buildingId): void {
@@ -222,19 +234,20 @@ export class MeterMappingComponent implements OnInit {
 
     getMappedMetersForBuilding(buildingId) {
         this.bldService.getMappedMetersForBuilding(buildingId)
-        .pipe(takeUntil(this._unsubscribeAll))
-        .subscribe(res => {
-            this.mappedMeters = res.map(obj => {
-                let supplyType = this.supplyTypes.find(item => item.SupplyTypeId == obj['SupplyTypeId']);
-                let supplyTo = supplyType['SupplyTos'].find(item => item.SupplyToId == obj['SupplyToId']);
-                let locationType = supplyTo['SupplyToLocationTypes'].find(item => item.SupplyToLocationTypeId == obj['LocationTypeId'])
-                obj = {...obj, SupplyType: supplyType['SupplyTypeName'], SupplyTo: supplyTo['SupplyToName'], Location: locationType['SupplyToLocationName']};
-                return obj;
-            });
-            this.getUmfaMetersForBuilding(this.selectedBuildingId);
-            this.getScadaUserDetails(this.usrService.userValue.UmfaId);
-            //console.log('mapped meters', res);
-        })
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(res => {
+                this.mappedMeters = res.map(obj => {
+                    let supplyType = this.supplyTypes.find(item => item.SupplyTypeId == obj['SupplyTypeId']);
+                    let supplyTo = supplyType['SupplyTos'].find(item => item.SupplyToId == obj['SupplyToId']);
+                    let locationType = supplyTo['SupplyToLocationTypes'].find(item => item.SupplyToLocationTypeId == obj['LocationTypeId'])
+                    obj = { ...obj, SupplyType: supplyType['SupplyTypeName'], SupplyTo: supplyTo['SupplyToName'], Location: locationType['SupplyToLocationName'] };
+                    return obj;
+                });
+                console.log(this.mappedMeters)
+                this.getUmfaMetersForBuilding(this.selectedBuildingId);
+                this.getScadaUserDetails(this.usrService.userValue.UmfaId);
+                //console.log('mapped meters', res);
+            })
     }
 
     selectScadaMeter(e) {
@@ -296,17 +309,44 @@ export class MeterMappingComponent implements OnInit {
                 this.umfaMeterGrid.instance.clearSelection();
                 this.scadaMeterGrid.instance.clearSelection();
                 this.form.reset();
-                this.form.get('partnerId').setValue(this.selectedPartnerId);
+                this.form.get('PartnerId').setValue(this.selectedPartnerId);
                 this.form.get('UmfaId').setValue(this.selectedBuildingId);
 
                 let supplyType = this.supplyTypes.find(item => item.SupplyTypeId == res['SupplyTypeId']);
                 let supplyTo = supplyType['SupplyTos'].find(item => item.SupplyToId == res['SupplyToId']);
                 let locationType = supplyTo['SupplyToLocationTypes'].find(item => item.SupplyToLocationTypeId == res['LocationTypeId'])
-                res = {...res, SupplyType: supplyType['SupplyTypeName'], SupplyTo: supplyTo['SupplyToName'], Location: locationType['SupplyToLocationName']};
+                res = { ...res, SupplyType: supplyType['SupplyTypeName'], SupplyTo: supplyTo['SupplyToName'], Location: locationType['SupplyToLocationName'] };
 
                 this.mappedMeters.push({ ...res });
                 this.umfaMeterGrid.instance.refresh();
                 this.scadaMeterGrid.instance.refresh();
+            })
+        }
+    }
+
+    updateMeterMapping() {
+        if (this.editedMappedMeterData) {
+            let formData = { ...this.editedMappedMeterData, ...this.MappedMeterData };
+            this.mappedMetersService.updateMappedMeter(formData, this.editedMappedMeterData.MappedMeterId).subscribe((res) => {
+                this.mappedMeters.map(mm => {
+                    if (mm.BuildingServiceId == this.editedMappedMeterData?.BuildingServiceId) {
+                        mm.RegisterType = this.MappedMeterData.RegisterType;
+                        mm.TOUHeader = this.MappedMeterData.TOUHeader;
+                        mm.SupplyType = this.MappedMeterData.SupplyType;
+                        mm['SupplyTypeId'] = this.MappedMeterData.SupplyTypeId
+                        mm.SupplyTo = this.MappedMeterData.SupplyTo;
+                        mm['SupplyToId'] = this.MappedMeterData.SupplyToId;
+                        mm.Location = this.MappedMeterData.LocationType;
+                        mm['LocationTypeId'] = this.MappedMeterData.LocationTypeId;
+                        mm.Description = this.MappedMeterData.Description;
+                        this.editedMappedMeterData = null;
+                        this.focusedMeterRowKey = null;
+                        this.focusedScadaRowKey = null;
+                        this.isRowEditing = false;
+                        this.initializeSelectionField();
+                    }
+                })
+
             })
         }
     }
@@ -351,6 +391,53 @@ export class MeterMappingComponent implements OnInit {
 
     }
 
+    onEditMappedMeter(e) {
+        e.event.preventDefault();
+        this.focusedMeterRowKey = null;
+        this.focusedScadaRowKey = null;
+        this.editedMappedMeterData = e.row.data;
+        let rowData = e.row.data;
+        this.isRowEditing = true;
+        this.focusedMeterRowKey = rowData.MeterNo;
+        this.focusedScadaRowKey = rowData.ScadaSerial;
+        this.form.get('TimeOfUse').setValue(this.timeOfUses.find(tm => tm.Name == rowData.TOUHeader).Id);
+        this.form.get('RegisterType').setValue(this.registerTypes.find(rt => rt.RegisterTypeName == rowData.RegisterType).RegisterTypeId);
+        this.form.get('ScadaMeterId').setValue(rowData.ScadaSerial)
+        this.form.get('SupplyTypeId').setValue(rowData.SupplyTypeId);
+        this.supplyToItems = this.supplyTypes.find(item => item.SupplyTypeId == rowData.SupplyTypeId).SupplyTos;
+        this.form.get('SupplyToId').setValue(rowData.SupplyToId);
+        this.filteredlocationTypes = this.supplyToItems.find(item => item.SupplyToId == rowData.SupplyToId).SupplyToLocationTypes;
+        console.log(this.form)
+        this.form.get('LocationTypeId').setValue(rowData.LocationTypeId);
+        this.form.get('Description').setValue(rowData.Description);
+    }
+
+    get MappedMeterData() {
+        return {
+            TOUHeader: this.timeOfUses.find(tm => tm.Id == this.form.value['TimeOfUse'])['Name'],
+            RegisterType: this.registerTypes.find(item => item.RegisterTypeId == this.form.value['RegisterType'])['RegisterTypeName'],
+            ScadaSerial: this.form.value['ScadaMeterId'],
+            SupplyType: this.supplyTypes.find(item => item.SupplyTypeId == this.form.value['SupplyTypeId'])['SupplyTypeName'],
+            SupplyTypeId: this.form.value['SupplyTypeId'],
+            SupplyTo: this.supplyToItems.find(item => item.SupplyToId == this.form.value['SupplyToId'])['SupplyToName'],
+            SupplyToId: this.form.value['SupplyToId'],
+            LocationType: this.filteredlocationTypes.find(item => item.SupplyToLocationTypeId == this.form.value['LocationTypeId'])['SupplyToLocationName'],
+            LocationTypeId: this.form.value['LocationTypeId'],
+            Description: this.form.value['Description'],
+            TOUId: this.form.value['TimeOfUse'],
+            RegisterTypeId: this.form.value['RegisterType']
+        }
+    }
+
+    get isValidateUpdated() {
+        return this.form.value['RegisterType'] 
+            && this.form.value['TimeOfUse'] 
+            && this.form.value['SupplyTypeId'] 
+            && this.form.value['SupplyToId'] 
+            && this.form.value['LocationTypeId'] 
+            && this.form.value['Description']
+    }
+
     updateScadaMeterMappedField() {
         this.scadaMeters = this.scadaMeters.map(item => {
             if (this.mappedMeters.find(mm => mm.ScadaSerial == item.Serial)) item.Mapped = true
@@ -370,9 +457,9 @@ export class MeterMappingComponent implements OnInit {
         this.selectedPartnerId = event.Id;
         this.selectedBuildingId = 0;
         this.form.reset();
-        this.form.get('partnerId').setValue(this.selectedPartnerId);
+        this.form.get('PartnerId').setValue(this.selectedPartnerId);
         this.usrService.scadaCredential = null;
-        
+
         this.usrService.scadaConfig(this.selectedPartnerId, this.usrService.userValue.UmfaId)
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((data: any[]) => {

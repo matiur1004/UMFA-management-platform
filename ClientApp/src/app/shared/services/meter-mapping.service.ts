@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CONFIG } from '@core/helpers';
 import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class MeterMappingService {
   private _supplyToItems: BehaviorSubject<any> = new BehaviorSubject([]);
   private _locationTypes: BehaviorSubject<any> = new BehaviorSubject([]);
   
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private notificationServices: NotificationService) { }
 
   get registerTypes$(): Observable<any> {
     return this._registerTypes.asObservable();
@@ -89,6 +90,17 @@ export class MeterMappingService {
           this._locationTypes.next(res);
         })
       );
+  }
+
+  updateMappedMeter(formData, Id) {
+    const url = `${CONFIG.apiURL}/MappedMeters/UpdateMappedMeter/${Id}`;
+    return this.http.put<any>(url, formData, {withCredentials: true})
+    .pipe(
+      catchError(err => this.catchErrors(err)),
+      tap(res => {
+        this.notificationServices.message("Updated Successfully.");
+      })
+    )
   }
 
   //catches errors
