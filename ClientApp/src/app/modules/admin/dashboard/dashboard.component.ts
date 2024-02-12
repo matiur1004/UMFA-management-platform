@@ -718,21 +718,21 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy
                 }
             });
 
-        this._dbService.triggeredAlarmDetailPage$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((data) => {
-                if(data) {                    
-                    let newTab: IHomeTab = {
-                        id: 0,
-                        title: `${data.MeterNo}`,
-                        type: 'AlarmTrigger',
-                        dataSource: data
-                    };
-                    this.tabsList.push(newTab);
-                    this.selectedTab = this.tabsList.length;
-                    this._cdr.markForCheck();
-                }
-            });
+        // this._dbService.triggeredAlarmDetailPage$
+        //     .pipe(takeUntil(this._unsubscribeAll))
+        //     .subscribe((data) => {
+        //         if(data) {                    
+        //             let newTab: IHomeTab = {
+        //                 id: 0,
+        //                 title: `${data.MeterNo}`,
+        //                 type: 'AlarmTrigger',
+        //                 dataSource: data
+        //             };
+        //             this.tabsList.push(newTab);
+        //             this.selectedTab = this.tabsList.length;
+        //             this._cdr.markForCheck();
+        //         }
+        //     });
 
         this._dbService.showTenantBillingDetails$
             .pipe(takeUntil(this._unsubscribeAll))
