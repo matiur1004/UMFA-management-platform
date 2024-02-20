@@ -1,0 +1,340 @@
+@import 'variables.less';
+
+.calcs-wrp .none-border {
+  border: none !important;
+}
+
+.calcs-wrp .filter-row {
+  margin-bottom: 30px;
+}
+
+.calcs-wrp .filter-lbl {
+  font-family: Gotham Medium;
+  font-size: 15px;
+  text-transform: uppercase;
+  line-height: 16px;
+  color: @color-text-tertiary;
+  margin-right: 20px;
+}
+
+.calcs-wrp .dropdown-item {
+  text-transform: unset;
+  font-size: 14px;
+}
+
+.calcs-wrp .dropdown-item.selected-item {
+  font-family: Gotham Medium;
+}
+
+.calcs-wrp .calc-meth-val {
+  font-family: Gotham Book;
+  font-size: 14px;
+  line-height: 16px;
+  color: @color-description;
+  text-align: center;
+}
+
+.calcs-wrp .calc-info-icon {
+  position: relative;
+  display: inline-block;
+  height: 14px;
+  width: 14px;
+  line-height: 16px;
+  margin-left: 10px;
+  background: url('../../../../../../../../assets/images/icons/services/package-info.svg') no-repeat center;
+  background-size: 14px;
+  cursor: pointer;
+}
+
+.calcs-wrp .calc-info-icon:hover {
+  background: url('../../../../../../../../assets/images/icons/services/package-info-hover.svg') no-repeat center;
+}
+
+.calcs-wrp .calc-info-icon .info-popup {
+  display: none;
+  position: absolute;
+  height: 100px;
+  width: 230px;
+  background-color: @color-background-dark;
+  color: @color-background-primary;
+  font-family: Gotham Book;
+  font-size: 14px;
+  line-height: 22px;
+  padding: 17px 28px 17px 20px;
+  border-radius: 5px;
+  right: -11px;
+  bottom: 24px;
+  z-index: 1;
+  opacity: 0.95;
+}
+
+.calcs-wrp .calc-info-icon .info-popup:before {
+  position: absolute;
+  content: '';
+  background: @color-background-dark;
+  bottom: -5px;
+  right: 13px;
+  width: 10px;
+  height: 10px;
+  z-index: -1;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
+.calcs-wrp .calc-info-icon:hover .info-popup {
+  display: block;
+}
+
+.calcs-wrp .calc-info-icon .info-popup {
+  display: none;
+  position: absolute;
+  height: 100px;
+  width: 230px;
+  background-color: @color-background-dark;
+  color: @color-background-primary;
+  font-family: Gotham Book;
+  font-size: 14px;
+  line-height: 22px;
+  padding: 17px 28px 17px 20px;
+  border-radius: 5px;
+  right: -11px;
+  bottom: 24px;
+  z-index: 1;
+  opacity: 0.95;
+}
+
+.calcs-wrp .calc-info-icon .info-popup:before {
+  position: absolute;
+  content: '';
+  background: @color-background-dark;
+  bottom: -5px;
+  right: 13px;
+  width: 10px;
+  height: 10px;
+  z-index: -1;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
+.calcs-wrp .calc-info-icon:hover .info-popup {
+  display: block;
+}
+
+.calcs-wrp .calc-list-wrp {
+  background-color: @color-background-white;
+  border: 1px solid @color-line;
+}
+
+.calcs-wrp .calc-list-item {
+  padding: 15px 15px 15px 25px;
+  height: 125px;
+  min-height: 125px;
+  max-height: 125px;
+}
+
+.calcs-wrp .tariff-name-lbl {
+  font-family: Gotham Medium;
+  font-size: 25px;
+  line-height: 25px;
+  color: @color-text-primary;
+}
+
+.calcs-wrp .calc-block-tick {
+  font-family: Gotham Book;
+  font-size: 12px;
+  line-height: 12px;
+  text-align: center;
+  padding: 5px 12px;
+  border-radius: 11px;
+  color: @color-background-white;
+  .gradient-dark-green() ;
+  margin-left: 10px;
+}
+
+.calcs-wrp .item-field-lbl,
+.calcs-wrp .item-field-val {
+  font-family: Gotham Book;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.calcs-wrp .item-field-lbl {
+  color: @color-description;
+  margin-right: 5px;
+}
+
+.calcs-wrp .item-field-val {
+  color: @color-text-tertiary;
+}
+
+.calcs-wrp .price-item {
+  padding-left: 20px;
+}
+
+.calcs-wrp .price-lbl {
+  width: 100%;
+}
+
+.calcs-wrp .price-lbl:before {
+  content: '';
+  display: inline-block;
+  background-position: center;
+  background-size: 22px;
+  background-repeat: no-repeat;
+  width: 22px;
+  height: 22px;
+  position: absolute;
+  margin-top: 2px;
+}
+
+.calcs-wrp .price-value {
+  font-family: Gotham Medium;
+  font-size: 20px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.calcs-wrp .price-per-unit {
+  font-family: Gotham Light;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.calcs-wrp .price-value,
+.calcs-wrp .price-per-unit {
+  margin-left: 32px;
+  .gradient-dark-green() ;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.calcs-wrp .expand-btn {
+  margin-right: 10px;
+}
+
+.calcs-wrp .calc-item-dtls {
+  padding: 15px 40px;
+  border-top: 1px solid @color-line;
+}
+
+.calcs-wrp .section-title-wrp {
+  margin-top: 35px;
+}
+
+.calcs-wrp .section-title {
+  font-family: Gotham Medium;
+  font-size: 25px;
+  color: @color-text-tertiary;
+  line-height: 1;
+}
+
+.calcs-wrp .bl-title-wrp {
+  padding-top: 35px;
+  padding-bottom: 35px;
+}
+
+.calcs-wrp .bl-gradient-title {
+  line-height: 1;
+}
+
+.calcs-wrp .list-header {
+  padding-right: 35px;
+  padding-left: 15px;
+}
+
+.calcs-wrp .header-field {
+  line-height: 1;
+}
+
+.calcs-wrp .list-body {
+  border: 1px solid @color-line;
+  margin-bottom: 15px;
+}
+
+.calcs-wrp .list-body-wrp {
+  max-height: 300px;
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+.calcs-wrp .body-row,
+.calcs-wrp .last-body-row {
+  padding: 20px 34px 20px 14px;
+  min-height: 50px;
+}
+
+.calcs-wrp .body-row.body-scroll {
+  padding-right: 14px;
+}
+
+.calcs-wrp .body-row,
+.calcs-wrp .price-dets-item {
+  border-bottom: 1px solid @color-line;
+}
+
+.calcs-wrp .meter-fld-val {
+  font-family: Gotham Medium;
+  font-size: 16px;
+  line-height: 1;
+  color: @color-text-primary;
+}
+
+.calcs-wrp .body-row-val {
+  font-family: Gotham Book;
+  font-size: 13px;
+  line-height: 13px;
+  color: @color-text-tertiary;
+}
+
+.calcs-wrp .total-lbl {
+  font-family: Gotham Medium;
+  font-size: 12px;
+  color: @color-description;
+}
+
+.calcs-wrp .last-body-row .body-row-val,
+.calcs-wrp .tot-price-val {
+  font-family: Gotham Medium;
+}
+
+.calcs-wrp .price-dets-item {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.calcs-wrp .price-dets-item:first-child {
+  padding-top: 0;
+}
+
+.calcs-wrp .price-dets-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.calcs-wrp .dets-duration-val,
+.calcs-wrp .dets-field-name,
+.calcs-wrp .dets-field-val {
+  font-family: Gotham Book;
+  color: @color-text-tertiary;
+}
+
+.calcs-wrp .dets-duration-val {
+  font-size: 13px;
+  line-height: 13px;
+  margin-bottom: 8px;
+}
+
+.calcs-wrp .dets-field-name,
+.calcs-wrp .dets-field-val {
+  font-size: 12px;
+  line-height: 12px;
+}
+
+.calcs-wrp .dets-field-name {
+  margin-right: 5px;
+  color: @color-description;
+}
+
+.calcs-wrp .dets-field-val {
+  margin-right: 20px;
+}

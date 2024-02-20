@@ -1,0 +1,70 @@
+<div #lineChart [style.height]="configurations.minHeight" class="linear-chart">
+  <ngx-charts-line-chart
+    [animations]="true"
+    [customColors]="customColors"
+    [customLine]="lineType"
+    [gradient]="configurations.gradient"
+    [legend]="configurations.legend"
+    [rangeFillOpacity]="0.3"
+    [results]="data"
+    [roundDomains]="true"
+    [schemeType]="'ordinal'"
+    [showGridLines]="true"
+    [view]="[lineChart.offsetWidth, lineChart.offsetHeight]"
+    [xAxis]="configurations.xAxis"
+    [yAxis]="configurations.yAxis"
+  >
+    <ng-template #seriesTooltipTemplate></ng-template>
+    <ng-template #tooltipTemplate let-model="model">
+      <div *ngIf="!isYearOnYearLineBar" class="custom-tooltip-wrapper enter-reading-modal">
+        <div class="row">
+          <div class="col">
+            <h3 class="d-inline-block">{{periodName(model) | dateReadingFormat:readingDate}}</h3>
+          </div>
+          <div class="col text-right">
+            <div class="custom-tooltip-wrapper__right d-inline-block">
+              <span>{{calculateReadingByUsage(readingUsage, averageUsage)}} {{registerInfo.registerId | registerUnit | async}}
+                / {{percentUsage(readingUsage, averageUsage)}} %</span>
+            </div>
+          </div>
+        </div>
+        <div class="custom-tooltip-content">
+          <div class="row">
+            <div class="col">
+              <div class="content">
+                <div [style.border-color]="selectedColor[0].value" class="current_usage circle"></div>
+                <span class="content-title">Current usage</span>
+              </div>
+            </div>
+            <div class="col text-right">
+              <div class="usages">
+                <h4>{{readingUsage}} {{registerInfo.registerId | registerUnit | async}}</h4>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="content">
+                <div class="average_usage circle"></div>
+                <span class="content-title">Average usage</span>
+              </div>
+            </div>
+            <div class="col text-right">
+              <div class="usages">
+                <h4>{{averageUsage}} {{registerInfo.registerId | registerUnit | async}}</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="isYearOnYearLineBar" class="custom-tooltip-wrapper enter-reading-modal">
+        <multiple-year-tooltip-template
+          [allData]="data"
+          [customColors]="customColors"
+          [model]="model"
+          [registerInfo]="registerInfo">
+        </multiple-year-tooltip-template>
+      </div>
+    </ng-template>
+  </ngx-charts-line-chart>
+</div>

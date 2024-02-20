@@ -1,0 +1,130 @@
+@import 'variables.less';
+
+.add-closing-readings .datepicker-lbl {
+  font-family: Gotham Medium;
+  font-size: 14px;
+  line-height: 14px;
+  color: @color-text-tertiary;
+  margin-left: 20px;
+  margin-right: 15px;
+}
+
+.add-closing-readings .nav-datepicker-wrp {
+  width: 150px !important;
+}
+
+.add-closing-readings .nav-datepicker-wrp .calendar {
+  height: 30px;
+  background-size: 15px 15px;
+}
+
+::ng-deep .add-closing-readings .nav-datepicker-wrp ngb-datepicker.dropdown-menu {
+  left: unset !important;
+  right: 0;
+}
+
+
+.add-closing-readings .nav-dtpickr-inpt {
+  height: 35px;
+}
+
+.add-closing-readings .list-header {
+  margin-top: 20px;
+  margin-bottom: 15px;
+}
+
+.add-closing-readings .header-field {
+  white-space: normal;
+}
+
+
+.add-closing-readings .item-row {
+  border-bottom: 1px solid @color-line;
+  padding: 10px 15px;
+}
+
+.add-closing-readings .item-row:last-child {
+  border-bottom: none;
+}
+
+
+.add-closing-readings .cell-prop-val {
+  font-family: Gotham Book;
+  font-size: 13px;
+  line-height: 13px;
+  color: @color-text-tertiary;
+}
+
+.add-closing-readings .actual-reading-inpt {
+  width: 88px;
+  min-width: 88px;
+  margin-right: 10px;
+  height: 35px;
+  font-size: 13px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.add-closing-readings .cursor-pointer:hover {
+  cursor: pointer;
+}
+
+.add-closing-readings .actual-rdng-btn {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-color: transparent;
+  border: none;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.add-closing-readings .actual-rdng-btn:after {
+  display: none;
+}
+
+.add-closing-readings .note-popup-dropdown.dropdown-menu,
+.add-closing-readings .rdngs-photo-dropdown.dropdown-menu {
+  width: 310px;
+  top: -122px !important;
+  left: -335px !important;
+  padding: 0;
+  margin: 0 20px 0 0;
+  border: none;
+  background: none;
+  z-index: 1600;
+}
+
+::ng-deep .add-closing-readings .note-popup-dropdown.dropdown-menu .note-popup:before {
+  display: none;
+}
+
+::ng-deep .add-closing-readings .note-popup-dropdown.dropdown-menu .note-popup:after {
+  position: absolute;
+  content: '';
+  display: block;
+  border-color: transparent;
+  border-width: 18px;
+  border-style: solid;
+  border-left-color: @color-text-primary;
+  opacity: 0.95;
+  width: 18px;
+  top: 115px;
+  right: -36px;
+}
+
+.add-closing-readings .footer-buttons {
+  margin-top: 35px;
+  margin-bottom: 10px;
+}
+
+.add-closing-readings .footer-buttons .dnm-btn {
+  width: 200px;
+  min-width: 200px;
+}
+
+.add-closing-readings .footer-buttons .dnm-btn:first-child {
+  margin-right: 30px;
+}

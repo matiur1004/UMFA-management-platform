@@ -1,0 +1,142 @@
+<ng-container *ngFor="let item of details">
+    <li class="shop-item">
+      <div class="d-flex align-items-center item-content">
+        <div class="container-fluid none-padding">
+          <div class="row none-margin-hr">
+            <div class="col-5 none-padding d-flex align-items-center">
+              <div class="bl-gradient-title shop-dtls-title">
+                {{item.shopOwnCosts.shopName}} details
+              </div>
+            </div>
+            <div class="col-7 d-flex align-items-center">
+              <div class="stat-blck w-100 d-flex justify-content-between">
+                <div *ngFor="let totalItem of item.totals" class="blck-item">
+                  <span [supplyTypeClassSufix]="'-grad'" [supplyTypeClass]="totalItem.supplyType"
+                        class="item-val">{{ totalItem.totalIncVat | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</span>
+                  <span [supplyTypeClassSufix]="'-grad'" [supplyTypeClass]="totalItem.supplyType"
+                        class="item-descr">
+                        Total {{supplyTypeNames[totalItem.supplyType]}} inc. vat
+                  </span>
+                </div>
+                <div class="blck-item">
+                  <span class="item-val total-grad">{{ item.totalIncVat | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</span>
+                  <span class="item-descr total-grad">total inc. vat</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ul>
+        <li class="shop-detail" *ngIf="item.shopOwnCosts.totalIncVat">          
+          <div class="item-content d-flex align-items-center">
+            <div class="container-fluid none-padding">
+              <div class="row none-margin-hr">
+                <div class="col-6 none-padding d-flex align-items-center">
+                  <div class="container-fluid none-padding">
+                    <div class="row none-margin-hr">
+                      <div class="col-6 none-padding txt-lg d-flex align-items-center">
+                        {{item.shopOwnCosts.shopName}} area
+                      </div>
+                      <div class="col-3">
+                        <div class="txt-sm-light">Shop code:</div>
+                        <div class="txt-sm">{{item.shopOwnCosts.shopCode}}</div>
+                      </div>
+                      <div class="col-3">
+                        <div class="txt-sm-light">Shop area:</div>
+                        <div class="txt-sm">{{item.shopOwnCosts.shopArea}} sq m</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="container-fluid none-padding">
+                    <div class="row none-margin-hr d-flex align-items-center">
+                      <div class="col-4">
+                        <div class="txt-sm-light">
+                          Total:
+                        </div>
+                        <div class="txt-sm">{{ item.shopOwnCosts.total | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                      </div>
+                      <div class="col-4">
+                        <div class="txt-sm-light">VAT:</div>
+                        <div class="txt-sm">{{ (item.shopOwnCosts.totalIncVat - item.shopOwnCosts.total) | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                      </div>
+                      <div class="col-4">
+                        <div class="container-fluid none-padding">
+                          <div class="row none-margin-hr">
+                            <div class="col-auto none-padding d-flex align-items-center price-icn">
+                              <i class="dnm-icon price-gr-icon"></i>
+                            </div>
+                            <div class="col-auto none-padding shop-tl-info">
+                              <div class="gd-title-green txt-lg">{{ item.shopOwnCosts.totalIncVat | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                              <div class="gd-title-green txt-sm-light txt-sm-descr">total inc. vat</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <node-tariff-section [nodeTariffSections]="item.shopOwnCosts.nodeTariffSections"></node-tariff-section>
+        </li>
+        
+        <ng-container *ngFor="let cmnArea of item.commonAreaCosts">
+          <li class="cmn-area-item" *ngIf="cmnArea.totalIncVat">
+            <div class="item-content d-flex align-items-center">
+              <div class="container-fluid none-padding">
+                <div class="row none-margin-hr">
+                  <div class="col-8 none-padding d-flex align-items-center">
+                    <div class="container-fluid none-padding">
+                      <div class="row none-margin-hr">
+                        <div class="col-6 none-padding txt-lg d-flex align-items-center">
+                          {{cmnArea.commonAreaName}}
+                        </div>
+                        <div class="col-6">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="container-fluid none-padding">
+                      <div class="row none-margin-hr d-flex align-items-center">
+                        <div class="col-4">
+                          <div class="txt-sm-light">Total:</div>
+                          <div class="txt-sm">{{ cmnArea.total | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                        </div>
+                        <div class="col-4">
+                          <div class="txt-sm-light">VAT:</div>
+                          <div class="txt-sm">{{ (cmnArea.totalIncVat - cmnArea.total) | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                        </div>
+                        <div class="col-4">
+                          <div class="container-fluid none-padding">
+                            <div class="row none-margin-hr">
+                              <div class="col-auto none-padding d-flex align-items-center price-icn">
+                                <i class="dnm-icon price-gr-icon"></i>
+                              </div>
+                              <div class="col-auto none-padding shop-tl-info">
+                                <div class="gd-title-green txt-lg">{{ cmnArea.totalIncVat | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                                <div class="gd-title-green txt-sm-light txt-sm-descr">total inc. vat</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <node-tariff-section [nodeTariffSections]="cmnArea.nodeTariffSections"></node-tariff-section>
+          </li>
+          
+        </ng-container>
+      </ul>
+      
+    </li>
+
+    
+  </ng-container>

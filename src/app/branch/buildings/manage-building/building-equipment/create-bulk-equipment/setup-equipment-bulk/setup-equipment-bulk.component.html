@@ -1,0 +1,194 @@
+<div class="container-fluid none-padding setup-bulk">
+  <div class="nav-row add-line-btn d-flex justify-content-start align-items-start">
+    <div class="mr-3 list-item total-container d-flex align-items-center">
+      <span class="total-text">Total:</span>
+      <span class="total-value">{{total}} items</span>
+    </div>
+    <div *ngIf="templates.controls">
+      <a (click)="addItem.emit()" class="blue-text-btn" href="javascript:void(0)">
+        <i class="add-icon"></i>
+        Add equipment
+      </a>
+    </div>
+  </div>
+  <div class="table-responsive vertical-table-scroll">
+    <table
+      class="table table-custom table-white table-outside-border-body table-vertical-center table-assigned-meters">
+      <thead>
+      <tr>
+        <th class="cell-selection">
+          <div class="darkness bulk-actions-nav" ngbDropdown placement="bottom-left">
+            <div class="checkbox-input dropdown-checkbox-input d-flex align-items-center" ngbDropdownToggle>
+              <div class="dnm-checkbox list-header-checkbox">
+                <input (change)="selectAllTemplates.emit(!isSelectedAllTemplates)" [checked]="isSelectedAllTemplates"
+                       class="checkbox-toggle"
+                       type="checkbox"/>
+                <div [ngClass]="{'indeterm-state': checkedAllPartly}" class="state">
+                  <label></label>
+                </div>
+              </div>
+            </div>
+            <div class="checkbox-menu" ngbDropdownMenu>
+              <div class="checkbox-menu-header">{{selectedTemplates}} items selected</div>
+
+              <button (click)="setBulkAction.emit({step: step, actionType: equipmentBulkActionType.SetNumber})" class="dropdown-item d-flex justify-content-between"
+                      type="button">
+                Set Number <i class="dnm-icon"></i>
+              </button>
+              <button (click)="setBulkAction.emit({step: step, actionType: equipmentBulkActionType.SetDevice})" class="dropdown-item d-flex justify-content-between"
+                      type="button">
+                Set Device <i class="dnm-icon"></i>
+              </button>
+              <button (click)="setBulkAction.emit({step: step, actionType: equipmentBulkActionType.SetLocation})" class="dropdown-item d-flex justify-content-between"
+                      type="button">
+                Set Location <i class="dnm-icon dnm-icon-equipment-locations"></i>
+              </button>
+              <button (click)="setBulkAction.emit({step: step, actionType: equipmentBulkActionType.SetManufactureDate})" class="dropdown-item d-flex datepicker-wrp justify-content-between"
+                      type="button">
+                Set Manufacture Date<i class="dnm-icon dnm-calendar"></i>
+              </button>
+              <button (click)="removeItem.emit()" class="dropdown-item d-flex justify-content-between"
+                      type="button">
+                Delete selected <i class="dnm-icon dnm-trash-icon"></i>
+              </button>
+            </div>
+          </div>
+        </th>
+        <th>
+          <span class="head-col min-column-width">Equipment group</span>
+        </th>
+        <th>
+          <span class="head-col cell-assigned equipment-number">Number</span>
+        </th>
+        <!-- <th>
+          <span class="head-col">Image</span>
+        </th> -->
+        <th>
+          <span class="head-col min-column-width">Device</span>
+        </th>
+        <th>
+          <span class="head-col min-column-width">Location</span>
+        </th>
+        <th>
+          <span class="head-col">Manufacture Date</span>
+        </th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr
+        *ngFor="let template of templates.controls; last as isLast; trackBy: trackById"
+        [ngClass]="{'last': isLast, 'selected-row' : template.value.isSelected}">
+        <td class="cell cell-selection">
+          <div class="dnm-checkbox selection-checkbox">
+            <input [ngrxFormControlState]="template.controls.isSelected" type="checkbox"/>
+            <div class="state">
+              <label></label>
+            </div>
+          </div>
+        </td>
+        <td>
+          <ng-select (change)="equipmentGroupChange.emit({id: template.value.id, equipmentGroupId: $event})"
+                     [appendTo]="'body'"
+                     [clearable]="false"
+                     [closeOnSelect]="true"
+                     [dropdownPosition]="'bottom'"
+                     [hideSelected]="true"
+                     [multiple]="false"
+                     [ngrxFormControlState]="template.controls.equipmentGroupId"
+                     [searchable]="false"
+                     class="select-dropdown">
+            <ng-option *ngFor="let item of dropdownData[template.value.id][bulkDropdownType.EquipmentGroups]"
+                       [value]="item.id">{{item.name}}</ng-option>
+          </ng-select>
+          <small *ngIf="template.isSubmitted && template.errors._equipmentGroupId?.required" class="alert-danger">
+            A equipment group is required
+          </small>
+        </td>
+        <td style="padding: 0">
+          <div
+            [ngClass]="{'dnm-invalid-inp': (template.isSubmitted && template.errors._numberOfEquipmentTemplate?.required) || (template.isSubmitted && (template.errors._numberOfEquipmentTemplate?.greaterThanOrEqualTo || template.errors._numberOfEquipmentTemplate?.lessThanOrEqualTo))}">
+            <number-input [max]="50"
+                          [min]="1" [ngrxFormControlState]="template.controls.numberOfEquipmentTemplate"
+                          input-class="number-field"></number-input>
+          </div>
+          <small *ngIf="template.isSubmitted && template.errors._numberOfEquipmentTemplate?.required"
+                 class="alert-danger">
+            A number is required
+          </small>
+          <small
+            *ngIf="template.isSubmitted && (template.errors._numberOfEquipmentTemplate?.greaterThanOrEqualTo || template.errors._numberOfEquipmentTemplate?.lessThanOrEqualTo)"
+            class="alert-danger">
+            Number should be between 1 to 50
+          </small>
+        </td>
+        <!-- <td>
+          <div class="d-flex justify-content-center">
+            <button (click)="onOpenImage(template.value.id, template.value.photo)" [ngClass]="{'dnm-btn-photo-add' : !template.value.photo, 'dnm-btn-photo' : template.value.photo}"
+                    class="dnm-btn actual-photo-btn"
+                    type="button"></button>
+          </div>
+        </td> -->
+        <td>
+          <ng-select (change)="deviceChange.emit({id: template.value.id, deviceId: $event})"
+                     [appendTo]="'body'"
+                     [clearable]="false"
+                     [closeOnSelect]="true"
+                     [dropdownPosition]="'bottom'"
+                     [hideSelected]="true"
+                     [multiple]="false"
+                     [ngrxFormControlState]="template.controls.deviceId"
+                     [searchable]="false"
+                     class="select-dropdown req-frm-fld">
+            <ng-option *ngFor="let item of dropdownData[template.value.id][bulkDropdownType.EquipmentTemplates]"
+                       [value]="item.id">{{item.model}}</ng-option>
+          </ng-select>
+          <small *ngIf="template.isSubmitted && template.errors._deviceId?.required" class="alert-danger">
+            A device is required
+          </small>
+        </td>
+        <td>
+          <ng-select (change)="locationChange.emit({id: template.value.id, locationId: $event})"
+                     [appendTo]="'body'"
+                     [clearable]="false"
+                     [closeOnSelect]="true"
+                     [dropdownPosition]="'bottom'"
+                     [hideSelected]="true"
+                     [multiple]="false"
+                     [ngrxFormControlState]="template.controls.locationId"
+                     [searchable]="false"
+                     class="select-dropdown">
+            <ng-option *ngFor="let item of dropdownData[template.value.id][bulkDropdownType.Locations]"
+                       [value]="item.id">{{item.name}}</ng-option>
+          </ng-select>
+        </td>
+        <td>
+          <div class="datepicker-wrp">
+            <input #d="ngbDatepicker" (click)="d.toggle()" [container]="'body'" [ngrxFormControlState]="template.controls.manufactureDate"
+                   [ngrxValueConverter]="ngbDateNgrxValueConverter" class="form-control" name="dp"
+                   ngbDatepicker placeholder="dd/mm/YYYY"
+                   placement="left-bottom">
+            <i (click)="d.toggle()" class="calendar no-hover"></i>
+          </div>
+        </td>
+        <td class="d-flex justify-content-between">
+          <div class="delete-link d-flex align-items-start">
+            <button (click)="removeItem.emit({id: template.value.id})" class="dnm-btn-icon"
+                    type="button">
+              <i class="icon cross-icon"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <div class="row none-margin-hr">
+    <div class="col-12 none-padding footer-btns d-flex justify-content-end">
+      <button (click)="close.emit()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+      <button (click)="nextStep.emit(1)" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Next</button>
+    </div>
+  </div>
+</div>

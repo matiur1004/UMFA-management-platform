@@ -1,0 +1,84 @@
+<div class="version-value-wrp">
+  <div class="modal-header">
+    <h5 class="modal-title">Add new Tariff</h5>
+    <button (click)="onDismiss()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <div class="modal-body add-supplier-modal__body">
+    <ng-container *ngIf="{
+      formState: formState$ | async,
+      order: branchTariffsOrder$ | async,
+      supplyType: supplyTypeFilter$ | async,
+      supplier: supplierFilter$ | async,
+      buildingCategories: buildingCategoriesFilter$ | async
+    } as data">
+      <form [ngrxFormState]="data.formState">
+        <div class="container-fluid none-padding ">
+          <div class="input-row none-margin-hr">
+            <div class="text-uppercase field-name"><strong>Supply type:</strong></div>
+            <div class="field-value none-padding">
+              <ng-select (change)="onChangeSupplyType($event)" [(ngModel)]="selectedSupplyType"
+                         [clearable]="false"
+                         [hideSelected]="true"
+                         [multiple]="false" [ngModelOptions]="{standalone: true}" [searchable]="false" class="dnm-ng-select dnm-ng-select--active sscheme-item-drpdwn">
+                <ng-option value="">All</ng-option>
+                <ng-option *ngFor="let item of supplyTypes" [value]="item.value">{{item.label}}</ng-option>
+              </ng-select>
+            </div>
+          </div>
+          <div class="input-row none-margin-hr">
+            <div class="text-uppercase field-name"><strong>Choose a supplier:</strong></div>
+            <div class="field-value none-padding">
+              <ng-select (change)="onChangeSupplier($event)" [(ngModel)]="selectedSupplier"
+                         [clearable]="false"
+                         [hideSelected]="true"
+                         [multiple]="false" [ngModelOptions]="{standalone: true}" [searchable]="false" class="dnm-ng-select dnm-ng-select--active sscheme-item-drpdwn">
+                <ng-option value="">All</ng-option>
+                <ng-option *ngFor="let item of suppliers$ | async" [value]="item.id">{{item.name}}</ng-option>
+              </ng-select>
+            </div>
+          </div>
+          <div class="input-row none-margin-hr">
+            <div class="text-uppercase field-name"><strong>Building category:</strong></div>
+            <div class="field-value none-padding">
+              <ng-select (change)="onChangeBuildingCategory($event)"
+                         [(ngModel)]="selectedCategory" [clearable]="false" [closeOnSelect]="false" [hideSelected]="true" [items]="categories$ | async"
+                         [multiple]="true" [searchable]="false" bindLabel="name"
+                         bindValue="id" class="dnm-ng-select dnm-ng-select--active sscheme-item-drpdwn"
+                         name="ids"
+                         placeholder="Select"></ng-select>
+            </div>
+          </div>
+          <div class="input-row none-margin-hr">
+            <div class="trf-chooser-wrp">
+              <tariffs-chooser (added)="onAddTariff($event)"
+                               (orderChanged)="onTariffOrder($event, data.order)"
+                               *ngIf="((branchTariffs$ | async) || []).length > 0; else emptyPlaceholder"
+                               [order]="data.order"
+                               [tariffs]="branchTariffs$ | async | fiterBranchTariffs : selectedSupplyType : selectedSupplier : selectedCategory"></tariffs-chooser>
+
+              <ng-template #emptyPlaceholder>
+                <div class="empty-placeholder">
+                  Choose a supplier to get an access to the tariff list
+                </div>
+              </ng-template>
+            </div>
+            <small *ngIf="data.formState.isSubmitted && data.formState.errors._tariffs?.required"
+                   class="alert-danger">
+              Choose tariff
+            </small>
+          </div>
+          <div class="row none-margin-hr">
+            <div class="col none-padding footer-buttons d-flex justify-content-end">
+              <button (click)="onDismiss()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+              <button (click)="onSave(data.formState)" class="dnm-btn dnm-btn-primary text-uppercase"
+                      type="submit">Add
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </ng-container>
+  </div>
+</div>

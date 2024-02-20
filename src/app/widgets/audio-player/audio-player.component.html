@@ -1,0 +1,16 @@
+<div class="audio">
+  <div class="d-flex align-items-center">
+    <i (click)="toggleAudio()"
+       [ngClass]="{'play-icon': audio.paused,
+                    'pause-icon': !audio.paused}"
+       class="record-icon"></i>
+    <span class="record-name">Record #1</span>
+  </div>
+  <div (click)="setCurrentPosition($event)" class="progress-container">
+    <progress class="audio-progress" max='{{audioLength}}' min="0" value='{{audio.currentTime}}'></progress>
+  </div>
+  <div class="d-flex align-items-center justify-content-between">
+    <span class="record-duration">{{ this.timeElapsed.value }}</span>
+    <span class="record-duration">{{ this.audioDuration }}</span>
+  </div>
+</div>

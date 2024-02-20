@@ -1,0 +1,58 @@
+@import 'variables.less';
+
+.cmn-area-shop-item {
+  width: 269px;
+  height: 70px;
+  padding: 0 15px;
+  border-bottom: 1px solid #e1e1e1;
+}
+
+.active-shop {
+  .consumption-gd-blue {
+    .gradient-blue();
+  }
+
+  .consumption-gd-yellow {
+    .gradient-yellow();
+  }
+}
+
+.vacant-shop {
+  .consumption-gd-red {
+    .gradient-red();
+  }
+}
+
+.cmn-area-shop-item .dnm-checkbox {
+  margin-right: 8px;
+}
+
+.cmn-area-shop-item .cell-percent-lbl {
+  font-family: @fontFamilyBook;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.cmn-area-shop-item .status-lbl {
+  min-width: 70px;
+  padding: 0 3px;
+  font-size: 11px;
+}
+
+.cmn-area-shop-item .alloc-field {
+  padding-right: 10px;
+}
+
+::ng-deep .cmn-area-shop-item .tooltip-inner {
+  padding: 8px 20px;
+}
+
+::ng-deep .cmn-area-shop-item input.alloc-fld-inpt {
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+}
+
+::ng-deep .cmn-area-shop-item input.alloc-fld-inpt:focus {
+  padding-left: 3px !important;
+  padding-right: 3px !important;
+}

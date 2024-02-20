@@ -1,0 +1,23 @@
+<div class="chng-spl-wrp">
+  <div class="modal-header">
+    <div class="container-fluid text-center">
+      <i class="icon-relative chng-spl-icon"></i>
+    </div>
+    <button (click)="dismiss()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container-fluid text-center">
+      <div class="popup-title">Are you sure you want to change the supply type?</div>
+      <div class="description">
+        All the settings that are applied to specific<br/>supply type would be reset.
+      </div>
+      <div class="button-container">
+        <button (click)="dismiss()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+        <button (click)="close()" class="dnm-btn dnm-btn-delete text-uppercase" type="button">Change anyway</button>
+      </div>
+    </div>
+  </div>
+
+</div>

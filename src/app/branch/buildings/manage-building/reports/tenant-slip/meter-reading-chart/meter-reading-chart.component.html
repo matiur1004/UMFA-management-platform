@@ -1,0 +1,24 @@
+<div #barChart [style.height]="configurations.minHeight" class="bar-chart-parent bar-chart w-100">
+    <ngx-charts-bar-vertical
+        [barPadding]="configurations.barPadding"
+        [dataLabelFormatting]="dataLabelFn"
+        [customColors]="customColors"
+        [gradient]="true"
+        [legend]="configurations.showLegend"
+        [noBarWhenZero]="true"
+        [results]="data"
+        [roundEdges]="false"
+        [showDataLabel]="configurations.showDataLabel"
+        [showXAxisLabel]="configurations.showXAxisLabel"
+        [showYAxisLabel]="configurations.showYAxisLabel"
+        [view]="[barChart.offsetWidth, barChart.offsetHeight]"
+        [xAxis]="configurations.xAxis"
+        [yAxis]="configurations.yAxis">
+        <ng-template #tooltipTemplate let-model="model">
+            <div class="m-3 d-flex flex-column">
+                <span class="text-block-title">Total Inc</span>
+                <span class="bl-gradient-title">{{model.value | dynCurrency:'ZAR':'symbol-narrow':'1.0-0'}}</span>
+            </div>
+        </ng-template>
+    </ngx-charts-bar-vertical>
+</div>

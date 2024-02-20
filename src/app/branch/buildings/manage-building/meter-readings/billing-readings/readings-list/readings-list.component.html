@@ -1,0 +1,105 @@
+<div class="container-fluid none-padding readings-list">
+  <div class="row none-margin-hr list-header">
+    <div class="col none-padding d-flex">
+      <div class="header-field srl-numb-header d-flex align-items-center">
+        Serial No
+      </div>
+      <ng-container *ngIf="chartUsage === billingReadingChart.None">
+        <ng-container *ngTemplateOutlet="usageChartNone"></ng-container>
+      </ng-container>
+
+      <ng-container *ngIf="chartUsage !== billingReadingChart.None">
+        <ng-container *ngTemplateOutlet="usageChartPeriod"></ng-container>
+      </ng-container>
+    </div>
+  </div>
+  <div class="list-body">
+    <readings-list-item (applyEstimation)="applyEstimation.emit($event)"
+                        (confirmReading)="confirmReading.emit($event)"
+                        (readingDetailsFileDownload)="readingDetailsFileDownload.emit($event)"
+                        (readingDetailsUpdate)="readingDetailsUpdate.emit($event)"
+                        (resetReading)="resetReading.emit($event)"
+                        (startEstimation)="startEstimation.emit($event)"
+                        (toggleMeterReading)="toggleMeterReading.emit($event)"
+                        (updateReadingsList)="onUpdateReadingsList($event)"
+                        *ngFor="let item of meterReadingDetails; let i = index"
+                        [branchId]="branchId"
+                        [buildingId]="buildingId"
+                        [buildingPeriodId]="buildingPeriod.id"
+                        [expandedRegisters]="expandedRegisters"
+                        [isShowVirtualRegisters]="isShowVirtualRegisters"
+                        [meterReadingChart]="meterReadingChart[i]"
+                        [meterReadingStatsChart]="readingStatsByMeterId(item.meterDetails.meterId)"
+                        [meter]="item"
+                        [reasons]="reasons">
+    </readings-list-item>
+  </div>
+  <pager (onPageChange)="onPageChange($event)" [pageSize]="itemsPerPage" [page]="page"
+         [total]="total"></pager>
+</div>
+
+<ng-template #mainNoneProps>
+  <div class="col-2 header-col header-field d-flex align-items-center">
+    <span title="Ratio">Ratio</span>
+  </div>
+  <div class="col-4 header-col header-field d-flex align-items-center">
+    <span title="Previous Readings">Previous Reading</span>
+  </div>
+  <div class="col-2 header-col header-field d-flex align-items-center">
+    <span title="Average Usage">Average Usage</span>
+  </div>
+  <div class="col-2 header-col header-field d-flex align-items-center">
+    <span title="Estimated Readings">Estimated Reading</span>
+  </div>
+</ng-template>
+
+<ng-template #usageChartNone>
+  <div class="w-100">
+    <div class="row none-margin-hr header-row">
+      <div class="col-7 none-padding d-flex align-items-center">
+        <div class="row none-margin-hr w-100">
+          <ng-container *ngTemplateOutlet="registerCol"></ng-container>
+          <ng-container *ngTemplateOutlet="mainNoneProps"></ng-container>
+        </div>
+      </div>
+      <div class="col-5 none-padding d-flex align-items-center">
+        <ng-container *ngTemplateOutlet="additionalRowPropsNone"></ng-container>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #usageChartPeriod>
+  <div class="w-100">
+    <div class="none-margin-hr header-row w-100 row">
+      <ng-container *ngTemplateOutlet="registerCol"></ng-container>
+      <ng-container *ngTemplateOutlet="usagesChart"></ng-container>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #additionalRowPropsNone>
+  <div class="row none-margin-hr w-100">
+    <div class="col-5 header-col header-field d-flex align-items-center">
+      <span title="Current Readings">Billing Reading</span>
+    </div>
+    <div class="col-3 header-col header-field d-flex align-items-center">
+      <span title="Closest Readings">Closest Reading</span>
+    </div>
+    <div class="col-4 header-col header-field d-flex align-items-center">
+      <span title="Usage">Usage</span>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #usagesChart>
+  <div class="col-8 header-col header-field d-flex align-items-center">
+    <span title="Usages Chart">Usages Chart</span>
+  </div>
+</ng-template>
+
+<ng-template #registerCol>
+  <div class="col-2 header-col header-field d-flex align-items-center">
+    <span title="Register">Register</span>
+  </div>
+</ng-template>

@@ -1,0 +1,24 @@
+<div class="page-content suppliers-page">
+  <!-- header -->
+  <div class="container-fluid none-padding">
+    <div class="row none-margin-hr">
+      <div class="col-6 none-padding">
+        <h1 class="page-title">Suppliers</h1>
+      </div>
+      <div class="col-6 none-padding text-right">
+        <button (click)="onAddNewSupplier()" class="dnm-btn dnm-btn-primary text-uppercase create-suppliers-btn"
+                type="button">
+          <span>Add New Supplier</span>
+          <i class="suppliers-icon add-supplier-icon"></i>
+        </button>
+      </div>
+    </div>
+    <div class="row none-margin-hr">
+      <div class="col none-padding">
+        <supplier-list (onDelete)="onDeleteSupplier($event)" (onEdit)="onEditSupplier($event)"></supplier-list>
+      </div>
+    </div>
+  </div>
+</div>
+
+

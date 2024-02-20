@@ -1,0 +1,39 @@
+<div class="service-price-popup">
+  <div class="popup-header">
+    {{serviceName}}
+  </div>
+  <div class="popup-body">
+    <div *ngIf="shouldDisplayFixedPriceMethod" class="price-val-item">
+      <span class="val-lbl">{{ model.fixedPrice | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</span>
+      <span class="per-sq-lbl">fixed price</span>
+    </div>
+    <div *ngIf="shouldDisplayPerTenantMethod" class="price-val-item">
+      <span class="val-lbl">{{ model.perTenant | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</span>
+      <span class="per-sq-lbl">per tenant</span>
+    </div>
+    <div *ngIf="shouldDisplayPerShopMethod" class="price-val-item">
+      <span class="val-lbl">{{ model.perShop | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</span>
+      <span class="per-sq-lbl">per shop</span>
+    </div>
+    <div *ngIf="shouldDisplayPerMeterMethod" class="price-val-item">
+      <span class="val-lbl">{{ model.perMeter | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</span>
+      <span class="per-sq-lbl">per meter</span>
+    </div>
+    <div *ngIf="shouldDisplayPerSQMeterMethod" class="price-val-item">
+      <span class="val-lbl">{{ model.perSquareMeter | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</span>
+      <span class="per-sq-lbl">per sq meter</span>
+    </div>
+    <div *ngIf="shouldDisplayPerBuildingMethod" class="price-val-item">
+      <span class="val-lbl">{{ model.perBuilding | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</span>
+      <span class="per-sq-lbl">per building</span>
+    </div>
+    <div *ngIf="shouldDisplayPerCouncilAccountMethod" class="price-val-item">
+      <span class="val-lbl">{{ model.perCouncilAccount | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</span>
+      <span class="per-sq-lbl">per council acc.</span>
+    </div>
+    <div *ngIf="shouldDisplayPerHourMethod" class="price-val-item">
+      <span class="val-lbl">{{ model.perHour | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</span>
+      <span class="per-sq-lbl">per hour</span>
+    </div>
+  </div>
+</div>

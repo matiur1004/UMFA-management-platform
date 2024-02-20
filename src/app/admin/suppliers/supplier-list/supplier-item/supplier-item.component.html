@@ -1,0 +1,58 @@
+<div (click)="onEditClick($event, supplier.id)" class="row none-margin-hr supplier-item">
+  <div class="col-6 none-padding d-flex align-items-center">
+    <div class="row none-margin-hr w-100">
+      <div class="col-8 d-flex align-items-center">
+        <logo-container [url]="supplier.logoUrl" logo-class="logo d-flex justify-content-center full-height">
+          <div class="logo-abbreviation d-flex align-items-center">
+            <span>SU</span>
+          </div>
+        </logo-container>
+        <div class="d-flex flex-column col-7">
+          <span class="supplier-name-lbl">{{supplier.name}}</span>
+          <span class="supplier-name-descr text-ellipsis">
+            {{supplier.description}}
+          </span>
+        </div>
+
+      </div>
+      <div class="col-4 d-flex align-items-center">
+        <span class="physical-address-lbl">
+          {{getAddressLine(supplier.physicalAddress)}}
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 none-padding d-flex align-items-center">
+    <div class="row none-margin-hr w-100">
+      <div class="col-4 d-flex align-items-center">
+        <div class="service-type d-flex align-items-center">
+          <div *ngIf="supplier.enabledSupplyTypes[SupplyType.Electricity]" class="service-icon electricity-icon"></div>
+          <div *ngIf="supplier.enabledSupplyTypes[SupplyType.Water]" class="service-icon water-icon"></div>
+          <div *ngIf="supplier.enabledSupplyTypes[SupplyType.Sewerage]" class="service-icon sewerage-icon"></div>
+          <div *ngIf="supplier.enabledSupplyTypes[SupplyType.Gas]" class="service-icon gas-icon"></div>
+          <div *ngIf="supplier.enabledSupplyTypes[SupplyType.AdHoc]" class="service-icon ad-hoc-icon"></div>
+        </div>
+      </div>
+      <div class="col-4">
+        <span class="email-lbl">{{supplier.email}}</span>
+      </div>
+      <div class="col-4 d-flex align-items-center justify-content-between">
+        <span class="phone-numb-lbl">{{supplier.phone}}</span>
+        <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+          <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle></button>
+          <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+            <button class="dropdown-item d-flex justify-content-between">
+              Edit
+              <i class="dnm-icon edit-icon"></i>
+            </button>
+            <button (click)="onDeleteClick(supplier.id)" class="dropdown-item d-flex justify-content-between on-delete">
+              Delete
+              <i class="dnm-icon delete-icon"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

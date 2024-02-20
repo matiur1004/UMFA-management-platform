@@ -1,0 +1,332 @@
+@import 'variables.less';
+
+.consumpt-report .doc-oper-btn {
+  position: relative;
+  background-color: @color-background-button;
+  color: @color-main-accent;
+  padding: 0 50px 0 20px;
+  font-size: 14px;
+  border-radius: 25px;
+  line-height: 14px;
+  height: 38px;
+  margin-right: 20px;
+
+  &:hover {
+    background: @color-background-tertiary;
+  }
+}
+
+.consumpt-report label.doc-oper-btn {
+  margin-bottom: 0;
+}
+
+.consumpt-report .doc-oper-icon {
+  background-position: center;
+  background-repeat: no-repeat;
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  background-size: 17px;
+  display: inline-block;
+  width: 17px;
+  height: 17px;
+}
+
+.consumpt-report .print-btn-icon {
+  background-image: url('../../../../../../assets/images/icons/meter-readings/enter-rdngs-btn-icon.svg');
+}
+
+.consumpt-report .export-btn-icon {
+  background-image: url('../../../../../../assets/images/icons/meter-readings/export-icon.svg');
+}
+
+.consumpt-report .filter-drpdwn-lbl {
+  font-family: Gotham Medium;
+  font-size: 15px;
+  line-height: 15px;
+  color: @color-text-tertiary;
+  margin-right: 20px;
+}
+
+.consumpt-report .bld-per-drpdwn-btn {
+  width: 380px;
+  min-width: 380px;
+}
+
+.consumpt-report .header-fltr-wrp:last-child {
+  margin-right: 0;
+}
+
+.consumpt-report .switch-slider-lbl,
+.consumpt-report .per-page-lbl {
+  font-family: Gotham Medium;
+  font-size: 15px;
+  line-height: 15px;
+  color: @color-text-tertiary;
+  margin-right: 20px;
+}
+
+.consumpt-report .service-switch {
+  height: 25px;
+}
+
+.consumpt-report .consumpt-report-fltr {
+  background-color: @color-background-secondary;
+  border-bottom: 1px solid @color-line;
+  margin: 25px -40px 40px -40px;
+
+  .bl-gradient-title {
+    font-size: 24px;
+    line-height: 24px;
+    margin-bottom: 10px;
+  }
+}
+
+::ng-deep .consumpt-report .txt-sm,
+::ng-deep .consumpt-report .txt-sm-light {
+  font-family: Gotham Book;
+  font-size: 14px;
+}
+
+::ng-deep .consumpt-report .txt-sm {
+  color: @color-text-tertiary;
+}
+
+::ng-deep .consumpt-report .txt-sm-light {
+  color: @color-description;
+}
+
+::ng-deep .consumpt-report .txt-sm-descr {
+  font-size: 12px;
+}
+
+::ng-deep .consumpt-report .txt-sm-bold,
+::ng-deep .consumpt-report .txt-sm-total {
+  font-family: Gotham Medium;
+  color: @color-text-tertiary;
+}
+
+::ng-deep .consumpt-report .txt-sm-bold {
+  font-size: 13px;
+}
+
+::ng-deep .consumpt-report .txt-sm-total {
+  font-size: 14px;
+}
+
+::ng-deep .consumpt-report .txt-md {
+  font-family: Gotham Medium;
+  font-size: 16px;
+}
+
+::ng-deep .consumpt-report .txt-lg {
+  font-family: Gotham Medium;
+  font-size: 20px;
+  color: @color-text-primary;
+}
+
+::ng-deep .consumpt-report .sub-title {
+  font-family: Gotham Bold;
+  font-size: 13px;
+  color: @color-text-tertiary;
+}
+
+::ng-deep .consumpt-report .nmbs-details {
+  font-family: Gotham Light;
+  font-size: 16px;
+  color: @color-text-tertiary;
+  margin-bottom: 25px;
+}
+
+::ng-deep .consumpt-report .price-dt {
+  font-family: Gotham Book;
+  font-size: 13px;
+  color: @color-text-tertiary;
+}
+
+::ng-deep .consumpt-report .price-dt-lt {
+  color: @color-description;
+}
+
+/* #region billing filter */
+
+.consumpt-report .consumpt-report-fltr {
+  border-top: 1px solid @color-line;
+  border-bottom: 1px solid @color-line;
+  margin-left: -40px;
+  margin-right: -40px;
+  padding: 40px;
+  background-color: @color-background-secondary;
+}
+
+.consumpt-report .mr-filter-mrgn-bottom {
+  margin-bottom: 40px;
+}
+
+.consumpt-report .first-col {
+  padding-left: 0;
+  padding-right: 40px;
+}
+
+.consumpt-report .second-col {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.consumpt-report .third-col {
+  padding-left: 40px;
+  padding-right: 0;
+}
+
+.consumpt-report .vert-blck-line {
+  border-right: 1px solid @color-line;
+}
+
+.consumpt-report .bl-gradient-title {
+  margin-bottom: 20px;
+  line-height: 20px;
+}
+
+.consumpt-report .filter-blck-wrp {
+  padding-bottom: 20px;
+}
+
+.consumpt-report .blng-fltr-mrgn-right {
+  margin-right: -10px;
+}
+
+.consumpt-report .filter-item {
+  min-width: 120px;
+  width: calc((100% / 3) - 10px);
+  height: 30px;
+  border: 1px solid @color-line;
+  background-color: @color-background-white;
+  border-radius: 15px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.consumpt-report .filter-item.active {
+  border: none;
+  background-color: @color-main-accent;
+  color: @color-background-white;
+}
+
+.consumpt-report .filter-item:not(.active):hover {
+  background-color: @color-background-tertiary;
+}
+
+.consumpt-report .filter-item-lbl {
+  font-family: Gotham Book;
+  font-size: 12px;
+  line-height: 12px;
+}
+
+.consumpt-report .filter-item-lbl {
+  color: @color-text-tertiary;
+}
+
+.consumpt-report .active .filter-item-lbl {
+  color: @color-background-white;
+}
+
+.consumpt-report .service-icon {
+  background-size: 13px;
+  width: 25px;
+  height: 25px;
+}
+
+.consumpt-report .service-icon:before {
+  width: 25px;
+  height: 25px;
+}
+
+.consumpt-report .type-lbl {
+  padding-left: 0;
+  font-size: 12px;
+}
+
+.consumpt-report .service-icon:before {
+  background: none;
+}
+
+.consumpt-report .abnorm-lvl-tgl {
+  font-family: Gotham Book;
+  font-size: 12px;
+  line-height: 30px;
+  color: @color-description;
+  margin-bottom: 20px;
+}
+
+.consumpt-report .abnorm-lvl-tgl .active {
+  color: @color-main-accent;
+}
+
+.consumpt-report .abnorm-lvl-lbl:first-child {
+  padding-right: 5px;
+  border-right: 1px solid @color-description;
+}
+
+.consumpt-report .abnorm-lvl-lbl:last-child {
+  padding-left: 5px;
+}
+
+.consumpt-report .abnormaly-lvl-inpt {
+  width: calc(50% - 25px);
+  height: 30px;
+  font-family: 'Gotham Book';
+  border-radius: 15px;
+  border: 1px solid @color-line;
+  color: @color-text-tertiary;
+  font-size: 15px;
+  padding: 8px 15px 8px 20px;
+  background: @color-background-white;
+}
+
+.consumpt-report .abnormaly-lvl-inpt:focus {
+  outline-color: transparent;
+}
+
+.consumpt-report .inpt-hyphen {
+  width: 50px;
+  line-height: 30px;
+  color: @color-text-tertiary;
+  font-family: Gotham Book;
+  font-size: 15px;
+  text-align: center;
+}
+
+.consumpt-report .filter-item-drpdwn-btn,
+.consumpt-report .filter-item-drpdwn-menu {
+  width: 100%;
+  min-width: 100%;
+}
+
+.consumpt-report .filter-item-drpdwn-btn {
+  margin-bottom: 10px;
+}
+
+.consumpt-report .footer-buttons {
+  margin: 15px 0 10px;
+}
+
+.consumpt-report .filter-footer-btn {
+  width: 135px;
+}
+
+.consumpt-report .dnm-btn-cancel {
+  margin-right: 20px;
+}
+
+.consumpt-report .dnm-btn-reset {
+  background-color: transparent;
+  color: @color-text-tertiary;
+  padding: 13px 16px;
+  font-size: 13px;
+  border-radius: 25px;
+  line-height: 14px;
+  margin-right: 15px;
+}
+
+/* #endregion */

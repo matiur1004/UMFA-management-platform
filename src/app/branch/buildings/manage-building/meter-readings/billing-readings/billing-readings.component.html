@@ -1,0 +1,310 @@
+<div class="container-fluid none-padding billing-readings">
+  <div class="row none-margin-hr blng-prd-filter">
+    <div class="col none-padding">
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+          <span class="text-uppercase filter-drpdwn-lbl">Building Period:</span>
+          <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+            <button class="btn btn-secondary dropdown-toggle bld-per-drpdwn-btn text-left" ngbDropdownToggle>
+              <span *ngIf="!(selectedBuildingPeriod$ | async)">Periods not found</span>
+              <span *ngIf="(selectedBuildingPeriod$ | async) as selectedBuildingPeriod">
+                {{selectedBuildingPeriod.name}}
+                ({{(selectedBuildingPeriod).startDate | dateMediumFormat}}
+                - {{(selectedBuildingPeriod).endDate | dateMediumFormat}})
+              </span>
+            </button>
+            <div class="dropdown-menu bld-per-drpdwn-menu w-100" ngbDropdownMenu>
+              <button (click)="onPeriodChanged(period.id)" *ngFor="let period of (buildingPeriods$ | async);"
+                      class="dropdown-item">
+                {{period.name}} ({{period.startDate | dateMediumFormat}} - {{period.endDate | dateMediumFormat}})
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex align-items-center">
+          <button (click)="onEnterReadings()" class="dnm-btn imprt-exprt-btn text-uppercase" type="button">Enter
+            Readings<i class="imprt-exprt-icon input-icon"></i></button>
+          <div class="d-flex justify-content-center">
+            <input #fileInput (change)="fileChangeEvent($event)" (click)="fileInput.value = null" class="upload-file-input" id="file-id"
+                   name="file" type="file"/>
+            <label class="dnm-btn imprt-exprt-btn text-uppercase d-flex align-items-center" for="file-id">
+              Import
+              <i class="imprt-exprt-icon import-icon"></i>
+            </label>
+          </div>
+          <button (click)="onExportToCsv()" class="dnm-btn imprt-exprt-btn text-uppercase m-0" type="button">Export<i
+            class="imprt-exprt-icon export-icon"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row search-row  none-margin-hr">
+    <div class="col none-padding">
+      <div [style.width]="(totalFilters$ | async) > 0 ? 'calc(100% - 54px)' : '100%'"
+            class="form-inline main-search-input">
+        <div class="input-group">
+          <input #searchBox (keyup)="search(searchBox.value)" class="form-control group-search-input"
+                 data-search-field placeholder="Search meter by serial number" type="search" [ngModel]="(searchKey$ | async)"/>
+          <div class="input-group-append">
+            <i class="icon-relative search-icon vertical-middle"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="(totalFilters$ | async) === 0" class="col-2 none-padding text-right">
+      <button (click)="onShowFilter()" [ngClass]="{'active-btn' : showFilter}" class="dnm-btn dnm-btn-filter text-uppercase"
+              type="button">Filter<i
+        class="btn-filter-icon"></i></button>
+    </div>
+  </div>
+  <div *ngIf="(totalFilters$ | async) > 0" class="row filter-details none-margin-hr">
+    <div class="col-auto mr-3">
+      <h3 class="bl-gradient-title">Filters</h3>
+      <p class="filter-details__count">{{totalFilters$ | async}} units</p>
+    </div>
+    <div class="col">
+      <div class="filter-details__items d-flex flex-wrap">
+        <div *ngFor="let filter of filters$ | async" [ngClass]="{'active': filter.active}"
+             class="filter-item--custom d-flex align-items-center justify-content-center">
+          <span (click)="onChangeFilter(filter)" class="filter-item-lbl w-100 text-center">{{filter.filterName}}</span>
+          <i (onConfirmerAction)="onRemoveFilter(filter)" aria-hidden="true"
+             class="icon-relative close-filter-item" confirm-delete-bind-dialog></i>
+        </div>
+      </div>
+    </div>
+    <div class="col-auto none-padding text-right">
+      <button (click)="onShowFilter()" [ngClass]="{'active-btn' : showFilter}" class="dnm-btn dnm-btn-filter text-uppercase"
+              type="button">Filter<i
+        class="btn-filter-icon"></i></button>
+    </div>
+  </div>
+  <div *ngIf="showFilter" [ngClass]="{ 'mr-filter-mrgn-bottom': showFilter == true }" class="billing-readings-filter">
+    <div class="row none-margin-hr">
+      <div class="col-4 first-col vert-blck-line">
+        <div class="filter-blck-wrp">
+          <div class="bl-gradient-title">Supply type</div>
+          <div class="d-flex flex-wrap blng-fltr-mrgn-right">
+            <div (click)="onSupplyTypeChange(supplyTypeValue)"
+                 *ngFor="let supplyTypeValue of (filterDetail$ | async).supplyTypes"
+                 [ngClass]="{'active': isTypeActive(supplyTypeValue) }"
+                 class="filter-item d-flex align-items-center justify-content-center">
+              <div *ngIf="isTypeActive(supplyTypeValue)" [ngClass]="{
+                     'electricity-white-icon': supplyTypeValue == supplyType.Electricity,
+                     'water-white-icon': supplyTypeValue == supplyType.Water,
+                     'sewerage-white-icon': supplyTypeValue == supplyType.Sewerage,
+                     'gas-white-icon': supplyTypeValue == supplyType.Gas,
+                     'ad-hoc-white-icon': supplyTypeValue == supplyType.AdHoc
+                }" class="service-icon"></div>
+              <div *ngIf="!isTypeActive(supplyTypeValue)" [ngClass]="{
+                     'electricity-icon': supplyTypeValue == supplyType.Electricity,
+                     'water-icon': supplyTypeValue == supplyType.Water,
+                     'sewerage-icon': supplyTypeValue == supplyType.Sewerage,
+                     'gas-icon': supplyTypeValue == supplyType.Gas,
+                     'ad-hoc-icon': supplyTypeValue == supplyType.AdHoc
+                }" class="service-icon"></div>
+              <span *ngIf="isTypeActive(supplyTypeValue)" class="filter-item-lbl">
+                {{supplyType[supplyTypeValue]}}
+              </span>
+              <span *ngIf="!isTypeActive(supplyTypeValue)" [ngClass]="{
+                     'electricity-lbl': supplyTypeValue == supplyType.Electricity,
+                     'water-lbl': supplyTypeValue == supplyType.Water,
+                     'sewerage-lbl': supplyTypeValue == supplyType.Sewerage,
+                     'gas-lbl': supplyTypeValue == supplyType.Gas,
+                     'ad-hoc-lbl': supplyTypeValue == supplyType.AdHoc
+                }" class="type-lbl">{{supplyType[supplyTypeValue]}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="filter-blck-wrp">
+          <div class="bl-gradient-title">Source</div>
+          <div class="d-flex flex-wrap blng-fltr-mrgn-right">
+            <div (click)="onReadingSourceChange(source)"
+                 *ngFor="let source of (filterDetail$ | async).sources"
+                 [ngClass]="{'active': source.isChecked }" class="filter-item d-flex align-items-center justify-content-center">
+              <span class="filter-item-lbl">{{readingSourcesDict[readingSource[source.readingSource]]}}</span>
+            </div>
+          </div>
+        </div>
+
+        <abnormality-filter (filterChanged)="onAbnormalityFilterDataChanged($event)"
+                            [filterData]="filterDetails.abnormalityFilterData"></abnormality-filter>
+
+      </div>
+      <div class="col-3 second-col vert-blck-line">
+        <div class="filter-blck-wrp">
+          <div class="bl-gradient-title">Registers</div>
+          <ng-select (change)="onRegisterChanged($event)" [clearable]="false" [closeOnSelect]="true"
+                     [dropdownPosition]="'top'" [hideSelected]="true"
+                     [ngModel]="filterDetails.checkedRegisterId" [searchable]="false" class="dnm-dropdown-select mb-2">
+            <ng-option value="">All Registers</ng-option>
+            <ng-option *ngFor="let register of registers$ | async" [value]="register.id">
+              {{register.id | registerUnit | async}}
+            </ng-option>
+          </ng-select>
+          <div (click)="onBillingOnlyChange()"
+               [ngClass]="{'active': (filterDetail$ | async).isBillingOnlyRegisters }"
+               class="filter-item w-100 d-flex align-items-center justify-content-center">
+            <span class="filter-item-lbl">Billing only</span>
+          </div>
+        </div>
+        <div class="filter-blck-wrp">
+          <div class="bl-gradient-title">Availability of readings</div>
+          <ng-select (change)="onReadingCategoryChanged($event)" [clearable]="false" [closeOnSelect]="true"
+                     [dropdownPosition]="'top'" [hideSelected]="true"
+                     [ngModel]="filterDetails.readingCategory" [searchable]="false" class="dnm-dropdown-select">
+            <ng-option *ngFor="let category of readingCategories" [value]="category.value">
+              {{category.title}}
+            </ng-option>
+          </ng-select>
+        </div>
+        <div *ngIf="filterDetails.readingCategory === 2" class="filter-blck-wrp">
+          <div class="bl-gradient-title">Reason</div>
+          <ng-select (change)="onReasonChange($event)" [clearable]="false" [closeOnSelect]="true"
+                     [dropdownPosition]="'top'" [hideSelected]="true"
+                     [ngModel]="filterDetails.checkedReasonId" [searchable]="false" class="dnm-dropdown-select">
+            <ng-option *ngFor="let item of reasons$ | async" [value]="item.id">{{item.name}}</ng-option>
+          </ng-select>
+        </div>
+      </div>
+      <div class="col-5 third-col">
+        <div class="row">
+          <div class="col-6">
+            <div class="filter-blck-wrp">
+              <div class="bl-gradient-title">Node</div>
+              <ng-select (change)="onNodeChanged($event)" [clearable]="false" [closeOnSelect]="true"
+                         [dropdownPosition]="'top'" [hideSelected]="true"
+                         [ngModel]="filterDetails.checkedNodeId" [searchable]="false" class="dnm-dropdown-select">
+                <ng-option value="">All nodes</ng-option>
+                <ng-option *ngFor="let node of nodes$ | async" [value]="node.id">{{node.name}}</ng-option>
+              </ng-select>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="filter-blck-wrp">
+              <div class="bl-gradient-title">Location</div>
+              <ng-select (change)="onLocationChanged($event)" [clearable]="false" [closeOnSelect]="true"
+                         [dropdownPosition]="'top'" [hideSelected]="true"
+                         [ngModel]="filterDetails.checkedLocationId" [searchable]="false" class="dnm-dropdown-select">
+                <ng-option value="">All Locations</ng-option>
+                <ng-option *ngFor="let location of locations$ | async"
+                           [value]="location.id">{{location.name}}</ng-option>
+              </ng-select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="filter-blck-wrp">
+              <div class="bl-gradient-title">Units</div>
+              <ng-select (change)="onUnitChanged($event)" [clearable]="false" [closeOnSelect]="true"
+                         [dropdownPosition]="'top'" [hideSelected]="true"
+                         [ngModel]="filterDetails.checkedUnitId" [searchable]="false" class="dnm-dropdown-select">
+                <ng-option value="">All units</ng-option>
+                <ng-option *ngFor="let unit of units$ | async" [value]="unit.id">{{unit.name}}</ng-option>
+              </ng-select>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="filter-blck-wrp">
+              <div class="bl-gradient-title">Tenant</div>
+              <ng-select (change)="onTenantChanged($event)" [clearable]="false" [closeOnSelect]="true"
+                         [dropdownPosition]="'top'" [hideSelected]="true"
+                         [ngModel]="filterDetails.checkedTenantId" [searchable]="false" class="dnm-dropdown-select">
+                <ng-option value="">All tenants</ng-option>
+                <ng-option *ngFor="let tenant of tenants$ | async" [value]="tenant.id">{{tenant.name}}</ng-option>
+              </ng-select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row none-margin-hr">
+      <div class="col-12 none-padding footer-buttons d-flex justify-content-end">
+        <button (click)="onSaveFilter()" *ngIf="activeFilter$ | async"
+                class="dnm-btn filter-footer-btn dnm-btn-reset text-uppercase mr-0" type="button">
+          Update Filter
+        </button>
+        <button (click)="onSaveFilter(true)" class="dnm-btn filter-footer-btn dnm-btn-reset text-uppercase mr-0"
+                type="button">
+          Save Filter
+        </button>
+        <button (click)="onResetFilter()" class="dnm-btn filter-footer-btn dnm-btn-reset text-uppercase" type="button">
+          Reset
+        </button>
+        <button (click)="onCancelFilter()" class="dnm-btn filter-footer-btn dnm-btn-cancel text-uppercase"
+                type="button">Cancel
+        </button>
+        <button (click)="onApply()" class="dnm-btn filter-footer-btn dnm-btn-primary text-uppercase" type="button">
+          Apply
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="row none-margin-hr nav-row">
+    <div class="col-12 none-padding">
+      <div class="d-flex justify-content-between">
+        <div class="d-flex align-items-center">
+          <span class="results-lbl dnm-text-light">{{getBillingReadingsItemsDetails$ | async}}</span>
+        </div>
+        <div class="d-flex align-item-center">
+          <div class="d-flex align-items-center header-fltr-wrp">
+            <span class="text-uppercase switch-slider-lbl">Virtual registers:</span>
+            <div class="service-switch">
+              <label class="dnm-switch-btn">
+                <input (click)="onShowVirtualRegister()" [checked]="isShowVirtualRegisters$ | async"
+                       [ngModel]="isShowVirtualRegisters$ | async" type="checkbox">
+                <span class="dnm-switch-slider round"></span>
+              </label>
+            </div>
+          </div>
+          <div class="d-flex align-items-center header-fltr-wrp">
+            <span class="text-uppercase switch-slider-lbl">Show Details:</span>
+            <div class="service-switch">
+              <label class="dnm-switch-btn">
+                <input (click)="onShowDetailsChanged()" [checked]="isShowDetails$ | async"
+                       [disabled]="(chartUsage$ | async) !== billingReadingEnum.None"
+                       [ngModel]="isShowDetails$ | async" type="checkbox">
+                <span class="dnm-switch-slider round"></span>
+              </label>
+            </div>
+          </div>
+          <div class="d-flex align-items-center header-fltr-wrp">
+            <span class="text-uppercase switch-slider-lbl">Usages Chart</span>
+            <ng-select (change)="onChangeChartUsages($event)"
+                       [clearable]="false"
+                       [closeOnSelect]="true"
+                       [dropdownPosition]="'top'"
+                       [hideSelected]="true"
+                       [multiple]="false"
+                       [ngModel]="chartUsage$ | async"
+                       [placeholder]="'Select Charging Type'"
+                       [searchable]="false"
+                       class="dnm-dropdown-select ng-select ng-select-single">
+              <ng-option *ngFor="let item of chartUsages" [value]="item.value">
+                {{item.label}}
+              </ng-option>
+            </ng-select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <readings-list (applyEstimation)="onApplyEstimation($event)" (confirmReading)="onConfirmReading($event)"
+                 (readingDetailsFileDownload)="downloadReadingDetailsFile($event)"
+                 (readingDetailsUpdate)="updateReadingDetails($event)"
+                 (resetReading)="onResetReading($event)"
+                 (startEstimation)="onStartEstimation($event)"
+                 (toggleMeterReading)="onToggleMeterReading($event)"
+                 (updateReadingsList)="updateMetersList()"
+                 [branchId]="branchId"
+                 [buildingId]="buildingId"
+                 [buildingPeriod]="selectedBuildingPeriod$ | async"
+                 [chartUsage]="chartUsage$ | async" [expandedRegisters]="expandedRegisters$ | async"
+                 [isShowVirtualRegisters]="isShowVirtualRegisters$ | async"
+                 [meterReadingChart]="meterReadingChart$ | async"
+                 [meterReadingDetails]="meterReadingDetails$ | async"
+                 [metersReadingStatsChart]="metersReadingStatsChart$ | async" [page]="page$ | async"
+                 [reasons]="reasons$ | async"
+                 [total]="total$ | async">
+  </readings-list>
+</div>

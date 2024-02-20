@@ -1,0 +1,62 @@
+@import 'variables.less';
+
+.manage-brands {
+  background-color: @color-background-white;
+  border: 1px solid @color-line;
+  padding: 30px;
+  height: 100%;
+}
+
+.manage-brands .title-row,
+.manage-brands .search-row,
+.manage-brands .stat-row {
+  margin-bottom: 30px;
+}
+
+.manage-brands .stat-lbl {
+  font-family: Gotham Light;
+  font-size: 16px;
+  line-height: 18px;
+  color: @color-text-tertiary;
+}
+
+.manage-brands .list-header .header-field {
+  text-transform: uppercase;
+}
+
+.manage-brands .list-body {
+  height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.manage-brands .body-row {
+  height: 50px;
+  border-bottom: 1px solid @color-line;
+}
+
+.manage-brands .body-row:last-child {
+  border-bottom: none;
+}
+
+.manage-brands .brand-name-lbl {
+  font-family: Gotham Medium;
+  font-size: 16px;
+  line-height: 18px;
+  color: @color-text-primary;
+}
+
+.manage-brands .equipment-group-lbl {
+  display: inline-block;
+  font-family: Gotham Book;
+  font-size: 14px;
+  line-height: 16px;
+  color: @color-text-tertiary;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.manage-brands .service-type {
+  margin-bottom: 0;
+}

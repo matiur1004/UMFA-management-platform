@@ -1,0 +1,29 @@
+<svg data-name="Слой 1" id="Слой_1" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <style>.cls-1 {
+      fill: url(#Безымянный_градиент_16);
+    }
+
+    .cls-2 {
+      fill: url(#Безымянный_градиент_16-2);
+    }
+
+    .cls-3 {
+      fill: url(#Безымянный_градиент_16-3);
+    }</style>
+    <linearGradient gradientUnits="userSpaceOnUse" id="Безымянный_градиент_16" x1="6.49" x2="30.19" y1="22" y2="22">
+      <stop offset="0" stop-color="#6792e2"/>
+      <stop offset="1" stop-color="#405192"/>
+    </linearGradient>
+    <linearGradient id="Безымянный_градиент_16-2" x1="6.49" x2="30.19" xlink:href="#Безымянный_градиент_16" y1="28"
+                    y2="28"/>
+    <linearGradient id="Безымянный_градиент_16-3" x1="-33.61" x2="50.14" xlink:href="#Безымянный_градиент_16" y1="25"
+                    y2="25"/>
+  </defs>
+  <title>tariff_create_popup</title>
+  <rect class="cls-1" height="2.5" width="14.15" x="16" y="20.75"/>
+  <rect class="cls-2" height="2.5" width="14.15" x="16" y="26.75"/>
+  <path class="cls-3"
+        d="M20,0V10H0V50H30V40H50V0Zm2.5,2.5H24L22.5,4Zm15,22v1H35v6h2.5v1h-25v-15h25v1H35v6ZM27.5,14,26,12.5H27.5ZM2.5,12.5H4L2.5,14Zm0,35V46L4,47.5Zm25,0H26L27.5,46Zm-5,0H7.5l-5-5v-25l5-5h15L25,15H10V35H27.5v7.5Zm25-10H46L47.5,36Zm0-5-5,5H30V35H40V29H37.5V28H40V22H37.5V21H40V15H30V10H22.5V7.5l5-5h15l5,5ZM47.5,4,46,2.5H47.5Z"/>
+</svg>

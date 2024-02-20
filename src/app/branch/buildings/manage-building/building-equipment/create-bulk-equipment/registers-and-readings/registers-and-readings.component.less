@@ -1,0 +1,211 @@
+@import "variables";
+
+.registers-and-readings .nav-row {
+  margin-bottom: 20px;
+}
+
+.registers-and-readings .footer-btns {
+  margin-top: 35px;
+}
+
+.registers-and-readings .dnm-btn-cancel {
+  margin-right: 30px;
+}
+
+.register_note {
+  min-width: 200px;
+}
+
+.registers-and-readings .dnm-btn-cancel,
+.registers-and-readings .dnm-btn-primary {
+  width: 200px;
+}
+
+.registers-and-readings .dropdown-field {
+  padding-top: 0px;
+  margin-right: 20px;
+  min-width: 150px;
+}
+
+.registers-and-readings .drpdwn-wrp {
+  margin-left: 50px;
+}
+
+.registers-and-readings .list-header {
+  margin-bottom: 0;
+  border-bottom: 1px solid #E1E1E1;
+  padding-bottom: 10px;
+}
+
+.registers-and-readings .list-header .header-field {
+  text-transform: uppercase;
+}
+
+.registers-and-readings .header-field {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.registers-and-readings .date {
+  background-color: #fff;
+  min-width: 110px;
+  padding-left: 10px;
+  padding-right: 8px;
+}
+
+.registers-and-readings .list-item {
+  display: flex;
+  //width: 11%;
+}
+
+.registers-and-readings .list-item.small-col {
+  //width: 6%;
+}
+
+.registers-and-readings .list-header-checkbox {
+  margin-right: 5px;
+}
+
+.registers-and-readings .list-body-row {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border: 1px solid #E1E1E1;
+  border-top: none;
+  background-color: #ffffff;
+}
+
+.registers-and-readings .list-body-row.selected {
+  background-color: #f4f6f9;
+}
+
+.registers-and-readings .list-body .checkbox-input {
+  width: 70px;
+  padding-left: 30px;
+}
+
+.body-wrapper {
+  margin-bottom: 10px;
+  min-height: 50px;
+}
+
+.cell.cell-selection.checkbox-input {
+  padding-left: 45px;
+}
+
+.body-wrapper .dnm-checkbox {
+  padding-top: 10px;
+}
+
+.registers-and-readings .checkbox-input.billing-checkbox {
+  padding-left: 20px;
+}
+
+.registers-and-readings .delete-link {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.registers-and-readings .last-list-cell {
+  width: calc(14.5% - 40px);
+}
+
+.registers-and-readings .actual-photo-btn {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-color: transparent;
+  border: none;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.registers-and-readings .actual-photo-btn:after {
+  display: none;
+}
+
+.registers-and-readings .meter-field {
+  font-size: 16px;
+  color: #19233c;
+  font-family: @fontFamilyMedium;
+}
+
+::ng-deep .registers-and-readings input.date ~ ngb-datepicker.dropdown-menu {
+  width: 234px;
+}
+
+::ng-deep .registers-and-readings .number {
+  width: 100px !important;
+}
+
+.registers-and-readings .register-container {
+  margin-top: 10px;
+}
+
+.registers-and-readings .input-row {
+  margin-bottom: 0px;
+}
+
+.registers-and-readings .register-btn {
+  margin-left: 90px;
+}
+
+.registers-and-readings .time-of-use-btn {
+  margin-right: 30px;
+}
+
+.registers-and-readings .apply-btn {
+  width: 135px;
+}
+
+.registers-and-readings .location-lbl, .registers-and-readings .device-type-lbl {
+  font-family: @fontFamilyBook;
+  font-size: 14px;
+  line-height: 13px;
+  color: #566787;
+}
+
+.registers-and-readings .text-form-field {
+  padding: 0;
+}
+
+.cdk-drag-preview {
+  display: inline;
+  line-height: 56px;
+
+  .register-container {
+
+    .list-item div {
+      display: none !important;
+    }
+
+    & :nth-child(1) {
+      width: 70px;
+    }
+
+    & :nth-child(2) {
+      width: 11%;
+    }
+
+    & :nth-child(3) div {
+      width: 100%;
+      display: flex !important;
+    }
+  }
+}
+
+.checkbox-input.dropdown-checkbox-input {
+  margin-right: 0;
+}
+
+.min-column-width {
+  width: max-content;
+}
+
+.register-icon {
+  height: 25px;
+  margin: 5px;
+  image-resolution: initial;
+  border-radius: 3px 5px;
+}

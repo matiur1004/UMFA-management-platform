@@ -1,0 +1,53 @@
+<div class="row none-margin-hr list-header">
+  <div class="col-5 none-padding">
+    <a (click)="onTariffOrderChanged(branchTariffListOrder.NameAsc)" [ngClass]="getActiveOrderClass(order, branchTariffListOrder.NameAsc, branchTariffListOrder.NameDesc)"
+       class="header-field d-flex align-items-center"
+       href="javascript:void(0);">
+      <span class="text-ellipsis text-uppercase" title="Name">Name</span>
+      <i [ngClass]="getOrderClasses(order, branchTariffListOrder.NameAsc, branchTariffListOrder.NameDesc)"
+         class="dnm-icon"></i>
+    </a>
+  </div>
+  <div class="col-5 none-padding">
+    <a (click)="onTariffOrderChanged(branchTariffListOrder.SupplyTypeAsc)" [ngClass]="getActiveOrderClass(order, branchTariffListOrder.SupplyTypeAsc, branchTariffListOrder.SupplyTypeDesc)"
+       class="header-field d-flex align-items-center"
+       href="javascript:void(0);">
+      <span class="text-ellipsis text-uppercase" title="Supply Type">Supply Type</span>
+      <i [ngClass]="getOrderClasses(order, branchTariffListOrder.SupplyTypeAsc, branchTariffListOrder.SupplyTypeDesc)"
+         class="dnm-icon"></i>
+    </a>
+  </div>
+  <div class="col-2 none-padding">
+    <a (click)="onTariffOrderChanged(branchTariffListOrder.AddAsc)" [ngClass]="getActiveOrderClass(order, branchTariffListOrder.AddAsc, branchTariffListOrder.AddDesc)"
+       class="header-field d-flex align-items-center"
+       href="javascript:void(0);">
+      <span class="text-ellipsis text-uppercase" title="Add">Add</span>
+      <i [ngClass]="getOrderClasses(order, branchTariffListOrder.AddAsc, branchTariffListOrder.AddDesc)"
+         class="dnm-icon"></i>
+    </a>
+  </div>
+</div>
+<div class="row none-margin-hr list-body">
+  <div *ngFor="let tariff of tariffs; let i = index;"
+       [ngClass]="{'selected' : tariff.isSelected}"
+       class="body-row row none-margin-hr w-100">
+    <div class="body-field col-5">
+      <span class="unit-field">{{ tariff.entity.name }}</span>
+    </div>
+    <div class="body-field col-5">
+      <ng-container *ngFor="let item of supplyTypes">
+        <div *ngIf="isSupplierSupplyType(tariff.entity.supplyType, item)"
+             class="service-type d-flex align-items-center">
+          <div [ngClass]="getSupplyTypeIconClass(item)" class="service-icon electricity-icon"></div>
+          <span [ngClass]="getSupplyTypeLabelClass(item)"
+                class="type-lbl">{{ supplyTypeText[item] }}</span>
+        </div>
+      </ng-container>
+    </div>
+    <div class="body-field col-2 d-flex align-items-center justify-content-center">
+      <a (click)="onAdd(tariff.entity.id)" class="blue-text-btn" href="javascript:void(0)">
+        <i [ngClass]="tariff.isSelected ? 'check-mark-icon' : 'add-icon'"></i>
+      </a>
+    </div>
+  </div>
+</div>

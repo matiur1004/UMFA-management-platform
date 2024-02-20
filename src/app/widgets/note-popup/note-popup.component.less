@@ -1,0 +1,208 @@
+@import 'variables.less';
+
+/* #region user popup */
+.note-popup {
+  border-radius: 4px;
+  width: 310px;
+  position: relative;
+
+  &::before {
+    position: absolute;
+    content: '';
+    display: block;
+    border-color: transparent;
+    border-width: 18px;
+    border-style: solid;
+    border-right-color: @color-background-dark;
+    opacity: 0.95;
+    width: 18px;
+    top: 40px;
+    left: -36px;
+  }
+
+  &.note-anchor-none:before {
+    display: none;
+  }
+
+  &.note-anchor-right::before {
+    top: 40px;
+    left: auto;
+    right: -36px;
+    border-right-color: transparent;
+    border-left-color: @color-background-dark;
+  }
+
+  .note-popup-header {
+    padding: 15px 15px 20px 20px;
+    opacity: 0.95;
+    background: @color-background-dark;
+    border-bottom: 1px dashed #646c7e;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+  }
+
+  .popup-header-title {
+    font-family: Gotham Medium;
+    font-size: 10px;
+    line-height: 10px;
+    text-transform: uppercase;
+    color: @color-empty;
+  }
+
+  .dnm-icon {
+    border: none;
+  }
+
+  .note-user-dtls {
+    margin-top: 10px;
+  }
+
+  .note-user-img {
+    width: 30px;
+    min-width: 30px;
+    height: 30px;
+    min-height: 30px;
+    border-radius: 50%;
+    background-color: transparent;
+    margin-right: 8px;
+  }
+
+  .note-user-name {
+    font-family: Gotham Medium;
+    font-size: 14px;
+    line-height: 14px;
+    margin-bottom: 8px;
+    color: @color-background-primary;
+  }
+
+  .user-note-date {
+    font-family: Gotham Book;
+    font-size: 12px;
+    line-height: 12px;
+    color: @color-empty;
+  }
+
+  .note-popup-content {
+    background: @color-background-dark;
+    font-size: 14px;
+    line-height: 20px;
+    color: @color-empty;
+    padding: 10px 15px 10px 10px;
+  }
+
+  .not-editable-content {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
+
+  .content-txt {
+    display: inline-block;
+    padding: 10px;
+    word-break: break-word;
+    white-space: normal;
+  }
+
+  .form-control {
+    background-color: @color-background-dark;
+    padding: 7px 10px;
+    color: @color-empty;
+    font-size: 14px;
+    line-height: 20px;
+    border: none;
+    height: 115px;
+    min-height: 115px;
+    max-height: 115px;
+    font-family: @fontFamilyBook;
+  }
+
+  .form-control::-webkit-scrollbar {
+    display: none;
+  }
+
+  .form-control:focus,
+  .form-control:active {
+    outline-color: transparent;
+    box-shadow: none;
+  }
+
+  .note-popup-btn-block {
+    border-top: 1px dashed #646c7e;
+    display: flex;
+    justify-content: space-between;
+    opacity: 0.95;
+    background: @color-background-dark;
+    padding: 0;
+    overflow: hidden;
+    height: 50px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
+
+  .attach-file-container {
+    border-top: 1px dashed #646c7e;
+    position: relative;
+    border-radius: 0px 0px 3px 3px;
+    cursor: pointer;
+
+    .input-file {
+      opacity: 0;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      cursor: pointer;
+    }
+  }
+
+  .note-popup-btn-block .delete-icon,
+  .note-popup-btn-block .view-icon {
+    width: 10px;
+    height: 10px;
+  }
+
+  .note-popup-btn-block button {
+    display: inline-block;
+    background-color: transparent;
+    border: none;
+    color: @color-empty;
+    font-size: 12.5px;
+    padding: 9px 10px 11px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .note-popup-btn-block button:hover {
+    background: #364161;
+    color: @color-accent;
+  }
+
+  .note-popup-btn-block button:hover .edit-icon {
+    background: url("../../../assets/images/icons/dropdowns/edit-hover.svg") no-repeat center;
+  }
+
+  .note-popup-btn-block button:hover .delete-icon {
+    background: url("../../../assets/images/icons/dropdowns/delete-hover.svg") no-repeat center;
+  }
+
+  .note-popup-btn-block button .dnm-icon {
+    position: relative;
+    top: 1px;
+    margin-left: 10px;
+  }
+
+  .separate-line {
+    border-right: 1px dashed #646c7e;
+  }
+
+  .file-link {
+    padding: 5px;
+
+    .link {
+
+    }
+  }
+
+  .file-name {
+    word-break: break-word;
+    white-space: normal;
+  }
+}

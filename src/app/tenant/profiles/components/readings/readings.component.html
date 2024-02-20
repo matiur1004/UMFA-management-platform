@@ -1,0 +1,76 @@
+<div class="container-fluid readings-wrp">
+  <div class="row none-margin-hr">
+    <div class="col none-padding">
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+          <span class="text-uppercase filter-drpdwn-lbl">Select Range:</span>
+          <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+            <button class="btn btn-secondary dropdown-toggle bld-per-drpdwn-btn text-left" ngbDropdownToggle
+                    type="button">
+              19/04/2018 - 19/04/2019
+            </button>
+            <div class="dropdown-menu bld-per-drpdwn-menu" ngbDropdownMenu>
+              <button class="dropdown-item" type="button">19/04/2018 - 19/04/2019</button>
+              <button class="dropdown-item" type="button">19/04/2018 - 19/04/2019</button>
+              <button class="dropdown-item" type="button">19/04/2018 - 19/04/2019</button>
+              <button class="dropdown-item" type="button">19/04/2018 - 19/04/2019</button>
+              <button class="dropdown-item" type="button">19/04/2018 - 19/04/2019</button>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex align-items-center">
+          <span class="text-uppercase filter-drpdwn-lbl">Supply Type:</span>
+          <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+            <button class="btn btn-secondary dropdown-toggle supply-type-drpdwn-btn text-left" ngbDropdownToggle
+                    type="button">
+              All supply types
+            </button>
+            <div class="dropdown-menu bld-per-drpdwn-menu" ngbDropdownMenu>
+              <button class="dropdown-item" type="button">All supply types</button>
+              <button class="dropdown-item" type="button">Supply type 1</button>
+              <button class="dropdown-item" type="button">Supply type 2</button>
+              <button class="dropdown-item" type="button">Supply type 3</button>
+              <button class="dropdown-item" type="button">Supply type 4</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row search-row none-margin-hr">
+    <div class="col none-padding">
+      <form class="form-inline w-100">
+        <div class="input-group">
+          <input #searchBox class="form-control group-search-input w-100" placeholder="Search meter by serial number"
+                 type="search"/>
+          <div class="input-group-append">
+            <i class="icon-relative search-icon"></i>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="row none-margin-hr">
+    <div class="col none-padding">
+      <div class="bl-gradient-title">Shop Area</div>
+      <div class="d-flex align-items-center">
+        <span class="results-lbl dnm-text-light">4 units of equipment</span>
+      </div>
+    </div>
+  </div>
+  <div class="equip-list-wrp">
+    <equipment-list></equipment-list>
+  </div>
+  <div class="row none-margin-hr">
+    <div class="col none-padding">
+      <div class="bl-gradient-title">Passage</div>
+      <div class="d-flex align-items-center">
+        <span class="results-lbl dnm-text-light">2 units of equipment</span>
+      </div>
+    </div>
+  </div>
+  <div class="equip-list-wrp">
+    <equipment-list></equipment-list>
+  </div>
+  <button class="dnm-btn report-mistake-btn text-uppercase" type="button">Report Mistake</button>
+</div>

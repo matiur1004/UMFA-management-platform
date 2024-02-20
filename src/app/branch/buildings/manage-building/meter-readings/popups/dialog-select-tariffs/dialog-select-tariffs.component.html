@@ -1,0 +1,99 @@
+<div class="select-nodes-modal">
+  <div class="modal-header">
+    <h5 class="modal-title">Apply New Tariff</h5>
+    <button (click)="dismiss()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container tariff-padding-wrap">
+      <div class="row">
+        <div class="col-3 pl-0">
+          <label class="choose-tariff-label">CHOOSE A SUPPLIER:</label>
+        </div>
+        <div class="col-4 pr-1">
+          <ng-select (change)="onFilterChanged()" [(ngModel)]="selectedSupplier" [clearable]="false" [items]="supplierList"
+                     [searchable]="false"
+                     bindLabel="name" bindValue="id" class="select-dropdown">
+          </ng-select>
+        </div>
+        <div class="col-1 pl-0">
+          <label class="choose-tariff-label">tariffs:</label>
+        </div>
+        <div class="col-4 pr-1">
+          <ng-select [(ngModel)]="showRecommended" [clearable]="false" [items]="filterList" [searchable]="false"
+                     bindLabel="name"
+                     bindValue="id" class="select-dropdown">
+          </ng-select>
+        </div>
+      </div>
+      <div class="row pt-4">
+        <table class="table table-custom table-white table-outside-border-body">
+          <thead>
+          <tr>
+            <th class="head-select"></th>
+            <th><span class="head-col">Version</span></th>
+            <th><span class="head-col">Tariff name</span></th>
+            <th><span class="head-col">Tariff code</span></th>
+            <th><span class="head-col">Consumer type</span></th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <ng-container
+            *ngFor="let tariffItem of tariffs | filterTariffsBySupplier : selectedSupplier | filterTariffsByRecommended : showRecommended">
+            <tr>
+              <td>
+                <div class="dnm-radio-btn">
+                  <input (change)="onSelectChanged(tariffItem)" [checked]="tariffItem.selected" id="t_{{tariffItem.id}}" name="tariff_item"
+                         type="radio"/>
+                  <div class="state">
+                    <label></label>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <label class="m-0 label-version" for="t_{{tariffItem.id}}">
+                  {{tariffItem.majorVersion}}-{{tariffItem.versionDate | date: 'dd/MM/yyyy'}}
+                </label>
+              </td>
+              <td>
+                <label class="m-0" for="t_{{tariffItem.id}}">
+                  {{tariffItem.entity.name}}
+                </label>
+              </td>
+              <td>
+                <label class="m-0" for="t_{{tariffItem.id}}">
+                  {{tariffItem.entity.code}}
+                </label>
+              </td>
+              <td>
+                <label class="m-0" for="t_{{tariffItem.id}}">
+                  <p class="mb-0" *ngFor="let cat of tariffItem.entity.buildingCategories"> {{cat.name}} </p>
+                </label>
+              </td>
+              <td class="text-right">
+                <label class="m-0" for="t_{{tariffItem.id}}">
+                    <span *ngIf="tariffItem.isRecommended" class="badge-recommended">
+                      <i class="tariff-recommended-active icon-size-md"></i>
+                      Recommended
+                    </span>
+                  <span *ngIf="tariffItem.isCostReceiver" class="badge-recommended ml-2">
+                      <i class="cost-receiver-active icon-size-md"></i>
+                      Cost Receiver
+                    </span>
+                </label>
+              </td>
+            </tr>
+          </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="modal-footer position-footer-left aplly-tariff-footer">
+      <button (click)="dismiss()" class="dnm-btn dnm-btn-cancel text-uppercase">Cancel</button>
+      <button (click)="close()" class="dnm-btn dnm-btn-primary text-uppercase">Apply</button>
+    </div>
+  </div>
+</div>

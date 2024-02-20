@@ -1,0 +1,81 @@
+@import 'variables.less';
+
+::ng-deep .social-list {
+  background: @color-background-white;
+  width: 500px;
+  max-height: 387px;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+::ng-deep .social-list::after, ::ng-deep .social-list::before {
+  position: absolute;
+  content: '';
+  background: @color-background-white;
+  top: -5px;
+  right: 22px;
+  width: 10px;
+  height: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: -1;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
+.social-list::before {
+  z-index: 1;
+  box-shadow: none;
+}
+
+.social-list .modal-header {
+  padding: 20px 20px 13px 28px;
+}
+
+.social-list .modal-header .modal-title {
+  font-family: Gotham Medium;
+  font-size: 18px;
+  color: @color-text-tertiary;
+  line-height: 18px;
+}
+
+.social-list-block {
+  max-height: 330px;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.social-list-block .social-list-item {
+  padding: 15px 30px 15px 28px;
+  border-bottom: 1px solid @color-background-primary;
+}
+
+.social-logo-block {
+  display: flex;
+  align-items: center;
+  padding-left: 0;
+}
+
+.social-logo-block .social-logo {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  margin-right: 15px;
+}
+
+.social-name {
+  font-family: 'Gotham Medium';
+  font-size: 14px;
+  color: @color-text-secondary;
+  line-height: 14px;
+}
+
+.social-link .social-href {
+  font-size: 13px;
+  font-family: Gotham Book;
+  line-height: 18px;
+  color: @color-text-tertiary;
+}
+
+.social-link .social-href:hover {
+  text-decoration: none;
+}

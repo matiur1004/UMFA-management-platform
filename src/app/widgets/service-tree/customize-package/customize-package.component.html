@@ -1,0 +1,981 @@
+<div class="row none-margin-hr">
+  <div class="col-12 none-padding">
+    <div class="service-cust-table">
+      <div class="table-header d-flex">
+        <div class="header-cell"></div>
+        <div *ngIf="service.electricity && service.electricity.isActive && shouldDisplayElectricitySupplier"
+             class="header-cell">
+          <div class="service-type d-flex align-items-center justify-content-center">
+            <div [ngClass]="{
+                     'electricity-icon': type == serviceType.Electricity,
+                     'water-icon': type == serviceType.Water,
+                     'sewerage-icon': type == serviceType.Sewerage,
+                     'gas-icon': type == serviceType.Gas,
+                      'ad-hoc-icon': type == serviceType.AdHoc }" class="service-icon">
+            </div>
+            <span [ngClass]="{
+                   'electricity-lbl': type == serviceType.Electricity,
+                   'water-lbl': type == serviceType.Water,
+                   'sewerage-lbl': type == serviceType.Sewerage,
+                   'gas-lbl': type == serviceType.Gas,
+                    'ad-hoc-lbl': type == serviceType.AdHoc }" class="type-lbl">Electricity</span>
+          </div>
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcol-lbl">Recom</span>
+            </div>
+            <div class="col none-padding">
+              <span class="subcol-lbl actual-price-lbl">Actual</span>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.water && service.water.isActive && shouldDisplayWaterSupplier" class="header-cell">
+          <div class="service-type d-flex align-items-center justify-content-center">
+            <div class="service-icon water-icon">
+            </div>
+            <span class="type-lbl water-lbl">Water</span>
+          </div>
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcol-lbl">Recom</span>
+            </div>
+            <div class="col none-padding">
+              <span class="subcol-lbl actual-price-lbl">Actual</span>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.sewerage && service.sewerage.isActive && shouldDisplaySewerageSupplier" class="header-cell">
+          <div class="service-type d-flex align-items-center justify-content-center">
+            <div class="service-icon sewerage-icon">
+            </div>
+            <span class="type-lbl sewerage-lbl">Sewerage</span>
+          </div>
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcol-lbl">Recom</span>
+            </div>
+            <div class="col none-padding">
+              <span class="subcol-lbl actual-price-lbl">Actual</span>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.gas && service.gas.isActive && shouldDisplayGasSupplier" class="header-cell">
+          <div class="service-type d-flex align-items-center justify-content-center">
+            <div class="service-icon gas-icon">
+            </div>
+            <span class="type-lbl gas-lbl">Gas</span>
+          </div>
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcol-lbl">Recom</span>
+            </div>
+            <div class="col none-padding">
+              <span class="subcol-lbl actual-price-lbl">Actual</span>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.adHoc && service.adHoc.isActive && shouldDisplayAdHocSupplier" class="header-cell">
+          <div class="service-type d-flex align-items-center justify-content-center">
+            <div class="service-icon ad-hoc-icon">
+            </div>
+            <span class="type-lbl ad-hoc-lbl">Ad Hoc</span>
+          </div>
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcol-lbl">Recom</span>
+            </div>
+            <div class="col none-padding">
+              <span class="subcol-lbl actual-price-lbl">Actual</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="shouldDisplayFixedPriceMethod" class="table-row d-flex">
+        <div *ngIf="hasSupplyTypes(service)" class="row-cell  d-flex align-items-center">
+          <span class="row-lbl">Fixed price</span>
+        </div>
+        <div *ngIf="service.electricity && service.electricity.isActive && shouldDisplayElectricitySupplier"
+             class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.electricity.recomFixedPrice}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'electricity', field:'fixedPrice', value: $event})" [model]="service.electricity.fixedPrice"
+                          [ngClass]="{'changed-supply-price': service.electricity.fixedPriceChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.water && service.water.isActive && shouldDisplayWaterSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.water.recomFixedPrice}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'water', field:'fixedPrice', value: $event})" [model]="service.water.fixedPrice"
+                          [ngClass]="{'changed-supply-price': service.water.fixedPriceChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.sewerage && service.sewerage.isActive && shouldDisplaySewerageSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.sewerage.recomFixedPrice}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'sewerage', field:'fixedPrice', value: $event})" [model]="service.sewerage.fixedPrice"
+                          [ngClass]="{'changed-supply-price': service.sewerage.fixedPriceChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.gas && service.gas.isActive && shouldDisplayGasSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.gas.recomFixedPrice}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'gas', field:'fixedPrice', value: $event})" [model]="service.gas.fixedPrice"
+                          [ngClass]="{'changed-supply-price': service.gas.fixedPriceChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.adHoc && service.adHoc.isActive && shouldDisplayAdHocSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.adHoc.recomFixedPrice}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'adHoc', field:'fixedPrice', value: $event})" [model]="service.adHoc.fixedPrice"
+                          [ngClass]="{'changed-supply-price': service.adHoc.fixedPriceChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="shouldDisplayPerTenantMethod" class="table-row d-flex">
+        <div *ngIf="hasSupplyTypes(service)" class="row-cell  d-flex align-items-center">
+          <span class="row-lbl">Per tenant</span>
+        </div>
+        <div *ngIf="service.electricity && service.electricity.isActive && shouldDisplayElectricitySupplier"
+             class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.electricity.recomPerTenant}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'electricity', field:'perTenant', value: $event})" [model]="service.electricity.perTenant"
+                          [ngClass]="{'changed-supply-price': service.electricity.perTenantChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.water && service.water.isActive && shouldDisplayWaterSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.water.recomPerTenant}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'water', field:'perTenant', value: $event})" [model]="service.water.perTenant"
+                          [ngClass]="{'changed-supply-price': service.water.perTenantChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.sewerage && service.sewerage.isActive && shouldDisplaySewerageSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.sewerage.recomPerTenant}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'sewerage', field:'perTenant', value: $event})" [model]="service.sewerage.perTenant"
+                          [ngClass]="{'changed-supply-price': service.sewerage.perTenantChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.gas && service.gas.isActive && shouldDisplayGasSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.gas.recomPerTenant}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'gas', field:'perTenant', value: $event})" [model]="service.gas.perTenant"
+                          [ngClass]="{'changed-supply-price': service.gas.perTenantChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.adHoc && service.adHoc.isActive && shouldDisplayAdHocSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.adHoc.recomPerTenant}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'adHoc', field:'perTenant', value: $event})" [model]="service.adHoc.perTenant"
+                          [ngClass]="{'changed-supply-price': service.adHoc.perTenantChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="shouldDisplayPerShopMethod" class="table-row d-flex">
+        <div *ngIf="hasSupplyTypes(service)" class="row-cell  d-flex align-items-center">
+          <span class="row-lbl">Per shop</span>
+        </div>
+        <div *ngIf="service.electricity && service.electricity.isActive && shouldDisplayElectricitySupplier"
+             class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.electricity.recomPerShop}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'electricity', field:'perShop', value: $event})" [model]="service.electricity.perShop"
+                          [ngClass]="{'changed-supply-price': service.electricity.perShopChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.water && service.water.isActive && shouldDisplayWaterSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.water.recomPerShop}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'water', field:'perShop', value: $event})" [model]="service.water.perShop"
+                          [ngClass]="{'changed-supply-price': service.water.perShopChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.sewerage && service.sewerage.isActive && shouldDisplaySewerageSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.sewerage.recomPerShop}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'sewerage', field:'perShop', value: $event})" [model]="service.sewerage.perShop"
+                          [ngClass]="{'changed-supply-price': service.sewerage.perShopChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.gas && service.gas.isActive && shouldDisplayGasSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.gas.recomPerShop}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'gas', field:'perShop', value: $event})" [model]="service.gas.perShop"
+                          [ngClass]="{'changed-supply-price': service.gas.perShopChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.adHoc && service.adHoc.isActive && shouldDisplayAdHocSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.adHoc.recomPerShop}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'adHoc', field:'perShop', value: $event})" [model]="service.adHoc.perShop"
+                          [ngClass]="{'changed-supply-price': service.adHoc.perShopChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="shouldDisplayPerMeterMethod" class="table-row d-flex">
+        <div *ngIf="hasSupplyTypes(service)" class="row-cell  d-flex align-items-center">
+          <span class="row-lbl">Per meter</span>
+        </div>
+        <div *ngIf="service.electricity && service.electricity.isActive && shouldDisplayElectricitySupplier"
+             class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.electricity.recomPerMeter}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'electricity', field:'perMeter', value: $event})" [model]="service.electricity.perMeter"
+                          [ngClass]="{'changed-supply-price': service.electricity.perMeterChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.water && service.water.isActive && shouldDisplayWaterSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.water.recomPerMeter}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'water', field:'perMeter', value: $event})" [model]="service.water.perMeter"
+                          [ngClass]="{'changed-supply-price': service.water.perMeterChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.sewerage && service.sewerage.isActive && shouldDisplaySewerageSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.sewerage.recomPerMeter}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'sewerage', field:'perMeter', value: $event})" [model]="service.sewerage.perMeter"
+                          [ngClass]="{'changed-supply-price': service.sewerage.perMeterChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.gas && service.gas.isActive && shouldDisplayGasSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.gas.recomPerMeter}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'gas', field:'perMeter', value: $event})" [model]="service.gas.perMeter"
+                          [ngClass]="{'changed-supply-price': service.gas.perMeterChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.adHoc && service.adHoc.isActive && shouldDisplayAdHocSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.adHoc.recomPerMeter}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'adHoc', field:'perMeter', value: $event})" [model]="service.adHoc.perMeter"
+                          [ngClass]="{'changed-supply-price': service.adHoc.perMeterChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ng-container
+        *ngIf="service.electricity && service.electricity.isActive && shouldDisplayElectricitySupplier && shouldDisplayPerMeterMethod">
+        <div *ngFor="let meterType of service.electricity.meterTypes; trackBy: trackByIndex" class="table-row d-flex">
+          <div class="row-cell  d-flex align-items-center">
+            <span class="row-lbl">{{meterType.name}}</span>
+          </div>
+          <div class="row-cell">
+            <div class="row none-margin-hr">
+              <div class="col none-padding">
+                <span class="subcell-val">R {{meterType.recomValue}}</span>
+              </div>
+              <div class="col input-col">
+                <text-input (modelChange)="meterValueChanged.emit({serviceId: service.id, supplyType: 'electricity', meterId: meterType.id, value: $event})" [model]="meterType.value"
+                            [ngClass]="{'changed-supply-price': meterType.meterChanged}"
+                            class="none-padding field-value"
+                            maxlength="256"></text-input>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="service.water && service.water.isActive && shouldDisplayWaterSupplier" class="row-cell">
+            <div class="row none-margin-hr">
+              <div class="col none-padding">
+                <span class="subcell-val"></span>
+              </div>
+              <div class="col input-col">
+
+              </div>
+            </div>
+          </div>
+          <div *ngIf="service.sewerage && service.sewerage.isActive && shouldDisplaySewerageSupplier" class="row-cell">
+            <div class="row none-margin-hr">
+              <div class="col none-padding">
+                <span class="subcell-val"></span>
+              </div>
+              <div class="col input-col">
+
+              </div>
+            </div>
+          </div>
+          <div *ngIf="service.gas && service.gas.isActive && shouldDisplayGasSupplier" class="row-cell">
+            <div class="row none-margin-hr">
+              <div class="col none-padding">
+                <span class="subcell-val"></span>
+              </div>
+              <div class="col input-col"></div>
+            </div>
+          </div>
+          <div *ngIf="service.adHoc && service.adHoc.isActive && shouldDisplayAdHocSupplier" class="row-cell">
+            <div class="row none-margin-hr">
+              <div class="col none-padding">
+                <span class="subcell-val"></span>
+              </div>
+              <div class="col input-col"></div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container
+        *ngIf="service.water && service.water.isActive  && shouldDisplayWaterSupplier && shouldDisplayPerMeterMethod">
+        <div *ngFor="let meterType of service.water.meterTypes; trackBy: trackByIndex" class="table-row d-flex">
+          <div class="row-cell  d-flex align-items-center">
+            <span class="row-lbl">{{meterType.name}}</span>
+          </div>
+          <div *ngIf="service.electricity && service.electricity.isActive && shouldDisplayElectricitySupplier"
+               class="row-cell">
+            <div class="row none-margin-hr">
+              <div class="col none-padding">
+
+              </div>
+              <div class="col input-col">
+
+              </div>
+            </div>
+          </div>
+          <div *ngIf="service.water && service.water.isActive && shouldDisplayWaterSupplier" class="row-cell">
+            <div class="row none-margin-hr">
+              <div class="col none-padding">
+                <span class="subcell-val">
+                  <span class="subcell-val">R {{meterType.recomValue}}</span>
+                </span>
+              </div>
+              <div class="col input-col">
+                <text-input (modelChange)="meterValueChanged.emit({serviceId: service.id, supplyType: 'water', meterId: meterType.id, value: $event})" [model]="meterType.value"
+                            [ngClass]="{'changed-supply-price': meterType.meterChanged}"
+                            class="none-padding field-value"
+                            maxlength="256"></text-input>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="service.sewerage && service.sewerage.isActive && shouldDisplaySewerageSupplier" class="row-cell">
+            <div class="row none-margin-hr">
+              <div class="col none-padding">
+                <span class="subcell-val"></span>
+              </div>
+              <div class="col input-col">
+
+              </div>
+            </div>
+          </div>
+          <div *ngIf="service.gas && service.gas.isActive && shouldDisplayGasSupplier" class="row-cell">
+            <div class="row none-margin-hr">
+              <div class="col none-padding">
+                <span class="subcell-val"></span>
+              </div>
+              <div class="col input-col"></div>
+            </div>
+          </div>
+          <div *ngIf="service.adHoc && service.adHoc.isActive && shouldDisplayAdHocSupplier" class="row-cell">
+            <div class="row none-margin-hr">
+              <div class="col none-padding">
+                <span class="subcell-val"></span>
+              </div>
+              <div class="col input-col"></div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container
+        *ngIf="service.sewerage && service.sewerage.isActive && shouldDisplaySewerageSupplier && shouldDisplayPerMeterMethod">
+        <div *ngFor="let meterType of service.sewerage.meterTypes; trackBy: trackByIndex" class="table-row d-flex">
+          <div class="row-cell  d-flex align-items-center">
+            <span class="row-lbl">{{meterType.name}}</span>
+          </div>
+          <div *ngIf="service.electricity && service.electricity.isActive && shouldDisplayElectricitySupplier"
+               class="row-cell">
+            <div class="row none-margin-hr">
+              <div class="col none-padding">
+
+              </div>
+              <div class="col input-col">
+
+              </div>
+            </div>
+          </div>
+          <div *ngIf="service.water && service.water.isActive && shouldDisplayWaterSupplier" class="row-cell">
+            <div class="row none-margin-hr">
+              <div class="col none-padding">
+                <span class="subcell-val">
+                  <span class="subcell-val"></span>
+                </span>
+              </div>
+              <div class="col input-col">
+
+              </div>
+            </div>
+          </div>
+          <div class="row-cell">
+            <div class="row none-margin-hr">
+              <div class="col none-padding">
+                <span class="subcell-val">
+                  R {{meterType.recomValue}}
+                </span>
+              </div>
+              <div class="col input-col">
+                <text-input (modelChange)="meterValueChanged.emit({serviceId: service.id, supplyType: 'sewerage', meterId: meterType.id, value: $event})" [model]="meterType.value"
+                            [ngClass]="{'changed-supply-price': meterType.meterChanged}"
+                            class="none-padding field-value"
+                            maxlength="256"></text-input>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="service.gas && service.gas.isActive && shouldDisplayGasSupplier" class="row-cell">
+            <div class="row none-margin-hr">
+              <div class="col none-padding">
+                <span class="subcell-val"></span>
+              </div>
+              <div class="col input-col"></div>
+            </div>
+          </div>
+          <div *ngIf="service.adHoc && service.adHoc.isActive && shouldDisplayAdHocSupplier" class="row-cell">
+            <div class="row none-margin-hr">
+              <div class="col none-padding">
+                <span class="subcell-val"></span>
+              </div>
+              <div class="col input-col"></div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container
+        *ngIf="service.gas && service.gas.isActive && shouldDisplayGasSupplier && shouldDisplayPerMeterMethod">
+        <div *ngFor="let meterType of service.gas.meterTypes; trackBy: trackByIndex" class="table-row d-flex">
+          <div class="row-cell  d-flex align-items-center">
+            <span class="row-lbl">{{meterType.name}}</span>
+          </div>
+          <div *ngIf="service.electricity && service.electricity.isActive && shouldDisplayElectricitySupplier"
+               class="row-cell">
+            <div class="row none-margin-hr">
+              <div class="col none-padding">
+
+              </div>
+              <div class="col input-col">
+
+              </div>
+            </div>
+          </div>
+          <div *ngIf="service.water && service.water.isActive && shouldDisplayWaterSupplier" class="row-cell">
+            <div class="row none-margin-hr">
+              <div class="col none-padding">
+                <span class="subcell-val">
+                  <span class="subcell-val"></span>
+                </span>
+              </div>
+              <div class="col input-col">
+
+              </div>
+            </div>
+          </div>
+          <div *ngIf="service.sewerage && service.sewerage.isActive && shouldDisplaySewerageSupplier" class="row-cell">
+            <div class="row none-margin-hr">
+              <div class="col none-padding">
+                <span class="subcell-val">
+                </span>
+              </div>
+              <div class="col input-col">
+              </div>
+            </div>
+          </div>
+          <div class="row-cell">
+            <div class="row none-margin-hr">
+              <div class="col none-padding">
+                <span class="subcell-val">
+                  R {{meterType.recomValue}}
+                </span>
+              </div>
+              <div class="col input-col">
+                <text-input (modelChange)="meterValueChanged.emit({serviceId: service.id, supplyType: 'gas', meterId: meterType.id, value: $event})" [model]="meterType.value"
+                            [ngClass]="{'changed-supply-price': meterType.meterChanged}"
+                            class="none-padding field-value"
+                            maxlength="256"></text-input>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="service.adHoc && service.adHoc.isActive && shouldDisplayAdHocSupplier" class="row-cell">
+            <div class="row none-margin-hr">
+              <div class="col none-padding">
+                <span class="subcell-val"></span>
+              </div>
+              <div class="col input-col"></div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container
+        *ngIf="service.adHoc && service.adHoc.isActive && shouldDisplayAdHocSupplier && shouldDisplayPerMeterMethod">
+        <div *ngFor="let meterType of service.adHoc.meterTypes; trackBy: trackByIndex" class="table-row d-flex">
+          <div class="row-cell  d-flex align-items-center">
+            <span class="row-lbl">{{meterType.name}}</span>
+          </div>
+          <div *ngIf="service.electricity && service.electricity.isActive && shouldDisplayElectricitySupplier"
+               class="row-cell">
+            <div class="row none-margin-hr">
+              <div class="col none-padding">
+
+              </div>
+              <div class="col input-col">
+
+              </div>
+            </div>
+          </div>
+          <div *ngIf="service.water && service.water.isActive && shouldDisplayWaterSupplier" class="row-cell">
+            <div class="row none-margin-hr">
+              <div class="col none-padding">
+                <span class="subcell-val">
+                  <span class="subcell-val"></span>
+                </span>
+              </div>
+              <div class="col input-col">
+
+              </div>
+            </div>
+          </div>
+          <div *ngIf="service.sewerage && service.sewerage.isActive && shouldDisplaySewerageSupplier" class="row-cell">
+            <div class="row none-margin-hr">
+              <div class="col none-padding">
+                <span class="subcell-val">
+                </span>
+              </div>
+              <div class="col input-col">
+              </div>
+            </div>
+          </div>
+          <div *ngIf="service.gas && service.gas.isActive && shouldDisplayGasSupplier" class="row-cell">
+            <div class="row none-margin-hr">
+              <div class="col none-padding">
+                <span class="subcell-val">
+
+                </span>
+              </div>
+              <div class="col input-col">
+
+              </div>
+            </div>
+          </div>
+          <div class="row-cell">
+            <div class="row none-margin-hr">
+              <div class="col none-padding">
+                <span class="subcell-val">
+                  R {{meterType.recomValue}}
+                </span>
+              </div>
+              <div class="col input-col">
+                <text-input (modelChange)="meterValueChanged.emit({serviceId: service.id, supplyType: 'adHoc', meterId: meterType.id, value: $event})" [model]="meterType.value"
+                            [ngClass]="{'changed-supply-price': meterType.meterChanged}"
+                            class="none-padding field-value"
+                            maxlength="256"></text-input>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <div *ngIf="shouldDisplayPerSQMeterMethod" class="table-row d-flex">
+        <div *ngIf="hasSupplyTypes(service)" class="row-cell  d-flex align-items-center">
+          <span class="row-lbl">Per sq m</span>
+        </div>
+        <div *ngIf="service.electricity && service.electricity.isActive && shouldDisplayElectricitySupplier"
+             class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.electricity.recomPerSquareMeter}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'electricity', field:'perSquareMeter', value: $event})" [model]="service.electricity.perSquareMeter"
+                          [ngClass]="{'changed-supply-price': service.electricity.perSquareMeterChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.water && service.water.isActive && shouldDisplayWaterSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.water.recomPerSquareMeter}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'water', field:'perSquareMeter', value: $event})" [model]="service.water.perSquareMeter"
+                          [ngClass]="{'changed-supply-price': service.water.perSquareMeterChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.sewerage && service.sewerage.isActive && shouldDisplaySewerageSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.sewerage.recomPerSquareMeter}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'sewerage', field:'perSquareMeter', value: $event})" [model]="service.sewerage.perSquareMeter"
+                          [ngClass]="{'changed-supply-price': service.sewerage.perSquareMeterChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.gas && service.gas.isActive && shouldDisplayGasSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.gas.recomPerSquareMeter}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'gas', field:'perSquareMeter', value: $event})" [model]="service.gas.perSquareMeter"
+                          [ngClass]="{'changed-supply-price': service.gas.perSquareMeterChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.adHoc && service.adHoc.isActive && shouldDisplayAdHocSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.adHoc.recomPerSquareMeter}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'adHoc', field:'perSquareMeter', value: $event})" [model]="service.adHoc.perSquareMeter"
+                          [ngClass]="{'changed-supply-price': service.adHoc.perSquareMeterChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="shouldDisplayPerBuildingMethod" class="table-row d-flex">
+        <div *ngIf="hasSupplyTypes(service)" class="row-cell  d-flex align-items-center">
+          <span class="row-lbl">Per building</span>
+        </div>
+        <div *ngIf="service.electricity && service.electricity.isActive && shouldDisplayElectricitySupplier"
+             class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.electricity.recomPerBuilding}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'electricity', field:'perBuilding', value: $event})" [model]="service.electricity.perBuilding"
+                          [ngClass]="{'changed-supply-price': service.electricity.perBuildingChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.water && service.water.isActive && shouldDisplayWaterSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.water.recomPerBuilding}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'water', field:'perBuilding', value: $event})" [model]="service.water.perBuilding"
+                          [ngClass]="{'changed-supply-price': service.water.perBuildingChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.sewerage && service.sewerage.isActive && shouldDisplaySewerageSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.sewerage.recomPerBuilding}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'sewerage', field:'perBuilding', value: $event})" [model]="service.sewerage.perBuilding"
+                          [ngClass]="{'changed-supply-price': service.sewerage.perBuildingChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.gas && service.gas.isActive && shouldDisplayGasSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.gas.recomPerBuilding}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'gas', field:'perBuilding', value: $event})" [model]="service.gas.perBuilding"
+                          [ngClass]="{'changed-supply-price': service.gas.perBuildingChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.adHoc && service.adHoc.isActive && shouldDisplayAdHocSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.adHoc.recomPerBuilding}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'adHoc', field:'perBuilding', value: $event})" [model]="service.adHoc.perBuilding"
+                          [ngClass]="{'changed-supply-price': service.adHoc.perBuildingChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="shouldDisplayPerCouncilAccountMethod" class="table-row d-flex">
+        <div *ngIf="hasSupplyTypes(service)" class="row-cell  d-flex align-items-center">
+          <span class="row-lbl">Per council acc.</span>
+        </div>
+        <div *ngIf="service.electricity && service.electricity.isActive && shouldDisplayElectricitySupplier"
+             class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.electricity.recomPerCouncilAccount}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'electricity', field:'perCouncilAccount', value: $event})" [model]="service.electricity.perCouncilAccount"
+                          [ngClass]="{'changed-supply-price': service.electricity.perCouncilAccountChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.water && service.water.isActive && shouldDisplayWaterSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.water.recomPerCouncilAccount}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'water', field:'perCouncilAccount', value: $event})" [model]="service.water.perCouncilAccount"
+                          [ngClass]="{'changed-supply-price': service.water.perCouncilAccountChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.sewerage && service.sewerage.isActive && shouldDisplaySewerageSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.sewerage.recomPerCouncilAccount}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'sewerage', field:'perCouncilAccount', value: $event})" [model]="service.sewerage.perCouncilAccount"
+                          [ngClass]="{'changed-supply-price': service.sewerage.perCouncilAccountChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.gas && service.gas.isActive && shouldDisplayGasSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.gas.recomPerCouncilAccount}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'gas', field:'perCouncilAccount', value: $event})" [model]="service.gas.perCouncilAccount"
+                          [ngClass]="{'changed-supply-price': service.gas.perCouncilAccountChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.adHoc && service.adHoc.isActive && shouldDisplayAdHocSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.adHoc.recomPerCouncilAccount}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'adHoc', field:'perCouncilAccount', value: $event})" [model]="service.adHoc.perCouncilAccount"
+                          [ngClass]="{'changed-supply-price': service.adHoc.perCouncilAccountChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="shouldDisplayPerHourMethod" class="table-row d-flex">
+        <div *ngIf="hasSupplyTypes(service)" class="row-cell  d-flex align-items-center">
+          <span class="row-lbl">Per hour</span>
+        </div>
+        <div *ngIf="service.electricity && service.electricity.isActive && shouldDisplayElectricitySupplier"
+             class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.electricity.recomPerHour}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'electricity', field:'perHour', value: $event})" [model]="service.electricity.perHour"
+                          [ngClass]="{'changed-supply-price': service.electricity.perHourChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.water && service.water.isActive && shouldDisplayWaterSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.water.recomPerHour}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'water', field:'perHour', value: $event})" [model]="service.water.perHour"
+                          [ngClass]="{'changed-supply-price': service.water.perHourChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.sewerage && service.sewerage.isActive && shouldDisplaySewerageSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.sewerage.recomPerHour}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'sewerage', field:'perHour', value: $event})" [model]="service.sewerage.perHour"
+                          [ngClass]="{'changed-supply-price': service.sewerage.perHourChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.gas && service.gas.isActive && shouldDisplayGasSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.gas.recomPerHour}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'gas', field:'perHour', value: $event})" [model]="service.gas.perHour"
+                          [ngClass]="{'changed-supply-price': service.gas.perHourChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="service.adHoc && service.adHoc.isActive && shouldDisplayAdHocSupplier" class="row-cell">
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <span class="subcell-val">R {{service.adHoc.recomPerHour}}</span>
+            </div>
+            <div class="col input-col">
+              <text-input (modelChange)="valueChanged.emit({serviceId: service.id, supplyType: 'adHoc', field:'perHour', value: $event})" [model]="service.adHoc.perHour"
+                          [ngClass]="{'changed-supply-price': service.adHoc.perHourChanged}"
+                          class="none-padding field-value"
+                          maxlength="256"></text-input>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

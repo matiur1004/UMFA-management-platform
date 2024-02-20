@@ -1,0 +1,13 @@
+<div class="container-fluid set-of-nodes">
+  <div class="row none-margin-hr">
+    <div class="col-12 none-padding">
+      <div class="d-flex justify-content-between">
+        <span class="set-nodes-header">Bulk action - Create Set</span>
+        <div class="back-button-container">
+          <back-button></back-button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <set-form (cancel)="onCancel()" (formSubmit)="onFormSubmitted($event)" [buildingId]="buildingId"></set-form>
+</div>

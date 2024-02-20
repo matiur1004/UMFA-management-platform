@@ -1,0 +1,71 @@
+<div class="apply-estimated-modal">
+  <ng-container *ngIf="estimate" class="container-fluid">
+    <div class="bl-gradient-title">Year on year average</div>
+    <div [formGroup]="formGroup">
+      <table class="table">
+        <thead class="table-header">
+        <tr>
+          <th></th>
+          <th><span class="col-lbl text-uppercase">Number of years</span></th>
+          <th><span class="col-lbl text-uppercase">Average Days</span></th>
+          <th><span class="col-lbl text-uppercase">Average Usage</span></th>
+          <th><span class="col-lbl text-uppercase">Daily Usage</span></th>
+          <th><span class="col-lbl text-uppercase">Estimated Reading</span></th>
+          <th><span class="col-lbl text-uppercase">Estimated Usage</span></th>
+        </tr>
+        </thead>
+        <tbody class="table-body">
+        <tr>
+          <td>
+            <input [value]="estimate.optionId" class="est-radio-slct" formControlName="estimationOption" name="estimationOption"
+                   type="radio">
+          </td>
+          <td>
+            <span class="bd-col-lbl max-col-width text-ellipsis"
+                  title="{{estimate.yearsNumber}}">{{estimate.yearsNumber | number:'1.0-2'}}</span>
+          </td>
+          <td>
+            <span class="bd-col-lbl max-col-width text-ellipsis"
+                  title="{{estimate.durationDays}}">{{estimate.durationDays | number:'1.0-2'}}</span>
+          </td>
+          <td>
+            <span class="bd-col-lbl max-col-width text-ellipsis"
+                  title="{{estimate.averageUsage}}">{{estimate.averageUsage | number:'1.0-2'}}</span>
+          </td>
+          <td>
+            <span class="bd-col-lbl max-col-width text-ellipsis"
+                  title="{{estimate.dailyUsage}}">{{estimate.dailyUsage | number:'1.0-2' }}</span>
+          </td>
+          <!-- DUN3345
+            <td>
+              <span class="bd-col-lbl max-col-width text-ellipsis"
+                  title="{{estimate.estimatedReading}}">{{estimate.estimatedReading | number:'1.0-2' }}</span>
+            </td>
+          -->
+          <div *ngIf="registerControl.value.registerType== 1" class="col none-padding align-self-center text-center">
+            <span class="bd-col-lbl max-col-width text-ellipsis"
+                  title="{{estimate.averageUsage}}">{{estimate.averageUsage | number:'1.0-2' }}</span>
+          </div>
+
+          <div *ngIf="registerControl.value.registerType == 0" class="col none-padding align-self-center text-center">
+            <span class="bd-col-lbl max-col-width text-ellipsis"
+                  title="{{registerControl.value.previousReadingValue + registerControl.value.averageUsage}}">{{registerControl.value.previousReadingValue + registerControl.value.averageUsage | number:'1.0-2' }}</span>
+          </div>
+
+          <div *ngIf="registerControl.value.registerType == 2" class="col none-padding align-self-center text-center">
+            <span class="bd-col-lbl max-col-width text-ellipsis"
+                  title="{{estimate.averageUsage}}">{{estimate.averageUsage | number:'1.0-2' }}</span>
+          </div>
+          <td>
+            <span class="bd-col-lbl max-col-width text-ellipsis"
+                  title="{{estimate.estimatedUsage}}">{{estimate.estimatedUsage | number:'1.0-2' }}</span>
+          </td>
+
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-container>
+
+</div>
+<div class="mdl-hr-line"></div>

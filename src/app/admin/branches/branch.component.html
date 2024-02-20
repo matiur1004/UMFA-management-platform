@@ -1,0 +1,263 @@
+<div class="branch-item-wrp">
+  <!-- branch item -->
+  <div (click)="expandToggle()" [ngClass]="{'collapse-list-item': model.isDetailed}" class="list-item">
+    <div class="container-fluid">
+      <div class="row align-items-center">
+        <div class="col-7">
+          <div class="text-center">
+            <logo-container [url]="model.logoUrl" logo-class="branch-logo full-height d-flex align-items-center">
+              <div class="logo-abbreviation d-flex align-items-center">
+                <span>{{model.name[0].toUpperCase()}}</span>
+              </div>
+            </logo-container>
+          </div>
+          <div class="list-item-title">
+            <div class="branch-name">{{model.name}}</div>
+            <span class="company-name">UMFA Branch</span>
+          </div>
+        </div>
+        <div class="col-5 text-right">
+          <a (click)="goToBranch($event)" class="text-link-lg text-uppercase" href="javascript:void(0)">Go to branch</a>
+          <div [ngClass]="{'expand-icon': !model.isDetailed, 'collapse-icon': model.isDetailed}"
+               class="branches-icon toggle-icon"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- detailed branch item -->
+  <div *ngIf="model.isDetailed" class="item-details">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-7">
+          <div class="text-blokc-title item-details-title">{{model.name}} Branch details</div>
+          <div class="bl-gradient-title">Branch Logo</div>
+          <upload-image (fileChange)="logoChanged($event)" [(file)]="model.logo" [outputFileName]="model.id"
+                        [src]="model.logoUrl"></upload-image>
+          <div class="editable-section container-fluid">
+            <div class="bl-gradient-title editable-section-title">General Info</div>
+            <form [formGroup]="form">
+              <div class="input-row">
+                <div class="none-padding text-uppercase field-name">Branch Name</div>
+                <div [ngClass]="{'dnm-invalid-inp': formErrors.name}" class="field-value">
+                  <text-input [isRequired]=true  (onFocusOut)="onFormUpdate()" formControlName="name"></text-input>
+                  <small *ngIf="formErrors.name" class="alert-danger">
+                    {{ formErrors.name }}
+                  </small>
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="none-padding text-uppercase field-name">Registered name</div>
+                <div [ngClass]="{'dnm-invalid-inp': formErrors.registeredName}" class="field-value">
+                  <text-input [isRequired]=true (onFocusOut)="onFormUpdate()" formControlName="registeredName"></text-input>
+                  <small *ngIf="formErrors.registeredName" class="alert-danger">
+                    {{ formErrors.registeredName }}
+                  </small>
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="none-padding text-uppercase field-name">Registration Number</div>
+                <div [ngClass]="{'dnm-invalid-inp': formErrors.registeredNumber}" class="field-value">
+                  <text-input [isRequired]=true  (onFocusOut)="onFormUpdate()" formControlName="registeredNumber"></text-input>
+                  <small *ngIf="formErrors.registeredNumber" class="alert-danger">
+                    {{ formErrors.registeredNumber }}
+                  </small>
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="none-padding text-uppercase field-name">VAT No.</div>
+                <div [ngClass]="{'dnm-invalid-inp': formErrors.vatNumber}" class="field-value">
+                  <text-input [isRequired]=true  (onFocusOut)="onFormUpdate()" formControlName="vatNumber"></text-input>
+                  <small *ngIf="formErrors.vatNumber" class="alert-danger">
+                    {{ formErrors.vatNumber }}
+                  </small>
+                </div>
+              </div>
+              <address (formSubmit)="onFormUpdate()" [name]="'Physical Address'" formControlName="physicalAddress"></address>
+              <address (formSubmit)="onFormUpdate()" [name]="'Postal Address'" formControlName="postAddress"></address>
+              <div class="input-row">
+                <div class="none-padding text-uppercase field-name">Email</div>
+                <div [ngClass]="{'dnm-invalid-inp': formErrors.email}" class="field-value">
+                  <text-input [isRequired]=true  (onFocusOut)="onFormUpdate()" formControlName="email"></text-input>
+                  <small *ngIf="formErrors.email" class="alert-danger">
+                    {{ formErrors.email }}
+                  </small>
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="none-padding text-uppercase field-name">
+                  Phone Number
+                  <br/>
+                  <span class="undertext">*default number</span>
+                </div>
+                <div [ngClass]="{'dnm-invalid-inp': formErrors.phone}" class="field-value">
+                  <text-input [isRequired]=true (onFocusOut)="onFormUpdate()" formControlName="phone"></text-input>
+                  <small *ngIf="formErrors.phone" class="alert-danger">
+                    {{ formErrors.phone }}
+                  </small>
+                </div>
+              </div>
+            </form>
+            <!-- phone contacs -->
+            <div *ngFor="let contact of model.phoneContacts; let idx = index;" class="row contact-item">
+              <dropdown-input (onFocusOut)="updatePhoneContact(idx)" [(model)]="contact.label"
+                              [values]="phoneContactLabels"
+                              class="col-5 none-padding text-uppercase field-name"></dropdown-input>
+              <text-input [isRequired]=true (onFocusOut)="updatePhoneContact(idx)" [(model)]="contact.value"
+                          class="col none-padding field-value"></text-input>
+              <button (click)="removePhoneContact(idx)" class="dnm-btn-icon" href="javascript:void(0);">
+                <i class="icon cross-icon"></i>
+              </button>
+            </div>
+            <div class="row">
+              <a (click)="addPhoneContact($event)" class="blue-text-btn" href="#">
+                <i class="add-icon"></i>Add Phone Number
+              </a>
+              <a (click)="addExternalLink($event)" *ngIf="!model.externalLinks.length" class="blue-text-btn" href="#">
+                <i class="add-icon"></i>Add External Link
+              </a>
+              <a (click)="addBankAccount()" *ngIf="!model.bankAccounts.length" class="blue-text-btn" href="javascript:void(0)">
+                <i class="add-icon"></i>Add Bank Account
+              </a>
+            </div>
+          </div>
+          <div *ngIf="model.externalLinks.length" class="editable-section container-fluid">
+            <div class="bl-gradient-title editable-section-title">External Links</div>
+            <div *ngFor="let contact of model.externalLinks; let idx = index;" class="row contact-item">
+              <dropdown-input (onFocusOut)="updateExternalLink(idx)" [(model)]="contact.label"
+                              [values]="externalLinkLabels"
+                              class="col-5 none-padding text-uppercase field-name"></dropdown-input>
+              <text-input [isRequired]=true (onFocusOut)="updateExternalLink(idx)" [(model)]="contact.value"
+                          class="col none-padding field-value"></text-input>
+              <button (click)="removeExternalLink(idx)" class="dnm-btn-icon" href="javascript:void(0);">
+                <i class="icon cross-icon"></i>
+              </button>
+
+            </div>
+            <div class="row">
+              <a (click)="addExternalLink($event)" class="blue-text-btn" href="#">
+                <i class="add-icon"></i>Add External Link
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-5">
+          <div class="admin-info container-fluid">
+            <div class="row align-items-center">
+              <div class="col-5">
+                <div class="bl-gradient-title">Branch Admin</div>
+              </div>
+              <div class="col-6 text-right">
+                <a (click)="openTab(1, false)" class="dnm-btn dnm-btn-secondary text-uppercase"
+                   href="javascript:void(0)">
+                  <div class="d-flex align-items-center">
+                    <span class="edit-lbl">Edit</span>
+                    <span class='edit-icon'></span>
+                  </div>
+                </a>
+              </div>
+            </div>
+            <div *ngFor="let admin of model.admins; let idx = index" class="admin-item">
+              <div class="row upload-image">
+                <div class="col-auto">
+                  <div [ngClass]="classes" class="container-block admin-photo-wrp">
+                    <img (error)="onImageError(admin)" *ngIf="!admin.showAbbreviation" [src]="admin.logoUrl"
+                         class="admin-img"/>
+                    <div *ngIf="admin.showAbbreviation" class="admin-photo">{{admin.fullName[0].toUpperCase()}}</div>
+                  </div>
+                </div>
+                <div class="col-auto none-padding">
+                  <div class="text-block-title">{{admin.fullName}}</div>
+                  <input #fileInput (change)="fileChangeEvent($event, idx)" (click)="fileInput.value = null" class="inputfile" id="file{{admin.id}}"
+                         name="file{{admin.id}}"
+                         type="file"/>
+                  <label class="text-uppercase"
+                         for="file{{admin.id}}">{{admin.showAbbreviation ? 'Upload image' : 'Change image'}}</label>
+                </div>
+              </div>
+              <div class="row contact-info">
+                <div class="col-12 email-info">
+                  <i class="branches-icon email-icon"></i>
+                  <span class="text-standard">{{admin.email}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div *ngIf="model.bankAccounts.length" class="editable-section container-fluid">
+            <div class="bl-gradient-title editable-section-title">Bank Accounts</div>
+            <table class="table table-premium bank-accounts-tbl">
+              <thead>
+              <tr class="table-header text-uppercase">
+                <th class="align-middle" scope="col">Account Name</th>
+                <th scope="col">Bank Name</th>
+                <th scope="col">Account Type</th>
+                <th scope="col">Account Number</th>
+                <th scope="col">Branch Code</th>
+                <th scope="col">Swift Code</th>
+                <th scope="col"></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let bankAccount of model.bankAccounts; let idx = index;">
+                <th scope="row">
+                  <div class="accounting-info">
+                    <div class="accounting-col">
+                      <div class="accounting-img"></div>
+                    </div>
+                    <div class="accounting-col">
+                      <div class="account-name">
+                        <text-input (onFocusOut)="updateBankAccount(idx)" [(model)]="bankAccount.accountName"
+                                    class="col-7 none-padding field-value"
+                                    input-class="bold small"></text-input>
+                      </div>
+                      <span class="text-secondary">
+                          <text-input [isRequired]=true (onFocusOut)="updateBankAccount(idx)" [(model)]="bankAccount.description"
+                                      class="col-7 none-padding field-value"
+                                      input-class="small"></text-input>
+                        </span>
+                    </div>
+                  </div>
+                </th>
+                <td>
+                  <text-input [isRequired]=true (onFocusOut)="updateBankAccount(idx)" [(model)]="bankAccount.bankName"
+                              class="col-7 none-padding field-value" input-class="small"></text-input>
+                </td>
+                <td>
+                  <text-input [isRequired]=true (onFocusOut)="updateBankAccount(idx)" [(model)]="bankAccount.accountType"
+                              class="col-7 none-padding field-value" input-class="small"></text-input>
+                </td>
+                <td>
+                  <text-input [isRequired]=true (onFocusOut)="updateBankAccount(idx)" [(model)]="bankAccount.accountNumber"
+                              class="col-7 none-padding field-value" input-class="small"></text-input>
+                </td>
+                <td>
+                  <text-input [isRequired]=true (onFocusOut)="updateBankAccount(idx)" [(model)]="bankAccount.branchCode"
+                              class="col-7 none-padding field-value" input-class="small"></text-input>
+                </td>
+                <td>
+                  <text-input [isRequired]=true (onFocusOut)="updateBankAccount(idx)" [(model)]="bankAccount.swiftCode"
+                              class="col-7 none-padding field-value" input-class="small"></text-input>
+                </td>
+                <td class="text-right none-padding">
+                  <button (click)="removeBankAccount(idx)" class="dnm-btn-icon" href="javascript:void(0);">
+                    <i class="icon cross-icon"></i>
+                  </button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <div class="row">
+              <a (click)="addBankAccount()" class="blue-text-btn" href="javascript:void(0)">
+                <i class="add-icon"></i>Add Account
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

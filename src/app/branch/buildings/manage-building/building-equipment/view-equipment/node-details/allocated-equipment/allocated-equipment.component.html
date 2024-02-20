@@ -1,0 +1,373 @@
+<div class="alloc-eqpmt-wrp">
+  <!-- total registers -->
+  <div *ngIf="(totalRegisters$ | async).length"
+       class="bl-gradient-title bl-title-wrp total-registers-header">Total registers
+  </div>
+  <div *ngIf="(totalRegisters$ | async).length" class="row alloc-equip-row none-margin-hr">
+    <div class="col none-padding">
+      <div class="d-flex">
+        <div *ngFor="let totalRegister of (totalRegisters$ | async)"
+             class="alloc-equip-item d-flex align-items-center justify-content-center flex-column">
+          <div class="alloc-equip-val alloc-units">{{totalRegister | registerUnit | async}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- total registers -->
+  <div *ngIf="!isMeter" class="row search-row none-margin-hr">
+    <div class="col none-padding">
+      <form class="form-inline main-search-input w-100">
+        <div class="input-group">
+          <input #searchBox (keyup)="search.emit(searchBox.value)" class="form-control group-search-input"
+                 data-search-field placeholder="Search meter by ID number" type="search"/>
+          <div class="input-group-append">
+            <i class="icon-relative search-icon vertical-middle"></i>
+          </div>
+          <div [ngbTooltip]="tipContent" [placement]="'top-right'"
+               class="input-group-append list-info-icon" tooltipClass="note-in-tooltip">
+            <i class="icon-relative rdngs-nav-btn rdngs-list-info-icon vertical-middle"></i>
+            <ng-template #tipContent>
+              <div class="info-message">
+                <span>
+                    Total register contains the list of the registers that are available in all equipments in the node.
+                  <br>
+                    If we have the Total register #1 of the Total registers #2,3,4,5 then we use only the Total registers #2,3,4,5, we don't use the child registers of each Total registers #2,3,4,5.
+                </span>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="nav-row d-flex justify-content-between align-items-center">
+    <div *ngIf="!isMeter" class="d-flex align-items-center">
+      <span class="results-label dnm-text-light">{{nodes.length}} items of equipment</span>
+      <a (click)="onAddEquipment()" class="blue-text-btn" href="javascript:void(0)">
+        <i class="add-icon"></i>Add Equipment
+      </a>
+    </div>
+    <div class="d-flex">
+      <div [ngClass]="{'allocated': isMeter}" class="d-flex align-items-center dropdown-wrapper">
+        <span class="dropdown-filter-label">Allocated:</span>
+        <ng-select (change)="onRemovedStatusUpdate($event)"
+                   [clearable]="false"
+                   [ngModel]="registerRemovedStatusText[selectedStatus.isRemoved]"
+                   [searchable]="false"
+                   class="select-dropdown dnm-dropdown-select">
+          <ng-option *ngFor="let status of registerRemovedStatuses"
+                     [value]="status">{{registerRemovedStatusText[status]}}</ng-option>
+        </ng-select>
+      </div>
+      <!--      <div class="d-flex align-items-center dropdown-wrapper">-->
+      <!--        <span class="dropdown-filter-label">Billing:</span>-->
+      <!--        <ng-select class="select-dropdown dnm-dropdown-select"-->
+      <!--                   [ngModel]="registerStatusTypeText[selectedStatus.isBilling]"-->
+      <!--                   (change)="onBillingStatusUpdate($event)"-->
+      <!--                   [clearable]="false"-->
+      <!--                   [searchable]="false">-->
+      <!--          <ng-option *ngFor="let status of registerStatusTypes"-->
+      <!--                     [value]="status">{{registerStatusTypeText[status]}}</ng-option>-->
+      <!--        </ng-select>-->
+      <!--      </div>-->
+      <div class="d-flex align-items-center dropdown-wrapper">
+        <span class="dropdown-filter-label">Register:</span>
+        <ng-select (change)="updateRegisterFilter.emit($event)"
+                   [clearable]="false" [closeOnSelect]="false"
+                   [hideSelected]="true" [multiple]="true"
+                   [ngModel]="selectedRegister" [searchable]="false" class="registers-select ng-filter-selector"
+                   placeholder="All registers">
+          <ng-option *ngFor="let register of availableTotalRegisters"
+                     [value]="register">{{register | registerUnit | async}}</ng-option>
+        </ng-select>
+      </div>
+    </div>
+  </div>
+  <div class="table-container">
+    <table class="table table-custom table-white table-vertical-center table-outside-border-body">
+      <thead>
+      <tr>
+        <th>
+          <div>
+            <div class="select-all d-flex align-items-center">
+              <div class="dnm-checkbox list-header-checkbox">
+                <input (click)="onSelectAllNodes(!allNodesSelected())" [checked]="allNodesSelected()" type="checkbox"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+              <div class="extend-menu darkness" ngbDropdown placement="bottom-left">
+                <div class="checkbox-input" ngbDropdownToggle>
+                  <div class="dnm-checkbox list-header-checkbox">
+                  </div>
+                </div>
+                <div class="checkbox-menu" ngbDropdownMenu>
+                  <div class="checkbox-menu-header">{{getSelectedItemCount()}} items selected</div>
+                  <button (click)="setFactorToSelectedNodes()" *ngIf="canShowBulkActions()"
+                          class="dropdown-item d-flex justify-content-between" data-menu-item type="button">
+                    Set calculation factor <i class="dnm-icon dnm-equals-icon"></i>
+                  </button>
+                  <button (click)="onDeleteSelected()" *ngIf="canShowBulkActions() && !isMeter"
+                          class="dropdown-item d-flex justify-content-between"
+                          type="button">
+                    Delete selected equipment <i class="dnm-icon dnm-trash-icon"></i>
+                  </button>
+                  <button (click)="onDeleteSelectedRegisters()" *ngIf="canShowBulkActions()"
+                          class="dropdown-item d-flex justify-content-between"
+                          type="button">
+                    Delete registers <i class="dnm-icon dnm-trash-icon"></i>
+                  </button>
+                  <button (click)="onAddSelectedRegisters()" *ngIf="canShowBulkActions()"
+                          class="dropdown-item d-flex justify-content-between"
+                          type="button">
+                    Allocate registers <i class="dnm-icon dnm-add-icon"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </th>
+        <th>
+          <a (click)="onChangeOrderIndex(orderType.NameAsc)" [ngClass]="{'active': orderIndex == orderType.NameAsc || orderIndex == orderType.NameDesc}"
+             class="head-col"
+             href="javascript:void(0);">
+            <span class="text-ellipsis" title="Name">Name</span>
+            <i [ngClass]="{'inactive': orderIndex != orderType.NameAsc && orderIndex != orderType.NameDesc, 'dnm-icon-sort-up': orderIndex == orderType.NameDesc,'dnm-icon-sort-down': orderIndex != orderType.NameDesc }"
+               class="dnm-icon"></i>
+          </a>
+        </th>
+        <th>
+          <a (click)="onChangeOrderIndex(orderType.MeterSerialNumberAsc)" [ngClass]="{'active': orderIndex == orderType.MeterSerialNumberAsc || orderIndex == orderType.MeterSerialNumberDesc}"
+             class="head-col"
+             href="javascript:void(0);">
+            <span class="text-ellipsis" title="Meter">Meter</span>
+            <i [ngClass]="{'inactive': orderIndex != orderType.MeterSerialNumberAsc && orderIndex != orderType.MeterSerialNumberDesc, 'dnm-icon-sort-up': orderIndex == orderType.MeterSerialNumberDesc,'dnm-icon-sort-down': orderIndex != orderType.MeterSerialNumberDesc }"
+               class="dnm-icon"></i>
+          </a>
+        </th>
+        <th>
+          <a (click)="onChangeOrderIndex(orderType.MeterBrandModelAsc)" [ngClass]="{'active': orderIndex == orderType.MeterBrandModelAsc}"
+             class="head-col"
+             href="javascript:void(0);">
+            <span class="text-ellipsis" title="Brand, Model">Brand, Model</span>
+            <i [ngClass]="{'inactive': orderIndex != orderType.MeterBrandModelAsc, 'dnm-icon-sort-up': orderIndex == orderType.MeterBrandModelDesc,'dnm-icon-sort-down': orderIndex != orderType.MeterBrandModelDesc }"
+               class="dnm-icon"></i>
+          </a>
+        </th>
+        <th>
+          <a (click)="onChangeOrderIndex(orderType.SupplyToAsc)" [ngClass]="{'active': orderIndex == orderType.SupplyToAsc || orderIndex == orderType.SupplyToDesc}"
+             class="head-col"
+             href="javascript:void(0);">
+            <span class="text-ellipsis" title="Supply type">Supply to</span>
+            <i [ngClass]="{'inactive': orderIndex != orderType.SupplyToAsc && orderIndex != orderType.SupplyToDesc, 'dnm-icon-sort-up': orderIndex == orderType.SupplyToDesc,'dnm-icon-sort-down': orderIndex != orderType.SupplyToDesc }"
+               class="dnm-icon"></i>
+          </a>
+        </th>
+        <th>
+          <a (click)="onChangeOrderIndex(orderType.DescriptionAsc)" [ngClass]="{'active': orderIndex == orderType.DescriptionAsc || orderIndex == orderType.DescriptionDesc}"
+             class="head-col"
+             href="javascript:void(0);">
+            <span class="text-ellipsis" title="Description">Description</span>
+            <i [ngClass]="{'inactive': orderIndex != orderType.DescriptionAsc && orderIndex != orderType.DescriptionDesc, 'dnm-icon-sort-up': orderIndex == orderType.DescriptionDesc,'dnm-icon-sort-down': orderIndex != orderType.DescriptionDesc }"
+               class="dnm-icon"></i>
+          </a>
+        </th>
+        <th>
+          <span class="head-col text-ellipsis" title="Attributes">Attributes</span>
+        </th>
+        <th *ngIf="!isMeter">
+          <span class="head-col text-ellipsis" title="Calculation Factor">Node Factor</span>
+        </th>
+        <th>
+          <span class="head-col text-ellipsis" title="Register">Register</span>
+        </th>
+        <th>
+          <span class="head-col text-ellipsis" title="Allocated">Allocated</span>
+        </th>
+        <!--        <th>-->
+        <!--          <span class="head-col text-ellipsis" title="Billing">Billing</span>-->
+        <!--        </th>-->
+        <th>
+          <span class="head-col text-ellipsis" title="Calculation Factor">Register Factor</span>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+
+      <ng-container *ngFor="let item of nodes; let idx = index; trackBy: trackById">
+        <tr [ngClass]="{'selected-row' : item.control.value.selected}">
+          <td class="">
+            <div class="d-flex align-items-center">
+              <div class="form-check">
+                <label>
+                  <input [ngrxFormControlState]="item.control.controls.selected" type="checkbox">
+                  <span class="checkbox-view"></span>
+                </label>
+              </div>
+            </div>
+          </td>
+          <td>
+            <a [routerLink]="['/branch', branchId, 'buildings', buildingId, 'version', versionDay, 'equipment', 'nodes', item.node.id]"
+               class="clickable meter-field"
+               title="{{item.node.displayName}}">{{item.node.displayName}}</a>
+          </td>
+          <td>
+              <span *ngIf="item.node.meterOwner?.serialNumber">
+                <a [routerLink]="['/branch', branchId, 'buildings', buildingId, 'version', versionDay, 'equipment', item.node.meterOwner?.meterId || item.node.meterOwner?.id]"
+                   class="meter-field"
+                   title="{{item.node.meterOwner?.serialNumber}}">
+                    <ng-container *ngIf="item.node.meterOwner?.supplyType; else supplyType">
+                      {{item.node.meterOwner?.serialNumber | shortMeterName : item.node.meterOwner?.supplyType }}
+                    </ng-container>
+                    <ng-template #supplyType>
+                      {{item.node.displayName}}
+                    </ng-template>
+                </a>
+              </span>
+          </td>
+          <td>
+              <span class="equipment-description-field"
+                    title="{{item.node.meterOwner?.equipmentModel || item.node.meterOwner?.equipment.equipmentModel}}">
+                <ng-container *ngIf="item.node.meterOwner?.equipmentModel; else equipmentModel">
+                  {{item.node.meterOwner?.equipmentModel}}
+                </ng-container>
+                <ng-template #equipmentModel>
+                  {{item.node.meterOwner?.equipment.equipmentModel}}
+                </ng-template>
+              </span>
+          </td>
+          <td>
+              <span class="equipment-description-field"
+                    title="{{ suppliesNames[item.node.supplyToId] }}&nbsp;{{ locationTypesNames[item.node.supplyToLocationId] }}">
+                {{ suppliesNames[item.node.supplyToId] }}&nbsp;{{ locationTypesNames[item.node.supplyToLocationId] }}
+              </span>
+          </td>
+          <td>
+            <span class="description-text">{{item.node.meterOwner?.description || item.node.description}}</span>
+          </td>
+          <td>
+            <div *ngFor="let attr of (item.node.attributes || item.node.meterOwner.equipment.attributes)"
+                 class="equipment-description-field">
+              <label *ngIf="attr.attribute.name === 'Notified Maximum Demand'">Max Demand:</label>
+              <label *ngIf="attr.attribute.name !== 'Notified Maximum Demand'">{{attr.attribute.name}}:</label>
+              <span *ngIf="attr.attribute.fieldType == fieldType.Number && attr.value; else defaultAttr"
+                    title="{{attr.value | number:'1.0-2'}}&nbsp;{{attr.attribute.unit?.name}}">
+                  {{attr.value | parseNumber | number:'1.0-2'}}
+                <ng-container *ngIf="attr.attribute.unit?.name">&nbsp;{{attr.attribute.unit?.name}}</ng-container>
+                </span>
+              <ng-template #defaultAttr>
+                <span *ngIf="attr.value" title="{{attr.value}}"> {{attr.value}} </span>
+              </ng-template>
+            </div>
+
+          </td>
+          <td *ngIf="!isMeter" class="calculation-factor-col">
+            <div
+              [ngClass]="{'dnm-invalid-inp': item.control.controls.calculationFactor.isSubmitted && item.control.controls.calculationFactor.isInvalid}">
+              <number-input [max]="1000" [min]="-1000"
+                            [ngrxFormControlState]="item.control.controls.calculationFactor"></number-input>
+            </div>
+            <small
+              *ngIf="item.control.controls.calculationFactor.isSubmitted && item.control.controls.calculationFactor.errors.notEqualTo"
+              class="alert-danger">
+              Value can't be zero
+            </small>
+          </td>
+          <td class="ml-1">
+            <div *ngFor="let register of filteredRegisters[item.node.nodeId];  trackBy: trackById"
+                 class="register-item-wrapper register-item">
+              <i *ngIf="register.totalRegister.registerId | checkVirtualRegister | async"
+                 class="tab-icon dnm-icon-equipment-virtual-registers"></i>
+              <span
+                [ngClass]="{'removed-register': register.totalRegister.isRemoved, 'equipment-description-field equipment-register-label': true}"
+                [ngbTooltip]="register.totalRegister.name"
+                title="{{register.totalRegister.unit}}">{{register.totalRegister | registerUnit | async}}</span>
+            </div>
+          </td>
+          <td>
+            <div *ngFor="let register of filteredRegisters[item.node.nodeId];  trackBy: trackById"
+                 class="allocated-register">
+              <div class="service-switch">
+                <label class="dnm-switch-btn">
+                  <input (change)="onAllocatedChange($event, register, item.node.nodeId)" [(ngModel)]="!register.totalRegister.isRemoved"
+                         type="checkbox">
+                  <span class="dnm-switch-slider round"></span>
+                </label>
+              </div>
+            </div>
+          </td>
+          <!--          <td>-->
+          <!--            <div class="register-item-wrapper"-->
+          <!--                 *ngFor="let register of filteredRegisters[item.node.nodeId];  trackBy: trackById">-->
+          <!--              <i *ngIf="register.totalRegister.isBilling"-->
+          <!--                 [ngClass]="{'removed-register': register.totalRegister.isRemoved, 'equipment-description-field dnm-icon dnm-billing-icon-active': true}"-->
+          <!--                 title="Billing"></i>-->
+          <!--              <i *ngIf="!register.totalRegister.isBilling"-->
+          <!--                 [ngClass]="{'removed-register': register.totalRegister.isRemoved, 'equipment-description-field dnm-icon dnm-billing-icon': true}"-->
+          <!--                 title="Read only"></i>-->
+          <!--            </div>-->
+          <!--          </td>-->
+          <td class="calculation-factor-col">
+            <div class="d-flex align-items-center justify-content-between">
+              <div>
+                <div *ngFor="let register of filteredRegisters[item.node.nodeId];  trackBy: trackById"
+                     class="register-item-wrapper">
+                  <ng-container *ngIf="register.controls.calculationFactor">
+                    <div
+                      [ngClass]="{'dnm-invalid-inp': register.controls.calculationFactor.isSubmitted && register.controls.calculationFactor.isInvalid && !register.totalRegister.isRemoved}">
+                      <number-input (change)="onRegisterFactorChange(item.node.nodeId, register.totalRegister)"
+                                    *ngIf="!register.totalRegister.isRemoved" [(ngModel)]="register.totalRegister.calculationFactor" [max]="1000"
+                                    [min]="-1000"></number-input>
+                    </div>
+                    <small
+                      *ngIf="register.controls.calculationFactor.isSubmitted && register.controls.calculationFactor.errors.required"
+                      class="alert-danger">
+                      Calculation factor is required
+                    </small>
+                    <small
+                      *ngIf="register.controls.calculationFactor.isSubmitted && (register.controls.calculationFactor.errors.greaterThanOrEqualTo || register.controls.calculationFactor.errors.lessThanOrEqualTo)"
+                      class="alert-danger">
+                      Calculation factor must be from -1000 to 1000
+                    </small>
+                    <small
+                      *ngIf="register.controls.calculationFactor.isSubmitted && register.controls.calculationFactor.errors.notEqualTo"
+                      class="alert-danger">
+                      Value can't be zero
+                    </small>
+                  </ng-container>
+                </div>
+              </div>
+
+              <div class="darkness dropdown" ngbDropdown placement="bottom-right">
+                <button aria-expanded="false" class="dnm-btn dnm-btn-menu delete-item-btn" ngbDropdownToggle
+                        type="button"></button>
+                <div class="delete-item-menu" ngbDropdownMenu>
+                  <button (click)="onDeleteNode(item.node.nodeId)" class="dropdown-item d-flex justify-content-between"
+                          type="button">
+                    Delete <i class="dnm-icon delete-icon"></i>
+                  </button>
+                  <button (click)="setFactorToNode(item.node.nodeId)" class="dropdown-item d-flex justify-content-between"
+                          type="button">
+                    Set calculation factor <i class="dnm-icon dnm-equals-icon"></i>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </td>
+        </tr>
+      </ng-container>
+
+      </tbody>
+    </table>
+  </div>
+  <div class="row none-margin-hr">
+    <div class="col-12 none-padding footer-btns d-flex justify-content-end">
+      <button (click)="onCancel()" [routerLink]="['/branch', branchId, 'buildings', buildingId, 'version', versionDay, 'equipment', 'nodes']" class="dnm-btn dnm-btn-cancel text-uppercase"
+              type="button">
+        Cancel
+      </button>
+      <button (click)="onSave()" class="dnm-btn dnm-btn-primary text-uppercase" type="button" [disabled]="buildingPeriodIsFinalized">Save</button>
+    </div>
+  </div>
+</div>

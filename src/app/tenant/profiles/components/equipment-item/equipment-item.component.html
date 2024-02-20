@@ -1,0 +1,43 @@
+<div class="container-fluid none-padding equip-item-wrp">
+  <div class="row none-margin-hr main-item-wrp">
+    <div class="col-2 d-flex align-items-center">
+      <div class="item-img d-flex align-items-center justify-content-center">
+        <logo-container logo-class="branch-logo full-height d-flex align-items-center" url="{{equipment.photoUrl}}">
+          <div class="meter-no-img"></div>
+        </logo-container>
+      </div>
+      <div class="d-flex flex-column">
+        <span [title]="equipment.serialNumber"
+              class="serial-numb-lbl">{{equipment.serialNumber | emptyValue | slice : -4}}
+          -{{equipment.supplyType | supplyTypeLetter}}</span>
+        <span class="equip-model-lbl">{{equipment.equipmentModel}}</span>
+      </div>
+    </div>
+    <div class="col-2 d-flex align-items-center">
+      <span class="equip-descr-lbl">{{equipment.description}}</span>
+    </div>
+    <div class="col-2 d-flex align-items-center">
+      <span class="equip-descr-lbl">{{equipment.billingRegisters.join(', ')}}</span>
+    </div>
+    <div class="col-6 d-flex align-items-center">
+      <div class="row none-margin-hr w-100">
+        <div class="col-7 d-flex align-items-center">
+          <div class="d-flex flex-wrap">
+            <div *ngFor="let attribute of equipment.attributes" class="equipment-attr">
+              <span class="equipment-attr-lbl">{{attribute.name}}:</span>
+              <span class="equipment-attr-val">{{attribute.value}}</span>
+              <span *ngIf="attribute.fieldType === fieldType.Number"
+                    class="equipment-attr-val">{{attribute.unitName}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-5 d-flex align-items-center justify-content-between">
+          <div class="d-flex flex-column">
+            <span class="tariff-name-lbl">{{equipment.tariffName}}</span>
+            <span class="supplier-name-lbl">{{equipment.appliedTariff?.tariffValue}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

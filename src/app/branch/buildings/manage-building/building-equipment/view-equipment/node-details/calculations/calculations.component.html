@@ -1,0 +1,1097 @@
+<div class="calcs-wrp">
+  <div class="row filter-row none-margin-hr">
+    <div class="col none-padding">
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+          <span class="filter-lbl">Building period:</span>
+          <div class="dropdown filter-dropdown small" ngbDropdown placement="bottom-right">
+            <button class="btn dropdown-toggle" ngbDropdownToggle>
+              December 2018 (31 days, 01/12/2018 - 31/12/2018)
+            </button>
+            <div class="dropdown-menu" ngbDropdownMenu>
+              <button class="dropdown-item">December 2018 (31 days, 01/12/2018 - 31/12/2018)</button>
+              <button class="dropdown-item">December 2018 (31 days, 01/12/2018 - 31/12/2018)</button>
+              <button class="dropdown-item">December 2018 (31 days, 01/12/2018 - 31/12/2018)</button>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex align-items-center">
+          <span class="filter-lbl">Calculation method:</span>
+          <span class="calc-meth-val">per node details</span>
+          <div class="calc-info-icon">
+            <div class="info-popup">
+              This calculation method was previously chosed on the "allocated tariffs" tab
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row none-margin-hr calc-list-wrp">
+    <div class="col none-padding">
+      <div class="row none-margin-hr calc-list-item">
+        <div class="col-5 d-flex align-items-center">
+          <div class="d-flex flex-column">
+            <div class="d-flex align-items-center">
+              <span class="tariff-name-lbl">Business rate tariff name</span>
+              <span class="calc-block-tick">Billing</span>
+            </div>
+            <div class="d-flex align-items-center">
+              <span class="item-field-lbl">Supplier:</span>
+              <span class="item-field-val">Johanesburg city power</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-7 d-flex align-items-center none-padding">
+          <div class="row none-margin-hr w-100">
+            <div class="col-4 d-flex align-items-center">
+              <div class="d-flex flex-column">
+                <span class="item-field-lbl">Tariff version:</span>
+                <span class="item-field-val">01-12/02/2019</span>
+              </div>
+            </div>
+            <div class="col-4 d-flex align-items-center">
+              <div class="d-flex flex-column">
+                <span class="item-field-lbl">Value:</span>
+                <span class="item-field-val">2018/2019</span>
+              </div>
+            </div>
+            <div class="col-4 d-flex align-items-center">
+              <div class="price-item price-lbl">
+                <div class="price-value">R 2000</div>
+                <div class="price-per-unit">total price</div>
+              </div>
+              <div class="d-flex align-items-center">
+                <!--<span class="icon-relative expand-btn expand-icon"></span>-->
+                <span class="icon-relative expand-btn collapse-icon"></span>
+                <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+                  <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle type="button"></button>
+                  <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                    <button class="dropdown-item d-flex justify-content-between" type="button">
+                      Change Value
+                      <i class="dnm-icon dnm-price-icon"></i>
+                    </button>
+                    <button class="dropdown-item d-flex justify-content-between" type="button">
+                      Change Tariff
+                      <i class="dnm-icon dnm-billing-icon"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row none-margin-hr calc-item-dtls">
+        <div class="col none-margin-hr">
+          <div class="section-title section-title-wrp">Totals calculation</div>
+          <div class="bl-gradient-title bl-title-wrp">Total kWh consumption</div>
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <div class="row none-margin-hr list-header">
+                <div class="col-6 none-padding d-flex align-items-center">
+                  <div class="row none-margin-hr w-100">
+                    <div class="col-3 d-flex align-items-center">
+                      <a (click)="changeOrderIndex(1);" [ngClass]="{'active': orderIndex == 1 || orderIndex == -1}"
+                         class="header-field d-flex align-items-center" href="javascript:void(0);">
+                        <span class="text-ellipsis text-uppercase" title="Meter">Meter</span>
+                        <i [ngClass]="{'inactive': orderIndex != 1 && orderIndex != -1, 'dnm-icon-sort-up': orderIndex == -1,'dnm-icon-sort-down': orderIndex != -1 }"
+                           class="dnm-icon"></i>
+                      </a>
+                    </div>
+                    <div class="col-5 d-flex align-items-center">
+                      <a (click)="changeOrderIndex(2);" [ngClass]="{'active': orderIndex == 2 || orderIndex == -2}"
+                         class="header-field d-flex align-items-center" href="javascript:void(0);">
+                        <span class="text-ellipsis text-uppercase" title="Brand, Model">Brand, Model</span>
+                        <i [ngClass]="{'inactive': orderIndex != 2 && orderIndex != -2, 'dnm-icon-sort-up': orderIndex == -2,'dnm-icon-sort-down': orderIndex != -2 }"
+                           class="dnm-icon"></i>
+                      </a>
+                    </div>
+                    <div class="col-4 d-flex align-items-center">
+                      <a (click)="changeOrderIndex(3);" [ngClass]="{'active': orderIndex == 3 || orderIndex == -3}"
+                         class="header-field d-flex align-items-center" href="javascript:void(0);">
+                        <span class="text-ellipsis text-uppercase" title="Usage, kWh">Usage, kWh</span>
+                        <i [ngClass]="{'inactive': orderIndex != 3 && orderIndex != -3, 'dnm-icon-sort-up': orderIndex == -3,'dnm-icon-sort-down': orderIndex != -3 }"
+                           class="dnm-icon"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 none-padding d-flex align-items-center">
+                  <div class="row none-margin-hr w-100">
+                    <div class="col-5 d-flex align-items-center">
+                      <a (click)="changeOrderIndex(4);" [ngClass]="{'active': orderIndex == 4 || orderIndex == -4}"
+                         class="header-field d-flex align-items-center" href="javascript:void(0);">
+                        <span class="text-ellipsis text-uppercase" title="Calc. Factor">Calc. Factor</span>
+                        <i [ngClass]="{'inactive': orderIndex != 4 && orderIndex != -4, 'dnm-icon-sort-up': orderIndex == -4,'dnm-icon-sort-down': orderIndex != -4 }"
+                           class="dnm-icon"></i>
+                      </a>
+                    </div>
+                    <div class="col-7 d-flex align-items-center">
+                      <a (click)="changeOrderIndex(5);" [ngClass]="{'active': orderIndex == 5 || orderIndex == -5}"
+                         class="header-field d-flex align-items-center" href="javascript:void(0);">
+                        <span class="text-ellipsis text-uppercase" title="Usage time factor">Usage time <br> Calc. Factor, kWh </span>
+                        <i [ngClass]="{'inactive': orderIndex != 5 && orderIndex != -5, 'dnm-icon-sort-up': orderIndex == -5,'dnm-icon-sort-down': orderIndex != -5 }"
+                           class="dnm-icon"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="list-body">
+                <div class="list-body-wrp">
+                  <div *ngFor="let item of testList" [ngClass]="{'body-scroll': testList.length > 5 }"
+                       class="row body-row none-margin-hr">
+                    <div class="col-6 none-padding d-flex align-items-center">
+                      <div class="row none-margin-hr w-100">
+                        <div class="col-3 d-flex align-items-center">
+                          <span class="meter-fld-val">SN123</span>
+                        </div>
+                        <div class="col-5 d-flex align-items-center">
+                          <span class="body-row-val">Elster A114</span>
+                        </div>
+                        <div class="col-4 d-flex align-items-center">
+                          <span class="body-row-val">14</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6 none-padding d-flex align-items-center">
+                      <div class="row none-margin-hr w-100">
+                        <div class="col-5 d-flex align-items-center">
+                          <span class="body-row-val">1</span>
+                        </div>
+                        <div class="col-7 d-flex align-items-center">
+                          <span class="body-row-val">17</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row last-body-row none-margin-hr">
+                  <div class="col-6 none-padding d-flex align-items-center">
+                    <div class="row none-margin-hr w-100">
+                      <div class="col-3 d-flex align-items-center">
+                        <span class="total-lbl text-uppercase">Total:</span>
+                      </div>
+                      <div class="col-5 d-flex align-items-center">
+                        <span class="body-row-val">Elster A114</span>
+                      </div>
+                      <div class="col-4 d-flex align-items-center">
+                        <span class="body-row-val">14</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6 none-padding d-flex align-items-center">
+                    <div class="row none-margin-hr w-100">
+                      <div class="col-5 d-flex align-items-center">
+                        <span class="body-row-val">1</span>
+                      </div>
+                      <div class="col-7 d-flex align-items-center">
+                        <span class="body-row-val">17</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bl-gradient-title bl-title-wrp">Total kVA consumption</div>
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <div class="row none-margin-hr list-header">
+                <div class="col-6 none-padding d-flex align-items-center">
+                  <div class="row none-margin-hr w-100">
+                    <div class="col-3 d-flex align-items-center">
+                      <a (click)="changeOrderIndex(1);" [ngClass]="{'active': orderIndex == 1 || orderIndex == -1}"
+                         class="header-field d-flex align-items-center" href="javascript:void(0);">
+                        <span class="text-ellipsis text-uppercase" title="Meter">Meter</span>
+                        <i [ngClass]="{'inactive': orderIndex != 1 && orderIndex != -1, 'dnm-icon-sort-up': orderIndex == -1,'dnm-icon-sort-down': orderIndex != -1 }"
+                           class="dnm-icon"></i>
+                      </a>
+                    </div>
+                    <div class="col-5 d-flex align-items-center">
+                      <a (click)="changeOrderIndex(2);" [ngClass]="{'active': orderIndex == 2 || orderIndex == -2}"
+                         class="header-field d-flex align-items-center" href="javascript:void(0);">
+                        <span class="text-ellipsis text-uppercase" title="Brand, Model">Brand, Model</span>
+                        <i [ngClass]="{'inactive': orderIndex != 2 && orderIndex != -2, 'dnm-icon-sort-up': orderIndex == -2,'dnm-icon-sort-down': orderIndex != -2 }"
+                           class="dnm-icon"></i>
+                      </a>
+                    </div>
+                    <div class="col-4 d-flex align-items-center">
+                      <a (click)="changeOrderIndex(3);" [ngClass]="{'active': orderIndex == 3 || orderIndex == -3}"
+                         class="header-field d-flex align-items-center" href="javascript:void(0);">
+                        <span class="text-ellipsis text-uppercase" title="Usage, kVA">Usage, kVA</span>
+                        <i [ngClass]="{'inactive': orderIndex != 3 && orderIndex != -3, 'dnm-icon-sort-up': orderIndex == -3,'dnm-icon-sort-down': orderIndex != -3 }"
+                           class="dnm-icon"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 none-padding d-flex align-items-center">
+                  <div class="row none-margin-hr w-100">
+                    <div class="col-5 d-flex align-items-center">
+                      <a (click)="changeOrderIndex(4);" [ngClass]="{'active': orderIndex == 4 || orderIndex == -4}"
+                         class="header-field d-flex align-items-center" href="javascript:void(0);">
+                        <span class="text-ellipsis text-uppercase" title="Calc. Factor">Calc. Factor</span>
+                        <i [ngClass]="{'inactive': orderIndex != 4 && orderIndex != -4, 'dnm-icon-sort-up': orderIndex == -4,'dnm-icon-sort-down': orderIndex != -4 }"
+                           class="dnm-icon"></i>
+                      </a>
+                    </div>
+                    <div class="col-7 d-flex align-items-center">
+                      <a (click)="changeOrderIndex(5);" [ngClass]="{'active': orderIndex == 5 || orderIndex == -5}"
+                         class="header-field d-flex align-items-center" href="javascript:void(0);">
+                        <span class="text-ellipsis text-uppercase" title="Usage time factor">Usage time <br> Calc. Factor, kVA </span>
+                        <i [ngClass]="{'inactive': orderIndex != 5 && orderIndex != -5, 'dnm-icon-sort-up': orderIndex == -5,'dnm-icon-sort-down': orderIndex != -5 }"
+                           class="dnm-icon"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="list-body">
+                <div class="list-body-wrp">
+                  <div *ngFor="let item of testList" [ngClass]="{'body-scroll': testList.length > 5 }"
+                       class="row body-row none-margin-hr">
+                    <div class="col-6 none-padding d-flex align-items-center">
+                      <div class="row none-margin-hr w-100">
+                        <div class="col-3 d-flex align-items-center">
+                          <span class="meter-fld-val">SN123</span>
+                        </div>
+                        <div class="col-5 d-flex align-items-center">
+                          <span class="body-row-val">Elster A114</span>
+                        </div>
+                        <div class="col-4 d-flex align-items-center">
+                          <span class="body-row-val">14</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6 none-padding d-flex align-items-center">
+                      <div class="row none-margin-hr w-100">
+                        <div class="col-5 d-flex align-items-center">
+                          <span class="body-row-val">1</span>
+                        </div>
+                        <div class="col-7 d-flex align-items-center">
+                          <span class="body-row-val">17</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row last-body-row none-margin-hr">
+                  <div class="col-6 none-padding d-flex align-items-center">
+                    <div class="row none-margin-hr w-100">
+                      <div class="col-3 d-flex align-items-center">
+                        <span class="total-lbl text-uppercase">Total:</span>
+                      </div>
+                      <div class="col-5 d-flex align-items-center">
+                        <span class="body-row-val">Elster A114</span>
+                      </div>
+                      <div class="col-4 d-flex align-items-center">
+                        <span class="body-row-val">14</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6 none-padding d-flex align-items-center">
+                    <div class="row none-margin-hr w-100">
+                      <div class="col-5 d-flex align-items-center">
+                        <span class="body-row-val">1</span>
+                      </div>
+                      <div class="col-7 d-flex align-items-center">
+                        <span class="body-row-val">17</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bl-gradient-title bl-title-wrp">Total kVARh consumption</div>
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <div class="row none-margin-hr list-header">
+                <div class="col-6 none-padding d-flex align-items-center">
+                  <div class="row none-margin-hr w-100">
+                    <div class="col-3 d-flex align-items-center">
+                      <a (click)="changeOrderIndex(1);" [ngClass]="{'active': orderIndex == 1 || orderIndex == -1}"
+                         class="header-field d-flex align-items-center" href="javascript:void(0);">
+                        <span class="text-ellipsis text-uppercase" title="Meter">Meter</span>
+                        <i [ngClass]="{'inactive': orderIndex != 1 && orderIndex != -1, 'dnm-icon-sort-up': orderIndex == -1,'dnm-icon-sort-down': orderIndex != -1 }"
+                           class="dnm-icon"></i>
+                      </a>
+                    </div>
+                    <div class="col-5 d-flex align-items-center">
+                      <a (click)="changeOrderIndex(2);" [ngClass]="{'active': orderIndex == 2 || orderIndex == -2}"
+                         class="header-field d-flex align-items-center" href="javascript:void(0);">
+                        <span class="text-ellipsis text-uppercase" title="Brand, Model">Brand, Model</span>
+                        <i [ngClass]="{'inactive': orderIndex != 2 && orderIndex != -2, 'dnm-icon-sort-up': orderIndex == -2,'dnm-icon-sort-down': orderIndex != -2 }"
+                           class="dnm-icon"></i>
+                      </a>
+                    </div>
+                    <div class="col-4 d-flex align-items-center">
+                      <a (click)="changeOrderIndex(3);" [ngClass]="{'active': orderIndex == 3 || orderIndex == -3}"
+                         class="header-field d-flex align-items-center" href="javascript:void(0);">
+                        <span class="text-ellipsis text-uppercase" title="Usage, kVARh">Usage, kVARh</span>
+                        <i [ngClass]="{'inactive': orderIndex != 3 && orderIndex != -3, 'dnm-icon-sort-up': orderIndex == -3,'dnm-icon-sort-down': orderIndex != -3 }"
+                           class="dnm-icon"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 none-padding d-flex align-items-center">
+                  <div class="row none-margin-hr w-100">
+                    <div class="col-4 d-flex align-items-center">
+                      <a (click)="changeOrderIndex(4);" [ngClass]="{'active': orderIndex == 4 || orderIndex == -4}"
+                         class="header-field d-flex align-items-center" href="javascript:void(0);">
+                        <span class="text-ellipsis text-uppercase" title="Calc. Factor">Calc. Factor</span>
+                        <i [ngClass]="{'inactive': orderIndex != 4 && orderIndex != -4, 'dnm-icon-sort-up': orderIndex == -4,'dnm-icon-sort-down': orderIndex != -4 }"
+                           class="dnm-icon"></i>
+                      </a>
+                    </div>
+                    <div class="col-4 d-flex align-items-center">
+                      <a (click)="changeOrderIndex(5);" [ngClass]="{'active': orderIndex == 5 || orderIndex == -5}"
+                         class="header-field d-flex align-items-center" href="javascript:void(0);">
+                        <span class="text-ellipsis text-uppercase" title="Usage, kVARh">Usage time <br>Calc. Factor, kVARh </span>
+                        <i [ngClass]="{'inactive': orderIndex != 5 && orderIndex != -5, 'dnm-icon-sort-up': orderIndex == -5,'dnm-icon-sort-down': orderIndex != -5 }"
+                           class="dnm-icon"></i>
+                      </a>
+                    </div>
+                    <div class="col-4 d-flex align-items-center">
+                      <a (click)="changeOrderIndex(6);" [ngClass]="{'active': orderIndex == 6 || orderIndex == -6}"
+                         class="header-field d-flex align-items-center" href="javascript:void(0);">
+                        <span class="text-ellipsis text-uppercase" title="Usage, kVA">Billable Consumption <br>(kVARh-30% kWh)</span>
+                        <i [ngClass]="{'inactive': orderIndex != 6 && orderIndex != -6, 'dnm-icon-sort-up': orderIndex == -6,'dnm-icon-sort-down': orderIndex != -6 }"
+                           class="dnm-icon"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="list-body">
+                <div class="list-body-wrp">
+                  <div class="row body-row none-margin-hr">
+                    <div class="col-6 none-padding d-flex align-items-center">
+                      <div class="row none-margin-hr w-100">
+                        <div class="col-3 d-flex align-items-center">
+                          <span class="meter-fld-val">SN123</span>
+                        </div>
+                        <div class="col-5 d-flex align-items-center">
+                          <span class="body-row-val">Elster A114</span>
+                        </div>
+                        <div class="col-4 d-flex align-items-center">
+                          <span class="body-row-val">14</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6 none-padding d-flex align-items-center">
+                      <div class="row none-margin-hr w-100">
+                        <div class="col-4 d-flex align-items-center">
+                          <span class="body-row-val">1</span>
+                        </div>
+                        <div class="col-4 d-flex align-items-center">
+                          <span class="body-row-val">17</span>
+                        </div>
+                        <div class="col-4 d-flex align-items-center">
+                          <span class="body-row-val">17</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row last-body-row none-margin-hr">
+                  <div class="col-6 none-padding d-flex align-items-center">
+                    <div class="row none-margin-hr w-100">
+                      <div class="col-3 d-flex align-items-center">
+                        <span class="total-lbl text-uppercase">Total:</span>
+                      </div>
+                      <div class="col-5 d-flex align-items-center">
+                        <span class="body-row-val">Elster A114</span>
+                      </div>
+                      <div class="col-4 d-flex align-items-center">
+                        <span class="body-row-val">14</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6 none-padding d-flex align-items-center">
+                    <div class="row none-margin-hr w-100">
+                      <div class="col-4 d-flex align-items-center">
+                        <span class="body-row-val">1</span>
+                      </div>
+                      <div class="col-4 d-flex align-items-center">
+                        <span class="body-row-val">17</span>
+                      </div>
+                      <div class="col-4 d-flex align-items-center">
+                        <span class="body-row-val">17</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="section-title-wrp d-flex align-items-center justify-content-between">
+            <div class="section-title">Costs per line item calculation</div>
+            <div class="d-flex align-items-center">
+              <span class="filter-lbl">Show:</span>
+              <div class="dropdown filter-dropdown small" ngbDropdown placement="bottom-right">
+                <button class="btn dropdown-toggle" ngbDropdownToggle>
+                  All Charges
+                </button>
+                <div class="dropdown-menu" ngbDropdownMenu>
+                  <button class="dropdown-item selected-item">All Charges</button>
+                  <button class="dropdown-item">Billing Charges</button>
+                  <button class="dropdown-item">Read only charges</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bl-title-wrp d-flex align-items-center">
+            <div class="bl-gradient-title">Consumption charge</div>
+            <span class="calc-block-tick bg-gd-gray">Read Only</span>
+          </div>
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <div class="row none-margin-hr list-header">
+                <div class="col-5 none-padding d-flex align-items-center">
+                  <div class="row none-margin-hr w-100">
+                    <div class="col-7 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="TOU">TOU</span>
+                    </div>
+                    <div class="col-5 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="Used, kWh">Used, kWh</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-7 none-padding d-flex align-items-center">
+                  <div class="row none-margin-hr w-100">
+                    <div class="col-9 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="Price Details">Price Details</span>
+                    </div>
+                    <div class="col-3 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="Total, R">Total, R</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="list-body">
+                <div class="list-body-wrp">
+                  <div class="row body-row none-margin-hr">
+                    <div class="col-5 none-padding d-flex align-items-center">
+                      <div class="row none-margin-hr w-100">
+                        <div class="col-7 d-flex align-items-center">
+                          <span class="meter-fld-val">Peak</span>
+                        </div>
+                        <div class="col-5 d-flex align-items-center">
+                          <span class="body-row-val">500</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-7 none-padding d-flex align-items-center">
+                      <div class="row none-margin-hr w-100">
+                        <div class="col-9 d-flex align-items-center">
+                          <div class="price-dets-wrp">
+                            <div class="price-dets-item">
+                              <div class="dets-duration-val">5 days, 25/05/2018 - 30/05/2018</div>
+                              <div class="d-flex align-items-center">
+                                <span class="dets-field-name">Value:</span>
+                                <span class="dets-field-val">2017/2018</span>
+                                <span class="dets-field-name">Season:</span>
+                                <span class="dets-field-val">High</span>
+                                <span class="dets-field-name">Category:</span>
+                                <span class="dets-field-val">230V/400V LV</span>
+                                <span class="dets-field-name">Price:</span>
+                                <span class="dets-field-val">R 31.15</span>
+                              </div>
+                            </div>
+                            <div class="price-dets-item">
+                              <div class="dets-duration-val">5 days, 25/05/2018 - 30/05/2018</div>
+                              <div class="d-flex align-items-center">
+                                <span class="dets-field-name">Value:</span>
+                                <span class="dets-field-val">2017/2018</span>
+                                <span class="dets-field-name">Season:</span>
+                                <span class="dets-field-val">High</span>
+                                <span class="dets-field-name">Category:</span>
+                                <span class="dets-field-val">230V/400V LV</span>
+                                <span class="dets-field-name">Price:</span>
+                                <span class="dets-field-val">R 31.15</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-3 d-flex align-items-center">
+                          <span class="body-row-val tot-price-val">R 1250.00</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row last-body-row none-margin-hr">
+                  <div class="col-5 none-padding d-flex align-items-center">
+                    <div class="row none-margin-hr w-100">
+                      <div class="col-7 d-flex align-items-center">
+                        <span class="total-lbl text-uppercase">Total:</span>
+                      </div>
+                      <div class="col-5 d-flex align-items-center">
+                        <span class="body-row-val">Elster A114</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-7 none-padding d-flex align-items-center">
+                    <div class="row none-margin-hr w-100">
+                      <div class="col-9 d-flex align-items-center">
+                        <span class="body-row-val">1</span>
+                      </div>
+                      <div class="col-3 d-flex align-items-center">
+                        <span class="body-row-val">17</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bl-title-wrp d-flex align-items-center">
+            <div class="bl-gradient-title">Demand charge</div>
+            <span class="calc-block-tick">Billing</span>
+          </div>
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <div class="row none-margin-hr list-header">
+                <div class="col-5 none-padding d-flex align-items-center">
+                  <div class="row none-margin-hr w-100">
+                    <div class="col-7 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="Amount, kVA">Amount, kVA</span>
+                    </div>
+                    <div class="col-5 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="Price, R/kVA/Month">Price, R/kVA/Month</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-7 none-padding d-flex align-items-center">
+                  <div class="row none-margin-hr w-100">
+                    <div class="col-9 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="Price Details">Price Details</span>
+                    </div>
+                    <div class="col-3 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="Total, R">Total, R</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="list-body">
+                <div class="list-body-wrp">
+                  <div class="row body-row none-border none-margin-hr">
+                    <div class="col-5 none-padding d-flex align-items-center">
+                      <div class="row none-margin-hr w-100">
+                        <div class="col-7 d-flex align-items-center">
+                          <span class="body-row-val">5.2</span>
+                        </div>
+                        <div class="col-5 d-flex align-items-center">
+                          <span class="body-row-val">R 50.0962</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-7 none-padding d-flex align-items-center">
+                      <div class="row none-margin-hr w-100">
+                        <div class="col-9 d-flex align-items-center">
+                          <div class="price-dets-wrp">
+                            <div class="price-dets-item">
+                              <div class="dets-duration-val">5 days, 25/05/2018 - 30/05/2018</div>
+                              <div class="d-flex align-items-center">
+                                <span class="dets-field-name">Value:</span>
+                                <span class="dets-field-val">2017/2018</span>
+                                <span class="dets-field-name">Season:</span>
+                                <span class="dets-field-val">High</span>
+                                <span class="dets-field-name">Category:</span>
+                                <span class="dets-field-val">230V/400V LV</span>
+                                <span class="dets-field-name">Price:</span>
+                                <span class="dets-field-val">R 31.15</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-3 d-flex align-items-center">
+                          <span class="body-row-val tot-price-val">R 1250.00</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bl-title-wrp d-flex align-items-center">
+            <div class="bl-gradient-title">Network access charge</div>
+            <span class="calc-block-tick">Billing</span>
+          </div>
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <div class="row none-margin-hr list-header">
+                <div class="col-5 none-padding d-flex align-items-center">
+                  <div class="row none-margin-hr w-100">
+                    <div class="col-7 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="Amount, kVA">Amount, kVA</span>
+                    </div>
+                    <div class="col-5 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="Price, R/kVA/Month">Price, R/kVA/Month</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-7 none-padding d-flex align-items-center">
+                  <div class="row none-margin-hr w-100">
+                    <div class="col-9 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="Price Details">Price Details</span>
+                    </div>
+                    <div class="col-3 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="Total, R">Total, R</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="list-body">
+                <div class="list-body-wrp">
+                  <div class="row body-row none-border none-margin-hr">
+                    <div class="col-5 none-padding d-flex align-items-center">
+                      <div class="row none-margin-hr w-100">
+                        <div class="col-7 d-flex align-items-center">
+                          <span class="body-row-val">5.2</span>
+                        </div>
+                        <div class="col-5 d-flex align-items-center">
+                          <span class="body-row-val">R 50.0962</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-7 none-padding d-flex align-items-center">
+                      <div class="row none-margin-hr w-100">
+                        <div class="col-9 d-flex align-items-center">
+                          <div class="price-dets-wrp">
+                            <div class="price-dets-item">
+                              <div class="dets-duration-val">5 days, 25/05/2018 - 30/05/2018</div>
+                              <div class="d-flex align-items-center">
+                                <span class="dets-field-name">Value:</span>
+                                <span class="dets-field-val">2017/2018</span>
+                                <span class="dets-field-name">Season:</span>
+                                <span class="dets-field-val">High</span>
+                                <span class="dets-field-name">Category:</span>
+                                <span class="dets-field-val">230V/400V LV</span>
+                                <span class="dets-field-name">Price:</span>
+                                <span class="dets-field-val">R 31.15</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-3 d-flex align-items-center">
+                          <span class="body-row-val tot-price-val">R 1250.00</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bl-title-wrp d-flex align-items-center">
+            <div class="bl-gradient-title">Fixed charge</div>
+            <span class="calc-block-tick">Billing</span>
+          </div>
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <div class="row none-margin-hr list-header">
+                <div class="col-5 none-padding d-flex align-items-center">
+                  <div class="row none-margin-hr w-100">
+                    <div class="col-7 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="Price, R/Month">Price, R/Month</span>
+                    </div>
+                    <div class="col-5 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="Price corrected">Price corrected,<br> R/Building period</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-7 none-padding d-flex align-items-center">
+                  <div class="row none-margin-hr w-100">
+                    <div class="col-9 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="Price Details">Price Details</span>
+                    </div>
+                    <div class="col-3 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="Total, R">Total, R</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="list-body">
+                <div class="list-body-wrp">
+                  <div class="row body-row none-border none-margin-hr">
+                    <div class="col-5 none-padding d-flex align-items-center">
+                      <div class="row none-margin-hr w-100">
+                        <div class="col-7 d-flex align-items-center">
+                          <span class="body-row-val">5.2</span>
+                        </div>
+                        <div class="col-5 d-flex align-items-center">
+                          <span class="body-row-val">R 50.0962</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-7 none-padding d-flex align-items-center">
+                      <div class="row none-margin-hr w-100">
+                        <div class="col-9 d-flex align-items-center">
+                          <div class="price-dets-wrp">
+                            <div class="price-dets-item">
+                              <div class="dets-duration-val">5 days, 25/05/2018 - 30/05/2018</div>
+                              <div class="d-flex align-items-center">
+                                <span class="dets-field-name">Value:</span>
+                                <span class="dets-field-val">2017/2018</span>
+                                <span class="dets-field-name">Season:</span>
+                                <span class="dets-field-val">High</span>
+                                <span class="dets-field-name">Category:</span>
+                                <span class="dets-field-val">230V/400V LV</span>
+                                <span class="dets-field-name">Price:</span>
+                                <span class="dets-field-val">R 31.15</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-3 d-flex align-items-center">
+                          <span class="body-row-val tot-price-val">R 1250.00</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="section-title-wrp d-flex align-items-center justify-content-between">
+            <div class="section-title">Costs per line item calculation</div>
+            <div class="d-flex align-items-center">
+              <span class="filter-lbl">Show:</span>
+              <div class="dropdown filter-dropdown small" ngbDropdown placement="bottom-right">
+                <button class="btn dropdown-toggle" ngbDropdownToggle>
+                  All Charges
+                </button>
+                <div class="dropdown-menu" ngbDropdownMenu>
+                  <button class="dropdown-item">All Charges</button>
+                  <button class="dropdown-item">Billing Charges</button>
+                  <button class="dropdown-item">Read only charges</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bl-title-wrp d-flex align-items-center">
+            <div class="bl-gradient-title">Consumption charge</div>
+            <span class="calc-block-tick bg-gd-gray">Read Only</span>
+          </div>
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <div class="row none-margin-hr list-header">
+                <div class="col-5 none-padding d-flex align-items-center">
+                  <div class="row none-margin-hr w-100">
+                    <div class="col-7 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="TOU">TOU</span>
+                    </div>
+                    <div class="col-5 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="Used, kWh">Used, kWh</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-7 none-padding d-flex align-items-center">
+                  <div class="row none-margin-hr w-100">
+                    <div class="col-9 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="Price Details">Price Details</span>
+                    </div>
+                    <div class="col-3 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="Total, R">Total, R</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="list-body">
+                <div class="list-body-wrp">
+                  <div class="row body-row none-margin-hr">
+                    <div class="col-5 none-padding d-flex align-items-center">
+                      <div class="row none-margin-hr w-100">
+                        <div class="col-7 d-flex align-items-center">
+                          <span class="meter-fld-val">Peak</span>
+                        </div>
+                        <div class="col-5 d-flex align-items-center">
+                          <span class="body-row-val">500</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-7 none-padding d-flex align-items-center">
+                      <div class="row none-margin-hr w-100">
+                        <div class="col-9 d-flex align-items-center">
+                          <div class="price-dets-wrp">
+                            <div class="price-dets-item">
+                              <div class="dets-duration-val">5 days, 25/05/2018 - 30/05/2018</div>
+                              <div class="d-flex align-items-center">
+                                <span class="dets-field-name">Value:</span>
+                                <span class="dets-field-val">2017/2018</span>
+                                <span class="dets-field-name">Season:</span>
+                                <span class="dets-field-val">High</span>
+                                <span class="dets-field-name">Category:</span>
+                                <span class="dets-field-val">230V/400V LV</span>
+                                <span class="dets-field-name">Price:</span>
+                                <span class="dets-field-val">R 31.15</span>
+                              </div>
+                            </div>
+                            <div class="price-dets-item">
+                              <div class="dets-duration-val">5 days, 25/05/2018 - 30/05/2018</div>
+                              <div class="d-flex align-items-center">
+                                <span class="dets-field-name">Value:</span>
+                                <span class="dets-field-val">2017/2018</span>
+                                <span class="dets-field-name">Season:</span>
+                                <span class="dets-field-val">High</span>
+                                <span class="dets-field-name">Category:</span>
+                                <span class="dets-field-val">230V/400V LV</span>
+                                <span class="dets-field-name">Price:</span>
+                                <span class="dets-field-val">R 31.15</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-3 d-flex align-items-center">
+                          <span class="body-row-val tot-price-val">R 1250.00</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row last-body-row none-margin-hr">
+                  <div class="col-5 none-padding d-flex align-items-center">
+                    <div class="row none-margin-hr w-100">
+                      <div class="col-7 d-flex align-items-center">
+                        <span class="total-lbl text-uppercase">Total:</span>
+                      </div>
+                      <div class="col-5 d-flex align-items-center">
+                        <span class="body-row-val">Elster A114</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-7 none-padding d-flex align-items-center">
+                    <div class="row none-margin-hr w-100">
+                      <div class="col-9 d-flex align-items-center">
+                        <span class="body-row-val">1</span>
+                      </div>
+                      <div class="col-3 d-flex align-items-center">
+                        <span class="body-row-val">17</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bl-title-wrp d-flex align-items-center">
+            <div class="bl-gradient-title">Demand charge</div>
+            <span class="calc-block-tick">Billing</span>
+          </div>
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <div class="row none-margin-hr list-header">
+                <div class="col-5 none-padding d-flex align-items-center">
+                  <div class="row none-margin-hr w-100">
+                    <div class="col-7 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="Amount, kVA">Amount, kVA</span>
+                    </div>
+                    <div class="col-5 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="Price, R/kVA/Month">Price, R/kVA/Month</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-7 none-padding d-flex align-items-center">
+                  <div class="row none-margin-hr w-100">
+                    <div class="col-9 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="Price Details">Price Details</span>
+                    </div>
+                    <div class="col-3 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="Total, R">Total, R</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="list-body">
+                <div class="list-body-wrp">
+                  <div class="row body-row none-border none-margin-hr">
+                    <div class="col-5 none-padding d-flex align-items-center">
+                      <div class="row none-margin-hr w-100">
+                        <div class="col-7 d-flex align-items-center">
+                          <span class="body-row-val">5.2</span>
+                        </div>
+                        <div class="col-5 d-flex align-items-center">
+                          <span class="body-row-val">R 50.0962</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-7 none-padding d-flex align-items-center">
+                      <div class="row none-margin-hr w-100">
+                        <div class="col-9 d-flex align-items-center">
+                          <div class="price-dets-wrp">
+                            <div class="price-dets-item">
+                              <div class="dets-duration-val">5 days, 25/05/2018 - 30/05/2018</div>
+                              <div class="d-flex align-items-center">
+                                <span class="dets-field-name">Value:</span>
+                                <span class="dets-field-val">2017/2018</span>
+                                <span class="dets-field-name">Season:</span>
+                                <span class="dets-field-val">High</span>
+                                <span class="dets-field-name">Category:</span>
+                                <span class="dets-field-val">230V/400V LV</span>
+                                <span class="dets-field-name">Price:</span>
+                                <span class="dets-field-val">R 31.15</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-3 d-flex align-items-center">
+                          <span class="body-row-val tot-price-val">R 1250.00</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bl-title-wrp d-flex align-items-center">
+            <div class="bl-gradient-title">Network access charge</div>
+            <span class="calc-block-tick">Billing</span>
+          </div>
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <div class="row none-margin-hr list-header">
+                <div class="col-5 none-padding d-flex align-items-center">
+                  <div class="row none-margin-hr w-100">
+                    <div class="col-7 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="Amount, kVA">Amount, kVA</span>
+                    </div>
+                    <div class="col-5 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="Price, R/kVA/Month">Price, R/kVA/Month</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-7 none-padding d-flex align-items-center">
+                  <div class="row none-margin-hr w-100">
+                    <div class="col-9 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="Price Details">Price Details</span>
+                    </div>
+                    <div class="col-3 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="Total, R">Total, R</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="list-body">
+                <div class="list-body-wrp">
+                  <div class="row body-row none-border none-margin-hr">
+                    <div class="col-5 none-padding d-flex align-items-center">
+                      <div class="row none-margin-hr w-100">
+                        <div class="col-7 d-flex align-items-center">
+                          <span class="body-row-val">5.2</span>
+                        </div>
+                        <div class="col-5 d-flex align-items-center">
+                          <span class="body-row-val">R 50.0962</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-7 none-padding d-flex align-items-center">
+                      <div class="row none-margin-hr w-100">
+                        <div class="col-9 d-flex align-items-center">
+                          <div class="price-dets-wrp">
+                            <div class="price-dets-item">
+                              <div class="dets-duration-val">5 days, 25/05/2018 - 30/05/2018</div>
+                              <div class="d-flex align-items-center">
+                                <span class="dets-field-name">Value:</span>
+                                <span class="dets-field-val">2017/2018</span>
+                                <span class="dets-field-name">Season:</span>
+                                <span class="dets-field-val">High</span>
+                                <span class="dets-field-name">Category:</span>
+                                <span class="dets-field-val">230V/400V LV</span>
+                                <span class="dets-field-name">Price:</span>
+                                <span class="dets-field-val">R 31.15</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-3 d-flex align-items-center">
+                          <span class="body-row-val tot-price-val">R 1250.00</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bl-title-wrp d-flex align-items-center">
+            <div class="bl-gradient-title">Fixed charge</div>
+            <span class="calc-block-tick">Billing</span>
+          </div>
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <div class="row none-margin-hr list-header">
+                <div class="col-5 none-padding d-flex align-items-center">
+                  <div class="row none-margin-hr w-100">
+                    <div class="col-7 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="Price, R/Month">Price, R/Month</span>
+                    </div>
+                    <div class="col-5 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="Price corrected">Price corrected,<br> R/Building period</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-7 none-padding d-flex align-items-center">
+                  <div class="row none-margin-hr w-100">
+                    <div class="col-9 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="Price Details">Price Details</span>
+                    </div>
+                    <div class="col-3 header-field d-flex align-items-center">
+                      <span class="text-ellipsis text-uppercase" title="Total, R">Total, R</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="list-body">
+                <div class="list-body-wrp">
+                  <div class="row body-row none-border none-margin-hr">
+                    <div class="col-5 none-padding d-flex align-items-center">
+                      <div class="row none-margin-hr w-100">
+                        <div class="col-7 d-flex align-items-center">
+                          <span class="body-row-val">5.2</span>
+                        </div>
+                        <div class="col-5 d-flex align-items-center">
+                          <span class="body-row-val">R 50.0962</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-7 none-padding d-flex align-items-center">
+                      <div class="row none-margin-hr w-100">
+                        <div class="col-9 d-flex align-items-center">
+                          <div class="price-dets-wrp">
+                            <div class="price-dets-item">
+                              <div class="dets-duration-val">5 days, 25/05/2018 - 30/05/2018</div>
+                              <div class="d-flex align-items-center">
+                                <span class="dets-field-name">Value:</span>
+                                <span class="dets-field-val">2017/2018</span>
+                                <span class="dets-field-name">Season:</span>
+                                <span class="dets-field-val">High</span>
+                                <span class="dets-field-name">Category:</span>
+                                <span class="dets-field-val">230V/400V LV</span>
+                                <span class="dets-field-name">Price:</span>
+                                <span class="dets-field-val">R 31.15</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-3 d-flex align-items-center">
+                          <span class="body-row-val tot-price-val">R 1250.00</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

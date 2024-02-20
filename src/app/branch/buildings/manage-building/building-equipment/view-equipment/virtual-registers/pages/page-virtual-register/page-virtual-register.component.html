@@ -1,0 +1,98 @@
+<div class="row search-row none-margin-hr">
+  <div class="col none-padding">
+    <form class="form-inline vr-form">
+      <simple-search-form (onSearch)="search($event)" placeholder="Search equipment by ID number"></simple-search-form>
+    </form>
+  </div>
+</div>
+<div class="row d-flex align-items-center justify-content-between none-padding">
+  <div class="col-auto">
+    <span class="results-label dnm-text-light">{{getShowingItems()}}</span>
+  </div>
+  <div class="col">
+    <a class="blue-text-btn d-inline-block" routerLink="./new" [ngClass]="{'disabled': buildingPeriodIsFinalized}" href="javascript:void(0)" (click)="onCreate()">
+      <i class="add-icon vertical-bottom"></i>
+      Add new virtual register
+    </a>
+  </div>
+  <div class="col-auto">
+    <div class="d-flex align-items-center">
+      <span class="text-uppercase per-page-lbl mr-3">Units Per Page:</span>
+      <ng-select (change)="setItemsPerPage($event)"
+                 [clearable]="false" [hideSelected]="true"
+                 [ngModel]="pageSize" [searchable]="false" class="dnm-single-select dnm-dropdown-select per-page-select dnm-dropdown-large ">
+        <ng-option *ngFor="let item of unitsPerPageList" [value]="item">{{item}}</ng-option>
+        <ng-option [value]="0">ALL</ng-option>
+      </ng-select>
+    </div>
+  </div>
+
+  <table
+    class="table table-custom table-white table-outside-border-body table-vertical-center table-virtual-registers">
+    <thead>
+    <tr>
+      <th>
+        <span class="head-col head-col-registers">Registers</span>
+      </th>
+      <th>
+        <span class="head-col">Description</span>
+      </th>
+      <th>
+        <span class="head-col">Type</span>
+      </th>
+      <th>
+        <span class="head-col"># Assigned Meters</span>
+      </th>
+      <th>
+        <span class="head-col">Units</span>
+      </th>
+      <th>
+
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-container *ngFor="let virtualRegister of (virtualRegisters$ | async)">
+      <tr class="vr-item">
+        <td class="cell cell-vr">
+          <span (click)="onEditVirtualRegister(virtualRegister.id)"
+                class="cell-vr d-inline-block virtual-register-name">{{virtualRegister.name}}</span>
+        </td>
+        <td class="cell cell-vr">
+          <span class="cell-vr">{{virtualRegister.description}}</span>
+        </td>
+        <td class="cell cell-equipment">
+          <span class="cell-vr">{{VirtualRegisterType[virtualRegister.type]}}</span>
+        </td>
+        <td class="cell cell-equipment">
+          <span class="cell-vr">{{virtualRegister.metersCount}}</span>
+        </td>
+        <td class="cell cell-equipment">
+          <span class="cell-vr">{{getUnitOfMeasurementTypeName(virtualRegister.unitOfMeasurement)}}</span>
+        </td>
+        <td class="cell cell-equipment">
+          <div class="d-flex align-items-center justify-content-end">
+            <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+              <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle></button>
+              <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                <button (click)="onEditVirtualRegister(virtualRegister.id)"
+                        class="dropdown-item d-flex justify-content-between">
+                  Edit
+                  <i class="dnm-icon edit-icon"></i>
+                </button>
+                <button (click)="onRemoveVirtualRegister(virtualRegister.id)"
+                        class="dropdown-item d-flex justify-content-between dropdown-delete">
+                  Delete
+                  <i class="dnm-icon delete-icon"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </ng-container>
+    </tbody>
+  </table>
+</div>
+<pager (onPageChange)="onPageChange($event)" [pageSize]="pageSize" [page]="page" [total]="total"></pager>
+

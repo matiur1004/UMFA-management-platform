@@ -1,0 +1,156 @@
+<div class="step-item-wrp">
+  <div class="row none-margin-hr">
+    <div class="col none-padding">
+      <div class="item-hdr-nav d-flex align-items-center justify-content-between">
+        <span class="text-uppercase step-name">Step #{{ stepIndex }}</span>
+        <div class="del-step-btn d-flex align-items-center">
+          <span class="cross-icon"></span>
+          <span (click)="onDeleteStep(step.value.id)" class="btn-lbl">Delete step</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="input-row line-div">
+    <div class="text-uppercase field-name text-form-field">
+      Name
+    </div>
+    <div class="field-value d-flex align-items-center">
+      <div [ngClass]="{'dnm-invalid-inp': step.isSubmitted && step.controls.name.isInvalid}" class="w-100">
+        <text-input [isRequired]= true [ngrxFormControlState]="step.controls.name" class="none-padding" maxlength="50"
+                    placeholder="Type here"></text-input>
+        <small *ngIf="step.isSubmitted && step.controls.name.errors.required" class="alert-danger">
+          Name is required
+        </small>
+      </div>
+    </div>
+  </div>
+  <div class="input-row line-div">
+    <div class="text-uppercase field-name text-form-field">
+      Apply Per
+    </div>
+    <div class="field-value">
+      <div *ngFor="let stepTypeOption of stepTypeOptions"
+           class="radio-input-wrp d-flex align-items-center step-type-option">
+        <div class="d-flex align-items-center">
+          <div class="dnm-radio-btn">
+            <input [name]="'applyPerPeriod-' + stepIndex" [ngrxFormControlState]="step.controls.applyPer" [value]="stepTypeOption.value"
+                   type="radio">
+            <div class="state">
+              <label></label>
+            </div>
+          </div>
+          <span [ngbTooltip]="stepTypeOption.description" class="radio-input-lbl" container="body"
+                tooltipClass="tooltip-break-words">{{ stepTypeOption.label }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="input-row line-div">
+    <div class="text-uppercase field-name text-form-field">
+      Measurement Unit
+    </div>
+    <div class="field-value d-flex align-items-center">
+      <div [ngClass]="{'dnm-invalid-inp': step.isSubmitted && step.controls.unitOfMeasurement.isInvalid}" class="w-100 req-frm-fld">
+        <ng-select [bindLabel]="'defaultName'" [bindValue]="'unitType'" [clearable]="false" [closeOnSelect]="true"
+                   [dropdownPosition]="'top'" [hideSelected]="true"
+                   [items]="units" [multiple]="false" [ngrxFormControlState]="step.controls.unitOfMeasurement" [searchable]="false"
+                   class="select-dropdown dnm-ng-select w-100"
+                   placeholder="Choose Unit Of Measurement"></ng-select>
+        <small *ngIf="step.isSubmitted && step.controls.unitOfMeasurement.errors.required" class="alert-danger">
+          Unit Of Measurement is required
+        </small>
+      </div>
+    </div>
+  </div>
+  <div class="input-row line-div">
+    <div class="text-uppercase field-name text-form-field">
+      Mirror into negative ranges
+    </div>
+    <div class="field-value d-flex align-items-center">
+      <div class="w-100">
+        <label class="dnm-switch-btn">
+          <input [name]="'withNegativeRanges-' + stepIndex" [ngrxFormControlState]="step.controls.withNegativeRanges"
+                 type="checkbox">
+          <span class="dnm-switch-slider round"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="input-row line-div d-flex align-items-start">
+    <div class="text-uppercase field-name text-form-field ranges-fld-name">
+      Step Ranges
+    </div>
+    <div class="field-value">
+      <div *ngFor="let range of step.controls.ranges.controls; trackBy: trackByIndex; let isFirst = first"
+           class="range-inpt-wrp">
+        <div class="range-inpt d-flex align-items-center justify-content-between">
+          <span class="range-lbl">From</span>
+          <div [ngClass]="{
+                 'input-group--infinity': showInfinity('from', step.controls.ranges.value, range.value),
+                 'is-infinity': range.controls.from.value === InfinityRange.MIN,
+               'dnm-invalid-inp': step.isSubmitted && range.controls.from.isInvalid
+               }" class="input-group req-frm-fld">
+            <input (change)="onSetValueRange('from', range.value, $event.target?.valueAsNumber, step.value.id, range.value.id)" *ngIf="range.controls.from.value !== InfinityRange.MIN; else minInfinity" [ngrxFormControlState]="range.controls.from"
+                   [textMask]="{ mask: numberMask, guide: false }"
+                   class="form-control numb-form-control"
+                   tabindex="0" type="number"/>
+            <ng-template #minInfinity>
+              <input class="form-control numb-form-control" disabled type="text" value="-&#8734;"/>
+            </ng-template>
+            <div class="input-group-append">
+              <button (click)="onSetInfinity('from', range.value, InfinityRange.MIN, step.value.id, range.value.id)" class="dnm-btn" tabindex="-1"
+                      type="button">-&#8734;
+              </button>
+            </div>
+          </div>
+
+          <span class="range-lbl">to</span>
+          <div [ngClass]="{
+                 'input-group--infinity': showInfinity('to', step.controls.ranges.value, range.value),
+                 'is-infinity': range.controls.to.value === InfinityRange.MAX,
+               'dnm-invalid-inp': step.isSubmitted && range.controls.to.isInvalid
+               }" class="input-group req-frm-fld">
+            <input (change)="onSetValueRange('to', range.value, $event.target?.valueAsNumber, step.value.id, range.value.id)" *ngIf="range.controls.to.value !== InfinityRange.MAX; else maxInfinity" [ngrxFormControlState]="range.controls.to"
+                   [ngrxUpdateOn]="'never'"
+                   [textMask]="{ mask: numberMask, guide: false  }"
+                   class="form-control numb-form-control"
+                   tabindex="0" type="number"/>
+            <ng-template #maxInfinity>
+              <input class="form-control numb-form-control" disabled type="text" value="+&#8734;"/>
+            </ng-template>
+            <div class="input-group-append">
+              <button (click)="onSetInfinity('to', range.value, InfinityRange.MAX, step.value.id, range.value.id)" class="dnm-btn"
+                      type="button">+&#8734;
+              </button>
+            </div>
+          </div>
+          <div (click)="onDeleteRange(step.value.id, range.value.id)" *ngIf="step.controls.ranges.value.length !== 1"
+               class="delete-item">
+            <span class="cross-icon"></span>
+          </div>
+        </div>
+        <small *ngIf="range.controls.from.errors.required || range.controls.to.errors.required; else otherErr"
+               class="alert-danger">Fill range values</small>
+        <ng-template #otherErr>
+          <small *ngIf="range.errors.missing" class="alert-danger">Range should be filled correctly</small>
+          <small *ngIf="isFirst && !step.controls.withNegativeRanges.value && range.controls.from.value > 0"
+                 class="alert-danger">First "From" value
+            should be less than or equal to "0"</small>
+          <small *ngIf="step.controls.withNegativeRanges.value && range.controls.from.value < 0" class="alert-danger">Value
+            should be greater than {{ (step.controls.withNegativeRanges.value ? 0 : InfinityRange.MIN) }}</small>
+          <small *ngIf="range.controls.to.errors.lessThanOrEqualTo" class="alert-danger">Value should be less
+            than {{ InfinityRange.MAX }}</small>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex">
+    <a (click)="onAddNewRange(step.value.id)" *ngIf="!isLastInfinity(step.controls?.ranges.value)" class="blue-text-btn"
+       href="javascript:void(0);">
+      <i class="add-icon"></i>Add new range
+    </a>
+    <a (click)="onAddNewStep()" class="blue-text-btn add-step-btn" href="javascript:void(0);">
+      <i class="add-icon"></i>Add new step
+    </a>
+  </div>
+</div>

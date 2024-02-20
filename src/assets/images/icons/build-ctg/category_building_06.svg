@@ -1,0 +1,19 @@
+<svg data-name="Layer 1" id="Layer_1" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>.cls-1 {
+      fill: #18233c;
+    }</style>
+  </defs>
+  <title>category</title>
+  <rect class="cls-1" height="1.8" width="1.19" x="15.88" y="9.77"/>
+  <rect class="cls-1" height="1.8" width="1.19" x="5.29" y="9.77"/>
+  <rect class="cls-1" height="1.8" width="1.19" x="2.93" y="9.77"/>
+  <rect class="cls-1" height="1.8" width="1.19" x="13.52" y="9.77"/>
+  <rect class="cls-1" height="2.73" width="20" y="2.93"/>
+  <rect class="cls-1" height="1.76" width="3.52"/>
+  <path class="cls-1" d="M10.59,20h4.1V14.49h3.55V20H20V6.84H10.59ZM12.34,8.59h5.9v4.14h-5.9Z"/>
+  <rect class="cls-1" height="4.34" width="1.21" x="2.93" y="15.66"/>
+  <rect class="cls-1" height="4.34" width="1.21" x="15.86" y="15.66"/>
+  <rect class="cls-1" height="1.76" width="3.52" x="16.48"/>
+  <path class="cls-1" d="M0,20H1.76V14.49H5.31V20h4.1V6.84H0ZM1.76,8.59h5.9v4.14H1.76Z"/>
+</svg>

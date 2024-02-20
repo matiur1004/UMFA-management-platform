@@ -1,0 +1,16 @@
+<svg data-name="Layer 1" id="Layer_1" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>.cls-1 {
+      fill: #18233c;
+    }</style>
+  </defs>
+  <title>category</title>
+  <rect class="cls-1" height="3.98" width="20" y="4.69"/>
+  <rect class="cls-1" height="3.13" width="1.21" x="12.11" y="12.77"/>
+  <rect class="cls-1" height="3.13" width="1.21" x="14.49" y="12.77"/>
+  <path class="cls-1" d="M1.17,20h2V11.6H9V20h9.84V9.84H1.17Zm9.77-8.4h5.94v5.47H10.94Z"/>
+  <polygon class="cls-1"
+           points="4.3 14.4 5.47 14.4 5.47 15.57 4.3 15.57 4.3 17.2 5.47 17.2 5.47 18.37 4.3 18.37 4.3 20 7.81 20 7.81 12.77 4.3 12.77 4.3 14.4"/>
+  <polygon class="cls-1"
+           points="12.93 1.17 11.76 1.17 11.76 0 10.59 0 10.59 1.17 9.41 1.17 9.41 0 8.24 0 8.24 1.17 7.07 1.17 7.07 3.52 12.93 3.52 12.93 1.17"/>
+</svg>

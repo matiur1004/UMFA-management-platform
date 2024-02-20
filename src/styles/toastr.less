@@ -1,0 +1,120 @@
+@import 'variables.less';
+
+.success-icon,
+.info-icon,
+.error-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.success-icon {
+  background: url('../assets/images/icons/notification-success.svg') no-repeat;
+}
+
+.info-icon {
+  background: url('../assets/images/icons/notification-warning.svg') no-repeat;
+}
+
+.error-icon {
+  background: url('../assets/images/icons/notification-error.svg') no-repeat;
+}
+
+#toast-container > .ngx-toastr {
+  width: 390px;
+  min-height: 95px;
+  background-color: @color-background-white;
+  color: #626973;
+  font-size: 14px;
+  padding: 0;
+  box-shadow: 0px 0px 80px 5px rgba(102, 102, 102, 0.2);
+  opacity: 1;
+}
+
+#toast-container .ngx-toastr:hover {
+  box-shadow: 0px 0px 80px 5px rgba(102, 102, 102, 0.15);
+}
+
+#toast-container > .ngx-toastr > div {
+  height: 100%;
+}
+
+#toast-container > .ngx-toastr > div > span {
+  height: 100%;
+  display: block;
+}
+
+#toast-container button.toast-close-button {
+  top: 10px;
+  right: 10px;
+  color: #c2c6c9;
+  z-index: 1;
+  background-image: url('../assets/images/icons/cross-icon.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  color: transparent;
+  height: 14px;
+}
+
+#toast-container .container,
+#toast-container .row {
+  height: 100%;
+}
+
+#toast-container .left {
+  background-color: #dcf5f1;
+  position: relative;
+}
+
+#toast-container .left > div {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+}
+
+#toast-container .right {
+  padding-right: 35px;
+  position: relative;
+}
+
+#toast-container .right > div {
+  position: relative;
+  transform: translateY(-50%);
+  top: 50%;
+}
+
+#toast-container .right .title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+#toast-container .toast-success .left {
+  background-color: #dcf5f1;
+}
+
+#toast-container .toast-success .right .title {
+  color: #5f8c85;
+}
+
+#toast-container .toast-info .left {
+  background-color: #f8f1e1;
+}
+
+#toast-container .toast-info .right .title {
+  color: #e4a558;
+}
+
+#toast-container .toast-error .left {
+  background-color: #fde3e4;
+}
+
+#toast-container .toast-error .right .title {
+  color: #d96975;
+}
+
+@media only screen and (max-width: 415px) {
+  #toast-container > .ngx-toastr {
+    width: 295px;
+  }
+}

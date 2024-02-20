@@ -1,0 +1,172 @@
+<div class="manage-profile-clients">
+  <div class="row">
+    <div class="col-12">
+      <form class="form-inline my-lg-0 main-search-input">
+        <div class="input-group">
+          <input #searchBox (keyup)="search(searchBox.value)" aria-label="Search"
+                 class="form-control group-search-input" data-search-field placeholder="Search Client / Portfolio / Building"
+                 type="search"/>
+          <div class="input-group-append">
+            <i class="icon-relative search-icon vertical-middle"></i>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="row">
+    <!-- filter container -->
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center filter-container">
+        <span class="filter-res-label dnm-text-light">Showing {{allClients.length}} clients</span>
+        <div class="manage-clients-data-nav">
+          <div class="data-nav-filter filter-by">
+            <span class="text-uppercase dd-filter-label">Filter By:</span>
+            <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+              <button class="btn btn-secondary dropdown-toggle text-left d-flex justify-content-between"
+                      id="ddManageClientsFilter" ngbDropdownToggle>
+                {{filterBy}}
+              </button>
+              <div aria-labelledby="ddManageClientsFilter" class="dropdown-menu" ngbDropdownMenu>
+                <button (click)="onFilterBy('Clients')" class="dropdown-item">Clients</button>
+                <button (click)="onFilterBy('Portfolios')" class="dropdown-item">Profiles</button>
+                <button (click)="onFilterBy('Buildings')" class="dropdown-item">Buildings</button>
+              </div>
+            </div>
+          </div>
+          <div class="data-nav-filter">
+            <span class="text-uppercase dd-filter-label">Show:</span>
+            <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+              <button class="btn btn-secondary dropdown-toggle text-left d-flex justify-content-between"
+                      id="ddManageClientsFilterShow" ngbDropdownToggle>
+                {{showTitle}}
+              </button>
+              <div aria-labelledby="ddManageClientsFilterShow" class="dropdown-menu" ngbDropdownMenu>
+                <button (click)="onShowAll(true)" class="dropdown-item">All clients</button>
+                <button (click)="onShowAll(false)" class="dropdown-item">Only assigned clients</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="clients-list">
+    <div class="row header-row">
+      <div class="col-12">
+        <div class="d-flex align-items-center">
+          <div class="dnm-checkbox filter-select-checkbox">
+            <input (click)="onCheckAll()" [checked]="checkAll" type="checkbox"/>
+            <div [ngClass]="{'indeterm-state': checkAllPartly}" class="state">
+              <label></label>
+            </div>
+          </div>
+          <span class="header-checkbox-label">Select/unselect all clients</span>
+        </div>
+      </div>
+    </div>
+    <div *ngFor="let client of searchedClients" [ngClass]="{'d-none': !client.isSelected && !showAll}"
+         class="row manage-client-items">
+      <div class="col-12 min-height-0">
+        <div (click)="expandClient($event, client)"
+             [ngClass]="{'d-none': filterBy === 'Portfolios' || filterBy === 'Buildings', 'manage-client-item-expanded': client.isDetailed}"
+             class="manage-client-item">
+          <div class="col-11">
+            <div class="d-flex align-items-center">
+              <div class="dnm-checkbox filter-select-checkbox">
+                <input (change)="onClientChanged(client)" [checked]="client.isSelected" class="checkbox-toggle"
+                       type="checkbox"/>
+                <div [ngClass]="{'indeterm-state': client.isSelectedPartly}" class="state">
+                  <label></label>
+                </div>
+              </div>
+              <div class="client-company-name">
+                {{client.name}}
+                <div class="client-company-description">
+                  {{getClientSelectedPortfoliosCount(client)}} portfolio & {{getClientSelectedBuildingsCount(client)}}
+                  buildings selected from among {{client.portfolios.length}} portfolio
+                  & {{getClientBuildingsCount(client)}} buildings
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-1 col-lg-1 d-flex align-items-center justify-content-end">
+            <span [ngClass]="{'expand-icon': !client.isDetailed, 'collapse-icon': client.isDetailed}"
+                  class="icon-relative"></span>
+          </div>
+        </div>
+        <div class="manage-client-portfolios">
+          <div class="row">
+            <div class="col-12 min-height-0">
+              <ng-container *ngFor="let portfolio of client.portfolios; let idx = index;">
+                <div (click)="expandPortfolio($event, portfolio)"
+                     [ngClass]="{'d-none': (!client.isDetailed && filterBy === 'Clients') || filterBy === 'Buildings'}"
+                     class="client-portfolio-item">
+                  <div class="col-11">
+                    <div class="d-flex align-items-center">
+                      <div class="dnm-checkbox filter-select-checkbox">
+                        <input (change)="onPortfolioChanged(client, portfolio)" [checked]="portfolio.isSelected" class="checkbox-toggle"
+                               type="checkbox"/>
+                        <div [ngClass]="{'indeterm-state': portfolio.isSelectedPartly}" class="state">
+                          <label></label>
+                        </div>
+                      </div>
+                      <div class="client-portfolio-name">
+                        Portfolio #{{idx + 1}} ({{portfolio.name}})
+                        <div class="client-portfolio-description">
+                          {{portfolio.buildings.length}} buildings
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-1 col-lg-1 d-flex align-items-center justify-content-end">
+                    <span [ngClass]="{'expand-icon': !portfolio.isDetailed, 'collapse-icon': portfolio.isDetailed}"
+                          class="icon-relative"></span>
+                  </div>
+                </div>
+                <div [ngClass]="{'d-none': ((!client.isDetailed || !portfolio.isDetailed) && filterBy === 'Clients') || (!portfolio.isDetailed && filterBy === 'Portfolios')}"
+                     class="manage-client-buildings">
+                  <div class="row">
+                    <div class="col-12 min-height-0">
+                      <div *ngFor="let building of portfolio.buildings" class="client-building-item">
+                        <div class="col-5">
+                          <div class="d-flex align-items-center">
+                            <div class="dnm-checkbox filter-select-checkbox">
+                              <input (change)="onBuildingChanged(client, portfolio, building)" [checked]="building.isSelected" class="checkbox-toggle"
+                                     type="checkbox"/>
+                              <div class="state">
+                                <label></label>
+                              </div>
+                            </div>
+                            <div class="client-building-name">
+                              {{building.name}}
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-3 building-tech-info">
+                          {{building.categoryDescription}}
+                        </div>
+                        <div class="col-2 building-tech-info">
+                          {{building.totalGla}} sq m
+                        </div>
+                        <div class="col-2 building-tech-info">
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 text-right footer-buttons">
+      <button (click)="dismiss()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+      <button (click)="save()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+<svg data-name="Layer 1" id="Layer_1" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <style>.cls-1 {
+      fill: url(#linear-gradient);
+    }
+
+    .cls-2 {
+      fill: url(#linear-gradient-2);
+    }
+
+    .cls-3 {
+      fill: url(#linear-gradient-3);
+    }
+
+    .cls-4 {
+      fill: url(#linear-gradient-4);
+    }</style>
+    <linearGradient gradientUnits="userSpaceOnUse" id="linear-gradient" x1="8.41" x2="11.6" y1="15.39" y2="15.39">
+      <stop offset="0" stop-color="#2a7ba7"/>
+      <stop offset="1" stop-color="#2a327c"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="15.1" x2="18.29" xlink:href="#linear-gradient" y1="13.62" y2="13.62"/>
+    <linearGradient id="linear-gradient-3" x1="1.72" x2="4.9" xlink:href="#linear-gradient" y1="15.74" y2="15.74"/>
+    <linearGradient id="linear-gradient-4" x1="0" x2="20" xlink:href="#linear-gradient" y1="5.28" y2="5.28"/>
+  </defs>
+  <title>tab</title>
+  <rect class="cls-1" height="9.23" width="3.19" x="8.41" y="10.77"/>
+  <rect class="cls-2" height="12.77" width="3.19" x="15.1" y="7.23"/>
+  <rect class="cls-3" height="8.52" width="3.19" x="1.72" y="11.48"/>
+  <path class="cls-4"
+        d="M19.87.14h0a.41.41,0,0,0-.62,0l-4,4.45L13.82,3a.42.42,0,0,0-.31-.15A.39.39,0,0,0,13.2,3L8.73,8,5.53,4.4a.41.41,0,0,0-.31-.14.44.44,0,0,0-.31.14L.13,9.72a.53.53,0,0,0-.12.47.44.44,0,0,0,.32.35l.11,0a.39.39,0,0,0,.31-.15l4.47-5L8.42,9A.4.4,0,0,0,9,9L13.5,4,15,5.62a.4.4,0,0,0,.61,0L19.87.83A.53.53,0,0,0,19.87.14Z"/>
+</svg>

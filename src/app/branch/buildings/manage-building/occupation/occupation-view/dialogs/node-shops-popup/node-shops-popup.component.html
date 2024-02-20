@@ -1,0 +1,10 @@
+<div class="node-shops-wrp">
+  <div class="modal-header d-flex align-items-center">
+    <h5 class="modal-title">Nodes:</h5>
+  </div>
+  <div class="modal-body">
+    <div (click)="onNodeItemClick(item.id)" *ngFor="let item of nodes" class="modal-body-item">
+      {{item.name}}
+    </div>
+  </div>
+</div>

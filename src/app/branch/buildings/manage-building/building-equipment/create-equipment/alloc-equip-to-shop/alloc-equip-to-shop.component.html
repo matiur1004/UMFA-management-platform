@@ -1,0 +1,162 @@
+<div class="container-fluid none-padding equip-to-shop">
+
+  <div class="row search-row none-margin-hr">
+    <div class="col none-padding">
+      <form class="form-inline main-search-input">
+        <div class="input-group">
+          <input #searchBox (keyup)="searchChange.emit(searchBox.value)" class="form-control group-search-input"
+                 data-search-field
+                 placeholder="Search equipment by ID number" type="search"/>
+          <div class="input-group-append">
+            <i class="icon-relative search-icon vertical-middle"></i>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="nav-row d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center">
+      <span class="results-label dnm-text-light">{{shopCountText}}</span>
+    </div>
+    <div class="d-flex justify-content-end">
+      <div class="d-flex align-items-center">
+        <span class="text-uppercase drpdwn-fltr-lbl">Show:</span>
+        <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+          <button class="btn btn-secondary fltr-drpdwn-btn dropdown-toggle" ngbDropdownToggle type="button">
+            {{unitFilterText}}
+          </button>
+          <div class="dropdown-menu fltr-drpdwn-menu" ngbDropdownMenu>
+            <button (click)="filterChange.emit(unitFilter.AllUnits)" class="dropdown-item"
+                    type="button">{{selectedUnitFilter.ALL_UNITS}}</button>
+            <button (click)="filterChange.emit(unitFilter.AllShops)" class="dropdown-item"
+                    type="button">{{selectedUnitFilter.ALL_SHOPS}}</button>
+            <button (click)="filterChange.emit(unitFilter.AllCommonAreas)" class="dropdown-item"
+                    type="button">{{selectedUnitFilter.ALL_COMMON_AREAS}}</button>
+            <button (click)="filterChange.emit(unitFilter.ConnectedUnits)" class="dropdown-item"
+                    type="button">{{selectedUnitFilter.CONNECTED_UNITS}}</button>
+            <button (click)="filterChange.emit(unitFilter.NotConnectedUnits)" class="dropdown-item"
+                    type="button">{{selectedUnitFilter.NOT_CONNECTED_UNITS}}</button>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="d-flex align-items-center">
+        <span class="text-uppercase drpdwn-fltr-lbl">Units Per Page:</span>
+        <div class="dropdown filter-dropdown d-inline-block small" placement="bottom-right" ngbDropdown>
+          <button class="btn btn-secondary per-page-btn dropdown-toggle" ngbDropdownToggle id="ddCountPerPage">
+            {{pageSize? pageSize: 'ALL' }}
+          </button>
+          <div class="dropdown-menu per-page-menu" ngbDropdownMenu aria-labelledby="ddCountPerPage">
+            <button type="button" class="dropdown-item" (click)="pageSizeChanged.emit(30)">30</button>
+            <button type="button" class="dropdown-item" (click)="pageSizeChanged.emit(50)">50</button>
+            <button type="button" class="dropdown-item" (click)="pageSizeChanged.emit(100)">100</button>
+            <button type="button" class="dropdown-item" (click)="pageSizeChanged.emit(0)">ALL</button>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+
+  <div class="row none-margin-hr list-header">
+    <div class="col-7 none-padding">
+      <div class="row none-margin-hr">
+        <div class="col-4">
+          <a [ngClass]="{'active': orderIndex == 1 || orderIndex == -1}" class="header-field d-flex align-items-center"
+             href="javascript:void(0);">
+            <span class="text-ellipsis" title="Shop Name">Shop Name</span>
+            <i [ngClass]="{'inactive': orderIndex != 1 && orderIndex != -1, 'dnm-icon-sort-up': orderIndex == -1,'dnm-icon-sort-down': orderIndex != -1 }"
+               class="dnm-icon"></i>
+          </a>
+        </div>
+        <div class="col-3">
+          <a [ngClass]="{'active': orderIndex == 1 || orderIndex == -1}" class="header-field d-flex align-items-center"
+             href="javascript:void(0);">
+            <span class="text-ellipsis" title="Area">Area</span>
+            <i [ngClass]="{'inactive': orderIndex != 1 && orderIndex != -1, 'dnm-icon-sort-up': orderIndex == -1,'dnm-icon-sort-down': orderIndex != -1 }"
+               class="dnm-icon"></i>
+          </a>
+        </div>
+        <div class="col-5">
+          <a [ngClass]="{'active': orderIndex == 1 || orderIndex == -1}" class="header-field d-flex align-items-center"
+             href="javascript:void(0);">
+            <span class="text-ellipsis" title="Tenant Name">Tenant Name</span>
+            <i [ngClass]="{'inactive': orderIndex != 1 && orderIndex != -1, 'dnm-icon-sort-up': orderIndex == -1,'dnm-icon-sort-down': orderIndex != -1 }"
+               class="dnm-icon"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="col-5 none-padding">
+      <div class="row none-margin-hr">
+        <div class="col-5">
+          <a [ngClass]="{'active': orderIndex == 1 || orderIndex == -1}" class="header-field d-flex align-items-center"
+             href="javascript:void(0);">
+            <span class="text-ellipsis" title="Floor">Floor</span>
+            <i [ngClass]="{'inactive': orderIndex != 1 && orderIndex != -1, 'dnm-icon-sort-up': orderIndex == -1,'dnm-icon-sort-down': orderIndex != -1 }"
+               class="dnm-icon"></i>
+          </a>
+        </div>
+        <div class="col-5">
+          <a [ngClass]="{'active': orderIndex == 1 || orderIndex == -1}" class="header-field d-flex align-items-center"
+             href="javascript:void(0);">
+            <span class="text-ellipsis" title="Status">Status</span>
+            <i [ngClass]="{'inactive': orderIndex != 1 && orderIndex != -1, 'dnm-icon-sort-up': orderIndex == -1,'dnm-icon-sort-down': orderIndex != -1 }"
+               class="dnm-icon"></i>
+          </a>
+        </div>
+        <div class="col-2 header-field d-flex align-items-center">
+          <span class="text-ellipsis" title="Add">Add</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="list-body">
+
+    <div *ngFor="let unit of units" [ngClass]="{'selected-row': unit.isSelected}" class="row none-margin-hr body-row">
+      <div class="col-7 none-padding">
+        <div class="row none-margin-hr">
+          <div class="col-4">
+            <span class="shop-name-lbl">{{unit.name}}</span>
+          </div>
+          <div class="col-3">
+            <span class="area-lbl">{{unit?.area}}</span>
+          </div>
+          <div class="col-5">
+            <span class="tenant-name-lbl">{{unit?.tenant?.name}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-5 none-padding">
+        <div class="row none-margin-hr">
+          <div class="col-5">
+            <span class="floor-lbl">{{unit.floor}}</span>
+          </div>
+          <div class="col-5">
+            <span class="equip-status-lbl">Allocated</span>
+          </div>
+          <div class="col-2">
+            <a (click)="toggleUnit.emit(unit.id);" class="blue-text-btn" href="javascript:void(0)">
+              <i [ngClass]="{'check-mark-icon': unit.isSelected, 'add-icon': !unit.isSelected}"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- <div class="row none-margin-hr">
+    <div class="col">
+      <pager [page]="2" [pageSize]="30" [total]="120" (onPageChange)="onPageChange($event)"></pager>
+    </div>
+  </div> -->
+
+  <div class="row none-margin-hr">
+    <div class="col-12 none-padding footer-btns d-flex justify-content-end">
+      <button (click)="cancel.emit()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Close</button>
+      <button (click)="nextStep.emit(3)" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Next</button>
+    </div>
+  </div>
+
+</div>

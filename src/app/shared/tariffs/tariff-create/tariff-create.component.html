@@ -1,0 +1,110 @@
+<div class="container-fluid none-padding create-tariff">
+  <div class="modal-header">
+    <h5 class="modal-title">Create a new tariff</h5>
+    <button (click)="dismiss()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form *ngIf="form" [formGroup]="form">
+      <div class="container-fluid none-padding">
+        <div class="input-row">
+          <div class="text-uppercase field-name text-form-field">
+            Tariff Name
+          </div>
+          <div class="field-value">
+            <div [ngClass]="{'dnm-invalid-inp': form.controls.name.touched && form.controls.name.invalid}">
+              <input class="form-control req-frm-fld" formControlName="name" maxlength="255" placeholder="Type here" type="text"/>
+            </div>
+          </div>
+          <div class="field-name"></div>
+          <div class="field-value">
+            <small *ngIf="form.controls.name.touched && form.controls.name.errors?.required" class="alert-danger">
+              A tariff name is required
+            </small>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name text-form-field">
+            Tariff Code
+          </div>
+          <div class="field-value">
+            <div [ngClass]="{'dnm-invalid-inp': form.controls.code.touched && form.controls.code.invalid}">
+              <input class="form-control req-frm-fld" formControlName="code" maxlength="255" placeholder="Type here" type="text"/>
+            </div>
+          </div>
+          <div class="field-name"></div>
+          <div class="field-value">
+            <small *ngIf="form.controls.code.touched && form.controls.code.errors?.required" class="alert-danger">
+              A tariff code is required
+            </small>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name text-form-field">Supply Type</div>
+          <div class="field-value">
+            <div [ngClass]="{'dnm-invalid-inp': form.isSubmitted && form.errors._supplyType?.greaterThan}"
+                 class="dropdown d-block fullwidth-dropdown" ngbDropdown>
+              <button class="btn btn-secondary dropdown-toggle text-left req-frm-fld" id="ddClientPortfolio" ngbDropdownToggle
+                      type="button">
+                {{form.controls.supplyType.value > -1 ? supplyTypeText[form.controls.supplyType.value] : 'Select supply type'}}
+              </button>
+              <div aria-labelledby="ddClientPortfolio" class="dropdown-menu" ngbDropdownMenu>
+                <button (click)="onSupplyTypeChanged(item)" *ngFor="let item of supplyTypes" class="dropdown-item"
+                        type="button">{{supplyTypeText[item]}}</button>
+              </div>
+            </div>
+          </div>
+          <div class="field-name"></div>
+          <div class="field-value">
+            <small *ngIf="form.controls.supplyType.touched && form.controls.supplyType.invalid" class="alert-danger">
+              Choose supply type
+            </small>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name text-form-field">Consumer Type</div>
+          <div class="field-value">
+            <div class="req-frm-fld" [ngClass]="{'dnm-invalid-inp': form.controls.buildingCategoriesIds.touched && form.controls.buildingCategoriesIds.invalid}">
+              <ng-select [clearable]="false" [dropdownPosition]="top" [hideSelected]="true"
+                         [items]="buildingCategories" [multiple]="true" [searchable]="false"
+                         bindLabel="name" bindValue="id"
+                         class="dnm-multiple-select" formControlName="buildingCategoriesIds">
+              </ng-select>
+            </div>
+          </div>
+          <div class="field-name"></div>
+          <div class="field-value">
+            <small *ngIf="form.controls.buildingCategoriesIds.touched && form.controls.buildingCategoriesIds.invalid"
+                   class="alert-danger">
+              Choose consumer type
+            </small>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name text-form-field">Version date</div>
+          <div [ngClass]="{'dnm-invalid-inp': form.controls.versionDate.touched && form.controls.versionDate.invalid}"
+               class="field-value datepicker-wrp datepicker-wrp__width">
+            <input #versionDateDatePicker="ngbDatepicker" (click)="versionDateDatePicker.toggle()" class="form-control req-frm-fld"
+                   formControlName="versionDate" name="versionDate"
+                   ngbDatepicker placeholder="dd/mm/YYYY" readonly>
+            <i (click)="versionDateDatePicker.toggle()" class="calendar"></i>
+          </div>
+          <div class="field-name"></div>
+          <div class="field-value">
+            <small *ngIf="form.controls.versionDate.touched && form.controls.versionDate.errors?.required"
+                   class="alert-danger">
+              Select version date
+            </small>
+          </div>
+        </div>
+        <div class="row none-margin-hr">
+          <div class="col-12 none-padding text-right footer-buttons">
+            <button (click)="dismiss();" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+            <button (click)="onSave();" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

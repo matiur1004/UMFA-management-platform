@@ -1,0 +1,46 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "downlevelIteration": true,
+    "outDir": "./dist/out-tsc",
+    "forceConsistentCasingInFileNames":true,
+     "strict": false,
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "useDefineForClassFields": false,
+    "module": "es2020",
+    "target": "ES2022",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2019",
+      "dom"
+    ],
+    "baseUrl": "src",
+    "types": [
+      "jasmine",
+      "googlemaps"
+    ],
+    "paths": {
+      "@app/*": [
+        "app/*"
+      ],
+      "@models": [
+        "app/shared/models/index"
+      ],
+      "@services": [
+        "app/shared/services/index"
+      ],
+      "@modules": [
+        "app/shared/modules/index"
+      ],
+      "@shared-helpers": [
+        "app/shared/helper"
+      ]
+    }
+  }
+}

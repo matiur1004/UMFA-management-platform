@@ -1,0 +1,264 @@
+<div *ngIf="node$ | async as node" class="container-fluid node-details">
+  <div *ngIf="form$ | async as form">
+    <form [ngrxFormState]="form">
+      <div class="row none-margin-hr">
+        <div class="col-12 none-padding">
+          <div class="d-flex justify-content-between">
+            <div class="node-details-header">
+              <span class="location-dets-title">{{form.controls.name.value}}</span>
+              <span class="location-dets-lbl">{{node.nodeType | nodeTypeLabel}}</span>
+            </div>
+            <div class="back-button-container">
+              <back-button [redirectPath]="nodeListUrl"></back-button>
+            </div>
+            <div class="next-prev-button-container">
+              <next-prev-button
+                [isLast]="currentIndex == (nodeList.length - 1)"
+                [isFirst]="currentIndex == 0"
+                (onPrev)="onPrevNode()" 
+                (onNext)="onNextNode()" 
+              ></next-prev-button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row none-margin-hr">
+        <div class="col-12 col-xl-6 none-padding">
+          <div class="col-12 none-padding input-row">
+            <div class="text-uppercase field-name text-form-field node-gen-info-title">Node Name</div>
+            <div class="field-value">
+              <div [ngClass]="{'dnm-invalid-inp': form.isSubmitted && form.controls.name.isInvalid}">
+                <input [ngrxFormControlState]="form.controls.name" class="form-control req-frm-fld" placeholder="Type here"
+                       type="text"/>
+              </div>
+              <small *ngIf="form.isSubmitted && form.errors._name?.required" class="alert-danger">
+                A node name is required
+              </small>
+            </div>
+          </div>
+
+          <div class="col-12 none-padding input-row">
+            <div class="text-uppercase field-name text-form-field node-gen-info-title">Supply To</div>
+            <div class="field-value">
+              <div class="d-block fullwidth-dropdown none-padding dropdown" ngbDropdown placement="bottom">
+                <button class="btn btn-secondary dropdown-toggle text-left dropdown-toggle" ngbDropdownToggle
+                        type="button">
+                  {{(supplies$ | async).selectedSupply ? (supplies$ | async).selectedSupply.name : 'Select supply'}}
+                </button>
+                <div class="dropdown-menu w-100" ngbDropdownMenu>
+                  <button (click)="onSupplyChanged(supply.id)" *ngFor="let supply of (supplies$ | async).supplies" class="dropdown-item"
+                          type="button">
+                    {{supply.name}}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 none-padding input-row">
+            <div class="text-uppercase field-name text-form-field node-gen-info-title">Location type</div>
+            <div class="field-value">
+              <div class="d-block fullwidth-dropdown none-padding dropdown" ngbDropdown placement="bottom">
+                <button class="btn btn-secondary dropdown-toggle text-left dropdown-toggle" ngbDropdownToggle
+                        type="button">
+                  {{(locationTypes$ | async).selectedLocationType ? (locationTypes$ | async).selectedLocationType.name : 'Select location type'}}
+                </button>
+                <div class="dropdown-menu w-100" ngbDropdownMenu>
+                  <button (click)="onLocationTypeChanged(locationType.id)" *ngFor="let locationType of (locationTypes$ | async).locationTypes"
+                          class="dropdown-item"
+                          type="button">
+                    {{locationType.name}}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 none-padding input-row node-dtls-descr-wrp">
+            <div class="text-uppercase field-name text-form-field node-gen-info-title">Description</div>
+            <div class="field-value">
+              <textarea [ngrxFormControlState]="form.controls.description" class="form-control" maxlength="256"
+                        placeholder="Type here"></textarea>
+            </div>
+          </div>
+
+          <div class="col-12 none-padding input-row">
+            <div class="text-uppercase field-name text-form-field node-gen-info-title">Cost tariff settings</div>
+            <div class="field-value">
+              <label [disableTooltip]="form.value.costProviderActive === true || !(hasCostReceiverTariff$ | async)" [ngbTooltip]="tipTariffSettings" class="dnm-switch-btn"
+                     tooltipClass="warning-tooltip">
+                <input [disabled]="form.value.costProviderActive === false && (hasCostReceiverTariff$ | async)" [ngrxFormControlState]="form.controls.costProviderActive"
+                       type="checkbox">
+                <span class="dnm-switch-slider round"></span>
+              </label>
+              <ng-template #tipTariffSettings>
+                <div>Сan not enable Cost Provider Setting. Remove following tariffs:</div>
+                <div *ngFor="let tariffName of (costReceiverTariffs$ | async)"> - {{tariffName}}</div>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-xl-6"></div>
+
+        <div class="input-row col-12 col-xl-6 none-padding">
+          <div class="d-flex justify-content-end w-100 changes-btns">
+            <button (click)="onCancel()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+            <button (click)="onSave()" class="dnm-btn dnm-btn-primary text-uppercase" type="button" [disabled]="buildingPeriodIsFinalized$ | async">Save</button>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="row alloc-equip-row none-margin-hr">
+      <div class="col none-padding">
+        <div class="d-flex">
+          <div class="alloc-equip-item d-flex align-items-center justify-content-center flex-column">
+            <div [supplyTypeClassSufix]="'-icon'" [supplyTypeClass]="node.supplyType" class="service-icon">
+            </div>
+            <span [supplyTypeClassSufix]="'-lbl'" [supplyTypeClass]="node.supplyType" class="type-lbl">
+              {{supplyType[node.supplyType].toLowerCase()}}
+            </span>
+          </div>
+          <div class="alloc-equip-item d-flex align-items-center justify-content-center flex-column">
+            <div class="alloc-equip-val alloc-units">{{(unitsCount$ | async)}}</div>
+            <div class="alloc-equip-lbl alloc-units">allocated units</div>
+          </div>
+          <div class="alloc-equip-item d-flex align-items-center justify-content-center flex-column">
+            <div class="alloc-equip-val alloc-equipment">{{allocatedEquipmentCount$ | async}}</div>
+            <div class="alloc-equip-lbl alloc-equipment">allocated equipment</div>
+          </div>
+          <div class="alloc-equip-item d-flex align-items-center justify-content-center flex-column">
+            <div class="alloc-equip-val alloc-equipment">{{totalOnePhaseAmperage$ | async | number : '1.0-2'}}</div>
+            <div class="alloc-equip-lbl alloc-equipment">Total single phase, A</div>
+          </div>
+          <div class="alloc-equip-item d-flex align-items-center justify-content-center flex-column">
+            <div class="alloc-equip-val alloc-equipment">{{totalThreePhasesAmperage$ | async | number : '1.0-2'}}</div>
+            <div class="alloc-equip-lbl alloc-equipment">Total three phase, A</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="dnm-tabset">
+          <ul ngbNav #nav="ngbNav" (navChange)="changeTab($event)" class="nav-tabs" [(activeId)]="tabId">
+            <li [ngbNavItem] ="'equipment'">
+              <a ngbNavLink>
+                <i class="tab-icon dnm-equipment-tab-icon"></i>
+                <span class="tab-name text-uppercase">Allocated equipment</span>
+              </a>
+              <ng-template ngbNavContent>
+                <ng-container *ngIf="node$ | async as node">
+                  <allocated-equipment (addSelectedRegisters)="onAddSelectedRegisters($event)"
+                                       (cancel)="onCancelAllocatedEquipments()"
+                                       (changeOrderIndex)="onChangeOrderIndex($event)"
+                                       (registersFactorCahnged)="onRegistersFactorCahnged($event)"
+                                       (removeNode)="onRemoveNode($event)"
+                                       (removeSelectedNodes)="onRemoveSelectedNodes($event)"
+                                       (removeSelectedRegisters)="onRemoveSelectedRegisters($event)"
+                                       (save)="onSaveAllocatedEquipments()"
+                                       (search)="onSearch($event)"
+                                       (selectNodes)="selectNodes($event)"
+                                       (showNodesAllocation)="onOpenNodesAllocation($event)"
+                                       (updateRegisterFilter)="onRegisterFilterChanged($event)"
+                                       (updateStatus)="onStatusChanged($event)" *ngIf="!(showNodesAllocation$ | async)"
+                                       [branchId]="branchId"
+                                       [buildingId]="buildingId"
+                                       [isMeter]="!!node.meterOwner"
+                                       [locationTypesNames]="locationTypesNames$ | async"
+                                       [nodes]="!node.meterOwner ? (allocatedNodes$ | async) : (meterAllocation$ | async)"
+                                       [registers]="!node.meterOwner ? (registers$ | async) : (smnRegisters$ | async)"
+                                       [selectedRegister]="selectedRegister$ | async"
+                                       [selectedStatus]="selectedStatus$ | async"
+                                       [suppliesNames]="suppliesNames$ | async"
+                                       [totalRegisters$]="totalRegister$"
+                                       [versionDay]="versionId"
+                                       [buildingPeriodIsFinalized]="buildingPeriodIsFinalized$ | async">
+                  </allocated-equipment>
+
+                  <ng-container *ngIf="!node.meterOwner">
+
+                    <add-meters (changeOrderIndex)="onChangeMeterOrderIndex($event)"
+                                (search)="onSearchMeter($event)"
+                                (showNodesAllocation)="onToggleNodesAllocationView($event)"
+                                (toggleNodeAllocation)="onToggleNodeAllocation($event)"
+                                (updateRegisterFilter)="onMeterRegisterFilterChanged($event)"
+                                *ngIf="showNodesAllocation$ | async"
+                                [allocatedNodes]="allocatedNodesDict$ | async"
+                                [nodes]="allowedChildNodesFiltered$ | async"
+                                [registers]="allowedChildrenRegisters$ | async"
+                                [selectedRegisterText]="selectedAddEquipmentRegisterText$ | async"
+                                [buildingPeriodIsFinalized]="buildingPeriodIsFinalized$ | async">
+                    </add-meters>
+                  </ng-container>
+                </ng-container>
+              </ng-template>
+            </li>
+
+            <li [ngbNavItem]="'customAttributes'" *ngIf="(form$ | async).value.supplyType===0">
+              <a ngbNavLink>
+                <i class="tab-icon dnm-custom-attributes-tab-icon"></i>
+                <span class="tab-name text-uppercase">Custom attributes</span>
+              </a>
+              <ng-template ngbNavContent>
+                <div>
+                  <custom-attributes-form (cancel)="onCancel()"
+                                          (nodeAttributesChanged)="onNodeAttributesChanged($event)"
+                                          (save)="onSave()"
+                                          [branchId]="branchId" [buildingId]="buildingId" [nodeAttributes]="(nodeAttributeValues$ | async)"
+                                          [totalOnePhaseAmperage]="(totalOnePhaseAmperage$ | async)" [totalThreePhasesAmperage]="(totalThreePhasesAmperage$ | async)"
+                                          [versionDay]="versionId"
+                                          [buildingPeriodIsFinalized]="buildingPeriodIsFinalized$ | async"></custom-attributes-form>
+                </div>
+              </ng-template>
+            </li>
+
+            <li [ngbNavItem]="'tariffs'">
+              <a ngbNavLink>
+                <i class="tab-icon dnm-tariffs-tab-icon"></i>
+                <span class="tab-name text-uppercase">Allocated tariffs</span>
+              </a>
+              <ng-template ngbNavContent>
+                <allocated-tariffs [buildingPeriodIsFinalized]="buildingPeriodIsFinalized$ | async"></allocated-tariffs>
+              </ng-template>
+            </li>
+
+            <li [ngbNavItem]="'calc'">
+              <a ngbNavLink>
+                <i class="tab-icon dnm-calcs-tab-icon"></i>
+                <span class="tab-name text-uppercase">Calculations</span>
+              </a>
+              <ng-template ngbNavContent>
+                <calculations></calculations>
+              </ng-template>
+            </li>
+
+            <li [ngbNavItem]="'costs'">
+              <a ngbNavLink>
+                <i class="tab-icon dnm-cost-alloc-tab-icon"></i>
+                <span class="tab-name text-uppercase">Costs allocation</span>
+              </a>
+              <ng-template ngbNavContent>
+                <costs-allocations [buildingPeriodIsFinalized]="buildingPeriodIsFinalized$ | async"></costs-allocations>
+              </ng-template>
+            </li>
+
+            <li [ngbNavItem]="'cost_provider'" *ngIf="form.controls.costProviderActive.value">
+              <a ngbNavLink>
+                <i class="tab-icon dnm-cost-alloc-tab-icon"></i>
+                <span class="tab-name text-uppercase">Cost tariff</span>
+              </a>
+              <ng-template ngbNavContent>
+                <cost-tariff [buildingPeriodIsFinalized]="buildingPeriodIsFinalized$ | async" (save)="onSaveCostTariff($event)" [nodeForm]="form"></cost-tariff>
+              </ng-template>
+            </li>
+          </ul>
+          <div [ngbNavOutlet]="nav"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,120 @@
+@import "variables.less";
+
+.tariff-versions-list .blue-text-btn {
+  margin: 15px 0px 15px 0px;
+  display: flex;
+  align-items: center;
+}
+
+.tariff-versions-list .button-row {
+  margin-left: 50px;
+}
+
+.tariff-versions-list .list-header {
+  margin-top: 50px;
+}
+
+.tariff-versions-list .list-header .header-field {
+  text-transform: uppercase;
+}
+
+.tariff-versions-list .list-body {
+  border: 1px solid @color-line;
+  background-color: @color-background-white;
+}
+
+.tariff-versions-list .body-row {
+  padding: 20px 0;
+  min-height: 70px;
+  border-bottom: 1px solid @color-line;
+}
+
+.tariff-versions-list .values-lbl {
+  font-family: Gotham Medium;
+  font-size: 16px;
+  line-height: 16px;
+  color: @color-text-tertiary;
+}
+
+.tariff-versions-list .list-text-lbl {
+  font-family: Gotham Book;
+  font-size: 13px;
+  line-height: 13px;
+  color: @color-text-tertiary;
+}
+
+.values-table {
+  padding: 0;
+
+  @first-root-column-width: 247px;
+
+  .frst-body-col {
+    width: @first-root-column-width;
+  }
+
+  .tbl-hdr-row {
+    padding: 0 30px;
+  }
+
+  .tbl-body-item {
+    width: calc(100% - @first-root-column-width);
+  }
+
+  .table-body {
+    min-height: 200px;
+    max-height: 500px;
+    overflow: auto;
+
+    .tree-view {
+      &:not(.value-expanded) {
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      .expand-btn {
+        margin-right: 15px;
+      }
+
+      li:last-child::before {
+        height: 60px;
+      }
+
+      li::after {
+        top: 58px;
+      }
+
+      .item-content {
+        padding: 25px 30px;
+
+        &::before {
+          top: 52px;
+        }
+      }
+
+      .data-col {
+        flex-basis: 16.66666%;
+      }
+
+      .sub-tree {
+        @first-sub-column-width: 177px;
+
+        .frst-body-col {
+          width: @first-sub-column-width;
+          cursor: pointer;
+        }
+
+        .tbl-body-item {
+          width: calc(100% - @first-sub-column-width);
+        }
+
+        .active-version {
+          background-color: @color-background-tertiary;
+        }
+      }
+    }
+  }
+}
+
+.section-title {
+  padding-top: 0;
+}

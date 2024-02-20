@@ -1,0 +1,48 @@
+<div class="page-content">
+  <!-- header -->
+  <div class="container-fluid">
+    <div class="row d-flex align-items-center">
+      <div class="col-6 none-padding">
+        <h1 class="page-title">Equipment</h1>
+      </div>
+      <div class="col-6 none-padding text-right">
+        <button (click)="onCreate()" class="dnm-btn dnm-btn-primary text-uppercase add-entity-btn" data-add-new-equip-btn
+                type="button">
+          <span>Add New Equipment</span>
+          <i class="icon-relative add-equipment-icon"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid none-padding">
+    <div class="dnm-tabset">
+     <ul ngbNav #tabs="ngbNav" class="nav-tabs" [(activeId)]="tabId">
+        <li [ngbNavItem]="'tab-0'">
+          <a ngbNavLink>
+            <span class="d-flex text-uppercase">
+              <i class="tab-icon dnm-icon-equipment-list"></i>Equipment List
+            </span>
+          </a>
+          <ng-template ngbNavContent>
+            <equipment-list [newEquipmentCreatedEvent]="newEquipmentSubject.asObservable()"></equipment-list>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="'tab-1'">
+          <a ngbNavLink>
+            <span class="d-flex text-uppercase">
+              <i class="tab-icon dnm-icon-equipment-settings"></i>Equipment Settings
+            </span>
+          </a>
+          <ng-template ngbNavContent>
+            <equipment-settings></equipment-settings>
+          </ng-template>
+        </li>
+      </ul>
+      <div [ngbNavOutlet]="tabs"></div>
+    </div>
+  </div>
+
+</div>
+
+

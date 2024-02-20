@@ -1,0 +1,309 @@
+//@import 'variables.less';
+@import 'required-fields.less';
+
+.package-details .title-container {
+  /*margin-bottom: 40px;*/
+}
+
+.package-details .section-title {
+  line-height: 1;
+  margin-bottom: 20px;
+  padding-top: 40px;
+}
+
+.package-details .line-div {
+  border-bottom: 1px solid #eeeff0;
+}
+
+.package-details .version-value {
+  font-size: 13px;
+  color: @color-text-tertiary;
+  font-family: Gotham Book;
+  margin-left: 21px;
+}
+
+.package-details .input-row {
+  padding: 7px 0 7px 20px;
+  margin-bottom: 0;
+}
+
+.package-details .field-name {
+  position: relative;
+}
+
+.package-details .field-name-top {
+  margin-top: 8px;
+}
+
+.package-details .price-icon {
+  background: url('../../../../../assets/images/icons/services/info-price.svg') center no-repeat;
+  background-size: 12px;
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  position: relative;
+  top: 1px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.package-details .price-icon:hover {
+  background: url('../../../../../assets/images/icons/services/info-price-hover.svg') center no-repeat;
+}
+
+.package-details .input-row-title {
+  font-family: Gotham Medium;
+  font-size: 12px;
+  line-height: 12px;
+  color: @color-empty;
+  text-transform: uppercase;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.package-details .price-info-popup {
+  display: none;
+  position: absolute;
+  display: none;
+  padding: 0;
+  margin: 0 0 12px 0;
+  right: -81px;
+  top: 23px;
+  z-index: 100;
+}
+
+.package-details .price-icon:hover .price-info-popup {
+  display: block;
+}
+
+.package-details .package-color-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 22px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.package-details .package-color-btn:before {
+  width: 30px;
+  height: 30px;
+  background-image: url('../../../../../assets/images/icons/check_mark_02.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 10px;
+  content: '';
+  display: inline-block;
+  position: absolute;
+}
+
+.package-details .package-color-btn.dropdown-toggle:after {
+  display: none;
+}
+
+.package-details .package-color-btn:hover {
+  opacity: 0.8;
+}
+
+.package-details .package-colors-list.dropdown-menu {
+  padding: 0;
+  margin: 0;
+  border: none;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.package-details .dnm-switch-btn input ~ .dnm-switch-lbl:after {
+  content: "Inactive";
+}
+
+.package-details .dnm-switch-btn input:checked ~ .dnm-switch-lbl:after {
+  content: "Active";
+}
+
+.package-details .checkbox-input {
+  padding-left: 22px;
+  margin-bottom: 15px;
+}
+
+.package-details .checkbox-input:first-child {
+  margin-top: 8px;
+}
+
+.package-details .checkbox-input .dnm-checkbox {
+  margin-right: 13px;
+}
+
+.package-details .checkbox-input-lbl {
+  font-family: Gotham Light;
+  font-size: 14px;
+  line-height: 14px;
+  color: @color-text-tertiary;
+}
+
+.package-details .dnm-switch-btn.package-status {
+  margin-left: 22px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.package-details .supply-types-row .checkbox-input {
+  margin: 0;
+  height: 20px;
+}
+
+.package-details .service-types-tabset {
+  margin-left: -50px;
+  margin-right: -50px;
+}
+
+::ng-deep .package-details .service-types-tabset .nav-tabs {
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+::ng-deep .package-details .service-types-tabset .tab-content {
+  background-color: @color-background-secondary;
+  border-bottom: 1px solid #dee2e6;
+  padding: 40px 50px;
+}
+
+/* #region service tree header */
+.package-details .nav-row {
+  margin-bottom: 30px;
+}
+
+.package-details .results-lbl {
+  margin-right: 20px;
+  font-size: 16px;
+  color: @color-text-tertiary;
+}
+
+.package-details .select-lbl {
+  font-family: Gotham Medium;
+  font-size: 15px;
+  color: @color-text-tertiary;
+  margin-right: 20px;
+}
+
+.package-details .filter-item {
+  margin-right: 30px;
+}
+
+.package-details .filter-item:last-child {
+  margin-right: 0;
+}
+
+.package-details .service-toggle-popup {
+  display: none;
+  position: absolute;
+  display: none;
+  padding: 0;
+  margin: 0 0 12px 0;
+  left: -69px;
+  top: -40px;
+}
+
+.package-details .service-switch {
+  position: relative;
+  height: 25px;
+}
+
+.package-details .service-switch:hover .service-toggle-popup {
+  display: block;
+}
+
+.package-details .service-toggle-msg {
+  border-radius: 4px;
+  overflow: hidden;
+  width: 180px;
+  height: 30px;
+  color: @color-empty;
+  font-family: Gotham Book;
+  font-size: 13px;
+  background: #242e45;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.package-details .service-toggle-msg::after {
+  position: absolute;
+  content: '';
+  display: block;
+  border-color: transparent;
+  border-width: 6px;
+  border-style: solid;
+  border-top-color: @color-text-primary;
+  opacity: 0.95;
+  width: 6px;
+  bottom: -12px;
+  left: 87px;
+}
+
+.package-details .services-filter-btn,
+.package-details .services-filter-menu {
+  width: 200px;
+}
+
+.package-details .footer-buttons {
+  display: flex;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+.package-details .footer-buttons button {
+  width: 200px;
+}
+
+.package-details .footer-buttons button:last-child {
+  margin-left: 30px;
+}
+
+/* #endregion */
+
+input {
+  font-size: 13px;
+  color: @color-text-tertiary;
+  font-family: Gotham Book;
+  width: 100%;
+  border: transparent solid 1px;
+  border-radius: 5px;
+  padding: 7px 30px 7px 20px;
+  transition: border-color .15s ease-in-out;
+  background-color: transparent;
+}
+
+input:hover {
+  border: @color-stroke solid 1px;
+  background: url("../../../../../assets/images/icons/blue-edit.png") no-repeat @color-background-white;
+  background-position: right 10px center;
+  cursor: pointer;
+}
+
+input:focus {
+  background: none;
+  cursor: text;
+  border: @color-main-accent solid 2px;
+  outline: 0;
+  padding: 6px 29px 6px 19px;
+  background-color: @color-background-white;
+}
+
+input.small {
+  padding: 2px 30px 2px 10px;
+}
+
+input.small:focus {
+  padding: 1px 29px 1px 9px;
+}
+
+input.bold {
+  font-family: Gotham Medium;
+  font-size: 16px;
+  color: @color-text-secondary;
+}

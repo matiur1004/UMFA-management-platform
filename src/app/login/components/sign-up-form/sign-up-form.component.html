@@ -1,0 +1,92 @@
+<form (submit)="onSignUp()" [formGroup]="signUpForm" [ngClass]="{'form-submited': submited}">
+  <div class="container-fluid none-padding d-flex justify-content-center">
+    <div class="main-logo-cnt d-flex align-items-end">
+      <img [src]="logoUrl" class="logo-img img-fluid ng-star-inserted"/>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="form-label" for="first-name">First Name</label>
+    <div class="input-box">
+      <input autoFocus class="form-control" formControlName="firstName" id="first-name" name="firstName" required
+             spellcheck="false" type="text">
+      <span class="check-icon"></span>
+    </div>
+    <small *ngIf="isInvalid('firstName')" class="alert-danger">
+      First name is required
+    </small>
+  </div>
+  <div class="form-group">
+    <label class="form-label" for="last-name">Last Name</label>
+    <div class="input-box">
+      <input class="form-control" formControlName="lastName" id="last-name" name="lastName" required
+             spellcheck="false" type="text">
+      <span class="check-icon"></span>
+    </div>
+    <small *ngIf="isInvalid('lastName')" class="alert-danger">
+      Last name is required
+    </small>
+  </div>
+  <div class="form-group">
+    <label class="form-label" for="sign-up-email">Email Address</label>
+    <div class="input-box">
+      <input class="form-control" email formControlName="email" id="sign-up-email" name="email"
+             required spellcheck="false" type="email">
+      <span class="check-icon"></span>
+    </div>
+    <small *ngIf="isInvalid('email')" class="alert-danger">
+      Email is required
+    </small>
+  </div>
+  <div class="form-group">
+    <label class="form-label" for="password">Password</label>
+    <div class="input-box">
+      <input class="form-control" formControlName="password" id="sign-up-password" name="password" required
+             type="password">
+      <span class="eye-icon" showPassword></span>
+    </div>
+    <small *ngIf="isInvalid('password')" class="alert-danger">
+      Password is required
+    </small>
+  </div>
+  <div class="form-group">
+    <label class="form-label" for="confirm-password">Confirm Password</label>
+    <div class="input-box">
+      <input class="form-control" formControlName="confirmPassword" id="sign-up-confirm-password" name="password"
+             required type="password">
+      <span class="eye-icon" showPassword></span>
+    </div>
+    <small *ngIf="signUpForm.hasError('notSame') || isInvalid('password')" class="alert-danger">
+      Passwords do not match
+    </small>
+  </div>
+
+  <div class="form-group remember-me-block d-flex justify-content-between">
+    <div class="form-check form-check-inline">
+      <label for="sign-up-remember-me">
+        <input formControlName="rememberMe" id="sign-up-remember-me" name="rememberMe" type="checkbox">
+        <span class="checkbox-view"></span>
+        Remember Me
+      </label>
+    </div>
+    <div class="form-check">
+      <span>Already signed up? &nbsp;</span>
+      <a [routerLink]="['/login']" class="link">Sign in</a>
+    </div>
+  </div>
+  <div class="form-group remember-me-block">
+    <div class="form-check form-check-inline">
+      <label for="is-accept">
+        <input formControlName="isAccept" id="is-accept" name="isAccept" type="checkbox">
+        <span class="checkbox-view"></span>
+      </label>
+      <a [routerLink]="['/sign-up']" class="link terms-conditions-text">
+        I accept Terms and Conditions
+      </a>
+    </div>
+  </div>
+  <div class="row submit-buttons">
+    <div class="col-md">
+      <button class="btn btn-auth" type="submit">Sign Up</button>
+    </div>
+  </div>
+</form>

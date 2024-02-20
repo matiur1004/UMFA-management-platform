@@ -1,0 +1,132 @@
+<div class="container-fluid none-padding locations-list">
+
+  <div class="row search-row none-margin-hr">
+    <div class="col none-padding">
+      <form class="form-inline main-search-input w-100">
+        <div class="input-group">
+          <input #searchBox (keyup)="search(searchBox.value)" class="form-control group-search-input" data-search-field
+                 placeholder="Locations Search" type="search"/>
+          <div class="input-group-append">
+            <i class="icon-relative search-icon vertical-middle"></i>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="nav-row">
+    <div class="d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center">
+        <span class="results-label dnm-text-light">{{(locationList$ | async).length}} locations </span>
+        <a (click)="onCreate()" class="blue-text-btn" href="javascript:void(0)" [ngClass]="{'disabled': buildingPeriodIsFinalized}">
+          <i class="add-icon"></i>
+          <span>Add Location</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="row none-margin-hr list-header">
+    <div class="col-4">
+      <div class="row none-margin-hr">
+        <div class="col-3">
+          <a (click)="changeOrderIndex(1)" [ngClass]="{'active': orderIndex == 1 || orderIndex == -1}"
+             class="header-field d-flex align-items-center"
+             href="javascript:void(0);">
+            <span class="text-ellipsis" title="Seq No">Seq No</span>
+            <i [ngClass]="{'inactive': orderIndex != 1 && orderIndex != -1, 'dnm-icon-sort-up': orderIndex == -1,'dnm-icon-sort-down': orderIndex != -1 }"
+               class="dnm-icon"></i>
+          </a>
+        </div>
+        <div class="col-9">
+          <a (click)="changeOrderIndex(2)" [ngClass]="{'active': orderIndex == 2 || orderIndex == -2}"
+             class="header-field d-flex align-items-center"
+             href="javascript:void(0);">
+            <span class="text-ellipsis" title="Location Name">Location Name</span>
+            <i [ngClass]="{'inactive': orderIndex != 2 && orderIndex != -2, 'dnm-icon-sort-up': orderIndex == -2,'dnm-icon-sort-down': orderIndex != -2 }"
+               class="dnm-icon"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="col-4 header-field d-flex align-items-center">
+      <span class="text-ellipsis" title="Description">Description</span>
+    </div>
+    <div class="col-4">
+      <div class="row none-margin-hr">
+        <div class="col-5">
+          <a (click)="changeOrderIndex(3)" [ngClass]="{'active': orderIndex == 3 || orderIndex == -3}"
+             class="header-field d-flex align-items-center"
+             href="javascript:void(0);">
+            <span class="text-ellipsis" title="Number of Units">Number of Units</span>
+            <i [ngClass]="{'inactive': orderIndex != 3 && orderIndex != -3, 'dnm-icon-sort-up': orderIndex == -3,'dnm-icon-sort-down': orderIndex != -3 }"
+               class="dnm-icon"></i>
+          </a>
+        </div>
+        <div class="col-7">
+          <a (click)="changeOrderIndex(4)" [ngClass]="{'active': orderIndex == 4 || orderIndex == -4}"
+             class="header-field d-flex align-items-center"
+             href="javascript:void(0);">
+            <span class="text-ellipsis" title="Number of Equipment">Number of Equipment</span>
+            <i [ngClass]="{'inactive': orderIndex != 4 && orderIndex != -4, 'dnm-icon-sort-up': orderIndex == -4,'dnm-icon-sort-down': orderIndex != -4 }"
+               class="dnm-icon"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div (cdkDropListDropped)="dropped($event)" cdkDropList class="list-body">
+    <div (click)="onOpenLocationDetail($event, location)"
+         *ngFor="let location of locationList$ | async; let i = index;"
+         cdkDrag cdkDragLockAxis="y" class="row none-margin-hr body-row box location-row">
+      <div class="col-4">
+        <div class="row none-margin-hr">
+          <div class="col-3 seq-no-column">
+            <span class="seq-no-lbl">{{location.sequenceNumber}}</span>
+          </div>
+          <div class="col-9">
+            <span class="location-name-lbl cursor-pointer">{{location.name}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-4 descr-cell d-flex align-items-center">
+        <span class="description-lbl">{{location.description}}</span>
+      </div>
+      <div class="col-4">
+        <div class="row none-margin-hr">
+          <div class="col-5">
+            <span class="units-numb-lbl">{{location.numberOfUnits}}</span>
+          </div>
+          <div class="col-7">
+            <div class="d-flex align-items-center justify-content-between">
+              <span class="equipment-numb-lbl">{{location.numberOfEquipment}}</span>
+              <div #locationItemDropdown='ngbDropdown' [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block"
+                   ngbDropdown>
+                <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle></button>
+                <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                  <button (click)="onClone(location)" class="dropdown-item d-flex justify-content-between dropdown-clone"
+                          type="button">
+                    Clone
+                    <i class="dnm-icon plus-icon"></i>
+                  </button>
+                  <button (click)="onEdit(location)" class="dropdown-item d-flex justify-content-between dropdown-edit"
+                          type="button">
+                    Edit
+                    <i class="dnm-icon edit-icon"></i>
+                  </button>
+                  <button (click)="onDelete(location.id)" class="dropdown-item d-flex justify-content-between dropdown-delete"
+                          type="button">
+                    Delete
+                    <i class="dnm-icon delete-icon"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

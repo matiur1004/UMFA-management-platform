@@ -1,0 +1,46 @@
+<svg data-name="Capa 1" id="Capa_1" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <style>.cls-1 {
+      fill: url(#linear-gradient);
+    }
+
+    .cls-2 {
+      fill: url(#linear-gradient-2);
+    }
+
+    .cls-3 {
+      fill: url(#linear-gradient-3);
+    }
+
+    .cls-4 {
+      fill: url(#linear-gradient-4);
+    }
+
+    .cls-5 {
+      fill: url(#linear-gradient-5);
+    }
+
+    .cls-6 {
+      fill: url(#linear-gradient-6);
+    }</style>
+    <linearGradient gradientUnits="userSpaceOnUse" id="linear-gradient" x1="7.66" x2="20" y1="1.09" y2="1.09">
+      <stop offset="0" stop-color="#2a7ba7"/>
+      <stop offset="1" stop-color="#2a327c"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="7.66" x2="16.12" xlink:href="#linear-gradient" y1="5.49" y2="5.49"/>
+    <linearGradient id="linear-gradient-3" x1="0" x2="5.8" xlink:href="#linear-gradient" y1="16.25" y2="16.25"/>
+    <linearGradient id="linear-gradient-4" x1="0" x2="5.98" xlink:href="#linear-gradient" y1="2.91" y2="2.91"/>
+    <linearGradient id="linear-gradient-5" x1="7.66" xlink:href="#linear-gradient" y1="14.63" y2="14.63"/>
+    <linearGradient id="linear-gradient-6" x1="7.66" x2="16.12" xlink:href="#linear-gradient" y1="19.08" y2="19.08"/>
+  </defs>
+  <title>tab_equipment_list_hover</title>
+  <path class="cls-1" d="M8.3,2H19.36c.35,0,.64-.4.64-.91s-.29-.91-.64-.91H8.3c-.3,0-.64.36-.64.82S8,2,8.3,2Z"/>
+  <path class="cls-2" d="M8.3,6.4h7.17c.36,0,.65-.41.65-.91s-.29-.91-.65-.91H8.3c-.35,0-.64.41-.64.91S8,6.4,8.3,6.4Z"/>
+  <path class="cls-3" d="M2.91,13.35A2.9,2.9,0,1,0,5.8,16.26v0A2.91,2.91,0,0,0,2.91,13.35Z"/>
+  <path class="cls-4" d="M3.07,5.82A2.91,2.91,0,1,0,3.07,0h0A2.9,2.9,0,0,0,2.73,5.8h.34Z"/>
+  <path class="cls-5"
+        d="M19.36,13.72H8.3c-.35,0-.64.41-.64.91s.29.91.64.91H19.36c.35,0,.64-.41.64-.91S19.71,13.72,19.36,13.72Z"/>
+  <path class="cls-6"
+        d="M15.47,18.16H8.3c-.35,0-.64.41-.64.91S8,20,8.3,20h7.17c.36,0,.65-.41.65-.91S15.83,18.16,15.47,18.16Z"/>
+</svg>

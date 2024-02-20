@@ -1,0 +1,62 @@
+@import 'variables.less';
+
+.node-tariff .item-row {
+  padding: 15px;
+  border: 1px solid #E1E1E1;
+  border-bottom: none;
+  background-color: @color-background-white;
+}
+
+.node-tariff .item-row:last-child {
+  border: 1px solid #E1E1E1;
+}
+
+.node-tariff .footer-buttons {
+  margin-top: 35px;
+}
+
+.node-tariff .footer-buttons .dnm-btn {
+  width: 200px;
+  min-width: 200px;
+}
+
+.node-tariff .footer-buttons .dnm-btn:first-child {
+  margin-right: 30px;
+}
+
+.node-tariff .node-lbl {
+  font-family: Gotham Medium;
+  font-size: 16px;
+  line-height: 16px;
+  color: @color-text-secondary;
+}
+
+.node-tariff .amperage-lbl,
+.node-tariff .line-item-lbl,
+.node-tariff .node-type-lbl {
+  font-family: 'Gotham Book';
+  color: @color-text-tertiary;
+  font-size: 14px;
+  line-height: 25px;
+}
+
+.node-tariff .fullwidth-dropdown {
+  padding: 5px 0px;
+}
+
+.node-tariff .line-item-container {
+  padding: 10px 0px;
+}
+
+.node-tariff .dnm-switch-btn {
+  margin-right: 10px;
+}
+
+::ng-deep .node-tariff .select-node-tariff .ng-select-container {
+  cursor: pointer;
+}
+
+::ng-deep .node-tariff .select-node-tariff .ng-dropdown-panel {
+  width: unset;
+  min-width: 100%;
+}

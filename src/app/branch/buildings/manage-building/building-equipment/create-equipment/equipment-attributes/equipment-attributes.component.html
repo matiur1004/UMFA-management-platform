@@ -1,0 +1,341 @@
+<div class="container-fluid equipment-attributes none-padding">
+  <div class="row none-margin-hr">
+
+
+    <div class="col-12 col-lg-9 col-xl-7 none-padding">
+      <div class="left-col-wrapper">
+        <div class="bl-gradient-title">Select device from a list</div>
+        <div class="input-row">
+          <div class="text-uppercase field-name text-form-field equipment-attributes-field-name">Select Device</div>
+          <div class="field-value">
+            <div [ngClass]="{'dnm-invalid-inp': equipmentTemplateForm.isSubmitted && equipmentTemplateForm.errors._equipmentModel?.required}"
+                 class="dropdown d-block fullwidth-dropdown"
+                 ngbDropdown>
+              <button class="btn btn-secondary dropdown-toggle text-left" id="ddEquipmentTemplate" ngbDropdownToggle
+                      type="button">
+                {{ equipmentTemplateForm.value.equipmentModel ? equipmentTemplateForm.value.equipmentModel : 'Select Device'}}
+              </button>
+              <div aria-labelledby="ddClientPortfolio" class="dropdown-menu" ngbDropdownMenu>
+                <button (click)="deviceChanges.emit(equipmentTemplate.id)" *ngFor="let equipmentTemplate of equipmentTemplates" class="dropdown-item"
+                        type="button">
+                  {{equipmentTemplate.model}}
+                </button>
+
+              </div>
+            </div>
+            <small *ngIf="equipmentTemplateForm.isSubmitted && equipmentTemplateForm.errors._equipmentModel?.required"
+                   class="alert-danger">
+              Device is required
+            </small>
+          </div>
+        </div>
+        <!-- Specific attributes -->
+        <div>
+          <div class="bl-gradient-title equip-attr-title">Specific attributes</div>
+          <div class="input-row">
+            <div class="text-uppercase field-name text-form-field equipment-attributes-field-name">Parent</div>
+            <div class="field-value">
+              <ng-select (change)="onParentsListChanged($event)" [clearable]="false"
+                         [hideSelected]="true" [multiple]="true"
+                         [searchable]="false" class="dnm-multiple-select equipment-parents-select" placeholder="ROOT">
+                <ng-option *ngFor="let meter of meters" [value]="meter.id">{{meter.serialNumber}}</ng-option>
+              </ng-select>
+            </div>
+          </div>
+          <div class="input-row">
+            <div class="text-uppercase field-name text-form-field equipment-attributes-field-name">Dummy</div>
+            <div class="field-value">
+              <div class="dnm-checkbox">
+                <input [disabled]="equipmentTemplateForm.value.isFaulty" [ngrxFormControlState]="equipmentTemplateForm.controls.isDummy" [value]="true" id="equipment_dummy"
+                       name="dummy"
+                       type="checkbox" />
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="input-row">
+            <div class="text-uppercase field-name text-form-field equipment-attributes-field-name">Faulty</div>
+            <div class="field-value">
+              <div>
+                <div class="dnm-checkbox">
+                  <input [disabled]="equipmentTemplateForm.value.isDummy" [ngrxFormControlState]="equipmentTemplateForm.controls.isFaulty" [value]="true"
+                         id="equipment_faulty" name="faulty"
+                         type="checkbox" />
+                  <div class="state">
+                    <label></label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div [hidden]="!equipmentTemplateForm.value.isFaulty" class="input-row">
+            <div class="text-uppercase field-name text-form-field equipment-attributes-field-name"></div>
+            <div class="field-value">
+              <textarea [ngrxFormControlState]="equipmentTemplateForm.controls.reasonOfFaulty" class="form-control" name="reasonOfFaulty"
+                        placeholder="Put the reason of it"></textarea>
+            </div>
+          </div>
+          <div class="input-row">
+            <div class="text-uppercase field-name text-form-field equipment-attributes-field-name">Serial Number</div>
+            <div class="field-value">
+              <div [ngClass]="{'dnm-invalid-inp': equipmentTemplateForm.isSubmitted && equipmentTemplateForm.errors._serialNumber?.required}">
+                <input [disabled]="equipmentTemplateForm.value.isDummy" [ngrxFormControlState]="equipmentTemplateForm.controls.serialNumber" class="form-control req-frm-fld"
+                       maxlength="100"
+                       placeholder="Type here" type="text">
+              </div>
+              <small *ngIf="equipmentTemplateForm.isSubmitted && equipmentTemplateForm.errors._serialNumber?.required"
+                     class="alert-danger">
+                A serial number is required
+              </small>
+            </div>
+          </div>
+          <div class="input-row">
+            <div class="text-uppercase field-name text-form-field equipment-attributes-field-name">
+              Manufacture Date
+            </div>
+            <div class="field-value">
+              <div class="datepicker-wrp">
+                <input #d="ngbDatepicker" (click)="d.toggle()" [ngrxFormControlState]="equipmentTemplateForm.controls.manufactureDate" [ngrxValueConverter]="dateNgrxValueConverter" class="form-control"
+                       name="dp"
+                       ngbDatepicker
+                       placeholder="dd/mm/YYYY">
+                <i (click)="d.toggle()" class="calendar no-hover"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Equipment attributes -->
+        <div>
+          <div class="bl-gradient-title equip-attr-title">Equipment attributes</div>
+          <div *ngFor="let attributeControl of attributes.controls; let idx = index; trackBy: trackById" [ngClass]="{'has-photo': attributeControl.value.attribute.canAddPhoto}"
+               class="input-row">
+            <div class="text-uppercase field-name text-form-field equipment-attributes-field-name">
+              {{attributeControl.controls.attribute.controls.name.value}}
+            </div>
+            <div class="field-value">
+              <div [ngClass]="{'dnm-invalid-inp': equipmentTemplateForm.isSubmitted && attributeControl.controls.value.isInvalid}">
+                <ng-container [ngSwitch]="attributeControl.value.attribute.fieldType">
+                  <ng-container *ngSwitchCase="fieldTypes.Number">
+                    <div class="input-unit-wrapper">
+                      <number-input [ngrxFormControlState]="attributeControl.controls.numberValue"
+                                    [suffixLabel]="attributeControl.value.attribute.unit ? attributeControl.value.attribute.unit.name : ''">
+                      </number-input>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngSwitchCase="fieldTypes.Combo">
+                    <div class="dropdown fullwidth-dropdown" ngbDropdown>
+                      <button class="btn btn-secondary dropdown-toggle text-left combo-value" ngbDropdownToggle
+                              type="button">
+                        {{attributeControl.controls.value.value || 'Options'}}
+                      </button>
+                      <div aria-labelledby="ddCategory" class="dropdown-menu" ngbDropdownMenu>
+                        <button (click)="comboSettingsChange.emit({value: item.value, index: idx})" *ngFor="let item of attributeControl.value.attribute.comboSettings"
+                                class="dropdown-item text-ellipsis"
+                                type="button">
+                          {{item.value}}
+                        </button>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngSwitchCase="fieldTypes.Ratio">
+                    <input [ngrxFormControlState]="attributeControl.controls.value"
+                           [placeholder]="ratioPlaceholderMask(attributeControl.value.attribute.name)"
+                           [textMask]="{ mask: ratioMask, guide: false }"
+                           class="form-control">
+                  </ng-container>
+                </ng-container>
+              </div>
+              <small *ngIf="equipmentTemplateForm.isSubmitted && attributeControl.controls.value.isInvalid"
+                     class="alert-danger">
+                Invalid value
+              </small>
+            </div>
+            <button (click)="openImage.emit({url: attributeControl.value.newPhotoUrl || attributeControl.value.photoUrl, attributeId: attributeControl.value.attribute.id, meterPhotoType: meterPhotoType.AttributePhoto})" *ngIf="attributeControl.value.attribute.canAddPhoto" [ngClass]="{'dnm-btn-photo' : isAttrPhotoAdded(attributeControl), 'dnm-btn-photo-add' : !isAttrPhotoAdded(attributeControl)}"
+                    class="dnm-btn attr-photo-btn"
+                    type="button"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-xl-5 icon-color-5 none-padding">
+      <div class="right-col-wrapper">
+        <div class="bl-gradient-title">Add image</div>
+        <upload-image (fileChange)="logoChanged($event)" [(defaultUrl)]="defaultImageUrl" [(file)]="logo"
+                      [(src)]="actualPhotoUrl" outputFileName="equipment-image"></upload-image>
+      </div>
+    </div>
+  </div>
+  <div class="row none-margin-hr">
+    <div class="col-12 none-padding">
+      <div class="bl-gradient-title equip-attr-title">Specify register details</div>
+      <div class="list-header">
+        <div class="row">
+          <div class="col-1 header-field d-flex align-items-center">
+            <span class="text-ellipsis" title="Equipment Attributes">Register</span>
+          </div>
+          <div class="col-1 header-field d-flex align-items-center">
+            <span class="text-ellipsis" title="Register Scale">Scale</span>
+          </div>
+          <div class="col-2 header-field d-flex align-items-center">
+            <span class="text-ellipsis" title="Equipment Attributes">Register Note</span>
+          </div>
+          <div class="col-1 header-field d-flex align-items-center">
+            <span class="text-ellipsis" title="Integer Digits">Integer Digits</span>
+          </div>
+          <div class="col-5 none-padding">
+            <div class="row none-margin-hr">
+              <div class="header-field d-flex align-items-center col-3">
+                <span class="text-ellipsis" title="OBIS Code">Obis Code</span>
+              </div>
+              <div class="header-field d-flex align-items-center col-3">
+                <span class="text-ellipsis" title="Equipment Attributes">Ratio</span>
+              </div>
+              <div class="header-field d-flex align-items-center col-3">
+                <span class="text-ellipsis" title="Equipment Attributes">Readings</span>
+              </div>
+              <div class="header-field d-flex align-items-center col-3">
+                <span class="text-ellipsis" title="Equipment Attributes">Reading Date</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-2 none-padding">
+            <div class="row none-margin-hr">
+              <div class="col-4 header-field d-flex align-items-center">
+                <span class="text-ellipsis" title="Equipment Attributes">Photo</span>
+              </div>
+              <div class="col-4 header-field d-flex align-items-center">
+                <span class="text-ellipsis" title="Equipment Attributes">Calc</span>
+              </div>
+              <div class="col-4 header-field d-flex align-items-center">
+                <span class="text-ellipsis" title="Equipment Attributes">Use for billing</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div (cdkDropListDropped)="onDropRegisters($event)" cdkDropList class="list-body">
+        <div *ngFor="let registerControl of registers.controls; let idx = index; trackBy: trackById" cdkDrag cdkDragLockAxis="y" class="row">
+          <div class="col-12 d-flex align-items-center justify-content-between item-container">
+            <div class="data-row">
+              <div class="row">
+                <div class="col-1">
+                  <div class="register-dtls-name">
+                    <span class="text-uppercase text-form-field">{{registerControl.controls.id.value | registerUnit | async}}</span>
+                  </div>
+                </div>
+                <div class="col-1">
+                  <ng-container *ngIf="equipmentRegistersDict[registerControl.controls.id.value] as register">
+                    <ng-select *ngIf="register.scalesDict"
+                               [clearable]="false"
+                               [hideSelected]="true"
+                               [items]="register.scalesDict | keyvalue"
+                               [ngrxFormControlState]="registerControl.controls.registerScaleId" [searchable]="false" bindLabel="value.name" bindValue="key"
+                               class="select-dropdown w-100">
+                    </ng-select>
+                  </ng-container>
+                </div>
+                <div class="col-2">
+                  <input [ngrxFormControlState]="registerControl.controls.description" class="form-control" placeholder="Type here"
+                         type="text" title="{{registerControl.controls.registerType.value}}">
+                </div>
+                <!-- integer digits -->
+                <div class="col-1">
+                  <number-input [isReadonly]="isFixedRegister" [min]="1"
+                                [ngrxFormControlState]="registerControl.controls.dialCount"></number-input>
+                </div>
+                <div class="col-5 none-padding">
+                  <div class="row none-margin-hr">
+                    <div class="col-3">
+                      <div class="dropdown d-block fullwidth-dropdown none-padding obis-code" ngbDropdown>
+                        <ng-select [ngrxFormControlState]="registerControl.controls.obisCode" [clearable]="false" [closeOnSelect]="true"
+                                   [dropdownPosition]="'top'" [items]="obisCodes" [multiple]="false" [searchable]="false"
+                                   bindLabel="displayValue" bindValue="obisCodeValue" class="select-dropdown" name="obisCodes">
+                        </ng-select>
+                      </div>
+                    </div>
+                    <div class="col-3">
+                      <number-input [min]="0" [ngrxFormControlState]="registerControl.controls.ratio"></number-input>
+                    </div>
+                    <div class="col-3">
+                      <input [autoSelect] [min]="0" [ngrxFormControlState]="registerControl.controls.readings"
+                             class="form-control form-number-input" step="any" type="number" />
+                    </div>
+                    <div class="col-3">
+                      <input #d="ngbDatepicker" (click)="d.toggle()" [ngrxFormControlState]="registerControl.controls.date" class="form-control date"
+                             name="dp" ngbDatepicker
+                             placeholder="mm/dd/YYYY"
+                              [minDate]="ngbMinDateStr"
+                              [maxDate]="ngbMaxDateStr"
+                             readonly>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-2 none-padding">
+                  <div class="row none-margin-hr vertical-middle">
+                    <div class="col-4 d-flex align-items-center">
+                      <div class="equip-inpt-wrp">
+                        <input #fileInput (change)="registerFileChange.emit({registerId: registerControl.value.id, files: $event.target.files})" accept="image/*" class="equip-file-inpt"
+                               type="file" />
+                        <i [ngClass]="{'view-equip-img' : registerFiles[registerControl.value.id]?.file,
+                      'add-equip-img': !registerFiles[registerControl.value.id]?.file}"></i>
+                      </div>
+                    </div>
+                    <div *ngIf="registerControl.controls.registerType.value == 0" class="col-4 d-flex align-items-center">
+                      <div class="register-icon-align align-items-center">
+                        <img class="register-icon" name="registerIcon" id="registerIcon" src="{{selectedIcon0}}" title="{{selectedIconAlt0}}" alt="{{selectedIconAlt0}}" #registerIcon>
+                      </div>
+                    </div>
+                    <div *ngIf="registerControl.controls.registerType.value == 1" class="col-4 d-flex align-items-center">
+                      <div class="register-icon-align align-items-center">
+                        <img class="register-icon" name="registerIcon" id="registerIcon" src="{{selectedIcon1}}" title="{{selectedIconAlt1}}" alt="{{selectedIconAlt1}}" #registerIcon>
+                      </div>
+                    </div>
+                    <div *ngIf="registerControl.controls.registerType.value == 2" class="col-4 d-flex align-items-center">
+                      <div class="register-icon-align align-items-center">
+                        <img class="register-icon" name="registerIcon" id="registerIcon" src="{{selectedIcon2}}" title="{{selectedIconAlt2}}" alt="{{selectedIconAlt2}}" #registerIcon>
+                      </div>
+                    </div>
+                    <div class="col-4 d-flex align-items-center">
+                      <div class="dnm-checkbox">
+                        <input [ngrxFormControlState]="registerControl.controls.useForBilling" type="checkbox" />
+                        <div class="state">
+                          <label></label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button (click)="removeRegister.emit(registerControl.controls.id.value)" [hidden]="isFixedRegister" class="dnm-btn-icon" type="button">
+              <i class="icon cross-icon"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="notIncludedRegisters.length" [hidden]="isFixedRegister" class="input-row">
+        <div class="d-inline-block" ngbDropdown>
+          <button class="btn btn-outline-primary" id="selectMeterType" ngbDropdownToggle type="button">
+            Add
+            register
+          </button>
+          <div aria-labelledby="selectMeterType" ngbDropdownMenu>
+            <button (click)="addRegister.emit(register)" *ngFor="let register of notIncludedRegisters" class="dropdown-item"
+                    type="button">
+              {{register.id | registerUnit | async}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row none-margin-hr">
+    <div class="col-12 none-padding footer-btns d-flex justify-content-end">
+      <button (click)="close.emit()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+      <button (click)="onClickNext()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Next</button>
+    </div>
+  </div>
+</div>

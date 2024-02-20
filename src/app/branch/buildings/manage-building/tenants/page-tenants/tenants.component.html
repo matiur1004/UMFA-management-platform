@@ -1,0 +1,164 @@
+<div class="container-fluid tenants-container">
+  <div class="row none-margin-hr">
+    <div class="col-12 none-padding">
+      <div class="search-block">
+        <form class="form-inline main-search-input w-100">
+          <div class="input-group">
+            <input #searchBox (keyup)="search(searchBox.value)" class="form-control group-search-input" data-search-field
+                   placeholder="Search Tenants" type="search"/>
+            <div class="input-group-append">
+              <i class="icon-relative search-icon vertical-middle"></i>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="filter-block">
+        <page-limit (create)="onCreate()" (limitChaged)="setItemsPerPage($event)" [itemName]="'tenant'"
+                    [itemsPerPageList]="itemsPerPageList" [itemsPerPage]="pageSize" [itemsTotal]="model.total"
+                    [page]="page" [showCreate]="true"></page-limit>
+      </div>
+    </div>
+  </div>
+  <div class="row none-margin-hr">
+    <div class="col-12 none-padding">
+      <div class="tenants-tbl">
+        <!-- table header -->
+        <div class="row table-header">
+          <div class="col-2">
+            <a (click)="changeOrderIndex(1);" [ngClass]="{'active': orderIndex == 1 || orderIndex == -1}"
+               class="col-lbl text-uppercase d-flex align-items-center sortable"
+               href="javascript:void(0);">
+              Tenant name
+              <i [ngClass]="{'inactive': orderIndex != 1 && orderIndex != -1, 'dnm-icon-sort-up': orderIndex == -1,'dnm-icon-sort-down': orderIndex != -1 }"
+                 class="dnm-icon"></i>
+            </a>
+          </div>
+          <div class="col-2">
+            <a class="col-lbl text-uppercase d-flex align-items-center sortable" href="javascript:void(0);">
+              Shops
+            </a>
+          </div>
+          <div class="col-2">
+            <a (click)="changeOrderIndex(3);" [ngClass]="{'active': orderIndex == 3 || orderIndex == -3}"
+               class="col-lbl text-uppercase d-flex align-items-center sortable"
+               href="javascript:void(0);">
+              Total GLA
+              <i [ngClass]="{'inactive': orderIndex != 3 && orderIndex != -3, 'dnm-icon-sort-up': orderIndex == -3,'dnm-icon-sort-down': orderIndex != -3 }"
+                 class="dnm-icon"></i>
+            </a>
+          </div>
+          <div class="col-6 none-padding">
+            <div class="row none-margin-hr">
+              <div class="col-3">
+                <span class="col-lbl text-uppercase">Email</span>
+              </div>
+              <div class="col-3">
+                <span class="col-lbl text-uppercase">Phone</span>
+              </div>
+              <div class="col-3">
+                <span class="col-lbl text-uppercase">National Tenant</span>
+              </div>
+              <div class="col-3">
+                <span class="col-lbl text-uppercase">External links</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- table body -->
+        <div class="table-body">
+          <ng-container *ngFor="let tenant of model.items;">
+            <div (click)="onEdit($event, tenant)" class="row table-row">
+              <div class="col-2 d-flex align-items-center">
+                <span class="tenant-name text-ellipsis">{{tenant.name}}</span>
+              </div>
+              <div class="col-2 d-flex align-items-center">
+              <span *ngIf="!last" class="tbl-cell-val">
+                <ng-container *ngFor="let shop of tenant.shops; let last = last">
+                <ng-container *ngIf="!last">
+                    {{shop}},&nbsp;
+                </ng-container>
+                <ng-container *ngIf="last">
+                    {{shop}}
+                </ng-container>
+                </ng-container>
+              </span>
+              </div>
+              <div class="col-2 d-flex align-items-center">
+                <span class="tbl-cell-val">{{tenant.totalGLA}} sq m</span>
+              </div>
+              <div class="col-6 none-padding">
+                <div class="row none-margin-hr">
+                  <div class="col-3 d-flex align-items-center">
+                    <span class="tbl-cell-val">{{tenant.email}}</span>
+                  </div>
+                  <div class="col-3 d-flex align-items-center">
+                    <span class="tbl-cell-val">{{tenant.phone}}</span>
+                  </div>
+                  <div class="col-3 d-flex align-items-center">
+                    <span class="tbl-cell-val">{{nationalTenantsDictionary[tenant.nationalTenantId]}}</span>
+                  </div>
+                  <div class="col-3 d-flex align-items-center justify-content-between">
+                    <div class="d-flex">
+                      <div *ngFor="let contactExternalLink of tenant.contactExternalLinks | slice:0:3;">
+                        <div class="dropdown" ngbDropdown placement="bottom-center">
+                          <button [ngClass]="{'d-social-zoom': contactExternalLink.label == 'Zoom', 'd-social-whatsapp': contactExternalLink.label == 'Whatsapp', 'd-social-web-address': contactExternalLink.label == 'Web address', 'd-social-twitter': contactExternalLink.label == 'Twitter', 'd-social-skype': contactExternalLink.label == 'Skype', 'd-social-other': contactExternalLink.label == 'Other', 'd-social-linkedin': contactExternalLink.label == 'Linkedin', 'd-social-hangouts': contactExternalLink.label == 'Hangouts', 'd-social-google-plus': contactExternalLink.label == 'G+', 'd-social-dropbox': contactExternalLink.label == 'Dropbox', 'd-social-fb': contactExternalLink.label == 'Facebook', 'd-social-google-drive': contactExternalLink.label == 'Google Drive'}" class="dnm-btn dnm-social-btn d-social-icon"
+                                  ngbDropdownToggle
+                                  type="button"></button>
+                          <div (click)="$event.stopPropagation();" class="external-link-dropdown dropdown-menu"
+                               ngbDropdownMenu>
+                            <app-popup-external-link [label]="contactExternalLink.label"
+                                                     [value]="contactExternalLink.value"></app-popup-external-link>
+                          </div>
+                        </div>
+                      </div>
+                      <div *ngIf="tenant.contactExternalLinks.length == 4;">
+                        <div class="dropdown" ngbDropdown placement="bottom-center">
+                          <button [ngClass]="{'d-social-zoom': tenant.contactExternalLinks[3].label == 'Zoom', 'd-social-whatsapp': tenant.contactExternalLinks[3].label == 'Whatsapp', 'd-social-web-address': tenant.contactExternalLinks[3].label == 'Web address', 'd-social-twitter': tenant.contactExternalLinks[3].label == 'Twitter', 'd-social-skype': tenant.contactExternalLinks[3].label == 'Skype', 'd-social-other': tenant.contactExternalLinks[3].label == 'Other', 'd-social-linkedin': tenant.contactExternalLinks[3].label == 'Linkedin', 'd-social-hangouts': tenant.contactExternalLinks[3].label == 'Hangouts', 'd-social-google-plus': tenant.contactExternalLinks[3].label == 'G+', 'd-social-dropbox': tenant.contactExternalLinks[3].label == 'Dropbox', 'd-social-fb': tenant.contactExternalLinks[3].label == 'Facebook', 'd-social-google-drive': tenant.contactExternalLinks[3].label == 'Google Drive'}" class="dnm-btn dnm-social-btn d-social-icon"
+                                  ngbDropdownToggle
+                                  type="button"></button>
+                          <div (click)="$event.stopPropagation();" class="external-link-dropdown dropdown-menu"
+                               ngbDropdownMenu>
+                            <app-popup-external-link [label]="tenant.contactExternalLinks[3].label"
+                                                     [value]="tenant.contactExternalLinks[3].value"></app-popup-external-link>
+                          </div>
+                        </div>
+                      </div>
+                      <div *ngIf="tenant.contactExternalLinks.length > 4;">
+                        <div [autoClose]="'outside'" class="dropdown" ngbDropdown placement="bottom-right">
+                          <button class="dnm-btn dnm-social-btn d-social-icon additional-links-btn" ngbDropdownToggle
+                                  type="button">
+                            +{{tenant.contactExternalLinks.length - 3}}
+                          </button>
+                          <div (click)="$event.stopPropagation();" class="external-link-dropdown dropdown-menu"
+                               ngbDropdownMenu>
+                            <popup-social-list [model]="tenant.contactExternalLinks"></popup-social-list>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness" ngbDropdown>
+                      <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle type="button"></button>
+                      <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                        <button class="dropdown-item d-flex justify-content-between" type="button">
+                          Edit
+                          <i class="dnm-icon edit-icon"></i>
+                        </button>
+                        <button (click)="onDelete(tenant)" class="dropdown-item d-flex justify-content-between on-delete"
+                                type="button">
+                          Delete
+                          <i class="dnm-icon delete-icon"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </ng-container>
+        </div>
+        <pager (onPageChange)="setPage($event)" [pageSize]="pageSize" [page]="page" [total]="model.total"></pager>
+      </div>
+    </div>
+  </div>
+</div>

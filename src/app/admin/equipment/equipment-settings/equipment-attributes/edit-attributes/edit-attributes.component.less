@@ -1,0 +1,40 @@
+@import 'required-fields.less';
+
+.edit-attributes .modal-body {
+  padding: 10px 40px 50px;
+}
+
+.edit-attributes .footer-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 35px;
+
+  .dnm-btn-cancel,
+  .dnm-btn-primary {
+    width: 200px;
+  }
+
+  .dnm-btn-primary {
+    margin-left: 30px;
+  }
+}
+
+.attribute-field-name {
+  font-family: Gotham Medium
+}
+
+::ng-deep .edit-attributes .field-type-value .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-input {
+  height: 100%;
+  top: 0;
+  margin-left: 5px;
+}
+
+::ng-deep .edit-attributes .field-type-value .ng-select.ng-select-single .ng-select-container .ng-value-container .ng-value {
+  border: none;
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+  line-height: 30px;
+  height: 100%;
+}

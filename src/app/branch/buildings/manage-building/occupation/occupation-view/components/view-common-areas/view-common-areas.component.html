@@ -1,0 +1,167 @@
+<div class="container-fluid none-padding view-common-areas">
+  <!-- filter container -->
+  <div class="row none-margin-hr common-areas-filter">
+    <div class="col-12 none-padding d-flex align-items-center">
+      <span class="filter-res-lbl dnm-text-light">{{commonAreas.length}} common areas</span>
+      <a (click)="onCreate()" class="blue-text-btn" href="javascript:void(0);">
+        <i class="add-icon"></i> Add Common Area
+      </a>
+    </div>
+  </div>
+  <div class="container-fluid none-padding">
+    <div class="common-areas-tbl">
+
+      <!-- table header -->
+      <div class="row table-header">
+        <div class="col-3">
+          <a (click)="changeOrderIndex(1);" [ngClass]="{'active': orderIndex == 1 || orderIndex == -1}" class="col-lbl header-field sortable"
+             href="javascript:void(0);">
+            <span class="col-lbl text-uppercase">Common Area Name</span>
+            <i [ngClass]="{'inactive': orderIndex != 1 && orderIndex != -1, 'dnm-icon-sort-up': orderIndex == -1,'dnm-icon-sort-down': orderIndex != -1 }"
+               class="dnm-icon"></i>
+          </a>
+        </div>
+        <div class="col-5">
+          <span class="col-lbl text-uppercase">Supply types</span>
+        </div>
+        <div class="col-2">
+          <a (click)="changeOrderIndex(2);" [ngClass]="{'active': orderIndex == 2 || orderIndex == -2}" class="col-lbl header-field sortable"
+             href="javascript:void(0);">
+            <span class="col-lbl text-uppercase">Floor</span>
+            <i [ngClass]="{'inactive': orderIndex != 2 && orderIndex != -2, 'dnm-icon-sort-up': orderIndex == -2,'dnm-icon-sort-down': orderIndex != -2 }"
+               class="dnm-icon"></i>
+          </a>
+        </div>
+        <div class="col-2">
+          <span class="col-lbl text-uppercase">Active/Inactive</span>
+        </div>
+      </div>
+
+      <!-- table body -->
+      <div [formGroup]="form" class="table-body">
+        <div formArrayName="commonAreas">
+          <div *ngFor="let commonArea of form.get('commonAreas')['controls']; let idx=index" class="row table-row">
+            <div class="col-3">
+              <div class="d-flex align-items-center">
+                <div [formGroupName]="idx">
+                  <div [ngClass]="{'dnm-invalid-inp': commonArea.controls.name.invalid}"
+                       class="field-value area-name-inpt">
+                    <input #name (change)="updateCommonArea.emit({id: commonAreas[idx].id, path:'name', value: commonArea.controls.name.value})" [autoSelect] class="form-control req-frm-fld" formControlName="name"
+                           placeholder="Type here"
+                           type="text"/>
+                  </div>
+                  <div class="field-name"></div>
+                  <div *ngIf="commonArea.controls.name.dirty && !commonArea.controls.name.valid" class="field-value">
+                    <small *ngIf="commonArea.hasError('required', 'name')" class="alert-danger">
+                      Name is required
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ng-container [formGroupName]="idx">
+              <div class="col-5" formGroupName="services">
+                <div class="dnm-checkbox service-check">
+                  <input (change)="updateCommonAreaServices.emit({id: commonAreas[idx].id, path:'isElectricityEnable', value: commonArea.get('services').controls.electricity.value})" [checked]="commonArea.get('services').controls.electricity.value"
+                         formControlName="electricity"
+                         type="checkbox"/>
+                  <div class="state">
+                    <label>Electricity</label>
+                  </div>
+                </div>
+                <div class="dnm-checkbox service-check">
+                  <input (change)="updateCommonAreaServices.emit({id: commonAreas[idx].id, path:'isWaterEnable', value: commonArea.get('services').controls.water.value})" [checked]="commonArea.get('services').controls.water.value"
+                         formControlName="water"
+                         type="checkbox"/>
+                  <div class="state">
+                    <label>Water</label>
+                  </div>
+                </div>
+                <div class="dnm-checkbox service-check">
+                  <input (change)="updateCommonAreaServices.emit({id: commonAreas[idx].id, path:'isSewerageEnable', value: commonArea.get('services').controls.sewerage.value})" [checked]="commonArea.get('services').controls.sewerage.value"
+                         formControlName="sewerage"
+                         type="checkbox"/>
+                  <div class="state">
+                    <label>Sewerage</label>
+                  </div>
+                </div>
+                <div class="dnm-checkbox service-check">
+                  <input (change)="updateCommonAreaServices.emit({id: commonAreas[idx].id, path:'isGasEnable', value: commonArea.get('services').controls.gas.value})" [checked]="commonArea.get('services').controls.gas.value" formControlName="gas"
+                         type="checkbox"/>
+                  <div class="state">
+                    <label>Gas</label>
+                  </div>
+                </div>
+                <div class="dnm-checkbox service-check">
+                  <input (change)="updateCommonAreaServices.emit({id: commonAreas[idx].id, path:'isOtherEnable', value: commonArea.get('services').controls.other.value})" [checked]="commonArea.get('services').controls.other.value"
+                         formControlName="other"
+                         type="checkbox"/>
+                  <div class="state">
+                    <label>Other</label>
+                  </div>
+                </div>
+                <div *ngIf="isSubmitted && commonArea.get('services').hasError('empty')" class="alert-danger">
+                  At least one service should be selected
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="d-flex align-items-center justify-content-between">
+                  <div>
+                    <div class="field-value common-areas-floor">
+                      <input #floor (change)="updateCommonArea.emit({id: commonAreas[idx].id, path:'floor', value: commonArea.controls.floor.value})" [autoSelect] class="form-control" formControlName="floor"
+                             placeholder="Type here"
+                             type="text"
+                      />
+                    </div>
+                    <div class="field-name"></div>
+                    <div *ngIf="commonArea.controls.floor.dirty && !commonArea.controls.floor.valid"
+                         class="field-value">
+                      <small *ngIf="commonArea.hasError('pattern', 'floor')" class="alert-danger">
+                        Floor not in the correct format
+                      </small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-2 d-flex align-items-center justify-content-between">
+                <label class="dnm-switch-btn">
+                  <input #isActive (change)="updateCommonArea.emit({id: commonAreas[idx].id, path:'isActive', value: commonArea.controls.isActive.value})" [checked]="commonArea.controls.isActive.value"
+                         formControlName="isActive"
+                         type="checkbox">
+                  <span class="dnm-switch-slider round"></span>
+                </label>
+                <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+                  <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle></button>
+                  <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                    <button (click)="onOpenLiability(commonArea.controls.id.value)" class="dropdown-item d-flex justify-content-between"
+                            data-menu-item>
+                      Liability
+                      <i class="dnm-icon rent-time-icon"></i>
+                    </button>
+                    <button (click)="onRemoveCommonArea(commonArea.controls.id.value)" class="dropdown-item d-flex justify-content-between"
+                            data-menu-item>
+                      Remove
+                      <i class="dnm-icon delete-icon"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+
+      <!-- table footer -->
+      <div class="table-footer">
+        <div class="row none-margin-hr">
+          <div class="col-12 none-padding text-right footer-buttons">
+            <button (click)="onCancel()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+            <button (click)="onSave()" *ngIf="canEdit" class="dnm-btn dnm-btn-primary text-uppercase" type="button" [disabled]="buildingPeriodIsFinalized$ | async">
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

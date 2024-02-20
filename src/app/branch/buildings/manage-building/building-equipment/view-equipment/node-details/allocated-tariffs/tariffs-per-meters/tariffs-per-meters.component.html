@@ -1,0 +1,217 @@
+<div class="tariffs-per-mtrs-wrp position-relative" id="tariffPerMeters">
+  <search-form (onSearch)="onSearch($event)" [attributes]="attributes" [suppliers]="suppliers"
+               [tariffs]="tariffs"></search-form>
+  <div class="table-container table-responsive position-relative">
+    <table
+      class="table table-custom table-striped table-outside-border-body table-vertical-center table-nodes-tariffs-assignment">
+      <thead>
+      <tr>
+        <th>
+          <span class="head-col">Node</span>
+        </th>
+        <th>
+          <span class="head-col">Register</span>
+        </th>
+        <th>
+          <span class="head-col">Attributes</span>
+        </th>
+        <th>
+          <span class="head-col">Billing tariff</span>
+        </th>
+        <th>
+          <span class="head-col">Number of units</span>
+        </th>
+        <th>
+          <span class="head-col">Line items</span>
+        </th>
+        <th>
+          <span class="head-col">Category</span>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <ng-container *ngFor="let node of nodes | nodeDetailsFilterNodes : filter">
+        <tr class="node-item">
+          <td class="cell cell-node">
+            <div class="node-name">{{node.displayName}}</div>
+
+            <div class="node-detail-data">
+              <label class="node-details-label">Type:</label>
+              <span class="node-details-value">{{node.nodeType | nodeTypeLabel}}</span>
+            </div>
+            <div class="node-detail-data">
+              <label class="node-details-label">Supply to:</label>
+              <span [innerHTML]="node.supplyToId | supplierDetails : suppliers" class="node-details-value"></span>
+            </div>
+            <div class="node-detail-data">
+              <label class="node-details-label">Location type:</label>
+              <span [innerHTML]="node.supplyToLocationId | locationTypeDetails : suppliers"
+                    class="node-details-value"></span>
+            </div>
+            <div class="node-detail-data">
+              <label class="node-details-label">Factor:</label>
+              <span class="node-details-value">{{node.calculationFactor}}</span>
+            </div>
+          </td>
+          <td class="cell cell-register">
+            <ng-container *ngIf="node.registers">
+              <div *ngFor="let register of node.registers" class="register-item">
+                {{register.registerId | registerUnit | async}}
+              </div>
+            </ng-container>
+          </td>
+
+          <td class="cell cell-attributes">
+            <div *ngFor="let attribute of node.attributes">
+              <div [innerHTML]="attribute | attributeDetails : attributes" class="attribute-details"></div>
+            </div>
+          </td>
+
+          <td class="cell cell-tariff">
+            <ng-container *ngFor="let tariff of nodeTariffs | fiterTariffsBySubNode : node.nodeId">
+              <div [ngClass]="{'tariff-status-billing': tariff.isBilling, 'tariff-status-readonly': !tariff.isBilling}"
+                   class="tariff-item tariff-lineitems-{{tariff.lineItems | arrayLength}}">
+                <div class="dnm-checkbox">
+                  <input (change)="onTariffBillingChanged(node.nodeId, tariff, $event.target)" [(ngModel)]="tariff.isBilling" [value]="node.nodeId + tariff.id"
+                         id="node-id-{{ node.nodeId }}-{{tariff.id}}" name="node_ids[]"
+                         type="checkbox"/>
+                  <div class="state">
+                    <label></label>
+                  </div>
+                </div>
+                <span [innerHTML]="tariff.id | tariffDetails : tariffs" class="tariff-details"></span>
+                <i (click)="onTariffRemoved(node, tariff)" class="delete-icon btn-icon"></i>
+                <!-- <ng-container *ngIf="tariff.hasConflicts">
+                  <div class="category-warning-info" *ngIf="tariff.approvalInfo">
+                    <ng-template #tipContentTatiff>
+                      <note-popup [comment]="tariff.approvalInfo.comment" [editableNote]="true" [attachFile]="true" [file]="tariff.approvalInfo.file" [userData]="tariff.approvalInfo.userName"
+                        [noteDate]="tariff.approvalInfo.date" [fileUrl]="tariff.approvalInfo.fileUrl" (edit)="onSelectedNode(tariff, $event)" (close)="tooltipItem.close()" anchorSide="none"></note-popup>
+                    </ng-template>
+                    <button type="button" class="dnm-btn categ-note-btn dnm-btn-note" tooltipClass="note-in-tooltip" container="body" triggers="click" [autoClose]="false" placement="left"
+                      [ngbTooltip]="tipContentTatiff" #tooltipItem="ngbTooltip"></button>
+                  </div>
+                  <div class="category-warning-icon">
+                    <i class="dnm-icon dnm-warning-red" tooltipClass="tooltip-break-words" container="body" ngbTooltip="This tariff is not recommended for this node"></i>
+                  </div>
+                </ng-container> -->
+                <conflicts (edit)="onSelectedNode(tariff, $event)" *ngIf="tariff.hasConflicts" [approvalInfo]="tariff.approvalInfo"
+                           [isTariff]="true"></conflicts>
+              </div>
+            </ng-container>
+            <div *ngIf="!(nodeTariffs | fiterTariffsBySubNode : node.nodeId | arrayLength)" class="no-tariffs">
+              No any selected tariffs
+            </div>
+            <div>
+              <a (onConfirmerAction)="onTariffAdded(node, $event)" [buildingId]="buildingId" [excludeTariffs]="nodeTariffs | fiterTariffsBySubNode : node.nodeId" [hideCostReceiver]="costProviderActive"
+                 [nodeIds]="[node.nodeId]"
+                 [supplyType]="supplyType" [versionId]="versionId" class="btn-add-tariff"
+                 select-tariffs-bind-dialog>
+                <i class="add-icon icon-sm"></i>
+                Add tariff
+              </a>
+            </div>
+          </td>
+          <td class="cell cell-line-items">
+            <ng-container *ngFor="let tariff of nodeTariffs | fiterTariffsBySubNode : node.nodeId">
+              <div class="tariff-duplication-factor tariff-lineitems-{{tariff.lineItems | arrayLength}}">
+                <number-input *ngIf="tariff.lineItems | hasDuplicationFactor" [(ngModel)]="tariff.duplicationFactor" [integerValue]="true"
+                              [min]="1"></number-input>
+              </div>
+            </ng-container>
+          </td>
+
+          <td class="cell cell-line-items">
+            <ng-container *ngFor="let tariff of nodeTariffs | fiterTariffsBySubNode : node.nodeId">
+              <div [ngClass]="{'tariff-status-billing': tariff.isBilling, 'tariff-status-readonly': !tariff.isBilling}"
+                   class="line-item-wrp tariff-lineitems-{{tariff.lineItems | arrayLength}}">
+                <div *ngFor="let lineItem of tariff.lineItems" class="line-items-wrp d-flex">
+                  <div class="dnm-checkbox">
+                    <input [(ngModel)]="lineItem.isBilling" name="line_item_billing[]" type="checkbox"/>
+                    <div class="state">
+                      <label></label>
+                    </div>
+                  </div>
+                  <span [innerHTML]="lineItem.id | lineItemDetails : tariffs"
+                        class="cell-fld-val line-items-label"></span>
+                </div>
+              </div>
+            </ng-container>
+          </td>
+          <td class="cell cell-category">
+            <ng-container *ngFor="let tariff of nodeTariffs | fiterTariffsBySubNode : node.nodeId">
+              <div [ngClass]="{'tariff-status-billing': tariff.isBilling, 'tariff-status-readonly': !tariff.isBilling}"
+                   class="category-item-wrp tariff-lineitems-{{tariff.lineItems | arrayLength}}">
+                <div *ngFor="let lineItem of tariff.lineItems" class="category-item">
+                  <div class="categories-list">
+                    <ng-select (change)="onCategorySelected(tariff, lineItem, $event)" [(ngModel)]="lineItem.categoryId"
+                               [clearable]="false"
+                               [items]="tariffs | findLineItemCategories : tariff.id : lineItem.id" [searchable]="false" appendTo="#tariffPerMeters" bindLabel="name"
+                               bindValue="id"
+                               class="dnm-multiple-select category-select">
+                      <ng-template ng-header-tmp>
+                        <div *ngIf="!(tariffs | findLineItemCategories : tariff.id : lineItem.id | markRecommendedCategory : recommendedTariffs[node.nodeId]: tariff.id | tariffSubcategory: true | arrayLength)"
+                             [ngClass]="{'d-none': !(tariffs | findLineItemCategories : tariff.id : lineItem.id | markRecommendedCategory : recommendedTariffs[node.nodeId]: tariff.id | arrayLength)}"
+                             class="ng-select-label-norecommended">
+                          No recommended categories
+                        </div>
+                      </ng-template>
+                      <ng-template let-item="item" ng-option-tmp>
+                        <div [ngClass]="{'marked-as-hidden': !item.isRecommended}">
+                          <div>{{item.name}}</div>
+                          <div *ngIf="item.isRecommended" class="ng-select-label-recommended">Recommended</div>
+                        </div>
+                      </ng-template>
+                      <ng-template ng-footer-tmp>
+                        <div *ngIf="(tariffs | findLineItemCategories : tariff.id : lineItem.id | markRecommendedCategory : recommendedTariffs[node.nodeId]: tariff.id | arrayLength) &&
+                                     (tariffs | findLineItemCategories : tariff.id : lineItem.id | markRecommendedCategory : recommendedTariffs[node.nodeId]: tariff.id | tariffSubcategory: false | arrayLength)"
+                             class="d-flex aling-items-center justify-content-center">
+                          <button class="btn blue-text-btn none-padding btn-show-more" showMoreItems type="button">Show
+                            All Categories
+                          </button>
+                        </div>
+                      </ng-template>
+                    </ng-select>
+                  </div>
+                  <div class="category-swicher-activation">
+                    <label class="dnm-switch-btn">
+                      <input [(ngModel)]="lineItem.isActive" type="checkbox">
+                      <span class="dnm-switch-slider round"></span>
+                    </label>
+                  </div>
+                  <!-- <ng-container *ngIf="lineItem.hasConflicts">
+                    <div class="category-warning-icon">
+                      <i class="dnm-icon dnm-warning-red" tooltipClass="tooltip-break-words" container="body" ngbTooltip="This category is not recommended for this line item"></i>
+                    </div>
+                    <div class="category-warning-info" *ngIf="lineItem.approvalInfo">
+                      <ng-template #tipContentLineItem>
+                        <note-popup [comment]="lineItem.approvalInfo.comment" [editableNote]="true" [attachFile]="true" [file]="lineItem.approvalInfo.file"
+                          [userData]="lineItem.approvalInfo.userName" [noteDate]="lineItem.approvalInfo.date" [fileUrl]="lineItem.approvalInfo.fileUrl" (edit)="onSelectedNode(lineItem, $event)"
+                          (close)="tooltipItem.close()" anchorSide="none"></note-popup>
+                      </ng-template>
+                      <button type="button" class="dnm-btn categ-note-btn dnm-btn-note" tooltipClass="note-in-tooltip" container="body" triggers="click" [autoClose]="false" placement="left"
+                        [ngbTooltip]="tipContentLineItem" #tooltipItem="ngbTooltip"></button>
+                    </div>
+                  </ng-container> -->
+                  <conflicts (edit)="onSelectedNode(lineItem, $event)" *ngIf="lineItem.hasConflicts" [approvalInfo]="lineItem.approvalInfo"
+                             [isTariff]="false"></conflicts>
+                </div>
+              </div>
+            </ng-container>
+          </td>
+        </tr>
+      </ng-container>
+      </tbody>
+    </table>
+  </div>
+  <div class="row none-margin-hr">
+    <div class="col-12 none-padding footer-btns d-flex justify-content-end">
+      <button [routerLink]="['/branch', branchId, 'buildings', buildingId, 'version', versionId, 'equipment', 'nodes']" class="dnm-btn dnm-btn-cancel text-uppercase"
+              type="button">
+        Cancel
+      </button>
+      <button (confirmedAction)="onSave($event)" class="dnm-btn dnm-btn-primary text-uppercase" comment-bind-dialog
+              type="button" [disabled]="buildingPeriodIsFinalized">Save
+      </button>
+    </div>
+  </div>
+</div>

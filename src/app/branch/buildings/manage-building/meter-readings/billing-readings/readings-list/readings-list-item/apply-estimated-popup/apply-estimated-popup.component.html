@@ -1,0 +1,238 @@
+<div class="apply-estimated-modal">
+  <div class="modal-header">
+    <h5 class="modal-title">Apply estimated readings | {{(selectedBuildingPeriod$ | async) ? (selectedBuildingPeriod$ | async).name : ''}}</h5>
+    <button (click)="onClose()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <form [formGroup]="form">
+    <div class="container">
+      <div class="row justify-content-end">
+        <div class="col-4">
+          <span class="text-form-field">Current Reading Date: </span>
+          <span class="bd-col-lbl">{{currentReadingDate | date:'dd/MM/yy' }}</span>
+        </div>
+        <div class="col-3">
+          <span class="text-form-field">Period Length: {{periodDuration}} Days</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-body">
+      <div class="group-bar-view">
+        <bar-chart *ngIf="selectedRegister"
+                   [configurations]="configurations"
+                   [customColors]="customColors"
+                   [data]="currentPeriodData"
+                   [isStats]="false"
+                   [isYearOnYearBar]="true"
+                   [registerInfo]="selectedRegister">
+        </bar-chart>
+      </div>
+      <ng-container *ngIf="dailyEstimates$ | async as dailyEstimates">
+        <div class="bl-gradient-title">Daily average</div>
+        <div class="container-fluid none-padding">
+          <!-- header row -->
+          <div class="row table-header none-margin-hr">
+            <div class="col-3 d-flex align-items-center none-padding">
+              <div class="row w-100 none-margin-hr">
+                <div class="col-8 tbl-col">
+                  <span class="col-lbl rdng-date-lbl text-uppercase">Reading Date</span>
+                </div>
+                <div class="col-4 tbl-col">
+                  <span class="col-lbl text-uppercase">Days</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-9 d-flex align-items-center none-padding">
+              <div class="row w-100 none-margin-hr">
+                <div class="col-2 tbl-col">
+                  <span class="col-lbl text-uppercase">Previous Reading</span>
+                </div>
+                <div class="col-2 tbl-col">
+                  <span class="col-lbl text-uppercase">Actual Reading</span>
+                </div>
+                <div class="col-2 tbl-col">
+                  <span class="col-lbl text-uppercase">Usage</span>
+                </div>
+                <div class="col-2 tbl-col">
+                  <span class="col-lbl text-uppercase">Daily Usage</span>
+                </div>
+                <div class="col-2 tbl-col">
+                  <span class="col-lbl text-uppercase">Estimated Reading</span>
+                </div>
+                <div class="col-2 tbl-col">
+                  <span class="col-lbl text-uppercase">Estimated Usage</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-body">
+            <div *ngFor="let item of dailyEstimates" class="row table-row none-margin-hr">
+              <div class="col-3 d-flex align-items-center none-padding">
+                <div class="row w-100 none-margin-hr">
+                  <div class="col-8 d-flex align-items-center tbl-col">
+                    <input [value]="item.optionId" class="est-radio-slct" formControlName="estimationOption" name="estimationOption"
+                           type="radio" title="Estimate Option">
+                    <span class="bd-col-lbl">{{item.readingDate | dateMediumFormat }}</span>
+                  </div>
+                  <div class="col-4 tbl-col">
+                    <span class="bd-col-lbl">{{item.durationDays}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-9 d-flex align-items-center none-padding">
+                <div class="row w-100 none-margin-hr">
+                  <div class="col-2 tbl-col">
+                    <span class="bd-col-lbl max-col-width text-ellipsis"
+                          title="{{item.previousReadingValue}}">{{item.previousReadingValue | number:'1.0-2' }}</span>
+                  </div>
+                  <div class="col-2 tbl-col">
+                    <span class="bd-col-lbl max-col-width text-ellipsis"
+                          title="{{item.readingValue}}">{{item.readingValue | number:'1.0-2'}}</span>
+                  </div>
+                  <div class="col-2 tbl-col">
+                    <span class="bd-col-lbl max-col-width text-ellipsis"
+                          title="{{item.usage}}">{{item.usage | number:'1.0-2'}}</span>
+                  </div>
+                  <div class="col-2 tbl-col">
+                    <span class="bd-col-lbl max-col-width text-ellipsis"
+                          title="{{item.dailyUsage}}">{{item.dailyUsage | number:'1.0-2' }}</span>
+                  </div>
+                  <div class="col-2 tbl-col">
+                    <span class="bd-col-lbl max-col-width text-ellipsis"
+                          title="{{item.estimatedReading}}">{{item.estimatedReading | number:'1.0-2' }}</span>
+                  </div>
+                  <div class="col-2 tbl-col">
+                    <span class="bd-col-lbl max-col-width text-ellipsis"
+                          title="{{item.estimatedUsage}}">{{item.estimatedUsage | number:'1.0-2' }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </ng-container>
+
+      <monthly-estimated (selectedPeriodsAmountChange)="monthlyEstimatedNumberOfPeriodsChange($event)" (selectedPeriodsChange)="monthlyEstimaterPeriodsSelectionChange($event)"
+                         *ngIf="monthlyEstimates"
+                         [(selectedPeriods)]="monthlyEstimatedSelectedPeriods"
+                         [estimate]="monthlyEstimates" [formGroup]="form"></monthly-estimated>
+
+      <year-on-year-estimated *ngIf="yearOnYearEstimates" [estimate]="yearOnYearEstimates" [formGroup]="form">
+      </year-on-year-estimated>
+
+      <div class="bl-gradient-title">Custom estimate</div>
+      <div class="container-fluid none-padding">
+
+        <!-- header row -->
+        <div class="row table-header none-margin-hr">
+          <div class="col-12 d-flex align-items-center none-padding">
+            <div class="row w-100 none-margin-hr">
+              <div class="col-4 tbl-col">
+                <span class="col-lbl rdng-date-lbl text-uppercase">Custom Reading</span>
+              </div>
+              <div class="col-2 tbl-col">
+                <span class="col-lbl text-uppercase">Previous Reading</span>
+              </div>
+              <div class="col-2 tbl-col">
+                <span class="col-lbl text-uppercase">Estimated Usage</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Custom Fields -->
+        <div class="table-body">
+          <div class="row table-row none-margin-hr">
+            <div class="col-12 d-flex align-items-center none-padding">
+              <div class="row w-100 none-margin-hr">
+                <div class="col-4 d-flex align-items-center tbl-col">
+                  <input (click)="onChangeChecked($event)"
+                         class="est-radio-slct"
+                         formControlName="estimationOption"
+                         name="estimationOption"
+                         type="radio"
+                         value="custom"
+                         title="Estimate Option">
+                  <!-- <number-input (change)="onChangeCustomEstimate()"
+                       (onBlur)="onBlurCustomEstimate()"
+                       formControlName="customEstimatedValue">
+                  </number-input>-->
+                  <input (blur)="onBlurCustomEstimate()" (change)="onChangeCustomEstimate()" class="estimate-input"
+                         formControlName="customEstimatedValue" type="number" title="Estimate Input">
+                  <small *ngIf="isSubmitted && customEstimatedValue.errors?.required"
+                         class="position-absolute alert-danger alert-bottom">
+                    Value is required
+                  </small>
+                </div>
+                <div class="col-2 tbl-col">
+                  <span class="bd-col-lbl text-ellipsis"
+                        title="{{previousReading}}">{{previousReading | number:'1.0-2'}}</span>
+                </div>
+                <div class="col-2 tbl-col">
+                  <span class="bd-col-lbl text-ellipsis"
+                        title="{{customEstimatedUsage}}">{{customEstimatedUsage | number:'1.0-2'}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mdl-hr-line"></div>
+
+      <div class="input-row">
+        <div class="bl-gradient-title none-margin-vr mr-5 reason-label">
+          Reason
+        </div>
+        <div class="field-value d-flex align-items-center reason-dropdown col-10">
+          <ng-select [clearable]="false" [closeOnSelect]="true" [dropdownPosition]="'top'" [hideSelected]="true"
+                     [searchable]="false" class="dnm-dropdown-select reason-dropdown"
+                     formControlName="reason">
+            <ng-option *ngFor="let item of estimatedReasons$ | async" [value]="item">{{item.name}}</ng-option>
+          </ng-select>
+        </div>
+      </div>
+
+
+      <div class="bl-gradient-title">Add note</div>
+      <textarea class="apl-estmd-txtarea form-control" formControlName="notes" placeholder="Type here"></textarea>
+      <div class="row none-margin-hr">
+        <div class="col-12 none-padding footer-errors">
+          <small *ngIf="isSubmitted && estimationOption.invalid " class="alert-danger">
+            At least one estimation option must be selected
+          </small>
+        </div>
+        <div class="col-12 none-padding footer-errors">
+          <small *ngIf="isSubmitted && estimateReason.invalid " class="alert-danger">
+            Reason is required
+          </small>
+        </div>
+        <div class="col-12 none-padding footer-errors">
+          <small *ngIf="isSubmitted && form.controls.notes.invalid " class="alert-danger">
+            Note is required
+          </small>
+        </div>
+        <div class="col-12 none-padding footer-errors">
+          <small *ngIf="(readingConsecutiveCounter | async) >= consecutiveEstimatedLimit" class="alert-danger">
+            This is a {{(readingConsecutiveCounter | async)}}-th consecutive estimated reading
+          </small>
+        </div>
+        <div class="col-12 none-padding footer-errors">
+          <small *ngIf="estimatedReadingExists" class="alert-danger">
+            Estimated reading already exists
+          </small>
+        </div>
+        <div class="col-12 none-padding text-right footer-buttons">
+          <button (click)="onClose()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+          <button (click)="onApply()" [disabled]="estimatedReadingExists" class="dnm-btn dnm-btn-primary text-uppercase"
+                  type="button">Apply
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+</div>

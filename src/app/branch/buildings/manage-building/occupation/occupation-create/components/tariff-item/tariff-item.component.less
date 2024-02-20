@@ -1,0 +1,71 @@
+@import 'variables.less';
+
+.trf {
+  border: 1px solid @color-line;
+  background-color: @color-background-white;
+  margin-bottom: 10px;
+  font-family: 'Gotham Book', serif;
+  line-height: 1;
+  font-size: 13px;
+  color: @color-text-tertiary;
+}
+
+.trf-name-wrp {
+  border-right: 1px solid @color-line;
+  padding: 20px;
+}
+
+.trf-name-val {
+  font-family: 'Gotham Medium', serif;
+  font-size: 16px;
+  line-height: 1;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.trf-name-dets {
+  line-height: 1;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.trf-name-dets .details-fld-name {
+  color: @color-description;
+}
+
+.trf-version-row {
+  padding: 30px 0;
+}
+
+.trf-version-row:not(:last-child) {
+  border-bottom: 1px solid @color-line;
+}
+
+.trf-version-val {
+  font-weight: bold;
+}
+
+.trf-item-list {
+  padding: 0;
+  margin: 0;
+}
+
+.trf-item-list li:not(:last-child) {
+  margin-bottom: 5px;
+}
+
+/* Specific styles */
+.trf--allocated-building .trf-name-wrp {
+  width: 27%;
+}
+
+.trf--allocated-building .trf-body {
+  width: 68%;
+}
+
+.trf--allocated-building .trf-actions {
+  border-left: 1px solid @color-line;
+  width: 5%;
+}
+
+

@@ -1,0 +1,28 @@
+<div class="container-fluid none-padding consumpt-report">
+    <div class="row none-margin-hr">
+        <div class="col none-padding">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    <span class="text-uppercase filter-drpdwn-lbl">Building Period:</span>
+                    <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+                      <button class="btn btn-secondary dropdown-toggle bld-per-drpdwn-btn text-left" ngbDropdownToggle>
+                        <span *ngIf="!selectedPeriod">Periods not found</span>
+                        <span *ngIf="selectedPeriod">
+                          {{selectedPeriod.name}} ({{selectedPeriod.startDate | dateMediumFormat}}
+                          - {{selectedPeriod.endDate | dateMediumFormat}})
+                        </span>
+                      </button>
+                      <div class="dropdown-menu bld-per-drpdwn-menu" ngbDropdownMenu>
+                        <button (click)="onPeriodChanged(period)" *ngFor="let period of periods;" class="dropdown-item">
+                          {{period.name}} ({{period.startDate | dateMediumFormat}} - {{period.endDate | dateMediumFormat}})
+                        </button>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="reports-tenants-list">
+    <detail-consumption-tenants-list [tenants]="rows" (expandToggleTenantEvent)="onExpandToggleTenant($event)"></detail-consumption-tenants-list>
+</div>

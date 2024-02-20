@@ -1,0 +1,154 @@
+<div class="select-units-modal">
+  <div class="modal-header">
+    <h5 class="modal-title bl-gradient-title">Select Units</h5>
+    <button (click)="ngbModal.close()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <div class="alloc-units-wrp">
+        <div class="pb-3">
+          <simple-search-form (onSearch)="search($event)"></simple-search-form>
+        </div>
+        <div class="nav-row d-flex justify-content-between align-items-center pb-3 flex-wrap">
+          <div class="d-flex row w-100">
+            <div class="d-flex align-items-center col-sm-2 col-12">
+              <span class="results-label dnm-text-light">
+                {{model | totalRegistersUnits}} registers
+              </span>
+            </div>
+            <div class="col-sm-10 col-12 d-flex justify-content-end align-items-center flex-wrap">
+              <div class="d-flex align-items-center drpdwn-wrp pr-3 mb-2">
+                <span class="text-uppercase label-dropdown-filter mr-2">Unit:</span>
+                <ng-select (change)="onChangeFilterData()" [(ngModel)]="selectedUnitId" [clearable]="false"
+                           [closeOnSelect]="true" [searchable]="false" class="dnm-dropdown-select">
+                  <ng-option [value]="'-1'">All</ng-option>
+                  <ng-option *ngFor="let item of unitsFilter" [value]="item.id">{{item.name}}</ng-option>
+                </ng-select>
+              </div>
+              <div *ngIf="selectedUnitOfMeasurement === unitOfMeasurementType.kWh"
+                   class="d-flex align-items-center drpdwn-wrp pr-3 mb-2">
+                <span class="text-uppercase label-dropdown-filter mr-2">Register:</span>
+                <ng-select (change)="onChangeFilterData()" [(ngModel)]="filterData.timeOfUseFilter" [clearable]="false"
+                           [closeOnSelect]="true" [searchable]="false"
+                           class="dnm-dropdown-select">
+                  <ng-option [value]="-1">All</ng-option>
+                  <ng-option *ngFor="let item of timeOfUseDropdownItems" [value]="item.id">{{item.name}}</ng-option>
+                </ng-select>
+              </div>
+              <div class="d-flex align-items-center drpdwn-wrp pr-3 mb-2">
+                <span class="text-uppercase label-dropdown-filter mr-2">Supply type:</span>
+                <ng-select (change)="onChangeFilterData()" [(ngModel)]="filterData.supplyTypeFilter" [clearable]="false"
+                           [closeOnSelect]="true" [dropdownPosition]="'top'" [hideSelected]="true"
+                           [searchable]="false" class="dnm-dropdown-select">
+                  <ng-option [value]="-1">All</ng-option>
+                  <ng-option *ngFor="let item of supplyTypeDropdownItems"
+                             [value]="item.value">{{item.label}}</ng-option>
+                </ng-select>
+              </div>
+              <div class="d-flex align-items-center drpdwn-wrp pr-3 mb-2">
+                <span class="text-uppercase label-dropdown-filter mr-2">Supply To:</span>
+                <ng-select (change)="onChangeFilterData()" [(ngModel)]="filterData.supplyToIdFilter" [clearable]="false"
+                           [closeOnSelect]="true" [searchable]="false"
+                           class="dnm-dropdown-select">
+                  <ng-option [value]="'-1'">All</ng-option>
+                  <ng-option *ngFor="let item of supplyToFilter" [value]="item.id">{{item.name}}</ng-option>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="table-container table-list-units">
+          <table class="table table-custom table-white table-outside-border-body table-dialog">
+            <thead>
+            <tr>
+              <th>
+                <div class="dnm-checkbox list-header-checkbox">
+                  <input (change)="onSelectAll()" [checked]="isAllSelected" [value]="-1" type="checkbox"/>
+                  <div class="state">
+                    <label></label>
+                  </div>
+                </div>
+              </th>
+              <th>
+                <a class="head-col">
+                  <span class="text-ellipsis" title="Register">Register</span>
+                  <i class="dnm-icon"></i>
+                </a>
+              </th>
+              <th>
+                <span class="head-col" title="Node Type">Node Type</span>
+              </th>
+              <th>
+                <span class="head-col" title="Node">Node</span>
+              </th>
+              <th>
+                <span class="head-col" title="Unit">Unit</span>
+              </th>
+              <th>
+                <a class="head-col">
+                  <span class="text-ellipsis" title="Supply To">Supply To</span>
+                  <i class="dnm-icon"></i>
+                </a>
+              </th>
+              <th>
+                <a class="head-col">
+                  <span class="text-ellipsis" title="Description">Description</span>
+                  <i class="dnm-icon"></i>
+                </a>
+              </th>
+            </tr>
+            </thead>
+            <tbody *ngFor="let unit of model">
+            <ng-container *ngFor="let node of unit.nodesInfo">
+              <tr *ngFor="let register of node.registers; let i = index">
+                <td>
+                  <div class="dnm-checkbox">
+                    <input (ngModelChange)="onSelectedDataChanged()" [(ngModel)]="register.isSelected" [value]="i" id="unit-id-{{ i }}"
+                           name="register_ids[]" type="checkbox"/>
+                    <div class="state">
+                      <label></label>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="unit-field">{{register.id | registerUnit | async}}</div>
+                </td>
+                <td>
+                  {{node.type | nodeTypeLabel : 'short'}}
+                </td>
+                <td class="d-flex align-items-center">
+                  <div [ngClass]="{
+                     'electricity-icon': node.supplyType == supplyType.Electricity,
+                     'water-icon': node.supplyType == supplyType.Water,
+                     'sewerage-icon': node.supplyType == supplyType.Sewerage,
+                     'gas-icon': node.supplyType == supplyType.Gas,
+                     'ad-hoc-icon': node.supplyType == supplyType.AdHoc
+                }" class="service-icon">
+                  </div>
+                  <span class="pl-4">{{node.name | emptyValue | slice : -4}}
+                    -{{node.supplyType | supplyTypeLetter}}</span>
+                </td>
+                <td>
+                  {{unit.unitName}}
+                </td>
+                <td>
+                  {{node.supplyToInfo ? node.supplyToInfo.name : ''}}
+                </td>
+                <td>
+                  {{register.description || ''}}
+                </td>
+              </tr>
+            </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button (click)="ngbModal.close()" class="dnm-btn dnm-btn-cancel modal-btn">Cancel</button>
+    <button (click)="onAdd()" class="dnm-btn dnm-btn-primary modal-btn">Add</button>
+  </div>
+</div>

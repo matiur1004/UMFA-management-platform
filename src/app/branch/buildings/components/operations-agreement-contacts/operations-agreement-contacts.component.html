@@ -1,0 +1,46 @@
+<div class="container-fluid oper-agr-contacts">
+
+  <div class="dropdown d-block fullwidth-dropdown row" ngbDropdown>
+    <button class="btn btn-secondary dropdown-toggle text-left" data-dropdown ngbDropdownToggle>
+      {{department?.name ? department.name : 'Select department'}}
+    </button>
+    <div class="dropdown-menu" data-DropdownMenuOpened ngbDropdownMenu>
+      <ng-container *ngFor="let department of departments">
+        <button (click)="onDepartmentChange(department)" class="dropdown-item">{{department.name}}</button>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="row">
+    <small *ngIf="!department && isSubmited" class="alert-danger">
+      {{ validationMessages.departments }}
+    </small>
+  </div>
+
+  <div class="dropdown d-block fullwidth-dropdown row mt-2" ngbDropdown>
+    <button class="btn btn-secondary dropdown-toggle text-left" ngbDropdownToggle>
+      {{contact?.fullName ? contact.fullName : 'Select contact'}}
+    </button>
+    <div class="dropdown-menu" ngbDropdownMenu>
+      <ng-container *ngFor="let contact of departmentContacts">
+        <button (click)="onContactChange(contact)" class="dropdown-item">{{contact.fullName}}</button>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="row">
+    <small *ngIf="!contact && isSubmited" class="alert-danger">
+      {{ validationMessages.contacts }}
+    </small>
+  </div>
+
+  <ng-container *ngIf="contact">
+    <div class="row mt-2">
+      <span class="fld-val-txt">{{contact.phone}}</span>
+    </div>
+
+    <div class="row mt-2">
+      <span class="fld-val-txt">{{contact.email}}</span>
+    </div>
+  </ng-container>
+</div>

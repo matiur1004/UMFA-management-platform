@@ -1,0 +1,147 @@
+<div class="apply-estimated-modal">
+
+  <ng-container *ngIf="estimate" class="none-padding">
+    <div class="bl-gradient-title">Monthly average</div>
+    <div class="container-fluid mx-0 px-0">
+
+      <div class="row table-header none-margin-hr">
+        <div class="col-2 text-center">
+          <span class="col-lbl text-uppercase">Number of Periods</span>
+        </div>
+        <div class="col-4">
+          <span class="col-lbl text-uppercase">Selected Months</span>
+        </div>
+        <div class="col-1 align-items-center ">
+          <span class="col-lbl text-uppercase">Days</span>
+        </div>
+        <div class="col-1 text-center">
+          <span class="col-lbl text-uppercase">Usage</span>
+        </div>
+        <div class="col-1 text-center">
+          <span class="col-lbl text-uppercase">Daily Usage</span>
+        </div>
+        <div class="col text-center">
+          <span class="col-lbl text-uppercase">Estimated Reading</span>
+        </div>
+        <div class="col text-center">
+          <span class="col-lbl text-uppercase">Estimated Usage</span>
+        </div>
+      </div>
+
+      <div class="table-row monthly-row table-body">
+        <div class="col-2 none-padding align-self-center text-center">
+          <div class="d-flex bd-highlight align-self-center align-items-center text-center pr-3">
+            <div class="d-flex none-padding">
+              <div [formGroup]="formGroup">
+                <input [value]="estimate.optionId" class="est-radio-slct" formControlName="estimationOption" name="estimationOption"
+                       style="margin-right: 16px;"
+                       type="radio">
+              </div>
+            </div>
+            <div class="d-flex">
+              <number-input (ngModelChange)="selectedPeriodsAmountChange.emit($event)"
+                            [max]="periods.length" [ngModel]="selectedPeriods.length"
+                            min="1"></number-input>
+            </div>
+          </div>
+        </div>
+        <div class="col-4 none-padding align-self-center">
+          <ng-select (add)="selectedPeriodsChange.emit(selectedPeriods)" (remove)="selectedPeriodsChange.emit(selectedPeriods)" [(ngModel)]="selectedPeriods"
+                     [clearable]="false" [closeOnSelect]="false" [items]="periods"
+                     [multiple]="true" bindLabel="ellipsizedPeriodName"
+                     bindValue="periodId"
+                     class="period-drp dnm-multiple-select w-100">
+
+            <ng-template class="periods-drp-header" ng-header-tmp>
+              <div class="container periods-drp-header px-2">
+                <div class="row align-items-start">
+                  <div class="col-4">
+                    <span class="col-lbl text-uppercase">Period</span>
+                  </div>
+                  <div class="col-2">
+                    <span class="col-lbl text-uppercase">Date</span>
+                  </div>
+                  <div class="col-2">
+                    <span class="col-lbl text-uppercase">Days</span>
+                  </div>
+                  <div class="col-2">
+                    <span class="col-lbl text-uppercase">Reading</span>
+                  </div>
+                  <div class="col-2">
+                    <span class="col-lbl text-uppercase">Usage</span>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+
+            <ng-template let-index="index" let-item="item" let-item$="item$" ng-option-tmp>
+              <div class="container px-0">
+                <div class="row period-row align-items-center">
+                  <div class="col-4 text-start">
+                    <input [ngModel]="item$.selected" id="item-{{index}}" type="checkbox"/> {{item.periodName}}
+                  </div>
+                  <div class="col-2 text-center px-0">
+                    <span class="bd-col-lbl max-col-width"
+                          title="{{item.lastReadingDate}}">{{item.lastReadingDate | date:'dd/MM/yy' }}</span>
+                  </div>
+                  <div class="col-2 text-center px-0">
+                    <span class="bd-col-lbl max-col-width" title="{{item.days}}">{{item.days | number:'1.0-2' }}</span>
+                  </div>
+                  <div class="col-2 text-center px-0">
+                    <span class="bd-col-lbl max-col-width"
+                          title="{{item.readingValue}}">{{item.readingValue | number:'1.0-2' }}</span>
+                  </div>
+                  <div class="col-2 text-center px-0">
+                    <span class="bd-col-lbl max-col-width"
+                          title="{{item.usage}}">{{item.usage | number:'1.0-2' }}</span>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </ng-select>
+        </div>
+        <div class="col-1 none-padding align-self-center text-center">
+          <span class="bd-col-lbl max-col-width text-ellipsis"
+                title="{{estimate.durationDays}}">{{estimate.durationDays | number:'1.0-2' }}</span>
+        </div>
+        <div class="col-1 none-padding align-self-center text-center">
+          <span class="bd-col-lbl max-col-width text-ellipsis"
+                title="{{estimate.usage}}">{{estimate.usage | number:'1.0-2' }}</span>
+        </div>
+        <div class="col-1 none-padding align-self-center text-center">
+          <span class="bd-col-lbl max-col-width text-ellipsis"
+                title="{{estimate.dailyUsage}}">{{estimate.dailyUsage | number:'1.0-2' }}</span>
+        </div>
+
+        <!-- Estimated Readings Changes - DUN3345 -->
+
+        <div class="col none-padding align-self-center text-center">
+          <span class="bd-col-lbl max-col-width text-ellipsis"
+                title="{{estimate.estimatedReading}}">{{estimate.estimatedReading | number:'1.0-2' }}
+              </span>
+        </div> 
+
+        <!-- <div *ngIf="registerControl.value.registerType == 1" class="col none-padding align-self-center text-center">
+          <span class="bd-col-lbl max-col-width text-ellipsis"
+                title="{{estimate.averageUsage}}">{{estimate.averageUsage | number:'1.0-2' }}</span>
+        </div>
+
+        <div *ngIf="registerControl.value.registerType == 0" class="col none-padding align-self-center text-center">
+          <span class="bd-col-lbl max-col-width text-ellipsis"
+                title="{{registerControl.value.previousReadingValue + registerControl.value.averageUsage}}">{{registerControl.value.previousReadingValue + registerControl.value.averageUsage | number:'1.0-2' }}</span>
+        </div>
+
+        <div *ngIf="registerControl.value.registerType == 2" class="col none-padding align-self-center text-center">
+          <span class="bd-col-lbl max-col-width text-ellipsis"
+                title="{{estimate.averageUsage}}">{{estimate.averageUsage | number:'1.0-2' }}</span>
+        </div> -->
+
+        <div class="col none-padding align-self-center text-center">
+          <span class="bd-col-lbl max-col-width text-ellipsis"
+                title="{{estimate.estimatedUsage}}">{{estimate.estimatedUsage | number:'1.0-2' }}</span>
+        </div>
+
+      </div>
+    </div>
+
+  </ng-container>

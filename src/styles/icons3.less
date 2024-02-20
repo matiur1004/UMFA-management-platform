@@ -1,0 +1,226 @@
+@import 'variables.less';
+
+
+// here should be icons moved from modules
+.electricity-icon {
+  background-image: url('../assets/images/icons/services/electricity.svg');
+
+  &:before {
+    .gradient-pink();
+  }
+}
+
+.electricity-white-icon {
+  background-image: url('../assets/images/icons/services/electricity-white.svg');
+}
+
+.water-icon {
+  background-image: url('../assets/images/icons/services/water.svg');
+
+  &:before {
+    .gradient-blue();
+  }
+
+}
+
+.water-white-icon {
+  background-image: url('../assets/images/icons/services/water-white.svg');
+}
+
+.sewerage-icon {
+  background-image: url('../assets/images/icons/services/sewerage.svg');
+
+  &:before {
+    .gradient-violet();
+  }
+}
+
+.sewerage-white-icon {
+  background-image: url('../assets/images/icons/services/sewerage-white.svg');
+}
+
+.gas-icon {
+  background-image: url('../assets/images/icons/services/gas.svg');
+
+  &:before {
+    .gradient-yellow();
+  }
+}
+
+.gas-white-icon {
+  background-image: url('../assets/images/icons/services/gas-white.svg');
+}
+
+.ad-hoc-icon {
+  background-image: url('../assets/images/icons/services/ad-hoc.svg');
+
+  &:before {
+    .gradient-black();
+  }
+}
+
+.ad-hoc-white-icon {
+  background-image: url('../assets/images/icons/services/ad-hoc-white.svg');
+}
+
+
+.input-icon {
+  background-image: url('../assets/images/icons/meter-readings/enter-rdngs-btn-icon.svg');
+}
+
+.import-icon {
+  background-image: url('../assets/images/icons/meter-readings/import-icon.svg');
+}
+
+.export-icon {
+  background-image: url('../assets/images/icons/meter-readings/export-icon.svg');
+}
+
+.btn-filter-icon {
+  background-image: url('../assets/images/icons/equipment/filters.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  background-size: 14px 20px;
+  display: inline-block;
+  width: 20px;
+  height: 14px;
+}
+
+.active-btn .btn-filter-icon {
+  background-image: url('../assets/images/icons/equipment/filter-X-icon.svg');
+}
+
+.rdngs-list-info-icon {
+  background-image: url('../assets/images/icons/info-icon.svg');
+
+  &:hover {
+    background-image: url('../assets/images/icons/meter-readings/info-icon-hover.svg');
+  }
+}
+
+.trend-up-icon {
+  background-image: url('../assets/images/icons/meter-readings/trend-icon-up.svg');
+}
+
+.trend-down-icon {
+  background-image: url('../assets/images/icons/meter-readings/trend-icon-down.svg');
+}
+
+.rdngs-more-icon {
+  background-image: url('../assets/images/icons/meter-readings/more.svg');
+
+  &:hover {
+    background-image: url('../assets/images/icons/meter-readings/more-hover.svg');
+  }
+}
+
+.upld-logo {
+  background: url('../assets/images/upload-file/upload-img-preview.png') no-repeat center;
+}
+
+.upload-file-icon {
+  background: url('../assets/images/upload-file/upload-file-icon.svg') no-repeat center;
+}
+
+.download-file-icon {
+  background: url('../assets/images/upload-file/download-file-icon.svg') no-repeat center;
+}
+
+.price-lbl:before {
+  background-image: url('../assets/images/icons/services/price-icon.svg');
+}
+
+.custom-package .price-lbl:before {
+  background-image: url('../assets/images/icons/services/price-icon-white.svg');
+}
+
+
+.dnm-icon-buildings {
+  min-height: 20px;
+  min-width: 20px;
+}
+
+.dnm-icon-buildings.inactive,
+.nav-link:not(.active) .dnm-icon-buildings {
+  background-image: url("../assets/images/icons/buildings_view-01.svg");
+}
+
+.dnm-icon-buildings,
+.nav-link:hover .dnm-icon-buildings {
+  background-image: url("../assets/images/icons/buildings_view_selected-01.svg");
+}
+
+
+.dnm-icon-map {
+  min-height: 20px;
+  min-width: 20px;
+}
+
+.dnm-icon-map.inactive,
+.nav-link:not(.active) .dnm-icon-map {
+  background-image: url("../assets/images/icons/map_view-01.svg");
+}
+
+.dnm-icon-map,
+.nav-link:hover .dnm-icon-map {
+  background-image: url("../assets/images/icons/map_view_selected-01.svg");
+}
+
+.general-info-icon {
+  background-image: url("../assets/images/icons/info-icon.svg");
+  width: 20px;
+  height: 20px;
+}
+
+.super-admin-icon {
+  background-image: url("../assets/images/icons/admin-icon.svg");
+  width: 20px;
+  height: 20px;
+}
+
+.bank-account-icon {
+  background-image: url("../assets/images/icons/bank-account-icon.svg");
+  width: 20px;
+  height: 20px;
+}
+
+.dropdown-arrow:after {
+  background-image: url('../assets/images/icons/arrow-branch-dropdown.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.page-404-logo {
+  background-image: url('../assets/images/404.png');
+}
+
+.cost-receiver {
+  background-image: url('../assets/images/icons/cost-receiver.svg');
+}
+
+.cost-receiver-active,
+.cost-receiver.active {
+  background-image: url('../assets/images/icons/cost-receiver-active.svg');
+}
+
+.tariff-recommended {
+  background-image: url('../assets/images/icons/tariff-recommended.svg');
+}
+
+.tariff-recommended-active,
+.tariff-recommended.active {
+  background-image: url('../assets/images/icons/tariff-recommended-active.svg');
+}
+
+.icon-size-md {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-position: center;
+  vertical-align: text-bottom;
+}

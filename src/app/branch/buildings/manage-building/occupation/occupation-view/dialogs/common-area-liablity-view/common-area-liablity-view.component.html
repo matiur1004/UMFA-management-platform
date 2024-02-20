@@ -1,0 +1,124 @@
+<div class="modal-header">
+  <h5 class="modal-title">Common Area Liability</h5>
+  <button (click)="onClose()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+    <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+  </button>
+</div>
+<div class="modal-body splt-md-bd">
+  <div class="container-fluid liability-cont">
+    <div class="cmn-ar-content">
+      <div class="dnm-tabset liability-tabset">
+       <ul ngbNav #nav="ngbNav" (navChange)="beforeChange($event)" [activeId]="selectedCommonAreaLiablityServiceType" class="nav-tabs">
+          <li [ngbNavItem]="'0'" *ngIf="selectedCommonAreaLiablity.commonArea.services.isElectricityEnable">
+            <a ngbNavLink>
+              <i class="tab-icon dnm-icon-electricity"></i>
+              <span class="tab-name text-uppercase client-tab-name">Electricity</span>
+            </a>
+            <ng-template ngbNavContent>
+              <liability-tab (defaultSettingsChanged)="onDefaultSettingsChanged($event)"
+                             (goToNodeDetail)="onGoToNodeDetail($event)"
+                             (includeNotLiableShopsChanged)="onIncludeNotLiableShopsChanged($event)"
+                             (includeVacantShopSqMChanged)="onIncludeVacantShopSqMChanged($event)"
+                             (ownerLiabilityChanged)="onOwnerLiabilityChanged($event)"
+                             (updateShopAllocation)="onUpdateShopAllocation($event)"
+                             (updateShopFilter)="onUdateShopFilter($event)" (updateShopLiability)="onUpdateShopLiability($event)"
+                             (updateShopTermSearch)="onUpdateShopTermSearch($event)"
+                             (updateSplit)="onUpdateSplit($event)"
+                             [filterBy]="liabilityShopFilter$ | async"
+                             [model]="selectedCommonAreaLiablityService" [nodes]="getSupplyTypeNodes(selectedCommonAreaLiablity.commonArea.supplyTypeNodes, 'Electricity')"
+                             [searchTerm]="liabilityShopSearchTerm"></liability-tab>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="'0'" *ngIf="selectedCommonAreaLiablity.commonArea.services.isWaterEnable" id="1">
+            <a ngbNavLink>
+              <i class="tab-icon dnm-icon-water"></i>
+              <span class="tab-name text-uppercase client-tab-name">Water</span>
+            </a>
+            <ng-template ngbNavContent>
+              <liability-tab (defaultSettingsChanged)="onDefaultSettingsChanged($event)"
+                             (goToNodeDetail)="onGoToNodeDetail($event)"
+                             (includeNotLiableShopsChanged)="onIncludeNotLiableShopsChanged($event)"
+                             (includeVacantShopSqMChanged)="onIncludeVacantShopSqMChanged($event)"
+                             (ownerLiabilityChanged)="onOwnerLiabilityChanged($event)"
+                             (updateShopAllocation)="onUpdateShopAllocation($event)"
+                             (updateShopFilter)="onUdateShopFilter($event)" (updateShopLiability)="onUpdateShopLiability($event)"
+                             (updateShopTermSearch)="onUpdateShopTermSearch($event)"
+                             (updateSplit)="onUpdateSplit($event)"
+                             [filterBy]="liabilityShopFilter$ | async"
+                             [model]="selectedCommonAreaLiablityService" [nodes]="getSupplyTypeNodes(selectedCommonAreaLiablity.commonArea.supplyTypeNodes, 'Water')"
+                             [searchTerm]="liabilityShopSearchTerm"></liability-tab>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="'0'" *ngIf="selectedCommonAreaLiablity.commonArea.services.isSewerageEnable" id="2">
+            <a ngbNavLink>
+              <i class="tab-icon dnm-icon-sewerage"></i>
+              <span class="tab-name text-uppercase client-tab-name">Sewerage</span>
+            </a>
+            <ng-template ngbNavContent>
+              <liability-tab (defaultSettingsChanged)="onDefaultSettingsChanged($event)"
+                             (goToNodeDetail)="onGoToNodeDetail($event)"
+                             (includeNotLiableShopsChanged)="onIncludeNotLiableShopsChanged($event)"
+                             (includeVacantShopSqMChanged)="onIncludeVacantShopSqMChanged($event)"
+                             (ownerLiabilityChanged)="onOwnerLiabilityChanged($event)"
+                             (updateShopAllocation)="onUpdateShopAllocation($event)"
+                             (updateShopFilter)="onUdateShopFilter($event)" (updateShopLiability)="onUpdateShopLiability($event)"
+                             (updateShopTermSearch)="onUpdateShopTermSearch($event)"
+                             (updateSplit)="onUpdateSplit($event)"
+                             [filterBy]="liabilityShopFilter$ | async"
+                             [model]="selectedCommonAreaLiablityService" [nodes]="getSupplyTypeNodes(selectedCommonAreaLiablity.commonArea.supplyTypeNodes, 'Sewerage')"
+                             [searchTerm]="liabilityShopSearchTerm"></liability-tab>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="'0'" *ngIf="selectedCommonAreaLiablity.commonArea.services.isGasEnable" id="3">
+            <a ngbNavLink>
+              <i class="tab-icon dnm-icon-gas"></i>
+              <span class="tab-name text-uppercase client-tab-name">Gas</span>
+            </a>
+            <ng-template ngbNavContent>
+              <liability-tab (defaultSettingsChanged)="onDefaultSettingsChanged($event)"
+                             (goToNodeDetail)="onGoToNodeDetail($event)"
+                             (includeNotLiableShopsChanged)="onIncludeNotLiableShopsChanged($event)"
+                             (includeVacantShopSqMChanged)="onIncludeVacantShopSqMChanged($event)"
+                             (ownerLiabilityChanged)="onOwnerLiabilityChanged($event)"
+                             (updateShopAllocation)="onUpdateShopAllocation($event)"
+                             (updateShopFilter)="onUdateShopFilter($event)" (updateShopLiability)="onUpdateShopLiability($event)"
+                             (updateShopTermSearch)="onUpdateShopTermSearch($event)"
+                             (updateSplit)="onUpdateSplit($event)"
+                             [filterBy]="liabilityShopFilter$ | async"
+                             [model]="selectedCommonAreaLiablityService" [nodes]="getSupplyTypeNodes(selectedCommonAreaLiablity.commonArea.supplyTypeNodes, 'Gas')"
+                             [searchTerm]="liabilityShopSearchTerm"></liability-tab>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="'0'" *ngIf="selectedCommonAreaLiablity.commonArea.services.isOtherEnable" id="4">
+            <a ngbNavLink>
+              <i class="tab-icon dnm-icon-other"></i>
+              <span class="tab-name text-uppercase client-tab-name">Other</span>
+            </a>
+            <ng-template ngbNavContent>
+              <liability-tab (defaultSettingsChanged)="onDefaultSettingsChanged($event)"
+                             (goToNodeDetail)="onGoToNodeDetail($event)"
+                             (includeNotLiableShopsChanged)="onIncludeNotLiableShopsChanged($event)"
+                             (includeVacantShopSqMChanged)="onIncludeVacantShopSqMChanged($event)"
+                             (ownerLiabilityChanged)="onOwnerLiabilityChanged($event)"
+                             (updateShopAllocation)="onUpdateShopAllocation($event)"
+                             (updateShopFilter)="onUdateShopFilter($event)" (updateShopLiability)="onUpdateShopLiability($event)"
+                             (updateShopTermSearch)="onUpdateShopTermSearch($event)"
+                             (updateSplit)="onUpdateSplit($event)"
+                             [filterBy]="liabilityShopFilter$ | async"
+                             [model]="selectedCommonAreaLiablityService" [nodes]="getSupplyTypeNodes(selectedCommonAreaLiablity.commonArea.supplyTypeNodes, 'Other')"
+                             [searchTerm]="liabilityShopSearchTerm"></liability-tab>
+            </ng-template>
+          </li>
+        </ul>
+        <div [ngbNavOutlet]="nav"></div>
+      </div>
+      <div class="container-fluid">
+        <div class="row mng-lblt-footer">
+          <div class="col-12 text-right footer-buttons">
+            <button (click)="onClose()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

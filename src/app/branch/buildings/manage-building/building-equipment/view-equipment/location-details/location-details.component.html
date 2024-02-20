@@ -1,0 +1,221 @@
+<div [ngClass]="{'location-wizard-wrp': (isWizardMode$ | async)}">
+  <create-equipment *ngIf="isWizardMode$ | async"></create-equipment>
+  <div *ngIf="!(isWizardMode$ | async)" class="container-fluid location-details">
+    <div class="row none-margin-hr">
+      <div class="col none-padding">
+        <div class="col-12 none-padding d-flex justify-content-between align-items-center location-title">
+          <h1 class="location-dets-title">{{(location$ | async).name}}</h1>
+          <div class="back-button-container">
+            <back-button></back-button>
+          </div>
+        </div>
+        <div class="location-dets-descr">
+          {{(location$ | async).description}}
+        </div>
+      </div>
+    </div>
+    <div class="row dets-stat-row none-margin-hr">
+      <div class="col none-padding d-flex">
+        <div class="dets-stat-item d-flex align-items-center justify-content-center flex-column">
+          <div class="dets-stat-val sequence-number">{{(location$ | async).sequenceNumber}}</div>
+          <div class="dets-stat-lbl sequence-number">sequence number</div>
+        </div>
+        <div class="dets-stat-item d-flex align-items-center justify-content-center flex-column">
+          <div class="dets-stat-val allocated-units">{{(location$ | async).numberOfUnits}}</div>
+          <div class="dets-stat-lbl allocated-units">allocated units</div>
+        </div>
+        <div class="dets-stat-item d-flex align-items-center justify-content-center flex-column">
+          <div class="dets-stat-val allocated-equipment">{{(location$ | async).numberOfEquipment}}</div>
+          <div class="dets-stat-lbl allocated-equipment">allocated equipment</div>
+        </div>
+      </div>
+    </div>
+    <div class="row search-row none-margin-hr">
+      <div class="col none-padding">
+        <form class="form-inline main-search-input w-100">
+          <div class="input-group">
+            <input #searchBox (keyup)="search(searchBox.value)" class="form-control group-search-input"
+                   data-search-field
+                   placeholder="Search equipment by ID number" type="search"/>
+            <div class="input-group-append">
+              <i class="icon-relative search-icon vertical-middle"></i>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="nav-row d-flex justify-content-between align-items-center">
+      <div class="d-flex align-items-center">
+        <!-- <span class="results-label dnm-text-light">Showing {{ ((unitsPerPage$ | async) * ((page$ | async) - 1)) + 1 }}-{{
+          (unitsPerPage$ | async) * (page$ | async) }} of {{totalCount$ | async}} units of equipment</span> -->
+        <a (click)="onAddMeter()" class="blue-text-btn" href="javascript:void(0)" [ngClass]="{'disabled': buildingPeriodIsFinalized}">
+          <i class="add-icon"></i>Add Equipment to the Location
+        </a>
+      </div>
+      <div class="d-flex align-items-center">
+        <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+          <button class="btn btn-secondary fltr-drpdwn-btn dropdown-toggle" ngbDropdownToggle type="button">
+            {{selectedSupplyTypeText$ | async}}
+          </button>
+          <div class="dropdown-menu fltr-drpdwn-menu" ngbDropdownMenu>
+            <button (click)="onSupplyTypeChanged(-1)" class="dropdown-item">All supply types</button>
+            <button (click)="onSupplyTypeChanged(item)" *ngFor="let item of supplyTypes"
+                    class="dropdown-item">{{supplyType[item]}}</button>
+          </div>
+        </div>
+        <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+          <button class="btn btn-secondary fltr-drpdwn-btn dropdown-toggle" ngbDropdownToggle type="button">
+            {{selectedUnitText$ | async}}
+          </button>
+          <div class="dropdown-menu fltr-drpdwn-menu" ngbDropdownMenu>
+            <button (click)="onUnitChanged(null)" class="dropdown-item">All units</button>
+            <button (click)="onUnitChanged(item.id)" *ngFor="let item of units$ | async"
+                    class="dropdown-item">{{item.name}}</button>
+          </div>
+        </div>
+        <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+          <button class="btn btn-secondary fltr-drpdwn-btn dropdown-toggle" ngbDropdownToggle type="button">
+            {{selectedNodeText$ | async}}
+          </button>
+          <div class="dropdown-menu fltr-drpdwn-menu" ngbDropdownMenu>
+            <button (click)="onNodeChanged(null)" class="dropdown-item">All nodes</button>
+            <button (click)="onNodeChanged(item.id)" *ngFor="let item of nodes$ | async"
+                    class="dropdown-item">{{item.name}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row none-margin-hr list-header">
+      <div class="col-5">
+        <div class="row none-margin-hr">
+          <div class="col-3">
+            <a (click)="changeOrderIndex(orderType.SequenceNumberAsc)" [ngClass]="{'active': (orderIndex$ | async) == orderType.SequenceNumberAsc || (orderIndex$ | async) == orderType.SequenceNumberDesc}"
+               class="header-field d-flex align-items-center"
+               href="javascript:void(0);">
+              <span class="text-ellipsis" title="Seq No">Seq No</span>
+              <i [ngClass]="{'inactive': (orderIndex$ | async) != orderType.SequenceNumberAsc && (orderIndex$ | async) != orderType.SequenceNumberDesc, 'dnm-icon-sort-up': (orderIndex$ | async) == orderType.SequenceNumberDesc,'dnm-icon-sort-down': (orderIndex$ | async) != orderType.SequenceNumberDesc }"
+                 class="dnm-icon"></i>
+            </a>
+          </div>
+          <div class="col-4">
+            <a (click)="changeOrderIndex(orderType.SerialNumberAsc)" [ngClass]="{'active': (orderIndex$ | async) == orderType.SerialNumberAsc || (orderIndex$ | async) == orderType.SerialNumberDesc}"
+               class="header-field d-flex align-items-center"
+               href="javascript:void(0);">
+              <span class="text-ellipsis" title="Serial Number">Serial Number</span>
+              <i [ngClass]="{'inactive': (orderIndex$ | async) != orderType.SerialNumberAsc && (orderIndex$ | async) != orderType.SerialNumberDesc, 'dnm-icon-sort-up': (orderIndex$ | async) == orderType.SerialNumberDesc,'dnm-icon-sort-down': (orderIndex$ | async) != orderType.SerialNumberDesc }"
+                 class="dnm-icon"></i>
+            </a>
+          </div>
+          <div class="col-5">
+            <a (click)="changeOrderIndex(orderType.BrandModelAsc)" [ngClass]="{'active': (orderIndex$ | async) == orderType.BrandModelAsc || (orderIndex$ | async) == orderType.BrandModelDesc}"
+               class="header-field d-flex align-items-center"
+               href="javascript:void(0);">
+              <span class="text-ellipsis" title="Brand, Model">Brand, Model</span>
+              <i [ngClass]="{'inactive': (orderIndex$ | async) != orderType.BrandModelAsc && (orderIndex$ | async) != orderType.BrandModelDesc, 'dnm-icon-sort-up': (orderIndex$ | async) == orderType.BrandModelDesc,'dnm-icon-sort-down': (orderIndex$ | async) != orderType.BrandModelDesc }"
+                 class="dnm-icon"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="col-7">
+        <div class="row none-margin-hr">
+          <div class="col-4">
+            <a (click)="changeOrderIndex(orderType.SupplyTypeAsc)" [ngClass]="{'active': (orderIndex$ | async) == 4 || (orderIndex$ | async) == -4}"
+               class="header-field d-flex align-items-center"
+               href="javascript:void(0);">
+              <span class="text-ellipsis" title="Supply type">Supply type</span>
+              <i [ngClass]="{'inactive': (orderIndex$ | async) != orderType.SupplyTypeAsc && (orderIndex$ | async) != orderType.SupplyTypeDesc, 'dnm-icon-sort-up': (orderIndex$ | async) == orderType.SupplyTypeDesc,'dnm-icon-sort-down': (orderIndex$ | async) != orderType.SupplyTypeDesc }"
+                 class="dnm-icon"></i>
+            </a>
+          </div>
+          <div class="col-4">
+            <a (click)="changeOrderIndex(orderType.NumberOfUnitsAsc)" [ngClass]="{'active': (orderIndex$ | async) == orderType.NumberOfUnitsAsc || (orderIndex$ | async) == orderType.NumberOfUnitsDesc}"
+               class="header-field d-flex align-items-center"
+               href="javascript:void(0);">
+              <span class="text-ellipsis" title="Number of Units">Number of Units</span>
+              <i [ngClass]="{'inactive': (orderIndex$ | async) != orderType.NumberOfUnitsAsc && (orderIndex$ | async) != orderType.NumberOfUnitsDesc, 'dnm-icon-sort-up': (orderIndex$ | async) == orderType.NumberOfUnitsDesc,'dnm-icon-sort-down': (orderIndex$ | async) != orderType.NumberOfUnitsDesc }"
+                 class="dnm-icon"></i>
+            </a>
+          </div>
+          <div class="col-4 header-field d-flex align-items-center">
+            <span class="text-ellipsis" title="Node">Node</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div (cdkDropListDropped)="dropped($event)" cdkDropList class="list-body">
+      <div (click)="onEditEquipment($event, equipment)"
+           *ngFor="let equipment of (equipmentList$ | async)"
+           cdkDrag cdkDragLockAxis="y" class="row none-margin-hr body-row d-flex align-items-center">
+        <div class="col-5">
+          <div class="row none-margin-hr">
+            <div class="col-3">
+              <span class="seq-no-lbl">{{equipment.sequenceNumber}}</span>
+            </div>
+            <div class="col-4">
+              <span [title]="equipment.serialNumber" class="id-nunb-lbl">
+                {{equipment.serialNumber | emptyValue | slice : -4}}-{{equipment.supplyType | supplyTypeLetter}}
+              </span>
+            </div>
+            <div class="col-5">
+              <span class="brand-model-lbl">{{ equipment.equipmentModel }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-7">
+          <div class="row none-margin-hr">
+            <div class="col-4">
+              <div class="service-type d-flex align-items-center">
+                <div [ngClass]="{'electricity-icon': equipment.supplyType == supplyType.Electricity, 'water-icon': equipment.supplyType == supplyType.Water, 'sewerage-icon': equipment.supplyType == supplyType.Sewerage, 'gas-icon': equipment.supplyType == supplyType.Gas, 'ad-hoc-icon': equipment.supplyType == supplyType.AdHoc}"
+                     class="service-icon"></div>
+                <span [ngClass]="{'electricity-lbl': equipment.supplyType == supplyType.Electricity, 'water-lbl': equipment.supplyType == supplyType.Water, 'sewerage-lbl': equipment.supplyType == supplyType.Sewerage, 'gas-lbl': equipment.supplyType == supplyType.Gas, 'ad-hoc-lbl': equipment.supplyType == supplyType.AdHoc}"
+                      class="type-lbl">
+                  {{supplyType[equipment.supplyType]}}
+                </span>
+              </div>
+            </div>
+            <div class="col-4">
+              <span class="units-numb-lbl">{{equipment.numberOfUnits}}</span>
+            </div>
+            <div class="col-4">
+              <div class="d-flex align-items-center justify-content-between">
+                <!-- <span class="node-numb-lbl">{{equipment.serialNumber}}</span> -->
+                <div class="node-numb-lbl">
+                  <ng-container *ngFor="let node of equipment.nodes; let lastNode = last">
+                    <div>
+                      <a [routerLink]="['/branch', branchId, 'buildings', buildingId, 'version', version, 'equipment', 'nodes', node.id]"
+                         class="location-lbl">{{node.name}}</a>
+                      <span *ngIf="!lastNode">, </span>
+                    </div>
+                  </ng-container>
+                </div>
+                <div class="d-flex align-items-center">
+                  <i class="location-info-icon"></i>
+                  <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+                    <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle></button>
+                    <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                      <button (click)="onAddReplace(equipment.id)"
+                              class="dropdown-item d-flex justify-content-between dropdown-replace">
+                        Replace
+                        <i class="dnm-icon replace-icon"></i>
+                      </button>
+                      <button (click)="onClone(equipment.id)"
+                              class="dropdown-item d-flex justify-content-between dropdown-clone">
+                        Clone
+                        <i class="dnm-icon plus-icon"></i>
+                      </button>
+                      <button class="dropdown-item d-flex justify-content-between">
+                        Edit
+                        <i class="dnm-icon edit-icon"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,98 @@
+<form [formGroup]="form">
+  <div class="comment-modal">
+    <div class="modal-header">
+      <button (click)="dismiss()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+        <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="container-fluid">
+        <div class="row none-margin-hr">
+          <div class="col-12 d-flex justify-content-center">
+            <div class="note-logo"></div>
+          </div>
+        </div>
+        <div class="row d-flex justify-content-center">
+          <div class="col-9">
+            <div class="comment-title text-center">Leave a note</div>
+            <div class="comment-msg text-center">
+              Please, describe in a few words the changes you have made so that we can record them in history
+            </div>
+          </div>
+        </div>
+        <div class="row d-flex justify-content-center comment-row">
+          <div class="col-10 d-flex flex-column">
+            <div class="field-value">
+              <div [ngClass]="{'dnm-invalid-inp': formErrors['comment']}">
+                <textarea class="form-control" formControlName="comment" placeholder="Type here"></textarea>
+              </div>
+            </div>
+            <div class="field-value">
+              <small *ngIf="formErrors['comment']" class="alert-danger">
+                {{ formErrors["comment"] }}
+              </small>
+            </div>
+          </div>
+        </div>
+        <div class="row d-flex justify-content-center radio-btn-row">
+          <div class="col-10">
+            <div class="dnm-radio-btn pay-pln-input">
+              <input (change)="onActionTypeChange(2)" [value]="2" formControlName="actionType" id="overvrite_1" name="actionType"
+                     type="radio"/>
+              <div class="state">
+                <label></label>
+              </div>
+            </div>
+            <label class="m-0 pl-1" for="overvrite_1">Update current '
+              <span class="version"
+                    title="{{selectedVersion.startDate | dateMediumFormat}} - {{selectedVersion.comment}}">
+                {{selectedVersion.startDate | dateMediumFormat}} - {{selectedVersion.comment}}
+              </span>' version
+            </label>
+          </div>
+        </div>
+        <div class="row d-flex justify-content-center radio-btn-row">
+          <div class="col-10">
+            <div class="dnm-radio-btn pay-pln-input">
+              <input (change)="onActionTypeChange(3)" [value]="3" formControlName="actionType" id="overvrite_2" name="actionType"
+                     type="radio"/>
+              <div class="state">
+                <label></label>
+              </div>
+            </div>
+            <label class="m-0 pl-1" for="overvrite_2">Update current and next versions</label>
+          </div>
+        </div>
+        <div class="row d-flex justify-content-center radio-btn-row">
+          <div class="col-10 d-flex align-items-center">
+            <div class="dnm-radio-btn pay-pln-input new-ver-r-btn">
+              <input (change)="onActionTypeChange(1)" [value]="1" formControlName="actionType" id="newVersion" name="actionType"
+                     type="radio"/>
+              <div class="state">
+                <label></label>
+              </div>
+            </div>
+            <label class="m-0 pl-1" for="newVersion">Save as a new version:</label>
+            <div [ngClass]="{'dnm-invalid-inp': formErrors['date']}">
+              <input #d="ngbDatepicker" (click)="d.toggle()" [autoClose]="'outside'" class="form-control date" formControlName="date"
+                     name="dp" [minDate]="minDate" [maxDate]="maxDate"
+                     ngbDatepicker placeholder="dd/mm/YYYY" readonly>
+            </div>
+            <div class="field-value">
+              <small *ngIf="formErrors['date']" class="alert-danger">
+                {{ formErrors["date"] }}
+              </small>
+            </div>
+          </div>
+        </div>
+        <div class="row d-flex justify-content-center comment-footer">
+          <div class="col-10 d-flex justify-content-between text-center footer-buttons">
+            <button (click)="dismiss()" class="dnm-btn dnm-btn-cancel size-lg text-uppercase" type="button">Cancel
+            </button>
+            <button (click)="close()" class="dnm-btn dnm-btn-primary size-lg text-uppercase" type="button">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

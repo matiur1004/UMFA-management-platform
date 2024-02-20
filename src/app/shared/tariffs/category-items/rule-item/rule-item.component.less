@@ -1,0 +1,96 @@
+@import 'variables.less';
+
+.rule-item-wrp {
+  padding-bottom: 20px;
+}
+
+/* #region rule row */
+
+.rule-item-wrp .rule-inpt {
+  width: calc(100% - 190px);
+  min-width: calc(100% - 190px);
+  padding-left: 40px;
+  padding-right: 40px;
+  position: relative;
+}
+
+.rule-item-wrp .rule-inpt:before {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: calc(50% - 1px);
+  left: 20px;
+  width: 20px;
+  height: 2px;
+  background-color: @color-main-accent;
+}
+
+.rule-item-wrp .drpdwn-attributes-inpt {
+  min-width: 125px;
+  margin-right: 20px;
+}
+
+.rule-item-wrp .drpdwn-operators-inpt {
+  min-width: 85px;
+  margin-right: 20px;
+}
+
+.rule-item-wrp .drpdwn-phase-val {
+  width: 150px;
+  min-width: 150px;
+}
+
+.rule-item-wrp .numb-form-control {
+  width: 85px;
+}
+
+.rule-item-wrp .rule-attr-lbl {
+  font-family: Gotham Book;
+  font-size: 14px;
+  line-height: 1;
+  color: @color-text-tertiary;
+  margin-left: 10px;
+}
+
+/* #endregion */
+
+/* #region rules nav styles */
+.rule-item-wrp .rule-nav {
+  width: 190px;
+  min-width: 190px;
+  height: 35px;
+}
+
+.rule-item-wrp .rules-nav-item {
+  margin-right: 20px;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+.rule-item-wrp .delete-item {
+  width: 12px;
+  height: 12px;
+  cursor: pointer;
+}
+
+/* #endregion */
+
+.rule-item-wrp--first .rule-inpt:before {
+  display: none;
+}
+
+.rule-item-wrp--one .nav-items {
+  margin-right: 12px;
+}
+
+.rule-row {
+  position: relative;
+}
+
+.rule-row .alert-danger {
+  position: absolute;
+  left: 40px;
+  bottom: -16px;
+  text-align: left;
+  width: auto;
+}

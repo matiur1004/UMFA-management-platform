@@ -1,0 +1,44 @@
+@import 'mixins.less';
+@import 'variables.less';
+
+.set-of-nodes-list {
+  background-color: @color-background-secondary;
+  border-top: 1px solid @color-line;
+  border-bottom: 1px solid @color-line;
+  margin: 0px -40px 15px -40px;
+  padding: 10px 40px;
+
+  .set-of-nodes-header {
+    padding-top: 27px;
+  }
+
+  .label-of-list {
+    display: inline-block;
+    font-size: 20px;
+    .gradient-heading();
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .add-new-set {
+    margin-left: 15px;
+    margin-bottom: .5rem;
+  }
+
+  .set-name {
+    color: inherit;
+    display: block;
+    max-width: 185px;
+    .text-ellipsis();
+  }
+
+  .set-description {
+    max-width: 350px;
+    width: 100%;
+    word-break: break-word;
+  }
+
+  .dropdown-menu {
+    margin-left: -25px;
+  }
+}

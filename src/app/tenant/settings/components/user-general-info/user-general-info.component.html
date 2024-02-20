@@ -1,0 +1,59 @@
+<div class="row none-margin-hr tenant-gi-wrp">
+  <div class="col-12 none-padding">
+    <!-- user logo -->
+    <div class="logo-block">
+      <div class="bl-gradient-title">User photo</div>
+      <upload-image (fileChange)="changeLogo.emit($event)" [aspectRatio]="1 / 1" [maintainAspectRatio]="true"
+                    [src]="(form.value.logoUrl | image) | async" outputFileName="user-account-logo">
+      </upload-image>
+    </div>
+    <!-- user info -->
+    <div class="gi-tab">
+      <div class="bl-gradient-title">User Info</div>
+      <div class="input-row">
+        <div class="text-uppercase field-name">First Name</div>
+        <div class="field-value">
+          <div [ngClass]="{'dnm-invalid-inp': form.isSubmitted && form.controls.firstName.isInvalid}">
+            <input [ngrxFormControlState]="form.controls.firstName" class="form-control" placeholder="Type here"
+                   type="text"/>
+          </div>
+          <small *ngIf="form.isSubmitted && form.errors._firstName?.required" class="alert-danger">
+            First name is required
+          </small>
+        </div>
+      </div>
+      <div class="input-row">
+        <div class="text-uppercase field-name">Last Name</div>
+        <div class="field-value">
+          <div [ngClass]="{'dnm-invalid-inp': form.isSubmitted && form.controls.lastName.isInvalid}">
+            <input [ngrxFormControlState]="form.controls.lastName" class="form-control" placeholder="Type here"
+                   type="text"/>
+          </div>
+          <small *ngIf="form.isSubmitted && form.errors._lastName?.required" class="alert-danger">
+            Last name is required
+          </small>
+        </div>
+      </div>
+      <div class="input-row">
+        <div class="text-uppercase field-name">Email</div>
+        <div class="field-value">
+          <div [ngClass]="{'dnm-invalid-inp': form.isSubmitted && form.controls.email.isInvalid}">
+            <input [ngrxFormControlState]="form.controls.email" class="form-control" placeholder="Type here"
+                   type="text"/>
+          </div>
+          <small *ngIf="form.isSubmitted && form.errors._email?.required" class="alert-danger">
+            Email is required
+          </small>
+          <small *ngIf="form.isSubmitted && form.errors._email?.email" class="alert-danger">
+            Incorrect email
+          </small>
+        </div>
+      </div>
+      <!-- save and cancel buttons -->
+      <div class="gi-footer">
+        <button (click)="cancel.emit()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+        <button (click)="save.emit()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

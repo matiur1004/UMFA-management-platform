@@ -1,0 +1,76 @@
+<div class="floor-topbar">
+  <div class="d-flex justify-content-between">
+    <ng-select (change)="onChangeFloor($event)"
+               [bindLabel]="'name'"
+               [bindValue]="'id'"
+               [clearable]="false"
+               [closeOnSelect]="true"
+               [dropdownPosition]="'top'"
+               [hideSelected]="true"
+               [items]="floors"
+               [multiple]="false"
+               [ngModel]="activeFloor"
+               [searchable]="false"
+               class="select-dropdown dnm-ng-select"
+               placeholder="Choose floor"></ng-select>
+    <div class="btn-container">
+      <button (click)="onLastLoad()"
+              class="dnm-btn dnm-btn-cancel text-uppercase"
+              type="button">Last saved Plan
+      </button>
+      <button (click)="onReset()"
+              class="dnm-btn dnm-btn-cancel text-uppercase"
+              type="button">Reset Plan
+      </button>
+      <button (click)="onSave()"
+              class="dnm-btn dnm-btn-primary text-uppercase"
+              type="button"
+              [disabled]="buildingPeriodIsFinalized$ | async">Save Plan
+      </button>
+    </div>
+  </div>
+</div>
+
+<div #container class="floor-plan-container">
+  <div #floor class="floor-plan"></div>
+
+  <div class="toolbar">
+    <button (click)="onClickToolbarButton(item)"
+            *ngFor="let item of menu"
+            [ngClass]="{ 'is-active' : activeAction.id === item.id }"
+            [title]="item.title"
+            class="toolbar__item"
+            type="button">
+      <i [ngClass]="item.icon" class="toolbar__item-icon">{{ item.icon }}</i>
+    </button>
+  </div>
+
+  <div class="zoom-bar">
+    <button (click)="onZoom(o.zoomStep)"
+            class="zoom-bar__item"
+            title="Zoom In"
+            type="button">
+      <i class="zoom-bar__item-icon">&#x2795;</i>
+    </button>
+
+    <button (click)="onZoom(o.defaultZoom)"
+            class="zoom-bar__item"
+            title="100%"
+            type="button">
+      <i class="zoom-bar__item-icon">[]</i>
+    </button>
+
+    <button (click)="onZoom(-o.zoomStep)"
+            class="zoom-bar__item"
+            title="Zoom Out"
+            type="button">
+      <i class="zoom-bar__item-icon">&#x2796;</i>
+    </button>
+  </div>
+
+  <div class="zoom-informer">
+    {{ getZoomInformer(zoom) + '%' }}
+  </div>
+
+  <div #textEdit (blur)="onTextEditBlur()" class="text-action" contenteditable="true"></div>
+</div>

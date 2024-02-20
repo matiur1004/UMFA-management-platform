@@ -1,0 +1,33 @@
+<div class="modal-header">
+  <div class="container-fluid text-center">
+    <i class="icon-relative delete-logo"></i>
+  </div>
+  <button (click)="onCancel()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+    <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="container-fluid text-center">
+    <div class="popup-title">{{validationMessage.title}}</div>
+    <div class="description">
+      {{validationMessage.message}}
+      <div *ngIf="validationMessage.values" class="relations-container row">
+        <div class="col-4"></div>
+        <div *ngFor="let item of validationMessage.values | keyvalue" class="relations-group col-4">
+          <div *ngIf="item.key.length" class="group-header">{{item.key}}:</div>
+          <div class="items-group">
+            <div *ngFor="let value of item.value" class="group-item">{{value}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="validationMessage.actions" class="button-container">
+      <button (click)="onCancel()" *ngIf="validationMessage.actions.includes(popupActions.cancel)"
+              class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel
+      </button>
+      <button (click)="onConfirm()" *ngIf="validationMessage.actions.includes(popupActions.confirm)"
+              class="dnm-btn dnm-btn-delete text-uppercase" type="button">Remove all
+      </button>
+    </div>
+  </div>
+</div>

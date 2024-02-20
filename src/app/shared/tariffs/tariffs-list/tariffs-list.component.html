@@ -1,0 +1,60 @@
+<div class="container-fluid none-padding">
+  <div class="row none-margin-hr list-header">
+    <div class="col-3 tariff-name-title d-flex align-items-center">
+      <a (click)="orderChanged.emit(orderType.NameAsc);" [ngClass]="{'active': orderIndex == orderType.NameAsc || orderIndex == orderType.NameDesc}"
+         class="header-field d-flex align-items-center"
+         href="javascript:void(0);">
+        <span class="text-ellipsis text-uppercase" title="Tariff Name">Tariff Name</span>
+        <i [ngClass]="{'inactive': orderIndex != orderType.NameAsc && orderIndex != orderType.NameDesc, 'dnm-icon-sort-up': orderIndex == orderType.NameDesc,'dnm-icon-sort-down': orderIndex != orderType.NameDesc }"
+           class="dnm-icon"></i>
+      </a>
+    </div>
+    <div class="col-9">
+      <div class="row none-margin-hr">
+        <div class="col-6 none-padding">
+          <div class="row none-margin-hr">
+            <div class="col-4 header-field d-flex align-items-center">
+              <a (click)="orderChanged.emit(orderType.VersionAsc);" [ngClass]="{'active': orderIndex == orderType.VersionAsc || orderIndex == orderType.VersionDesc}"
+                 class="header-field d-flex align-items-center"
+                 href="javascript:void(0);">
+                <span class="text-ellipsis text-uppercase" title="Versions">Versions</span>
+                <i [ngClass]="{'inactive': orderIndex != orderType.VersionAsc && orderIndex != orderType.VersionDesc, 'dnm-icon-sort-up': orderIndex == orderType.VersionDesc,'dnm-icon-sort-down': orderIndex != orderType.VersionDesc }"
+                   class="dnm-icon"></i>
+              </a>
+            </div>
+            <div class="col-4 header-field d-flex align-items-center">
+              <span class="text-uppercase" title="Line Items">Line Items</span>
+            </div>
+            <div class="col-4 header-field d-flex align-items-center">
+              <a (click)="orderChanged.emit(orderType.TypeAsc);" [ngClass]="{'active': orderIndex == orderType.TypeAsc || orderIndex == orderType.TypeDesc}"
+                 class="header-field d-flex align-items-center"
+                 href="javascript:void(0);">
+                <span class="text-ellipsis text-uppercase" title="Tariff Types">Tariff Types</span>
+                <i [ngClass]="{'inactive': orderIndex != orderType.TypeAsc && orderIndex != orderType.TypeDesc, 'dnm-icon-sort-up': orderIndex == orderType.TypeDesc,'dnm-icon-sort-down': orderIndex != orderType.TypeDesc }"
+                   class="dnm-icon"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 none-padding">
+          <div class="row none-margin-hr">
+            <div class="col-7 header-field d-flex align-items-center">
+              <span class="text-uppercase" title="Categories">Categories</span>
+            </div>
+            <div class="col-5 header-field d-flex align-items-center">
+              <span class="text-uppercase" title="Values">Values</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <tariffs-item (addNewTariffValue)="addNewTariffValue.emit($event)"
+                (addNewTariffVersion)="addNewTariffVersion.emit($event)"
+                (deleteTariffVersion)="deleteTariff.emit($event)"
+                (editTariff)="editTariff.emit($event)"
+                (editTariffValue)="editTariffValue.emit($event)"
+                *ngFor="let item of tariffs"
+                [tariff]="item">
+  </tariffs-item>
+</div>

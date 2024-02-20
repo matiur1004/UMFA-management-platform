@@ -1,0 +1,229 @@
+<ng-container>
+  <div *ngFor="let registerDetails of registersReadings" class="row none-margin-hr item-row">
+    <div class="col-7 none-padding d-flex align-items-center">
+      <div class="row none-margin-hr w-100">
+        <div class="col-2 rdngs-lst-col d-flex align-items-center">
+                  <span class="cell-prop-val text-ellipsis cursor-poiner"
+                        title="{{registerDetails.registerName}}">{{registerDetails.registerId | registerUnit | async}}</span>
+        </div>
+        <div class="col-2 rdngs-lst-col d-flex align-items-center">
+          <span class="cell-prop-val text-ellipsis" [ngbTooltip]="'Scale(' + registerDetails.registerScaleName +  ') x Ratio(' + registerDetails.ratio + ') = ' + registerDetails.registerScaleRatio * registerDetails.ratio">{{registerDetails.ratio * registerDetails.registerScaleRatio}}</span>
+        </div>
+        <div class="col-4 rdngs-lst-col d-flex align-items-center">
+                  <span class="cell-prop-val text-ellipsis prev-read-val"
+                        title="{{registerDetails.previousReadingValue}}">{{registerDetails.previousReadingValue | number:'1.0-2'}}</span>
+          <ng-container *ngIf="registerDetails.previousReadingId"
+                        [ngTemplateOutletContext]="{
+                        readingId: registerDetails.previousReadingId,
+                        hasImage: registerDetails.previousReadingHasImage,
+                        notes: registerDetails.previousReadingNotes }"
+                        [ngTemplateOutlet]="readingDetails"></ng-container>
+          <div [estimatedReadingsCounter]="registerDetails.previousEstimatedReadingsCounter"
+               [isReadingConfirmed]="registerDetails.isPreviousReadingConfirmed"
+
+               [ngbTooltip]="(registerDetails.isPreviousReadingConfirmed | readingStatus : registerDetails.previousReadingSource) +
+                (registerDetails.previousEstimatedReadingsCounter >= consecutiveEstimatedLimit
+                  ? ' ' + registerDetails.previousEstimatedReadingsCounter + ' times'
+                  : '')"
+               [readingSource]="registerDetails.previousReadingSource"
+               [style.visibility]="registerDetails.previousReadingValue || registerDetails.previousReadingValue === 0 ? 'visible' : 'hidden'"
+               class="reading-status"
+
+               placement="top"
+               reading-status></div>
+        </div>
+
+        <div class="col-2 rdngs-lst-col d-flex align-items-center">
+                  <span class="cell-prop-val text-ellipsis"
+                        title="{{registerDetails.averageUsage}}">{{registerDetails.averageUsage | number:'1.0-2'}}</span>
+        </div>
+        <!-- DUN3345
+          <div class="col-2 rdngs-lst-col d-flex align-items-center">
+              <span class="cell-prop-val text-ellipsis"
+                title="{{registerDetails.estimatedReadingValue}}">
+                {{registerDetails.estimatedReadingValue | number:'1.0-2'}}</span>
+          </div>
+        -->
+          <div *ngIf="registerDetails.registerType == 1" class="col-2 rdngs-lst-col d-flex align-items-center">
+            <span class="cell-prop-val text-ellipsis"
+                  title="{{registerDetails.averageUsage}}">{{registerDetails.averageUsage | number:'1.0-2'}}</span>
+          </div>
+          <div *ngIf="registerDetails.registerType == 0" class="col-2 rdngs-lst-col d-flex align-items-center">
+            <span class="cell-prop-val text-ellipsis"
+                  title="{{registerDetails.previousReadingValue  + registerDetails.averageUsage}}">{{registerDetails.previousReadingValue + registerDetails.averageUsage | number:'1.0-2'}}</span>
+          </div>
+          <div *ngIf="registerDetails.registerType == 2" class="col-2 rdngs-lst-col d-flex align-items-center">
+            <span class="cell-prop-val text-ellipsis"
+                  title="{{registerDetails.averageUsage}}">{{registerDetails.averageUsage | number:'1.0-2'}}</span>
+          </div>
+          <div *ngIf="registerDetails.registerType != 0 || 1 || 2" class="col-2 rdngs-lst-col d-flex align-items-center">
+            <span class="cell-prop-val text-ellipsis"
+                  title="{{registerDetails.estimatedReadingValue}}">{{registerDetails.estimatedReadingValue | number:'1.0-2'}}</span>
+          </div>
+      </div>
+    </div>
+    <div class="col-5 none-padding d-flex align-items-center">
+      <div class="row none-margin-hr w-100">
+        <div class="col-5 rdngs-lst-col d-flex align-items-center">
+                  <span class="cell-prop-val prev-read-val text-ellipsis"
+                        title="{{registerDetails.currentReadingValue}}">{{registerDetails.currentReadingValue | number:'1.0-2'}}</span>
+          <ng-container *ngIf="registerDetails.currentReadingId"
+                        [ngTemplateOutletContext]="{
+                        readingId: registerDetails.currentReadingId,
+                        hasImage: registerDetails.currentReadingHasImage,
+                        notes: registerDetails.currentReadingNotes }"
+                        [ngTemplateOutlet]="readingDetails"></ng-container>
+          <div [estimatedReadingsCounter]="registerDetails.currentEstimatedReadingsCounter"
+               [isReadingConfirmed]="registerDetails.isCurrentReadingConfirmed"
+
+               [ngbTooltip]="(registerDetails.isCurrentReadingConfirmed | readingStatus : registerDetails.currentReadingSource) +
+                  (registerDetails.currentEstimatedReadingsCounter >= this.consecutiveEstimatedLimit
+                    ? ' ' + registerDetails.currentEstimatedReadingsCounter + ' times'
+                    : '')"
+               [readingSource]="registerDetails.currentReadingSource"
+               [style.visibility]="registerDetails.currentReadingValue || registerDetails.currentReadingValue === 0 ? 'visible' : 'hidden'"
+               class="reading-status"
+
+               placement="top"
+               reading-status></div>
+          <div class="dropdown rdng-list-btn-wrp d-flex align-items-center">
+            <div
+              *ngIf="registerDetails.abnormalityLevel && (registerDetails.abnormalityLevel >= trendUpValue || registerDetails.abnormalityLevel <= trendDownValue)"
+              [autoClose]="'outside'" ngbDropdown placement="right-top">
+              <button [ngClass]="{'trend-up-icon' : registerDetails.abnormalityLevel >= trendUpValue,
+                              'trend-down-icon' : registerDetails.abnormalityLevel <= trendDownValue}" class="dnm-btn rdng-list-btn"
+                      ngbDropdownToggle
+                      type="button"></button>
+              <div class="warning-info-popup dropdown-menu" ngbDropdownMenu>
+                <warning-info [value]="registerDetails.abnormalityLevel"></warning-info>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-3 rdngs-lst-col d-flex align-items-center flex-column">
+          <div *ngIf="!registerDetails.isEndDateReading" class="w-100 d-flex flex-column">
+                  <span *ngIf="registerDetails.precedingReadingDistanceDays" class="minus-sublbl">
+                    -{{registerDetails.precedingReadingDistanceDays}}
+                    days
+                  </span>
+            <span *ngIf="registerDetails.followingReadingDistanceDays" class="plus-sublbl">
+                    +{{registerDetails.followingReadingDistanceDays}}
+              days
+                  </span>
+          </div>
+        </div>
+        <div class="col-4 rdngs-lst-col d-flex align-items-center justify-content-between">
+          <div class="dropdown d-flex align-items-center" ngbDropdown placement="right-top">
+                  <span *ngIf="registerDetails.currentReadingValue != null"
+                        class="usage-lbl cell-prop-val text-ellipsis" ngbDropdownToggle
+                        title="{{registerDetails.usage}}">
+                    {{registerDetails.usage | number:'1.0-2'}}
+                  </span>
+            <i *ngIf="registerDetails.isRollover" class="refresh"></i>
+            <div class="usage-history-popup dropdown-menu" ngbDropdownMenu>
+              <usage-history [history]="registerDetails.usageHistory || []"></usage-history>
+            </div>
+          </div>
+          <div class="d-flex align-items-center">
+            <div (click)="enterReadings.emit()" class="rdngs-nav-btn enter-rdngs-icon"></div>
+            <a
+              [routerLink]="['/branch',branchId,'buildings',buildingId,'meter-readings','readings-history',registerDetails.meterId,registerDetails.registerId, getTimeOfUse(registerDetails.timeOfUse)]"
+              class="rdngs-nav-btn rdngs-list-info-icon"></a>
+            <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block"
+                 ngbDropdown>
+              <button class="dnm-btn dnm-btn-menu drpdwn-nav-btn" ngbDropdownToggle></button>
+              <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                <button [disabled]="buildingFinalized" (click)="startEstimation.emit({meterId: meter.meterDetails.meterId, registerId: registerDetails.registerId, readingDate: buildingPeriod.endDate, timeOfUse: registerDetails.timeOfUse == null ? '' : registerDetails.timeOfUse})" class="dropdown-item d-flex justify-content-between"
+                        data-menu-item>
+                  Apply estimated
+                  <i class="dnm-icon apply-estimated-icon"></i>
+                </button>
+                <button (readingDetailsFileDownload)="readingDetailsFileDownload.emit($event)" (resetReading)="resetReading.emit($event)"
+                        (updateReadingsList)="updateReadingsList.emit($event)" *ngIf="registerDetails?.previousReadingId" [buildingId]="buildingId"
+                        [buildingPeriod]="buildingPeriod"
+                        [meterId]="meter.meterDetails.meterId" [mode]="readingDetailsPopupMode.Reset"
+                        [readingId]="registerDetails.previousReadingId" class="dropdown-item d-flex justify-content-between"
+                        data-menu-item
+                        readingDetailsPopup
+                        type="button"
+                        [disabled]="buildingFinalized">
+                  Reset previous
+                  <i class="dnm-icon reset-previous-icon"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="isShowVirtualRegisters">
+  <div *ngFor="let registerDetails of virtualRegistersReadings" class="row none-margin-hr item-row">
+    <div class="col-7 none-padding d-flex align-items-center">
+      <div class="row none-margin-hr w-100">
+        <div class="col-2 rdngs-lst-col d-flex align-items-center">
+                  <span class="cell-prop-val text-ellipsis cursor-poiner"
+                        title="{{registerDetails.registerName}}">{{registerDetails.registerName}}</span>
+        </div>
+        <div class="col-2 rdngs-lst-col d-flex align-items-center">
+                  <span
+                    class="cell-prop-val text-ellipsis">{{registerDetails.ratio ? registerDetails.ratio : null}}</span>
+        </div>
+        <div class="col-4 rdngs-lst-col d-flex align-items-center">
+          <span class="cell-prop-val text-ellipsis prev-read-val"></span>
+        </div>
+        <div class="col-2 rdngs-lst-col d-flex align-items-center">
+                  <span class="cell-prop-val text-ellipsis"
+                        title="{{registerDetails.averageUsage}}">{{registerDetails.averageUsage | number:'1.0-2'}}</span>
+        </div>
+        <div class="col-2 rdngs-lst-col d-flex align-items-center">
+          <span class="cell-prop-val text-ellipsis"></span>
+        </div>
+      </div>
+    </div>
+    <div class="col-5 none-padding d-flex align-items-center">
+      <div class="row none-margin-hr w-100">
+        <div class="col-5 rdngs-lst-col d-flex align-items-center">
+                  <span class="cell-prop-val prev-read-val text-ellipsis"
+                        title="{{registerDetails.currentReadingValue}}"></span>
+        </div>
+        <div class="col-3 rdngs-lst-col d-flex align-items-center flex-column"></div>
+        <div class="col-4 rdngs-lst-col d-flex align-items-center justify-content-between">
+                  <span class="cell-prop-val text-ellipsis" title="{{registerDetails.usage}}">
+                      {{registerDetails.usage | number:'1.0-2'}}
+                  </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #readingDetails let-hasImage="hasImage" let-notes="notes" let-readingId="readingId">
+  <div (confirmReading)="confirmReading.emit($event)"
+       (readingDetailsFileDownload)="readingDetailsFileDownload.emit($event)"
+       (readingDetailsUpdate)="readingDetailsUpdate.emit($event)"
+       (updateReadingsList)="updateReadingsList.emit($event)"
+       [buildingId]="buildingId"
+       [meterId]="meter.meterDetails.meterId"
+       [readingId]="readingId"
+       class="dropdown rdng-list-btn-wrp d-flex align-items-center"
+       readingDetailsPopup>
+    <!--<button [ngClass]="{'dnm-btn-note': notes, 'dnm-btn-note-add' : !notes}" class="dnm-btn rdng-list-btn" type="button"></button>-->
+    <button *ngIf="notes" class="dnm-btn rdng-list-btn dnm-btn-note" type="button" title="Edit Note"></button>
+    <button *ngIf="!notes" class="dnm-btn rdng-list-btn dnm-btn-note-add" type="button" title="Add Note"></button>
+  </div>
+  <div (confirmReading)="confirmReading.emit($event)"
+       (readingDetailsFileDownload)="readingDetailsFileDownload.emit($event)"
+       (readingDetailsUpdate)="readingDetailsUpdate.emit($event)"
+       (updateReadingsList)="updateReadingsList.emit($event)"
+       [buildingId]="buildingId"
+       [meterId]="meter.meterDetails.meterId"
+       [readingId]="readingId"
+       class="dropdown rdng-list-btn-wrp d-flex align-items-center"
+       readingDetailsPopup>
+    <button *ngIf="hasImage" class="dnm-btn rdng-list-btn dnm-btn-photo" type="button" title="Edit Photo"></button>
+    <button *ngIf="!hasImage" class="dnm-btn rdng-list-btn dnm-btn-photo-add" type="button" title="Add Photo"></button>
+  </div>
+</ng-template>

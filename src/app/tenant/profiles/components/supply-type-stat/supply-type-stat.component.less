@@ -1,0 +1,119 @@
+@import 'variables.less';
+
+.supply-stat-wrp {
+  .left-border {
+    border-left: 1px solid @color-line;
+  }
+
+  .right-border {
+    border-right: 1px solid @color-line;
+  }
+}
+
+.supply-stat-wrp .scroll-hdr-fld {
+  width: 140px;
+  min-width: 140px;
+}
+
+.supply-stat-wrp .list-header .header-field {
+  padding: 0 15px;
+}
+
+.supply-stat-wrp .list-header .header-field:first-child:not(.smr-usage-hdr) {
+  padding-left: 30px;
+}
+
+.supply-stat-wrp .list-body {
+  background-color: @color-background-white;
+  border-bottom: 1px solid @color-line;
+}
+
+.supply-stat-wrp .scrolable-block {
+  width: 100%;
+  overflow: hidden;
+  overflow-x: scroll;
+  border-bottom: 1px solid @color-line;
+}
+
+.supply-stat-wrp .tbl-row {
+  border-top: 1px solid @color-line;
+}
+
+.supply-stat-wrp .tbl-cell {
+  border-top: 1px solid @color-line;
+  min-height: 50px;
+  background-color: @color-background-white;
+  padding-left: 15px;
+}
+
+.supply-stat-wrp .tbl-row .tbl-cell {
+  margin-top: -1px;
+}
+
+.supply-stat-wrp .tbl-row .tbl-cell:first-child {
+  padding-left: 30px;
+}
+
+.supply-stat-wrp .lst-row {
+  background-color: @color-background-primary;
+}
+
+.supply-stat-wrp .list-body-ftr {
+  height: 18px;
+  background-color: @color-background-primary;
+  border-top: 1px solid @color-line;
+}
+
+.supply-stat-wrp .total-lbl {
+  font-family: Gotham Medium;
+  font-size: 12px;
+  line-height: 12px;
+  color: @color-description;
+  margin-left: 15px;
+}
+
+.supply-stat-wrp .service-icon {
+  margin-left: 15px;
+}
+
+.supply-stat-wrp .type-lbl {
+  font-size: 13px;
+  line-height: 13px;
+}
+
+.supply-stat-wrp .supply-type-val {
+  font-family: Gotham Book;
+  font-size: 13px;
+  line-height: 13px;
+  color: @color-text-tertiary;
+}
+
+.supply-stat-wrp .lst-row .supply-type-val {
+  font-family: Gotham Medium;
+  color: @color-text-tertiary;
+}
+
+.supply-stat-wrp .stat-info-btn {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-color: transparent;
+  border: none;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.supply-stat-wrp .info-icon {
+  background-image: url('../../../../../assets/images/icons/info-icon.svg');
+}
+
+.supply-stat-wrp .info-icon:hover {
+  background-image: url('../../../../../assets/images/icons/meter-readings/info-icon-hover.svg');
+}
+
+
+.supply-stat-wrp .stat-info-btn:after {
+  display: none;
+}

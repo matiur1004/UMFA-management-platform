@@ -1,0 +1,175 @@
+<div class="container-fluid page-header">
+  <div class="row d-flex align-items-center header-line">
+    <div class="col-12 none-padding">
+      <form class="form-inline my-lg-0 main-search-input w-100">
+        <div class="input-group">
+          <input #searchBox (keyup)="search(searchBox.value)" aria-label="Search" class="form-control group-search-input"
+                 data-search-field placeholder="User Search" type="search"/>
+          <div class="input-group-append">
+            <i class="icon-relative search-icon vertical-middle"></i>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!--move add user functionality to user.component-->
+
+<page-limit (limitChaged)="onPageSizeChanged($event)" [itemName]="'user'" [itemsPerPageList]="itemsPerPageList" [itemsPerPage]="pageSize"
+            [itemsTotal]="model.total" [page]="page"></page-limit>
+
+<div class="users-list-wrp pt-4">
+  <div class="list-header text-uppercase d-xs-none row none-margin-hr">
+    <div class="col-md-2">
+      <a (click)="changeOrderIndex(1);" [ngClass]="{'active': orderIndex == 1 || orderIndex == -1}"
+         class="header-field d-flex align-items-center sortable"
+         href="javascript:void(0);">
+        Username
+        <i [ngClass]="{'inactive': orderIndex != 1 && orderIndex != -1, 'dnm-icon-sort-up': orderIndex == 1,'dnm-icon-sort-down': orderIndex != 1 }"
+           class="dnm-icon"></i>
+      </a>
+    </div>
+    <div class="col-md-3">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-6 none-padding">
+            <a class="header-field d-flex align-items-center" href="javascript:void(0);">Branches</a>
+          </div>
+          <div class="col-6 none-padding">
+            <a (click)="changeOrderIndex(5);" [ngClass]="{'active': orderIndex == 5 || orderIndex == -5}"
+               class="header-field d-flex align-items-center"
+               href="javascript:void(0);">
+              Roles
+              <i [ngClass]="{'inactive': orderIndex != 5 && orderIndex != -5, 'dnm-icon-sort-up': orderIndex == 5,'dnm-icon-sort-down': orderIndex != 5 }"
+                 class="dnm-icon"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <a (click)="changeOrderIndex(3);" [ngClass]="{'active': orderIndex == 3 || orderIndex == -3}"
+         class="header-field d-flex align-items-center sortable"
+         href="javascript:void(0);">
+        Department
+        <i [ngClass]="{'inactive': orderIndex != 3 && orderIndex != -3, 'dnm-icon-sort-up': orderIndex == 3,'dnm-icon-sort-down': orderIndex != 3 }"
+           class="dnm-icon"></i>
+      </a>
+    </div>
+    <div class="col-md-2">
+      <a (click)="changeOrderIndex(2);" [ngClass]="{'active': orderIndex == 2 || orderIndex == -2}"
+         class="header-field d-flex align-items-center"
+         href="javascript:void(0);">
+        Email
+        <i [ngClass]="{'inactive': orderIndex != 2 && orderIndex != -2, 'dnm-icon-sort-up': orderIndex == 2,'dnm-icon-sort-down': orderIndex != 2 }"
+           class="dnm-icon"></i>
+      </a>
+    </div>
+    <div class="col-md-3">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-7 none-padding">
+            <a (click)="changeOrderIndex(4);" [ngClass]="{'active': orderIndex == 4 || orderIndex == -4}"
+               class="header-field d-flex align-items-center"
+               href="javascript:void(0);">
+              Last Login
+              <i [ngClass]="{'inactive': orderIndex != 4 && orderIndex != -4, 'dnm-icon-sort-up': orderIndex == 4,'dnm-icon-sort-down': orderIndex != 4 }"
+                 class="dnm-icon"></i>
+            </a>
+          </div>
+          <div class="col-5 none-padding">
+            <a (click)="changeOrderIndex(6);" [ngClass]="{'active': orderIndex == 6 || orderIndex == -6}"
+               class="header-field d-flex align-items-center"
+               href="javascript:void(0);">
+              State
+              <i [ngClass]="{'inactive': orderIndex != 6 && orderIndex != -6, 'dnm-icon-sort-up': orderIndex == 6,'dnm-icon-sort-down': orderIndex != 6 }"
+                 class="dnm-icon"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngFor="let user of model.items;let idx = index" class="users-list dnm-text-medium">
+    <div (click)="onEdit($event, user.id)" class="users-item row">
+      <div class="col-md-2 col-xs-12">
+        <div class="vertical-middle d-flex align-items-center">
+          <div class="user-img-block">
+            <logo-container [file]="user.logo" [url]="user.logoUrl" logo-class="round-logo-wrp">
+              <div class="user-no-img">
+                <span>{{user.fullName[0].toUpperCase()}}</span>
+              </div>
+            </logo-container>
+          </div>
+          <div class="user-name text-ellipsis">
+            {{user.fullName}}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-xs-12">
+        <div class="row vertical-middle">
+          <div class="col-6">
+            <div *ngIf="user.branches.length" class="user-profiles-roles-block">
+              <div *ngFor="let branch of user.branches | slice:0:3" class="user-profiles-roles-item">
+                <span class="user-profiles-roles-label">• {{branch}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 none-padding">
+            <div class="user-profiles-roles-block">
+              <div class="user-profiles-roles-item">
+                <span class="user-profiles-roles-label">{{user.role}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2 col-xs-12">
+        <div class="vertical-middle">
+          <div class="users-department">{{user.departmentDescription}}</div>
+        </div>
+      </div>
+      <div class="col-md-2 col-xs-12">
+        <div class="vertical-middle">
+          <div class="users-email">{{user.email}}</div>
+        </div>
+      </div>
+      <div class="col-md-3 col-xs-12 d-flex align-items-center">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-7 none-padding">
+              <div class="vertical-middle">
+                <div class="users-phone">{{user.lastLogin | date}}</div>
+              </div>
+            </div>
+            <div class="col-5 none-padding d-flex justify-content-between action-buttons">
+              <label class="dnm-switch-btn">
+                <input (change)="onStatusChanged(user)" [checked]="user.isApproved" class="approve" type="checkbox">
+                <span class="dnm-switch-slider round approve"></span>
+              </label>
+              <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+                <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle></button>
+                <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                  <button (click)="onEdit($event, user.id)" class="dropdown-item d-flex justify-content-between dropdown-edit"
+                          data-menu-item>
+                    Edit
+                    <i class="dnm-icon edit-icon"></i>
+                  </button>
+                  <button (click)="onDelete(user.id)" class="dropdown-item d-flex justify-content-between dropdown-delete"
+                          data-menu-item type="button">
+                    Delete
+                    <i class="dnm-icon delete-icon"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<pager (onPageChange)="setPage($event)" [pageSize]="pageSize" [page]="page" [total]="model.total"></pager>

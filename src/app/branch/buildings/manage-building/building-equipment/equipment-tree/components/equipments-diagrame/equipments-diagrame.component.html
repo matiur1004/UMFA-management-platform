@@ -1,0 +1,66 @@
+<ng-template #tipContent>
+  <ng-container *ngIf="selectedEquipment">
+    <div class="tooltip-details">
+      <table class="tooltip-table">
+        <tr>
+          <td><label>Brand, Model:</label></td>
+          <td><span>{{ selectedEquipment.equipmentModel }}</span></td>
+        </tr>
+        <tr>
+          <td><label>Serial number:</label></td>
+          <td>
+                        <span [title]="selectedEquipment.serialNumber">
+                            {{selectedEquipment.serialNumber | emptyValue | slice : -4}}
+                          -{{selectedEquipment.supplyType | supplyTypeLetter}}
+                        </span>
+          </td>
+        </tr>
+        <tr>
+          <td><label>Meter type:</label></td>
+          <td><span>{{ selectedEquipment.meterType | meterTypeLabel }}</span></td>
+        </tr>
+        <tr>
+          <td><label>CT Ratio:</label></td>
+          <td><span>{{ selectedEquipment.attributes.ctRatio ? selectedEquipment.attributes.ctRatio : '-' }}</span></td>
+        </tr>
+        <tr>
+          <td><label>PT Ratio:</label></td>
+          <td><span>{{ selectedEquipment.attributes.ptRatio ? selectedEquipment.attributes.ptRatio : '-' }}</span></td>
+        </tr>
+        <tr>
+          <td><label>Supply to, location type:</label></td>
+          <td>
+            <span *ngIf="selectedEquipment.location">{{selectedEquipment.location.supplyTo}},</span>
+            <span *ngIf="selectedEquipment.location && selectedEquipment.location.locationType">
+                            {{selectedEquipment.location.locationType}}
+                        </span>
+          </td>
+        </tr>
+        <tr>
+          <td><label>Description:</label></td>
+          <td><span>{{selectedEquipment.description}}</span></td>
+        </tr>
+        <tr>
+          <td><label>Age:</label></td>
+          <td><span>{{selectedEquipment.ageInDays | dateDuration}}</span></td>
+        </tr>
+        <tr>
+          <td><label>Last reading source:</label></td>
+          <td><span>{{selectedEquipment.lastReadingSource | readingSourceLabel}}</span></td>
+        </tr>
+        <tr *ngIf="selectedEquipment.isDummy">
+          <td><label>Dummy status:</label></td>
+          <td><span>it is dummy</span></td>
+        </tr>
+        <tr *ngIf="selectedEquipment.isFaulty">
+          <td><label>Faulty status:</label></td>
+          <td><span>it is faulty</span></td>
+        </tr>
+      </table>
+    </div>
+  </ng-container>
+</ng-template>
+<div #equipmentsDiagrame #tooltip="ngbTooltip" [ngbTooltip]="tipContent" closeDelay="0" id="equipments_diagrame"
+     placement="top-right" tooltipClass="tooltip-detail-equipment"
+     triggers="manual">
+</div>

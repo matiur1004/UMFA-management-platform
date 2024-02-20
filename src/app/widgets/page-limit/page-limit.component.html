@@ -1,0 +1,25 @@
+<div class="d-flex justify-content-between">
+  <div class="d-flex align-items-center">
+    <span class="results-label dnm-text-light">{{getItemsDetails()}}</span>
+    <ng-container *ngIf="showCreate">
+      <a (click)="onCreate($event)" class="blue-text-btn d-flex align-items-center" data-add-new
+         href="javascript:void(0);">
+        <i class="add-icon"></i>Add {{itemName}}
+      </a>
+    </ng-container>
+  </div>
+  <div class="d-flex align-items-center">
+    <span class="text-uppercase count-label">{{itemsName}} Per Page:</span>
+    <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+      <button class="btn btn-secondary dropdown-toggle bld-per-page-btn text-left" id="ddCountPerPage"
+              ngbDropdownToggle>
+        {{ itemsPerPage ? itemsPerPage : 'ALL' }}
+      </button>
+      <div aria-labelledby="ddCountPerPage" class="dropdown-menu" ngbDropdownMenu>
+        <button (click)="setItemsPerPage(item)" *ngFor="let item of itemsPerPageList"
+                class="dropdown-item">{{item}}</button>
+        <button (click)="setItemsPerPage(0)" class="dropdown-item">All</button>
+      </div>
+    </div>
+  </div>
+</div>

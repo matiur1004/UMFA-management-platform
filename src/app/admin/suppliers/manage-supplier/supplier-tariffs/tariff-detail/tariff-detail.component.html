@@ -1,0 +1,37 @@
+<div class="tariff-details">
+  <edit-tariff (goToVersion)="onEditTariffVersion($event)" [attributes]="attributes$ | async"
+               [buildingCategories]="buildingCategories$ | async" [chargingTypes]="chargingTypes$ | async"
+               [dispatch]="dispatchFn" [form]="formState$ | async"
+               [lineItems]="lineItems$ | async" [supplyTypes]="supplyTypes$ | async"
+               [tariffVersionCategories]="tariffVersionCategories$ | async" [tariffVersionSteps]="tariffVersionSteps$ | async"
+               [tariffVersions]="tariffVersions$ | async" [units]="unitsOfMeasurement$ | async">
+  </edit-tariff>
+
+  <tariff-versions-list (addNewVersion)="onAddTariffVersion(true)" (changeOrderIndex)="onChangeTariffSubVersionOrder($event)"
+                        (deleteVersion)="onDeleteTariffVersion($event)"
+                        (editVersion)="onEditTariffVersion($event)"
+                        [orderIndex]="subVersionOrderIndex$ | async" [tariffVersions]="tariffSubVersions$ | async"
+                        [title]="'Tariff Sub-versions'">
+  </tariff-versions-list>
+
+  <tariff-values-versions-list (addNewValue)="onAddVersionValue()" (addNewVersion)="onAddValueSubVersion($event)"
+                               (changeOrderIndex)="onChangeTariffValueVersionOrder($event)"
+                               (deleteValue)="onDeleteTariffValue($event)"
+                               (deleteVersion)="onDeleteTariffValuesVersion($event)" (editVersion)="onEditTariffValuesVersion($event)"
+                               [isLastTariffVersion]="isLastTariffVersion$ | async"
+                               [orderIndex]="valuesVersionOrderIndex$ | async"
+                               [tariffVersions]="tariffValuesVersions$ | async"
+                               [title]="'Tariff values'">
+  </tariff-values-versions-list>
+
+  <div class="client-contact-info-footer">
+    <div class="row">
+      <div class="col-12 footer-buttons d-flex justify-content-end">
+        <button [routerLink]="['/admin','suppliers', supplierId ,'tariffs']" class="dnm-btn dnm-btn-cancel text-uppercase btn-lg"
+                type="button">Cancel
+        </button>
+        <button (click)="onSave()" class="dnm-btn dnm-btn-primary text-uppercase btn-lg" type="button">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

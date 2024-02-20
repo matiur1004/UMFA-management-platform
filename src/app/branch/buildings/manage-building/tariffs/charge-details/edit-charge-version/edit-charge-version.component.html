@@ -1,0 +1,107 @@
+<div class="edit-charge-version">
+  <div class="container-fluid title-container">
+    <div class="row">
+      <div class="col-12 none-padding d-flex justify-content-between align-items-center">
+        <h1 class="page-title">Edit Charge</h1>
+        <back-button></back-button>
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="formState$ | async as formState">
+    <form [ngrxFormState]="formState">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-8 none-padding">
+            <div class="bl-gradient-title section-title">General Info</div>
+            <div class="input-row line-div">
+              <div class="text-uppercase field-name text-form-field">Charge Name</div>
+              <div class="field-value">
+                <text-input [ngrxFormControlState]="formState.controls.charge.controls.name"
+                            class="none-padding field-value"
+                            maxlength="150"
+                            placeholder="Charge name"></text-input>
+                <small *ngIf="formState.isSubmitted && formState.errors?._charge?._name?.required"
+                       class="alert-danger">
+                  A charge name is required
+                </small>
+              </div>
+            </div>
+            <div class="input-row line-div">
+              <div class="text-uppercase field-name text-form-field">Supply Type</div>
+              <div class="field-value">
+                <ng-select [bindLabel]="'label'"
+                           [bindValue]="'value'"
+                           [clearable]="false"
+                           [closeOnSelect]="true"
+                           [dropdownPosition]="'top'"
+                           [hideSelected]="true"
+                           [items]="SupplyTypeDropdownItems"
+                           [multiple]="false"
+                           [ngrxFormControlState]="formState.controls.charge.controls.supplyType"
+                           [placeholder]="'Select'"
+                           [searchable]="false"
+                           class="dnm-ng-select select-dropdown"></ng-select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-8 none-padding">
+            <div class="bl-gradient-title section-title">Line items</div>
+            <ng-container
+              *ngFor="let lineItem of formState.controls.charge.controls.basedOnReadingsLineItems.controls; let idx = index; trackBy: trackByFn">
+              <based-on-readings-charge-line-item (deleteLineItem)="onDeleteLineItem($event)"
+                                                  (updateChargingType)="onUpdateChargingType($event)"
+                                                  [lineItemNumber]="idx + 1"
+                                                  [lineItem]="lineItem"
+                                                  [registers]="registers$ | async">
+              </based-on-readings-charge-line-item>
+            </ng-container>
+            <ng-container
+              *ngFor="let lineItem of formState.controls.charge.controls.fixedPriceLineItems.controls; let idx = index; trackBy: trackByFn">
+              <fixed-price-charge-line-item (deleteLineItem)="onDeleteLineItem($event)"
+                                            (updateChargingType)="onUpdateChargingType($event)"
+                                            [lineItemNumber]="formState.controls.charge.controls.basedOnReadingsLineItems.controls.length + idx + 1"
+                                            [lineItem]="lineItem"
+                                            [registers]="registers$ | async">
+              </fixed-price-charge-line-item>
+            </ng-container>
+            <div class="row button-row">
+              <div class="col-12">
+                <a (click)="onAddLineItem()" class="blue-text-btn" href="javascript:void(0);">
+                  <i class="add-icon"></i>Add new line item
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <charge-values-versions-list (addNewVersion)="onAddValueVersion(formState.value.charge.id)"
+                                   (changeOrderIndex)="onChangeValueVersionOrder($event)"
+                                   (editVersion)="onEditValueVersion($event)"
+                                   [btnName]="'Add new value'"
+                                   [chargeVersions]="valuesVersions$ | async"
+                                   [orderIndex]="valuesVersionOrder$ | async"
+                                   [title]="'Value versions'">
+      </charge-values-versions-list>
+      <div class="client-contact-info-footer">
+        <div class="row">
+          <div class="col-12 footer-buttons d-flex justify-content-end">
+            <button (click)="onCancel()" class="dnm-btn dnm-btn-cancel text-uppercase"
+                    type="button">Cancel
+            </button>
+            <button (click)="onSave(formState.isValid, formState.value.charge.id, formState.value.charge)"
+                    class="dnm-btn dnm-btn-primary text-uppercase"
+                    type="submit">Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+</div>

@@ -1,0 +1,42 @@
+<div [ngClass]="{ 'active-shop': shop.tenant, 'vacant-shop': !shop.tenant }"
+     class="container-fluid cmn-area-shop-item d-flex align-items-center">
+  <div class="row none-margin-hr">
+    <div class="col-6 none-padding d-flex align-items-center">
+      <div class="dnm-checkbox">
+        <input (click)="onSelected()" [checked]="model.isSelected" type="checkbox"/>
+        <div class="state">
+          <label></label>
+        </div>
+      </div>
+      <div *ngIf="model.isSelected" class="field-value">
+        <number-input (change)="updateShopAllocation.emit({commonAreaId: model.commmonAreaId, shopId: model.shopId, serviceType: serviceIdx, allocation: liabilities.allocation})"
+                      [(ngModel)]="liabilities.allocation"
+                      [disabled]="splitTypeIdx != splitType.Custom"
+                      [min]="0"
+                      input-class="alloc-fld-inpt"></number-input>
+      </div>
+    </div>
+    <div *ngIf="model.isSelected" class="col-4 none-padding d-flex align-items-center justify-content-center">
+      <span *ngIf="splitTypeIdx !== splitType.Consumption" [ngClass]="{'consumption-gd-red': liabilities.status === liableShopStatus.VacantShops, 'consumption-gd-blue': liabilities.status === liableShopStatus.LiableShops, 'consumption-gd-yellow': liabilities.status === liableShopStatus.NotLiableShops}"
+            class="status-lbl text-uppercase">{{liabilities.proportion}}
+        %</span>
+      <span *ngIf="splitTypeIdx === splitType.Consumption"
+            [ngClass]="{'consumption-gd-red': liabilities.status === liableShopStatus.VacantShops, 'consumption-gd-blue': liabilities.status === liableShopStatus.LiableShops, 'consumption-gd-yellow': liabilities.status === liableShopStatus.NotLiableShops}"
+            class="status-lbl text-uppercase">
+            <ng-container *ngIf="liabilities.status === liableShopStatus.VacantShops"> Vacant</ng-container>
+            <ng-container *ngIf="liabilities.status === liableShopStatus.LiableShops"> Liable</ng-container>
+            <ng-container *ngIf="liabilities.status === liableShopStatus.NotLiableShops"> Not Liable</ng-container>
+      </span>
+    </div>
+    <div *ngIf="model.isSelected  && shop.tenant && !ownerLiable"
+         class="col-2 none-padding d-flex align-items-center justify-content-center">
+      <span (click)="updateShopLiable.emit({commonAreaId: model.commmonAreaId, shopId: model.shopId, serviceType: serviceIdx, value: true})" *ngIf="!liabilities.isLiable" class="dnm-liable-icon active dnm-liable-true"
+            ngbTooltip="Make liable"
+            placement="left"></span>
+      <span (click)="updateShopLiable.emit({commonAreaId: model.commmonAreaId, shopId: model.shopId, serviceType: serviceIdx, value: false})" *ngIf="liabilities.isLiable" class="dnm-liable-icon dnm-liable-false"
+            ngbTooltip="Make not liable"
+            placement="left"></span>
+    </div>
+
+  </div>
+</div>

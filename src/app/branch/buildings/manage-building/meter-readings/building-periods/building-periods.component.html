@@ -1,0 +1,102 @@
+<div class="container-fluid none-padding building-periods">
+
+  <div class="row search-row none-margin-hr">
+    <div class="col none-padding">
+      <form class="form-inline main-search-input w-100">
+        <div class="input-group">
+          <input #searchBox (keyup)="onSearchFilterChanged(searchBox.value)" class="form-control group-search-input"
+                 data-search-field placeholder="Search Building Period" type="search"/>
+          <div class="input-group-append">
+            <i class="icon-relative search-icon vertical-middle"></i>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="nav-row">
+    <page-limit (limitChaged)="onPageSizeChanged($event)" [itemName]="'building period'" [itemsPerPageList]="pageSizes"
+                [itemsPerPage]="pageSize$ | async" [itemsTotal]="total$ | async"
+                [page]="(page$ | async) + 1"></page-limit>
+  </div>
+  <div class="row none-margin-hr list-header">
+    <div class="col-6">
+      <div class="row none-margin-hr">
+        <div class="col-6 header-field d-flex align-items-center">
+          <span class="text-ellipsis" title="Period Name">Period Name</span>
+        </div>
+        <div class="col-3 header-field d-flex align-items-center">
+          <span class="text-ellipsis" title="Start date">Start date</span>
+        </div>
+        <div class="col-3 header-field d-flex align-items-center">
+          <span class="text-ellipsis" title="End date">End date</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-3 header-field d-flex align-items-center">
+      <span class="text-ellipsis" title="Linked Period">Linked Period</span>
+    </div>
+    <div class="col-3 header-field d-flex align-items-center">
+      <span class="text-ellipsis" title="Client Statement Name">Client Statement Name</span>
+    </div>
+  </div>
+
+  <div class="list-body">
+    <div *ngFor="let period of (buildingPeriods$ | async); let ind = index;" [ngClass]="{'active-body-row': !period.isFinalized}"
+         class="row none-margin-hr body-row">
+      <div class="col-6 d-flex align-items-center">
+        <div class="row none-margin-hr w-100">
+          <div class="col-6 d-flex justify-content-start flex-column">
+            <span class="period-name-lbl">{{period.name}}</span>
+            <span *ngIf="period.isFinalized" class="period-name-descr">Current period</span>
+          </div>
+          <div class="col-3 d-flex align-items-center">
+            <span class="start-date-lbl">{{period.startDate | dateMediumFormat}}</span>
+          </div>
+          <div class="col-3 d-flex align-items-center">
+            <span class="end-date-lbl">{{period.endDate | dateMediumFormat}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-3 d-flex align-items-center">
+        <span class="linked-period-lbl text-ellipsis">{{period.linkedBuildingPeriods?.join(',')}}</span>
+      </div>
+      <div class="col-3 d-flex align-items-center justify-content-between">
+        <span class="client-statement-lbl text-ellipsis">{{period.clientStatementName}}</span>
+        <div class="d-flex align-items-center">
+          <div class="bld-period-info">
+            <bld-periods-popup [buildingPeriod]="period"></bld-periods-popup>
+          </div>
+          <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+            <button class="dnm-btn dnm-btn-menu drpdwn-nav-btn" ngbDropdownToggle></button>
+            <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+              <button (click)="onFinalizeBuildingPeriod()" class="dropdown-item d-flex justify-content-between"
+                      data-menu-item>
+                Finalize
+                <i class="dnm-icon finalize-icon"></i>
+              </button>
+              <button (click)="onEditBuildingPeriod()" class="dropdown-item d-flex justify-content-between"
+                      data-menu-item>
+                Edit
+                <i class="dnm-icon edit-icon"></i>
+              </button>
+              <button (click)="onRollback()" *ngIf="previousBuildingPeriod$ | async"
+                      class="dropdown-item d-flex justify-content-between">
+                Rollback
+                <i class="dnm-icon rollback-icon"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row none-margin-hr">
+    <div class="col">
+      <pager (onPageChange)="onPageChanged($event)" [pageSize]="pageSize$ | async" [page]="(page$ | async) + 1"
+             [total]="total$ | async"></pager>
+    </div>
+  </div>
+
+</div>

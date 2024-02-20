@@ -1,0 +1,207 @@
+<div class="modal-header">
+  <h5 class="modal-title">Split shop</h5>
+  <button (click)="dismiss()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+    <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+  </button>
+</div>
+<div class="modal-body splt-md-bd">
+  <div class="container-fluid crnt-data">
+    <div class="row none-margin-hr crnt-data-row">
+      <div class="col-10 none-padding">
+        <div class="container none-padding">
+          <div class="row none-margin-hr">
+            <div class="col-4 none-padding">
+              <span class="crnt-data-ttl">Current shop name</span>
+            </div>
+            <div class="col-4 none-padding">
+              <span class="crnt-data-inf">{{model.name}}</span>
+            </div>
+            <div class="col-4 none-padding">
+              <span class="crnt-data-ttl">Area</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-2 none-padding">
+        <div class="container none-padding">
+          <div class="row none-margin-hr">
+            <div class="col-12 none-padding">
+              <span class="crnt-data-inf">{{model.area}} sq m</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row none-margin-hr crnt-data-row">
+      <div class="col-10 none-padding">
+        <div class="container none-padding">
+          <div class="row none-margin-hr">
+            <div class="col-4 none-padding">
+              <span class="crnt-data-ttl">Current tenant</span>
+            </div>
+            <div class="col-4 none-padding">
+              <span class="crnt-data-inf">{{model.tenant ? model.tenant.name : ''}}</span>
+            </div>
+            <div class="col-4 none-padding">
+              <span class="crnt-data-ttl">Floor</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-2 none-padding">
+        <div class="container none-padding">
+          <div class="row none-margin-hr">
+            <div class="col-12 none-padding">
+              <span class="crnt-data-inf">{{model.floor}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid splt-data">
+    <div class="row splt-nav-row none-margin-hr">
+      <div class="col-12 none-padding">
+        <div class="row none-margin-hr">
+          <div class="col-3 d-flex align-items-center none-padding">
+            <span class="nav-lbl">Split into</span>
+          </div>
+          <div class="col-auto d-flex align-items-center none-padding">
+            <div class="field-value w-100">
+              <ng-select (change)="onShopsTotalChange($event)" [(ngModel)]="shopsTotal" [clearable]="false"
+                         [closeOnSelect]="true" [dropdownPosition]="'top'" [hideSelected]="true"
+                         [searchable]="false" class="select-dropdown">
+                <ng-option *ngFor="let item of splitItems" [value]="item">{{item}}</ng-option>
+              </ng-select>
+            </div>
+            <span class="nav-inp-lbl">shops</span>
+          </div>
+          <div class="col d-flex align-items-center justify-content-end">
+            <a (click)="onCreateTenant()" class="blue-text-btn" href="javascript:void(0)">
+              <span class="add-icon mr-2"></span>
+              Add new Tenant
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <form (keydown.enter)="$event.preventDefault()" [formGroup]="form">
+      <div formArrayName="shops">
+        <div *ngFor="let shop of shopsArr.controls; let idx=index;" [formGroupName]="idx"
+             class="row splt-row none-margin-hr">
+          <div class="col-10 none-padding">
+            <div class="container none-padding">
+              <div class="row none-margin-hr">
+                <div class="col-4 none-padding">
+                  <div class="splt-cell">
+                    <span class="splt-cell-lbl">Shop #{{idx + 1}}</span>
+                    <div [ngClass]="{'dnm-invalid-inp': isSubmitted && isFieldInvalid(shop.controls.name)}"
+                         class="field-value">
+                      <input #name class="form-control req-frm-fld" formControlName="name" placeholder="Type here" type="text"/>
+                      <div *ngIf="isSubmitted && isFieldInvalid(shop.controls.name)" class="field-value">
+                        <small *ngIf="shop.hasError('required', 'name')" class="alert-danger">
+                          Name is required
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4 none-padding">
+                  <div class="container none-padding">
+                    <div class="row none-margin-hr">
+                      <div class="col-6 none-padding">
+                        <div class="splt-cell">
+                          <span class="splt-cell-lbl">Area</span>
+                          <div [ngClass]="{'dnm-invalid-inp': isSubmitted && isFieldInvalid(shop.controls.area)}"
+                               class="field-value">
+                            <number-input [min]="0" formControlName="area"></number-input>
+                            <div *ngIf="checkValidArea()">
+                              <small class="alert-danger">
+                                Sum of area must below {{model.area}} sq m
+                              </small>
+                            </div>
+                            <div *ngIf="isFieldInvalid(shop.controls.area)">
+                              <small *ngIf="shop.hasError('required', 'area')" class="alert-danger">
+                                Area is required
+                              </small>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-6 none-padding">
+                        <div class="splt-cell">
+                          <span class="splt-cell-lbl">Status</span>
+                          <div class="field-value">
+                            <div [ngClass]="{
+                                      'st-occupied': shop.controls.status.value == shopStatus.Occupied,
+                                      'st-vacant': shop.controls.status.value == shopStatus.Vacant,
+                                      'st-spare': shop.controls.status.value == shopStatus.Spare }" class="text-ellipsis mng-shps-stat">
+                              <span class="usr-status-cnt">{{shopStatus[shop.controls.status.value]}}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4 none-padding">
+                  <div class="splt-cell">
+                    <span class="splt-cell-lbl">Tenant name</span>
+                    <div class="field-value" formGroupName="tenant">
+                      <ng-select #selectTenant (change)="onSetTenant(shop)"
+                                 [clearable]="false"
+                                 [searchable]="false"
+                                 class="dnm-single-select dnm-dropdown-select dnm-dropdown-large"
+                                 formControlName="name" placeholder="Select tenant name">
+                        <ng-template ng-header-tmp>
+                          <div class="dnm-single-field-filter">
+                            <input (input)="selectTenant.filter($event.target.value)" class="dnm-single-input-field"
+                                   type="text"/>
+                          </div>
+                        </ng-template>
+                        <ng-option [value]="''">Vacant</ng-option>
+                        <ng-option *ngFor="let tenant of tenants" [value]="tenant.name">{{tenant.name}}</ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-2 none-padding">
+            <div class="container none-padding">
+              <div class="row none-margin-hr">
+                <div class="col-12 none-padding">
+                  <div class="splt-cell none-padding">
+                    <span class="splt-cell-lbl">Floor</span>
+                    <div class="field-value floor-fld-val d-flex align-items-center justify-content-between">
+                      <number-input formControlName="floor"></number-input>
+                      <div *ngIf="isFieldInvalid(shop.controls.floor)" class="field-value">
+                        <small class="alert-danger">
+                          Floor not in the correct format
+                        </small>
+                      </div>
+                      <div *ngIf="shopsTotal > 2" class="delete-link d-flex align-items-center justify-content-center">
+                        <button (click)="onDelete(idx)" class="dnm-btn-icon">
+                          <i class="icon cross-icon"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row splt-footer">
+        <div class="col-12 text-right footer-buttons">
+          <button (click)="dismiss();" class="dnm-btn dnm-btn-cancel text-uppercase" id="split-button-dissmis">Cancel
+          </button>
+          <button (click)="save()" class="dnm-btn dnm-btn-primary text-uppercase" id="split-button-save">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

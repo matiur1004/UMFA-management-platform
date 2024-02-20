@@ -1,0 +1,167 @@
+@import 'variables.less';
+
+.cmn-area-item {
+  width: 270px;
+  border-right: 1px solid #e1e1e1;
+  border-bottom: 1px solid #e1e1e1;
+  margin-bottom: -1px;
+}
+
+.cmn-area-item .item-header {
+  border-bottom: 1px solid #e1e1e1;
+  padding-top: 10px;
+  padding-bottom: 7px;
+}
+
+.cmn-area-item .item-title {
+  font-family: Gotham Medium;
+  font-size: 16px;
+  line-height: 16px;
+  color: @color-text-primary;
+  margin-bottom: 7px;
+
+  .common-area-name {
+    max-width: 240px;
+  }
+}
+
+.cmn-area-item .item-data {
+  font-family: Gotham Book;
+  font-size: 12px;
+  line-height: 17px;
+  color: @color-description;
+}
+
+.cmn-area-item .common-area-floor {
+  padding-left: 10px;
+  border-left: 1px solid #e1e1e1;
+}
+
+.cmn-area-item .common-area-nodes {
+  padding-left: 10px;
+  padding-right: 10px;
+  border-left: 1px solid #e1e1e1;
+  cursor: pointer;
+
+  span {
+    border-bottom: 1px solid #dadce1;
+  }
+}
+
+:host {
+  .popover .popover-body {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+}
+
+.cmn-area-item .common-area-node-item {
+  font-family: Gotham Book;
+  font-size: 13px;
+  line-height: 24px;
+  color: @color-text-tertiary;
+  cursor: pointer;
+  margin-right: 0;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.cmn-area-item .item-nav-inputs {
+  padding: 10px 15px 15px 15px;
+}
+
+.cmn-area-item .item-switch {
+  margin-bottom: 15px;
+  height: 25px;
+}
+
+.cmn-area-item .dropdown-wrp {
+  height: 35px;
+}
+
+.cmn-area-item .col-tbl-header {
+  border-top: 1px solid #e1e1e1;
+  height: 40px;
+  padding: 0 15px;
+  background-color: @color-background-primary;
+}
+
+.cmn-area-item .dnm-checkbox {
+  margin-right: 8px;
+}
+
+.cmn-area-item .col-tbl-lbl {
+  font-family: Gotham Medium;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: @color-description;
+}
+
+.cmn-area-item .srv-type {
+  display: inline-block;
+  font-family: Gotham Book;
+  font-size: 12px;
+  padding-right: 10px;
+  .gradient-heading();
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.cmn-area-item .srv-type::before {
+  content: '';
+  background-repeat: no-repeat;
+  display: inline-block;
+  position: relative;
+  width: 13px;
+  height: 13px;
+  margin-right: 5px;
+  top: 1px;
+}
+
+.cmn-area-item .st-electricity {
+  background: linear-gradient(90deg, #f1618a 0, #ea547d 20%, #e34671 30%, #dc3764 45%, #d42557 60%, #d42557 100%);
+  -webkit-background-clip: text;
+}
+
+.cmn-area-item .st-electricity::before {
+  background-image: url('../../../../../../../../../assets/images/icons/occupation/electricity-red.svg');
+}
+
+.cmn-area-item .st-water {
+  background: linear-gradient(90deg, #6189d6 0, #5b7ec9 20%, #5473bb 30%, #4e68ae 45%, #475da1 60%, #475da1 100%);
+  -webkit-background-clip: text;
+}
+
+.cmn-area-item .st-water::before {
+  background-image: url('../../../../../../../../../assets/images/icons/occupation/water-blue.svg');
+}
+
+.cmn-area-item .st-sewerage {
+  background: linear-gradient(90deg, #a269dd 0, #915fc6 20%, #8056af 30%, #704c99 45%, #604383 60%, #604383 100%);
+  -webkit-background-clip: text;
+}
+
+.cmn-area-item .st-sewerage::before {
+  background-image: url('../../../../../../../../../assets/images/icons/occupation/sewerage-violet.svg');
+  width: 15px;
+}
+
+.cmn-area-item .st-gas {
+  background: linear-gradient(90deg, #e7c05c 0, #e4b456 20%, #e1a950 30%, #dd9d4c 45%, #d89248 60%, #d89248 100%);
+  -webkit-background-clip: text;
+}
+
+.cmn-area-item .st-gas::before {
+  background-image: url('../../../../../../../../../assets/images/icons/occupation/gas-yellow.svg');
+}
+
+.cmn-area-item .st-other {
+  .gradient-black();
+  -webkit-background-clip: text;
+}
+
+.cmn-area-item .st-other::before {
+  background-image: url('../../../../../../../../../assets/images/icons/occupation/other-gray.svg');
+}

@@ -1,0 +1,128 @@
+<div class="kva-calc-item-wrp">
+  <div class="row none-margin-hr">
+    <div class="col none-padding">
+      <div class="kva-item-hdr-wrp">
+        <div class="item-hdr-nav d-flex align-items-center justify-content-between">
+          <span class="text-uppercase kva-calc-name">Scheme #1</span>
+          <div class="del-step-btn d-flex align-items-center">
+            <span class="cross-icon"></span>
+            <span class="btn-lbl">Delete calculation</span>
+          </div>
+        </div>
+        <div class="input-row line-div">
+          <div class="text-uppercase field-name text-form-field">
+            Name
+          </div>
+          <div class="field-value d-flex align-items-center">
+            <text-input class="none-padding w-100" maxlength="50" placeholder="Type here"
+                        value="Default kVA calculation scheme"></text-input>
+          </div>
+        </div>
+        <div class="radio-input-wrp d-flex align-items-center">
+          <div class="d-flex align-items-center">
+            <div class="dnm-radio-btn">
+              <input name="kvaCalcRadio" type="radio">
+              <div class="state">
+                <label></label>
+              </div>
+            </div>
+            <span class="radio-input-lbl">Apply greater of the following</span>
+          </div>
+          <div class="d-flex align-items-center">
+            <div class="dnm-radio-btn">
+              <input name="kvaCalcRadio" type="radio">
+              <div class="state">
+                <label></label>
+              </div>
+            </div>
+            <span class="radio-input-lbl">Apply one of the following</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="calc-scheme-wrp">
+    <div class="row none-margin-hr">
+      <div class="col-6 none-padding">
+        <div class="scheme-item-wrp">
+          <div class="dnm-radio-wrp d-flex align-items-center">
+            <div class="dnm-radio-btn">
+              <input name="calcSchemeRadio" type="radio">
+              <div class="state">
+                <label></label>
+              </div>
+            </div>
+            <span class="radio-input-lbl">Apply greater of the following</span>
+          </div>
+          <ng-select [clearable]="false" [closeOnSelect]="false" [dropdownPosition]="'top'"
+                     [hideSelected]="true" [multiple]="true" [searchable]="false"
+                     class="dnm-ng-select dnm-multiple-select scheme-item-drpdwn" placeholder="Select"></ng-select>
+        </div>
+        <div class="scheme-item-wrp">
+          <div class="dnm-radio-wrp d-flex align-items-center">
+            <div class="dnm-radio-btn">
+              <input name="calcSchemeRadio" type="radio">
+              <div class="state">
+                <label></label>
+              </div>
+            </div>
+            <span class="radio-input-lbl">Minimum demand</span>
+          </div>
+          <div class="d-flex align-items-center">
+            <number-input [placeholder]="0" input-class="numb-form-control"></number-input>
+            <span class="numb-input-lbl">kVA</span>
+          </div>
+        </div>
+        <div class="scheme-item-wrp">
+          <div class="dnm-radio-wrp d-flex align-items-center">
+            <div class="dnm-radio-btn">
+              <input name="calcSchemeRadio" type="radio">
+              <div class="state">
+                <label></label>
+              </div>
+            </div>
+            <span class="radio-input-lbl">Average demand</span>
+          </div>
+          <div class="d-flex">
+            <div class="d-flex align-items-center">
+              <number-input [placeholder]="0" input-class="numb-form-control"></number-input>
+              <span class="numb-input-lbl">preceding periods</span>
+            </div>
+            <div class="d-flex align-items-center">
+              <number-input [placeholder]="0" input-class="numb-form-control"></number-input>
+              <span class="numb-input-lbl">highest demand</span>
+            </div>
+            <div class="d-flex align-items-center">
+              <number-input [placeholder]="0" input-class="numb-form-control"></number-input>
+              <span class="numb-input-lbl">percents</span>
+            </div>
+            <ng-select [clearable]="false" [closeOnSelect]="false"
+                       [dropdownPosition]="'top'" [hideSelected]="true" [multiple]="true" [searchable]="false"
+                       class="dnm-ng-select dnm-multiple-select scheme-item-drpdwn" placeholder="Select"></ng-select>
+          </div>
+        </div>
+        <div class="scheme-item-wrp">
+          <div class="dnm-radio-wrp d-flex align-items-center">
+            <div class="dnm-radio-btn">
+              <input name="calcSchemeRadio" type="radio">
+              <div class="state">
+                <label></label>
+              </div>
+            </div>
+            <span class="radio-input-lbl">Prestage minimum demand</span>
+          </div>
+          <div class="d-flex align-items-center">
+            <div class="d-flex align-items-center">
+              <number-input [placeholder]="0" input-class="numb-form-control"></number-input>
+              <span class="numb-input-lbl">percents</span>
+            </div>
+            <div class="d-flex align-items-center">
+              <number-input [placeholder]="0" input-class="numb-form-control"></number-input>
+              <span class="numb-input-lbl">kVA</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,69 @@
+<div class="container-fluid supplier-list">
+  <div class="row search-row none-margin-hr">
+    <div class="col none-padding">
+      <form class="form-inline main-search-input w-100">
+        <div class="input-group">
+          <input #searchBox (keyup)="onSearchTextChanged(searchBox.value)" class="form-control group-search-input" data-search-field
+                 placeholder="Supplier Search" type="search"/>
+          <div class="input-group-append">
+            <i class="icon-relative search-icon vertical-middle"></i>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="nav-row d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center">
+      <span class="results-label dnm-text-light">Showing {{ (suppliers$ | async).length }} suppliers</span>
+    </div>
+    <div class="d-flex align-items-center">
+      <span class="text-uppercase fltr-drpdwn-lbl">Supply Type:</span>
+      <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+        <button class="btn btn-secondary fltr-drpdwn-btn dropdown-toggle" ngbDropdownToggle>
+          {{selectedSupplyTypeText}}
+        </button>
+        <div class="dropdown-menu fltr-drpdwn-menu" ngbDropdownMenu>
+          <button (click)="onSupplyTypeChanged(item)" *ngFor="let item of supplyTypeOptions"
+                  class="dropdown-item">{{item.text}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row none-margin-hr list-header">
+    <div class="col-6 none-padding">
+      <div class="row none-margin-hr">
+        <div class="col-8">
+          <a (click)="changeOrderIndex(SupplierListOrder.SupplierNameDesc);" [ngClass]="{'active': orderIndex == SupplierListOrder.SupplierNameAsc || orderIndex == SupplierListOrder.SupplierNameDesc}"
+             class="header-field d-flex align-items-center"
+             href="javascript:void(0);">
+            <span class="text-ellipsis" title="Supplier Name">Supplier Name</span>
+            <i [ngClass]="{'inactive': orderIndex != SupplierListOrder.SupplierNameDesc && orderIndex != SupplierListOrder.SupplierNameAsc, 'dnm-icon-sort-up': orderIndex == SupplierListOrder.SupplierNameAsc,'dnm-icon-sort-down': orderIndex != SupplierListOrder.SupplierNameAsc }"
+               class="dnm-icon"></i>
+          </a>
+        </div>
+        <div class="col-4 header-field d-flex align-items-center">
+          <span class="text-ellipsis" title="Physical Address">Physical Address</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 none-padding">
+      <div class="row none-margin-hr">
+        <div class="col-4 header-field d-flex align-items-center">
+          <span class="text-ellipsis" title="Supply Type">Supply Type</span>
+        </div>
+        <div class="col-4 header-field d-flex align-items-center">
+          <span class="text-ellipsis" title="Email">Email</span>
+        </div>
+        <div class="col-4 header-field d-flex align-items-center">
+          <span class="text-ellipsis" title="Phone">Phone</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="list-body">
+    <div *ngFor="let supplier of suppliers$ | async" class="body-row">
+      <supplier-item (onDelete)="onDeleteSupplier($event)" (onEdit)="onEditSupplier($event)"
+                     [supplier]="supplier"></supplier-item>
+    </div>
+  </div>
+</div>

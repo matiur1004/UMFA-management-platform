@@ -1,0 +1,56 @@
+@import 'variables.less';
+
+/* List header*/
+.list-header {
+  text-transform: uppercase;
+  margin-bottom: 0;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e1e1e1;
+}
+
+.list-header .header-field {
+  padding-left: 30px;
+}
+
+.list-header .header-field:hover {
+  color: @color-text-tertiary;
+}
+
+/* List body */
+.list-body .body-field {
+  padding: 15px 30px;
+}
+
+.list-body {
+  max-height: 165px;
+  overflow: auto;
+}
+
+.list-body .body-field {
+  font-size: 13px;
+  color: @color-text-secondary;
+  display: flex;
+  align-items: center;
+}
+
+.list-body .service-type {
+  margin-bottom: 0;
+}
+
+.body-field .unit-field {
+  font-family: Gotham Medium;
+  font-size: 16px;
+  color: @color-text-primary;
+}
+
+.body-row {
+  background-color: @color-background-white;
+  border: 1px solid #e1e1e1;
+  border-top: none;
+}
+
+.body-row.selected {
+  background-color: @color-background-primary;
+}
+
+

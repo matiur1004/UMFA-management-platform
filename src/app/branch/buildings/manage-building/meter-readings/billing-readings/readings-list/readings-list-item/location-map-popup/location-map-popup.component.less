@@ -1,0 +1,44 @@
+@import 'variables.less';
+
+.map-location {
+  background: none;
+  width: 700px;
+  height: 400px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 15px;
+}
+
+.map-location::before {
+  content: '';
+  position: absolute;
+  left: calc(50% - 10px);
+  top: -7px;
+  border: 10px solid transparent;
+  border-bottom: 12px solid @color-background-dark;
+}
+
+.map-location .modal-header {
+  height: 50px;
+  min-height: 50px;
+  padding: 0;
+  border-bottom: 1px dashed #646c7e;
+  background-color: @color-background-dark;
+  opacity: 0.95;
+}
+
+.map-location .close {
+  height: 50px;
+  width: 50px;
+  padding: 0;
+  margin: 0;
+}
+
+.map-location .modal-body {
+  background: @color-background-white;
+  height: 350px;
+  min-height: 350px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+

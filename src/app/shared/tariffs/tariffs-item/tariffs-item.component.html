@@ -1,0 +1,115 @@
+<div class="trf-item-wrp">
+  <div class="row none-margin-hr">
+    <div class="col-3 d-flex align-items-center trf-name-col">
+      <div (click)="editTariff.emit(tariff.id)" class="trf-name-wrp">
+        <span class="trf-name-val">{{tariff.name}}</span>
+        <div class="trf-name-dets">
+          <span class="details-fld-name">Tariff Code:</span>
+          <span class="details-fld-val">{{tariff.code}}</span>
+        </div>
+        <div class="trf-name-dets">
+          <span class="details-fld-name">Created on:</span>
+          <span class="details-fld-val">{{tariff.createdOn | date: 'dd/MM/yyyy'}}</span>
+        </div>
+        <div class="trf-name-dets">
+          <span class="details-fld-name">Created by:</span>
+          <span class="details-fld-val">{{tariff.createdByUser.fullName}}</span>
+        </div>
+        <div class="trf-name-dets">
+          <span class="details-fld-name">Consumer:</span>
+          <span class="details-fld-val">
+            <ng-container *ngFor="let buildingCategory of tariff.buildingCategories; let last = last">
+              <ng-container *ngIf="!last">
+                {{buildingCategory.name}},&nbsp;
+              </ng-container>
+              <ng-container *ngIf="last">
+                {{buildingCategory.name}}
+              </ng-container>
+            </ng-container>
+          </span>
+        </div>
+        <div class="service-type d-flex align-items-center">
+          <div [ngClass]="{'electricity-icon': tariff.supplyType == supplyType.Electricity, 'water-icon': tariff.supplyType == supplyType.Water, 'sewerage-icon': tariff.supplyType == supplyType.Sewerage, 'gas-icon': tariff.supplyType == supplyType.Gas, 'ad-hoc-icon': tariff.supplyType == supplyType.AdHoc}"
+               class="service-icon"></div>
+          <span [ngClass]="{'electricity-lbl': tariff.supplyType == supplyType.Electricity, 'water-lbl': tariff.supplyType == supplyType.Water, 'sewerage-lbl': tariff.supplyType == supplyType.Sewerage, 'gas-lbl': tariff.supplyType == supplyType.Gas, 'ad-hoc-lbl': tariff.supplyType == supplyType.AdHoc}"
+                class="type-lbl">
+            {{supplyType[tariff.supplyType]}}
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-9 none-padding d-flex align-items-center">
+      <div class="w-100">
+        <div (click)="onTariffRowClick($event, item.id)" *ngFor="let item of tariff.tariffs"
+             class="row none-margin-hr item-row">
+          <div class="col-6 none-padding d-flex align-items-center">
+            <div class="row none-margin-hr w-100">
+              <div class="col-4 d-flex align-items-center">
+                <span class="trf-version-val">Vers. {{item.majorVersion}}
+                  -{{item.versionDate | date: 'dd/MM/yyyy'}}</span>
+              </div>
+              <div class="col-4 d-flex align-items-center">
+                <div class="d-flex flex-column">
+                  <span *ngFor="let lineItem of item.entity.lineItems" class="trf-item-val">{{lineItem.name}}</span>
+                </div>
+              </div>
+              <div class="col-4 d-flex align-items-center">
+                <div class="d-flex flex-column">
+                  <span class="trf-item-val">Reseller</span>
+                  <span class="trf-item-val">Reselling</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 none-padding d-flex align-items-center">
+            <div class="row none-margin-hr w-100">
+              <div class="col-7 d-flex align-items-center">
+                <ul class="trf-item-list">
+                  <li *ngFor="let category of tariff.tariffCategories">
+                    <span class="list-item-val">{{category.name}}</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-5 d-flex align-items-center justify-content-between">
+                <ul class="trf-item-list">
+                  <li (click)="editTariffValue.emit({tariffVersionId: item.id, tariffValueId: valueItem.id})"
+                      *ngFor="let valueItem of (item.entity.tariffValues | actualVersions)">
+                    <span class="list-item-val">{{ valueItem.name }}</span>
+                  </li>
+                </ul>
+                <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+                  <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle type="button"></button>
+                  <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                    <button (click)="addNewTariffVersion.emit({versions: tariff.tariffs, currentTariff: item.entity, vId: item.id})" class="dropdown-item d-flex justify-content-between on-add-new-version"
+                            type="button">
+                      Add new version
+                      <i class="dnm-icon add-new-version-icon"></i>
+                    </button>
+                    <button class="dropdown-item d-flex justify-content-between" type="button">
+                      Edit version
+                      <i class="dnm-icon edit-icon"></i>
+                    </button>
+                    <button (click)="onDeleteVersion(item)" class="dropdown-item d-flex justify-content-between on-delete"
+                            type="button">
+                      Delete version
+                      <i class="dnm-icon delete-icon"></i>
+                    </button>
+                    <button (click)="addNewTariffValue.emit(item)" class="dropdown-item d-flex justify-content-between on-add-new-value"
+                            type="button">
+                      Add new value
+                      <i class="dnm-icon plus-icon"></i>
+                    </button>
+                    <button *ngIf="false" class="dropdown-item d-flex justify-content-between" type="button">
+                      New tariff from version
+                      <i class="dnm-icon new-tariff-version-icon"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

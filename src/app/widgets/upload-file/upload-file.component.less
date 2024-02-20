@@ -1,0 +1,68 @@
+@import 'variables.less';
+
+.upload-form {
+  position: relative;
+  border: 1px dashed #CCCCCC;
+  background-color: #FCFCFC;
+  min-height: 45px;
+  text-align: center;
+
+  &.disabled {
+    opacity: 0.6;
+    cursor: no-drop;
+
+    & .click-attach {
+      cursor: no-drop;
+    }
+  }
+
+  .selected-file-name {
+    color: @color-main-accent;
+  }
+
+  .select-file-message {
+    display: inline-block;
+    line-height: 43px;
+    font-size: 14px;
+  }
+
+  .click-attach {
+    color: @color-main-accent;
+    cursor: pointer;
+  }
+
+  input[type="file"] {
+    opacity: 0;
+    filter: alpha(opacity=0);
+    font-size: 1px;
+    position: absolute;
+  }
+
+  .selected-file-name {
+    line-height: 23px;
+    font-weight: bold;
+    color: @color-main-accent;
+  }
+
+  &.file-selected .select-file-message {
+    line-height: inherit;
+    font-size: 11px;
+  }
+
+  &.file-drag {
+    &:before {
+      content: "";
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      right: 0px;
+      bottom: 0px;
+      background-color: rgba(103, 103, 103, 0.1);
+      pointer-events: none;
+    }
+
+    span {
+      pointer-events: none;
+    }
+  }
+}

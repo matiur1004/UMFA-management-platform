@@ -1,0 +1,128 @@
+<!-- create new contact -->
+<ng-container *ngIf="contacts.items.length == 0">
+  <div class="create-new-contact">
+    <div class="new-contact-icon">
+      <img src="assets/images/icons/no-contacts-icon.svg"/>
+    </div>
+    <div class="create-new-contact-msg">There are no contacts here</div>
+    <a (click)="onCreate()" class="blue-text-btn" href="javascript:void(0);">
+      <i class="add-icon"></i> Create a New Contact
+    </a>
+  </div>
+</ng-container>
+
+<!-- contacts -->
+<ng-container *ngIf="contacts.items.length > 0">
+  <div class="client-contacts-block">
+    <page-limit (create)="onCreate()" (limitChaged)="setItemsPerPage($event)" [itemName]="'contact'"
+                [itemsPerPageList]="itemsPerPageList" [itemsPerPage]="pageSize" [itemsTotal]="contacts.total"
+                [page]="page" [showCreate]="true"></page-limit>
+    <div class="row contacts-table-header-row list-header pt-4">
+      <div class="col-3 table-col-header">
+        <a (click)="changeOrderIndex(1);" [ngClass]="{'active': order == 1 || order == -1}"
+           class="header-field sortable d-flex align-items-center" href="javascript:void(0);">
+          <span class="text-ellipsis" title="Client name">Contact Name</span>
+          <i [ngClass]="{'inactive': order != 1 && order != -1, 'dnm-icon-sort-up': order == -1,'dnm-icon-sort-down': order != -1 }"
+             class="dnm-icon"></i>
+        </a>
+      </div>
+      <div class="col-2 table-col-header">
+        <a (click)="changeOrderIndex(2);" [ngClass]="{'active': order == 2 || order == -2}"
+           class="header-field sortable d-flex align-items-center" href="javascript:void(0);">
+          <span class="text-ellipsis" title="Client name">Department</span>
+          <i [ngClass]="{'inactive': order != 2 && order != -2, 'dnm-icon-sort-up': order == -2,'dnm-icon-sort-down': order != -2 }"
+             class="dnm-icon"></i>
+        </a>
+      </div>
+      <div class="col-2 table-col-header">
+        <a (click)="changeOrderIndex(3);" [ngClass]="{'active': order == 3 || order == -3}"
+           class="header-field sortable d-flex align-items-center" href="javascript:void(0);">
+          <span class="text-ellipsis" title="Client name">Home Address</span>
+          <i [ngClass]="{'inactive': order != 3 && order != -3, 'dnm-icon-sort-up': order == -3,'dnm-icon-sort-down': order != -3 }"
+             class="dnm-icon"></i>
+        </a>
+      </div>
+      <div class="col-2 table-col-header">Email</div>
+      <div class="col-1 table-col-header">Phone</div>
+      <div class="col-2 table-col-header">External Links</div>
+    </div>
+
+    <!-- table body -->
+    <div (click)="onEdit($event, contact)" *ngFor="let contact of contacts.items; let idx = index;"
+         class="row contacts-table-body-row">
+      <div class="col-3 table-col-cell">
+        <div class="contact-user-img-block">
+          <logo-container [url]="contact.logoUrl" logo-class="round-logo-wrp">
+            <div>
+              <span class="contact-user-no-img">{{contact.fullName[0].toUpperCase()}}</span>
+            </div>
+          </logo-container>
+        </div>
+        <div class="contact-name">
+          {{contact.fullName}}
+          <div class="contact-name-description">
+            {{contact.description}}
+          </div>
+        </div>
+      </div>
+      <div class="col-2 table-col-cell">{{contact.departmentDescription}}</div>
+      <div
+        class="col-2 table-col-cell">{{contact.address.suburb ? contact.address.suburb + ', ' : ''}}{{contact.address.city}}</div>
+      <div class="col-2 table-col-cell">{{contact.email}}</div>
+      <div class="col-1 table-col-cell">
+        <span class="text-ellipsis" ngbTooltip="{{contact.phone}}">{{contact.phone}}</span>
+      </div>
+      <div class="col-2 table-col-cell justify-content-between">
+        <div class="d-flex">
+          <div *ngFor="let contactExternalLink of contact.contactExternalLinks | slice:0:3;">
+            <div class="dropdown" ngbDropdown placement="bottom-center">
+              <button [ngClass]="{'d-social-zoom': contactExternalLink.label == 'Zoom', 'd-social-whatsapp': contactExternalLink.label == 'Whatsapp', 'd-social-web-address': contactExternalLink.label == 'Web address', 'd-social-twitter': contactExternalLink.label == 'Twitter', 'd-social-skype': contactExternalLink.label == 'Skype', 'd-social-other': contactExternalLink.label == 'Other', 'd-social-linkedin': contactExternalLink.label == 'Linkedin', 'd-social-hangouts': contactExternalLink.label == 'Hangouts', 'd-social-google-plus': contactExternalLink.label == 'G+', 'd-social-dropbox': contactExternalLink.label == 'Dropbox', 'd-social-fb': contactExternalLink.label == 'Facebook', 'd-social-google-drive': contactExternalLink.label == 'Google Drive'}"
+                      class="dnm-btn d-social-icon"
+                      ngbDropdownToggle></button>
+              <div (click)="$event.stopPropagation();" class="external-link-dropdown dropdown-menu" ngbDropdownMenu>
+                <app-popup-external-link [label]="contactExternalLink.label"
+                                         [value]="contactExternalLink.value"></app-popup-external-link>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="contact.contactExternalLinks.length == 4;">
+            <div class="dropdown" ngbDropdown placement="bottom-center">
+              <button [ngClass]="{'d-social-zoom': contact.contactExternalLinks[3].label == 'Zoom', 'd-social-whatsapp': contact.contactExternalLinks[3].label == 'Whatsapp', 'd-social-web-address': contact.contactExternalLinks[3].label == 'Web address', 'd-social-twitter': contact.contactExternalLinks[3].label == 'Twitter', 'd-social-skype': contact.contactExternalLinks[3].label == 'Skype', 'd-social-other': contact.contactExternalLinks[3].label == 'Other', 'd-social-linkedin': contact.contactExternalLinks[3].label == 'Linkedin', 'd-social-hangouts': contact.contactExternalLinks[3].label == 'Hangouts', 'd-social-google-plus': contact.contactExternalLinks[3].label == 'G+', 'd-social-dropbox': contact.contactExternalLinks[3].label == 'Dropbox', 'd-social-fb': contact.contactExternalLinks[3].label == 'Facebook', 'd-social-google-drive': contact.contactExternalLinks[3].label == 'Google Drive'}"
+                      class="dnm-btn d-social-icon"
+                      ngbDropdownToggle></button>
+              <div (click)="$event.stopPropagation();" class="external-link-dropdown dropdown-menu" ngbDropdownMenu>
+                <app-popup-external-link [label]="contact.contactExternalLinks[3].label"
+                                         [value]="contact.contactExternalLinks[3].value"></app-popup-external-link>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="contact.contactExternalLinks.length > 4;">
+            <div [autoClose]="'outside'" class="dropdown" ngbDropdown placement="bottom-right">
+              <button class="dnm-btn d-social-icon additional-links-btn" ngbDropdownToggle>
+                +{{contact.contactExternalLinks.length - 3}}
+              </button>
+              <div (click)="$event.stopPropagation();" class="external-link-dropdown dropdown-menu" ngbDropdownMenu>
+                <popup-social-list [model]="contact.contactExternalLinks"></popup-social-list>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+          <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle title="Menu"></button>
+          <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+            <button class="dropdown-item d-flex justify-content-between">
+              Edit
+              <i class="dnm-icon edit-icon"></i>
+            </button>
+            <button (click)="onDelete(contact, idx)" class="dropdown-item d-flex justify-content-between on-delete">
+              Delete
+              <i class="dnm-icon delete-icon"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <pager (onPageChange)="onPageChange($event)" [pageSize]="pageSize" [page]="page" [total]="contacts.total"></pager>
+  </div>
+</ng-container>

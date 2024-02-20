@@ -1,0 +1,142 @@
+//@import 'variables.less';
+@import 'required-fields.less';
+
+.edit-registers .modal-body {
+  padding: 10px 40px 50px;
+}
+
+.hedader-title {
+  margin-bottom: 15px;
+}
+
+.register-form-input-container {
+  display: flex;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.register-form-label {
+  min-width: 40%;
+  margin: 0 5px;
+  line-height: 38px;
+  font-weight: bolder;
+  color: @color-text-tertiary;
+}
+
+.register-form-input {
+  flex-grow: 1;
+  margin: 0 5px;
+}
+
+.register-type-input {
+  width: 380px;
+  margin: 0 5px;
+}
+
+.register-icon {
+  height:25px;
+  margin: 5px;
+  image-resolution:initial;
+  border-radius: 3px 5px;
+}
+
+.textarea {
+  resize: none;
+}
+
+.select {
+  margin-bottom: 15px;
+}
+
+.tou-header {
+  font-size: 15px;
+  color: @color-empty;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+hr {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.scale-margin {
+  margin-right: 15px;
+}
+
+.text-item {
+  line-height: 38px;
+  width: 20px;
+}
+
+.measurement-unit-lbl {
+  line-height: 35px;
+}
+
+.scale-control {
+  flex-grow: 1;
+}
+
+.multiplier {
+  font-size: 25px;
+  line-height: 35px;
+}
+
+.scale-form-row {
+  margin-bottom: 15px;
+}
+
+.add-new-button {
+  margin: 15px 0 15px 15px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.add-new-button > a > i {
+  margin-right: 10px;
+}
+
+.add-new-button > a:hover {
+  text-decoration: none;
+  color: @color-main-accent;
+  opacity: 0.7;
+}
+
+.disable, .add-new-button > a.disable:hover {
+  opacity: 0.5;
+}
+
+.disable:hover {
+  cursor: not-allowed;
+}
+
+.footer-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 35px;
+
+  .dnm-btn-cancel,
+  .dnm-btn-primary {
+    width: 200px;
+  }
+
+  .dnm-btn-primary {
+    margin-left: 30px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .register-form-input-container {
+    flex-wrap: wrap;
+    margin-bottom: 0;
+  }
+
+  .register-form-label {
+    width: 100%;
+  }
+
+  .scale-margin {
+    margin-right: 5px;
+  }
+
+}

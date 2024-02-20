@@ -1,0 +1,43 @@
+<div class="categ-wrp">
+  <div class="modal-header">
+    <h5 class="modal-title">Add new Category</h5>
+    <button (click)="dismiss()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container-fluid none-padding">
+      <div class="input-row">
+        <div class="text-uppercase field-name">Choose category</div>
+        <div class="field-value none-padding">
+          <div class="dropdown d-block fullwidth-dropdown none-padding invalid-input-val" ngbDropdown>
+            <button class="btn btn-secondary dropdown-toggle text-left" ngbDropdownToggle type="button">
+              Category Name
+            </button>
+            <div aria-labelledby="ddCategory" class="dropdown-menu w-100" ngbDropdownMenu>
+              <button class="dropdown-item" type="button">Category Name #1</button>
+              <button class="dropdown-item" type="button">Category Name #2</button>
+              <button class="dropdown-item" type="button">Category Name #3</button>
+              <button class="dropdown-item" type="button">Category Name #4</button>
+              <button class="dropdown-item" type="button">Category Name #5</button>
+            </div>
+          </div>
+        </div>
+        <div class="field-name"></div>
+        <div class="field-value none-padding">
+          <div class="d-flex justify-content-end">
+            <small class="alert-danger text-uppercase">
+              Category already exists in this tariff
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="row none-margin-hr">
+        <div class="col none-padding footer-buttons d-flex justify-content-end">
+          <button (click)="dismiss()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+          <button (click)="save()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

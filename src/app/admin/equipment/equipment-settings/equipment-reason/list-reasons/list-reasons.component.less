@@ -1,0 +1,75 @@
+@import 'variables.less';
+
+.manage-reasons {
+  background-color: @color-background-white;
+  border: 1px solid @color-line;
+  padding: 30px;
+  height: 100%;
+}
+
+.manage-reasons .title-row,
+.manage-reasons .search-row,
+.manage-reasons .stat-row {
+  margin-bottom: 30px;
+}
+
+.manage-reasons .stat-lbl {
+  font-family: @fontFamilyLight;
+  font-size: 16px;
+  line-height: 18px;
+  color: @color-text-tertiary;
+}
+
+.manage-reasons .list-header {
+  margin-right: 5px;
+}
+
+.manage-reasons .list-header .header-field {
+  text-transform: uppercase;
+}
+
+.manage-reasons .list-body {
+  height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.manage-reasons .body-row {
+  height: 50px;
+  border-bottom: 1px solid @color-line;
+}
+
+.manage-reasons .body-row:last-child {
+  border-bottom: none;
+}
+
+.manage-reasons .register-name-lbl {
+  font-family: @fontFamilyMedium;
+  font-size: 16px;
+  line-height: 18px;
+  color: @color-text-primary;
+}
+
+.manage-reasons .description-lbl {
+  display: inline-block;
+  font-family: @fontFamilyBook;
+  font-size: 13px;
+  line-height: 15px;
+  color: @color-text-tertiary;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.manage-reasons .registers-lbl {
+  display: inline-block;
+  font-family: @fontFamilyBook;
+  font-size: 13px;
+  line-height: 15px;
+  color: @color-text-tertiary;
+}
+
+.manage-reasons .service-type {
+  margin-bottom: 0;
+  margin-right: 10px;
+}

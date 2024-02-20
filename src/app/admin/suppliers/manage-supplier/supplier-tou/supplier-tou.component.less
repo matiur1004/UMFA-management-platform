@@ -1,0 +1,96 @@
+@import 'variables.less';
+
+.splr-tou-wrp {
+  padding-top: 8px;
+}
+
+.splr-tou-wrp .splr-tou-block {
+  width: 650px;
+  max-width: 650px;
+}
+
+.splr-tou-wrp .item-hdr-nav {
+  margin-bottom: 10px;
+}
+
+.splr-tou-wrp .item-hdr-name {
+  font-family: Gotham Medium;
+  font-size: 12px;
+  color: @color-empty;
+}
+
+.splr-tou-wrp .del-item-btn {
+  cursor: pointer;
+  line-height: 1;
+}
+
+.splr-tou-wrp .del-item-btn .btn-lbl {
+  margin-left: 10px;
+  font-family: Gotham Book;
+  font-size: 14px;
+  background: linear-gradient(to right, #e4877a, #dc3939);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.splr-tou-wrp .line-div {
+  border-bottom: 1px solid #eeeff0;
+}
+
+.splr-tou-wrp .input-row {
+  margin: 0;
+  min-height: 50px;
+  padding: 7px 0 7px 20px;
+}
+
+.splr-tou-wrp .select-box-wrp {
+  padding-left: 36px;
+}
+
+.splr-tou-wrp .checkbox-input-lbl,
+.splr-tou-wrp .radio-input-lbl {
+  font-family: Gotham Light;
+  font-size: 14px;
+  line-height: 14px;
+  color: @color-text-tertiary;
+  white-space: nowrap;
+  padding-right: 20px;
+  padding-left: 10px;
+}
+
+.splr-tou-wrp .tou-table-wrp {
+  margin-left: -40px;
+  margin-right: -40px;
+  padding-left: 40px;
+  padding-right: 40px;
+  background-color: @color-background-secondary;
+  border-top: 1px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
+}
+
+/* #region ng-deep styles */
+
+::ng-deep .splr-tou-wrp .dnm-tabset .nav-tabs {
+  margin-left: -40px;
+  margin-right: -40px;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+::ng-deep .splr-tou-wrp .dnm-tabset .nav-tabs .nav-link {
+  padding-top: 30px;
+  padding-bottom: 13px;
+}
+
+::ng-deep .splr-tou-wrp .dnm-tabset .tab-content {
+  margin-left: -40px;
+  margin-right: -40px;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-top: 0;
+  background-color: @color-background-secondary;
+  border-bottom: 1px solid #dee2e6;
+}
+
+/* #endregion */
+

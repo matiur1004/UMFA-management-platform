@@ -1,0 +1,239 @@
+@import 'variables.less';
+
+.align-items-center {
+  align-items: center;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+/* #region users navigation settings  */
+
+.results-label {
+  font-size: 16px;
+  color: @color-text-tertiary;
+}
+
+.results-label:first-child {
+  margin-right: 14px;
+}
+
+.count-label {
+  font-size: 14px;
+  color: @color-text-tertiary;
+  margin-right: 12px;
+}
+
+.add-contact-btn {
+  font-size: 14px;
+  line-height: 26px;
+}
+
+.add-contact-btn .add-icon {
+  margin-right: 10px;
+}
+
+.contact-data-nav {
+  display: flex;
+  align-items: center;
+}
+
+/* #endregion */
+
+/* #region users grid header */
+
+.contacts-list-wrp {
+  margin-bottom: 40px;
+}
+
+.contacts-item {
+  border-bottom: 1px solid #f0f1f1;
+  border-left: 1px solid #f0f1f1;
+  border-right: 1px solid #f0f1f1;
+  background: @color-background-white;
+  position: relative;
+  color: @color-text-tertiary;
+  font-size: 14px;
+  padding: 19px 0 17px 0;
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.contacts-item:hover {
+  cursor: pointer;
+}
+
+.contacts-item:first-child {
+  border-top: 1px solid #f0f1f1;
+}
+
+.contact-img-block .contact-img {
+  border-radius: 18px;
+  width: 36px;
+  height: 36px;
+}
+
+.contact-img-block .contact-no-img {
+  .gradient-header();
+  border-radius: 18px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: @color-main-accent;
+  font-family: 'Gotham Medium';
+  font-size: 14px;
+  line-height: 36px;
+}
+
+.contact-name {
+  font-family: 'Gotham Medium';
+  font-size: 18px;
+  color: @color-text-secondary;
+}
+
+.contact-name .contact-name-description {
+  font-family: 'Gotham Light';
+  font-size: 13px;
+  line-height: 16px;
+  color: @color-description;
+}
+
+.contacts-department,
+.contacts-address,
+.contacts-email,
+.contacts-department {
+  font-size: 13px;
+  font-family: 'Gotham Book';
+  line-height: 20px;
+  color: @color-text-tertiary;
+}
+
+.contact-external-links {
+  width: 100%;
+}
+
+.d-social-btn {
+  background: none;
+  border: none;
+  margin-right: 10px;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.d-social-btn::after {
+  content: none;
+}
+
+.d-social-btn:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+.d-social-icon {
+  width: 24px;
+  height: 24px;
+  border: none;
+  display: inline-block;
+  line-height: 1;
+}
+
+.d-social-icon.numb-of-socials {
+  .gradient-header();
+  border-radius: 12px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 11px;
+  line-height: 24px;
+  color: @color-background-white;
+  font-family: 'Gotham Book';
+}
+
+.social-list-dropdown.dropdown-menu,
+.external-link-dropdown.dropdown-menu {
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
+.social-list-dropdown.dropdown-menu {
+  margin-top: 12px;
+  margin-bottom: 12px;
+  left: -461px !important;
+}
+
+.contacts-list-wrp .add-to-users-icon {
+  margin-right: 10px;
+}
+
+.add-to-users-icon,
+.user-assigned-icon {
+  position: relative;
+}
+
+.add-to-users-icon:hover,
+.user-assigned-icon:hover {
+  cursor: pointer;
+}
+
+.add-to-users-icon:hover .add-to-users-popup,
+.user-assigned-icon:hover .add-to-users-popup {
+  display: block;
+}
+
+
+.add-to-users-popup {
+  position: absolute;
+  display: none;
+  padding: 0;
+  margin: 0 0 12px 0;
+  left: -53px;
+  top: -40px;
+}
+
+
+.add-to-users-msg {
+  border-radius: 4px;
+  overflow: hidden;
+  width: 120px;
+  height: 30px;
+  color: @color-empty;
+  font-family: Gotham Book;
+  font-size: 13px;
+  background: #242e45;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-to-users-msg::after {
+  position: absolute;
+  content: '';
+  display: block;
+  border-color: transparent;
+  border-width: 6px;
+  border-style: solid;
+  border-top-color: @color-text-primary;
+  opacity: 0.95;
+  width: 6px;
+  bottom: -12px;
+  left: 57px;
+}
+
+.paging-container {
+  margin-bottom: 60px;
+}
+
+.paging-btn {
+  height: 40px;
+  width: 40px;
+  line-height: 40px;
+}
+
+/* #endregion */

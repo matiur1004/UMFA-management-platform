@@ -1,0 +1,232 @@
+<ng-container *ngIf="!shopCount">
+  <div class="create-new-shop">
+    <div class="shop-icon d-flex justify-content-center"></div>
+    <div class="new-shop-msg d-flex justify-content-center">There are no shops here</div>
+    <div class="d-flex align-items-center justify-content-center">
+      <a (click)="onCreate()" class="blue-text-btn d-flex align-items-center justify-content-center"
+         href="javascript:void(0);">
+        <i class="add-icon"></i> Create Shop
+      </a>
+      <a (click)="onUploadData()" class="blue-text-btn d-flex align-items-center justify-content-center"
+         href="javascript:void(0);">
+        <i class="add-icon"></i> Upload Shops
+      </a>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="shopCount">
+  <div class="container-fluid none-padding shops-list-cont">
+    <div class="row manage-shops-nav">
+      <div class="col small-nav">
+        <div class="d-flex align-items-center">
+          <span class="filter-res-lbl dnm-text-light">{{shopsInfoText}}</span>
+          <div *ngIf="showActionMenu" class="dropdown filter-dropdown d-inline-block small shops-action-menu"
+               ngbDropdown
+               placement="bottom-right">
+            <button class="btn btn-secondary dropdown-toggle text-left" id="ddMngShpsDtls" ngbDropdownToggle>
+              Action
+            </button>
+            <div aria-labelledby="ddMngShpsDtls" class="dropdown-menu" ngbDropdownMenu>
+              <div class="dropdown-title">Status</div>
+              <button (click)="onSetVacantMultiple()" class="dropdown-item">Vacant</button>
+              <button (click)="onSetSpareMultiple()" class="dropdown-item">Spare</button>
+              <div class="dropdown-title">Merge</div>
+              <button (click)="onMerge()" class="dropdown-item">Merge shops</button>
+            </div>
+          </div>
+          <a (click)="onCreate()" class="blue-text-btn add-shop-btn" href="javascript:void(0);">
+            <i class="add-icon"></i> Add Shop
+          </a>
+        </div>
+        <form class="form-inline main-search-input w-100">
+          <div class="input-group">
+            <input #searchShopsList (keyup)="updateShopSearchTerm.emit(searchShopsList.value)" class="form-control group-search-input background-white"
+                   placeholder="Shop Search" type="search"/>
+            <div class="input-group-append">
+              <i class="icon-relative search-icon vertical-middle"></i>
+            </div>
+          </div>
+        </form>
+        <div class="d-flex align-items-center justify-content-center">
+          <button (click)="onUploadData()" class="dnm-btn import-data-btn text-uppercase d-flex align-items-center">
+            Import
+            <i class="import-data-icon import-icon"></i>
+          </button>
+          <span class="text-uppercase dd-filter-lbl">Show:</span>
+          <ng-select (change)="onFilterBy($event)"
+                     [clearable]="false" [items]="filterByItems" [ngModel]="filterByIdx"
+                     [searchable]="false" bindLabel="label"
+                     bindValue="value" class="dnm-single-select dnm-dropdown-select" title="{{filterByLbl}}">
+            <ng-template let-item="item" ng-option-tmp>
+              <span title="{{item.label}}">{{item.label}}</span>
+            </ng-template>
+          </ng-select>
+        </div>
+      </div>
+    </div>
+    <div [formGroup]="form" class="table-container table-vertical-scroll mng-shps-tbl">
+      <table class="table table-custom table-white table-vertical-center table-outside-border-body">
+        <thead>
+        <tr>
+          <th class="pl-0 d-flex align-items-center">
+            <div class="checkbox-col d-flex align-items-center">
+              <div class="dnm-checkbox">
+                <input (click)="onSelectAll()" [checked]="checkedAll" type="checkbox"/>
+                <div [ngClass]="{'indeterm-state': checkedAllPartly}" class="state">
+                  <label></label>
+                </div>
+              </div>
+            </div>
+            <a (click)="changeOrderIndex(1);" [ngClass]="{'active': orderIndex == 1 || orderIndex == -1}"
+               class="head-col shop-name-header d-flex align-items-center"
+               href="javascript:void(0);">
+              <span class="text-ellipsis text-uppercase" title="Shop Name">Shop Name</span>
+              <i [ngClass]="{'inactive': orderIndex != 1 && orderIndex != -1, 'dnm-icon-sort-up': orderIndex == -1,'dnm-icon-sort-down': orderIndex != -1 }"
+                 class="dnm-icon"></i>
+            </a>
+          </th>
+          <th>
+            <a (click)="changeOrderIndex(2);" [ngClass]="{'active': orderIndex == 2 || orderIndex == -2}" class="head-col d-flex align-items-center"
+               href="javascript:void(0);">
+              <span class="text-ellipsis text-uppercase" title="Tenant Name">Tenant Name</span>
+              <i [ngClass]="{'inactive': orderIndex != 2 && orderIndex != -2, 'dnm-icon-sort-up': orderIndex == -2,'dnm-icon-sort-down': orderIndex != -2 }"
+                 class="dnm-icon"></i>
+            </a>
+          </th>
+          <th>
+            <a (click)="changeOrderIndex(3);" [ngClass]="{'active': orderIndex == 3 || orderIndex == -3}" class="head-col d-flex align-items-center"
+               href="javascript:void(0);">
+              <span class="text-ellipsis text-uppercase" title="Area">Area</span>
+              <i [ngClass]="{'inactive': orderIndex != 3 && orderIndex != -3, 'dnm-icon-sort-up': orderIndex == -3,'dnm-icon-sort-down': orderIndex != -3 }"
+                 class="dnm-icon"></i>
+            </a>
+          </th>
+          <th class="status-col">
+            <a (click)="changeOrderIndex(4);" [ngClass]="{'active': orderIndex == 4 || orderIndex == -4}" class="head-col d-flex align-items-center"
+               href="javascript:void(0);">
+              <span class="text-ellipsis text-uppercase" title="Status">Status</span>
+              <i [ngClass]="{'inactive': orderIndex != 4 && orderIndex != -4, 'dnm-icon-sort-up': orderIndex == -4,'dnm-icon-sort-down': orderIndex != -4 }"
+                 class="dnm-icon"></i>
+            </a>
+          </th>
+          <th class="floor-col">
+            <a (click)="changeOrderIndex(5);" [ngClass]="{'active': orderIndex == 5 || orderIndex == -5}" class="head-col d-flex align-items-center"
+               href="javascript:void(0);">
+              <span class="text-ellipsis text-uppercase" title="Floor">Floor</span>
+              <i [ngClass]="{'inactive': orderIndex != 5 && orderIndex != -5, 'dnm-icon-sort-up': orderIndex == -5,'dnm-icon-sort-down': orderIndex != -5 }"
+                 class="dnm-icon"></i>
+            </a>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <ng-container *ngFor="let shop of form.controls.shops.controls; let idx = index;" formArrayName="shops">
+          <tr [formGroupName]="idx">
+            <td class="pl-0 d-flex align-items-center">
+              <div class="checkbox-col d-flex align-items-center">
+                <div class="dnm-checkbox">
+                  <input (click)="onSelect()" formControlName="isSelected" type="checkbox"/>
+                  <div class="state">
+                    <label></label>
+                  </div>
+                </div>
+              </div>
+              <div class="shop-name-col">
+                <div class="field-value">
+                  <input #name (change)="updateShop.emit({id: shops[idx].id, path:'name', value: shop.controls.name.value})" class="form-control" formControlName="name" placeholder="Type here"
+                         type="text"/>
+                </div>
+                <div class="field-name"></div>
+                <div *ngIf="shop.controls.name.dirty && !shop.controls.name.valid" class="field-value">
+                  <small *ngIf="shop.hasError('required', 'name')" class="alert-danger">
+                    Name is required
+                  </small>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="field-value" formGroupName="tenant">
+                <input #tenantName (change)="updateShop.emit({id: shops[idx].id, path:'tenant.name', value: shop.controls.tenant.controls.name.value})" class="form-control" formControlName="name" placeholder="Type here"
+                       type="text"/>
+              </div>
+            </td>
+            <td>
+              <div class="field-value">
+                <number-input (change)="updateShop.emit({id: shops[idx].id, path:'area', value: shop.controls.area.value})" [min]="0"
+                              [styleClass]="'short-number-input'"
+                              formControlName="area"></number-input>
+              </div>
+              <div class="field-name"></div>
+              <div *ngIf="shop.controls.area.dirty && !shop.controls.area.valid" class="field-value">
+                <small *ngIf="shop.hasError('required', 'area')" class="alert-danger">
+                  Area is required
+                </small>
+                <small *ngIf="shop.hasError('pattern', 'area')" class="alert-danger">
+                  Area not in the correct format
+                </small>
+              </div>
+            </td>
+            <td class="status-col">
+              <div [ngClass]="{
+                      'st-occupied': shop.controls.status.value == shopStatus.Occupied,
+                      'st-vacant': shop.controls.status.value == shopStatus.Vacant,
+                      'st-spare': shop.controls.status.value == shopStatus.Spare
+                      }" class="text-ellipsis mng-shps-stat">
+                <span class="usr-status-cnt">{{shopStatus[shop.controls.status.value]}}</span>
+              </div>
+            </td>
+            <td class="floor-col pr-0">
+              <div class="d-flex align-items-center justify-content-between">
+                <div>
+                  <div class="mng-shps-floor">
+                    <number-input (change)="updateShop.emit({id: shops[idx].id, path:'floor', value: shop.controls.floor.value})" [styleClass]="'short-number-input'"
+                                  formControlName="floor"></number-input>
+                  </div>
+                  <div class="field-name"></div>
+                  <div *ngIf="shop.controls.floor.dirty &&
+                                shop.controls.floor.errors &&
+                                shop.controls.floor.errors.valid" class="field-value">
+                    <small class="alert-danger">
+                      Floor not in the correct format
+                    </small>
+                  </div>
+                </div>
+                <div [container]="'body'" [placement]="['bottom-right', 'top-right']"
+                     class="dropdown darkness d-inline-block" ngbDropdown>
+                  <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle></button>
+                  <div class="darkness dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                    <button (click)="onSplitShop(shops[idx].id)" class="dropdown-item d-flex justify-content-between"
+                            data-menu-item>
+                      Split shop
+                      <i class="dnm-icon split-icon"></i>
+                    </button>
+                    <button (click)="onToggleSpare(shops[idx].id, idx);" class="dropdown-item d-flex justify-content-between"
+                            data-menu-item>
+                      {{shop.controls['isSpare'].value ? 'Vacant' : 'Spare'}}
+                      <i class="dnm-icon spare-icon"></i>
+                    </button>
+                    <button (click)="onDelete(shops[idx].id, idx)" class="dropdown-item d-flex justify-content-between"
+                            data-menu-item>
+                      Delete
+                      <i class="dnm-icon delete-icon"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row mng-shps-footer">
+    <div class="col-12 text-right footer-buttons">
+      <button (click)="previous.emit('shopManager')" class="dnm-btn dnm-btn-cancel size-lg text-uppercase"
+              type="button">Cancel
+      </button>
+      <button (click)="onNext()" class="dnm-btn dnm-btn-primary size-lg text-uppercase" type="button">Next</button>
+    </div>
+  </div>
+</ng-container>

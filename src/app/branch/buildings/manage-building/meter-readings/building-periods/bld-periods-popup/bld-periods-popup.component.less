@@ -1,0 +1,52 @@
+@import 'variables.less';
+
+.bld-periods-popup {
+  width: 300px;
+  min-width: 300px;
+  height: 170px;
+  background-color: @color-background-dark;
+  opacity: 0.95;
+  border-radius: 5px;
+}
+
+.bld-periods-popup:before {
+  position: absolute;
+  content: '';
+  background: @color-background-dark;
+  top: 0;
+  right: 40px;
+  width: 10px;
+  height: 10px;
+  z-index: -1;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
+.bld-periods-popup .popup-title {
+  height: 50px;
+  background-color: @color-background-dark;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom: 1px dashed #646c7e;
+  color: @color-background-white;
+  padding: 0 20px;
+}
+
+.bld-periods-popup .popup-body {
+  padding: 16px 20px;
+}
+
+.bld-periods-popup .body-item {
+  font-family: Gotham Book;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.bld-periods-popup .item-field-lbl {
+  color: @color-empty;
+  margin-right: 5px;
+}
+
+.bld-periods-popup .item-field-val {
+  color: @color-background-primary;
+}

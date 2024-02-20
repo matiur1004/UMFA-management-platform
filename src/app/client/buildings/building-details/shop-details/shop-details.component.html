@@ -1,0 +1,191 @@
+<div class="client-build-shop-det">
+  <div class="subdivision-item dnm-text-medium">
+    <div class="dnm-text-bold">
+      Allocated equipment
+    </div>
+    <div class="list-container">
+      <div class="d-flex none-margin-hr text-uppercase">
+        <div class="col-2 header-field d-flex align-items-center">
+          <span class="text-ellipsis text-uppercase" title="Equipment">Equipment</span>
+        </div>
+        <div class="col-2 header-field d-flex align-items-center">
+          <span class="text-ellipsis text-uppercase" title="Description">Description</span>
+        </div>
+        <div class="col-2 header-field d-flex align-items-center">
+          <span class="text-ellipsis text-uppercase" title="Billing Registers">Billing Registers</span>
+        </div>
+        <div class="col-3 header-field d-flex align-items-center">
+          <span class="text-ellipsis text-uppercase" title="Equipment Attributes">Equipment Attributes</span>
+        </div>
+        <div class="col-3 header-field d-flex align-items-center">
+          <span class="text-ellipsis text-uppercase" title="Applied tariff">Applied tariff</span>
+        </div>
+      </div>
+      <div *ngFor="let meter of shopDetails?.meters" class="d-flex flex-wrap list-item">
+        <div class="col-2 d-flex align-items-center">
+          <div class="item-img d-flex align-items-center justify-content-center">
+            <logo-container [url]="(meter.photoUrl | image) | async"
+                            logo-class="branch-logo full-height d-flex align-items-center">
+              <div class="meter-no-img"></div>
+            </logo-container>
+          </div>
+          <div class="d-flex flex-column">
+                <span [title]="meter.serialNumber" class="serial-numb-lbl">
+                  {{meter.serialNumber | emptyValue | slice : -4}}-{{meter.supplyType | supplyTypeLetter}}
+                </span>
+            <span class="equip-model-lbl">{{meter.equipmentModel}}</span>
+          </div>
+        </div>
+        <div class="col-2 d-flex align-items-center">
+          <span class="text-ellipsis equip-descr-lbl">{{meter.description}}</span>
+        </div>
+        <div class="col-2 d-flex align-items-center">
+          <span class="text-ellipsis equip-descr-lbl">{{meter.billingRegisters.join(', ')}}</span>
+        </div>
+        <div class="col-3 d-flex flex-column justify-content-center">
+          <div *ngFor="let attribute of meter.attributes" class="equipment-attr">
+            <span class="equipment-attr-lbl">{{attribute.name}}:</span>
+            <span class="equipment-attr-val">{{attribute.value}}</span>
+            <span *ngIf="attribute.fieldType === fieldType.Number"
+                  class="equipment-attr-val">{{attribute.unitName}}</span>
+          </div>
+        </div>
+        <div class="col-3 d-flex align-items-center justify-content-between">
+          <div class="equip-descr-lbl">{{meter.tariffName ? meter.tariffName : ''}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="header-name dnm-text-bold">
+      Specials
+    </div>
+    <div class="list-container">
+      <div class="d-flex none-margin-hr text-uppercase">
+        <div class="col-2 header-field d-flex align-items-center">
+          <span class="text-ellipsis text-uppercase" title="Special name">Special name</span>
+        </div>
+        <div class="col-1 header-field d-flex align-items-center">
+          <span class="text-ellipsis text-uppercase" title="Floor">Floor</span>
+        </div>
+        <div class="col-2 header-field d-flex align-items-center">
+          <span class="text-ellipsis text-uppercase" title="Supply type">Supply type</span>
+        </div>
+        <div class="col-2 header-field d-flex align-items-center">
+          <span class="text-ellipsis text-uppercase" title="Share">Share</span>
+        </div>
+        <div class="col-2 header-field d-flex align-items-center">
+          <span class="text-ellipsis text-uppercase" title="Meter">Meter</span>
+        </div>
+        <div class="col-3 header-field d-flex align-items-center">
+          <span class="text-ellipsis text-uppercase" title="Applied tariff">Applied tariff</span>
+        </div>
+      </div>
+      <ng-container *ngFor="let special of shopDetails?.specials">
+        <div class="d-flex flex-wrap list-item">
+          <div class="col-2 d-flex align-items-center">
+            <span class="text-ellipsis special-name-lbl">{{special.name}}</span>
+          </div>
+          <div class="col-1 d-flex align-items-center">
+            <span class="text-ellipsis special-name-lbl">{{special.floor}}</span>
+          </div>
+          <ng-container *ngIf="special.supplyTypeMeters.length">
+            <div class="col-2 d-flex align-items-center">
+              <div class="d-flex flex-row align-items-center">
+                <div [supplyTypeClassSufix]="'-icon'" [supplyTypeClass]="special.supplyTypeMeters[0].supplyType"
+                     class="service-icon"></div>
+                <span [supplyTypeClassSufix]="'-lbl'" [supplyTypeClass]="special.supplyTypeMeters[0].supplyType"
+                      class="type-lbl">{{supplyTypeText[special.supplyTypeMeters[0].supplyType]}}</span>
+              </div>
+            </div>
+            <div class="col-2 d-flex align-items-center">
+              <span class="text-ellipsis special-name-lbl">{{special.supplyTypeMeters[0].share}}%</span>
+            </div>
+            <div class="col-2 d-flex align-items-center">
+              <div class="d-flex flex-column">
+                <span class="serial-numb-lbl">{{special.supplyTypeMeters[0].meter.serialNumber}}</span>
+                <span class="equip-model-lbl">{{special.supplyTypeMeters[0].meter.equipmentModel}}</span>
+              </div>
+            </div>
+            <div class="col-3 d-flex align-items-center justify-content-between">
+              <div
+                class="special-name-lbl">{{special.supplyTypeMeters[0].appliedTariff?.name + special.supplyTypeMeters[0].appliedTariff?.tariffValue ? ' (' + special.supplyTypeMeters[0].appliedTariff?.tariffValue + ')' : ''}}</div>
+            </div>
+          </ng-container>
+        </div>
+        <div *ngFor="let item of special.supplyTypeMeters; let isFirst = first"
+             class="d-flex flex-wrap list-item sub-item">
+          <ng-container *ngIf="!isFirst">
+            <div class="col-2 d-flex align-items-center">
+            </div>
+            <div class="col-1 d-flex align-items-center">
+            </div>
+            <div class="col-2 d-flex align-items-center">
+              <div class="d-flex flex-row align-items-center">
+                <div [supplyTypeClassSufix]="'-icon'" [supplyTypeClass]="item.supplyType" class="service-icon"></div>
+                <span [supplyTypeClassSufix]="'-lbl'" [supplyTypeClass]="item.supplyType"
+                      class="type-lbl">{{supplyTypeText[item.supplyType]}}</span>
+              </div>
+            </div>
+            <div class="col-2 d-flex align-items-center">
+              <span class="text-ellipsis special-name-lbl">{{item.share}}%</span>
+            </div>
+            <div class="col-2 d-flex align-items-center">
+              <div class="d-flex flex-column">
+                    <span [title]="item.meter.serialNumber" class="serial-numb-lbl">
+                      {{item.meter.serialNumber | emptyValue | slice : -4}}
+                      -{{item.meter?.supplyType | supplyTypeLetter}}
+                    </span>
+                <span class="equip-model-lbl">{{item.meter.equipmentModel}}</span>
+              </div>
+            </div>
+            <div class="col-3 d-flex align-items-center justify-content-between">
+              <div
+                class="special-name-lbl">{{item.appliedTariff?.name + item.appliedTariff?.tariffValue ? ' (' + item.appliedTariff?.tariffValue + ')' : ''}}</div>
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+    </div>
+    <div class="header-name dnm-text-bold">
+      Additional charges
+    </div>
+    <div class="list-container">
+      <div class="d-flex none-margin-hr text-uppercase">
+        <div class="col-2 header-field d-flex align-items-center">
+          <span class="text-ellipsis text-uppercase" title="Charge">Charge</span>
+        </div>
+        <div class="col-2 header-field d-flex align-items-center">
+          <span class="text-ellipsis text-uppercase" title="Supply type">Supply type</span>
+        </div>
+        <div class="col-2 header-field d-flex align-items-center">
+          <span class="text-ellipsis text-uppercase" title="Line name">Line name</span>
+        </div>
+        <div class="col-3 header-field d-flex align-items-center">
+          <span class="text-ellipsis text-uppercase" title="Description">Description</span>
+        </div>
+        <div class="col-3 header-field d-flex align-items-center">
+          <span class="text-ellipsis text-uppercase" title="Values, R">Values, R</span>
+        </div>
+      </div>
+      <div class="d-flex flex-wrap list-item">
+        <div class="col-2 d-flex align-items-center">
+          <span class="text-ellipsis charge-name-lbl">Rent recovery</span>
+        </div>
+        <div class="col-2 d-flex align-items-center">
+          <div class="d-flex flex-row align-items-center">
+            <div [supplyTypeClassSufix]="'-icon'" [supplyTypeClass]="1" class="service-icon"></div>
+            <span [supplyTypeClassSufix]="'-lbl'" [supplyTypeClass]="1" class="type-lbl">Water</span>
+          </div>
+        </div>
+        <div class="col-2 d-flex align-items-center">
+          <span class="text-ellipsis charge-name-lbl">Monthly rent recovery</span>
+        </div>
+        <div class="col-3 d-flex align-items-center">
+          <span class="text-ellipsis charge-name-lbl">Fixed charge, monthly, R/month</span>
+        </div>
+        <div class="col-3 d-flex align-items-center justify-content-between">
+          <div class="text-ellipsis charge-name-lbl">400 R/month</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

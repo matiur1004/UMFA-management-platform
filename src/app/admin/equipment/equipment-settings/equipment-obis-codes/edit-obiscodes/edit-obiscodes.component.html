@@ -1,0 +1,117 @@
+<div class="edit-groups">
+  <div class="modal-header">
+    <h5 class="modal-title">
+      <span *ngIf="!model">Create Obis Code</span>
+      <span *ngIf="model && !model.isSystem">Edit Obis Code</span>
+      <span *ngIf="model && model.isSystem">Obis Code Details</span>
+    </h5>
+    <button (click)="dismiss()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container-fluid none-padding">
+      <form [formGroup]="form">
+        <div class="input-row none-margin-hr">
+          <div class="text-uppercase field-name">Obis Code</div>
+          <div class="field-value none-padding">
+            <div [ngClass]="{'dnm-invalid-inp': formErrors.obisCodeValue}">
+              <input class="form-control req-frm-fld" formControlName="obisCodeValue" maxlength="8" placeholder="ie: 1.8.0" type="text"/>
+            </div>
+          </div>
+          <div class="field-name"></div>
+          <div class="field-value none-padding">
+            <small *ngIf="formErrors.obisCodeValue" class="alert-danger">
+              {{ formErrors.obisCodeValue }}
+            </small>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name">Energy Type</div>
+          <div class="field-value none-padding">
+            <ng-select [clearable]="false"
+                       [hideSelected]="true"
+                       [items]="energyTypesList"
+                       [searchable]="false"
+                       bindLabel="label"
+                       bindValue="value"
+                       class="select-dropdown req-frm-fld"
+                       formControlName="energyType">
+            </ng-select>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name">Polarity Type</div>
+          <div class="field-value none-padding">
+            <ng-select [clearable]="false"
+                       [hideSelected]="true"
+                       [items]="polarityTypesList"
+                       [searchable]="false"
+                       bindLabel="label"
+                       bindValue="value"
+                       class="select-dropdown req-frm-fld"
+                       formControlName="polarityType">
+            </ng-select>
+
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name">Reading Type</div>
+          <div class="field-value none-padding">
+            <ng-select [clearable]="false"
+                       [hideSelected]="true"
+                       [items]="readingTypesList"
+                       [searchable]="false"
+                       bindLabel="label"
+                       bindValue="value"
+                       class="select-dropdown req-frm-fld"
+                       formControlName="readingType">
+            </ng-select>
+
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name">Tariff Type</div>
+          <div class="field-value none-padding">
+            <ng-select [clearable]="false"
+                       [hideSelected]="true"
+                       [items]="tariffTypesList"
+                       [searchable]="false"
+                       bindLabel="label"
+                       bindValue="value"
+                       class="select-dropdown req-frm-fld"
+                       formControlName="tariffType">
+            </ng-select>
+          </div>
+        </div>
+        <div class="input-row none-margin-hr">
+          <div class="text-uppercase field-name">Display Value</div>
+          <div class="field-value none-padding">
+            <div [ngClass]="{'dnm-invalid-inp': formErrors.displayValue}">
+              <input class="form-control req-frm-fld" formControlName="displayValue" maxlength="25" placeholder="ie: 1.8.0 (kWh-Tot)" type="text"/>
+            </div>
+          </div>
+          <div class="field-name"></div>
+          <div class="field-value none-padding">
+            <small *ngIf="formErrors.displayValue" class="alert-danger">
+              {{ formErrors.displayValue }}
+            </small>
+          </div>
+        </div>
+        <div class="row none-margin-hr">
+          <div class="col-md-8 offset-md-4 none-padding footer-buttons">
+            <button (click)="dismiss()" *ngIf="!model  || model && !model.isSystem"
+                    class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel
+            </button>
+            <button (click)="save()" *ngIf="!model  || model && !model.isSystem"
+                    class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save
+            </button>
+            <button (click)="dismiss()" *ngIf="model && model.isSystem" class="dnm-btn dnm-btn-primary text-uppercase"
+                    type="button">Close
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

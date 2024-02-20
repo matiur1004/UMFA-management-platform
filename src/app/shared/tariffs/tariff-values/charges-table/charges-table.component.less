@@ -1,0 +1,124 @@
+@import 'variables.less';
+
+:host {
+  width: 100%;
+}
+
+::ng-deep .charges-table-container .tooltip-inner {
+  max-width: 100%;
+  padding: 0;
+}
+
+/* Table Container */
+.charges-table-container {
+  padding-top: 26px;
+}
+
+.charges-table-container .field-name {
+  font-family: Gotham Medium;
+  padding: 7px 0 0 20px;
+  font-size: 14px;
+  color: #afb5c0;
+}
+
+.charges-table-container .charges-table-content:last-child {
+  border-bottom: 1px solid #eeeff0;
+}
+
+/* Table Title */
+.charges-table-title {
+  padding-left: 20px;
+  margin-bottom: 10px;
+}
+
+.charges-table-title .title-item {
+  font-size: 12px;
+  font-family: Gotham Medium;
+  color: @color-description;
+  width: 15%;
+  padding-left: 20px;
+}
+
+.charges-table-title .title-item:first-child {
+  padding-left: 0;
+}
+
+.charges-table-title .title-item:nth-child(2),
+.charges-table-title .title-item:last-child {
+  width: 20%;
+}
+
+.charges-table-subtitle {
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 14px;
+  padding-left: 20px;
+  margin-bottom: 24px;
+}
+
+/* Table Content */
+.charges-table-content {
+  background-color: @color-background-white;
+  border: 1px solid #eeeff0;
+  border-bottom: none;
+}
+
+.charges-table-content-item {
+  width: 15%;
+  padding: 16px 20px 19px 0;
+}
+
+.charges-table-content-item:nth-child(2) {
+  width: calc(20% + 20px);
+  padding-left: 20px;
+}
+
+.charges-table-content-item:last-child {
+  width: 20%;
+}
+
+.charges-table-content-item.dnm-invalid-inp input.numb-form-control:not(:focus) {
+  border-right: 1px solid @color-warning !important;
+}
+
+.charges-table-content-item.dnm-invalid-inp input.numb-form-control:focus {
+  border-right: 2px solid @color-main-accent !important;
+}
+
+.charges-table-content-item .text-disabled {
+  color: @color-description;
+  font-size: 14px;
+  padding: 7px 20px;
+  display: inline-block;
+}
+
+.general-info-icon {
+  background-image: url('../../../../../assets/images/icons/info-icon.svg');
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  margin-left: 20px;
+}
+
+.general-info-icon:hover {
+  background-image: url('../../../../../assets/images/icons/info-hover.svg');
+  cursor: pointer;
+}
+
+.tooltip-content .date {
+  color: @color-empty;
+}
+
+.consumption-charges {
+  min-width: 640px;
+}
+
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}

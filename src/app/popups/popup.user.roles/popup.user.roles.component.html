@@ -1,0 +1,12 @@
+<div class="popup-user-roles-block">
+  <div class="user-roles-block-header">
+    <div class="roles-stat-data">User profiles: {{userProfiles.length}}</div>
+    <div class="roles-stat-data">Roles: {{roleCount}}</div>
+  </div>
+  <div class="user-roles-block-body">
+    <div *ngFor="let userProfile of userProfiles" class="roles-info-item">
+      <span class="user-roles-title">• {{userProfile.name}}:</span>
+      <span class="user-roles-description"> {{userProfile.roles.join(', ')}}</span>
+    </div>
+  </div>
+</div>

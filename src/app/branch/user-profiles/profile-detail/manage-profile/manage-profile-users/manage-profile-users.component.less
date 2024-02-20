@@ -1,0 +1,131 @@
+@import 'variables.less';
+
+.form-inline.main-search-input {
+  width: 100%;
+}
+
+.group-search-input,
+.form-control.group-search-input:focus {
+  background: @color-background-white;
+}
+
+.filter-container {
+  margin-top: 30px;
+}
+
+.filter-container .dropdown-toggle {
+  width: 205px;
+  margin-left: 20px;
+}
+
+.filter-res-lbl, .dd-filter-lbl {
+  color: @color-text-tertiary;
+}
+
+.dd-filter-lbl {
+  font-family: 'Gotham Medium';
+  font-size: 15px;
+}
+
+.user-photo {
+  background: linear-gradient(to right, #394fa2, #324693, #2b3e83, #253575, #1e2d66);
+  width: 35px;
+  height: 35px;
+  line-height: 35px;
+  border-radius: 50%;
+  font-size: 14px;
+  color: @color-main-accent;
+  text-align: center;
+  vertical-align: middle;
+  box-shadow: 1px 2px 16px -2px rgba(126, 125, 171, 1);
+  float: left;
+  margin-right: 20px;
+}
+
+.roles-dropdown, .roles-dropdown .dropdown-toggle {
+  width: 100%;
+}
+
+.add-to-users-icon {
+  vertical-align: middle;
+}
+
+.contact-info {
+  max-width: 160px;
+}
+
+.user-name {
+  font: 18px/20px Gotham Medium;
+  color: @color-text-secondary;
+}
+
+.user-email {
+  font: 13px/15px Gotham Light;
+  color: @color-description;
+}
+
+.department {
+  font-size: 13px;
+  color: @color-text-tertiary;
+}
+
+.users-table .dnm-checkbox {
+  margin-right: 25px;
+}
+
+.footer-buttons {
+  margin-top: 50px;
+  padding-bottom: 50px;
+}
+
+.footer-buttons .dnm-btn {
+  width: 200px;
+}
+
+.footer-buttons .dnm-btn:first-child {
+  margin-right: 30px;
+}
+
+/* #region users table */
+
+.users-table {
+  margin-top: 20px;
+}
+
+.users-table .table-body {
+  margin-left: -15px;
+  margin-right: -15px;
+  padding-left: 15px;
+  padding-right: 15px;
+  max-height: calc(100vh - 550px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.users-table .table-header {
+  border-bottom: 1px solid @color-line;
+  padding: 0 30px 15px 30px;
+}
+
+.users-table .table-row {
+  background: @color-background-white;
+  padding: 20px 30px;
+  border: 1px solid @color-line;
+  border-top: none;
+  border-bottom-color: #f0f1f1;
+}
+
+.users-table .table-row:last-child {
+  border-bottom-color: @color-line;
+}
+
+.users-table .col-lbl {
+  font: 12px/13px Gotham Medium;
+  color: @color-description;
+}
+
+.users-table .col-lbl.selected {
+  color: @color-text-tertiary;
+}
+
+/* #endregion */

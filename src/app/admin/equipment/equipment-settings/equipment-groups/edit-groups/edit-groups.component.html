@@ -1,0 +1,58 @@
+<div class="edit-groups">
+  <div class="modal-header">
+    <h5 class="modal-title">
+      <span *ngIf="!model">Create equipment group</span>
+      <span *ngIf="model && !model.isSystem">Edit equipment group</span>
+      <span *ngIf="model && model.isSystem">Equipment group details</span>
+    </h5>
+    <button (click)="dismiss()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container-fluid none-padding">
+      <form [formGroup]="form">
+        <div class="input-row none-margin-hr">
+          <div class="text-uppercase field-name">Equipment group name</div>
+          <div class="field-value none-padding">
+            <div [ngClass]="{'dnm-invalid-inp': formErrors.name}">
+              <input class="form-control req-frm-fld" formControlName="name" maxlength="256" placeholder="Type here" type="text"/>
+            </div>
+          </div>
+          <div class="field-name"></div>
+          <div class="field-value none-padding">
+            <small *ngIf="formErrors.name" class="alert-danger">
+              {{ formErrors.name }}
+            </small>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name">Supply type</div>
+          <div class="field-value none-padding">
+            <ng-select [clearable]="false"
+                       [hideSelected]="true"
+                       [items]="supplyTypesList"
+                       [searchable]="false"
+                       bindLabel="label"
+                       bindValue="value"
+                       class="select-dropdown"
+                       formControlName="supplyType"></ng-select>
+          </div>
+        </div>
+        <div class="row none-margin-hr">
+          <div class="col-md-8 offset-md-4 none-padding footer-buttons">
+            <button (click)="dismiss()" *ngIf="!model  || model && !model.isSystem"
+                    class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel
+            </button>
+            <button (click)="save()" *ngIf="!model  || model && !model.isSystem"
+                    class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save
+            </button>
+            <button (click)="dismiss()" *ngIf="model && model.isSystem" class="dnm-btn dnm-btn-primary text-uppercase"
+                    type="button">Close
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

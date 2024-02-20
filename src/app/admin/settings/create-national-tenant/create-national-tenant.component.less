@@ -1,0 +1,115 @@
+//@import 'variables.less';
+@import 'required-fields.less';
+
+.modal-body {
+  padding: 0;
+}
+
+.create-national-tenant-modal {
+  padding: 0 25px;
+}
+
+.create-national-tenant-modal .footer-buttons .dnm-btn {
+  margin-left: 25px;
+}
+
+.create-national-tenant-modal .col-left,
+.create-national-tenant-modal .col-right {
+  position: relative;
+  width: 100%;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.create-national-tenant-modal .bl-gradient-title {
+  margin-bottom: 30px;
+  line-height: 1;
+}
+
+.create-national-tenant-modal .upld-logo-row {
+  margin-bottom: 50px;
+}
+
+.create-national-tenant-modal .logo-preview {
+  border: 1px solid @color-stroke;
+  width: 225px;
+  height: 150px;
+  float: left;
+  margin-right: 40px;
+  position: relative;
+}
+
+.create-national-tenant-modal .logo-preview-img {
+  max-width: 100%;
+  max-height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.create-national-tenant-modal .default-img {
+  width: 60px;
+  height: 60px;
+}
+
+.create-national-tenant-modal .logo-description {
+  font-family: Gotham Book;
+  font-size: 13px;
+  color: @color-description;
+  padding-left: 30px;
+  padding-top: 25px;
+}
+
+.create-national-tenant-modal .logo-description label {
+  width: 125px;
+  min-width: 130px;
+  text-align: center;
+}
+
+.create-national-tenant-modal .logo-description label.disabled {
+  cursor: not-allowed;
+}
+
+.create-national-tenant-modal .logo-description .inputfile,
+.create-national-tenant-modal .logo-description .inputfile + label {
+  margin-top: 15px;
+}
+
+@media (min-width: 768px) {
+  .create-national-tenant-modal .form-control {
+    padding-left: 20px;
+  }
+
+  .create-national-tenant-modal .col-left {
+    -ms-flex: 0 0 267px;
+    flex: 0 0 267px;
+    max-width: 267px;
+  }
+
+  .create-national-tenant-modal .col-right {
+    -ms-flex: 0 0 480px;
+    flex: 0 0 480px;
+    max-width: 480px;
+  }
+
+  .create-national-tenant-modal .footer-buttons {
+    padding-top: 100px;
+    padding-bottom: 50px;
+  }
+
+  .create-national-tenant-modal .footer-buttons .dnm-btn {
+    width: 200px;
+  }
+}
+
+.create-national-tenant-modal .dnm-btn-delete {
+  background: none;
+  box-shadow: none;
+  padding: 10px;
+}
+
+.create-national-tenant-modal .dnm-btn-delete:hover {
+  background: @color-background-tertiary;
+}

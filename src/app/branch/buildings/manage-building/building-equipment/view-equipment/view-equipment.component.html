@@ -1,0 +1,73 @@
+<div class="container-fluid none-padding view-equipment-wrp">
+  <div class="dnm-tabset">
+   <ul ngbNav #nav="ngbNav" (navChange)="onBeforeTabChange($event)" [(activeId)]="tabId" class="nav-tabs">
+      <li [ngbNavItem]="'tabEquip-0'">
+        <a ngbNavLink>
+          <span class="d-flex text-uppercase" title="Equipment">
+            <i class="tab-icon dnm-icon-equipment-list"></i>
+            <span class="tab-text">Equipment</span>
+          </span>
+        </a>
+        <ng-template ngbNavContent>
+          <equipment-list></equipment-list>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="'tabEquip-1'">
+        <a ngbNavLink>
+          <span class="d-flex text-uppercase" title="Locations">
+            <i class="tab-icon dnm-icon-equipment-locations"></i>
+            <span class="tab-text">Locations</span>
+          </span>
+        </a>
+        <ng-template ngbNavContent>
+          <locations-list></locations-list>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="'tabEquip-2'">
+        <a ngbNavLink>
+          <span class="d-flex text-uppercase" title="Nodes">
+            <i class="tab-icon dnm-icon-equipment-nodes"></i>
+            <span class="tab-text">Nodes</span>
+          </span>
+        </a>
+        <ng-template ngbNavContent>
+          <equipment-nodes></equipment-nodes>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="'tabEquip-3'">
+        <a ngbNavLink>
+          <span class="d-flex text-uppercase" title="Equipment templates">
+            <i class="tab-icon dnm-icon-equipment-settings"></i>
+            <span class="tab-text">Equipment templates</span>
+          </span>
+        </a>
+        <ng-template ngbNavContent>
+          <equipment-template-list></equipment-template-list>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="'tabEquip-4'">
+        <a ngbNavLink>
+          <span class="d-flex text-uppercase" title="Equipment tree">
+            <i class="tab-icon dnm-icon-graph"></i>
+            <span class="tab-text">Equipment tree</span>
+          </span>
+        </a>
+        <ng-template ngbNavContent>
+          <equipment-tree></equipment-tree>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="'tabEquip-5'">
+        <a ngbNavLink>
+          <span class="d-flex text-uppercase" title="Virtual Registers">
+            <i class="position-static tab-icon dnm-icon-equipment-virtual-registers"></i>
+            <span class="tab-text">Virtual Registers</span>
+          </span>
+        </a>
+        <ng-template ngbNavContent>
+          <page-virtual-register></page-virtual-register>
+        </ng-template>
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="nav"></div>
+  </div>
+</div>

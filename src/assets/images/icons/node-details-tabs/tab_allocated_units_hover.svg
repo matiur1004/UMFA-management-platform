@@ -1,0 +1,141 @@
+<svg data-name="Слой 1" id="Слой_1" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <style>.cls-1 {
+      fill: url(#Безымянный_градиент_9);
+    }
+
+    .cls-2 {
+      fill: url(#Безымянный_градиент_9-2);
+    }
+
+    .cls-3 {
+      fill: url(#Безымянный_градиент_9-3);
+    }
+
+    .cls-4 {
+      fill: url(#Безымянный_градиент_9-4);
+    }
+
+    .cls-5 {
+      fill: url(#Безымянный_градиент_9-5);
+    }
+
+    .cls-6 {
+      fill: url(#Безымянный_градиент_9-6);
+    }
+
+    .cls-7 {
+      fill: url(#Безымянный_градиент_9-7);
+    }
+
+    .cls-8 {
+      fill: url(#Безымянный_градиент_9-8);
+    }
+
+    .cls-9 {
+      fill: url(#Безымянный_градиент_9-9);
+    }
+
+    .cls-10 {
+      fill: url(#Безымянный_градиент_9-10);
+    }
+
+    .cls-11 {
+      fill: url(#Безымянный_градиент_9-11);
+    }
+
+    .cls-12 {
+      fill: url(#Безымянный_градиент_9-12);
+    }
+
+    .cls-13 {
+      fill: url(#Безымянный_градиент_9-13);
+    }
+
+    .cls-14 {
+      fill: url(#Безымянный_градиент_9-14);
+    }
+
+    .cls-15 {
+      fill: url(#Безымянный_градиент_9-15);
+    }
+
+    .cls-16 {
+      fill: url(#Безымянный_градиент_9-16);
+    }
+
+    .cls-17 {
+      fill: url(#Безымянный_градиент_9-17);
+    }
+
+    .cls-18 {
+      fill: url(#Безымянный_градиент_9-18);
+    }
+
+    .cls-19 {
+      fill: url(#Безымянный_градиент_9-19);
+    }</style>
+    <linearGradient gradientUnits="userSpaceOnUse" id="Безымянный_градиент_9" x2="20" y1="10" y2="10">
+      <stop offset="0" stop-color="#2f76a2"/>
+      <stop offset="1" stop-color="#2b448b"/>
+    </linearGradient>
+    <linearGradient id="Безымянный_градиент_9-2" x1="8" x2="9.5" xlink:href="#Безымянный_градиент_9" y1="3.75"
+                    y2="3.75"/>
+    <linearGradient id="Безымянный_градиент_9-3" x1="10.5" x2="12" xlink:href="#Безымянный_градиент_9" y1="3.75"
+                    y2="3.75"/>
+    <linearGradient id="Безымянный_градиент_9-4" x1="8" x2="9.5" xlink:href="#Безымянный_градиент_9" y1="6.75"
+                    y2="6.75"/>
+    <linearGradient id="Безымянный_градиент_9-5" x1="10.5" x2="12" xlink:href="#Безымянный_градиент_9" y1="6.75"
+                    y2="6.75"/>
+    <linearGradient id="Безымянный_градиент_9-6" x1="8" x2="9.5" xlink:href="#Безымянный_градиент_9" y1="9.75"
+                    y2="9.75"/>
+    <linearGradient id="Безымянный_градиент_9-7" x1="10.5" x2="12" xlink:href="#Безымянный_градиент_9" y1="9.75"
+                    y2="9.75"/>
+    <linearGradient id="Безымянный_градиент_9-8" x1="8" x2="9.5" xlink:href="#Безымянный_градиент_9" y1="12.75"
+                    y2="12.75"/>
+    <linearGradient id="Безымянный_градиент_9-9" x1="10.5" x2="12" xlink:href="#Безымянный_градиент_9" y1="12.75"
+                    y2="12.75"/>
+    <linearGradient id="Безымянный_градиент_9-10" x1="13.25" x2="14.75" xlink:href="#Безымянный_градиент_9" y1="3.75"
+                    y2="3.75"/>
+    <linearGradient id="Безымянный_градиент_9-11" x1="13.25" x2="14.75" xlink:href="#Безымянный_градиент_9" y1="6.75"
+                    y2="6.75"/>
+    <linearGradient id="Безымянный_градиент_9-12" x1="13.25" x2="14.75" xlink:href="#Безымянный_градиент_9" y1="9.75"
+                    y2="9.75"/>
+    <linearGradient id="Безымянный_градиент_9-13" x1="13.25" x2="14.75" xlink:href="#Безымянный_градиент_9" y1="12.75"
+                    y2="12.75"/>
+    <linearGradient id="Безымянный_градиент_9-14" x1="5.25" x2="6.75" xlink:href="#Безымянный_градиент_9" y1="3.75"
+                    y2="3.75"/>
+    <linearGradient id="Безымянный_градиент_9-15" x1="5.25" x2="6.75" xlink:href="#Безымянный_градиент_9" y1="6.75"
+                    y2="6.75"/>
+    <linearGradient id="Безымянный_градиент_9-16" x1="5.25" x2="6.75" xlink:href="#Безымянный_градиент_9" y1="9.75"
+                    y2="9.75"/>
+    <linearGradient id="Безымянный_градиент_9-17" x1="5.25" x2="6.75" xlink:href="#Безымянный_градиент_9" y1="12.75"
+                    y2="12.75"/>
+    <linearGradient id="Безымянный_градиент_9-18" x1="5.25" x2="6.75" xlink:href="#Безымянный_градиент_9" y1="16.75"
+                    y2="16.75"/>
+    <linearGradient id="Безымянный_градиент_9-19" x1="13.25" x2="14.75" xlink:href="#Безымянный_градиент_9" y1="16.75"
+                    y2="16.75"/>
+  </defs>
+  <title>tab</title>
+  <path class="cls-1"
+        d="M17,6V0H3V6H0V20H20V6ZM1.5,18.5V7.5H3V9H2.25v1.5H3V12H2.25v1.5H3V16H2.25v1.5H3v1Zm10.5,0V16H8v2.5H4.5V1.5h11v17Zm6.5,0H17v-1h.75V16H17V13.5h.75V12H17V10.5h.75V9H17V7.5h1.5Z"/>
+  <rect class="cls-2" height="1.5" width="1.5" x="8" y="3"/>
+  <rect class="cls-3" height="1.5" width="1.5" x="10.5" y="3"/>
+  <rect class="cls-4" height="1.5" width="1.5" x="8" y="6"/>
+  <rect class="cls-5" height="1.5" width="1.5" x="10.5" y="6"/>
+  <rect class="cls-6" height="1.5" width="1.5" x="8" y="9"/>
+  <rect class="cls-7" height="1.5" width="1.5" x="10.5" y="9"/>
+  <rect class="cls-8" height="1.5" width="1.5" x="8" y="12"/>
+  <rect class="cls-9" height="1.5" width="1.5" x="10.5" y="12"/>
+  <rect class="cls-10" height="1.5" width="1.5" x="13.25" y="3"/>
+  <rect class="cls-11" height="1.5" width="1.5" x="13.25" y="6"/>
+  <rect class="cls-12" height="1.5" width="1.5" x="13.25" y="9"/>
+  <rect class="cls-13" height="1.5" width="1.5" x="13.25" y="12"/>
+  <rect class="cls-14" height="1.5" width="1.5" x="5.25" y="3"/>
+  <rect class="cls-15" height="1.5" width="1.5" x="5.25" y="6"/>
+  <rect class="cls-16" height="1.5" width="1.5" x="5.25" y="9"/>
+  <rect class="cls-17" height="1.5" width="1.5" x="5.25" y="12"/>
+  <rect class="cls-18" height="1.5" width="1.5" x="5.25" y="16"/>
+  <rect class="cls-19" height="1.5" width="1.5" x="13.25" y="16"/>
+</svg>

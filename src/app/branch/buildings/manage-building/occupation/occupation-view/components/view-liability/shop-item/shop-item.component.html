@@ -1,0 +1,21 @@
+<div [ngClass]="{ 'active-shop': model.tenant, 'vacant-shop': !model.tenant }"
+     class="shop-item d-flex align-content-stretch">
+  <div class="shop-data">
+    <div class="shop-name">{{model.name}}</div>
+    <div (click)="onChangeRentDetails()" *ngIf="model.tenant && model.tenant.name"
+         class="tenant-name">{{model.tenant.name}}</div>
+    <div (click)="onChangeRentDetails()" *ngIf="!model.tenant || !model.tenant.name" class="no-tenant-name">No tenant
+    </div>
+    <div class="tbl-sub-col d-flex">
+      <div class="shop-square">{{model.area.toFixed(2)}} sq m</div>
+    </div>
+  </div>
+  <div class="shop-input d-flex align-items-center justify-content-center">
+    <div class="dnm-checkbox">
+      <input (click)="onSelected()" [checked]="checkedAll" type="checkbox"/>
+      <div [ngClass]="{'indeterm-state': checkedAllPartly}" class="state">
+        <label></label>
+      </div>
+    </div>
+  </div>
+</div>

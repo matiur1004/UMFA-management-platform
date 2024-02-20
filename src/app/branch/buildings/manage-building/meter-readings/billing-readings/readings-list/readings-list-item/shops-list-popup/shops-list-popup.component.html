@@ -1,0 +1,18 @@
+<div class="shops-list-popup">
+  <div class="popup-header d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center">
+      <span class="shops-numb-lbl">Shops:</span>
+      <span class="shops-numb-val">{{shops.length}}</span>
+    </div>
+    <button (click)="close.emit()" aria-label="Close" class="close d-flex align-items-center justify-content-center"
+            type="button">
+      <i class="dnm-icon delete-icon"></i>
+    </button>
+  </div>
+  <div class="popup-content">
+    <ul class="shops-list">
+      <li *ngFor="let shop of shops">{{shop}}</li>
+    </ul>
+  </div>
+
+</div>

@@ -1,0 +1,163 @@
+<div class="client-building-details">
+  <div class="container-fluid top-container">
+    <div class="row content">
+      <div class="client-header-title">
+        <h1 class="page-title text-uppercase">Building details</h1>
+      </div>
+      <back-button></back-button>
+    </div>
+  </div>
+
+  <div *ngIf="(building$ | async) as building" class="building-container none-margin-hr">
+    <div class="d-flex">
+      <div class="item-img">
+        <logo-container [url]="(building.logoUrl | image) | async"
+                        logo-class="branch-logo full-height d-flex align-items-center">
+          <div class="logo-abbreviation d-flex justify-content-center align-items-center">
+            <span>{{building.name[0].toUpperCase()}}</span>
+          </div>
+        </logo-container>
+      </div>
+      <div class="build-info-container d-flex flex-column justify-content-between">
+        <div>
+          <div class="building-lbl">{{building.name}}</div>
+          <div class="info-lbl">{{building.address}}</div>
+        </div>
+        <div>
+          <div class="info-lbl">{{building.branchName}}</div>
+          <div class="info-lbl">{{building.totalGLA + ' sq m, ' + building.categories.join(', ')}}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="search-row">
+      <div class="col none-padding">
+        <form class="form-inline main-search-input">
+          <div class="input-group">
+            <input #searchBox (keyup)="onSearch(searchBox.value)" class="form-control group-search-input"
+                   data-search-field placeholder="Shop name search" type="search"/>
+            <div class="input-group-append">
+              <i class="icon-relative search-icon vertical-middle"></i>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <ng-container *ngIf="(shops$ | async) as shops">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+          <span class="results-label dnm-text-light">{{shops.length}} shops</span>
+        </div>
+        <div class="d-flex  align-items-center">
+          <span class="text-uppercase drpdwn-fltr-lbl">Tenant:</span>
+          <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+            <button class="btn btn-secondary fltr-drpdwn-btn dropdown-toggle" id="ddTenant" ngbDropdownToggle
+                    type="button">
+              {{(selectedTenant$ | async)?.name || 'All tenants'}}
+            </button>
+            <div aria-labelledby="ddTenant" class="dropdown-menu fltr-drpdwn-menu" ngbDropdownMenu>
+              <button (click)="onChangeTenant(null)" class="dropdown-item" type="button">All tenants</button>
+              <button (click)="onChangeTenant(tenant.id)" *ngFor="let tenant of tenants$ | async" class="dropdown-item"
+                      type="button">
+                {{tenant.name}}
+              </button>
+            </div>
+          </div>
+          <span class="text-uppercase drpdwn-fltr-lbl">Floor:</span>
+          <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+            <button class="btn btn-secondary fltr-drpdwn-btn dropdown-toggle" id="ddFloor" ngbDropdownToggle
+                    type="button">
+              {{(selectedFloor$ | async) || 'All floors'}}
+            </button>
+            <div aria-labelledby="ddFloor" class="dropdown-menu fltr-drpdwn-menu" ngbDropdownMenu>
+              <button (click)="onChangeFloor(null)" class="dropdown-item" type="button">All floors</button>
+              <button (click)="onChangeFloor(floor)" *ngFor="let floor of floors$ | async" class="dropdown-item"
+                      type="button">
+                {{floor}}
+              </button>
+            </div>
+          </div>
+          <span class="text-uppercase drpdwn-fltr-lbl">Status:</span>
+          <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+            <button class="btn btn-secondary per-page-btn dropdown-toggle" id="ddStatus" ngbDropdownToggle
+                    type="button">
+              {{(selectedStatus$ | async) !== null ? status[(selectedStatus$ | async)] : 'All statuses'}}
+            </button>
+            <div aria-labelledby="ddStatus" class="dropdown-menu per-page-menu" ngbDropdownMenu>
+              <button (click)="onChangeStatus(null)" class="dropdown-item" type="button">All statuses</button>
+              <button (click)="onChangeStatus(item)" *ngFor="let item of statuses" class="dropdown-item"
+                      type="button">{{status[item]}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="shops-container">
+        <div class="d-flex list-header text-uppercase">
+          <div class="col-3">Name</div>
+          <div class="col-3">Tenant</div>
+          <div class="col-2">Area, sq m</div>
+          <div class="col-2">Status</div>
+          <div class="col-2">Floor</div>
+        </div>
+        <ng-container *ngFor="let shop of shops; let idx = index">
+          <div class="shop-item d-flex dnm-text-medium">
+            <div class="col-3 none-padding d-flex align-items-center">
+              <div class="d-flex flex-column">
+                <span class="building-lbl shop-lbl">{{shop.name}}</span>
+                <span class="shop-account-lbl">Account #1</span>
+              </div>
+            </div>
+            <div class="col-3 d-flex align-items-center">{{shop.tenant?.name}}</div>
+            <div class="col-2 d-flex align-items-center">{{shop.area}}</div>
+            <div class="col-2 d-flex align-items-center">
+              <div [ngClass]="{'st-spare': shop.status === status.Spare, 'st-occupied': shop.status === status.Occupied, 'st-vacant': shop.status === status.Vacant}"
+                   class="text-ellipsis mng-shps-stat">
+                <span class="usr-status-cnt">{{status[shop.status]}}</span>
+              </div>
+            </div>
+            <div class="col-2 d-flex align-items-center justify-content-between">
+              <div>{{shop.floor}}</div>
+              <div class="d-flex expand-edit-container">
+                <div (click)="onToggleShop(idx)">
+                  <span [ngClass]="{'expand-icon': !isSelected, 'collapse-icon': isSelected}"
+                        class="icon-relative expand-btn"></span>
+                </div>
+                <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+                  <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle type="button"></button>
+                  <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                    <button (click)="onSplitShop(shop)" class="dropdown-item d-flex justify-content-between" data-menu-item
+                            type="button">
+                      Split
+                      <i class="dnm-icon split-icon"></i>
+                    </button>
+                    <button (click)="onSpareShop(idx)" class="dropdown-item d-flex justify-content-between" data-menu-item
+                            type="button">
+                      {{shop.isSpare ? 'Vacant' : 'Spare'}}
+                      <i class="dnm-icon spare-icon"></i>
+                    </button>
+                    <button (click)="onChangeRentDetails(shop)" *ngIf="!shop.isSpare" class="dropdown-item d-flex justify-content-between"
+                            data-menu-item type="button">
+                      Occupation
+                      <i class="dnm-icon edit-icon"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <shop-details *ngIf="shop.isSelected" [shopDetails]="shop.details"></shop-details>
+        </ng-container>
+      </div>
+    </ng-container>
+
+    <div class="row footer">
+      <div class="col-12 text-right footer-buttons">
+        <button (click)="onCancel()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+        <button (click)="onRequestChanges()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Request
+          changes
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

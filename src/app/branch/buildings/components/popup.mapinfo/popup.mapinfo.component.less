@@ -1,0 +1,112 @@
+@import 'variables.less';
+
+.popup-mapinfo-block {
+  width: 380px;
+  opacity: 0.95;
+  border-radius: 4px;
+  margin-top: 20px;
+  display: inline-block;
+  position: relative;
+}
+
+.popup-mapinfo-block::before {
+  content: '';
+  position: absolute;
+  left: -18px;
+  top: calc(50% - 8px);
+  border: 8px solid transparent;
+  border-right: 10px solid @color-text-primary;
+}
+
+.popup-mapinfo-block .mapinfo-block-header {
+  background: @color-background-dark;
+  border-bottom: 1px dashed #646c7e;
+  padding: 20px 40px 20px 20px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.mapinfo-block-header .building-name {
+  font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 12px;
+  color: @color-background-primary;
+}
+
+.mapinfo-block-header .building-params-row {
+  display: flex;
+  flex-wrap: nowrap;
+  margin-bottom: 8px;
+}
+
+.mapinfo-block-header .building-params-row:last-child {
+  margin-bottom: 0;
+}
+
+.building-params-row .building-param {
+  display: flex;
+  flex-grow: 1;
+  font-size: 12px;
+  line-height: 12px;
+  padding-left: 8px;
+  border-right: 1px solid @color-empty;
+  color: @color-empty;
+}
+
+.building-params-row .building-param:first-child {
+  padding-left: 0;
+}
+
+.building-params-row .building-param:last-child {
+  border-right: none;
+}
+
+.mapinfo-block-header .building-parameter:last-child {
+  border-right: none;
+}
+
+.mapinfo-block-header .building-parameter:first-child {
+  padding: 0;
+}
+
+.popup-mapinfo-block .mapinfo-block-body {
+  background: @color-text-primary;
+  padding: 20px 40px 20px 20px;
+  border-bottom: 1px dashed #646c7e;
+}
+
+.mapinfo-block-body .building-info-item {
+  font-size: 14px;
+  line-height: 21px;
+  color: @color-empty;
+  font-weight: 100;
+}
+
+.popup-mapinfo-block .mapinfo-block-footer {
+  background: @color-background-dark;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.mapinfo-block-footer .mapinfo-footer-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 51px;
+  font-size: 13px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  border-left: 1px dashed #646c7e;
+  color: @color-empty;
+}
+
+.mapinfo-block-footer .mapinfo-footer-btn:first-child {
+  border-left: none;
+}
+
+.mapinfo-block-footer .mapinfo-footer-btn:hover {
+  color: @color-accent;
+  cursor: pointer;
+  background: @color-text-primary;
+  text-decoration: none;
+}

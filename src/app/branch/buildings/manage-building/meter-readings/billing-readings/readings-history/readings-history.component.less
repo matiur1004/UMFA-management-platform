@@ -1,0 +1,89 @@
+@import 'variables.less';
+
+.readings-history .hdr-fltr-wrp {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.readings-history .top-container {
+  background-color: transparent;
+  margin: 0px -40px 0px -40px;
+}
+
+.readings-history .filter-item-lbl {
+  font-family: Gotham Medium;
+  font-size: 14px;
+  line-height: 14px;
+  color: @color-text-tertiary;
+  margin-right: 20px;
+}
+
+.meter-name {
+  font-family: Gotham Medium;
+  min-width: 150px;
+}
+
+.readings-history .rdngs-hstr-cont {
+  padding: 10px 0px 24px 0;
+}
+
+.readings-history .filter-item-wrp {
+  margin-left: 40px;
+  position: relative;
+  z-index: 10;
+}
+
+.readings-history .filter-item-wrp:first-child {
+  margin-left: 0;
+}
+
+.readings-history .filter-item-drpdwn-btn,
+.readings-history .filter-item-drpdwn-menu {
+  min-width: 155px;
+}
+
+.readings-history .dropdown-item {
+  text-transform: none;
+}
+
+.readings-history .bld-per-drpdwn-btn,
+.readings-history .bld-per-drpdwn-menu {
+  min-width: 200px;
+  width: 200px;
+}
+
+.readings-history .nav-datepicker-wrp {
+  width: 150px !important;
+}
+
+.readings-history .nav-dtpickr-inpt {
+  height: 30px;
+  border-radius: 15px;
+}
+
+.readings-history .nav-datepicker-wrp .calendar {
+  height: 30px;
+  background-size: 15px 15px;
+}
+
+::ng-deep .readings-history .nav-datepicker-wrp ngb-datepicker.dropdown-menu {
+  left: unset !important;
+  right: 0;
+}
+
+.readings-history .rdng-items-wrp {
+  position: relative;
+  width: calc(100% - 330px);
+  min-width: calc(100% - 330px);
+  padding-right: 30px;
+}
+
+.readings-history .bl-gradient-title {
+  line-height: 1;
+  margin-bottom: 30px;
+}
+
+.readings-history .pnnd-rdngs-wrp {
+  margin-top: 50px;
+  min-width: 330px;
+}

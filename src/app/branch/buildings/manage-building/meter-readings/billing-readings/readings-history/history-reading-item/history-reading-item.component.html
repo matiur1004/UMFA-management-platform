@@ -1,0 +1,123 @@
+<div [ngClass]="{'selected-item': reading.isBilling, 'sidebar-item': pinnedReading}" class="history-reading-container">
+  <div [ngClass]="{'incorrect': reading.confirmed === false}" class="item-body">
+    <div class="item-nav">
+      <i (click)="reading.isActiveBuildingPeriod && onSetBilling(reading)" *ngIf="reading.isBillable && !reading.isOpening && !pinnedReading"
+         [hidden]="reading.confirmed === false"
+         [ngClass]="{
+         'dnm-billing-icon-active': reading.isBilling,
+         'dnm-billing-icon': !reading.isBilling,
+         'dnm-billing-icon-disabled': !reading.isActiveBuildingPeriod
+         }"
+         class="item-nav-icon billing-icon" ngbTooltip="Mark as billing" placement="top"></i>
+      <i *ngIf="!reading.isBillable && reading.isBilling && !reading.isOpening && !pinnedReading"
+         [hidden]="reading.confirmed === false"
+         class="item-nav-icon billing-icon dnm-billing-icon-active" ngbTooltip="Billing reading" placement="top"></i>
+      <i *ngIf="reading.confirmed === false"
+         [ngbTooltip]="'Incorrect'" class="item-nav-icon incorrect-icon reset-cursor selected"
+         placement="top"></i>
+      <div *ngIf="!pinnedReading && !reading.isPinned && !reading.isOpening">
+        <i (click)="onTogglePin()" class="item-nav-icon pin-icon"
+           ngbTooltip="{{pinStatus}}" placement="top"></i>
+      </div>
+      <div (confirmAction)="onTogglePin()"
+           *ngIf="pinnedReading || reading.isPinned && !reading.isOpening"
+           class="pinned-item"
+           confirm-dialog>
+        <i class="item-nav-icon pinned-icon"
+           ngbTooltip="{{pinStatus}}" placement="top"></i>
+      </div>
+      <div *ngIf="reading.isOpening"
+           class="opening-reading-item">
+        <i (click)="onTogglePin()" *ngIf="!pinnedReading && !reading.isPinned" class="item-nav-icon pin-icon"
+           ngbTooltip="{{pinStatus}}" placement="top"></i>
+        <i class="item-nav-icon opening-reading-icon"
+           ngbTooltip="Opening reading" placement="top"></i>
+      </div>
+    </div>
+    <div class="row none-margin-hr history-reading-content">
+      <div class="none-padding col d-flex">
+        <div (readingDetailsFileDownload)="readingDetailsFileDownload.emit($event)" (readingDetailsUpdate)="readingDetailsUpdate.emit($event)"
+             (updateReadingsList)="onUpdateReadingsList($event)" [buildingId]="reading.buildingId" [meterId]="reading.meterId" [buildingPeriod]="buildingPeriod"
+             [mode]="readingDetailsPopupMode.DetailsWithMarkAsIncorrect"
+             [readingId]="reading.id"
+             class="item-img d-flex align-items-center justify-content-center"
+             ngbTooltip="View details"
+             readingDetailsPopup>
+          <img [ngClass]="{'default-reading-img': readingImgSrc == defaultReadingUrl }" [src]="readingImgSrc"
+               alt="Reading Image" class="reading-img"/>
+        </div>
+        <div class="data-container w-100">
+          <div class="data-row d-flex align-items-center">
+            <div [ngClass]="{'status-confirmed': reading.confirmed && (reading.readingSource != readingSource['Estimate']),
+                               'status-unconfirmed': !reading.confirmed && (reading.readingSource != readingSource['Estimate']),
+                               'status-estimated': reading.readingSource == readingSource['Estimate']}"
+                 class="reading-status"
+                 ngbTooltip="{{readingStatus}}" placement="top"></div>
+            <div class="data-item d-flex flex-column">
+              <span class="item-hdr text-uppercase">Reading</span>
+              <span class="item-val reading-val text-ellipsis reading-val-grdnt"
+                    title="{{reading.value}}">{{reading.value}}</span>
+            </div>
+            <div class="data-item d-flex flex-column">
+              <span class="item-hdr text-uppercase">Rollover</span>
+              <span class="refresh margin-refresh"></span>
+            </div>
+            <div class="data-item d-flex flex-column">
+              <span class="item-hdr text-uppercase">Date</span>
+              <span
+                class="item-val item-val-grdnt">{{ reading.date | dateReadingDetails: shouldDisplayTime(reading) }}</span>
+            </div>
+          </div>
+          <div class="data-row d-flex">
+            <div class="data-item d-flex flex-column">
+              <span class="item-hdr text-uppercase">Ratio</span>
+              <span class="item-val item-val-grdnt"
+                    [ngbTooltip]="'Scale(' + reading.registerScaleName +  ') x Ratio(' + reading.ratio + ') = ' + reading.registerScaleRatio * reading.ratio">
+                {{reading.ratio ? (reading.ratio * reading.registerScaleRatio| number:'1.0-2') : 0}}
+              </span>
+            </div>
+            <div class="data-item d-flex flex-column">
+              <span class="item-hdr text-uppercase">BP Usage</span>
+              <span class="item-val item-val-grdnt" title="{{reading.calculatedBPUsageFormula}}">{{reading.calculatedBPUsage | number:'1.0-2'}}</span>
+            </div>
+            <div class="data-item d-flex flex-column">
+              <span class="item-hdr text-uppercase">BV Usage</span>
+              <span class="item-val item-val-grdnt" title="{{reading.calculatedBVUsageFormula}}">{{reading.calculatedBVUsage | number:'1.0-2'}}</span>
+            </div>
+            <div class="data-item d-flex flex-column">
+              <span class="item-hdr text-uppercase">Source</span>
+              <span class="item-val item-val-grdnt source-val">{{reading.readingSource | readingSourceLabel}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div [ngClass]="{'col': !pinnedReading, 'col-12': pinnedReading, 'none-padding': pinnedReading}"
+           class="description-container">
+        <audio-player *ngIf="reading.recordingUrl" [url]="reading.recordingUrl"></audio-player>
+        <div *ngIf="reading.notes && reading.notes.length" class="item-descr cursor-pointer" ngbTooltip={{reading.notes}}
+             placement="left">
+          {{reading.notes}}
+        </div>
+        <div *ngIf="(reasons | searchReason:reading.reasonId)?.name" class="item-descr cursor-pointer"
+             placement="left">
+          Reason: {{(reasons | searchReason:reading.reasonId)?.name}}
+        </div>
+      </div>
+      <div [ngClass]="{'col': !pinnedReading, 'col-12': pinnedReading}" class="none-padding">
+        <div class="added-by-hdr">Added by</div>
+        <div class="added-by-wrp d-flex">
+          <logo-container [url]="reading.createdByUserPhotoUrl" class="user-img">
+            <div class="user-no-img">
+              <span>{{reading.createdByUserName | shortName}}</span>
+            </div>
+          </logo-container>
+          <div class="d-flex flex-column">
+            <span class="user-name">{{reading.createdByUserName}}</span>
+            <span class="publishing-date">{{reading.createdDate | dateReadingDetails:true}}</span>
+          </div>
+        </div>
+        <span class="d-block mt-2 register-unit font-weight-bold">{{ reading.registerId | registerUnit | async}}</span>
+      </div>
+    </div>
+  </div>
+</div>

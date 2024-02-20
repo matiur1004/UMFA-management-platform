@@ -1,0 +1,146 @@
+<div class="container-fluid branch-admin-container">
+  <!-- Create an admin from existing users -->
+  <div class="row row-title">
+    <div class="col-12">
+      <div class="bl-gradient-title">Create an admin from existing users</div>
+      <div class="create-new-account d-flex">
+        or
+        <a (click)="createNewUser()" class="blue-text-btn" href="javascript:void(0);">
+          <i class="add-icon"></i>Create New
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="row existing-users">
+    <div class="col-12">
+      <ng-template #rt let-r="result">
+        {{ r.fullName}} - {{ r.email}}
+      </ng-template>
+      <div class="d-flex align-items-center">
+        <ng-select (add)="this.addSelectedUsers()"
+                   (remove)="removeNewUserFromSelect($event.value)"
+                   [(ngModel)]="selectedAdmins"
+                   [clearable]="false"
+                   [closeOnSelect]="false"
+                   [hideSelected]="true"
+                   [multiple]="true"
+                   [placeholder]="'Select the name of the user you want to assign as an admin'"
+                   [searchable]="true"
+                   class="dnm-multiple-select w-100">
+          <ng-option *ngFor="let item of users" [value]="item">{{item.fullName}} - {{item.email}}</ng-option>
+        </ng-select>
+      </div>
+    </div>
+  </div>
+  <ng-container *ngIf="!newUser">
+    <!-- List of current admins -->
+    <div *ngIf="model.admins.length" class="row create-admin-title">
+      <div class="col-12">
+        <hr class="separate-line"/>
+      </div>
+      <div class="col-12">
+        <div class="bl-gradient-title">Current admin(s)</div>
+      </div>
+    </div>
+    <ng-container *ngFor="let user of model.admins; let idx = index; let first = first;">
+      <div *ngIf="!first" class="row">
+        <div class="col-12">
+          <hr class="separate-line"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="admin-logo round-logo-wrp">
+            <logo-container *ngIf="user.logoUrl" [file]="user.logo" [url]="user.logoUrl">
+            </logo-container>
+
+            <div *ngIf="!user.logoUrl" class="branch-admin-no-img">
+              <span>{{user.fullName[0].toUpperCase()}}</span>
+            </div>
+
+          </div>
+          <div class="user-fullname vertical-middle">{{user.fullName}}</div>
+        </div>
+        <div class="col-md-4">
+          <div class="email-info vertical-middle">
+            <i class="branches-icon email-icon"></i>
+            <span class="text-standard">{{user.email}}</span>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <a (click)="removeNewUser(idx)" class="dnm-btn dnm-btn-delete float-right" href="javascript:void(0)">
+            <span class='delete-icon'></span>
+          </a>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+  <!-- Create new admin -->
+  <ng-container *ngIf="newUser">
+    <form [formGroup]="form" class="branch-admin-fm">
+      <div class="row">
+        <div class="col-12">
+          <hr class="separate-line"/>
+        </div>
+      </div>
+      <div class="row create-admin-title">
+        <div class="col-12">
+          <div class="bl-gradient-title">Create new admin</div>
+        </div>
+      </div>
+      <upload-image (fileChange)="logoChanged($event)" [(file)]="logo" [aspectRatio]="1 / 1" [maintainAspectRatio]="true"
+                    [outputFileName]="model.id" [src]="defalutLogo"></upload-image>
+      <div class="row">
+        <div class="col-left text-form-field text-uppercase">
+          Full Name
+        </div>
+        <div class="col-right">
+          <div class="form-group">
+            <div [ngClass]="{'dnm-invalid-inp': formErrors.fullName}">
+              <input class="form-control req-frm-fld" formControlName="fullName" id="admin-fullname" placeholder="Type here"
+                     type="text">
+            </div>
+            <small *ngIf="formErrors.fullName" class="alert-danger">
+              {{ formErrors.fullName }}
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-left text-form-field text-uppercase">
+          Email
+        </div>
+        <div class="col-right">
+          <div class="form-group">
+            <div [ngClass]="{'dnm-invalid-inp': formErrors.email}">
+              <input class="form-control req-frm-fld" formControlName="email" id="admin-email" placeholder="Type here" type="email">
+            </div>
+            <small *ngIf="formErrors.email" class="alert-danger">
+              {{ formErrors.email }}
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <a (click)="submit()" class="btn-form-section float-right" href="javascript:void(0);">
+            <i class='icon check-mark-icon'></i>Submit
+          </a>
+          <a (click)="cancelCreateUser()" class="btn-form-section float-right" href="javascript:void(0);">
+            <i class='icon cross-icon'></i>Cancel
+          </a>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+  <div class="row">
+    <div class="col-12 text-right footer-buttons">
+      <div *ngIf="isNew">
+        <button (click)="dismiss()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+        <button (click)="next()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Next</button>
+      </div>
+      <button (click)="dismiss()" *ngIf="!isNew" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Close
+      </button>
+    </div>
+  </div>
+</div>

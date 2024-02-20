@@ -1,0 +1,163 @@
+<div class="edit-supply-types">
+  <div class="modal-header">
+    <h5 class="modal-title">
+      <span *ngIf="isNew">Create</span>
+      <span *ngIf="!isNew">Edit</span>
+      supply and location type
+    </h5>
+    <button (click)="dismiss()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container-fluid none-padding">
+      <div class="bl-gradient-title">Supply to settings</div>
+      <form [formGroup]="form">
+        <div class="input-row none-margin-hr">
+          <div class="text-uppercase field-name">Supply to</div>
+          <div class="field-value none-padding">
+            <div class="d-flex align-items-center">
+              <div [ngClass]="{'dnm-invalid-inp': formErrors.name}" class="w-100">
+                <input class="form-control req-frm-fld" formControlName="name" maxlength="256" placeholder="Type here" type="text"/>
+              </div>
+              <div class="delete-address d-flex align-items-center">
+                <button class="dnm-btn-icon"></button>
+              </div>
+            </div>
+          </div>
+          <div class="field-name"></div>
+          <div class="field-value none-padding">
+            <small *ngIf="formErrors.name" class="alert-danger">
+              {{ formErrors.name }}
+            </small>
+          </div>
+        </div>
+
+        <div formArrayName="supplyTypes">
+          <div class="bl-gradient-title loc-set-lbl">Supply types</div>
+          <div *ngFor="let supplyTypeModel of supplyTypes.controls; let i = index"
+               [ngClass]="{'location-block': i > 0}">
+            <ng-container [formGroupName]="i">
+              <div class="input-row none-margin-hr">
+                <div class="text-uppercase field-name">Supply type #{{i + 1}}</div>
+                <div class="field-value none-padding">
+                  <div class="d-flex align-items-center">
+                    <div class="dropdown d-block fullwidth-dropdown none-padding" ngbDropdown>
+                      <button class="btn btn-secondary dropdown-toggle text-left" ngbDropdownToggle>
+                        {{supplyTypeEnum[supplyTypeModel.controls.supplyType.value]}}
+                      </button>
+                      <div aria-labelledby="ddCategory" class="dropdown-menu" ngbDropdownMenu>
+                        <button (click)="onSupplyTypeChange(supplyTypeModel, type)" *ngFor="let type of supplyTypesList"
+                                class="dropdown-item">{{supplyTypeEnum[type]}}</button>
+                      </div>
+                    </div>
+                    <div class="delete-address d-flex align-items-center">
+                      <button (click)="deleteItemFromArray(form.controls.supplyTypes, i)" class="dnm-btn-icon">
+                        <i class="icon cross-icon"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="input-row sub-container pl-0">
+                <div formArrayName="supplyToLocations">
+                  <div class="bl-gradient-title loc-set-lbl">Location Types</div>
+                  <div
+                    *ngFor="let supplyTypeLocation of supplyTypeModel.get('supplyToLocations').controls; let j = index">
+                    <div [formGroupName]="j" class="input-row none-margin-hr">
+                      <div class="text-uppercase field-name">Location</div>
+                      <div class="field-value none-padding">
+                        <div class="d-flex align-items-center">
+                          <div
+                            [ngClass]="{'dnm-invalid-inp': isSubmitted && supplyTypeLocation.controls.name.isInvalid}"
+                            class="w-100">
+                            <input class="form-control req-frm-fld" formControlName="name" maxlength="256" placeholder="Type here"
+                                   type="text"/>
+                          </div>
+                          <div class="delete-address d-flex align-items-center">
+                            <button (click)="deleteItemFromArray(supplyTypeModel.controls.supplyToLocations, j)"
+                                    class="dnm-btn-icon">
+                              <i class="icon cross-icon"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="field-name"></div>
+                      <div class="field-value none-padding">
+                        <small
+                          *ngIf="isSubmitted && supplyTypeLocation.controls.name.errors && supplyTypeLocation.controls.name.errors.required"
+                          class="alert-danger">
+                          Location name is required
+                        </small>
+                      </div>
+                    </div>
+                    <div class="input-row">
+                      <div class="text-uppercase field-name">Categories</div>
+                      <div class="field-value none-padding">
+                        <div class="d-flex align-items-center">
+                          <div
+                            [ngClass]="{'dnm-invalid-inp': formErrors['categoryIds'] && model.supplyTypes[i].supplyToLocations[j].categoryIds.length == 0}"
+                            class="w-100">
+                            <ng-select (change)="categoriesChanged(supplyTypeLocation.controls.categoryIds, $event)" [(ngModel)]="model.supplyTypes[i].supplyToLocations[j].categoryIds" [clearable]="false"
+                                       [dropdownPosition]="'top'" [hideSelected]="true"
+                                       [items]="categories"
+                                       [multiple]="true" [ngModelOptions]="{standalone: true}" [searchable]="false" bindLabel="name"
+                                       bindValue="id"
+                                       class="dnm-multiple-select"></ng-select>
+                          </div>
+                          <div class="delete-address d-flex align-items-center">
+                            <button class="dnm-btn-icon"></button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="field-name"></div>
+                      <div class="field-value">
+                        <small *ngIf="formErrors['categoryIds']" class="alert-danger">
+                          {{ formErrors["categoryIds"] }}
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="input-row">
+                <div class="field-name">
+                  <a (click)="addLocation(supplyTypeModel.controls.supplyToLocations)" class="blue-text-btn"
+                     href="javascript:void(0);">
+                    <i class="add-icon"></i>Add Location
+                  </a>
+                </div>
+                <div class="field-value none-padding">
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+
+        <!-- Question about this block -->
+        <div class="input-row none-margin-hr">
+          <div class="field-name">
+            <small *ngIf="formErrors.locations" class="alert-danger">
+              {{ formErrors.locations }}
+            </small>
+          </div>
+          <div class="field-value none-padding">
+          </div>
+        </div>
+
+        <div class="row none-margin-hr">
+          <a (click)="addSupplyType()" class="blue-text-btn" href="javascript:void(0);">
+            <i class="add-icon"></i>Add Supply Type
+          </a>
+        </div>
+
+        <div class="row none-margin-hr">
+          <div class="col-md-8 offset-md-4 none-padding footer-buttons">
+            <button (click)="dismiss()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+            <button (click)="save()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

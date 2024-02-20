@@ -1,0 +1,5 @@
+<div class="supply-type-icon supply-align-{{label?'block':'inline'}} size-{{size}}">
+  <div class="supply-icon {{supplyTypeLabels[type]}}-icon"></div>
+  <span *ngIf="label"
+        class="supply-label label-{{supplyTypeLabels[type]}}">{{ supplyTypeLabels[type] | titlecase }}</span>
+</div>

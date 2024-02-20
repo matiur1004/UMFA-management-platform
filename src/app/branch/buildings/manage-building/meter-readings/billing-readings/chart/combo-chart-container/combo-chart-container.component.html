@@ -1,0 +1,34 @@
+<div #comboChart class="combo-chart w-100">
+  <combo-chart-component
+    [allComboData]="allComboData"
+    [animations]="animations"
+    [colorSchemeLine]="lineChartScheme"
+    [customColors]="customColors"
+    [customLine]="lineType"
+    [gradient]="gradient"
+    [legendPosition]="legendPosition"
+    [legend]="showLegend"
+    [lineChart]="lineChartData"
+    [registerInfo]="selectedRegister"
+    [results]="comboChartData"
+    [scheme]="comboBarScheme"
+    [showGridLines]="showGridLines"
+    [showRightYAxisLabel]="showYAxisLabel"
+    [showXAxisLabel]="showXAxisLabel"
+    [showYAxisLabel]="showYAxisLabel"
+    [view]="[comboChart.offsetWidth, comboChart.offsetHeight]"
+    [xAxisLabel]="xAxisLabel"
+    [xAxis]="showXAxis"
+    [yAxisLabel]="yAxisLabel"
+    [yAxis]="showYAxis">
+    <ng-template #seriesTooltipTemplate></ng-template>
+    <ng-template #tooltipTemplate let-model="model">
+      <multiple-year-tooltip-template
+        [allData]="allComboData"
+        [customColors]="customColors"
+        [model]="model"
+        [registerInfo]="selectedRegister">
+      </multiple-year-tooltip-template>
+    </ng-template>
+  </combo-chart-component>
+</div>

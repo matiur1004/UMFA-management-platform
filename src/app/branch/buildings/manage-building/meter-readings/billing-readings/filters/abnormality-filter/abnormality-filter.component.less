@@ -1,0 +1,36 @@
+@import "variables.less";
+
+.abnormality-filter {
+  .bl-gradient-title {
+    margin-bottom: 20px;
+  }
+
+  input {
+    width: calc(50% - 25px);
+    height: 30px;
+    font-family: "Gotham Book";
+    border-radius: 15px;
+    border: 1px solid @color-line;
+    color: @color-text-tertiary;
+    font-size: 15px;
+    padding: 8px 15px 8px 20px;
+    background: @color-background-white;
+
+    &:focus {
+      outline: none;
+      border-color: @color-line;
+    }
+
+    &:not(:read-only):focus {
+      border-color: @color-main-accent;
+    }
+  }
+
+  .abnormality-level-absolute-usage {
+    margin-top: 20px;
+
+    .bl-gradient-title {
+      margin-bottom: 0;
+    }
+  }
+}

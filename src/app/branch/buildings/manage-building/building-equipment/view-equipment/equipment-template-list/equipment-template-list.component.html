@@ -1,0 +1,258 @@
+<div class="container-fluid none-padding equipment-list">
+
+  <div class="row search-row none-margin-hr">
+    <div class="col none-padding">
+      <form class="form-inline main-search-input">
+        <div class="input-group">
+          <input #searchBox (keyup)="search(searchBox.value)" class="form-control group-search-input" data-search-field
+                 placeholder="Search equipment" type="search"/>
+          <div class="input-group-append">
+            <i class="icon-relative search-icon vertical-middle"></i>
+          </div>
+        </div>
+      </form>
+      <button (click)="onShowFilter()" [ngClass]="{'active-btn' : showFilter}" class="dnm-btn dnm-btn-filter text-uppercase"
+              type="button">Filter<i class="btn-filter-icon"></i></button>
+    </div>
+  </div>
+
+  <div *ngIf="showFilter" class="equipment-filter">
+    <div class="row none-margin-hr">
+      <div class="col-2 none-padding">
+        <div class="bl-gradient-title">Supply types</div>
+        <div class="d-flex align-items-center checkbox-input">
+          <div class="dnm-checkbox">
+            <input (click)="onAllSupplyTypesChanged()" [checked]="(filterDetail$ | async).isAllSupplyTypes" class="checkbox-toggle"
+                   type="checkbox"/>
+            <div class="state">
+              <label></label>
+            </div>
+          </div>
+          <span class="checkbox-input-lbl">All supply types</span>
+        </div>
+        <div *ngFor="let item of (filterDetail$ | async).supplyTypes; let idx=index;"
+             class="d-flex align-items-center checkbox-input">
+          <div class="dnm-checkbox">
+            <input (click)="onSupplyTypeChanged(item.isChecked, idx)" [checked]="item.isChecked" class="checkbox-toggle"
+                   type="checkbox"/>
+            <div class="state">
+              <label></label>
+            </div>
+          </div>
+          <span class="checkbox-input-lbl">{{supplyType[item.supplyType]}}</span>
+        </div>
+      </div>
+
+
+      <div class="col-10 none-padding">
+        <div class="bl-gradient-title">Equipment attributes</div>
+        <div class="d-flex justify-content-between">
+          <div class="filter-block">
+            <div class="row filter-row">
+              <div class="col">
+                <ng-select (change)="onEquipmentGroupChanged($event)"
+                           [clearable]="false"
+                           [ngModel]="selectedEquipmentGroupText$ | async"
+                           [searchable]="false" class="dnm-dropdown-select equipment-filter-btn d-inline-block dropdown-menu-filters">
+                  <ng-option [value]="''" class="dropdown-menu-filters">All equip. groups</ng-option>
+                  <ng-option *ngFor="let item of (filterDetail$ | async).equipmentGroups"
+                             [value]="item">{{item.name}}</ng-option>
+                </ng-select>
+                <ng-select (change)="onBrandChanged($event)"
+                           [clearable]="false"
+                           [ngModel]="selectedBrandText$ | async"
+                           [searchable]="false" class="dnm-dropdown-select equipment-filter-btn d-inline-block dropdown-menu-filters">
+                  <ng-option [value]="''">All brands</ng-option>
+                  <ng-option *ngFor="let item of (filterDetail$ | async).brands"
+                             [value]="item">{{item.name}}</ng-option>
+                </ng-select>
+                <ng-select (change)="onModelChanged($event)"
+                           [clearable]="false"
+                           [ngModel]="selectedModelText$ | async"
+                           [searchable]="false" class="dnm-dropdown-select equipment-filter-btn d-inline-block dropdown-menu-filters" placeholder="All models">
+                  <ng-option [value]="''">All models</ng-option>
+                  <ng-option *ngFor="let item of (allEquipmentTemplateModels$ | async)"
+                             [value]="item">{{item}}</ng-option>
+                </ng-select>
+              </div>
+            </div>
+            <div class="row filter-row">
+              <div class="col">
+                <div *ngFor="let item of (filterDetail$ | async).equipmentAttributes; let idx=index;"
+                     class="d-inline-block small">
+                  <ng-select (change)="onAttributeChanged({attribute: item.attribute, value: $event})"
+                             *ngIf="item.attribute.fieldType === fieldType.Combo"
+                             [clearable]="false" [ngModel]="item.value"
+                             [searchable]="false"
+                             class="dnm-dropdown-select equipment-filter-btn d-inline-block dropdown-menu-filters">
+                    <ng-option [value]="''">All {{item.attribute.name}}s</ng-option>
+                    <ng-option *ngFor="let option of item.attribute.comboSettings"
+                               [value]="option.value">{{option.value}}</ng-option>
+                  </ng-select>
+                  <ng-select (change)="onAttributeChanged({attribute: item.attribute, value: $event})"
+                             *ngIf="item.attribute.fieldType === fieldType.Number"
+                             [clearable]="false"
+                             [ngModel]="item.value || item.numberValue" [searchable]="false"
+                             class="dnm-dropdown-select equipment-filter-btn d-inline-block dropdown-menu-filters">
+                    <ng-option [value]="''">All {{item.attribute.name}}s</ng-option>
+                    <ng-option *ngFor="let option of item.attribute.unitValues"
+                               [value]="option">{{option}} {{item.attribute.unit ? item.attribute.unit.name || '' : ''}}</ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex align-items-start checkbox-input old-equipment-input">
+            <div class="dnm-checkbox">
+              <input (click)="onIsOldModelChanged()" [checked]="(filterDetail$ | async).isOldModel" class="checkbox-toggle"
+                     type="checkbox"/>
+              <div class="state">
+                <label></label>
+              </div>
+            </div>
+            <span class="checkbox-input-lbl">Including old equipment</span>
+          </div>
+        </div>
+        <div class="col-12 none-padding footer-buttons d-flex justify-content-end">
+          <button (click)="onResetFilter()" class="dnm-btn dnm-btn-reset text-uppercase" type="button">Reset</button>
+          <button (click)="onShowFilter()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+          <button (click)="onApply()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Apply</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-row d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center">
+      <span class="results-label dnm-text-light">{{(equipmentTemplateList$ | async).length}}
+        units of equipment / {{assignedEquipmentTemplatesCount$ | async}} units of equipment added to building </span>
+    </div>
+    <div class="d-flex justify-content-end">
+      <div class="d-flex align-items-center">
+        <span class="text-uppercase drpdwn-fltr-lbl">Show:</span>
+        <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+          <button class="btn btn-secondary fltr-drpdwn-btn dropdown-toggle" ngbDropdownToggle>
+            {{selectedAssignFilterText$ | async }}
+          </button>
+          <div class="dropdown-menu fltr-drpdwn-menu" ngbDropdownMenu>
+            <button (click)="onShowEquipmentChanged(-1)" class="dropdown-item">All equipment</button>
+            <button (click)="onShowEquipmentChanged(1)" class="dropdown-item">Only added equipment</button>
+            <button (click)="onShowEquipmentChanged(0)" class="dropdown-item">Not added equipment</button>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex align-items-center">
+        <span class="text-uppercase drpdwn-fltr-lbl">Units Per Page:</span>
+        <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+          <button class="btn btn-secondary per-page-btn dropdown-toggle" id="ddCountPerPage" ngbDropdownToggle>
+            {{selectedUnitsPerPageText$ | async }}
+          </button>
+          <div aria-labelledby="ddCountPerPage" class="dropdown-menu per-page-menu" ngbDropdownMenu>
+            <button (click)="onUnitsPerPageChanged(item)" *ngFor="let item of unitsPerPageList"
+                    class="dropdown-item">{{item}}</button>
+            <button (click)="onUnitsPerPageChanged(null)" class="dropdown-item">ALL</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row none-margin-hr list-header">
+    <div class="col-6">
+      <div class="row none-margin-hr">
+        <div class="col-4">
+          <a (click)="changeOrderIndex(orderType.BrandModelAsc)" [ngClass]="{'active': orderIndex == orderType.BrandModelAsc || orderIndex == orderType.BrandModelDesc}"
+             class="header-field d-flex align-items-center"
+             href="javascript:void(0);">
+            <span class="text-ellipsis" title="Brand, Model">Brand, Model</span>
+            <i [ngClass]="{'inactive': orderIndex != 1 && orderIndex != -1, 'dnm-icon-sort-up': orderIndex == orderType.BrandModelDesc,'dnm-icon-sort-down': orderIndex != orderType.BrandModelDesc }"
+               class="dnm-icon"></i>
+          </a>
+        </div>
+        <div class="col-4">
+          <a (click)="changeOrderIndex(orderType.SupplyTypeAsc)" [ngClass]="{'active': orderIndex == orderType.SupplyTypeAsc || orderIndex == orderType.SupplyTypeDesc}"
+             class="header-field d-flex align-items-center"
+             href="javascript:void(0);">
+            <span class="text-ellipsis" title="Supply Type">Supply Type</span>
+            <i [ngClass]="{'inactive': orderIndex != 2 && orderIndex != -2, 'dnm-icon-sort-up': orderIndex == orderType.SupplyTypeDesc,'dnm-icon-sort-down': orderIndex != orderType.SupplyTypeDesc }"
+               class="dnm-icon"></i>
+          </a>
+        </div>
+        <div class="col-4">
+          <a (click)="changeOrderIndex(orderType.EquipmentGroupAsc)" [ngClass]="{'active': orderIndex == orderType.EquipmentGroupAsc || orderIndex == orderType.EquipmentGroupDesc}"
+             class="header-field d-flex align-items-center"
+             href="javascript:void(0);">
+            <span class="text-ellipsis" title="Equipment group">Equipment Group</span>
+            <i [ngClass]="{'inactive': orderIndex != 3 && orderIndex != -3, 'dnm-icon-sort-up': orderIndex == orderType.EquipmentGroupDesc,'dnm-icon-sort-down': orderIndex != orderType.EquipmentGroupDesc }"
+               class="dnm-icon"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="col-5 header-field d-flex align-items-center">
+      <span class="text-ellipsis" title="Equipment Attributes">Equipment Attributes</span>
+    </div>
+    <div class="col-1 header-field d-flex align-items-center">
+      <span class="text-ellipsis" title="Add">Add</span>
+    </div>
+  </div>
+
+  <div class="list-body">
+    <div *ngFor="let equipmentTemplate of equipmentTemplateList$ | async" class="row none-margin-hr body-row">
+      <div class="col-6">
+        <div class="row vertical-middle none-margin-hr">
+          <div class="col-4 none-padding d-flex align-items-center">
+            <div class="item-img">
+              <logo-container [url]="equipmentTemplate.logoUrl">
+                <div class="meter-no-img"></div>
+              </logo-container>
+            </div>
+            <span class="brand-model-lbl">
+                {{equipmentTemplate.brand}} {{equipmentTemplate.model}}
+              </span>
+          </div>
+          <div class="col-4 none-padding d-flex align-items-center">
+            <div class="service-type d-flex align-items-center">
+              <div [ngClass]="{'electricity-icon': equipmentTemplate.supplyType == supplyType.Electricity, 'water-icon': equipmentTemplate.supplyType == supplyType.Water, 'sewerage-icon': equipmentTemplate.supplyType == supplyType.Sewerage, 'gas-icon': equipmentTemplate.supplyType == supplyType.Gas, 'ad-hoc-icon': equipmentTemplate.supplyType == supplyType.AdHoc}"
+                   class="service-icon"></div>
+              <span [ngClass]="{'electricity-lbl': equipmentTemplate.supplyType == supplyType.Electricity, 'water-lbl': equipmentTemplate.supplyType == supplyType.Water, 'sewerage-lbl': equipmentTemplate.supplyType == supplyType.Sewerage, 'gas-lbl': equipmentTemplate.supplyType == supplyType.Gas, 'ad-hoc-lbl': equipmentTemplate.supplyType == supplyType.AdHoc}"
+                    class="type-lbl">
+                  {{supplyType[equipmentTemplate.supplyType]}}
+                </span>
+            </div>
+          </div>
+          <div class="col-4 none-padding d-flex align-items-center">
+            <span class="equipment-group-lbl">{{equipmentTemplate.equipmentGroup}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-5 none-padding d-flex align-items-center justify-content-between">
+        <div class="d-flex flex-wrap">
+          <ng-container *ngFor="let attribInfo of equipmentTemplate.attributes">
+            <div *ngIf="attribInfo.value || (attribInfo.numberValue || attribInfo.numberValue === 0)"
+                 class="equipment-attr">
+              <span class="equipment-attr-lbl">{{attribInfo.name}}:</span>
+              <span class="equipment-attr-val">{{attribInfo.value || attribInfo.numberValue}}</span>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+      <div class="col-1 d-flex align-items-center">
+        <a (click)="onAddRemoveEquipmentTemplate(equipmentTemplate.id, equipmentTemplate.isAssigned)" class="blue-text-btn"
+           href="javascript:void(0)" [ngClass]="{'disabled': buildingPeriodIsFinalized}">
+          <i
+            [ngClass]="{'check-mark-icon': equipmentTemplate.isAssigned, 'add-icon': !equipmentTemplate.isAssigned}"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="row none-margin-hr">
+    <div class="col">
+      <!-- pager -->
+      <pager (onPageChange)="onPageChange($event)" [pageSize]="unitsPerPage$ | async" [page]="page$ | async"
+             [total]="(totalCount$ | async)"></pager>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,1628 @@
+<div class="container-fluid none-padding operations-agreement">
+
+  <!-- Branch block -->
+  <div class="opr-agr-block branch-block" data-branch-block>
+    <div class="bl-gradient-title">Branch</div>
+    <div class="input-row">
+      <div class="text-uppercase field-name">Current Client of</div>
+      <div class="field-value">
+        <span class="fld-val-txt">{{branch.name}}</span>
+      </div>
+    </div>
+    <div class="hr-line"></div>
+    <div class="row contacts">
+      <div class="col contacts-header">
+        <div class="text-uppercase text-form-field">
+          <div class="container-fluid">
+            <div class="row">
+              Department
+            </div>
+            <div class="row">
+              Contact person
+            </div>
+            <div class="row">
+              Contact number
+            </div>
+            <div class="row">
+              Email
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col contacts-list">
+        <div class="row none-margin-hr">
+          <div class="col-contact">
+            <div class="bl-gradient-title">Technician</div>
+            <div class="contact-items">
+              <div *ngFor="let contact of branchTechnicalContacts; let idx = index;" class="contact-item">
+                <operations-agreement-contacts (agreementContactChange)="contactChange(idx, branchTechnicalContacts, $event)"
+                                               [agreementContact]="contact"
+                                               [allContacts]="branchUsersContacts" [departments]="branchDepartments"
+                                               [validationNotify]="submitNotify"></operations-agreement-contacts>
+                <div class="container-fluid">
+                  <div class="row">
+                    <a (click)="removeContact(branchTechnicalContacts, idx)" class="red-text-btn d-flex align-items-center justify-content-center"
+                       data-remove-Technician href="javascript:void(0);" ngbTooltip="Delete contact"
+                       placement="top">
+                      <i class="remove-icon"></i>
+                    </a>
+                    <a (click)="addContact(branchTechnicalContacts, contactPosition.BranchTechnical)" class="blue-text-btn d-flex align-items-center justify-content-center"
+                       data-add-Technician
+                       href="javascript:void(0);" ngbTooltip="Add existing contact"
+                       placement="top">
+                      <i class="add-icon"></i>
+                    </a>
+                    <a (click)="createNewBranchContact(branchTechnicalContacts, contactPosition.BranchTechnical)" class="gray-text-btn d-flex align-items-center justify-content-center"
+                       data-user-Technician
+                       href="javascript:void(0);"
+                       ngbTooltip="Add new contact" placement="top">
+                      <i class="manage-users-icon"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="!branchTechnicalContacts.length" class="container-fluid">
+              <div class="row">
+                <a (click)="addContact(branchTechnicalContacts, contactPosition.BranchTechnical)" class="blue-text-btn d-flex align-items-center justify-content-center"
+                   data-add-Technician
+                   href="javascript:void(0);" ngbTooltip="Add existing contact"
+                   placement="top">
+                  <i class="add-icon"></i>
+                </a>
+                <a (click)="createNewBranchContact(branchTechnicalContacts, contactPosition.BranchTechnical)" class="gray-text-btn d-flex align-items-center justify-content-center"
+                   data-remove-Technician
+                   href="javascript:void(0);"
+                   ngbTooltip="Add new contact" placement="top">
+                  <i class="manage-users-icon"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-contact">
+            <div class="bl-gradient-title">Administrator</div>
+            <div class="contact-items">
+              <div *ngFor="let contact of branchAdminContacts; let idx = index;" class="contact-item">
+                <operations-agreement-contacts (agreementContactChange)="contactChange(idx, branchAdminContacts, $event)"
+                                               [agreementContact]="contact"
+                                               [allContacts]="branchUsersContacts" [departments]="branchDepartments"
+                                               [validationNotify]="submitNotify"></operations-agreement-contacts>
+                <div class="container-fluid">
+                  <div class="row">
+                    <a (click)="removeContact(branchAdminContacts, idx)" class="red-text-btn d-flex align-items-center justify-content-center"
+                       data-remove-Administrator href="javascript:void(0);" ngbTooltip="Delete contact"
+                       placement="top">
+                      <i class="remove-icon"></i>
+                    </a>
+                    <a (click)="addContact(branchAdminContacts, contactPosition.BranchAdministrator)" class="blue-text-btn d-flex align-items-center justify-content-center"
+                       data-add-Administrator
+                       href="javascript:void(0);" ngbTooltip="Add existing contact"
+                       placement="top">
+                      <i class="add-icon"></i>
+                    </a>
+                    <a (click)="createNewBranchContact(branchAdminContacts, contactPosition.BranchAdministrator)" class="gray-text-btn d-flex align-items-center justify-content-center"
+                       data-user-Administrator
+                       href="javascript:void(0);"
+                       ngbTooltip="Add new contact" placement="top">
+                      <i class="manage-users-icon"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="!branchAdminContacts.length" class="container-fluid">
+              <div class="row">
+                <a (click)="addContact(branchAdminContacts, contactPosition.BranchAdministrator)" class="blue-text-btn d-flex align-items-center justify-content-center"
+                   data-add-Administrator
+                   href="javascript:void(0);" ngbTooltip="Add existing contact"
+                   placement="top">
+                  <i class="add-icon"></i>
+                </a>
+                <a (click)="createNewBranchContact(branchAdminContacts, contactPosition.BranchAdministrator)" class="gray-text-btn d-flex align-items-center justify-content-center"
+                   data-remove-Administrator
+                   href="javascript:void(0);"
+                   ngbTooltip="Add new contact" placement="top">
+                  <i class="manage-users-icon"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-contact">
+            <div class="bl-gradient-title">Portfolio Manager</div>
+            <div class="contact-items">
+              <div *ngFor="let contact of branchPortfolioManagerContacts; let idx = index;" class="contact-item">
+                <operations-agreement-contacts (agreementContactChange)="contactChange(idx, branchPortfolioManagerContacts, $event)"
+                                               [agreementContact]="contact"
+                                               [allContacts]="branchUsersContacts" [departments]="branchDepartments"
+                                               [validationNotify]="submitNotify"></operations-agreement-contacts>
+                <div class="container-fluid">
+                  <div class="row">
+                    <a (click)="removeContact(branchPortfolioManagerContacts, idx)" class="red-text-btn d-flex align-items-center justify-content-center"
+                       data-remove-Portfolio href="javascript:void(0);"
+                       ngbTooltip="Delete contact" placement="top">
+                      <i class="remove-icon"></i>
+                    </a>
+                    <a (click)="addContact(branchPortfolioManagerContacts, contactPosition.BranchPortfolioManager)" class="blue-text-btn d-flex align-items-center justify-content-center"
+                       data-add-Portfolio
+                       href="javascript:void(0);"
+                       ngbTooltip="Add existing contact" placement="top">
+                      <i class="add-icon"></i>
+                    </a>
+                    <a (click)="createNewBranchContact(branchPortfolioManagerContacts, contactPosition.BranchPortfolioManager)" class="gray-text-btn d-flex align-items-center justify-content-center"
+                       data-user-Portfolio
+                       href="javascript:void(0);"
+                       ngbTooltip="Add new contact" placement="top">
+                      <i class="manage-users-icon"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="!branchPortfolioManagerContacts.length" class="container-fluid">
+              <div class="row">
+                <a (click)="addContact(branchPortfolioManagerContacts, contactPosition.BranchPortfolioManager)" class="blue-text-btn d-flex align-items-center justify-content-center"
+                   data-add-Portfolio
+                   href="javascript:void(0);"
+                   ngbTooltip="Add existing contact" placement="top">
+                  <i class="add-icon"></i>
+                </a>
+                <a (click)="createNewBranchContact(branchPortfolioManagerContacts, contactPosition.BranchPortfolioManager)" class="gray-text-btn d-flex align-items-center justify-content-center"
+                   data-remove-Portfolio
+                   href="javascript:void(0);"
+                   ngbTooltip="Add new contact" placement="top">
+                  <i class="manage-users-icon"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-contact">
+            <div class="bl-gradient-title">Financial</div>
+            <div class="contact-items">
+              <div *ngFor="let contact of branchFinancialContacts; let idx = index;" class="contact-item">
+                <operations-agreement-contacts (agreementContactChange)="contactChange(idx, branchFinancialContacts, $event)"
+                                               [agreementContact]="contact"
+                                               [allContacts]="branchUsersContacts" [departments]="branchDepartments"
+                                               [validationNotify]="submitNotify"></operations-agreement-contacts>
+                <div class="container-fluid">
+                  <div class="row">
+                    <a (click)="removeContact(branchFinancialContacts, idx)" class="red-text-btn d-flex align-items-center justify-content-center"
+                       data-remove-Financial href="javascript:void(0);" ngbTooltip="Delete contact"
+                       placement="top">
+                      <i class="remove-icon"></i>
+                    </a>
+                    <a (click)="addContact(branchFinancialContacts, contactPosition.BranchFinancial)" class="blue-text-btn d-flex align-items-center justify-content-center"
+                       data-add-Financial
+                       href="javascript:void(0);" ngbTooltip="Add existing contact"
+                       placement="top">
+                      <i class="add-icon"></i>
+                    </a>
+                    <a (click)="createNewBranchContact(branchFinancialContacts, contactPosition.BranchFinancial)" class="gray-text-btn d-flex align-items-center justify-content-center"
+                       data-user-Financial
+                       href="javascript:void(0);"
+                       ngbTooltip="Add new contact" placement="top">
+                      <i class="manage-users-icon"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="!branchFinancialContacts.length" class="container-fluid">
+              <div class="row">
+                <a (click)="addContact(branchFinancialContacts, contactPosition.BranchFinancial)" class="blue-text-btn d-flex align-items-center justify-content-center"
+                   data-add-Financial
+                   href="javascript:void(0);" ngbTooltip="Add existing contact"
+                   placement="top">
+                  <i class="add-icon"></i>
+                </a>
+                <a (click)="createNewBranchContact(branchFinancialContacts, contactPosition.BranchFinancial)" class="gray-text-btn d-flex align-items-center justify-content-center"
+                   data-remove-Financial
+                   href="javascript:void(0);"
+                   ngbTooltip="Add new contact" placement="top">
+                  <i class="manage-users-icon"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-contact">
+            <div class="bl-gradient-title">Branch Manager</div>
+            <div class="contact-items">
+              <div *ngFor="let contact of branchManagerContacts; let idx = index;" class="contact-item">
+                <operations-agreement-contacts (agreementContactChange)="contactChange(idx, branchManagerContacts, $event)"
+                                               [agreementContact]="contact"
+                                               [allContacts]="branchUsersContacts" [departments]="branchDepartments"
+                                               [validationNotify]="submitNotify"></operations-agreement-contacts>
+                <div class="container-fluid">
+                  <div class="row">
+                    <a (click)="removeContact(branchManagerContacts, idx)" class="red-text-btn d-flex align-items-center justify-content-center"
+                       data-remove-Branch href="javascript:void(0);" ngbTooltip="Delete contact"
+                       placement="top">
+                      <i class="remove-icon"></i>
+                    </a>
+                    <a (click)="addContact(branchManagerContacts, contactPosition.BranchManager)" class="blue-text-btn d-flex align-items-center justify-content-center"
+                       data-add-Branch
+                       href="javascript:void(0);" ngbTooltip="Add existing contact"
+                       placement="top">
+                      <i class="add-icon"></i>
+                    </a>
+                    <a (click)="createNewBranchContact(branchManagerContacts, contactPosition.BranchManager)" class="gray-text-btn d-flex align-items-center justify-content-center"
+                       data-user-Branch
+                       href="javascript:void(0);"
+                       ngbTooltip="Add new contact" placement="top">
+                      <i class="manage-users-icon"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="!branchManagerContacts.length" class="container-fluid">
+              <div class="row">
+                <a (click)="addContact(branchManagerContacts, contactPosition.BranchManager)" class="blue-text-btn d-flex align-items-center justify-content-center"
+                   data-add-Branch href="javascript:void(0);"
+                   ngbTooltip="Add existing contact" placement="top">
+                  <i class="add-icon"></i>
+                </a>
+                <a (click)="createNewBranchContact(branchManagerContacts, contactPosition.BranchManager)" class="gray-text-btn d-flex align-items-center justify-content-center"
+                   data-remove-Branch
+                   href="javascript:void(0);"
+                   ngbTooltip="Add new contact" placement="top">
+                  <i class="manage-users-icon"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Building block -->
+  <div class="opr-agr-block building-block" data-building-block>
+    <div class="bl-gradient-title">Building</div>
+    <div class="input-row">
+      <div class="text-uppercase field-name">Building Name</div>
+      <div class="field-value position-text-bottom">
+        <span class="fld-val-txt" data-name>{{building.name}}</span>
+      </div>
+    </div>
+    <div class="input-row">
+      <div class="text-uppercase field-name">Owner / Managing Agent</div>
+      <div class="field-value position-text-bottom">
+        <span class="fld-val-txt" data-owner>{{client.name}}</span>
+      </div>
+    </div>
+    <div class="input-row">
+      <div class="text-uppercase field-name">Physical Address</div>
+      <div class="field-value position-text-bottom">
+        <span class="fld-val-txt" data-phisical-address>{{getAddressLine(building.address)}}</span>
+      </div>
+    </div>
+    <div *ngIf="client.addresses && client.addresses.length > 0" class="input-row">
+      <div class="text-uppercase field-name">Postal Address</div>
+      <div class="field-value position-text-bottom">
+        <span class="fld-val-txt" data-postal-address>{{getAddressLine(client.addresses[0])}}</span>
+      </div>
+    </div>
+    <div class="hr-line"></div>
+    <div class="row contacts">
+      <div class="col contacts-header">
+        <div class="text-uppercase text-form-field">
+          <div class="container-fluid">
+            <div class="row">
+              Department
+            </div>
+            <div class="row">
+              Contact person
+            </div>
+            <div class="row">
+              Contact number
+            </div>
+            <div class="row">
+              Email
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col contacts-list">
+        <div class="row none-margin-hr">
+          <div class="col-contact">
+            <div class="bl-gradient-title">Ops Questions</div>
+            <div class="contact-items">
+              <div *ngFor="let contact of clientOpsQuestionsContacts; let idx = index;" class="contact-item">
+                <operations-agreement-contacts (agreementContactChange)="contactChange(idx, clientOpsQuestionsContacts, $event)"
+                                               [agreementContact]="contact"
+                                               [allContacts]="clientContacts" [departments]="clientDepartments"
+                                               [validationNotify]="submitNotify"></operations-agreement-contacts>
+                <div class="container-fluid">
+                  <div class="row">
+                    <a (click)="removeContact(clientOpsQuestionsContacts, idx)" class="red-text-btn d-flex align-items-center justify-content-center"
+                       data-remove-OpsQuestions href="javascript:void(0);"
+                       ngbTooltip="Delete contact" placement="top">
+                      <i class="remove-icon"></i>
+                    </a>
+                    <a (click)="addContact(clientOpsQuestionsContacts, contactPosition.ClientOpsQuestions)" class="blue-text-btn d-flex align-items-center justify-content-center"
+                       data-add-OpsQuestions
+                       href="javascript:void(0);"
+                       ngbTooltip="Add existing contact" placement="top">
+                      <i class="add-icon"></i>
+                    </a>
+                    <a (click)="createNewClientContact(clientOpsQuestionsContacts, contactPosition.ClientOpsQuestions)" class="gray-text-btn d-flex align-items-center justify-content-center"
+                       data-user-OpsQuestions
+                       href="javascript:void(0);"
+                       ngbTooltip="Add new contact" placement="top">
+                      <i class="manage-users-icon"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="!clientOpsQuestionsContacts.length" class="container-fluid">
+              <div class="row">
+                <a (click)="addContact(clientOpsQuestionsContacts, contactPosition.ClientOpsQuestions)" class="blue-text-btn d-flex align-items-center justify-content-center"
+                   data-add-OpsQuestions
+                   href="javascript:void(0);" ngbTooltip="Add existing contact"
+                   placement="top">
+                  <i class="add-icon"></i>
+                </a>
+                <a (click)="createNewClientContact(clientOpsQuestionsContacts, contactPosition.ClientOpsQuestions)" class="gray-text-btn d-flex align-items-center justify-content-center"
+                   data-user-OpsQuestions
+                   href="javascript:void(0);"
+                   ngbTooltip="Add new contact" placement="top">
+                  <i class="manage-users-icon"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-contact">
+            <div class="bl-gradient-title">Tenant Changes</div>
+            <div class="contact-items">
+              <div *ngFor="let contact of tenantMovementsInfoContacts; let idx = index;" class="contact-item">
+                <operations-agreement-contacts (agreementContactChange)="contactChange(idx, tenantMovementsInfoContacts, $event)"
+                                               [agreementContact]="contact"
+                                               [allContacts]="clientContacts" [departments]="clientDepartments"
+                                               [validationNotify]="submitNotify"></operations-agreement-contacts>
+                <div class="container-fluid">
+                  <div class="row">
+                    <a (click)="removeContact(tenantMovementsInfoContacts, idx)" class="red-text-btn d-flex align-items-center justify-content-center"
+                       data-remove-Tenant href="javascript:void(0);"
+                       ngbTooltip="Delete contact" placement="top">
+                      <i class="remove-icon"></i>
+                    </a>
+                    <a (click)="addContact(tenantMovementsInfoContacts, contactPosition.TenantMovementsInfo)" class="blue-text-btn d-flex align-items-center justify-content-center"
+                       data-add-Tenant
+                       href="javascript:void(0);"
+                       ngbTooltip="Add existing contact" placement="top">
+                      <i class="add-icon"></i>
+                    </a>
+                    <a (click)="createNewClientContact(tenantMovementsInfoContacts, contactPosition.TenantMovementsInfo)" class="gray-text-btn d-flex align-items-center justify-content-center"
+                       data-user-Tenant
+                       href="javascript:void(0);"
+                       ngbTooltip="Add new contact" placement="top">
+                      <i class="manage-users-icon"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="!tenantMovementsInfoContacts.length" class="container-fluid">
+              <div class="row">
+                <a (click)="addContact(tenantMovementsInfoContacts, contactPosition.TenantMovementsInfo)" class="blue-text-btn d-flex align-items-center justify-content-center"
+                   data-add-Tenant
+                   href="javascript:void(0);"
+                   ngbTooltip="Add existing contact" placement="top">
+                  <i class="add-icon"></i>
+                </a>
+                <a (click)="createNewClientContact(tenantMovementsInfoContacts, contactPosition.TenantMovementsInfo)" class="gray-text-btn d-flex align-items-center justify-content-center"
+                   data-user-Tenant
+                   href="javascript:void(0);"
+                   ngbTooltip="Add new contact" placement="top">
+                  <i class="manage-users-icon"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-contact">
+            <div class="bl-gradient-title">Send Import Files</div>
+            <div class="contact-items">
+              <div *ngFor="let contact of clientSendImportFilesContacts; let idx = index;" class="contact-item">
+                <operations-agreement-contacts (agreementContactChange)="contactChange(idx, clientSendImportFilesContacts, $event)"
+                                               [agreementContact]="contact"
+                                               [allContacts]="clientContacts" [departments]="clientDepartments"
+                                               [validationNotify]="submitNotify"></operations-agreement-contacts>
+                <div class="container-fluid">
+                  <div class="row">
+                    <a (click)="removeContact(clientSendImportFilesContacts, idx)" class="red-text-btn d-flex align-items-center justify-content-center"
+                       data-remove-import-files href="javascript:void(0);"
+                       ngbTooltip="Delete contact" placement="top">
+                      <i class="remove-icon"></i>
+                    </a>
+                    <a (click)="addContact(clientSendImportFilesContacts, contactPosition.ClientSendImportFiles)" class="blue-text-btn d-flex align-items-center justify-content-center"
+                       data-add-import-files
+                       href="javascript:void(0);"
+                       ngbTooltip="Add existing contact" placement="top">
+                      <i class="add-icon"></i>
+                    </a>
+                    <a (click)="createNewClientContact(clientSendImportFilesContacts, contactPosition.ClientSendImportFiles)" class="gray-text-btn d-flex align-items-center justify-content-center"
+                       data-user-import-files
+                       href="javascript:void(0);"
+                       ngbTooltip="Add new contact" placement="top">
+                      <i class="manage-users-icon"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="!clientSendImportFilesContacts.length" class="container-fluid">
+              <div class="row">
+                <a (click)="addContact(clientSendImportFilesContacts, contactPosition.ClientSendImportFiles)" class="blue-text-btn d-flex align-items-center justify-content-center"
+                   data-add-import-files
+                   href="javascript:void(0);"
+                   ngbTooltip="Add existing contact" placement="top">
+                  <i class="add-icon"></i>
+                </a>
+                <a (click)="createNewClientContact(clientSendImportFilesContacts, contactPosition.ClientSendImportFiles)" class="gray-text-btn d-flex align-items-center justify-content-center"
+                   data-user-import-files
+                   href="javascript:void(0);"
+                   ngbTooltip="Add new contact" placement="top">
+                  <i class="manage-users-icon"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-contact">
+            <div class="bl-gradient-title">Monthly Reports</div>
+            <div class="contact-items">
+              <div *ngFor="let contact of clientMonthlyReportsContacts; let idx = index;" class="contact-item">
+                <operations-agreement-contacts (agreementContactChange)="contactChange(idx, clientMonthlyReportsContacts, $event)"
+                                               [agreementContact]="contact"
+                                               [allContacts]="clientContacts" [departments]="clientDepartments"
+                                               [validationNotify]="submitNotify"></operations-agreement-contacts>
+                <div class="container-fluid">
+                  <div class="row">
+                    <a (click)="removeContact(clientMonthlyReportsContacts, idx)" class="red-text-btn d-flex align-items-center justify-content-center"
+                       data-remove-Reports href="javascript:void(0);"
+                       ngbTooltip="Delete contact" placement="top">
+                      <i class="remove-icon"></i>
+                    </a>
+                    <a (click)="addContact(clientMonthlyReportsContacts, contactPosition.ClientMonthlyReports)" class="blue-text-btn d-flex align-items-center justify-content-center"
+                       data-add-Reports
+                       href="javascript:void(0);"
+                       ngbTooltip="Add existing contact" placement="top">
+                      <i class="add-icon"></i>
+                    </a>
+                    <a (click)="createNewClientContact(clientMonthlyReportsContacts, contactPosition.ClientMonthlyReports)" class="gray-text-btn d-flex align-items-center justify-content-center"
+                       data-user-Reports
+                       href="javascript:void(0);"
+                       ngbTooltip="Add new contact" placement="top">
+                      <i class="manage-users-icon"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="!clientMonthlyReportsContacts.length" class="container-fluid">
+              <div class="row">
+                <a (click)="addContact(clientMonthlyReportsContacts, contactPosition.ClientMonthlyReports)" class="blue-text-btn d-flex align-items-center justify-content-center"
+                   data-add-Reports
+                   href="javascript:void(0);"
+                   ngbTooltip="Add existing contact" placement="top">
+                  <i class="add-icon"></i>
+                </a>
+                <a (click)="createNewClientContact(clientMonthlyReportsContacts, contactPosition.ClientMonthlyReports)" class="gray-text-btn d-flex align-items-center justify-content-center"
+                   data-user-Reports
+                   href="javascript:void(0);"
+                   ngbTooltip="Add new contact" placement="top">
+                  <i class="manage-users-icon"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-contact">
+            <div class="bl-gradient-title">Send Invoicing</div>
+            <div class="contact-items">
+              <div *ngFor="let contact of clientSendInvoicingContacts; let idx = index;" class="contact-item">
+                <operations-agreement-contacts (agreementContactChange)="contactChange(idx, clientSendInvoicingContacts, $event)"
+                                               [agreementContact]="contact"
+                                               [allContacts]="clientContacts" [departments]="clientDepartments"
+                                               [validationNotify]="submitNotify"></operations-agreement-contacts>
+                <div class="container-fluid">
+                  <div class="row">
+                    <a (click)="removeContact(clientSendInvoicingContacts, idx)" class="red-text-btn d-flex align-items-center justify-content-center"
+                       data-remove-Invoicing href="javascript:void(0);"
+                       ngbTooltip="Delete contact" placement="top">
+                      <i class="remove-icon"></i>
+                    </a>
+                    <a (click)="addContact(clientSendInvoicingContacts, contactPosition.ClientSendInvoicing)" class="blue-text-btn d-flex align-items-center justify-content-center"
+                       data-add-Invoicing
+                       href="javascript:void(0);"
+                       ngbTooltip="Add existing contact" placement="top">
+                      <i class="add-icon"></i>
+                    </a>
+                    <a (click)="createNewClientContact(clientSendInvoicingContacts, contactPosition.ClientSendInvoicing)" class="gray-text-btn d-flex align-items-center justify-content-center"
+                       data-user-Invoicing
+                       href="javascript:void(0);"
+                       ngbTooltip="Add new contact" placement="top">
+                      <i class="manage-users-icon"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="!clientSendInvoicingContacts.length" class="container-fluid">
+              <div class="row">
+                <a (click)="addContact(clientSendInvoicingContacts, contactPosition.ClientSendInvoicing)" class="blue-text-btn d-flex align-items-center justify-content-center"
+                   data-add-Invoicing
+                   href="javascript:void(0);"
+                   ngbTooltip="Add existing contact" placement="top">
+                  <i class="add-icon"></i>
+                </a>
+                <a (click)="createNewClientContact(clientSendInvoicingContacts, contactPosition.ClientSendInvoicing)" class="gray-text-btn d-flex align-items-center justify-content-center"
+                   data-user-Invoicing
+                   href="javascript:void(0);"
+                   ngbTooltip="Add new contact" placement="top">
+                  <i class="manage-users-icon"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payment Plan block -->
+  <div class="opr-agr-block" data-payment-plan>
+    <div class="bl-gradient-title">Payment Plan</div>
+    <div class="row none-margin-hr">
+      <div class="col-7 none-padding">
+        <div class="row row-title">
+          <div class="col-4">
+            <span class="col-title">Payment Methods</span>
+          </div>
+          <div class="col-3">
+            <span class="col-title">Yes/no</span>
+          </div>
+          <div class="col-5">
+            <span class="col-title">Amount / %</span>
+          </div>
+        </div>
+        <div class="row pay-pln-row">
+          <div class="col-4 d-flex align-items-center">
+            <span class="pay-mthds-lbl">Do we Share in Loss</span>
+          </div>
+          <div class="col-3 d-flex align-items-center">
+            <label class="dnm-switch-btn" data-cbx>
+              <input [(ngModel)]="model.paymentPlan.shareLoss.active" type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+              <span class="dnm-switch-lbl"></span>
+            </label>
+          </div>
+          <div class="col-5">
+            <div class="field-value">
+              <input [(ngModel)]="model.paymentPlan.shareLoss.amount" [autoSelect] [disabled]="!model.paymentPlan.shareLoss.active" class="form-control" data-amount-input
+                     maxlength="256" placeholder="Type here"
+                     type="text"/>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="model.paymentPlan.shareLoss.active && isSubmited && !isNumberValid(this.model.paymentPlan.shareLoss.amount)"
+             class="row pay-pln-row">
+          <div class="col-7">
+          </div>
+          <div class="col-5">
+            <small class="alert-danger">
+              {{ validationMessages.paymentPlan }}
+            </small>
+          </div>
+        </div>
+        <div class="row pay-pln-row">
+          <div class="col-4 d-flex align-items-center">
+            <span class="pay-mthds-lbl">Min Recovery %</span>
+          </div>
+          <div class="col-3 d-flex align-items-center">
+            <label class="dnm-switch-btn" data-cbx>
+              <input [(ngModel)]="model.paymentPlan.minRecovery.active" type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+              <span class="dnm-switch-lbl"></span>
+            </label>
+          </div>
+          <div class="col-5">
+            <div class="field-value">
+              <input [(ngModel)]="model.paymentPlan.minRecovery.amount" [autoSelect] [disabled]="!model.paymentPlan.minRecovery.active" class="form-control" data-amount-input
+                     maxlength="256"
+                     placeholder="Type here" type="text"/>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="model.paymentPlan.shareLoss.active && isSubmited && !isNumberValid(this.model.paymentPlan.minRecovery.amount)"
+             class="row pay-pln-row">
+          <div class="col-7">
+          </div>
+          <div class="col-5">
+            <small class="alert-danger">
+              {{ validationMessages.paymentPlan }}
+            </small>
+          </div>
+        </div>
+        <div class="row pay-pln-row">
+          <div class="col-4 d-flex align-items-center">
+            <span class="pay-mthds-lbl">Min Monthly fee</span>
+          </div>
+          <div class="col-3 d-flex align-items-center">
+            <label class="dnm-switch-btn pay-pln-input" data-cbx>
+              <input [(ngModel)]="model.paymentPlan.minMonthlyFee.active" type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+              <span class="dnm-switch-lbl"></span>
+            </label>
+          </div>
+          <div class="col-5">
+            <div class="field-value">
+              <input [(ngModel)]="model.paymentPlan.minMonthlyFee.amount" [autoSelect] [disabled]="!model.paymentPlan.minMonthlyFee.active" class="form-control" data-amount-input
+                     maxlength="256"
+                     placeholder="Type here" type="text"/>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="model.paymentPlan.shareLoss.active && isSubmited && !isNumberValid(this.model.paymentPlan.minMonthlyFee.amount)"
+             class="row pay-pln-row">
+          <div class="col-7">
+          </div>
+          <div class="col-5">
+            <small class="alert-danger">
+              {{ validationMessages.paymentPlan }}
+            </small>
+          </div>
+        </div>
+        <div class="row pay-pln-row">
+          <div class="col-4 d-flex align-items-center">
+            <span class="pay-mthds-lbl">Max Monthly fee</span>
+          </div>
+          <div class="col-3 d-flex align-items-center">
+            <label class="dnm-switch-btn pay-pln-input" data-cbx>
+              <input [(ngModel)]="model.paymentPlan.maxMonthlyFee.active" type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+              <span class="dnm-switch-lbl"></span>
+            </label>
+          </div>
+          <div class="col-5">
+            <div class="field-value">
+              <input [(ngModel)]="model.paymentPlan.maxMonthlyFee.amount" [autoSelect] [disabled]="!model.paymentPlan.maxMonthlyFee.active" class="form-control" data-amount-input
+                     maxlength="256"
+                     placeholder="Type here" type="text"/>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="model.paymentPlan.shareLoss.active && isSubmited && !isNumberValid(this.model.paymentPlan.maxMonthlyFee.amount)"
+             class="row pay-pln-row">
+          <div class="col-7">
+          </div>
+          <div class="col-5">
+            <small class="alert-danger">
+              {{ validationMessages.paymentPlan }}
+            </small>
+          </div>
+        </div>
+        <div class="row pay-pln-row">
+          <div class="col-4 d-flex align-items-center">
+            <span class="pay-mthds-lbl">Min Netto Recovery %</span>
+          </div>
+          <div class="col-3 d-flex align-items-center">
+            <label class="dnm-switch-btn" data-cbx>
+              <input [(ngModel)]="model.paymentPlan.minNettoRecovery.active" type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+              <span class="dnm-switch-lbl"></span>
+            </label>
+          </div>
+          <div class="col-5">
+            <div class="field-value">
+              <input [(ngModel)]="model.paymentPlan.minNettoRecovery.amount" [autoSelect] [disabled]="!model.paymentPlan.minNettoRecovery.active" class="form-control" data-amount-input
+                     maxlength="256"
+                     placeholder="Type here" type="text"/>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="model.paymentPlan.shareLoss.active && isSubmited && !isNumberValid(this.model.paymentPlan.minNettoRecovery.amount)"
+             class="row pay-pln-row">
+          <div class="col-7">
+          </div>
+          <div class="col-5">
+            <small class="alert-danger">
+              {{ validationMessages.paymentPlan }}
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recoveries from Tenants block -->
+  <div class="opr-agr-block" data-recoveries>
+    <div class="bl-gradient-title">Recoveries from Tenants</div>
+    <div class="row none-margin-hr">
+      <div class="col-8">
+        <div class="row row-title">
+          <div class="col-4 d-flex align-items-center none-padding">
+            <span class="col-title">Vacant Shops</span>
+          </div>
+          <div class="col-2 d-flex align-items-center none-padding">
+            <span class="col-title">Owner</span>
+          </div>
+          <div class="col-2 d-flex align-items-center none-padding">
+            <span class="col-title">Management Company</span>
+          </div>
+          <div class="col-4 d-flex align-items-center none-padding">
+            <span class="col-title">
+              Divide between
+              <br>occupying tenants
+            </span>
+          </div>
+        </div>
+        <form>
+          <div class="row tnt-row">
+            <div class="col-4 d-flex align-items-center none-padding">
+              <span class="tnt-lbl">Electricity</span>
+            </div>
+            <div class="col-2 d-flex align-items-center none-padding">
+              <div class="dnm-radio-btn pay-pln-input">
+                <input [(ngModel)]="model.recoveries.electrycity" [checked]="model.recoveries.electrycity === RelationshipSubject.owner" [value]="RelationshipSubject.owner"
+                       name="electrycity-radio-input"
+                       type="radio"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+            </div>
+            <div class="col-2 d-flex align-items-center none-padding">
+              <div class="dnm-radio-btn pay-pln-input">
+                <input [(ngModel)]="model.recoveries.electrycity" [checked]="model.recoveries.electrycity === RelationshipSubject.umfa" [value]="RelationshipSubject.umfa"
+                       name="electrycity-radio-input"
+                       type="radio"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+            </div>
+            <div class="col-4 d-flex align-items-center none-padding">
+              <div class="dnm-radio-btn pay-pln-input">
+                <input [(ngModel)]="model.recoveries.electrycity" [checked]="model.recoveries.electrycity === RelationshipSubject.tenants" [value]="RelationshipSubject.tenants"
+                       name="electrycity-radio-input"
+                       type="radio"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <form>
+          <div class="row tnt-row">
+            <div class="col-4 d-flex align-items-center none-padding">
+              <span class="tnt-lbl">Water</span>
+            </div>
+            <div class="col-2 d-flex align-items-center none-padding">
+              <div class="dnm-radio-btn pay-pln-input">
+                <input [(ngModel)]="model.recoveries.water" [checked]="model.recoveries.water === RelationshipSubject.owner" [value]="RelationshipSubject.owner"
+                       name="water-radio-input"
+                       type="radio"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+            </div>
+            <div class="col-2 d-flex align-items-center none-padding">
+              <div class="dnm-radio-btn pay-pln-input">
+                <input [(ngModel)]="model.recoveries.water" [checked]="model.recoveries.water === RelationshipSubject.umfa" [value]="RelationshipSubject.umfa"
+                       name="water-radio-input"
+                       type="radio"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+            </div>
+            <div class="col-4 d-flex align-items-center none-padding">
+              <div class="dnm-radio-btn pay-pln-input">
+                <input [(ngModel)]="model.recoveries.water" [checked]="model.recoveries.water === RelationshipSubject.tenants" [value]="RelationshipSubject.tenants"
+                       name="water-radio-input"
+                       type="radio"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <form>
+          <div class="row tnt-row">
+            <div class="col-4 d-flex align-items-center none-padding">
+              <span class="tnt-lbl">Sewerage</span>
+            </div>
+            <div class="col-2 d-flex align-items-center none-padding">
+              <div class="dnm-radio-btn pay-pln-input">
+                <input [(ngModel)]="model.recoveries.sewerage" [checked]="model.recoveries.sewerage === RelationshipSubject.owner" [value]="RelationshipSubject.owner"
+                       name="sewerage-radio-input"
+                       type="radio"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+            </div>
+            <div class="col-2 d-flex align-items-center none-padding">
+              <div class="dnm-radio-btn pay-pln-input">
+                <input [(ngModel)]="model.recoveries.sewerage" [checked]="model.recoveries.sewerage === RelationshipSubject.umfa" [value]="RelationshipSubject.umfa"
+                       name="sewerage-radio-input"
+                       type="radio"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+            </div>
+            <div class="col-4 d-flex align-items-center none-padding">
+              <div class="dnm-radio-btn pay-pln-input">
+                <input [(ngModel)]="model.recoveries.sewerage" [checked]="model.recoveries.sewerage === RelationshipSubject.tenants" [value]="RelationshipSubject.tenants"
+                       name="sewerage-radio-input"
+                       type="radio"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <form>
+          <div class="row tnt-row">
+            <div class="col-4 d-flex align-items-center none-padding">
+              <span class="tnt-lbl">Gas</span>
+            </div>
+            <div class="col-2 d-flex align-items-center none-padding">
+              <div class="dnm-radio-btn pay-pln-input">
+                <input [(ngModel)]="model.recoveries.gas" [checked]="model.recoveries.gas === RelationshipSubject.owner" [value]="RelationshipSubject.owner"
+                       name="gas-radio-input"
+                       type="radio"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+            </div>
+            <div class="col-2 d-flex align-items-center none-padding">
+              <div class="dnm-radio-btn pay-pln-input">
+                <input [(ngModel)]="model.recoveries.gas" [checked]="model.recoveries.gas === RelationshipSubject.umfa" [value]="RelationshipSubject.umfa"
+                       name="gas-radio-input"
+                       type="radio"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+            </div>
+            <div class="col-4 d-flex align-items-center none-padding">
+              <div class="dnm-radio-btn pay-pln-input">
+                <input [(ngModel)]="model.recoveries.gas" [checked]="model.recoveries.gas === RelationshipSubject.tenants" [value]="RelationshipSubject.tenants"
+                       name="gas-radio-input"
+                       type="radio"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Deposits pay and receive block -->
+  <div class="opr-agr-block" data-deposit>
+    <div class="bl-gradient-title">Deposits pay and receive</div>
+    <div class="row none-margin-hr">
+      <div class="col-8">
+        <div class="row row-title">
+          <div class="col-4 d-flex align-items-center none-padding">
+            <span class="line-title">Who will carry the deposit on the building?</span>
+          </div>
+          <div class="col-2 d-flex align-items-center none-padding">
+            <span class="col-title">Owner</span>
+          </div>
+          <div class="col-2 d-flex align-items-center none-padding">
+            <span class="col-title">Management Company</span>
+          </div>
+          <div class="col-4 d-flex align-items-center none-padding">
+            <span class="col-title">Amount</span>
+          </div>
+        </div>
+        <form>
+          <div class="row dp-pay-row">
+            <div class="col-4 d-flex align-items-center none-padding">
+              <span class="dp-pay-lbl">Electricity</span>
+            </div>
+            <div class="col-2 d-flex align-items-center none-padding">
+              <div class="dnm-radio-btn pay-pln-input">
+                <input [(ngModel)]="model.deposits.carryElectrycity.subject" [checked]="model.deposits.carryElectrycity.subject === RelationshipSubject.owner" [value]="RelationshipSubject.owner"
+                       name="carryElectrycity-radio-input"
+                       type="radio"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+            </div>
+            <div class="col-2 d-flex align-items-center none-padding">
+              <div class="dnm-radio-btn pay-pln-input">
+                <input [(ngModel)]="model.deposits.carryElectrycity.subject" [checked]="model.deposits.carryElectrycity.subject === RelationshipSubject.umfa" [value]="RelationshipSubject.umfa"
+                       name="carryElectrycity-radio-input"
+                       type="radio"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+            </div>
+            <div class="col-4 d-flex align-items-center none-padding">
+              <div class="field-value">
+                <input [(ngModel)]="model.deposits.carryElectrycity.amount" [autoSelect] [ngModelOptions]="{standalone: true}" class="form-control"
+                       maxlength="256" placeholder="Type here"
+                       type="text"/>
+              </div>
+            </div>
+          </div>
+        </form>
+        <form>
+          <div class="row dp-pay-row">
+            <div class="col-4 d-flex align-items-center none-padding">
+              <span class="dp-pay-lbl">Water</span>
+            </div>
+            <div class="col-2 d-flex align-items-center none-padding">
+              <div class="dnm-radio-btn pay-pln-input">
+                <input [(ngModel)]="model.deposits.carryWater.subject" [checked]="model.deposits.carryWater.subject === RelationshipSubject.owner" [value]="RelationshipSubject.owner"
+                       name="carryWater-radio-input"
+                       type="radio"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+            </div>
+            <div class="col-2 d-flex align-items-center none-padding">
+              <div class="dnm-radio-btn pay-pln-input">
+                <input [(ngModel)]="model.deposits.carryWater.subject" [checked]="model.deposits.carryWater.subject === RelationshipSubject.umfa" [value]="RelationshipSubject.umfa"
+                       name="carryWater-radio-input"
+                       type="radio"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+            </div>
+            <div class="col-4 d-flex align-items-center none-padding">
+              <div class="field-value">
+                <input [(ngModel)]="model.deposits.carryWater.amount" [autoSelect] [ngModelOptions]="{standalone: true}" class="form-control"
+                       maxlength="256" placeholder="Type here"
+                       type="text"/>
+              </div>
+            </div>
+          </div>
+        </form>
+        <form>
+          <div class="row dp-pay-row">
+            <div class="col-4 d-flex align-items-center none-padding">
+              <span class="dp-pay-lbl">Sewerage</span>
+            </div>
+            <div class="col-2 d-flex align-items-center none-padding">
+              <div class="dnm-radio-btn pay-pln-input">
+                <input [(ngModel)]="model.deposits.carrySewerage.subject" [checked]="model.deposits.carrySewerage.subject === RelationshipSubject.owner" [value]="RelationshipSubject.owner"
+                       name="carrySewerage-radio-input"
+                       type="radio"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+            </div>
+            <div class="col-2 d-flex align-items-center none-padding">
+              <div class="dnm-radio-btn pay-pln-input">
+                <input [(ngModel)]="model.deposits.carrySewerage.subject" [checked]="model.deposits.carrySewerage.subject === RelationshipSubject.umfa" [value]="RelationshipSubject.umfa"
+                       name="carrySewerage-radio-input"
+                       type="radio"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+            </div>
+            <div class="col-4 d-flex align-items-center none-padding">
+              <div class="field-value">
+                <input [(ngModel)]="model.deposits.carrySewerage.amount" [autoSelect] [ngModelOptions]="{standalone: true}" class="form-control"
+                       maxlength="256" placeholder="Type here"
+                       type="text"/>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="row none-margin-hr dp-pay-form">
+      <div class="col-8">
+        <div class="row row-title">
+          <div class="col-4">
+          </div>
+          <div class="col-2 d-flex align-items-center none-padding">
+            <span class="col-title">Owner</span>
+          </div>
+          <div class="col-2 d-flex align-items-center none-padding">
+            <span class="col-title">Management Company</span>
+          </div>
+          <div class="col-4 d-flex align-items-center none-padding">
+            <span class="col-title">Amount</span>
+          </div>
+        </div>
+        <form>
+          <div class="row tnt-row">
+            <div class="col-4 d-flex align-items-center none-padding">
+              <span class="line-title">Who will charge and hold the tenant Deposits?</span>
+            </div>
+            <div class="col-2 d-flex align-items-center none-padding">
+              <div class="dnm-radio-btn pay-pln-input">
+                <input [(ngModel)]="model.deposits.chargeDeposits.subject" [checked]="model.deposits.chargeDeposits.subject === RelationshipSubject.owner" [value]="RelationshipSubject.owner"
+                       name="chargeDeposits-radio-input"
+                       type="radio"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+            </div>
+            <div class="col-2 d-flex align-items-center none-padding">
+              <div class="dnm-radio-btn pay-pln-input">
+                <input [(ngModel)]="model.deposits.chargeDeposits.subject" [checked]="model.deposits.chargeDeposits.subject === RelationshipSubject.umfa" [value]="RelationshipSubject.umfa"
+                       name="chargeDeposits-radio-input"
+                       type="radio"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+            </div>
+            <div class="col-4 d-flex align-items-center none-padding">
+              <div class="field-value">
+                <input [(ngModel)]="model.deposits.chargeDeposits.amount" [autoSelect] [ngModelOptions]="{standalone: true}" class="form-control"
+                       maxlength="256" placeholder="Type here"
+                       type="text"/>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- General information and Important Information for metering purposes blocks -->
+  <div class="opr-agr-block" data-general-info>
+    <div class="row">
+      <div class="dbl-col">
+        <div class="bl-gradient-title">General Information</div>
+        <div class="row gen-info-row none-margin-hr">
+          <div class="col-6 d-flex align-items-center none-padding">
+            <span class="line-title">Letter of Appontment Received:</span>
+          </div>
+          <div class="col-6 d-flex align-items-center justify-content-between">
+            <label class="dnm-switch-btn" data-cbx>
+              <input [(ngModel)]="model.generalInformation.appontmentReceived" type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+              <span class="dnm-switch-lbl"></span>
+            </label>
+
+            <div [autoClose]="'outside'" [ngClass]="{'d-flex':  documentList[FieldType.appontmentLetter].documents.length != 0 }" [style.display]="documentList[FieldType.appontmentLetter].documents.length == 0 ? 'none' : 'flex'"
+                 class="dropdown align-items-center"
+                 ngbDropdown>
+              <button class="dnm-upld-file" ngbDropdownToggle ngbTooltip="View document" placement="top">
+                <span *ngIf="documentList[FieldType.appontmentLetter].totalProgresDone" class="file-loader-icon"></span>
+                <span *ngIf="documentList[FieldType.appontmentLetter].totalProgresDone"
+                      class="upld-fl-status">{{documentList[FieldType.appontmentLetter].totalProgresDone + ' %'}}</span>
+                <span class="dnm-upld-fl-icon dnm-uploaded-file"></span>
+                <span class="upld-fls-count">{{documentList[FieldType.appontmentLetter].documents.length}}</span>
+              </button>
+              <div class="upld-file-dpwn dropdown-menu" ngbDropdownMenu>
+                <popup-files-list (close)="closePopup($event)"
+                                  (delete)="onDeleteFile($event)"
+                                  (uploadFile)="onFileChangeEmiter($event)"
+                                  [files]="documentList[FieldType.appontmentLetter].documents"></popup-files-list>
+              </div>
+            </div>
+
+            <ng-template [ngIf]="!documentList[FieldType.appontmentLetter].documents.length">
+              <label class="file-upld dnm-upld-fl-icon dnm-upload-file" data-file-upload ngbTooltip="Upload document"
+                     placement="top">
+                <input #fileInput (change)="onFileChange($event, FieldType.appontmentLetter)" (click)="fileInput.value = null" multiple
+                       type="file"/>
+              </label>
+            </ng-template>
+          </div>
+        </div>
+        <div class="row gen-info-row none-margin-hr">
+          <div class="col-6 d-flex align-items-center none-padding">
+            <span class="line-title">Copy of Municipal Account Received:</span>
+          </div>
+          <div class="col-6 d-flex align-items-center justify-content-between">
+            <label class="dnm-switch-btn" data-cbx>
+              <input [(ngModel)]="model.generalInformation.municipalAccountReceived" type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+              <span class="dnm-switch-lbl"></span>
+            </label>
+            <div [autoClose]="'outside'" [ngClass]="{'d-flex':  documentList[FieldType.municipalAccount].documents.length != 0 }" [style.display]="documentList[FieldType.municipalAccount].documents.length == 0 ? 'none' : 'flex'"
+                 class="dropdown align-items-center"
+                 ngbDropdown>
+              <button class="dnm-upld-file" ngbDropdownToggle ngbTooltip="View document" placement="top">
+                <span *ngIf="documentList[FieldType.municipalAccount].totalProgresDone" class="file-loader-icon"></span>
+                <span *ngIf="documentList[FieldType.municipalAccount].totalProgresDone"
+                      class="upld-fl-status">{{documentList[FieldType.municipalAccount].totalProgresDone + ' %'}}</span>
+                <span class="dnm-upld-fl-icon dnm-uploaded-file"></span>
+                <span class="upld-fls-count">{{documentList[FieldType.municipalAccount].documents.length}}</span>
+              </button>
+              <div class="upld-file-dpwn dropdown-menu" ngbDropdownMenu>
+                <popup-files-list (close)="closePopup($event)"
+                                  (delete)="onDeleteFile($event)"
+                                  (uploadFile)="onFileChangeEmiter($event)"
+                                  [files]="documentList[FieldType.municipalAccount].documents"></popup-files-list>
+              </div>
+            </div>
+
+            <ng-template [ngIf]="!documentList[FieldType.municipalAccount].documents.length">
+              <label class="file-upld dnm-upld-fl-icon dnm-upload-file" data-file-upload ngbTooltip="Upload document"
+                     placement="top">
+                <input #fileInput (change)="onFileChange($event, FieldType.municipalAccount)" (click)="fileInput.value = null"
+                       multiple
+                       type="file"/>
+              </label>
+            </ng-template>
+          </div>
+        </div>
+        <div class="row gen-info-row none-margin-hr">
+          <div class="col-6 d-flex align-items-center none-padding">
+            <span class="line-title">Date of Management Company's first Invoice:</span>
+          </div>
+          <div class="col-6 d-flex align-items-center justify-content-between">
+            <div class="field-value">
+              <div class="datepicker-wrp">
+                <input #firstInvoiceDate="ngbDatepicker" (click)="firstInvoiceDate.toggle()" [(ngModel)]="model.generalInformation.firstInvoice"
+                       class="form-control nav-dtpickr-inpt"
+                       data-date-pick name="firstInvoiceDate" ngbDatepicker
+                       placeholder="dd/mm/YYYY" readonly>
+                <i (click)="firstInvoiceDate.toggle()" class="calendar"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row gen-info-row none-margin-hr">
+          <div class="col-6 d-flex align-items-center none-padding">
+            <span class="line-title">Arrangement for keys at building:</span>
+          </div>
+          <div class="col-6 d-flex align-items-center justify-content-between">
+            <div class="field-value">
+              <input [(ngModel)]="model.generalInformation.arrangementForKeys" class="form-control" data-text-arrangement maxlength="256" placeholder="Type here"
+                     type="text"/>
+            </div>
+          </div>
+        </div>
+        <div class="row gen-info-row none-margin-hr">
+          <div class="col-6 d-flex align-items-center none-padding">
+            <span class="line-title">Previous Metering Company Name:</span>
+          </div>
+          <div class="col-6 d-flex align-items-center justify-content-between">
+            <div class="field-value">
+              <input [(ngModel)]="model.generalInformation.previousCompany" class="form-control" data-text-name maxlength="256" placeholder="Type here"
+                     type="text"/>
+            </div>
+          </div>
+        </div>
+        <div class="row gen-info-row none-margin-hr">
+          <div class="col-6 d-flex align-items-center none-padding">
+            <span class="line-title">Previous Metering Company Contact:</span>
+          </div>
+          <div class="col-6 d-flex align-items-center justify-content-between">
+            <div class="field-value">
+              <input [(ngModel)]="model.generalInformation.previousContact" class="form-control" data-text-contact maxlength="256" placeholder="Type here"
+                     type="text"/>
+            </div>
+          </div>
+        </div>
+        <div class="row gen-info-row none-margin-hr">
+          <div class="col-6 d-flex align-items-center none-padding">
+            <span class="line-title">Previous Metering Company Last Reading Date:</span>
+          </div>
+          <div class="col-6 d-flex align-items-center justify-content-between">
+            <div class="field-value">
+              <div class="datepicker-wrp">
+                <input #lastReadingDate="ngbDatepicker" (click)="lastReadingDate.toggle()" [(ngModel)]="model.generalInformation.previousCompanyLastReadingDate"
+                       class="form-control nav-dtpickr-inpt"
+                       data-date-pick name="lastReadingDate" ngbDatepicker
+                       placeholder="dd/mm/YYYY" readonly>
+                <i (click)="lastReadingDate.toggle()" class="calendar"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row gen-info-row none-margin-hr">
+          <div class="col-6 d-flex align-items-center none-padding">
+            <span class="line-title">Management Company assisting on Final Reading?</span>
+          </div>
+          <div class="col-6 d-flex align-items-center">
+            <label class="dnm-switch-btn" data-cbx>
+              <input [(ngModel)]="model.generalInformation.finalReading" type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+              <span class="dnm-switch-lbl"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="vr-line"></div>
+      <div class="dbl-col" data-important-info>
+        <div class="bl-gradient-title">Important Information for metering purposes</div>
+        <div class="row gen-info-row none-margin-hr">
+          <div class="col-6 d-flex align-items-center none-padding">
+            <span class="line-title">Tenant List Provided?</span>
+          </div>
+          <div class="col-6 d-flex align-items-center justify-content-between">
+            <label class="dnm-switch-btn" data-cbx>
+              <input [(ngModel)]="model.meteringInformation.tenatList" type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+              <span class="dnm-switch-lbl"></span>
+            </label>
+            <div [autoClose]="'outside'" [ngClass]="{'d-flex':  documentList[FieldType.tenantList].documents.length != 0 }" [style.display]="documentList[FieldType.tenantList].documents.length == 0 ? 'none' : 'flex'"
+                 class="dropdown align-items-center"
+                 ngbDropdown>
+              <button class="dnm-upld-file" ngbDropdownToggle ngbTooltip="View document" placement="top">
+                <span *ngIf="documentList[FieldType.tenantList].totalProgresDone" class="file-loader-icon"></span>
+                <span *ngIf="documentList[FieldType.tenantList].totalProgresDone"
+                      class="upld-fl-status">{{documentList[FieldType.tenantList].totalProgresDone + ' %'}}</span>
+                <span class="dnm-upld-fl-icon dnm-uploaded-file"></span>
+                <span class="upld-fls-count">{{documentList[FieldType.tenantList].documents.length}}</span>
+              </button>
+              <div class="upld-file-dpwn dropdown-menu" ngbDropdownMenu>
+                <popup-files-list (close)="closePopup($event)" (delete)="onDeleteFile($event)"
+                                  (uploadFile)="onFileChangeEmiter($event)"
+                                  [files]="documentList[FieldType.tenantList].documents"></popup-files-list>
+              </div>
+            </div>
+
+            <ng-template [ngIf]="!documentList[FieldType.tenantList].documents.length">
+              <label class="file-upld dnm-upld-fl-icon dnm-upload-file" ngbTooltip="Upload document" placement="top">
+                <input #fileInput (change)="onFileChange($event, FieldType.tenantList)" (click)="fileInput.value = null" data-file-upload
+                       multiple type="file"/>
+              </label>
+            </ng-template>
+          </div>
+        </div>
+        <div class="row gen-info-row none-margin-hr">
+          <div class="col-6 d-flex align-items-center none-padding">
+            <span class="line-title">Shop Numbers Provided?</span>
+          </div>
+          <div class="col-6 d-flex align-items-center justify-content-between">
+            <label class="dnm-switch-btn" data-cbx>
+              <input [(ngModel)]="model.meteringInformation.shopNumbers" type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+              <span class="dnm-switch-lbl"></span>
+            </label>
+            <div [autoClose]="'outside'" [ngClass]="{'d-flex':  documentList[FieldType.shopNumbers].documents.length != 0 }" [style.display]="documentList[FieldType.shopNumbers].documents.length == 0 ? 'none' : 'flex'"
+                 class="dropdown align-items-center"
+                 ngbDropdown>
+              <button class="dnm-upld-file" ngbDropdownToggle ngbTooltip="View document" placement="top">
+                <span *ngIf="documentList[FieldType.shopNumbers].totalProgresDone" class="file-loader-icon"></span>
+                <span *ngIf="documentList[FieldType.shopNumbers].totalProgresDone"
+                      class="upld-fl-status">{{documentList[FieldType.shopNumbers].totalProgresDone + ' %'}}</span>
+                <span class="dnm-upld-fl-icon dnm-uploaded-file"></span>
+                <span class="upld-fls-count">{{documentList[FieldType.shopNumbers].documents.length}}</span>
+              </button>
+
+              <div class="upld-file-dpwn dropdown-menu" ngbDropdownMenu>
+                <popup-files-list (close)="closePopup($event)" (delete)="onDeleteFile($event)"
+                                  (uploadFile)="onFileChangeEmiter($event)"
+                                  [files]="documentList[FieldType.shopNumbers].documents"></popup-files-list>
+              </div>
+            </div>
+
+            <ng-template [ngIf]="!documentList[FieldType.shopNumbers].documents.length">
+              <label class="file-upld dnm-upld-fl-icon dnm-upload-file" ngbTooltip="Upload document" placement="top">
+                <input #fileInput (change)="onFileChange($event, FieldType.shopNumbers)" (click)="fileInput.value = null" data-file-upload
+                       multiple type="file"/>
+              </label>
+            </ng-template>
+          </div>
+        </div>
+        <div class="row gen-info-row none-margin-hr">
+          <div class="col-6 d-flex align-items-center none-padding">
+            <span class="line-title">Square Meters Provided?</span>
+          </div>
+          <div class="col-6 d-flex align-items-center justify-content-between">
+            <label class="dnm-switch-btn" data-cbx>
+              <input [(ngModel)]="model.meteringInformation.squareMeters" type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+              <span class="dnm-switch-lbl"></span>
+            </label>
+            <div [autoClose]="'outside'" [ngClass]="{'d-flex':  documentList[FieldType.squareMeters].documents.length != 0 }" [style.display]="documentList[FieldType.squareMeters].documents.length == 0 ? 'none' : 'flex'"
+                 class="dropdown align-items-center"
+                 ngbDropdown>
+              <button class="dnm-upld-file" ngbDropdownToggle ngbTooltip="View document" placement="top">
+                <span *ngIf="documentList[FieldType.squareMeters].totalProgresDone" class="file-loader-icon"></span>
+                <span *ngIf="documentList[FieldType.squareMeters].totalProgresDone"
+                      class="upld-fl-status">{{documentList[FieldType.squareMeters].totalProgresDone + ' %'}}</span>
+                <span class="dnm-upld-fl-icon dnm-uploaded-file"></span>
+                <span class="upld-fls-count">{{documentList[FieldType.squareMeters].documents.length}}</span>
+              </button>
+              <div class="upld-file-dpwn dropdown-menu" ngbDropdownMenu>
+                <popup-files-list (close)="closePopup($event)" (delete)="onDeleteFile($event)"
+                                  (uploadFile)="onFileChangeEmiter($event)"
+                                  [files]="documentList[FieldType.squareMeters].documents"></popup-files-list>
+              </div>
+            </div>
+
+            <ng-template [ngIf]="!documentList[FieldType.squareMeters].documents.length">
+              <label class="file-upld dnm-upld-fl-icon dnm-upload-file" ngbTooltip="Upload document" placement="top">
+                <input #fileInput (change)="onFileChange($event, FieldType.squareMeters)" (click)="fileInput.value = null" data-file-upload
+                       multiple type="file"/>
+              </label>
+            </ng-template>
+          </div>
+        </div>
+        <div class="row gen-info-row none-margin-hr">
+          <div class="col-6 d-flex align-items-center none-padding">
+            <span class="line-title">Copy of Tenant Lease Agreements provided?</span>
+          </div>
+          <div class="col-6 d-flex align-items-center justify-content-between">
+            <label class="dnm-switch-btn" data-cbx>
+              <input [(ngModel)]="model.meteringInformation.tenantLeaseAgreements" type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+              <span class="dnm-switch-lbl"></span>
+            </label>
+            <div [autoClose]="'outside'" [ngClass]="{'d-flex':  documentList[FieldType.tenantLeaseAgreement].documents.length != 0 }" [style.display]="documentList[FieldType.tenantLeaseAgreement].documents.length == 0 ? 'none' : 'flex'"
+                 class="dropdown align-items-center"
+                 ngbDropdown>
+              <button class="dnm-upld-file" ngbDropdownToggle ngbTooltip="View document" placement="top">
+                <span *ngIf="documentList[FieldType.tenantLeaseAgreement].totalProgresDone"
+                      class="file-loader-icon"></span>
+                <span *ngIf="documentList[FieldType.tenantLeaseAgreement].totalProgresDone"
+                      class="upld-fl-status">{{documentList[FieldType.tenantLeaseAgreement].totalProgresDone + ' %'}}</span>
+                <span class="dnm-upld-fl-icon dnm-uploaded-file"></span>
+                <span class="upld-fls-count">{{documentList[FieldType.tenantLeaseAgreement].documents.length}}</span>
+              </button>
+              <div class="upld-file-dpwn dropdown-menu" ngbDropdownMenu>
+                <popup-files-list (close)="closePopup($event)"
+                                  (delete)="onDeleteFile($event)"
+                                  (uploadFile)="onFileChangeEmiter($event)"
+                                  [files]="documentList[FieldType.tenantLeaseAgreement].documents"></popup-files-list>
+              </div>
+            </div>
+
+            <ng-template [ngIf]="!documentList[FieldType.tenantLeaseAgreement].documents.length">
+              <label class="file-upld dnm-upld-fl-icon dnm-upload-file" ngbTooltip="Upload document" placement="top">
+                <input #fileInput (change)="onFileChange($event, FieldType.tenantLeaseAgreement)" (click)="fileInput.value = null"
+                       data-file-upload multiple
+                       type="file"/>
+              </label>
+            </ng-template>
+          </div>
+        </div>
+        <div class="row gen-info-row none-margin-hr">
+          <div class="col-6 d-flex align-items-center none-padding">
+            <span class="line-title">Copy of Final Readings?</span>
+          </div>
+          <div class="col-6 d-flex align-items-center justify-content-between">
+            <label class="dnm-switch-btn" data-cbx>
+              <input [(ngModel)]="model.meteringInformation.finalReadings" type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+              <span class="dnm-switch-lbl"></span>
+            </label>
+            <div [autoClose]="'outside'" [ngClass]="{'d-flex':  documentList[FieldType.finalReading].documents.length != 0 }" [style.display]="documentList[FieldType.finalReading].documents.length == 0 ? 'none' : 'flex'"
+                 class="dropdown align-items-center"
+                 ngbDropdown>
+              <button class="dnm-upld-file" ngbDropdownToggle ngbTooltip="View document" placement="top">
+                <span *ngIf="documentList[FieldType.finalReading].totalProgresDone" class="file-loader-icon"></span>
+                <span *ngIf="documentList[FieldType.finalReading].totalProgresDone"
+                      class="upld-fl-status">{{documentList[FieldType.finalReading].totalProgresDone + ' %'}}</span>
+                <span class="dnm-upld-fl-icon dnm-uploaded-file"></span>
+                <span class="upld-fls-count">{{documentList[FieldType.finalReading].documents.length}}</span>
+              </button>
+              <div class="upld-file-dpwn dropdown-menu" ngbDropdownMenu>
+                <popup-files-list (close)="closePopup($event)" (delete)="onDeleteFile($event)"
+                                  (uploadFile)="onFileChangeEmiter($event)"
+                                  [files]="documentList[FieldType.finalReading].documents"></popup-files-list>
+              </div>
+            </div>
+
+            <ng-template [ngIf]="!documentList[FieldType.finalReading].documents.length">
+              <label class="file-upld dnm-upld-fl-icon dnm-upload-file" ngbTooltip="Upload document" placement="top">
+                <input #fileInput (change)="onFileChange($event, FieldType.finalReading)" (click)="fileInput.value = null" data-file-upload
+                       multiple type="file"/>
+              </label>
+            </ng-template>
+          </div>
+        </div>
+        <div class="row gen-info-row none-margin-hr">
+          <div class="col-6 d-flex align-items-center none-padding">
+            <span class="line-title">Copy of letter informing Tenants of take over?</span>
+          </div>
+          <div class="col-6 d-flex align-items-center justify-content-between">
+            <label class="dnm-switch-btn" data-cbx>
+              <input [(ngModel)]="model.meteringInformation.tenantsLetter" type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+              <span class="dnm-switch-lbl"></span>
+            </label>
+            <div [autoClose]="'outside'" [ngClass]="{'d-flex':  documentList[FieldType.tenantsLetter].documents.length != 0 }" [style.display]="documentList[FieldType.tenantsLetter].documents.length == 0 ? 'none' : 'flex'"
+                 class="dropdown align-items-center"
+                 ngbDropdown>
+              <button class="dnm-upld-file" ngbDropdownToggle ngbTooltip="View document" placement="top">
+                <span *ngIf="documentList[FieldType.tenantsLetter].totalProgresDone" class="file-loader-icon"></span>
+                <span *ngIf="documentList[FieldType.tenantsLetter].totalProgresDone"
+                      class="upld-fl-status">{{documentList[FieldType.tenantsLetter].totalProgresDone + ' %'}}</span>
+                <span class="dnm-upld-fl-icon dnm-uploaded-file"></span>
+                <span class="upld-fls-count">{{documentList[FieldType.tenantsLetter].documents.length}}</span>
+              </button>
+              <div class="upld-file-dpwn dropdown-menu" ngbDropdownMenu>
+                <popup-files-list (close)="closePopup($event)" (delete)="onDeleteFile($event)"
+                                  (uploadFile)="onFileChangeEmiter($event)"
+                                  [files]="documentList[FieldType.tenantsLetter].documents"></popup-files-list>
+              </div>
+            </div>
+
+            <ng-template [ngIf]="!documentList[FieldType.tenantsLetter].documents.length">
+              <label class="file-upld dnm-upld-fl-icon dnm-upload-file" ngbTooltip="Upload document" placement="top">
+                <input #fileInput (change)="onFileChange($event, FieldType.tenantsLetter)" (click)="fileInput.value = null" data-file-upload
+                       multiple type="file"/>
+              </label>
+            </ng-template>
+          </div>
+        </div>
+        <div class="row gen-info-row none-margin-hr">
+          <div class="col-6 d-flex align-items-center none-padding">
+            <span class="line-title">Building Plan with shop Layout?</span>
+          </div>
+          <div class="col-6 d-flex align-items-center justify-content-between">
+            <label class="dnm-switch-btn" data-cbx>
+              <input [(ngModel)]="model.meteringInformation.buildingPlan" type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+              <span class="dnm-switch-lbl"></span>
+            </label>
+            <div [autoClose]="'outside'" [ngClass]="{'d-flex':  documentList[FieldType.buildingPlan].documents.length != 0 }" [style.display]="documentList[FieldType.buildingPlan].documents.length == 0 ? 'none' : 'flex'"
+                 class="dropdown align-items-center"
+                 ngbDropdown>
+              <button class="dnm-upld-file" ngbDropdownToggle ngbTooltip="View document" placement="top">
+                <span *ngIf="documentList[FieldType.buildingPlan].totalProgresDone" class="file-loader-icon"></span>
+                <span *ngIf="documentList[FieldType.buildingPlan].totalProgresDone"
+                      class="upld-fl-status">{{documentList[FieldType.buildingPlan].totalProgresDone + ' %'}}</span>
+                <span class="dnm-upld-fl-icon dnm-uploaded-file"></span>
+                <span class="upld-fls-count">{{documentList[FieldType.buildingPlan].documents.length}}</span>
+              </button>
+              <div class="upld-file-dpwn dropdown-menu" ngbDropdownMenu>
+                <popup-files-list (close)="closePopup($event)" (delete)="onDeleteFile($event)"
+                                  (uploadFile)="onFileChangeEmiter($event)"
+                                  [files]="documentList[FieldType.buildingPlan].documents"></popup-files-list>
+              </div>
+            </div>
+
+            <ng-template [ngIf]="!documentList[FieldType.buildingPlan].documents.length">
+              <label class="file-upld dnm-upld-fl-icon dnm-upload-file" ngbTooltip="Upload document" placement="top">
+                <input #fileInput (change)="onFileChange($event, FieldType.buildingPlan)" (click)="fileInput.value = null" data-file-upload
+                       multiple type="file"/>
+              </label>
+            </ng-template>
+          </div>
+        </div>
+        <div class="row gen-info-row none-margin-hr">
+          <div class="col-6 d-flex align-items-center none-padding">
+            <span class="line-title">Electrical Diagram available?</span>
+          </div>
+          <div class="col-6 d-flex align-items-center justify-content-between">
+            <label class="dnm-switch-btn" data-cbx>
+              <input [(ngModel)]="model.meteringInformation.electricalDiagram" type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+              <span class="dnm-switch-lbl"></span>
+            </label>
+            <div [autoClose]="'outside'" [ngClass]="{'d-flex':  documentList[FieldType.electricalDiagram].documents.length != 0 }" [style.display]="documentList[FieldType.electricalDiagram].documents.length == 0 ? 'none' : 'flex'"
+                 class="dropdown align-items-center"
+                 ngbDropdown>
+              <button class="dnm-upld-file" ngbDropdownToggle ngbTooltip="View document" placement="top">
+                <span *ngIf="documentList[FieldType.electricalDiagram].totalProgresDone"
+                      class="file-loader-icon"></span>
+                <span *ngIf="documentList[FieldType.electricalDiagram].totalProgresDone"
+                      class="upld-fl-status">{{documentList[FieldType.electricalDiagram].totalProgresDone + ' %'}}</span>
+                <span class="dnm-upld-fl-icon dnm-uploaded-file"></span>
+                <span class="upld-fls-count">{{documentList[FieldType.electricalDiagram].documents.length}}</span>
+              </button>
+              <div class="upld-file-dpwn dropdown-menu" ngbDropdownMenu>
+                <popup-files-list (close)="closePopup($event)"
+                                  (delete)="onDeleteFile($event)"
+                                  (uploadFile)="onFileChangeEmiter($event)"
+                                  [files]="documentList[FieldType.electricalDiagram].documents"></popup-files-list>
+              </div>
+            </div>
+
+            <ng-template [ngIf]="!documentList[FieldType.electricalDiagram].documents.length">
+              <label class="file-upld dnm-upld-fl-icon dnm-upload-file" ngbTooltip="Upload document" placement="top">
+                <input #fileInput (change)="onFileChange($event, FieldType.electricalDiagram)" (click)="fileInput.value = null"
+                       data-file-upload multiple
+                       type="file"/>
+              </label>
+            </ng-template>
+          </div>
+        </div>
+        <div class="row gen-info-row none-margin-hr">
+          <div class="col-6 d-flex align-items-center none-padding">
+            <span class="line-title">Meter Replacement CONTRACT and payment procedures:</span>
+          </div>
+          <div class="col-6 d-flex align-items-center justify-content-between">
+            <label class="dnm-switch-btn" data-cbx>
+              <input [(ngModel)]="model.meteringInformation.meterReplacementContract" type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+              <span class="dnm-switch-lbl"></span>
+            </label>
+            <div [autoClose]="'outside'" [ngClass]="{'d-flex':  documentList[FieldType.meterReplacementContract].documents.length != 0 }" [style.display]="documentList[FieldType.meterReplacementContract].documents.length == 0 ? 'none' : 'flex'"
+                 class="dropdown align-items-center"
+                 ngbDropdown>
+              <button class="dnm-upld-file" ngbDropdownToggle ngbTooltip="View document" placement="top">
+                <span *ngIf="documentList[FieldType.meterReplacementContract].totalProgresDone"
+                      class="file-loader-icon"></span>
+                <span *ngIf="documentList[FieldType.meterReplacementContract].totalProgresDone"
+                      class="upld-fl-status">{{documentList[FieldType.meterReplacementContract].totalProgresDone + ' %'}}</span>
+                <span class="dnm-upld-fl-icon dnm-uploaded-file"></span>
+                <span
+                  class="upld-fls-count">{{documentList[FieldType.meterReplacementContract].documents.length}}</span>
+              </button>
+              <div class="upld-file-dpwn dropdown-menu" ngbDropdownMenu>
+                <popup-files-list (close)="closePopup($event)"
+                                  (delete)="onDeleteFile($event)"
+                                  (uploadFile)="onFileChangeEmiter($event)"
+                                  [files]="documentList[FieldType.meterReplacementContract].documents"></popup-files-list>
+              </div>
+            </div>
+
+            <ng-template [ngIf]="!documentList[FieldType.meterReplacementContract].documents.length">
+              <label class="file-upld dnm-upld-fl-icon dnm-upload-file" ngbTooltip="Upload document" placement="top">
+                <input #fileInput (change)="onFileChange($event, FieldType.meterReplacementContract)" (click)="fileInput.value = null"
+                       data-file-upload multiple
+                       type="file"/>
+              </label>
+            </ng-template>
+          </div>
+        </div>
+        <div class="row gen-info-row none-margin-hr">
+          <div class="col-6 d-flex align-items-center none-padding">
+            <span class="line-title">Meter Instations on new buildings and payment procedures:</span>
+          </div>
+          <div class="col-6 d-flex align-items-center justify-content-between">
+            <label class="dnm-switch-btn" data-cbx>
+              <input [(ngModel)]="model.meteringInformation.meterInstations" type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+              <span class="dnm-switch-lbl"></span>
+            </label>
+            <div [autoClose]="'outside'" [ngClass]="{'d-flex':  documentList[FieldType.meterInstations].documents.length != 0 }" [style.display]="documentList[FieldType.meterInstations].documents.length == 0 ? 'none' : 'flex'"
+                 class="dropdown align-items-center"
+                 ngbDropdown>
+              <button class="dnm-upld-file" ngbDropdownToggle ngbTooltip="View document" placement="top">
+                <span *ngIf="documentList[FieldType.meterInstations].totalProgresDone" class="file-loader-icon"></span>
+                <span *ngIf="documentList[FieldType.meterInstations].totalProgresDone"
+                      class="upld-fl-status">{{documentList[FieldType.meterInstations].totalProgresDone + ' %'}}</span>
+                <span class="dnm-upld-fl-icon dnm-uploaded-file"></span>
+                <span class="upld-fls-count">{{documentList[FieldType.meterInstations].documents.length}}</span>
+              </button>
+              <div class="upld-file-dpwn dropdown-menu" ngbDropdownMenu>
+                <popup-files-list (close)="closePopup($event)"
+                                  (delete)="onDeleteFile($event)"
+                                  (uploadFile)="onFileChangeEmiter($event)"
+                                  [files]="documentList[FieldType.meterInstations].documents"></popup-files-list>
+              </div>
+            </div>
+
+            <ng-template [ngIf]="!documentList[FieldType.meterInstations].documents.length">
+              <label class="file-upld dnm-upld-fl-icon dnm-upload-file" ngbTooltip="Upload document" placement="top">
+                <input #fileInput (change)="onFileChange($event, FieldType.meterInstations)" (click)="fileInput.value = null"
+                       data-file-upload multiple
+                       type="file"/>
+              </label>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Save and cancel buttons block -->
+  <div class="container-fluid btn-container text-right">
+    <button (click)="onCancel()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+    <ng-template [ngIf]="!model.isComplete">
+      <button (click)="save(0);" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Save Draft</button>
+      <button (click)="save(1);" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Final Save</button>
+    </ng-template>
+    <ng-template [ngIf]="model.isComplete && !versionId">
+      <button (click)="save(1);" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save</button>
+    </ng-template>
+  </div>
+
+</div>

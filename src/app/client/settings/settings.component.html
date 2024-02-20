@@ -1,0 +1,72 @@
+<div class="client-settings">
+  <div class="container-fluid top-container">
+    <div class="row content">
+      <div class="client-header-title">
+        <h1 class="page-title text-uppercase">Client Account</h1>
+      </div>
+      <back-button></back-button>
+    </div>
+  </div>
+
+
+  <div *ngIf="(generalInfoForm$ | async).value as form" class="settings-container row none-margin-hr">
+    <div class="col-5 none-padding">
+      <div class="item-img">
+        <logo-container [url]="(form.logoUrl | image) | async"
+                        logo-class="branch-logo full-height d-flex align-items-center">
+          <div class="logo-abbreviation d-flex justify-content-center align-items-center">
+            <span>{{form.name ? form.name[0].toUpperCase() : ''}}</span>
+          </div>
+        </logo-container>
+      </div>
+      <div class="input-row">
+        <div class="text-uppercase field-name text-form-field">Email:</div>
+        <div class="field-value">
+          <span class="info-lbl">{{form.email}}</span>
+        </div>
+      </div>
+      <div class="input-row">
+        <div class="text-uppercase field-name text-form-field">Phone number (default):</div>
+        <div class="field-value">
+          <span class="info-lbl">{{form.phone}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-7 none-padding d-flex flex-column justify-content-between">
+      <div>
+        <div class="input-row">
+          <div class="text-uppercase field-name text-form-field">Company name:</div>
+          <div class="field-value">
+            <span class="info-lbl">{{form.name}}</span>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name text-form-field">Registration number:</div>
+          <div class="field-value">
+            <span class="info-lbl">{{form.registrationNumber}}</span>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name text-form-field">VAT number:</div>
+          <div class="field-value">
+            <span class="info-lbl">{{form.vatNumber}}</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="input-row">
+          <div class="text-uppercase field-name text-form-field">Address:</div>
+          <div class="field-value">
+            <span class="info-lbl">{{form.address}}</span>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name text-form-field">Web address:</div>
+          <div class="field-value">
+            <span class="info-lbl">{{form.webAddress}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

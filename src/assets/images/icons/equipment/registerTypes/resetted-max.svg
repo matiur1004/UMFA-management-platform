@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW 2021.5 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="236px" height="243px" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 158.594 163.456"
+ xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:xodm="http://www.corel.com/coreldraw/odm/2003">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .str1 {stroke:#00757D;stroke-width:0.672;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:2.61313}
+    .str0 {stroke:#00757D;stroke-width:13.44;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:2.61313}
+    .fil0 {fill:none}
+    .fil1 {fill:#00757D;fill-rule:nonzero}
+   ]]>
+  </style>
+    <mask id="id0">
+  <linearGradient id="id1" gradientUnits="userSpaceOnUse" x1="123.585" y1="146.325" x2="2.668" y2="21.128">
+   <stop offset="0" style="stop-opacity:1; stop-color:white"/>
+   <stop offset="0.6" style="stop-opacity:0.501961; stop-color:white"/>
+   <stop offset="1" style="stop-opacity:0; stop-color:white"/>
+  </linearGradient>
+     <rect style="fill:url(#id1)" x="-0.009" y="-0.009" width="158.603" height="158.62"/>
+    </mask>
+    <mask id="id2">
+  <linearGradient id="id3" gradientUnits="userSpaceOnUse" x1="123.585" y1="146.325" x2="2.668" y2="21.128">
+   <stop offset="0" style="stop-opacity:1; stop-color:white"/>
+   <stop offset="0.6" style="stop-opacity:0.501961; stop-color:white"/>
+   <stop offset="1" style="stop-opacity:0; stop-color:white"/>
+  </linearGradient>
+     <rect style="fill:url(#id3)" x="97.172" y="124.425" width="34.261" height="39.031"/>
+    </mask>
+    <mask id="id4">
+  <linearGradient id="id5" gradientUnits="userSpaceOnUse" x1="15.214" y1="176.359" x2="190.169" y2="-4.79">
+   <stop offset="0" style="stop-opacity:1; stop-color:white"/>
+   <stop offset="0.6" style="stop-opacity:0.501961; stop-color:white"/>
+   <stop offset="1" style="stop-opacity:0; stop-color:white"/>
+  </linearGradient>
+     <rect style="fill:url(#id5)" x="51.869" y="41.164" width="54.812" height="75.917"/>
+    </mask>
+ </defs>
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <g id="_2179666341472">
+   <path class="fil0 str0" style="mask:url(#id0)" d="M123.931 136.529c-8.139,6.347 -17.538,10.885 -27.569,13.311 -38.958,9.422 -78.177,-14.521 -87.6,-53.478 -9.422,-38.958 14.521,-78.178 53.479,-87.6 38.958,-9.422 78.177,14.521 87.599,53.479 1.881,7.776 2.463,15.808 1.723,23.773"/>
+   <polyline class="fil0 str0" style="mask:url(#id2)" points="103.892,131.145 124.713,135.915 122.457,156.736 "/>
+   <path class="fil1 str1" style="mask:url(#id4)" d="M65.74 116.745l0 -5.407 27.07 -0.246 0 5.653 -27.07 0zm0 -9.439l0 -28.184 -13.535 0 27.07 -37.622 27.07 37.622 -13.535 0 0 27.938 -27.07 0.246z"/>
+  </g>
+ </g>
+</svg>

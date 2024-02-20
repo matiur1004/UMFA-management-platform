@@ -1,0 +1,134 @@
+<div class="container-fluid none-padding create-bulk-equip">
+  <div class="dnm-tabstep">
+    <div class="tab-line"></div>
+    <div class="tab-pr-line checked-tab-{{step$ | async}}"></div>
+   <ul ngbNav #bulkTabs="ngbNav" (navChange)="beforeChange($event)" [activeId]="step$ | async" id="top-bar-equipment" class="nav-tabs">
+      <li [ngbNavItem]="'0'">
+        <a ngbNavLink>
+          <span *ngIf="(step$ | async) < 1" class="tab-lbl text-uppercase">1</span>
+          <span *ngIf="(step$ | async) >= 1" class="chckd-tab-lbl chckd-tab-lbl-1"><i
+            class="tab-checked-icon"></i></span>
+          <div class="tab-txt-lbl">Setup equipment bulk</div>
+          </a>
+        <ng-template ngbNavContent>
+          <setup-equipment-bulk (addItem)="onAddItem($event)"
+                                (close)="onCloseWizard()"
+                                (deviceChange)="onDeviceChange($event)"
+                                (equipmentGroupChange)="onEquipmentGroupChanged($event)"
+                                (locationChange)="onLocationChanged($event)"
+                                (locationTypeChange)="onLocationTypeChanged($event)"
+                                (nextStep)="onNextStep($event)"
+                                (photoChange)="onSetupStepPhotoChanged($event)"
+                                (removeItem)="onRemoveItem($event)"
+                                (selectAllTemplates)="onSelectAllTemplates($event)"
+                                (setBulkAction)="onSetBulkActionType($event)"
+                                (supplyToChange)="onSupplyToChanged($event)"
+                                [dropdownData]="dropdownData$ | async"
+                                [form]="setupForm$ | async"
+                                [isSelectedAllTemplates]="isAllSelectedTemplates$ | async"
+                                [selectedTemplates]="selectedTemplates$ | async"
+                                [total]="total$ | async"
+          ></setup-equipment-bulk>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="'1'">
+        <a ngbNavLink>
+          <span *ngIf="(step$ | async) < 2" class="tab-lbl text-uppercase">2</span>
+          <span *ngIf="(step$ | async) >= 2" class="chckd-tab-lbl chckd-tab-lbl-1"><i
+            class="tab-checked-icon"></i></span>
+          <div class="tab-txt-lbl">Units allocation</div>
+          </a>
+        <ng-template ngbNavContent>
+          <alloc-bulk-equip-to-shop (applyBulk)="onSetBulkActionType($event)"
+                                    (close)="onCloseWizard()"
+                                    (filter)="onFilterShops($event)"
+                                    (unitChange)="onUnitChanged($event)"
+                                    (locationTypeChange)="onShopsLocationTypeChanged($event)"
+                                    (serialNumberChange)="onSerialNumberChanged($event)"
+                                    (parentChange)="onParentChanged($event)"
+                                    (nextStep)="onNextStep($event)"
+                                    (selectAllMeters)="onShopsSelectAllMeters($event)"
+                                    (changeOrder)="onChangeOrder($event)"
+                                    (supplyToChange)="onShopsSupplyToChanged($event)"
+                                    (updateLocationMeters)="onShopsUpdateLocationMeters($event)"
+                                    *ngIf="newMeters$ | async"
+                                    [bulkSupplies]="shopsSupplies$ | async"
+                                    [dropdownData]="meterDropdownData$ | async"
+                                    [existMeters]="existMeters$ | async"
+                                    [filterForm]="filterShopForm$ | async"
+                                    [form]="filteredShopsForm$ | async"
+                                    [isSelectedAllMeters]="shopsStepIsSelectedAllMeters$ | async"
+                                    [newMeters]="newMeters$ | async"
+                                    [locationList]="locations$ | async"
+                                    [selectedItems]="selectedItems$ | async"
+                                    [total]="totalShop$ | async"
+                                    [unitOptions]="unitOptions$ | async"
+                                    [equipmentGroups]="equipmentGroups"
+                                    [deviceTypes]="equipmentTemplateList$ | async">
+          </alloc-bulk-equip-to-shop>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="'2'">
+        <a ngbNavLink>
+          <span *ngIf="(step$ | async) < 3" class="tab-lbl text-uppercase">3</span>
+          <span *ngIf="(step$ | async) >= 3" class="chckd-tab-lbl chckd-tab-lbl-1"><i
+            class="tab-checked-icon"></i></span>
+          <div class="tab-txt-lbl">Equipment attributes</div>
+          </a>
+        <ng-template ngbNavContent>
+          <bulk-equipment-attributes (applyBulkValue)="onSetBulkActionType($event)"
+                                     (attributePhotoChange)="onAttributePhotoChange($event)"
+                                     (close)="onCloseWizard()"
+                                     (comboSettingChange)="onAttributesComboSettingChange($event)"
+                                     (nextStep)="onNextStep($event)"
+                                     (filter)="onFilterAttributes($event)"
+                                     (selectAllMeters)="onAttributesSelectAllMeters($event)"
+                                     [filterAttribute]="filterAttributeForm$  | async"
+                                     [form]="filteredAttributesForm$ | async"
+                                     [selectedAllMeters]="attributesStepSelectedAllMeters$ | async"
+                                     [selectedAttributes]="selectedAttributeMetersCount$ | async"
+                                     [selectedOneOrMoreMeters]="attributesStepSelectedOneOrMoreMeters$ | async"
+                                     [total]="totalAttributes$ | async"
+                                     [equipmentGroups]="equipmentGroups"
+                                     [deviceTypes]="equipmentTemplateList$ | async"
+                                     [locationList]="locations$ | async">
+          </bulk-equipment-attributes>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="'3'">
+        <a ngbNavLink>
+          <span *ngIf="(step$ | async) < 4" class="tab-lbl text-uppercase">4</span>
+          <span *ngIf="(step$ | async) >= 4" class="chckd-tab-lbl chckd-tab-lbl-1"><i
+            class="tab-checked-icon"></i></span>
+          <div class="tab-txt-lbl">Registers and readings</div>
+          </a>
+        <ng-template ngbNavContent>
+          <registers-and-readings (addRegister)="onAddRegister($event)"
+                                  (applyBulkValue)="onSetBulkActionType($event)"
+                                  (close)="onCloseWizard()"
+                                  (nextStep)="onNextStep($event)"
+                                  (registerFileChange)="onRegisterFileChanged($event)"
+                                  (registerScaleChange)="onRegisterScaleChanged($event)"
+                                  (registerSequenceChange)="onRegisterSequenceChange($event)"
+                                  (removeRegister)="onRemoveRegister($event)"
+                                  (selectAllMeters)="onRegistersSelectAllMeters($event)"
+                                  [equipmentRegistersDictionary]="equipmentRegistersDictionary$ | async"
+                                  [form]="filteredRegistersForm$ | async"
+                                  [isSelectedAllMeters]="registersStepIsSelectedAllMeters$ | async"
+                                  [isSelectedOneOrMoreMeters]="registersStepIsSelectedOneOrMoreMeters$ | async"
+                                  [notIncludedRegisters]="notIncludedRegisters$ | async"
+                                  [registerFiles]="registerFiles$ | async"
+                                  [selectedRegisters]="selectedRegisters$ | async"
+                                  [buildingPeriod]="buildingPeriod$ | async"
+                                  [total]="totalRegisters$ | async"
+                                  [equipmentGroups]="equipmentGroups"
+                                  [deviceTypes]="equipmentTemplateList$ | async"
+                                  [locationList]="locations$ | async"
+                                  (filter)="onFilterRegistersAndReadings($event)">
+          </registers-and-readings>
+        </ng-template>
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="bulkTabs"></div>
+  </div>
+</div>

@@ -1,0 +1,304 @@
+<div class="container-fluid none-padding registers-and-readings">
+  <div class="row nav-row d-flex align-items-center">
+    <div class="col-2 d-flex align-items-center">
+      <div class="list-item total-container d-flex align-items-center">
+        <span class="total-text">Total:</span>
+        <span class="total-value">{{total}} items</span>
+      </div>
+    </div>
+    <div class="col-auto d-flex align-items-center">
+      <!-- <span class="text-uppercase drpdwn-fltr-lbl">Supply Type</span> -->
+      <ng-select  
+              (change)="onChangeFilterType($event)"
+              [(ngModel)]="filterTypeModel"
+              [clearable]="false"
+              [hideSelected]="true"
+              [searchable]="false"
+              class="dnm-dropdown-select ng-select ng-select-single mr-4">
+        <ng-option [value]="-1">All</ng-option>
+        <ng-option *ngFor="let item of filterTypesList" [value]="item.value">{{item.label}}</ng-option>
+      </ng-select>
+      <ng-container *ngIf="filterTypeModel == filterTypes.SupplyType">
+        <ng-select (change)="onSearchBySupplyType($event)"
+                [(ngModel)]="supplyTypeModel"
+                [clearable]="false"
+                [hideSelected]="true"
+                [searchable]="false"
+                class="dnm-dropdown-select ng-select ng-select-single">
+          <ng-option [value]="-1">All</ng-option>
+          <ng-option *ngFor="let item of supplyTypesList" [value]="item.value">{{item.label}}</ng-option>
+        </ng-select>
+      </ng-container>
+      <ng-container *ngIf="filterTypeModel == filterTypes.Location">
+        <ng-select (change)="onSearchByLocation($event)"
+                [(ngModel)]="locationModel"
+                [clearable]="false"
+                [hideSelected]="true"
+                [searchable]="false"
+                class="dnm-dropdown-select ng-select ng-select-single">
+          <ng-option [value]="-1">All</ng-option>
+          <ng-option *ngFor="let item of locationList" [value]="item.id">{{item.name}}</ng-option>
+        </ng-select>
+      </ng-container>
+      <ng-container *ngIf="filterTypeModel == filterTypes.EquipmentGroup">
+        <ng-select (change)="onSearchByEquipmentModel($event)"
+                [(ngModel)]="equipmentGroupModel"
+                [clearable]="false"
+                [hideSelected]="true"
+                [searchable]="false"
+                class="dnm-dropdown-select ng-select ng-select-single">
+          <ng-option [value]="-1">All</ng-option>
+          <ng-option *ngFor="let item of equipmentGroups" [value]="item.id">{{item.name}}</ng-option>
+        </ng-select>
+      </ng-container>
+      <ng-container *ngIf="filterTypeModel == filterTypes.DeviceType">
+        <ng-select (change)="onSearchByDeviceType($event)"
+                [(ngModel)]="deviceTypeModel"
+                [clearable]="false"
+                [hideSelected]="true"
+                [searchable]="false"
+                class="dnm-dropdown-select ng-select ng-select-single">
+          <ng-option [value]="-1">All</ng-option>
+          <ng-option *ngFor="let item of deviceTypes" [value]="item.id">{{item.model}}</ng-option>
+        </ng-select>
+      </ng-container>
+
+      <ng-container *ngIf="filterTypeModel == filterTypes.SerialNumber">
+        <div class="col-auto">
+          <simple-search-form (onSearch)="search($event)" [value]="searchTerm"
+                              placeholder="Search Equipment"></simple-search-form>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <div class="none-margin-hr table-responsive vertical-table-scroll">
+    <table class="table table-custom table-white table-outside-border-body table-vertical-center">
+      <thead>
+        <tr>
+          <th class="cell-selection">
+            <div class="darkness bulk-actions-nav" ngbDropdown placement="bottom-left">
+              <div class="checkbox-input dropdown-checkbox-input d-flex align-items-center" ngbDropdownToggle>
+                <div class="dnm-checkbox list-header-checkbox">
+                  <input (click)="selectAllMeters.emit(!isSelectedAllMeters)" [checked]="isSelectedAllMeters" class="checkbox-toggle"
+                         type="checkbox" />
+                  <div [ngClass]="{'indeterm-state': checkedAllPartly}" class="state">
+                    <label></label>
+                  </div>
+                </div>
+              </div>
+              <div class="checkbox-menu" ngbDropdownMenu>
+                <div class="checkbox-menu-header">{{selectedRegisters}} items selected</div>
+
+                <button (click)="applyBulkValue.emit({step: step, actionType: actionType.SetRegisterNote})" class="dropdown-item d-flex justify-content-between"
+                        type="button">
+                  Set Register Note
+                </button>
+                <button (click)="applyBulkValue.emit({step: step, actionType: actionType.SetRatio})" class="dropdown-item d-flex justify-content-between"
+                        type="button">
+                  Set Ratio
+                </button>
+                <button (click)="applyBulkValue.emit({step: step, actionType: actionType.SetReading})" class="dropdown-item d-flex justify-content-between"
+                        type="button">
+                  Set Reading
+                </button>
+                <button (click)="applyBulkValue.emit({step: step, actionType: actionType.SetReadingDate})" class="dropdown-item d-flex datepicker-wrp justify-content-between"
+                        type="button">
+                  Set Reading Date
+                </button>
+                <button (click)="applyBulkValue.emit({step: step, actionType: actionType.SetBilling})" class="dropdown-item d-flex datepicker-wrp justify-content-between"
+                        type="button">
+                  Set Billing
+                </button>
+              </div>
+            </div>
+          </th>
+          <th>
+            <span class="head-col cell-assigned">Serial number</span>
+          </th>
+          <th>
+            <span class="head-col">Location</span>
+          </th>
+          <th>
+            <span class="head-col">Register</span>
+          </th>
+          <th>
+            <span class="head-col">Scale</span>
+          </th>
+          <th>
+            <span class="head-col">Register note</span>
+          </th>
+          <th>
+            <span class="head-col">Ratio</span>
+          </th>
+          <th>
+            <span class="head-col">Obis Code</span>
+          </th>
+          <th>
+            <span class="head-col">Calc</span>
+          </th>
+          <th>
+            <span class="head-col min-column-width">Reading</span>
+          </th>
+          <th>
+            <span class="head-col min-column-width">Reading date</span>
+          </th>
+          <th>
+            <span class="head-col min-column-width">Default</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let meter of meters.controls; let idx = index; trackBy: trackById"
+          [ngClass]="{'selected' : meter.value.isSelected}">
+        <td class="cell cell-selection checkbox-input">
+          <div class="dnm-checkbox selection-checkbox">
+            <input [ngrxFormControlState]="meter.controls.isSelected" class="checkbox-toggle" type="checkbox"/>
+            <div class="state">
+              <label></label>
+            </div>
+          </div>
+        </td>
+        <td class="d-flex align-items-center">
+          <div class="d-flex flex-column">
+            <div class="d-flex align-items-center">
+              <span [title]="meter.value.serialNumber" class="text-ellipsis meter-field mr-1">
+                {{meter.value.serialNumber | emptyValue | slice : -4}}-{{meter.value.supplyType | supplyTypeLetter}}
+              </span>
+              <div [ngClass]="{'electricity-icon': meter.value.supplyType == supplyType.Electricity,
+                'water-icon': meter.value.supplyType == supplyType.Water,
+                'sewerage-icon': meter.value.supplyType == supplyType.Sewerage,
+                'gas-icon': meter.value.supplyType == supplyType.Gas,
+                'ad-hoc-icon': meter.value.supplyType == supplyType.AdHoc}" class="service-icon mr-2 position-relative"
+                >
+              </div>
+            </div>
+            <div class="text-ellipsis device-type-lbl mt-1">
+              {{meter.value.deviceTypeName}}
+            </div>
+          </div>
+        </td>
+        <td>
+          <span
+            class="text-ellipsis location-lbl">{{meter.value.locationName + ' (' + meter.value.sequenceNumber + ')'}}</span>
+        </td>
+        <td>
+          <ng-container *ngFor="let register of meter.controls.registers.controls; let idx = index; trackBy: trackById">
+            <div class="body-wrapper">
+              <div class="text-ellipsis meter-field">{{register.value.id | registerUnit | async}}</div>
+            </div>
+          </ng-container>
+        </td>
+        <td>
+          <ng-container *ngFor="let register of meter.controls.registers.controls; let idx = index; trackBy: trackById">
+            <div class="body-wrapper">
+              <ng-container
+                *ngIf="equipmentRegistersDictionary && equipmentRegistersDictionary[meter.value.equipmentTemplateId][register.value.id] as registerInfo">
+                <div *ngIf="registerInfo.scalesDictionary" class="dropdown d-block fullwidth-dropdown" ngbDropdown>
+                  <button class="btn btn-secondary dropdown-toggle text-left" ngbDropdownToggle type="button">
+                    {{ register.value.registerScaleId ? registerInfo.scalesDictionary[register.value.registerScaleId].name : registerInfo.id | registerUnit | async}}
+                  </button>
+                  <div aria-labelledby="ddRegisterScale" class="dropdown-menu" ngbDropdownMenu>
+                    <button (click)="registerScaleChange.emit({serialNumber: meter.value.serialNumber, scaleId: scale.value.isDefault ? null : scale.key, index: idx})" *ngFor="let scale of registerInfo.scalesDictionary | keyvalue"
+                            class="dropdown-item"
+                            type="button">{{scale.value.name}}</button>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </ng-container>
+        </td>
+        <td class="register_note">
+          <ng-container *ngFor="let register of meter.controls.registers.controls; let idx = index; trackBy: trackById">
+            <div class="body-wrapper">
+            <textarea [ngrxFormControlState]="register.controls.description" class="form-control" maxlength="256"
+                      placeholder="Type here"></textarea>
+            </div>
+          </ng-container>
+        </td>
+        <td>
+          <ng-container *ngFor="let register of meter.controls.registers.controls; let idx = index; trackBy: trackById">
+            <div class="body-wrapper">
+              <number-input [min]="0" [ngrxFormControlState]="register.controls.ratio"
+                            input-class="number"></number-input>
+            </div>
+          </ng-container>
+        </td>
+        <td>
+          <ng-container *ngFor="let register of meter.controls.registers.controls; let idx = index; trackBy: trackById">
+            <div class="body-wrapper">
+                <div class="dropdown d-block fullwidth-dropdown dropdown-field" ngbDropdown>
+                  <ng-select [ngrxFormControlState]="register.controls.obisCode" [clearable]="false" [closeOnSelect]="true"
+                    [dropdownPosition]="'top'" [items]="obisCodes" [multiple]="false" [searchable]="false"
+                    bindLabel="displayValue" bindValue="obisCodeValue" class="select-dropdown" name="obisCodes">
+                  </ng-select>
+                </div>
+            </div>
+          </ng-container>
+        </td>
+        <td>
+          <ng-container *ngFor="let register of meter.controls.registers.controls; let idx = index; trackBy: trackById">
+            <div class="body-wrapper">
+              <div *ngIf="register.controls.registerType.value==0" class="col-1">
+                <div class="register-icon-align align-items-center">
+                  <img class="register-icon" name="registerIcon" id="registerIcon" src="{{selectedIcon0}}" title="{{selectedIconAlt0}}" alt="{{selectedIconAlt0}}" #registerIcon>
+                </div>
+              </div>
+              <div *ngIf="register.controls.registerType.value==1" class="col-1">
+                <div class="register-icon-align align-items-center">
+                  <img class="register-icon" name="registerIcon" id="registerIcon" src="{{selectedIcon1}}" title="{{selectedIconAlt1}}" alt="{{selectedIconAlt1}}" #registerIcon>
+                </div>
+              </div>
+              <div *ngIf="register.controls.registerType.value==2" class="col-1">
+                <div class="register-icon-align align-items-center">
+                  <img class="register-icon" name="registerIcon" id="registerIcon" src="{{selectedIcon2}}" title="{{selectedIconAlt2}}" alt="{{selectedIconAlt2}}" #registerIcon>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </td>
+        <td>
+          <ng-container *ngFor="let register of meter.controls.registers.controls; let idx = index; trackBy: trackById">
+            <div class="body-wrapper">
+              <input [autoSelect] [min]="0" [ngrxFormControlState]="register.controls.readings"
+                     class="form-control form-number-input" step="any" type="number"/>
+            </div>
+          </ng-container>
+        </td>
+        <td>
+          <ng-container *ngFor="let register of meter.controls.registers.controls; let idx = index; trackBy: trackById">
+            <div class="body-wrapper">
+              <input #d="ngbDatepicker" (click)="d.toggle()" [ngrxFormControlState]="register.controls.date"
+                     [ngrxValueConverter]="ngbDateNgrxValueConverter"
+                     class="form-control date" name="dp" ngbDatepicker
+                     placeholder="mm/dd/YYYY"
+                     [minDate]="ngbMinDateStr"
+                     [maxDate]="ngbMaxDateStr"
+                     readonly>
+            </div>
+          </ng-container>
+        </td>
+        <td>
+          <ng-container *ngFor="let register of meter.controls.registers.controls; let idx = index; trackBy: trackById">
+            <div class="body-wrapper">
+              <div class="dnm-checkbox d-block">
+                <input [ngrxFormControlState]="register.controls.useForBilling" class="checkbox-toggle"
+                       type="checkbox"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="row none-margin-hr">
+    <div class="col-12 none-padding footer-btns d-flex justify-content-end">
+      <button (click)="close.emit()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+      <button (click)="nextStep.emit(4)" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Next</button>
+    </div>
+  </div>
+</div>
+

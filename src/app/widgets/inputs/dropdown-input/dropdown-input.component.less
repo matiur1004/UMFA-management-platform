@@ -1,0 +1,58 @@
+@import 'variables.less';
+
+.dropdown {
+  width: 100%;
+}
+
+.dropdown-toggle {
+  color: @color-text-tertiary;
+  width: 100%;
+  border: transparent solid 1px;
+  border-radius: 5px;
+  padding: 7px 20px;
+  transition: border-color .15s ease-in-out;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.dropdown-toggle::after {
+  content: none;
+}
+
+.dropdown-toggle:hover {
+  border: @color-stroke solid 1px;
+  background: url("../../../../assets/images/icons/arr-down-icon.png") no-repeat @color-background-white;
+  background-position: right 10px center;
+}
+
+.dropdown-toggle:active {
+  border: @color-main-accent solid 2px;
+  outline: 0;
+  padding: 6px 19px;
+}
+
+.dropdown-menu {
+  margin-top: 3px;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  -webkit-box-shadow: 0 0 40px 3px rgba(0, 0, 0, 0.08);
+  -moz-box-shadow: 0 0 40px 3px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 0 40px 3px rgba(0, 0, 0, 0.08);
+  max-height: 200px;
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+.dropdown-item {
+  text-transform: uppercase;
+  cursor: pointer;
+  color: @color-text-tertiary;
+  padding: 12px;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background-color: @color-background-tertiary;
+  color: @color-text-tertiary;
+}

@@ -1,0 +1,89 @@
+@import 'variables.less';
+
+.service-cust-table {
+  cursor: default;
+}
+
+.service-cust-table .header-cell,
+.service-cust-table .row-cell {
+  border-left: 1px solid #f0f1f1;
+  min-width: 220px;
+  width: 220px;
+}
+
+.service-cust-table .row-cell {
+  padding: 5px 0;
+  border-bottom: 1px solid #f0f1f1;
+}
+
+.service-cust-table .header-cell:first-child,
+.service-cust-table .row-cell:first-child {
+  padding-left: 20px;
+  border-left: none;
+  min-width: 140px;
+  width: 140px;
+}
+
+.service-cust-table .table-row:last-child .row-cell {
+  border-bottom: none;
+}
+
+.service-cust-table .row-lbl {
+  font-family: Gotham Light;
+  font-size: 12px;
+  line-height: 30px;
+  text-align: center;
+  color: @color-description;
+}
+
+.service-cust-table .service-type {
+  height: 55px;
+  border-bottom: 1px solid #f0f1f1;
+}
+
+.service-cust-table .subcol-lbl {
+  font-family: Gotham Medium;
+  font-size: 11px;
+  line-height: 1;
+  color: @color-empty;
+  padding-left: 22px;
+  margin-top: 10px;
+  margin-bottom: 12px;
+}
+
+.service-cust-table .subcol-lbl.actual-price-lbl {
+  padding-left: 7px;
+}
+
+.service-cust-table .subcell-val {
+  font-family: Gotham Book;
+  font-size: 12px;
+  line-height: 30px;
+  color: @color-text-tertiary;
+  padding-left: 22px;
+}
+
+.service-cust-table .input-col {
+  padding: 0 10px 0 0;
+}
+
+::ng-deep .service-cust-table .field-value input {
+  font-family: Gotham Book;
+  font-size: 12px;
+  padding: 5px 20px 5px 11px;
+}
+
+::ng-deep .service-cust-table .field-value input:focus {
+  font-family: Gotham Book;
+  font-size: 12px;
+  padding: 4px 20px 4px 10px;
+}
+
+.service-cust-table .changed-supply-price {
+  font-family: Gotham Bold;
+}
+
+
+::ng-deep .service-cust-table .field-value.changed-supply-price input {
+  font-family: Gotham Bold;
+}

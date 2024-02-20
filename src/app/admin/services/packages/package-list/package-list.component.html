@@ -1,0 +1,191 @@
+<div class="packages-container">
+  <!-- filter panel -->
+  <div class="d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center">
+      <span class="results-label dnm-text-light">{{packagesItemsDetailsText$ | async}}</span>
+      <a (click)="onCreate()" class="blue-text-btn add-user-btn d-flex align-items-center" href="javascript:void(0);">
+        <i class="add-icon"></i>
+        Add Package
+      </a>
+    </div>
+    <div class="d-flex">
+      <div class="d-flex align-items-center filter-item category-filter">
+        <span class="text-uppercase count-label">Category:</span>
+        <ng-select (change)="onChangeCategory($event)"
+                   [clearable]="false"
+                   [ngModel]="packagesCategory$ | async"
+                   [searchable]="false" class="dnm-single-select dnm-dropdown-select">
+          <ng-option [value]="-1">All categories</ng-option>
+          <ng-option [value]="0">Full metering</ng-option>
+          <ng-option [value]="1">Partial metering</ng-option>
+          <ng-option [value]="2">Pre-paid metering</ng-option>
+          <ng-option [value]="3">Single tenant</ng-option>
+        </ng-select>
+      </div>
+      <div class="d-flex align-items-center">
+        <span class="text-uppercase count-label">Sort by:</span>
+        <ng-select (change)="onChangeOrder($event)"
+                   [clearable]="false"
+                   [ngModel]="packagesOrder$ | async"
+                   [searchable]="false" class="dnm-single-select dnm-dropdown-select">
+          <ng-option [value]="1">Name</ng-option>
+          <ng-option [value]="2">Date of creation</ng-option>
+          <ng-option [value]="3">Date of editing</ng-option>
+          <ng-option [value]="4">Number of services</ng-option>
+          <ng-option [value]="5">Popularity</ng-option>
+        </ng-select>
+      </div>
+    </div>
+  </div>
+
+  <!-- packages list -->
+  <div class="container-fluid pckgs-list">
+    <div class="row">
+
+      <ng-container *ngFor="let package of packagesList$ | async">
+        <!-- package: begin -->
+        <div class="col pckg-item">
+          <div [ngClass]="package.color" class="pckg-header">
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="pckg-name">{{package.name}}</span>
+              <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+                <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle></button>
+                <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                  <button (click)="onDelete(package.id)" class="dropdown-item d-flex justify-content-between"
+                          data-menu-item>
+                    Delete
+                    <i class="dnm-icon delete-icon"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="service-types d-flex justify-content-between align-items-center">
+              <div class="d-flex align-items-center">
+                <div *ngIf="package.hasElectricitySupplier" class="icon-wrp" ngbTooltip="ELECTRICITY">
+                  <div class="service-icon electricity-icon"></div>
+                  <div class="service-icon-bg"></div>
+                </div>
+                <div *ngIf="package.hasWaterSupplier" class="icon-wrp" ngbTooltip="WATER">
+                  <div class="service-icon water-icon"></div>
+                  <div class="service-icon-bg"></div>
+                </div>
+                <div *ngIf="package.hasSewerageSupplier" class="icon-wrp" ngbTooltip="SEWERAGE">
+                  <div class="service-icon sewerage-icon"></div>
+                  <div class="service-icon-bg"></div>
+                </div>
+                <div *ngIf="package.hasGasSupplier" class="icon-wrp" ngbTooltip="GAS">
+                  <div class="service-icon gas-icon"></div>
+                  <div class="service-icon-bg"></div>
+                </div>
+                <div *ngIf="package.hasAdHocSupplier" class="icon-wrp" ngbTooltip="ADHOC">
+                  <div class="service-icon adhoc-icon"></div>
+                  <div class="service-icon-bg"></div>
+                </div>
+              </div>
+              <div class="d-flex align-items-center">
+                <label class="dnm-switch-btn" ngbTooltip="Package is inactive">
+                  <input (ngModelChange)="onChangePackageStatus({packageId: package.id, value: !package.isActive})" [ngModel]="package.isActive"
+                         type="checkbox"/>
+                  <span class="dnm-switch-slider round"></span>
+                  <span class="switch-bg"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="row none-margin-hr">
+            <div class="col none-padding">
+              <ngx-slick-carousel #slickModal="slick-carousel"
+                                  [config]="slideConfig"
+                                  class="carousel">
+                <div class="slide pckg-price-list" ngxSlickItem>
+                  <div class="pckg-price">
+                    <div class="price-val gd-title-green">
+                      R {{ package.hasPerTenantMethod ? package.perTenant : 'N/A' }}</div>
+                    <div class="price-type gd-title-green">per tenant</div>
+                  </div>
+                </div>
+                <div class="slide pckg-price-list" ngxSlickItem>
+                  <div class="pckg-price">
+                    <div class="price-val gd-title-green">R {{package.hasPerShopMethod ? package.perShop : 'N/A'}}</div>
+                    <div class="price-type gd-title-green">per shop</div>
+                  </div>
+                </div>
+                <div class="slide pckg-price-list" ngxSlickItem>
+                  <div class="pckg-price" ngbDropdown>
+                    <div class="price-val gd-title-green">
+                      R {{package.hasPerMeterMethod ? package.perMeter : 'N/A'}}</div>
+                    <div class="price-type gd-title-green">per meter</div>
+                    <!--<div class="package-info-btn" ngbDropdownToggle></div>
+                    <div class="dropdown-menu" ngbDropdownMenu>
+                      <meter-info-popup [meterTypes]="package.meterTypes"></meter-info-popup>
+                    </div>-->
+                  </div>
+                </div>
+                <div class="slide pckg-price-list" ngxSlickItem>
+                  <div class="pckg-price">
+                    <div class="price-val gd-title-green">
+                      R {{ package.hasPerSQMeterMethod ? package.perSquareMeter : 'N/A'}}</div>
+                    <div class="price-type gd-title-green">per sq m</div>
+                  </div>
+                </div>
+                <div class="slide pckg-price-list" ngxSlickItem>
+                  <div class="pckg-price">
+                    <div class="price-val gd-title-green">
+                      R {{package.hasFixedPriceMethod ? package.fixedPrice : 'N/A'}}</div>
+                    <div class="price-type gd-title-green">fixed price</div>
+                  </div>
+                </div>
+                <div class="slide pckg-price-list" ngxSlickItem>
+                  <div class="pckg-price">
+                    <div class="price-val gd-title-green">
+                      R {{package.hasPerBuildingMethod ? package.perBuilding : 'N/A'}}</div>
+                    <div class="price-type gd-title-green">per building</div>
+                  </div>
+                </div>
+                <div class="slide pckg-price-list" ngxSlickItem>
+                  <div class="pckg-price">
+                    <div class="price-val gd-title-green">
+                      R {{package.hasPerCouncilAccountMethod ? package.perCouncilAccount : 'N/A'}}</div>
+                    <div class="price-type gd-title-green">per council</div>
+                  </div>
+                </div>
+                <div class="slide pckg-price-list" ngxSlickItem>
+                  <div class="pckg-price">
+                    <div class="price-val gd-title-green">R {{package.hasPerHourMethod ? package.perHour : 'N/A'}}</div>
+                    <div class="price-type gd-title-green">per hour</div>
+                  </div>
+                </div>
+              </ngx-slick-carousel>
+            </div>
+          </div>
+          <div class="pckg-info">
+            <div>
+              <div class="property-name">Services:</div>
+              <div class="property-value">{{package.serviceCount}}</div>
+            </div>
+            <div>
+              <div class="property-name">In use for:</div>
+              <div class="property-value">{{package.appliedCount}} times</div>
+            </div>
+            <div>
+              <div class="property-name">Last edits:</div>
+              <div class="property-value">{{package.modifyDate | date:'dd/MM/yyyy'}}</div>
+            </div>
+            <div>
+              <div class="property-name">Version number:</div>
+              <div class="property-value">{{package.regNumber}}</div>
+            </div>
+          </div>
+          <div class="pckg-buttons d-flex">
+            <button [routerLink]="['/admin','services','packages', package.id]"
+                    class="w-100 d-flex align-items-center justify-content-center">
+              View / Edit <i class="dnm-icon view-icon"></i>
+            </button>
+          </div>
+        </div>
+        <!-- package: end -->
+      </ng-container>
+
+    </div>
+  </div>
+</div>

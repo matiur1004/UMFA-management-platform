@@ -1,0 +1,119 @@
+<div class="splr-tou-wrp">
+  <div class="row none-margin-hr">
+    <div class="col none-padding">
+      <div class="splr-tou-block">
+        <div class="item-hdr-nav d-flex align-items-center justify-content-between">
+          <span class="text-uppercase item-hdr-name">Configuration #1</span>
+          <div class="del-item-btn d-flex align-items-center">
+            <span class="cross-icon"></span>
+            <span class="btn-lbl">Delete configuration</span>
+          </div>
+        </div>
+        <div class="input-row line-div">
+          <div class="text-uppercase field-name text-form-field">
+            Configuration Name
+          </div>
+          <div class="field-value d-flex align-items-center">
+            <text-input class="none-padding w-100" placeholder="Type here"
+                        value="TOU scheme applicable to kVA"></text-input>
+          </div>
+        </div>
+        <div class="input-row line-div">
+          <div class="text-uppercase field-name text-form-field">
+            Time of use
+          </div>
+          <div class="field-value select-box-wrp d-flex align-items-center">
+            <div class=" d-flex align-items-center">
+              <div class="dnm-checkbox">
+                <input class="checkbox-toggle" type="checkbox">
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+              <span class="checkbox-input-lbl">Peak</span>
+            </div>
+            <div class="d-flex align-items-center">
+              <div class="dnm-checkbox">
+                <input class="checkbox-toggle" type="checkbox">
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+              <span class="checkbox-input-lbl">Standard</span>
+            </div>
+            <div class="d-flex align-items-center">
+              <div class="dnm-checkbox">
+                <input class="checkbox-toggle" type="checkbox">
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+              <span class="checkbox-input-lbl">Off Peak</span>
+            </div>
+          </div>
+        </div>
+        <div [ngClass]="{'line-div': isTabset}" class="input-row">
+          <div class="text-uppercase field-name text-form-field">
+            Season change
+          </div>
+          <div class="field-value select-box-wrp d-flex align-items-center">
+            <div class="d-flex">
+              <div class="d-flex align-items-center">
+                <div class="dnm-radio-btn">
+                  <input name="seasonChange" type="radio">
+                  <div class="state">
+                    <label></label>
+                  </div>
+                </div>
+                <span class="radio-input-lbl">Yes</span>
+              </div>
+              <div class="d-flex align-items-center">
+                <div class="dnm-radio-btn">
+                  <input name="seasonChange" type="radio">
+                  <div class="state">
+                    <label></label>
+                  </div>
+                </div>
+                <span class="radio-input-lbl">No</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="isTabset" class="row none-margin-hr">
+    <div class="col none-padding">
+      <div class="dnm-tabset">
+       <ul ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]="tabId">
+          <li [ngbNavItem]="'tab-0'">
+            <a ngbNavLink>
+              <i class="tab-icon dnm-trend-up-icon"></i>
+              <span class="tab-name text-uppercase">High season</span>
+            </a>
+            <ng-template ngbNavContent>
+              <supplier-tou-table [isTab]="isTabset"></supplier-tou-table>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="'tab-1'">
+            <a ngbNavLink>
+              <i class="tab-icon dnm-trend-down-icon"></i>
+              <span class="tab-name text-uppercase">Low season</span>
+            </a>
+            <ng-template ngbNavContent>
+              <supplier-tou-table [isTab]="isTabset"></supplier-tou-table>
+            </ng-template>
+          </li>
+        </ul>
+        <div [ngbNavOutlet]="nav"></div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!isTabset" class="row none-margin-hr">
+    <div class="col none-padding">
+      <div class="tou-table-wrp">
+        <supplier-tou-table [isTab]="isTabset"></supplier-tou-table>
+      </div>
+    </div>
+  </div>
+</div>

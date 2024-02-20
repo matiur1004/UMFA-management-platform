@@ -1,0 +1,48 @@
+<div class="modal-header">
+  <h5 class="modal-title">Add National Tenant</h5>
+  <button (click)="dismiss()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+    <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+  </button>
+</div>
+<div class="modal-body create-national-tenant-modal">
+  <div class="container-fluid">
+    <form [formGroup]="form">
+      <div class="bl-gradient-title">Logo</div>
+      <div class="row upld-logo-row">
+        <div class="col-12">
+          <upload-image (fileChange)="fileChangeEvent($event)" [src]="dataUrl"></upload-image>
+        </div>
+      </div>
+      <div class="bl-gradient-title">General Info</div>
+      <div class="row">
+        <div class="col-left text-form-field text-uppercase">
+          Name
+        </div>
+        <div class="col-right">
+          <div [ngClass]="{'dnm-invalid-inp': isSubmitted && form.controls.name.errors?.required}" class="form-group">
+            <input class="form-control req-frm-fld" formControlName="name" placeholder="Type here" type="text">
+            <small *ngIf="isSubmitted && form.controls.name.errors?.required" class="alert-danger">
+              A name is required
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-left text-form-field text-uppercase">
+          Description
+        </div>
+        <div class="col-right">
+          <div class="form-group">
+            <textarea class="form-control" formControlName="description" placeholder="Type here"></textarea>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="row">
+      <div class="col-12 text-right footer-buttons">
+        <button (click)="dismiss()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+        <button (click)="submit()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

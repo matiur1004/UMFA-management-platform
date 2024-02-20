@@ -1,0 +1,8 @@
+{
+  "/api/v1": {
+    "target": "https://dunamistestwebapp.azurewebsites.net",
+    "secure": true,
+    "changeOrigin": true,
+    "timeout": 6000000
+  }
+}

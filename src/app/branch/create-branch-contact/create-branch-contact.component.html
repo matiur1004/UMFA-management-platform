@@ -1,0 +1,199 @@
+<div class="modal-header">
+  <h5 *ngIf="isNew" class="modal-title">Create a new contact</h5>
+  <h5 *ngIf="!isNew" class="modal-title">Edit contact</h5>
+  <button (click)="onCancel()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+    <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <form [formGroup]="form" class="col">
+      <div class="col-md-12 none-padding">
+        <!-- client logo -->
+        <div class="client-upload-logo-block">
+          <div class="bl-gradient-title">Contact photo</div>
+          <upload-image (fileChange)="logoChanged($event)" [(file)]="file" [(src)]="model.logoUrl" [aspectRatio]="1"
+                        [maintainAspectRatio]="true" [outputFileName]="'client-logo'"></upload-image>
+        </div>
+        <!-- contact info -->
+        <div class="client-contact-info-block">
+          <div class="bl-gradient-title editable-section-title">Contact Info</div>
+
+          <div class="input-row">
+            <div class="text-uppercase field-name">Contact Name</div>
+            <div class="field-value">
+              <div [ngClass]="{'dnm-invalid-inp': formErrors['fullName']}">
+                <input class="form-control req-frm-fld" formControlName="fullName" maxlength="256" placeholder="Type here"
+                       type="text"/>
+              </div>
+            </div>
+            <div class="field-name"></div>
+            <div class="field-value">
+              <small *ngIf="formErrors['fullName']" class="alert-danger">
+                {{ formErrors["fullName"] }}
+              </small>
+            </div>
+          </div>
+
+          <div class="input-row">
+            <div class="text-uppercase field-name">Departments</div>
+            <div class="field-value">
+
+              <div [ngClass]="{'dnm-invalid-inp': formErrors['departments'] && selectedDepartmentsIds.length == 0}">
+                <ng-select (change)="onDepartmentChange($event)" [(ngModel)]="selectedDepartmentsIds" [clearable]="false" [closeOnSelect]="false"
+                           [dropdownPosition]="'top'" [hideSelected]="true"
+                           [items]="departments" [multiple]="true" [ngModelOptions]="{standalone: true}" [searchable]="false"
+                           bindLabel="name"
+                           bindValue="id" class="dnm-multiple-select req-frm-fld"></ng-select>
+              </div>
+            </div>
+            <div class="field-name"></div>
+            <div class="field-value">
+              <small *ngIf="formErrors['departments']" class="alert-danger">
+                {{ formErrors["departments"] }}
+              </small>
+            </div>
+          </div>
+
+          <div *ngIf="isNew" class="input-row">
+            <div class="text-uppercase field-name">Branch Addresses:</div>
+            <div class="field-value">
+              <div class="dropdown d-block fullwidth-dropdown none-padding" ngbDropdown>
+                <button class="btn btn-secondary dropdown-toggle text-left" id="ddCategory" ngbDropdownToggle>
+                  {{selectedAddressText}}
+                </button>
+                <div aria-labelledby="ddCategory" class="dropdown-menu" ngbDropdownMenu>
+                  <button (click)="onAddressChange(address)" *ngFor="let address of addresses"
+                          class="dropdown-item">{{address.description}}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <address [isSubmitted]="isSubmitted" [validationNotify]="submitNotify" formControlName="address" [name]="'Physical Address'"></address>
+
+          <div class="input-row">
+            <div class="text-uppercase field-name">Email</div>
+            <div class="field-value">
+              <div [ngClass]="{'dnm-invalid-inp': formErrors['email']}">
+                <input class="form-control req-frm-fld" formControlName="email" maxlength="254" placeholder="Type here"
+                       type="text"/>
+              </div>
+            </div>
+            <div class="text-uppercase field-name"></div>
+            <div class="field-value">
+              <small *ngIf="formErrors['email']" class="alert-danger">
+                {{ formErrors["email"] }}
+              </small>
+            </div>
+          </div>
+
+          <div class="input-row">
+            <div class="text-uppercase field-name">
+              Phone Number
+              <br/>
+              <span class="undertext">*default number</span>
+            </div>
+            <div class="field-value">
+              <div [ngClass]="{'dnm-invalid-inp': formErrors['phone']}">
+                <input class="form-control req-frm-fld" formControlName="phone" maxlength="15" placeholder="Type here" type="text"/>
+              </div>
+            </div>
+            <div class="text-uppercase field-name"></div>
+            <div class="field-value">
+              <small *ngIf="formErrors['phone']" class="alert-danger">
+                {{ formErrors["phone"] }}
+              </small>
+            </div>
+          </div>
+
+          <div class="input-row row-description">
+            <div class="text-uppercase field-name">Description</div>
+            <div class="field-value">
+              <textarea class="form-control" formControlName="description" maxlength="500"
+                        placeholder="Type here"></textarea>
+            </div>
+          </div>
+
+          <div formArrayName="contactPhoneNumbers">
+            <div *ngFor="let contact of contactPhoneNumbers.controls; let idx = index;" class="input-row contact-item">
+              <ng-container formGroupName="{{idx}}">
+                <div class="text-uppercase field-name">
+                  <dropdown-input [formControl]="contact.get('label')"
+                                  [values]="contactPhoneNumberTypes"></dropdown-input>
+                </div>
+                <div class="field-value d-flex">
+                  <text-input [isRequired]=true [formControl]="contact.get('value')" class="editable-ctrl w-100"></text-input>
+                  <!--<div class="delete-item none-padding">
+                      <span class="cross-icon" (click)="onRemoveExternalLink(idx)"></span>
+                  </div>-->
+                  <button (click)="onRemovePhoneNumber(idx)" class="dnm-btn-icon" href="javascript:void(0);">
+                    <i class="icon cross-icon"></i>
+                  </button>
+                </div>
+                <div class="field-name">
+                </div>
+                <div class="field-value">
+                  <small *ngIf="formErrors['contactPhoneNumbers' + idx]" class="alert-danger">
+                    {{ formErrors['contactPhoneNumbers' + idx] }}
+                  </small>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+
+          <div class="row">
+            <a (click)="onAddPhoneNumber()" class="blue-text-btn client-add-link-btn" href="javascript:void(0);">
+              <i class="add-icon"></i> Add Phone Number
+            </a>
+          </div>
+
+          <br/>
+
+          <div formArrayName="contactExternalLinks">
+            <div *ngFor="let contact of contactExternalLinks.controls; let idx = index;" class="input-row contact-item">
+              <ng-container formGroupName="{{idx}}">
+                <div class="text-uppercase field-name">
+                  <dropdown-input [formControl]="contact.get('label')"
+                                  [values]="contactExternalLinkTypes"></dropdown-input>
+                </div>
+                <div class="field-value d-flex">
+                  <text-input [isRequired]=true [formControl]="contact.get('value')" class="editable-ctrl w-100"></text-input>
+                  <!--<div class="delete-item none-padding">
+                      <span class="cross-icon" (click)="onRemoveExternalLink(idx)"></span>
+                  </div>-->
+                  <button (click)="onRemoveExternalLink(idx)" class="dnm-btn-icon" href="javascript:void(0);">
+                    <i class="icon cross-icon"></i>
+                  </button>
+                </div>
+                <div class="field-name">
+                </div>
+                <div class="field-value">
+                  <small *ngIf="formErrors['contactExternalLinks' + idx]" class="alert-danger">
+                    {{ formErrors['contactExternalLinks' + idx] }}
+                  </small>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+
+          <div class="row">
+            <a (click)="onAddExternalLink()" class="blue-text-btn client-add-link-btn" href="javascript:void(0);">
+              <i class="add-icon"></i> Add External Link
+            </a>
+          </div>
+        </div>
+
+        <!-- save and cancel buttons -->
+        <div class="client-contact-info-footer">
+          <div class="row">
+            <div class="col-md-8 offset-md-4 none-padding footer-buttons">
+              <button (click)="onCancel();" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+              <button (click)="onSave();" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

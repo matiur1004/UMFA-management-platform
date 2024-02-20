@@ -1,0 +1,27 @@
+<svg data-name="Layer 1" id="Layer_1" viewBox="0 0 30 35" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>.cls-1 {
+      fill: #633e16;
+    }
+
+    .cls-2 {
+      fill: url(#linear-gradient);
+    }
+
+    .cls-3 {
+      fill: #fff;
+    }</style>
+    <linearGradient gradientUnits="userSpaceOnUse" id="linear-gradient" x2="30" y1="15" y2="15">
+      <stop offset="0" stop-color="#eac85f"/>
+      <stop offset="1" stop-color="#d58844"/>
+    </linearGradient>
+  </defs>
+  <title>pin</title>
+  <path class="cls-1" d="M27,30H15v5Z" data-name="Rectangle 756 copy 21" id="Rectangle_756_copy_21"/>
+  <rect class="cls-2" data-name="Rectangle 755 copy 21" height="30" id="Rectangle_755_copy_21" rx="3" ry="3"
+        width="30"/>
+  <path class="cls-3"
+        d="M10.67,4.76a.42.42,0,0,0-.42-.38H7.75a.42.42,0,0,0-.41.38L5.67,23.94a.42.42,0,0,0,.42.45h5.85a.42.42,0,0,0,.42-.42.41.41,0,0,0,0-.15Z"/>
+  <path class="cls-3"
+        d="M25.43,10.26a.42.42,0,0,0-.44.06l-4.32,3.6V10.63a.42.42,0,0,0-.68-.32l-4.32,3.6V10.63a.42.42,0,0,0-.25-.38.41.41,0,0,0-.45.07l-2.61,2.4a.42.42,0,0,0-.13.34l.94,10.8s0,.07,0,.11a.42.42,0,0,0,.42.42H25.25a.42.42,0,0,0,.42-.42V10.63A.42.42,0,0,0,25.43,10.26Zm-7.26,9.55a.42.42,0,0,1-.42.42h-2.5a.42.42,0,0,1-.42-.42V17.3a.42.42,0,0,1,.42-.42h2.5a.42.42,0,0,1,.42.42Zm5,0a.42.42,0,0,1-.42.42h-2.5a.42.42,0,0,1-.42-.42V17.3a.42.42,0,0,1,.42-.42h2.5a.42.42,0,0,1,.42.42Z"/>
+</svg>

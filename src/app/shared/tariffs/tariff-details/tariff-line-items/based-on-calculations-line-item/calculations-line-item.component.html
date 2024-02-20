@@ -1,0 +1,80 @@
+<div class="category-item text-uppercase text-form-field text-category">
+  Line #{{lineItemNumber}}
+  <div class="delete-item none-padding">
+    <div (click)="deleteLineItem.emit({id: lineItem.controls.id.value, chargingType: lineItem.controls.chargingType.value})"
+         class="cross-custom">
+      <span class="cross-icon"></span>
+      <span class="cross-text">Delete line item</span>
+    </div>
+  </div>
+</div>
+<div class="input-row line-div">
+  <div class="text-uppercase field-name text-form-field">Line name</div>
+  <div class="field-value">
+    <div [ngClass]="{'dnm-invalid-inp': isSubmitted && lineItem.controls.name.isInvalid}">
+      <text-input [ngrxFormControlState]="lineItem.controls.name" class="none-padding field-value"
+                  maxlength="150"
+                  placeholder="Line name"></text-input>
+    </div>
+    <small *ngIf="isSubmitted && lineItem.controls.name.errors.required" class="alert-danger">
+      A line item name is required
+    </small>
+  </div>
+</div>
+<div class="input-row line-div">
+  <div class="text-uppercase field-name text-form-field">Charging type</div>
+  <div class="field-value">
+    <div class="dropdown d-block fullwidth-dropdown" ngbDropdown>
+      <button class="btn btn-secondary dropdown-toggle text-left" id="ddClientPortfolio" ngbDropdownToggle
+              type="button">
+        {{chargingTypeText[lineItem.controls.chargingType.value]}}
+      </button>
+      <div aria-labelledby="ddClientPortfolio" class="dropdown-menu" ngbDropdownMenu>
+        <button (click)="onUpdateChargingType(item)" *ngFor="let item of filterChargingType(lineItem.controls.chargingType.value)"
+                class="dropdown-item"
+                type="button">
+          {{chargingTypeText[item]}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="input-row line-div">
+  <div class="text-uppercase field-name text-form-field">Dependent line items</div>
+  <div class="field-value">
+    <div [ngClass]="{'dnm-invalid-inp': isSubmitted && lineItem.controls.dependentLineItemIds.isInvalid}">
+      <ng-select (change)="onChangeDependentLineItems($event)" [clearable]="false" [closeOnSelect]="false" [dropdownPosition]="'top'"
+                 [hideSelected]="true" [items]="filteredLineItems"
+                 [multiple]="true" [ngModel]="dependentLineItemIds" [searchable]="false" bindLabel="name"
+                 bindValue="lineItemId"
+                 class="dnm-multiple-select">
+      </ng-select>
+      <i class="dnm-invalid-inp-icon"></i>
+    </div>
+    <small *ngIf="isSubmitted && lineItem.controls.dependentLineItemIds.errors.required" class="alert-danger">
+      Choose dependent line items
+    </small>
+  </div>
+</div>
+<div class="input-row line-div">
+  <div class="text-uppercase field-name text-form-field">Charging method</div>
+  <div class="field-value">
+    <div [ngClass]="{'dnm-invalid-inp': isSubmitted && lineItem.controls.chargingMethod.isInvalid}">
+      <text-input [ngrxFormControlState]="lineItem.controls.chargingMethod" class="none-padding field-value"
+                  maxlength="150"
+                  placeholder="Charging method"></text-input>
+    </div>
+    <small *ngIf="isSubmitted && lineItem.controls.chargingMethod.errors.required" class="alert-danger">
+      A charging method is required
+    </small>
+  </div>
+</div>
+<div class="input-row line-div">
+  <div class="text-uppercase field-name text-form-field">Categories</div>
+  <div class="field-value">
+    <ng-select (remove)="onRemoveLineItemCategory($event)" [clearable]="false" [closeOnSelect]="false"
+               [dropdownPosition]="'top'"
+               [hideSelected]="true" [items]="categories" [multiple]="true" [ngrxFormControlState]="lineItem.controls.categories"
+               [searchable]="false" bindLabel="name"></ng-select>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+@import 'variables.less';
+
+.list-header {
+  margin-bottom: 20px;
+}
+
+.list-header .header-field {
+  font-family: Gotham Medium;
+  font-size: 12px;
+  white-space: nowrap;
+  color: @color-empty;
+  text-decoration: none;
+}
+
+.list-header .header-field .dnm-icon {
+  margin-left: 7px;
+}
+
+.list-header .header-field.sortable:hover {
+  color: @color-text-tertiary;
+}
+
+.list-header .header-field:hover .dnm-icon-sort-down {
+  background-image: url("../assets/images/icons/arrow_sort_selected-01.svg");
+}
+
+.list-header .header-field:hover .dnm-icon-sort-up {
+  background-image: url("../assets/images/icons/arrow_sort_selected-01.svg");
+}
+
+.list-header .header-field.active {
+  color: @color-text-tertiary;
+}

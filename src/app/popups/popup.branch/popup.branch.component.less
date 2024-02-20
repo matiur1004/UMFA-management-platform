@@ -1,0 +1,129 @@
+@import 'variables.less';
+
+.branch-item-radio {
+  position: relative;
+  display: block;
+  cursor: pointer;
+  height: 18px;
+  width: 18px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.branch-item-radio input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 18px;
+  width: 18px;
+  background-color: @color-background-white;
+  border-radius: 50%;
+}
+
+.branch-item:hover .branch-item-radio input:not(:checked) ~ .checkmark:after {
+  display: block;
+}
+
+.branch-item-radio input:checked ~ .checkmark {
+  background-color: @color-background-white;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.branch-item-radio input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.branch-item-radio .checkmark:after {
+  top: 4px;
+  left: 4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: @color-main-accent;
+}
+
+.popup-branch-block {
+  font-family: Gotham Book;
+  max-height: 450px;
+  width: 315px;
+  background: @color-background-dark;
+  border-radius: 4px;
+  opacity: .95;
+
+  .search-item {
+    padding-right: 18px;
+  }
+
+  .scroll-list {
+    max-height: 387px;
+    overflow: hidden;
+    overflow-y: auto;
+  }
+}
+
+.branch-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 18px 10px 18px;
+  border-top: 1px dashed #6a7183;
+  cursor: pointer;
+
+  &:first-child {
+    border-top: none;
+  }
+
+  &.all-brns-item {
+    border-top: 1px solid #6a7183;
+    padding: 18px 10px 18px 18px;
+  }
+
+  label {
+    margin: 0;
+  }
+
+  .branch-item-header {
+    font-size: 15px;
+    color: @color-background-white;
+    font-weight: 400;
+  }
+
+  .branch-item-details {
+    font-size: 12px;
+    color: @color-description;
+    font-weight: 400;
+  }
+
+  &:hover .branch-item-radio input:not(:checked) ~ .checkmark {
+    background-color: @color-main-accent;
+  }
+
+  &:hover .branch-item-radio input:not(:checked) ~ .checkmark:after {
+    top: 2px;
+    left: 2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: @color-background-white;
+  }
+}
+
+.branch-item.selected .branch-item-header,
+.branch-item:hover .branch-item-header,
+.branch-item.selected .branch-item-details,
+.branch-item:hover .branch-item-details {
+  color: @color-accent;
+}

@@ -1,0 +1,42 @@
+<div class="input-row">
+  <div class="text-uppercase field-name">Name</div>
+  <div *ngIf="form.controls.name as nameCtrl" class="field-value">
+    <div [ngClass]="{'dnm-invalid-inp': (nameCtrl.touched || showAllErrors) && nameCtrl.invalid}">
+      <input [formControl]="nameCtrl" class="form-control req-frm-fld" maxlength="256" placeholder="Type here" type="text"/>
+    </div>
+    <small *ngIf="nameCtrl.invalid && (nameCtrl.touched || showAllErrors) && nameCtrl.errors.required"
+           class="alert-danger">
+      Name is required
+    </small>
+  </div>
+</div>
+<div class="input-row row-description">
+  <div class="text-uppercase field-name">Description</div>
+  <div *ngIf="form.controls.description as description" class="field-value">
+              <textarea [formControl]="description" class="form-control" maxlength="256"
+                        placeholder="Type here"></textarea>
+  </div>
+</div>
+
+<div class="input-row">
+  <div class="text-uppercase field-name">Units of Measurement</div>
+  <div *ngIf="form.controls.unitOfMeasurement as unitOfMeasurement" class="field-value">
+    <ng-select
+      (change)="onUnitOfMeasurementChange()"
+      [clearable]="false" [formControl]="unitOfMeasurement"
+      [hideSelected]="true"
+      [items]="unitsOfMeasurement"
+      [ngClass]="{'dnm-invalid-inp': (unitOfMeasurement.touched || showAllErrors) && unitOfMeasurement.invalid}"
+      [searchable]="false"
+      bindLabel="defaultName"
+      bindValue="unitType"
+      class="select-dropdown w-100 req-frm-fld"
+      required>
+    </ng-select>
+    <small
+      *ngIf="unitOfMeasurement.invalid && (unitOfMeasurement.touched || showAllErrors) && unitOfMeasurement.errors.required"
+      class="alert-danger">
+      Unit of measurement is required
+    </small>
+  </div>
+</div>

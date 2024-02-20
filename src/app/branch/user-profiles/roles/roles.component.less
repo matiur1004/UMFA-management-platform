@@ -1,0 +1,179 @@
+//@import 'variables.less';
+@import 'required-fields.less';
+
+/* #region roles list */
+
+.roles-container {
+  background: @color-background-white;
+  width: 270px;
+  border: 1px solid @color-line;
+  padding: 30px 20px;
+  float: left;
+}
+
+.roles-container .paging-container {
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.row-header {
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.roles-container_title {
+  font-size: 18px;
+  color: @color-text-primary;
+}
+
+.add-role-btn {
+  font-size: 14px;
+  line-height: 26px;
+}
+
+.add-role-btn .add-icon {
+  margin-right: 7px;
+}
+
+.roles-list-container {
+  margin: 15px -20px;
+}
+
+.roles-list {
+  list-style: none;
+  margin: 0;
+  -webkit-margin-before: 0;
+  -webkit-margin-after: 0;
+  -webkit-margin-start: 0;
+  -webkit-margin-end: 0;
+  -webkit-padding-start: 0;
+  font-size: 14px;
+  color: @color-text-primary;
+}
+
+.roles-list .list-item {
+  border-bottom: 1px solid #f2f3f3;
+  padding: 16px 20px;
+}
+
+.roles-list .list-item:last-child {
+  border-bottom: none;
+}
+
+.roles-list .list-item:hover,
+.roles-list .list-item.selected {
+  background: @color-background-tertiary;
+}
+
+.roles-list .list-item:hover {
+  cursor: pointer;
+}
+
+.paging-btn {
+  height: 30px;
+  width: 30px;
+  line-height: 30px;
+}
+
+/* #endregion */
+
+/* #region permissions container */
+
+.permissions-container {
+  width: calc(100% - 270px);
+  margin-left: 270px;
+  padding-left: 45px;
+  padding-right: 0;
+}
+
+.permissions-container .title-row {
+  margin-bottom: 6px;
+}
+
+.permissions-container .list-header {
+  margin-top: 35px;
+  margin-bottom: 24px;
+}
+
+::ng-deep .user-profile-roles .permissions-container .text-title input {
+  font-family: Gotham Medium;
+  font-size: 30px;
+  color: @color-text-primary;
+}
+
+::ng-deep .user-profile-roles .permissions-container .text-undertitle input {
+  font-size: 16px;
+  color: @color-description;
+}
+
+.user-profile-roles .permissions-container .role-not-editable .text-title {
+  display: inline-block;
+  font-family: Gotham Medium;
+  font-size: 30px;
+  color: @color-text-primary;
+}
+
+.user-profile-roles .permissions-container .role-not-editable .text-undertitle {
+  font-size: 16px;
+  color: @color-description;
+}
+
+.add-permission-btn {
+  position: relative;
+  top: -3px;
+}
+
+.add-permission-btn .add-icon {
+  margin-right: 5px;
+  position: relative;
+  top: 5px;
+}
+
+.list-header_title {
+  font-weight: bold;
+  font-size: 14px;
+  color: @color-text-primary;
+}
+
+.item-content {
+  width: 100%;
+}
+
+.item-content .col-left {
+  position: relative;
+  -ms-flex: 0 0 calc(100% - 100px);
+  flex: 0 0 calc(100% - 100px);
+  max-width: calc(100% - 100px);
+}
+
+.item-content .col-right {
+  position: relative;
+  -ms-flex: 0 0 calc(100px);
+  flex: 0 0 calc(100px);
+  max-width: calc(100px);
+}
+
+.item-content .dnm-switch-btn {
+  margin-bottom: 0;
+}
+
+.footer-buttons {
+  display: flex;
+  margin-top: 35px;
+  margin-bottom: 45px;
+}
+
+.footer-buttons button:last-child {
+  margin-left: 30px;
+}
+
+.uneditable-icon {
+  background: url("../../../../assets/images/icons/roles/uneditable.svg") no-repeat center;
+  width: 30px;
+  height: 30px;
+  margin-left: 15px;
+}
+
+/* #endregion */

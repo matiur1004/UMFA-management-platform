@@ -1,0 +1,43 @@
+<svg data-name="Слой 1" id="Слой_1" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <style>.cls-1 {
+      fill: url(#Безымянный_градиент_9);
+    }
+
+    .cls-2 {
+      fill: url(#Безымянный_градиент_9-2);
+    }
+
+    .cls-3 {
+      fill: url(#Безымянный_градиент_9-3);
+    }
+
+    .cls-4 {
+      fill: url(#Безымянный_градиент_9-4);
+    }
+
+    .cls-5 {
+      fill: url(#Безымянный_градиент_9-5);
+    }</style>
+    <linearGradient gradientUnits="userSpaceOnUse" id="Безымянный_градиент_9" x1="-0.17" x2="20.01" y1="13" y2="13">
+      <stop offset="0" stop-color="#2f76a2"/>
+      <stop offset="1" stop-color="#2b448b"/>
+    </linearGradient>
+    <linearGradient id="Безымянный_градиент_9-2" x1="-0.17" x2="20.01" xlink:href="#Безымянный_градиент_9" y1="18"
+                    y2="18"/>
+    <linearGradient id="Безымянный_градиент_9-3" x1="-0.17" x2="20.01" xlink:href="#Безымянный_градиент_9" y1="15.5"
+                    y2="15.5"/>
+    <linearGradient id="Безымянный_градиент_9-4" x1="-0.17" x2="20.01" xlink:href="#Безымянный_градиент_9" y1="5.75"
+                    y2="5.75"/>
+    <linearGradient id="Безымянный_градиент_9-5" x1="-0.17" x2="20.01" xlink:href="#Безымянный_градиент_9" y1="10.75"
+                    y2="10.75"/>
+  </defs>
+  <title>Монтажная область 1 копия 49</title>
+  <path class="cls-1" d="M3.5,7.5v11h-2V7.5h2M5,6H0V20H5V6Z"/>
+  <path class="cls-2" d="M18.5,17.5v1h-2v-1h2M20,16H15v4h5V16Z"/>
+  <path class="cls-3" d="M11,12.5v6H9v-6h2M12.5,11h-5v9h5V11Z"/>
+  <polygon class="cls-4"
+           points="18 11.5 14.54 11.5 12.04 6.5 7.04 6.5 4.54 1.5 0 1.5 0 0 5.46 0 7.96 5 12.96 5 15.46 10 18 10 18 11.5"/>
+  <polygon class="cls-5" points="20 10.71 17.38 8.1 16.32 9.15 17.91 10.75 16.32 12.34 17.38 13.4 20 10.78 20 10.71"/>
+</svg>

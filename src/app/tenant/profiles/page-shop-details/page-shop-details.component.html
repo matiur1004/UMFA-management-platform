@@ -1,0 +1,71 @@
+<div class="container-fluid top-container">
+  <div class="row content">
+    <div class="client-header-title">
+      <h1 class="page-title text-uppercase">Manage Shop details</h1>
+    </div>
+    <back-button></back-button>
+  </div>
+</div>
+
+<div class="dnm-tabset">
+ <ul ngbNav #nav="ngbNav" (navChange)="beforeChange($event)" class="nav-tabs" [(activeId)]="activeId">
+    <li [ngbNavItem]="tabId.GeneralInfo">
+      <a ngbNavLink>
+        <i class="tab-icon general-info-icon"></i>
+        <span class="tab-name text-uppercase">General Info</span>
+      </a>
+      <ng-template ngbNavContent>
+        <general-info [generalInfo]="generalInfo$ | async">
+        </general-info>
+      </ng-template>
+    <li>
+    <li [ngbNavItem]="tabId.AllocatedEquipment">
+      <a ngbNavLink>
+        <i class="tab-icon dnm-equipment-tab-icon"></i>
+        <span class="tab-name text-uppercase">Allocated Equipment</span>
+      </a>
+      <ng-template ngbNavContent>
+        <allocated-equipment [allocatedEquipment]="allocatedEquipment$ | async">
+        </allocated-equipment>
+      </ng-template>
+    <li>
+    <li [ngbNavItem]="tabId.Readings">
+      <a ngbNavLink>
+        <i class="tab-icon meter-readings-icon"></i>
+        <span class="tab-name text-uppercase">Readings</span>
+      </a>
+      <ng-template ngbNavContent>
+        <readings></readings>
+      </ng-template>
+    <li>
+    <li [ngbNavItem]="tabId.Costs">
+      <a ngbNavLink>
+        <i class="tab-icon"></i>
+        <span class="tab-name text-uppercase">Costs</span>
+      </a>
+      <ng-template ngbNavContent>
+        <costs [costs]="costs$ | async">
+        </costs>
+      </ng-template>
+    <li>
+    <li [ngbNavItem]="tabId.Statistic">
+      <a ngbNavLink>
+        <i class="tab-icon dnm-icon-graph"></i>
+        <span class="tab-name text-uppercase">Statistic</span>
+      </a>
+      <ng-template ngbNavContent>
+        <shop-dets-statistic></shop-dets-statistic>
+      </ng-template>
+    <li>
+    <li [ngbNavItem]="tabId.Prepaid">
+      <a ngbNavLink>
+        <i class="tab-icon"></i>
+        <span class="tab-name text-uppercase">Prepaid</span>
+      </a>
+      <ng-template ngbNavContent>
+        Prepaid
+      </ng-template>
+    <li>
+  </ul>
+  <div [ngbNavOutlet]="nav"></div>
+</div>

@@ -1,0 +1,5 @@
+<manage-tariffs></manage-tariffs>
+<allocated-tariffs-list [branchId]="branchId" [buildingId]="buildingId"
+                        [tariffs]="tariffs$ | async" [buildingPeriodIsFinalized]="buildingPeriodIsFinalized$ | async"></allocated-tariffs-list>
+
+<additional-charges-list [buildingPeriodIsFinalized]="buildingPeriodIsFinalized$ | async" [charges]="charges$ | async"></additional-charges-list>

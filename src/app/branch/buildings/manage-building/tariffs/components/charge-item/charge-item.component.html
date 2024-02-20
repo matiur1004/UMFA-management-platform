@@ -1,0 +1,125 @@
+<div class="chrg-item-wrp">
+  <div class="row none-margin-hr">
+    <div class="col-3 d-flex align-items-center chrg-name-col">
+      <div (click)="onEditCharge(charge)" class="chrg-name-wrp">
+        <span class="chrg-name-val text-ellipsis">{{ charge.name }}</span>
+        <div class="chrg-name-dets">
+          <span class="details-fld-name">Created on:</span>
+          <span class="details-fld-val">{{ charge.createdOn | date: 'dd/MM/yyyy' }}</span>
+        </div>
+        <div class="chrg-name-dets">
+          <span class="details-fld-name">Created by:</span>
+          <span class="details-fld-val">{{ charge.createdByUser?.fullName }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-9 none-padding d-flex align-items-center">
+      <div *ngIf="charge.additionalChargeValues?.length > 0; else simpleView" class="w-100">
+        <div *ngFor="let value of charge.additionalChargeValues" class="row none-margin-hr item-row">
+          <div class="col-5 d-flex align-items-center text-ellipsis">
+            <span class="chrg-version-val">{{ value.name }}</span>
+          </div>
+          <div class="col-3 d-flex align-items-center">
+            <div class="d-flex flex-column">
+              <span class="chrg-item-val">{{ value.createdOn | date: 'dd/MM/yyyy' }}</span>
+            </div>
+          </div>
+          <div class="col-3 d-flex align-items-center text-ellipsis ">
+            <span class="chrg-item-val">{{ value.createdByUser.fullName }}</span>
+          </div>
+          <div class="col-1 d-flex align-items-center justify-content-end">
+            <div class="d-flex align-items-center">
+              <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block"
+                   ngbDropdown>
+                <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle></button>
+                <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                  <button (click)="onEditCharge(charge)"
+                          class="dropdown-item d-flex justify-content-between on-delete"
+                          type="button">
+                    Edit Charge
+                    <i class="dnm-icon edit-icon"></i>
+                  </button>
+                  <button (click)="onDeleteCharge(charge)"
+                          class="dropdown-item d-flex justify-content-between on-delete"
+                          type="button">
+                    Delete Charge
+                    <i class="dnm-icon delete-icon"></i>
+                  </button>
+                  <button (click)="onEditValue(charge, value)"
+                          class="dropdown-item d-flex justify-content-between on-delete"
+                          type="button">
+                    Edit Value
+                    <i class="dnm-icon edit-icon"></i>
+                  </button>
+                  <button (click)="onAddNewValue(charge, value)"
+                          class="dropdown-item d-flex justify-content-between on-delete"
+                          type="button">
+                    New Value
+                    <i class="dnm-icon plus-icon"></i>
+                  </button>
+                  <button (click)="onDeleteValue(charge, value)"
+                          class="dropdown-item d-flex justify-content-between on-delete"
+                          type="button">
+                    Delete Value
+                    <i class="dnm-icon delete-icon"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #simpleView>
+        <div class="w-100">
+          <div class="row none-margin-hr item-row">
+            <div class="col-5 d-flex align-items-center">
+              <span class="chrg-version-val"></span>
+            </div>
+            <div class="col-3 d-flex align-items-center">
+              <div class="d-flex flex-column">
+                <span class="chrg-item-val"></span>
+              </div>
+            </div>
+            <div class="col-3 d-flex align-items-center">
+              <span class="chrg-item-val"></span>
+            </div>
+            <div class="col-1 d-flex align-items-center justify-content-end">
+              <div class="d-flex align-items-center">
+                <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block"
+                     ngbDropdown>
+                  <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle></button>
+                  <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                    <button (click)="onEditCharge(charge)"
+                            class="dropdown-item d-flex justify-content-between on-delete"
+                            type="button"
+                            [disabled]="buildingPeriodIsFinalized">
+                      Edit Charge
+                      <i class="dnm-icon edit-icon"></i>
+                    </button>
+                    <button (click)="onDeleteCharge(charge)"
+                            class="dropdown-item d-flex justify-content-between on-delete"
+                            type="button"
+                            [disabled]="buildingPeriodIsFinalized">
+                      Delete Charge
+                      <i class="dnm-icon delete-icon"></i>
+                    </button>
+                    <button (click)="onAddNewValue(charge, null)"
+                            class="dropdown-item d-flex justify-content-between on-delete"
+                            type="button"
+                            [disabled]="buildingPeriodIsFinalized">
+                      New Value
+                      <i class="dnm-icon plus-icon"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>
+
+

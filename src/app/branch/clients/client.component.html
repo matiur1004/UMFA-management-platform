@@ -1,0 +1,51 @@
+<div class="container-fluid top-container">
+  <div class="row content">
+    <div class="client-header-title">
+      <h1 class="page-title text-uppercase">Manage Client details</h1>
+    </div>
+    <back-button></back-button>
+  </div>
+</div>
+
+<div class="dnm-tabset">
+ <ul ngbNav #nav="ngbNav" (navChange)="onTabChange($event)" class="nav-tabs" [(activeId)]="tabId">
+    <li [ngbNavItem]="'tab-0'">
+      <a ngbNavLink>
+        <i class="tab-icon general-info-icon"></i>
+        <span class="tab-name text-uppercase client-tab-name">General Info</span>
+      </a>
+      <ng-template ngbNavContent>
+        <client-general-info (cancel)="onCancel()" (submit)="onSubmit($event)" [(model)]="model"
+                             [isNew]="isNew"></client-general-info>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="'tab-1'" *ngIf="!isNew">
+      <a ngbNavLink>
+        <i class="tab-icon contacts-icon"></i>
+        <span class="tab-name text-uppercase client-tab-name">Client contacts</span>
+      </a>
+      <ng-template ngbNavContent>
+        <client-contacts #clientContactsCmp [(model)]="model"></client-contacts>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="'tab-2'" *ngIf="!isNew">
+      <a ngbNavLink>
+        <i class="tab-icon client-portfolios-icon"></i>
+        <span class="tab-name text-uppercase client-tab-name">Client portfolios</span>
+      </a>
+      <ng-template ngbNavContent>
+        <client-portfolios #clientPortfolioCmp [(model)]="model"></client-portfolios>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="'tab-3'" *ngIf="!isNew && accessPermission.canManageFinance">
+      <a ngbNavLink>
+        <i class="tab-icon bank-account-icon"></i>
+        <span class="tab-name text-uppercase client-tab-name">Bank accounts</span>
+      </a>
+      <ng-template ngbNavContent>
+        <bank-accounts></bank-accounts>
+      </ng-template>
+    </li>
+  </ul>
+  <div [ngbNavOutlet]="nav"></div>
+</div>

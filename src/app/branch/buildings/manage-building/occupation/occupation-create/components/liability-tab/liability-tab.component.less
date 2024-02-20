@@ -1,0 +1,219 @@
+@import 'variables.less';
+
+.liability-container {
+  .prefics-row {
+    padding-bottom: 20px;
+
+    .input-row {
+      margin-bottom: 20px;
+    }
+  }
+
+  .filter-item-wrp {
+    margin-right: 30px;
+
+    .filter-lbl {
+      font-family: Gotham Medium;
+      font-size: 15px;
+      line-height: 16px;
+      color: @color-text-tertiary;
+      white-space: nowrap;
+      margin-right: 20px;
+    }
+  }
+
+  .dnm-switch-lbl {
+    color: @color-text-tertiary;
+  }
+
+  .liability-lbl {
+    display: block;
+    height: 25px;
+    padding-left: 30px;
+    border-left: 1px solid @color-stroke;
+    font-family: Gotham Book;
+    font-size: 13px;
+    color: @color-text-tertiary;
+    margin-bottom: 0;
+  }
+
+  .dropdown-toggle {
+    width: auto;
+  }
+
+  .stat-block {
+    padding-top: 12px;
+    display: flex;
+    justify-content: flex-start;
+
+    .block-item {
+      height: 100px;
+      min-width: 119px;
+      background-color: @color-background-white;
+      border-radius: 8px;
+      margin-right: 25px;
+      padding-left: 15px;
+      padding-right: 15px;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+
+      .item-val,
+      .item-descr {
+        display: block;
+        font-family: Gotham Book;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .item-val {
+        font-size: 36px;
+        line-height: 36px;
+        margin-bottom: 10px;
+      }
+
+      .item-descr {
+        font-size: 13px;
+        line-height: 13px;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  .shops-grad {
+    .gradient-black();
+  }
+
+  .tot-area-grad {
+    .gradient-dark-green();
+  }
+
+  .liable-shops-grad {
+    .gradient-blue();
+  }
+
+  .not-liable-shops-grad {
+    .gradient-yellow();
+  }
+
+  .vacant-shops-grad {
+    .gradient-red();
+  }
+
+  .liability-table-filter {
+    margin-bottom: 15px;
+
+    .group-search-input {
+      background-color: @color-background-white;
+    }
+
+    .dropdown-menu,
+    .dropdown-toggle {
+      width: 200px;
+    }
+
+    .dropdown-item {
+      text-transform: none;
+    }
+
+    .dropdown-toggle,
+    .dropdown-item {
+      color: @color-text-tertiary;
+      font-size: 15px;
+    }
+
+    .filter-item-wrp:last-of-type {
+      margin-right: 0;
+    }
+
+  }
+
+  .liability-table-wrp {
+    .table-header {
+      padding: 0 20px 12px 30px;
+      margin: 0;
+    }
+
+    .col-lbl {
+      font-family: Gotham Medium;
+      font-size: 12px;
+      color: @color-description;
+    }
+
+    .table-body {
+      border: 1px solid #e1e1e1;
+      background-color: @color-background-white;
+      //max-height: calc(100vh - 750px);
+      min-height: 75px;
+      //overflow: hidden;
+      overflow-y: visible;
+    }
+
+    .table-row {
+      padding-left: 30px;
+      padding-right: 20px;
+      margin-left: 0;
+      margin-right: 0;
+      height: 70px;
+      border-bottom: 1px solid #e1e1e1;
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+
+    .shop-name {
+      font-family: Gotham Medium;
+      font-size: 14px;
+      line-height: 14px;
+      color: @color-text-primary;
+    }
+
+    .floor-numb,
+    .area-sq,
+    .tnt-name {
+      font-family: Gotham Book;
+      font-size: 12px;
+      line-height: 12px;
+      color: @color-text-tertiary;
+    }
+
+    .floor-numb,
+    .tnt-name {
+      font-size: 12px;
+      line-height: 12px;
+    }
+
+    .area-sq {
+      font-size: 13px;
+      line-height: 13px;
+    }
+
+    .status-lbl {
+      width: 110px;
+      font-size: 13px;
+    }
+
+  }
+
+  @media (max-width: 1400px) {
+    .filter-item-wrp .filter-lbl {
+      font-size: 12px;
+    }
+  }
+
+}
+::ng-deep .liability-table-wrp .field-value .alloc-inpt {
+  width: 65px !important;
+}
+
+::ng-deep .liability-table-wrp .field-value .alloc-inpt {
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
+::ng-deep .liability-table-wrp .field-value .alloc-inpt:focus {
+  padding-left: 9px !important;
+  padding-right: 9px !important;
+}

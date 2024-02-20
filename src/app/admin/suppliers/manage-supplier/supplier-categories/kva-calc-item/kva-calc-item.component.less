@@ -1,0 +1,115 @@
+@import 'variables.less';
+
+.kva-calc-item-wrp {
+  margin-top: 40px;
+}
+
+.kva-calc-item-wrp .kva-item-hdr-wrp {
+  width: 650px;
+  max-width: 650px;
+}
+
+.kva-calc-item-wrp .item-hdr-nav {
+  margin-bottom: 10px;
+}
+
+.kva-calc-item-wrp .kva-calc-name {
+  font-family: Gotham Medium;
+  font-size: 12px;
+  color: @color-empty;
+}
+
+.kva-calc-item-wrp .del-step-btn {
+  cursor: pointer;
+  line-height: 1;
+}
+
+.kva-calc-item-wrp .del-step-btn .btn-lbl {
+  margin-left: 10px;
+  font-family: Gotham Book;
+  font-size: 14px;
+  background: linear-gradient(to right, #e4877a, #dc3939);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.kva-calc-item-wrp .line-div {
+  border-bottom: 1px solid #eeeff0;
+}
+
+.kva-calc-item-wrp .input-row {
+  margin: 0;
+  min-height: 50px;
+  padding: 7px 0 7px 20px;
+}
+
+.kva-calc-item-wrp .text-form-field {
+  padding-top: 0;
+}
+
+.kva-calc-item-wrp .radio-input-wrp {
+  height: 70px;
+  min-height: 70px;
+}
+
+.kva-calc-item-wrp .radio-input-lbl {
+  font-family: Gotham Book;
+  font-size: 14px;
+  line-height: 14px;
+  color: @color-text-tertiary;
+  white-space: nowrap;
+  padding-right: 20px;
+  padding-left: 10px;
+}
+
+.kva-calc-item-wrp .calc-scheme-wrp {
+  margin-left: -40px;
+  margin-right: -40px;
+  padding: 40px;
+  background-color: @color-background-secondary;
+  border-top: 1px solid @color-line;
+  border-bottom: 1px solid @color-line;
+}
+
+.kva-calc-item-wrp .scheme-item-wrp {
+  padding-bottom: 30px;
+}
+
+.kva-calc-item-wrp .scheme-item-wrp:last-child {
+  padding-bottom: 0;
+}
+
+.kva-calc-item-wrp .dnm-radio-wrp {
+  margin-bottom: 20px;
+}
+
+.kva-calc-item-wrp .scheme-item-drpdwn {
+  width: 415px;
+  min-width: 415px;
+}
+
+.kva-calc-item-wrp .numb-input-lbl {
+  font-family: Gotham Light;
+  font-size: 14px;
+  line-height: 14px;
+  color: @color-text-tertiary;
+  white-space: nowrap;
+  padding-right: 30px;
+  padding-left: 10px;
+}
+
+/* #region ng-deep styles */
+
+::ng-deep .kva-calc-item-wrp .numb-form-control {
+  width: 100px !important;
+}
+
+::ng-deep .kva-calc-item-wrp .custom-select {
+  display: none;
+}
+
+::ng-deep .kva-calc-item-wrp .datepicker-wrp .dropdown-menu {
+  width: 100%;
+}
+
+/* #endregion */

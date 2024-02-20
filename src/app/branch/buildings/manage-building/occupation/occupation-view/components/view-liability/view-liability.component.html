@@ -1,0 +1,115 @@
+<div class="container-fluid none-padding liabil-container">
+  <div class="row search-row none-margin-hr">
+    <div class="col-4 none-padding">
+      <div class="input-search">
+        <form class="form-inline main-search-input w-100">
+          <div class="input-group">
+            <input #searchShops (keyup)="updateShopSearchTerm.emit(searchShops.value)" class="form-control group-search-input" data-search-field
+                   placeholder="Shop Search" type="search"/>
+            <div class="input-group-append">
+              <i class="icon-relative search-icon vertical-middle"></i>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-4 none-padding">
+      <div class="input-search">
+        <form class="form-inline main-search-input w-100">
+          <div class="input-group">
+            <input #searchCommonAreas (keyup)="updateCommonAreaSearchTerm.emit(searchCommonAreas.value)" class="form-control group-search-input"
+                   data-search-field
+                   placeholder="Common Area Search" type="search"/>
+            <div class="input-group-append">
+              <i class="icon-relative search-icon vertical-middle"></i>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-4 none-padding">
+      <div class="d-flex align-items-center justify-content-end">
+        <span class="filter-lbl">Show:</span>
+        <div class="dropdown filter-dropdown small" ngbDropdown placement="bottom-right">
+          <button class="btn dropdown-toggle" ngbDropdownToggle>
+            {{shopFilterText}}
+          </button>
+          <div class="dropdown-menu" ngbDropdownMenu>
+            <button (click)="updateShopFilter.emit(0)" class="dropdown-item">All shops</button>
+            <div class="dropdown-title">Connection</div>
+            <button (click)="updateShopFilter.emit(1)" class="dropdown-item">Connected shops</button>
+            <button (click)="updateShopFilter.emit(2)" class="dropdown-item">Not connected shops</button>
+            <div class="dropdown-title">Liability</div>
+            <button (click)="updateShopFilter.emit(3)" class="dropdown-item">Liable shops</button>
+            <button (click)="updateShopFilter.emit(4)" class="dropdown-item">Not liable shops</button>
+            <button (click)="updateShopFilter.emit(5)" class="dropdown-item">Vacant shops</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row none-margin-hr">
+    <div class="cmn-ar-shp-tbl">
+      <div #tableColsHeader class="table-header d-flex">
+        <div #tableFirstColHeader class="tbl-col">
+          <div class="bl-gradient-title col-title">Common Area Properties</div>
+          <div class="col-prop-name">Use the default settings?</div>
+          <div class="col-prop-name">Owner Liability</div>
+          <div class="col-prop-name">include vacant shop sq m</div>
+          <div class="col-prop-name">Include not liable shops</div>
+          <div class="col-prop-name">How to split</div>
+          <div class="tbl-sub-col d-flex">
+            <div class="sub-col-title">Shop name</div>
+            <div class="sub-col-title d-flex justify-content-center">All</div>
+          </div>
+        </div>
+        <div *ngFor="let commonAreaLiability of commonAreaServiceLiabilities;trackBy:trackByFn" class="tbl-col">
+          <common-area-item (goToNodeDetail)="onGoToNodeDetail($event)" (selectCommonAreaForAllShops)="selectCommonAreaForAllShops.emit($event)" (unselectCommonAreaForAllShops)="unselectCommonAreaForAllShops.emit($event)"
+                            (updateCommonAreaHeader)="updateCommonAreaHeader.emit($event)"
+                            [commonAreasShopsData]="commonAreasShopsData"
+                            [model]="commonAreaLiability"
+                            [shops]="shops"></common-area-item>
+        </div>
+        <div *ngIf="nodeSupplyTypeIndexesToShow?.length" class="tbl-col node-data d-flex flex-row">
+          <node-item [supplyTypeIndexesToShow]="nodeSupplyTypeIndexesToShow"></node-item>
+        </div>
+      </div>
+      <div (scroll)="onScroll($event)" class="table-body">
+        <div *ngFor="let shop of shops; let row = index;trackBy:trackByFn"
+             class="table-row d-flex align-items-center none-margin-hr">
+          <div #tableRowsHeader class="tbl-col">
+            <shop-item (selectShopForAllCommonAreas)="selectShopForAllCommonAreas.emit($event)" (unselectShopForAllCommonAreas)="unselectShopForAllCommonAreas.emit($event)" (updateShopRentDetails)="updateShopRentDetails.emit($event)"
+                       [activeCommonAreas]="activeCommonAreas"
+                       [allShops]="allShops"
+                       [buildingId]="buildingId"
+                       [commonAreasShopsData]="commonAreasShopsData"
+                       [model]="shop"
+                       [tenants]="tenants$ | async"></shop-item>
+          </div>
+          <div *ngFor="let commonAreaLiability of commonAreaServiceLiabilities; let column = index;trackBy:trackByFn"
+               class="tbl-col">
+            <common-area-shop-item (addCommonAreaShop)="addCommonAreaShop.emit($event)"
+                                   (deleteCommonAreaShop)="deleteCommonAreaShop.emit($event)"
+                                   (updateShopAllocation)="updateShopAllocation.emit($event)" (updateShopLiable)="updateShopLiable.emit($event)"
+                                   [model]="commonAreasShopsData[commonAreaLiability.commonArea.id][shop.id]"
+                                   [ownerLiable]="commonAreaLiability.liability.ownerLiable"
+                                   [serviceIdx]="commonAreaLiability.liability.serviceType"
+                                   [shop]="shop"
+                                   [splitTypeIdx]="commonAreaLiability.liability.splitType"></common-area-shop-item>
+          </div>
+          <div *ngIf="nodeSupplyTypeIndexesToShow?.length" class="tbl-col node-data">
+            <node-shop-item (goToNodeDetail)="onGoToNodeDetail($event)" [buildingId]="buildingId"
+                            [shop]="shop"
+                            [supplyTypeIndexesToShow]="nodeSupplyTypeIndexesToShow"></node-shop-item>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row none-margin-hr view-lblt-footer">
+    <div class="col-12 text-right footer-buttons none-padding">
+      <button (click)="onSaveOcupation()" class="dnm-btn dnm-btn-primary text-uppercase" type="button" [disabled]="buildingPeriodIsFinalized$ | async">Save to history
+      </button>
+    </div>
+  </div>
+</div>

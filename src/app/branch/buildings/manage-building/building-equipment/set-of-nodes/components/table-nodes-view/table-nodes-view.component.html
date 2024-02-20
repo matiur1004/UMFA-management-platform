@@ -1,0 +1,222 @@
+<div class="statistic">
+  <span>{{nodes | arrayLength}} nodes</span>
+  <span> / </span>
+  <span>{{nodes | selectedArrayLength}} selected</span>
+</div>
+<div class="table-container table-responsive">
+  <table
+    class="table table-custom table-striped table-outside-border-body table-vertical-center table-nodes-tariffs-assignment">
+    <thead>
+    <tr>
+      <th class="cell-fixed cell-fixed-left">
+        <div class="dnm-checkbox list-header-checkbox">
+          <input (change)="onSelectAll()" [checked]="isAllSelected" [value]="-1" id="node-id-all" name="node_ids_all"
+                 type="checkbox"/>
+          <div class="state">
+            <label></label>
+          </div>
+        </div>
+      </th>
+      <th>
+        <span class="head-col">Node</span>
+      </th>
+      <th>
+        <span class="head-col">Register</span>
+      </th>
+      <th>
+        <span class="head-col">Attributes</span>
+      </th>
+      <th>
+        <span class="head-col">Allocated area</span>
+      </th>
+      <th>
+        <span class="head-col">Billing tariff</span>
+      </th>
+      <th>
+        <span class="head-col">Line items</span>
+      </th>
+      <th>
+        <span class="head-col">Category</span>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-container *ngFor="let node of nodes  | filterNodes : filter">
+      <tr class="node-item">
+        <td class="cell-fixed cell-fixed-left">
+          <div class="dnm-checkbox list-header-checkbox">
+            <input (change)="onSelect(node)" [checked]="node.isSelected" [value]="node.id" id="node-id-{{ node.id }}"
+                   name="node_ids[]" type="checkbox"/>
+            <div class="state">
+              <label></label>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div class="node-name">{{node.displayName}}</div>
+          <div class="node-detail-data">
+            <label class="node-details-label">Type:</label>
+            <span class="node-details-value">{{node.nodeType | nodeTypeLabel}}</span>
+          </div>
+          <div class="node-detail-data">
+            <label class="node-details-label">Supply to:</label>
+            <span [innerHTML]="node.supplyToId | supplierDetails : supplies" class="node-details-value"></span>
+          </div>
+          <div class="node-detail-data">
+            <label class="node-details-label">Location type:</label>
+            <span [innerHTML]="node.supplyToLocationId | locationTypeDetails : supplies"
+                  class="node-details-value"></span>
+          </div>
+          <div class="node-detail-data">
+            <label class="node-details-label">Factor:</label>
+            <span class="node-details-value">N/A</span>
+          </div>
+          <div class="node-detail-data">
+            <label class="node-details-label">Tariff apply type:</label>
+            <span class="node-details-value">{{node.tariffApplyType | tariffApplyTypeLabel}}</span>
+          </div>
+        </td>
+        <td>
+          <div *ngFor="let register of node.registers" class="register-item">
+            <i *ngIf="register.registerId | checkVirtualRegister | async"
+               class="tab-icon dnm-icon-equipment-virtual-registers"></i>
+            {{register.registerId | registerUnit | async}}
+          </div>
+        </td>
+        <td>
+          <div *ngFor="let attribute of node.attributeValues">
+            <div [innerHTML]="attribute | attributeDetails : attributes" class="attribute-details"></div>
+          </div>
+        </td>
+        <td>
+          <div *ngFor="let shopId of node.shopIds | slice : 0 : 1" class="shop-item">
+            <div [innerHTML]="shopId | shopDetails : shops" class="shop-details"></div>
+          </div>
+          <div *ngFor="let areaId of node.commonAreaIds | slice : 0 : 1" class="shop-item">
+            <div [innerHTML]="areaId | areaDetails : areas" class="area-details"></div>
+          </div>
+          <div *ngIf="node.shopIds.length > 1 || node.commonAreaIds.length > 1">
+            <div class="additional-shops" ngbDropdown>
+              <span *ngIf="node.shopIds.length > 1 && node.commonAreaIds.length === 0" class="cursor-pointer"
+                    ngbDropdownToggle>+ {{(node.shopIds.length) + (node.commonAreaIds.length - 1)}} more</span>
+              <span *ngIf="node.commonAreaIds.length > 1 && node.shopIds.length === 0" class="cursor-pointer"
+                    ngbDropdownToggle>+ {{(node.shopIds.length - 1) + (node.commonAreaIds.length)}} more</span>
+              <span *ngIf="node.commonAreaIds.length > 1 && node.shopIds.length > 1" class="cursor-pointer"
+                    ngbDropdownToggle>+ {{(node.shopIds.length - 1) + (node.commonAreaIds.length - 1)}} more</span>
+              <div class="tooltip tooltip-inner tooltip-shops" ngbDropdownMenu>
+                <div>
+                  <div *ngFor="let shopId of node.shopIds | slice : 1 : 100" class="shop-item">
+                    <div [innerHTML]="shopId | shopDetails : shops" class="shop-details"></div>
+                  </div>
+                  <div *ngFor="let areaId of node.commonAreaIds | slice : 1 : 100" class="shop-item">
+                    <div [innerHTML]="areaId | areaDetails : areas" class="area-details"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+        <td class="cell cell-tariff">
+          <ng-container *ngIf="node.tariffApplyType === 0">
+            <ng-container *ngFor="let tariff of node.tariffs">
+              <div class="tariff-item tariff-lineitems-{{tariff.lineItems | arrayLength}}">
+                <div [innerHTML]="tariff.id | tariffDetails : tariffs" class="tariff-details"></div>
+              </div>
+            </ng-container>
+          </ng-container>
+        </td>
+        <td class="cell cell-line-items">
+          <ng-container *ngIf="node.tariffApplyType === 0">
+            <div *ngFor="let tariff of node.tariffs"
+                 class="line-items tariff-lineitems-{{tariff.lineItems | arrayLength}}">
+              <div *ngFor="let lineItem of tariff.lineItems">
+                <div [innerHTML]="lineItem.id | lineItemDetails : tariffs" class="line-item-details"></div>
+              </div>
+            </div>
+          </ng-container>
+        </td>
+        <td class="cell cell-category">
+          <ng-container *ngIf="node.tariffApplyType === 0">
+            <div *ngFor="let tariff of node.tariffs"
+                 class="category-items tariff-lineitems-{{tariff.lineItems | arrayLength}}">
+              <div *ngFor="let lineItem of tariff.lineItems">
+                <div [innerHTML]="lineItem.categoryId | lineItemCategoryDetails : tariffs"
+                     class="line-item-category-details"></div>
+              </div>
+            </div>
+          </ng-container>
+        </td>
+      </tr>
+      <!-- ----------------Sub nodes---------------- -->
+      <ng-container *ngIf="node.tariffApplyType === 1 && node.nodes">
+        <ng-container *ngFor="let subnode of node.nodes">
+          <tr class="node-item sub-node-item">
+            <td class="cell-fixed cell-fixed-left">
+            </td>
+            <td>
+              <div class="node-name">{{subnode.displayName}}</div>
+              <div class="node-detail-data">
+                <label class="node-details-label">Type:</label>
+                <span class="node-details-value">{{subnode.nodeType | nodeTypeLabel}}</span>
+              </div>
+              <div class="node-detail-data">
+                <label class="node-details-label">Supply to:</label>
+                <span [innerHTML]="subnode.supplyToId | supplierDetails : supplies" class="node-details-value"></span>
+              </div>
+              <div class="node-detail-data">
+                <label class="node-details-label">Location type:</label>
+                <span [innerHTML]="subnode.supplyToLocationId | locationTypeDetails : supplies"
+                      class="node-details-value"></span>
+              </div>
+              <div class="node-detail-data">
+                <label class="node-details-label">Factor:</label>
+                <span class="node-details-value">N/A</span>
+              </div>
+            </td>
+            <td>
+              <ng-container *ngIf="subnode.registers">
+                <div *ngFor="let register of subnode.registers" class="register-item">
+                  {{register.registerId | registerUnit | async}}
+                </div>
+              </ng-container>
+            </td>
+            <td>
+              <div *ngFor="let attribute of subnode.attributes">
+                <div [innerHTML]="attribute | attributeDetails : attributes" class="attribute-details"></div>
+              </div>
+            </td>
+            <td>
+              <!-- don't display  common areas for subnodes - requirement from comment in DUN-1728 -->
+            </td>
+            <td class="cell cell-tariff">
+              <ng-container *ngFor="let tariff of node.tariffs | fiterTariffsBySubNode : subnode.nodeId">
+                <div class="tariff-item tariff-lineitems-{{tariff.lineItems | arrayLength}}">
+                  <div [innerHTML]="tariff.id | tariffDetails : tariffs" class="tariff-details"></div>
+                </div>
+              </ng-container>
+            </td>
+            <td class="cell cell-line-items">
+              <div *ngFor="let tariff of node.tariffs | fiterTariffsBySubNode : subnode.nodeId"
+                   class="line-items tariff-lineitems-{{tariff.lineItems | arrayLength}}">
+                <div *ngFor="let lineItem of tariff.lineItems">
+                  <div [innerHTML]="lineItem.id | lineItemDetails : tariffs" class="line-item-details"></div>
+                </div>
+              </div>
+            </td>
+            <td class="cell cell-category">
+              <div *ngFor="let tariff of node.tariffs | fiterTariffsBySubNode : subnode.nodeId"
+                   class="category-items tariff-lineitems-{{tariff.lineItems | arrayLength}}">
+                <div *ngFor="let lineItem of tariff.lineItems">
+                  <div [innerHTML]="lineItem.categoryId | lineItemCategoryDetails : tariffs"
+                       class="line-item-category-details"></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+      </ng-container>
+
+    </ng-container>
+    </tbody>
+  </table>
+</div>

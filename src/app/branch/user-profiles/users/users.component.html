@@ -1,0 +1,216 @@
+<!-- labels -->
+<div class="d-flex justify-content-between align-items-center">
+  <div class="d-flex align-items-center">
+    <span class="results-label dnm-text-light">{{getItemsDetails()}}</span>
+    <a (click)="onCreate()" class="blue-text-btn add-user-btn d-flex align-items-center" href="javascript:void(0);">
+      <i class="add-icon"></i>
+      Add User
+    </a>
+  </div>
+  <div class="users-data-nav">
+    <span class="text-uppercase count-label">User profile:</span>
+    <div class="dropdown filter-dropdown d-inline-block small user-profile-dropdown" ngbDropdown
+         placement="bottom-right">
+      <button class="btn btn-secondary dropdown-toggle" id="ddCountPerPage" ngbDropdownToggle>
+        {{selectedUserProfile ? selectedUserProfile.name : 'Selected User Profile'}}
+      </button>
+      <div aria-labelledby="ddCountPerPage" class="dropdown-menu" ngbDropdownMenu>
+        <button (click)="onUserProfileChanged()" *ngIf="selectedUserProfile" class="dropdown-item">ALL</button>
+        <button (click)="onUserProfileChanged(userProfile)" *ngFor="let userProfile of userProfiles;"
+                class="dropdown-item">{{userProfile.name}}</button>
+      </div>
+    </div>
+    <span class="text-uppercase count-label">Users Per Page:</span>
+    <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+      <button class="btn btn-secondary dropdown-toggle" id="ddCountPerPage" ngbDropdownToggle>
+        {{pageSize ? pageSize : 'ALL' }}
+      </button>
+      <div aria-labelledby="ddCountPerPage" class="dropdown-menu" ngbDropdownMenu>
+        <button (click)="onPageSizeChanged(30)" class="dropdown-item">30</button>
+        <button (click)="onPageSizeChanged(50)" class="dropdown-item">50</button>
+        <button (click)="onPageSizeChanged(100)" class="dropdown-item">100</button>
+        <button (click)="onPageSizeChanged(0)" class="dropdown-item">ALL</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- users grid header -->
+<div class="users-list-wrp pt-4">
+  <div class="list-header text-uppercase d-xs-none row none-margin-hr">
+    <div class="col-md-2">
+      <a (click)="changeOrderIndex(1);" [ngClass]="{'active': orderIndex == 1 || orderIndex == -1}"
+         class="header-field d-flex align-items-center sortable"
+         href="javascript:void(0);">
+        User name
+        <i [ngClass]="{'inactive': orderIndex != 1 && orderIndex != -1, 'dnm-icon-sort-up': orderIndex == -1,'dnm-icon-sort-down': orderIndex != -1 }"
+           class="dnm-icon"></i>
+      </a>
+    </div>
+    <div class="col-md-2">
+      <a class="header-field d-flex align-items-center" href="javascript:void(0);">User profiles / roles</a>
+    </div>
+    <div class="col-md-2">
+      <a (click)="changeOrderIndex(2);" [ngClass]="{'active': orderIndex == 2 || orderIndex == -2}"
+         class="header-field d-flex align-items-center sortable"
+         href="javascript:void(0);">
+        Department
+        <i [ngClass]="{'inactive': orderIndex != 2 && orderIndex != -2, 'dnm-icon-sort-up': orderIndex == -2,'dnm-icon-sort-down': orderIndex != -2 }"
+           class="dnm-icon"></i>
+      </a>
+    </div>
+    <div class="col-md-2">
+      <a class="header-field d-flex align-items-center" href="javascript:void(0);">Email</a>
+    </div>
+    <div class="col-md-4 none-padding">
+      <div class="container-fluid none-padding">
+        <div class="row none-padding none-margin-hr">
+          <div class="col-md-3">
+            <a (click)="changeOrderIndex(3);" [ngClass]="{'active': orderIndex == 3 || orderIndex == -3}"
+               class="header-field d-flex align-items-center sortable"
+               href="javascript:void(0);">
+              Status
+              <i [ngClass]="{'inactive': orderIndex != 3 && orderIndex != -3, 'dnm-icon-sort-up': orderIndex == -3,'dnm-icon-sort-down': orderIndex != -3 }"
+                 class="dnm-icon"></i>
+            </a>
+          </div>
+          <div class="col-md-3">
+            <a class="header-field d-flex align-items-center" href="javascript:void(0);">Phone</a>
+          </div>
+          <div class="col-md-6">
+            <a class="header-field d-flex align-items-center" href="javascript:void(0);">External links</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- users grid content -->
+  <div *ngFor="let user of model.items;let idx = index" class="users-list dnm-text-medium">
+    <div (click)="onEdit($event, user)" class="users-item row">
+      <div class="col-md-2 col-xs-12">
+        <div class="vertical-middle d-flex align-items-center">
+          <div class="user-img-block">
+            <logo-container [file]="user.logo" [url]="user.logoUrl"
+                            logo-class="round-logo-wrp full-height d-flex align-items-center">
+              <div class="user-no-img">
+                <span>{{user.fullName[0].toUpperCase()}}</span>
+              </div>
+            </logo-container>
+          </div>
+          <div class="user-name text-ellipsis">
+            {{user.fullName}}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2 col-xs-12 d-flex align-items-center">
+        <div *ngIf="user.userProfiles.length" class="user-profiles-roles-block d-flex align-items-center">
+          <div class="profiles-list">
+            <div *ngFor="let userProfile of user.userProfiles | slice:0:3" class="user-profiles-roles-item">
+              <span class="user-profiles-roles-label">• {{userProfile.name}}:</span>
+              <span class="user-profiles-roles-text"> {{userProfile.roles.join(', ')}}</span>
+            </div>
+          </div>
+          <div class="tooltip-container d-flex align-items-center">
+            <div class="user-profiles-roles-icon">
+              <div class="user-profiles-roles-popup">
+                <app-popup-user-roles [userProfiles]="user.userProfiles"></app-popup-user-roles>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2 col-xs-12">
+        <div class="vertical-middle">
+          <div class="users-department text-ellipsis">{{user.departmentDescription}}</div>
+        </div>
+      </div>
+      <div class="col-md-2 col-xs-12">
+        <div class="vertical-middle">
+          <div class="users-email text-ellipsis">{{user.email}}</div>
+        </div>
+      </div>
+      <div class="col-md-4 none-padding d-flex align-items-center">
+        <div class="container-fluid none-padding">
+          <div class="row none-padding none-margin-hr">
+            <div class="col-md-3 d-flex align-items-center">
+              <div *ngIf="user.isApproved" class="text-ellipsis usr-status st-active">
+                <span class="usr-status-cnt">Active</span>
+              </div>
+              <div *ngIf="!user.isApproved" class="text-ellipsis usr-status st-pending">
+                <span class="usr-status-cnt">Pending</span>
+              </div>
+            </div>
+            <div class="col-md-3 d-flex align-items-center">
+              <div class="users-phone text-ellipsis">{{user.phone}}</div>
+            </div>
+            <div class="col-md-6">
+              <div class="d-flex justify-content-between user-external-links action-buttons">
+                <div class="d-flex">
+                  <div *ngFor="let contactExternalLink of user.contactExternalLinks | slice:0:2;">
+                    <div class="dropdown" ngbDropdown placement="bottom-center">
+                      <button [ngClass]="{'d-social-zoom': contactExternalLink.label == 'Zoom', 'd-social-whatsapp': contactExternalLink.label == 'Whatsapp', 'd-social-web-address': contactExternalLink.label == 'Web address', 'd-social-twitter': contactExternalLink.label == 'Twitter', 'd-social-skype': contactExternalLink.label == 'Skype', 'd-social-other': contactExternalLink.label == 'Other', 'd-social-linkedin': contactExternalLink.label == 'Linkedin', 'd-social-hangouts': contactExternalLink.label == 'Hangouts', 'd-social-google-plus': contactExternalLink.label == 'G+', 'd-social-dropbox': contactExternalLink.label == 'Dropbox', 'd-social-fb': contactExternalLink.label == 'Facebook', 'd-social-google-drive': contactExternalLink.label == 'Google Drive'}"
+                              class="dnm-btn d-social-icon dnm-social-btn"
+                              ngbDropdownToggle></button>
+                      <div (click)="$event.stopPropagation();" class="external-link-dropdown dropdown-menu"
+                           ngbDropdownMenu>
+                        <app-popup-external-link [label]="contactExternalLink.label"
+                                                 [value]="contactExternalLink.value"></app-popup-external-link>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div *ngIf="user.contactExternalLinks.length == maxContCount;">
+                    <div class="dropdown" ngbDropdown placement="bottom-center">
+                      <button [ngClass]="{'d-social-zoom': user.contactExternalLinks[maxContCount - 1].label == 'Zoom', 'd-social-whatsapp': user.contactExternalLinks[maxContCount - 1].label == 'Whatsapp', 'd-social-web-address': user.contactExternalLinks[maxContCount - 1].label == 'Web address', 'd-social-twitter': user.contactExternalLinks[maxContCount - 1].label == 'Twitter', 'd-social-skype': user.contactExternalLinks[maxContCount - 1].label == 'Skype', 'd-social-other': user.contactExternalLinks[maxContCount - 1].label == 'Other', 'd-social-linkedin': user.contactExternalLinks[maxContCount - 1].label == 'Linkedin', 'd-social-hangouts': user.contactExternalLinks[maxContCount - 1].label == 'Hangouts', 'd-social-google-plus': user.contactExternalLinks[maxContCount - 1].label == 'G+', 'd-social-dropbox': user.contactExternalLinks[maxContCount - 1].label == 'Dropbox', 'd-social-fb': user.contactExternalLinks[maxContCount - 1].label == 'Facebook', 'd-social-google-drive': user.contactExternalLinks[maxContCount - 1].label == 'Google Drive'}"
+                              class="dnm-btn d-social-icon dnm-social-btn"
+                              ngbDropdownToggle></button>
+                      <div (click)="$event.stopPropagation();" class="external-link-dropdown dropdown-menu"
+                           ngbDropdownMenu>
+                        <app-popup-external-link [label]="user.contactExternalLinks[maxContCount - 1].label"
+                                                 [value]="user.contactExternalLinks[maxContCount - 1].value"></app-popup-external-link>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div *ngIf="user.contactExternalLinks.length > maxContCount;">
+                    <div [autoClose]="'outside'" class="dropdown" ngbDropdown placement="bottom-right">
+                      <button class="dnm-btn d-social-icon additional-links-btn dnm-social-btn" ngbDropdownToggle>
+                        +{{user.contactExternalLinks.length - maxContCount + 1}}
+                      </button>
+                      <div class="social-list-dropdown dropdown-menu" ngbDropdownMenu>
+                        <popup-social-list [model]="user.contactExternalLinks"></popup-social-list>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+                  <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle></button>
+                  <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                    <button (click)="onApproval(user)" *ngIf="!user.isApproved" class="dropdown-item">
+                      Send on approval
+                      <i class="dnm-icon edit-icon"></i>
+                    </button>
+                    <button (click)="onDisable(user)" *ngIf="user.isApproved" class="dropdown-item on-disable">
+                      Disable
+                      <i class="dnm-icon edit-icon"></i>
+                    </button>
+                    <button class="dropdown-item">
+                      Edit
+                      <i class="dnm-icon edit-icon"></i>
+                    </button>
+                    <button (click)="onDelete(user, idx)" class="dropdown-item on-delete">
+                      Delete
+                      <i class="dnm-icon delete-icon"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<pager (onPageChange)="setPage($event)" [pageSize]="pageSize" [page]="page" [total]="model.total"></pager>

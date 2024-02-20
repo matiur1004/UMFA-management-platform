@@ -1,0 +1,17 @@
+<div class="popup-user-block">
+  <div class="user-block-header">
+    <div class="user-name">{{user.fullName}}</div>
+  </div>
+  <div class="user-block-content">
+    <span class="label">Roles:</span> {{ user.roles }}
+  </div>
+  <div class="user-btn-block">
+    <button [routerLink]="['/user-profiles/users/', user.id]" class="w-50">View<i class="dnm-icon view-icon"></i>
+    </button>
+    <div class="separate-line"></div>
+    <button (click)="onRemoveUser($event)" class="w-50">Remove<i class="dnm-icon delete-icon"></i></button>
+  </div>
+</div>
+<!-- user popup -->
+
+

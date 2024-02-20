@@ -1,0 +1,365 @@
+@import 'variables.less';
+
+.view-shops .view-shops-filter {
+  margin-bottom: 25px;
+}
+
+.view-shops-filter .filter-res-lbl {
+  font-size: 16px;
+  color: @color-text-tertiary;
+  margin-right: 30px;
+}
+
+.view-shops-filter .dropdown-toggle,
+.view-shops-filter .dropdown-menu {
+  width: 200px;
+}
+
+.view-shops-filter .shops-action-menu {
+  margin-right: 20px;
+}
+
+.view-shops-filter .add-shop-btn {
+  margin-left: 0;
+}
+
+.view-shops .dd-filter-lbl {
+  font-family: Gotham Medium;
+  font-size: 15px;
+  color: @color-text-tertiary;
+  margin-right: 20px;
+}
+
+.view-shops .activity-container {
+  width: 300px;
+  float: right;
+  padding-top: 36px;
+}
+
+.view-shops-tbl .table-header {
+  padding: 0 15px 12px 16px;
+}
+
+.view-shops-tbl .sortable .dnm-icon {
+  margin-left: 8px;
+}
+
+.view-shops-tbl > .table-body {
+  margin: 0 15px;
+  background: @color-background-white;
+  border: 1px solid @color-line;
+}
+
+.view-shops-tbl .table-row {
+  margin: 0;
+  border-bottom: 1px solid @color-line;
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+
+.view-shops-tbl .shop-expanded {
+  padding-bottom: 0;
+}
+
+.view-shops-tbl .table-row:last-child {
+  border-bottom: none;
+}
+
+.view-shops-tbl .dnm-checkbox {
+  margin-right: 20px;
+}
+
+.view-shops-tbl .col-lbl {
+  font-family: Gotham Medium;
+  font-size: 12px;
+  color: @color-description;
+}
+
+.view-shops-tbl .field-value {
+  width: 100%;
+}
+
+::ng-deep .field-value.view-shops-floor .shops-floor-input {
+  width: 110px !important;
+}
+
+.view-shops-tbl .field-value .form-control:disabled {
+  background-color: @color-background-primary;
+}
+
+.view-shops-tbl .mng-shps-stat {
+  border-radius: 13px;
+  color: @color-background-white;
+  font-family: Gotham Book;
+  font-size: 13px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+}
+
+.view-shops-tbl .mng-shps-stat.st-occupied {
+  background-image: linear-gradient(to right, #628ad8, #5b7ec9, #5472ba, #4d66ab, #465a9d);
+}
+
+.view-shops-tbl .mng-shps-stat.st-vacant {
+  background-image: linear-gradient(to right, #e7c05c, #e4b456, #e1a850, #dd9d4c, #d89148);
+}
+
+.view-shops-tbl .mng-shps-stat.st-spare {
+  background-image: linear-gradient(to right, #899696, #7e8a8b, #747f80, #697475, #5f696a);
+}
+
+
+.view-shops-tbl .table-footer {
+  margin-top: 50px;
+  margin-bottom: 100px;
+}
+
+.view-shops-tbl .dnm-btn-primary,
+.view-shops-tbl .dnm-btn-cancel {
+  width: 200px;
+}
+
+.view-shops-tbl .dnm-btn-cancel {
+  margin-right: 30px;
+}
+
+.activity-container .occup-doc,
+.activity-container .occup-history {
+  background: @color-background-white;
+  border: 1px solid @color-line;
+  padding: 30px 0 20px 0;
+  margin-bottom: 30px;
+}
+
+.activity-container .section-title {
+  display: block;
+  font-family: Gotham Medium;
+  font-size: 20px;
+  line-height: 20px;
+  text-transform: uppercase;
+  color: @color-text-primary;
+  padding: 0 15px 0 30px;
+  margin-bottom: 15px;
+}
+
+.occup-doc .doc-item,
+.occup-history .history-item {
+  padding: 20px 15px 20px 30px;
+}
+
+.occup-doc .doc-details,
+.occup-history .item-details {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-right: 14px;
+}
+
+.doc-details .file-type {
+  margin-right: 20px;
+  width: 26px;
+  height: 30px;
+}
+
+.doc-details .doc-info {
+  line-height: 1;
+}
+
+.doc-details .doc-name {
+  font-family: Gotham Book;
+  font-size: 14px;
+  line-height: 14px;
+  color: @color-text-secondary;
+}
+
+.doc-details .date-size-info {
+  font-family: Gotham Light;
+  font-size: 12px;
+  line-height: 12px;
+  color: @color-text-tertiary;
+  margin-top: 4px;
+}
+
+.doc-details .date-info {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.doc-details .size-info {
+  display: inline-block;
+  padding-left: 10px;
+  border-left: 1px solid @color-text-tertiary;
+}
+
+.occup-history .history-item {
+  border-bottom: 1px solid @color-line;
+}
+
+.occup-history .history-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.hist-details .activity-descr {
+  font-family: Gotham Book;
+  font-size: 13px;
+  line-height: 13px;
+  color: @color-text-secondary;
+}
+
+.hist-details .activity-date {
+  font-family: Gotham Light;
+  font-size: 12px;
+  line-height: 12px;
+  color: @color-text-tertiary;
+  margin-top: 4px;
+}
+
+.add-shop-btn {
+  margin-left: 25px;
+}
+
+.checkbox-col {
+  flex: 0 0 50px;
+  max-width: 50px;
+  padding-left: 15px;
+}
+
+.shop-name-col {
+  flex: 0 0 calc(100% - 50px);
+  max-width: calc(100% - 50px);
+  padding-right: 15px;
+}
+
+/* #region create new shops */
+
+.create-new-shop {
+  padding-top: 150px;
+}
+
+.create-new-shop a {
+  outline: none;
+  font-size: 14px;
+}
+
+.create-new-shop .shop-icon {
+  height: 50px;
+  background-image: url('../../../../../../../../assets/images/icons/occupation/common-areas-icon.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 50px;
+  margin-bottom: 20px;
+}
+
+.create-new-shop .new-shop-msg {
+  font-family: 'Gotham Light';
+  color: @color-empty;
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 30px;
+}
+
+.create-new-shop a .add-icon {
+  margin-right: 10px;
+}
+
+/* #endregion */
+
+.view-shops-filter .filter-res-lbl {
+  font-size: 16px;
+  color: @color-text-tertiary;
+  margin-right: 20px;
+}
+
+.view-shops-filter .dropdown-toggle {
+  width: 160px;
+}
+
+.view-shops-filter .dropdown-title {
+  border-bottom: 1px solid @color-line;
+  padding: 10px;
+  font-family: Gotham Medium;
+  font-size: 12px;
+  color: @color-description;
+  text-transform: uppercase;
+}
+
+.view-shops-filter .dropdown-item {
+  text-transform: none;
+  font-family: Gotham Book;
+  font-size: 15px;
+}
+
+.view-shops-filter .dd-filter-lbl {
+  margin-right: 20px;
+  font-family: Gotham Medium;
+  font-size: 15px;
+  color: @color-text-tertiary;
+}
+
+.view-shops .main-search-input {
+  margin-right: 0;
+}
+
+.view-shops .form-control.group-search-input {
+  background: @color-background-white;
+}
+
+.history-list.dropdown-menu {
+  padding: 0;
+  margin: 0;
+  border: none;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.view-shops .toggle-icon {
+  cursor: pointer;
+}
+
+.history-tbl .table-body {
+  font-family: Gotham Book;
+  font-size: 13px;
+  line-height: 13px;
+  color: @color-text-secondary;
+}
+
+.history-tbl .table-row {
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+.history-tbl .table-header {
+  margin-top: 14px;
+}
+
+.history-tbl .table-body .history-itm-absent {
+  color: @color-text-tertiary;
+}
+
+.history-container, .history-tbl {
+  max-width: 100%;
+}
+
+.history-tbl .table-header > div:first-child,
+.history-tbl .table-body .row > div:first-child {
+  padding-left: 0;
+}
+
+.history-tbl .table-header > div:last-child,
+.history-tbl .table-body .row > div:last-child {
+  padding-right: 0;
+}
+
+.history-wrapper {
+  background: @color-background-secondary;
+  margin-top: 18px;
+  border-top: 1px solid @color-line;
+}
+
+.history-container {
+  margin-top: 22px;
+}

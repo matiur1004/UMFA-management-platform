@@ -1,0 +1,8 @@
+<floor-plan (changeFloor)="onChangeFloor($event)"
+            (lastLoad)="onLastLoad()"
+            (reset)="onResetPlan()"
+            (save)="onSavePlan($event)"
+            [activeFloor]="activeFloor$ | async"
+            [floors]="floors$ | async"
+            [importData]="plan$ | async"
+            [shops]="shops$ | async"></floor-plan>

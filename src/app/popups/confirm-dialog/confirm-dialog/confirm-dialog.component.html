@@ -1,0 +1,23 @@
+<div class="confirm-dialog-container">
+  <div class="modal-header">
+    <button (click)="dismiss()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container-fluid text-center">
+      <i class="icon-relative check-mark-icon"></i>
+      <div class="popup-title">Confirm Action</div>
+      <div class="description">
+        <ng-container *ngIf="popupText">
+          {{popupText}} <br/>
+        </ng-container>
+        Are you sure you want to accept this action?
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer d-flex justify-content-center">
+    <button (click)="dismiss()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">No</button>
+    <button (click)="close()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Yes</button>
+  </div>
+</div>

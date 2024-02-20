@@ -1,0 +1,82 @@
+<ng-container>
+  <div *ngFor="let registerDetails of registersReadings; let i = index;" class="row none-margin-hr chart-row">
+    <div class="col-12 none-padding d-flex align-items-center">
+      <div class="row none-margin-hr w-100 chart-row__left">
+        <div class="col-1 rdngs-lst-col d-flex align-items-center">
+                  <span class="cell-prop-val text-ellipsis cursor-poiner"
+                        title="{{registerDetails.registerName}}">{{registerDetails.registerId | registerUnit | async}}</span>
+        </div>
+        <div class="col-9 d-flex align-items-center">
+          <bar-chart *ngIf="currentUsageChart === billingReadingChartEnum.CurrentPeriod
+          && currentPeriodData && currentPeriodData[i]"
+                     [configurations]="configurations"
+                     [customColors]="customColors[i]"
+                     [data]="currentPeriodData[i]"
+                     [registerInfo]="registersInfo[i]">
+          </bar-chart>
+
+          <div *ngIf="currentUsageChart === billingReadingChartEnum.YearOnYear
+          && yearOnYearPeriodData && yearOnYearPeriodData[i]"
+               class="group-bar-view w-100">
+            <bar-chart
+              [configurations]="configurations"
+              [customColors]="customColors[i]"
+              [data]="yearOnYearPeriodData[i]"
+              [isYearOnYearBar]="true"
+              [registerInfo]="registersInfo[i]">
+            </bar-chart>
+          </div>
+
+        </div>
+        <div class="col-2 filter-section d-flex align-items-center justify-content-center">
+          <button (click)="onToggleFilter(registerDetails)" [ngClass]="{'active-btn' : registerDetails.isShowDetails}"
+                  class="dnm-btn dnm-btn-filter text-uppercase"
+                  type="button">Details<i
+            class="btn-filter-icon"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="_isShowVirtualRegisters">
+  <div *ngFor="let registerDetails of virtualRegistersReadings; let i = index;"
+       class="row none-margin-hr chart-row">
+    <div class="col-12 none-padding d-flex align-items-center">
+      <div class="row none-margin-hr w-100 chart-row__left">
+        <div class="col-1 rdngs-lst-col d-flex align-items-center">
+                <span class="cell-prop-val text-ellipsis cursor-poiner"
+                      title="{{registerDetails.registerName}}">{{registerDetails.registerName}}</span>
+        </div>
+        <div class="col-9 d-flex align-items-center">
+          <bar-chart
+            *ngIf="currentUsageChart === billingReadingChartEnum.CurrentPeriod
+            && currentPeriodVRData && currentPeriodVRData[i]"
+            [configurations]="configurations"
+            [customColors]="customVRColors[i]"
+            [data]="currentPeriodVRData[i]"
+            [registerInfo]="_virtualRegisters[i]">
+          </bar-chart>
+
+          <div *ngIf="currentUsageChart === billingReadingChartEnum.YearOnYear
+          && yearOnYearPeriodVRData && yearOnYearPeriodVRData[i]"
+               class="group-bar-view w-100">
+            <bar-chart *ngIf="currentUsageChart === billingReadingChartEnum.YearOnYear"
+                       [configurations]="configurations"
+                       [customColors]="customVRColors[i]"
+                       [data]="yearOnYearPeriodVRData[i]"
+                       [isYearOnYearBar]="true"
+                       [registerInfo]="_virtualRegisters[i]"
+            ></bar-chart>
+          </div>
+        </div>
+        <div class="col-2 filter-section d-flex align-items-center justify-content-center">
+          <button (click)="onToggleFilter(registerDetails)" [ngClass]="{'active-btn' : registerDetails.isShowDetails}"
+                  class="dnm-btn dnm-btn-filter text-uppercase" type="button">
+            Details<i
+            class="btn-filter-icon"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

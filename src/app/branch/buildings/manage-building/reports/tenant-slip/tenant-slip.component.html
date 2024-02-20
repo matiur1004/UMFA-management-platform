@@ -1,0 +1,165 @@
+<div class="container-fluid none-padding consumpt-report">
+    <div class="row none-margin-hr">
+        <div class="col-md-3 second-col vert-blck-line">
+            <div class="filter-blck-wrp">
+                <div class="bl-gradient-title">Building Period:</div>
+                <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+                    <button class="btn btn-secondary dropdown-toggle bld-per-drpdwn-btn text-left" ngbDropdownToggle>
+                    <span *ngIf="!selectedPeriod">Periods not found</span>
+                    <span *ngIf="selectedPeriod">
+                        {{selectedPeriod.name}} ({{selectedPeriod.startDate | dateMediumFormat}}
+                        - {{selectedPeriod.endDate | dateMediumFormat}})
+                    </span>
+                    </button>
+                    <div class="dropdown-menu bld-per-drpdwn-menu" ngbDropdownMenu>
+                    <button (click)="onPeriodChanged(period)" *ngFor="let period of periods;" class="dropdown-item">
+                        {{period.name}} ({{period.startDate | dateMediumFormat}} - {{period.endDate | dateMediumFormat}})
+                    </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 second-col vert-blck-line">
+            <div class="filter-blck-wrp">
+                <div class="bl-gradient-title">Tenant</div>
+                <ng-select [(ngModel)]="selectedTenantId" [clearable]="false"
+                            [dropdownPosition]="'top'" [hideSelected]="true" [items]="filterOptions.tenants"
+                            [ngModelOptions]="{standalone: true}" [searchable]="false" bindLabel="name"
+                            bindValue="id" class="dnm-multiple-select dmb-dropdown-radius" (ngModelChange)="onChangeTenant($event)"></ng-select>
+            </div>
+        </div>
+        <!-- <div class="col-md-2 none-padding d-flex">
+            <button (click)="onApply()" class="dnm-btn filter-footer-btn dnm-btn-primary text-uppercase" type="button">
+                Apply
+            </button>
+        </div> -->
+    </div>
+    <div class="row none-margin-hr mt-2">
+        <div class="card w-100 p-3 bg-gray rounded-xl">
+            <div class="row none-margin-hr">
+                <div class="col-md-5 card p-2 rounded-xl">
+                    <img alt="Logo" src="/assets/images/logo.png" width="240" class="company-logo">
+                </div>
+                <div class="col-md-7 d-flex justify-content-center align-items-center flex-column text-standard size-14 text-dark" *ngIf="branchDetail">
+                    <div class="size-18 font-weight-bold text-uppercase">T/A UMFA - {{branchDetail.registeredName}}</div>
+                    <div>Registration No: {{branchDetail.registeredNumber}}</div>
+                    <div>UMFA {{branchDetail.postAddress.city}}, {{branchDetail.postAddress.line1}}, {{branchDetail.postAddress.suburb}}, {{branchDetail.postAddress.code}}</div>
+                    <div class="d-flex mt-2 flex-row justify-content-around">
+                        <div class="pr-2" *ngIf="branchDetail.phoneContacts.length > 0">Tel: {{branchDetail.phoneContacts[0]['name']}}</div>
+                        <!-- <div class="pl-2">Fax: -</div> -->
+                        <div class="pl-2">Email: {{branchDetail.email}}</div>
+                    </div>
+                    <div class="d-flex flex-row justify-content-around">
+                        
+                        <div class="pr-2" *ngIf="branchDetail.webAddress">Website:: {{branchDetail.webAddress}}</div>
+                        <div class="pl-2"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row none-margin-hr mt-3">
+                <div class="col-md-5 card size-14 text-dark d-flex justify-content-between mr-2">
+                    <div class="size-18 font-weight-bold text-uppercase">{{tenant?.name}}</div>
+                </div>
+                <div class="flex card w-full col px-2 py-3 flex-column size-16 building-detail">
+                    <div class="row none-margin-hr rounded-lg border-1">
+                        <div class="col-md-2 bg-gray border-right-1 rounded-lg font-weight-bold">Building</div>
+                        <div class="col-md-5">{{buildingDetail?.name}}</div>
+                        <div class="col-md-2 bg-gray border-right-1 border-left-1 font-weight-bold">Tenant Code</div>
+                        <div class="col-md-3"></div>
+                    </div>
+                    <div class="row none-margin-hr rounded-lg border-1 mt-2">
+                        <div class="col-md-2 bg-gray border-right-1 rounded-lg font-weight-bold">Units</div>
+                        <div class="col-md-5">{{buildingDetail?.shopName}}</div>
+                        <div class="col-md-2 bg-gray border-right-1 border-left-1 font-weight-bold">Area</div>
+                        <div class="col-md-3">{{buildingDetail?.shopArea}} sq m</div>
+                    </div>
+                    <div class="row none-margin-hr rounded-lg border-1 mt-2">
+                        <div class="col-md-2 bg-gray border-right-1 rounded-lg font-weight-bold">Notes</div>
+                        <div class="col-md-10"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row none-margin-hr mt-3">
+        <div class="col-md-12 text-block-title text-dark font-weight-bold text-center">
+            Consumption Report {{this.selectedPeriod?.name}} (31 days)
+        </div>
+        <div class="col-md-12 card mt-2 table">
+            <div class="row table-header bg-gray font-weight-bold">
+                <div class="col-2 border-right-1">Date</div>
+                <div class="col-7 border-right-1">Description</div>
+                <div class="col-1 border-right-1">Tax</div>
+                <div class="col-2">Excl Vat</div>
+            </div>
+            <div class="row item-row" *ngFor="let item of tenantTableItems">
+                <div class="col-2 rdngs-lst-col d-flex align-items-center border-right-1">
+                    <span class="cell-prop-val text-ellipsis">{{item.date | dateMediumFormat}}</span>
+                </div>
+                <div class="col-7 rdngs-lst-col d-flex align-items-center border-right-1">
+                    <span class="cell-prop-val text-ellipsis">{{item.description}}</span>
+                </div>
+                <div class="col-1 rdngs-lst-col d-flex align-items-center border-right-1">
+                    <span class="cell-prop-val text-ellipsis">Y</span>
+                </div>
+                <div class="col-2 rdngs-lst-col d-flex align-items-center">
+                    {{item.total | dynCurrency:'ZAR':'symbol-narrow':'1.2-2'}}
+                </div>
+            </div>
+            <div class="row table-footer bg-gray pt-2">
+                <div class="col-9"></div>
+                <div class="col-3 d-flex flex-column justify-content-center size-14">
+                    <div class="d-flex justify-content-around">
+                        <span class="size-16 font-weight-bold">Total Excl:</span>
+                        <span>{{costTotal?.total | dynCurrency:'ZAR':'symbol-narrow':'1.2-2'}}</span>
+                    </div>
+                    <div class="d-flex justify-content-around">
+                        <span class="size-16 font-weight-bold">Total Vat:</span>
+                        <span>{{(costTotal?.totalIncVat - costTotal?.total) | dynCurrency:'ZAR':'symbol-narrow':'1.2-2'}}</span>
+                    </div>
+                    <div class="d-flex justify-content-around">
+                        <span class="size-16 font-weight-bold">Total Incl:</span>
+                        <span>{{costTotal?.totalIncVat | dynCurrency:'ZAR':'symbol-narrow':'1.2-2'}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row none-margin-hr mt-3">
+        <div class="col-md-6 card meter-table">
+            <div class="row bg-gray font-weight-bold border-bottom-1 table-title">
+                <span class="size-16 font-weight-bold">Meter Readings</span>
+                <span class="size-13 font-weight-bold">* NA - Not Applicable due to monthly reset values</span>
+                <span class="size-13 font-weight-bold">** - Indicates Estimated values used if next to reading</span>
+            </div>
+            <div class="row table-header bg-gray font-weight-bold">
+                <div class="col-3 border-right-1">Meter No</div>
+                <div class="col-3 border-right-1">Previous</div>
+                <div class="col-3 border-right-1">Current</div>
+                <div class="col-2">FCT</div>
+                <div class="col-1">%</div>
+            </div>
+            <div class="row item-row" *ngFor="let item of meterReadingList">
+                <div class="col-3 rdngs-lst-col d-flex align-items-center">
+                    <span class="cell-prop-val text-ellipsis">({{item.supply.charAt(0)}}){{item.node}}</span>
+                </div>
+                <div class="col-3 rdngs-lst-col d-flex align-items-center">
+                    <span class="cell-prop-val text-ellipsis">{{item.previousReading | number:'1.2-2'}}</span>
+                </div>
+                <div class="col-3 rdngs-lst-col d-flex align-items-center">
+                    <span class="cell-prop-val text-ellipsis">{{item.currentReading | number:'1.2-2'}}</span>
+                </div>
+                <div class="col-2 rdngs-lst-col d-flex align-items-center">
+                    <span class="cell-prop-val text-ellipsis">1.00</span>
+                </div>
+                <div class="col-1 rdngs-lst-col d-flex align-items-center">
+                    <span class="cell-prop-val text-ellipsis"></span>
+                </div>
+            </div>
+        </div>
+        <div class="ml-2 col card meter-table">
+            <meter-reading-chart [data]="chartData"></meter-reading-chart>
+        </div>
+    </div>
+</div>

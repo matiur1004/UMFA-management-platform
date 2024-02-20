@@ -1,0 +1,158 @@
+<div class="container-fluid cost-totals-wrp">
+  <div class="row none-margin-hr">
+    <div class="col none-padding">
+      <div class="bl-gradient-title">Totals (alternative)</div>
+    </div>
+  </div>
+  <div class="row list-header none-margin-hr">
+    <div class="col none-padding d-flex align-items-center">
+      <div class="frst-hdr-col"></div>
+      <div class="row none-margin-hr w-100">
+        <div class="col-4 header-field">
+          <span class="col-lbl text-uppercase" title="Recoverable">Recoverable</span>
+        </div>
+        <div class="col-4 header-field">
+          <span class="col-lbl text-uppercase" title="Non-recoverable">Non-recoverable</span>
+        </div>
+        <div class="col-4 header-field">
+          <span class="col-lbl text-uppercase" title="Total">Total</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <ng-container *ngFor="let costTotalsItem of costTotalsData; let idx = index;">
+    <div class="tree-view">
+      <ul>
+        <li class="root-item">
+          <div class="item-content d-flex align-items-center">
+            <div class="frst-body-col d-flex align-items-center">
+              <div [supplyTypeClassSufix]="'-icon'"
+                   [supplyTypeClass]="costTotalsItem.supplyType" class="service-icon"></div>
+              <span [supplyTypeClassSufix]="'-lbl'"
+                    [supplyTypeClass]="costTotalsItem.supplyType"
+                    class="type-lbl">{{supplyTypeText[costTotalsItem.supplyType]}}</span>
+            </div>
+            <div class="row none-margin-hr w-100">
+              <div class="col-4 d-flex align-items-center">
+                <span class="cost-tot-val">{{costTotalsItem.recoverable | number:'1.0-2'}}</span>
+              </div>
+              <div class="col-4 d-flex align-items-center">
+                <span class="cost-tot-val">{{costTotalsItem.nonRecoverable | number:'1.0-2'}}</span>
+              </div>
+              <div class="col-4 d-flex align-items-center justify-content-between none-rt-padding">
+                <span class="cost-tot-val">{{costTotalsItem.total | number:'1.0-2'}}</span>
+                <div (click)="onExpandItem(costTotalsItem)" class="toggle-btn">
+                  <div [ngClass]="{'expand-icon': !costTotalsItem.isExpanded, 'collapse-icon': costTotalsItem.isExpanded}"
+                       class="toggle-icon"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ul *ngIf="costTotalsItem.isExpanded">
+            <li *ngIf="costTotalsItem.shopArea" class="frst-lvl-item">
+              <div class="item-content d-flex align-items-center">
+                <div class="frst-body-col">
+                  <span class="cost-tot-lbl">Shop area</span>
+                </div>
+                <div class="row none-margin-hr w-100">
+                  <div class="col-4 d-flex align-items-center">
+                    <span class="cost-tot-val">{{costTotalsItem.shopArea.recoverable | number:'1.0-2'}}</span>
+                  </div>
+                  <div class="col-4 d-flex align-items-center">
+                    <span class="cost-tot-val">{{costTotalsItem.shopArea.nonRecoverable | number:'1.0-2'}}</span>
+                  </div>
+                  <div class="col-4 d-flex align-items-center justify-content-between none-rt-padding">
+                    <span class="cost-tot-val">{{costTotalsItem.shopArea.total | number:'1.0-2'}}</span>
+                    <div (click)="onExpandItem(costTotalsItem.shopArea)" class="toggle-btn">
+                      <div [ngClass]="{'expand-icon': !costTotalsItem.shopArea.isExpanded, 'collapse-icon': costTotalsItem.shopArea.isExpanded}"
+                           class="toggle-icon"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <ul *ngIf="costTotalsItem.shopArea.isExpanded">
+                <li *ngFor="let item of costTotalsItem.shopArea.items" class="scnd-lvl-item">
+                  <div class="item-content d-flex align-items-center">
+                    <div class="frst-body-col">
+                      <span class="cost-tot-lbl">{{reconCategoryText[item.reconCategory]}}</span>
+                    </div>
+                    <div class="row none-margin-hr w-100">
+                      <div class="col-4 d-flex align-items-center">
+                        <span class="cost-tot-val">{{item.recoverable | number:'1.0-2'}}</span>
+                      </div>
+                      <div class="col-4 d-flex align-items-center">
+                        <span class="cost-tot-val">{{item.nonRecoverable | number:'1.0-2'}}</span>
+                      </div>
+                      <div class="col-4 d-flex align-items-center justify-content-between">
+                        <span class="cost-tot-val">{{item.total | number:'1.0-2'}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </li>
+            <li *ngIf="costTotalsItem.specials" class="frst-lvl-item">
+              <div class="item-content last-item-content d-flex align-items-center">
+                <div class="frst-body-col">
+                  <span class="cost-tot-lbl">Specials</span>
+                </div>
+                <div class="row none-margin-hr w-100">
+                  <div class="col-4 d-flex align-items-center">
+                    <span class="cost-tot-val">{{costTotalsItem.specials.recoverable | number:'1.0-2'}}</span>
+                  </div>
+                  <div class="col-4 d-flex align-items-center">
+                    <span class="cost-tot-val">{{costTotalsItem.specials.nonRecoverable | number:'1.0-2'}}</span>
+                  </div>
+                  <div class="col-4 d-flex align-items-center justify-content-between none-rt-padding">
+                    <span class="cost-tot-val">{{costTotalsItem.specials.total | number:'1.0-2'}}</span>
+                    <div (click)="onExpandItem(costTotalsItem.specials)" class="toggle-btn">
+                      <div [ngClass]="{'expand-icon': !costTotalsItem.specials.isExpanded, 'collapse-icon': costTotalsItem.specials.isExpanded}"
+                           class="toggle-icon"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <ul *ngIf="costTotalsItem.specials.isExpanded">
+                <li *ngFor="let item of costTotalsItem.specials.items" class="scnd-lvl-item">
+                  <div class="item-content d-flex align-items-center">
+                    <div class="frst-body-col">
+                      <span class="cost-tot-lbl">{{reconCategoryText[item.reconCategory]}}</span>
+                    </div>
+                    <div class="row none-margin-hr w-100">
+                      <div class="col-4 d-flex align-items-center">
+                        <span class="cost-tot-val">{{item.recoverable | number:'1.0-2'}}</span>
+                      </div>
+                      <div class="col-4 d-flex align-items-center">
+                        <span class="cost-tot-val">{{item.nonRecoverable | number:'1.0-2'}}</span>
+                      </div>
+                      <div class="col-4 d-flex align-items-center justify-content-between">
+                        <span class="cost-tot-val">{{item.total | number:'1.0-2'}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </ng-container> -->
+  <div *ngFor="let costTotalsSumItem of costTotalsSum;" class="item-content d-flex align-items-center">
+    <div class="frst-body-col d-flex align-items-center">
+      <span class="cost-tot-lbl">{{costTotalsSumItem.fieldName}}</span>
+    </div>
+    <div class="row none-margin-hr w-100">
+      <div class="col-4 d-flex align-items-center">
+        <span class="cost-tot-val">{{costTotalsSumItem.recoverable | number:'1.0-2'}}</span>
+      </div>
+      <div class="col-4 d-flex align-items-center">
+        <span class="cost-tot-val">{{costTotalsSumItem.nonRecoverable | number:'1.0-2'}}</span>
+      </div>
+      <div class="col-4 d-flex align-items-center justify-content-between">
+        <span class="cost-tot-val">{{costTotalsSumItem.total | number:'1.0-2'}}</span>
+      </div>
+    </div>
+  </div>
+</div>

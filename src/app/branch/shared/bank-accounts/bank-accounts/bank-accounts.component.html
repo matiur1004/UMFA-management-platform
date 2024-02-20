@@ -1,0 +1,69 @@
+<!-- contacts -->
+<div class="client-contacts-block">
+  <div *ngIf="model.length" class="d-flex contacts-table-nav">
+    <span class="text-label-light total-accounts">{{model.length}} bank accounts</span>
+    <a (click)="add()" class="blue-text-btn" href="javascript:void(0);">
+      <i class="add-icon"></i>Add Account
+    </a>
+  </div>
+
+  <div *ngIf="model.length" class="editable-section container-fluid none-padding">
+    <table class="table table-premium bank-accounts-tbl">
+      <thead>
+      <tr class="table-header text-uppercase">
+        <th class="align-middle" scope="col">Account Name</th>
+        <th scope="col">Bank Name</th>
+        <th scope="col">Account Type</th>
+        <th scope="col">Account Number</th>
+        <th scope="col">Branch Code</th>
+        <th scope="col">Swift Code</th>
+        <th scope="col"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let bankAccount of model; let idx = index;" class="table-row">
+        <th scope="row">
+          <div class="accounting-info">
+            <div class="accounting-col">
+              <div class="accounting-img"></div>
+            </div>
+            <div class="accounting-col">
+              <div class="account-name">{{bankAccount.accountName}}</div>
+              <span class="text-secondary">
+                  {{bankAccount.description}}
+                </span>
+            </div>
+          </div>
+        </th>
+        <td>{{bankAccount.bankName}}</td>
+        <td>{{bankAccount.accountType}}</td>
+        <td>{{bankAccount.accountNumber}}</td>
+        <td>{{bankAccount.branchCode}}</td>
+        <td>{{bankAccount.swiftCode}}</td>
+        <td class="text-right">
+          <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+            <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle title="Menu"></button>
+            <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+              <button (click)="edit(idx)" class="dropdown-item d-flex justify-content-between" data-menu-item>Edit<i
+                class="dnm-icon edit-icon"></i></button>
+              <button (click)="delete(idx)" class="dropdown-item d-flex justify-content-between" data-menu-item>Delete<i
+                class="dnm-icon delete-icon"></i></button>
+            </div>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="!model.length" class="no-items-container d-flex align-items-center">
+    <div class="container-fluid text-center">
+      <i class="icon-relative bank-account-icon icon"></i>
+      <div class="description">There are no bank accounts here</div>
+      <a (click)="add()" class="blue-text-btn d-flex align-items-center justify-content-center"
+         href="javascript:void(0);">
+        <i class="add-icon"></i>Create a New Account
+      </a>
+    </div>
+  </div>
+</div>

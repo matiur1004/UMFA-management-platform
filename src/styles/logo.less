@@ -1,0 +1,74 @@
+@import 'variables.less';
+
+.logo {
+  border: 1px solid #ebf0f7;
+  background-color: @color-background-white;
+  width: 120px;
+  height: 80px;
+}
+
+.logo-abbreviation {
+  font-family: 'Gotham Medium';
+  font-size: 25px;
+  color: @color-main-accent;
+  margin: auto;
+}
+
+.round-logo-wrp {
+  width: 35px;
+  height: 35px;
+  margin-right: 20px;
+  border-radius: 17px;
+  float: left;
+}
+
+.round-logo-wrp img.logo-img {
+  max-width: 35px;
+  max-height: 35px !important;
+  border-radius: 17px;
+}
+
+.logo-no-img {
+  .gradient-header();
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: @color-main-accent;
+  font-family: 'Gotham Medium';
+  font-size: 14px;
+  line-height: 35px;
+}
+
+.admin-photo {
+  background: linear-gradient(to right, #394fa2, #324693, #2b3e83, #253575, #1e2d66);
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  font-family: Gotham Book;
+  font-size: 20px;
+  color: @color-main-accent;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 50px;
+  -webkit-box-shadow: 1px 2px 16px -2px rgba(126, 125, 171, 1);
+  -moz-box-shadow: 1px 2px 16px -2px rgba(126, 125, 171, 1);
+  box-shadow: 1px 2px 16px -2px rgba(126, 125, 171, 1);
+}
+
+.profile-photo-abbreviation {
+  position: relative;
+  background: gray;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  vertical-align: middle;
+  float: left;
+  text-align: center;
+  color: @color-background-white;
+  border-radius: 20px;
+  margin-right: 15px;
+}

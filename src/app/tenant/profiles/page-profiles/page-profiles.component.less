@@ -1,0 +1,137 @@
+@import 'variables.less';
+
+.tenant-profiles .top-container .dropdown {
+  margin-right: 30px;
+}
+
+.tenant-profiles .buildings-container {
+  padding-top: 30px;
+}
+
+.tenant-profiles .filter-dropdown.dropdown .dropdown-toggle {
+  min-width: 175px;
+}
+
+.tenant-profiles .dnm-text-medium {
+  font-family: 'Gotham Book';
+}
+
+.tenant-profiles .dnm-text-bold {
+  font-family: 'Gotham Medium';
+}
+
+.tenant-profiles .building-name {
+  color: @color-text-primary;
+  font-size: 20px;
+}
+
+.tenant-profiles .shop-name {
+  color: @color-text-primary;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.tenant-profiles .shop-header-name {
+  font-size: 16px;
+  margin: 10px 0px 10px 0px;
+}
+
+.tenant-profiles .tenant-name {
+  font-size: 18px;
+}
+
+.tenant-profiles .tenant-container {
+  margin-top: 20px;
+}
+
+.tenant-profiles .building-address,
+.tenant-profiles .account-name {
+  color: @color-description;
+}
+
+.tenant-profiles .building-item {
+  padding: 20px;
+  border: 1px solid @color-line;
+  margin-bottom: 10px;
+  background: @color-background-white;
+  position: relative;
+  min-height: 108px;
+  color: @color-text-tertiary;
+  font-size: 14px;
+}
+
+.tenant-profiles .building-info {
+  width: 100%;
+}
+
+.tenant-profiles .profiles-icon {
+  display: inline-block;
+  position: relative;
+  margin: 0px 5px 1px 0px;
+}
+
+.tenant-profiles .manage-users-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.tenant-profiles .email-icon {
+  background-image: url("../../../../assets/images/icons/email.png");
+  background-repeat: no-repeat;
+  width: 16px;
+  height: 12px;
+}
+
+.tenant-profiles .phone-icon {
+  background-image: url("../../../../assets/images/icons/phone.png");
+  background-repeat: no-repeat;
+  width: 16px;
+  height: 16px;
+}
+
+.tenant-profiles .header-field {
+  font-size: 12px;
+  white-space: nowrap;
+  color: @color-empty;
+  text-decoration: none;
+}
+
+.tenant-profiles .service-icon {
+  margin-right: 10px;
+}
+
+.tenant-profiles .shop-item {
+  margin-top: 10px;
+  border: 1px solid #e1e1e1;
+  background-color: @color-background-secondary;
+  padding: 10px 0px 10px 0px;
+}
+
+.tenant-profiles .cross-text {
+  display: inline-block;
+  font-family: Gotham Medium;
+  font-size: 14px;
+  background: linear-gradient(to right, #cc9966, #d08752, #d47243, #d9593b, #dc3939);
+  text-transform: none;
+  margin: 1px 0px 0px 5px;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.tenant-profiles .delete-item {
+  cursor: pointer;
+}
+
+/* #region media queries */
+
+@media (min-width: 768px) {
+  .tenant-profiles .main-search-input {
+    margin-right: 35px;
+  }
+
+  .tenant-profiles .filter-dropdown.dropdown.small {
+    padding-left: 20px;
+  }
+}
+
+/* #endregion */

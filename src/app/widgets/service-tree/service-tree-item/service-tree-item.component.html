@@ -1,0 +1,278 @@
+<li [ngClass]="{'root-item': isRootItem, 'none-padding': service.isExpanded, 'list-pd': !service.isExpanded}">
+  <div *ngIf="!isCustomize" [ngClass]="{'block-pointer': true}" class="item-content d-flex">
+    <div (click)="toggleService.emit(service.id)" class="col-left">
+      <div class="row none-margin-hr">
+        <div class="col-12 none-padding">
+          <div [ngClass]="{'col-10': displayChargingType}" class="service-name text-uppercase">{{service.name}}<span
+            *ngIf="service.numberOfChildren" class="serv-stat-lbl">(+{{service.numberOfChildren}})</span></div>
+          <div [ngClass]="{'col-10': displayChargingType}" class="service-description">{{service.description}}</div>
+          <div *ngIf="!isCustomize" [ngClass]="{'service-price-list': showPrice}"
+               class="d-flex align-items-center align-items-baseline">
+            <service-price
+              *ngIf="service.electricity && service.electricity.isActive && shouldDisplayElectricitySupplier"
+              [model]="service.electricity" [shouldDisplayFixedPriceMethod]="shouldDisplayFixedPriceMethod" [shouldDisplayPerBuildingMethod]="shouldDisplayPerBuildingMethod"
+              [shouldDisplayPerCouncilAccountMethod]="shouldDisplayPerCouncilAccountMethod"
+              [shouldDisplayPerHourMethod]="shouldDisplayPerHourMethod"
+              [shouldDisplayPerMeterMethod]="shouldDisplayPerMeterMethod"
+              [shouldDisplayPerSQMeterMethod]="shouldDisplayPerSQMeterMethod"
+              [shouldDisplayPerShopMethod]="shouldDisplayPerShopMethod"
+              [shouldDisplayPerTenantMethod]="shouldDisplayPerTenantMethod"
+              [showPrice]="showPrice"
+              [type]="serviceType.Electricity"></service-price>
+            <service-price *ngIf="service.water && service.water.isActive && shouldDisplayWaterSupplier"
+                           [model]="service.water"
+                           [shouldDisplayFixedPriceMethod]="shouldDisplayFixedPriceMethod" [shouldDisplayPerBuildingMethod]="shouldDisplayPerBuildingMethod"
+                           [shouldDisplayPerCouncilAccountMethod]="shouldDisplayPerCouncilAccountMethod"
+                           [shouldDisplayPerHourMethod]="shouldDisplayPerHourMethod"
+                           [shouldDisplayPerMeterMethod]="shouldDisplayPerMeterMethod"
+                           [shouldDisplayPerSQMeterMethod]="shouldDisplayPerSQMeterMethod"
+                           [shouldDisplayPerShopMethod]="shouldDisplayPerShopMethod"
+                           [shouldDisplayPerTenantMethod]="shouldDisplayPerTenantMethod"
+                           [showPrice]="showPrice"
+                           [type]="serviceType.Water"></service-price>
+            <service-price *ngIf="service.sewerage && service.sewerage.isActive && shouldDisplaySewerageSupplier"
+                           [model]="service.sewerage" [shouldDisplayFixedPriceMethod]="shouldDisplayFixedPriceMethod" [shouldDisplayPerBuildingMethod]="shouldDisplayPerBuildingMethod"
+                           [shouldDisplayPerCouncilAccountMethod]="shouldDisplayPerCouncilAccountMethod"
+                           [shouldDisplayPerHourMethod]="shouldDisplayPerHourMethod"
+                           [shouldDisplayPerMeterMethod]="shouldDisplayPerMeterMethod"
+                           [shouldDisplayPerSQMeterMethod]="shouldDisplayPerSQMeterMethod"
+                           [shouldDisplayPerShopMethod]="shouldDisplayPerShopMethod"
+                           [shouldDisplayPerTenantMethod]="shouldDisplayPerTenantMethod"
+                           [showPrice]="showPrice"
+                           [type]="serviceType.Sewerage"></service-price>
+            <service-price *ngIf="service.gas && service.gas.isActive && shouldDisplayGasSupplier"
+                           [model]="service.gas"
+                           [shouldDisplayFixedPriceMethod]="shouldDisplayFixedPriceMethod" [shouldDisplayPerBuildingMethod]="shouldDisplayPerBuildingMethod"
+                           [shouldDisplayPerCouncilAccountMethod]="shouldDisplayPerCouncilAccountMethod"
+                           [shouldDisplayPerHourMethod]="shouldDisplayPerHourMethod"
+                           [shouldDisplayPerMeterMethod]="shouldDisplayPerMeterMethod"
+                           [shouldDisplayPerSQMeterMethod]="shouldDisplayPerSQMeterMethod"
+                           [shouldDisplayPerShopMethod]="shouldDisplayPerShopMethod"
+                           [shouldDisplayPerTenantMethod]="shouldDisplayPerTenantMethod"
+                           [showPrice]="showPrice"
+                           [type]="serviceType.Gas"></service-price>
+            <service-price *ngIf="service.adHoc && service.adHoc.isActive && shouldDisplayAdHocSupplier"
+                           [model]="service.adHoc"
+                           [shouldDisplayFixedPriceMethod]="shouldDisplayFixedPriceMethod" [shouldDisplayPerBuildingMethod]="shouldDisplayPerBuildingMethod"
+                           [shouldDisplayPerCouncilAccountMethod]="shouldDisplayPerCouncilAccountMethod"
+                           [shouldDisplayPerHourMethod]="shouldDisplayPerHourMethod"
+                           [shouldDisplayPerMeterMethod]="shouldDisplayPerMeterMethod"
+                           [shouldDisplayPerSQMeterMethod]="shouldDisplayPerSQMeterMethod"
+                           [shouldDisplayPerShopMethod]="shouldDisplayPerShopMethod"
+                           [shouldDisplayPerTenantMethod]="shouldDisplayPerTenantMethod"
+                           [showPrice]="showPrice"
+                           [type]="serviceType.AdHoc"></service-price>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-right">
+      <div class="d-flex justify-content-end">
+        <span *ngIf="service.objectCount" class="service-using-lbl">In use for <span
+          class="service-using-val">{{service.objectCount}}
+          object(s)</span></span>
+      </div>
+      <div class="row-nav">
+        <div class="d-flex align-items-center justify-content-end">
+          <div *ngIf="displaySwitch" class="service-switch serv-nav-item">
+            <label class="dnm-switch-btn">
+              <input (ngModelChange)="changeServiceStatus.emit({serviceId: service.id, value: !service.isActive})" [ngModel]="service.isActive"
+                     type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+            </label>
+            <div class="service-toggle-popup">
+              <div class="service-toggle-msg">
+                {{ service.isActive ? 'Service is active' : 'Service is inactive' }}
+              </div>
+            </div>
+          </div>
+          <div (click)="toggleService.emit(service.id)" *ngIf="service.services.length" class="serv-nav-item">
+            <div [ngClass]="{'expand-icon': !service.isExpanded, 'collapse-icon': service.isExpanded}"
+                 class="toggle-icon"></div>
+          </div>
+          <div *ngIf="displayActionMenu" [placement]="['bottom-right', 'top-right']"
+               class="dropdown darkness d-inline-block" ngbDropdown>
+            <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle></button>
+            <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+              <button (click)="create.emit(service.id)" *ngIf="deepLevel < maxDeepLevel"
+                      class="dropdown-item d-flex justify-content-between" data-menu-item>
+                Add Inner Service
+                <i class="dnm-icon plus-icon"></i>
+              </button>
+              <button (click)="edit.emit(service.id)" class="dropdown-item d-flex justify-content-between"
+                      data-menu-item>
+                Edit
+                <i class="dnm-icon edit-icon"></i>
+              </button>
+              <button (click)="delete.emit({serviceId: service.id, value: service.isActive, objectCount: service.objectCount})" class="dropdown-item d-flex justify-content-between"
+                      data-menu-item>
+                Delete
+                <i class="dnm-icon delete-icon"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isCustomize" [ngClass]="{'block-pointer': true}" class="item-content is-charging-block">
+    <div class="row title-row none-margin-hr">
+      <div class="col-12 none-padding">
+        <div class="d-flex align-items-center justify-content-between">
+          <div class="item-title">
+            <div class="service-name text-uppercase">{{service.name}}<span *ngIf="service.services.length"
+                                                                           class="serv-stat-lbl">(+{{service.services.length}}
+              )</span></div>
+            <div class="service-description">{{service.description}}</div>
+          </div>
+          <div class="d-flex align-items-end">
+            <div *ngIf="displayChargingType" class="item-nav radio-input-wrp d-flex align-items-center">
+              <div class="d-flex align-items-center radio-input">
+                <div class="dnm-radio-btn">
+                  <input (click)="chargingTypeChanged.emit({serviceId: service.id, value: 1})" [ngModel]="service.chargingType" [value]="1"
+                         name="{{service.id}}"
+                         type="radio"/>
+                  <div class="state">
+                    <label></label>
+                  </div>
+                </div>
+                <span class="radio-input-lbl">One-time</span>
+              </div>
+              <div class="d-flex align-items-center radio-input">
+                <div class="dnm-radio-btn">
+                  <input (click)="chargingTypeChanged.emit({serviceId: service.id, value: 0})" [ngModel]="service.chargingType" [value]="0"
+                         name="{{service.id}}"
+                         type="radio"/>
+                  <div class="state">
+                    <label></label>
+                  </div>
+                </div>
+                <span class="radio-input-lbl">Monthly</span>
+              </div>
+            </div>
+            <div *ngIf="isCustomize" class="item-nav">
+              <div class="d-flex align-items-end justify-content-end">
+                <div *ngIf="isCharging" class="is-charging-package">
+                  <div class="charging-dropdown-lbl">Choose a charging method:</div>
+                  <div class="dropdown d-block fullwidth-dropdown" ngbDropdown>
+                    <button class="btn btn-secondary dropdown-toggle services-filter-btn text-left" ngbDropdownToggle
+                            type="button">
+                      {{ chargingMethodText }}
+                    </button>
+                    <div class="dropdown-menu services-filter-menu" ngbDropdownMenu>
+                      <button (click)="onChangeChargingMethod(chargingMethod.FixedPrice)" class="dropdown-item"
+                              type="button">
+                        Fixed
+                        price
+                      </button>
+                      <button (click)="onChangeChargingMethod(chargingMethod.PerTenant)" class="dropdown-item"
+                              type="button">
+                        Per
+                        tenant
+                      </button>
+                      <button (click)="onChangeChargingMethod(chargingMethod.PerShop)" class="dropdown-item"
+                              type="button">
+                        Per
+                        shop
+                      </button>
+                      <button (click)="onChangeChargingMethod(chargingMethod.PerMeter)" class="dropdown-item"
+                              type="button">
+                        Per
+                        meter
+                      </button>
+                      <button (click)="onChangeChargingMethod(chargingMethod.PerSquareMeter)" class="dropdown-item"
+                              type="button">
+                        Per
+                        square meter
+                      </button>
+                      <button (click)="onChangeChargingMethod(chargingMethod.PerBuilding)" class="dropdown-item"
+                              type="button">
+                        Per
+                        building
+                      </button>
+                      <button (click)="onChangeChargingMethod(chargingMethod.PerCouncilAccount)" class="dropdown-item"
+                              type="button">
+                        Per
+                        council account
+                      </button>
+                      <button (click)="onChangeChargingMethod(chargingMethod.PerHour)" class="dropdown-item"
+                              type="button">
+                        Per
+                        hour
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="service-switch serv-nav-item">
+                  <label class="dnm-switch-btn">
+                    <input (ngModelChange)="changeServiceStatus.emit({serviceId: service.id, value: !service.isActive})" [ngModel]="service.isActive"
+                           type="checkbox">
+                    <span class="dnm-switch-slider round"></span>
+                  </label>
+                  <div class="service-toggle-popup">
+                    <div class="service-toggle-msg">
+                      {{ service.isActive ? 'Service is active' : 'Service is inactive' }}
+                    </div>
+                  </div>
+                </div>
+                <div (click)="toggleService.emit(service.id)" *ngIf="deepLevel!=maxDeepLevel" class="serv-nav-item">
+                  <div [ngClass]="{'expand-icon': !service.isExpanded, 'collapse-icon': service.isExpanded}"
+                       class="toggle-icon"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row none-margin-hr">
+      <div class="col none-padding">
+        <customize-package (meterValueChanged)="meterValueChanged.emit($event)" (valueChanged)="valueChanged.emit($event)"
+                           [service]="service"
+                           [shouldDisplayAdHocSupplier]="shouldDisplayAdHocSupplier"
+                           [shouldDisplayElectricitySupplier]="shouldDisplayElectricitySupplier"
+                           [shouldDisplayFixedPriceMethod]="shouldDisplayFixedPriceMethod || _shouldDisplayFixedPriceMethod"
+                           [shouldDisplayGasSupplier]="shouldDisplayGasSupplier"
+                           [shouldDisplayPerBuildingMethod]="shouldDisplayPerBuildingMethod || _shouldDisplayPerBuildingMethod"
+                           [shouldDisplayPerCouncilAccountMethod]="shouldDisplayPerCouncilAccountMethod || _shouldDisplayPerCouncilAccountMethod"
+                           [shouldDisplayPerHourMethod]="shouldDisplayPerHourMethod || _shouldDisplayPerHourMethod"
+                           [shouldDisplayPerMeterMethod]="shouldDisplayPerMeterMethod || _shouldDisplayPerMeterMethod"
+                           [shouldDisplayPerSQMeterMethod]="shouldDisplayPerSQMeterMethod || _shouldDisplayPerSQMeterMethod"
+                           [shouldDisplayPerShopMethod]="shouldDisplayPerShopMethod || _shouldDisplayPerShopMethod"
+                           [shouldDisplayPerTenantMethod]="shouldDisplayPerTenantMethod || _shouldDisplayPerTenantMethod"
+                           [shouldDisplaySewerageSupplier]="shouldDisplaySewerageSupplier"
+                           [shouldDisplayWaterSupplier]="shouldDisplayWaterSupplier"></customize-package>
+      </div>
+    </div>
+  </div>
+
+  <ul *ngIf="service.isExpanded" [ngClass]="{'expanded-list': service.isExpanded}">
+    <service-tree-item (changeServiceStatus)="changeServiceStatus.emit($event)" (changeServiceStatus)="onChangeServiceStatus($event)"
+                       (chargingMethodChanged)="chargingMethodChanged.emit($event)" (chargingTypeChanged)="chargingTypeChanged.emit($event)" (create)="create.emit($event)"
+                       (delete)="delete.emit($event)"
+                       (edit)="edit.emit($event)" (meterValueChanged)="meterValueChanged.emit($event)"
+                       (toggleService)="toggleService.emit($event)" (valueChanged)="onServiceValueChanged($event)"
+                       *ngFor="let subService of service.services; trackBy:trackById" [deepLevel]="deepLevel+1"
+                       [displayActionMenu]="displayActionMenu"
+                       [displayChargingType]="displayChargingType" [displaySwitch]="displaySwitch"
+                       [isCharging]="isCharging"
+                       [isCustomize]="isCustomize" [isRootItem]="false"
+                       [maxDeepLevel]="maxDeepLevel"
+                       [parentId]="service.id" [service]="subService"
+                       [shouldDisplayAdHocSupplier]="shouldDisplayAdHocSupplier"
+                       [shouldDisplayElectricitySupplier]="shouldDisplayElectricitySupplier"
+                       [shouldDisplayFixedPriceMethod]="shouldDisplayFixedPriceMethod"
+                       [shouldDisplayGasSupplier]="shouldDisplayGasSupplier"
+                       [shouldDisplayPerBuildingMethod]="shouldDisplayPerBuildingMethod"
+                       [shouldDisplayPerCouncilAccountMethod]="shouldDisplayPerCouncilAccountMethod"
+                       [shouldDisplayPerHourMethod]="shouldDisplayPerHourMethod"
+                       [shouldDisplayPerMeterMethod]="shouldDisplayPerMeterMethod"
+                       [shouldDisplayPerSQMeterMethod]="shouldDisplayPerSQMeterMethod"
+                       [shouldDisplayPerShopMethod]="shouldDisplayPerShopMethod"
+                       [shouldDisplayPerTenantMethod]="shouldDisplayPerTenantMethod"
+                       [shouldDisplaySewerageSupplier]="shouldDisplaySewerageSupplier"
+                       [shouldDisplayWaterSupplier]="shouldDisplayWaterSupplier"
+                       [showPrice]="showPrice"></service-tree-item>
+  </ul>
+</li>

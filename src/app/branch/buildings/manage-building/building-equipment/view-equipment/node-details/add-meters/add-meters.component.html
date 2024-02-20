@@ -1,0 +1,86 @@
+<div class="container-fluid node-details">
+  <div class="row search-row none-margin-hr">
+    <div class="col none-padding">
+      <form class="form-inline main-search-input w-100 mr-0">
+        <div class="input-group">
+          <input #searchBox (keyup)="search.emit(searchBox.value)" class="form-control group-search-input"
+                 data-search-field
+                 placeholder="Search meter by ID number" type="search"/>
+          <div class="input-group-append">
+            <i class="icon-relative search-icon vertical-middle"></i>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="nav-row d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center">
+      <span class="results-label dnm-text-light">{{nodes.length}} items of equipment</span>
+    </div>
+    <div class="d-flex align-items-center">
+      <span class="text-uppercase drpdwn-fltr-lbl">Register:</span>
+      <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+        <button class="btn btn-secondary fltr-drpdwn-btn dropdown-toggle" ngbDropdownToggle>
+          {{selectedRegisterText}}
+        </button>
+        <div class="dropdown-menu fltr-drpdwn-menu" ngbDropdownMenu>
+          <button (click)="updateRegisterFilter.emit(null)" class="dropdown-item">All registers</button>
+          <button (click)="updateRegisterFilter.emit(item)" *ngFor="let item of registers"
+                  class="dropdown-item">{{item.id | registerUnit | async}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row none-margin-hr list-header">
+    <div class="col-2">
+      <a (click)="onChangeOrderIndex(orderType.SerialNumberAsc)" [ngClass]="{'active': orderIndex == orderType.SerialNumberAsc || orderIndex == orderType.SerialNumberDesc}"
+         class="header-field d-flex align-items-center"
+         href="javascript:void(0);">
+        <span class="text-ellipsis" title="Equipment ID">Name</span>
+        <i [ngClass]="{'inactive': orderIndex != orderType.SerialNumberAsc && orderIndex != orderType.SerialNumberDesc, 'dnm-icon-sort-up': orderIndex == orderType.SerialNumberDesc,'dnm-icon-sort-down': orderIndex != orderType.SerialNumberDesc }"
+           class="dnm-icon"></i>
+      </a>
+    </div>
+    <div class="col-4 header-field d-flex align-items-center">
+      <span class="text-ellipsis" title="Node Type">Node Type</span>
+    </div>
+    <div class="col-5 header-field d-flex align-items-center">
+      <span class="text-ellipsis" title="Register">Register</span>
+    </div>
+    <div class="col-1 header-field d-flex align-items-center">
+      <span class="text-ellipsis" title="Add">Add</span>
+    </div>
+  </div>
+
+  <div class="list-body">
+    <ng-container *ngFor="let node of nodes; let idx = index;">
+      <div class="row none-margin-hr body-row d-flex align-items-center">
+        <div class="col-2">
+          <span class="equip-id-lbl">{{node.displayName}}</span>
+        </div>
+        <div class="col-4">
+          <span class="brand-model-lbl">{{node.nodeType | nodeTypeLabel}}</span>
+        </div>
+        <div class="col-5 d-flex flex-column">
+              <span *ngFor="let register of node.registers" class="position-relative register-lbl">
+                <i *ngIf="registersDict[register.registerId]?.id | checkVirtualRegister | async"
+                   class="tab-icon dnm-icon-equipment-virtual-registers"></i>
+                {{registersDict[register.registerId]?.id | registerUnit | async}}
+              </span>
+        </div>
+        <div class="col-1 d-flex align-items-center">
+          <a (click)="toggleNodeAllocation.emit({node: node, allocated: !allocatedNodes[node.nodeId]})" class="blue-text-btn"
+             href="javascript:void(0)">
+            <i
+              [ngClass]="{'check-mark-icon': allocatedNodes[node.nodeId], 'add-icon': !allocatedNodes[node.nodeId]}"></i>
+          </a>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+  <div class="row none-margin-hr">
+    <div class="col-12 none-padding footer-btns d-flex justify-content-end">
+      <button (click)="onSave()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button" [disabled]="buildingPeriodIsFinalized">OK</button>
+    </div>
+  </div>
+</div>

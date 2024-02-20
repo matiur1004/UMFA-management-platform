@@ -1,0 +1,148 @@
+//@import 'variables.less';
+@import 'required-fields.less';
+
+.modal-body {
+  padding: 0;
+}
+
+.add-bank-account-modal {
+  padding: 40px 25px 0;
+}
+
+::ng-deep .add-bank-account-modal .footer-buttons .dnm-btn {
+  margin-left: 25px;
+}
+
+.add-icon {
+  margin-right: 9px;
+}
+
+::ng-deep .general-info-icon, .super-admin-icon,
+::ng-deep .bank-account-icon {
+  background-repeat: no-repeat;
+}
+
+::ng-deep .general-info-icon {
+  background-image: url("../../../../assets/images/icons/info-icon.svg");
+  width: 20px;
+  height: 20px;
+}
+
+::ng-deep .super-admin-icon {
+  background-image: url("../../../../assets/images/icons/admin-icon.svg");
+  width: 20px;
+  height: 20px;
+}
+
+::ng-deep .bank-account-icon {
+  background-image: url("../../../../assets/images/icons/bank-account-icon.svg");
+  width: 20px;
+  height: 20px;
+}
+
+::ng-deep .add-bank-account-modal .nav-tabs .nav-link {
+  line-height: 1;
+  padding-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+::ng-deep .nav-link.active .general-info-icon {
+  background-image: url("../../../../assets/images/icons/info-active-icon.svg");
+}
+
+::ng-deep .nav-link.active .super-admin-icon {
+  background-image: url("../../../../assets/images/icons/admin-active-icon.svg");
+}
+
+::ng-deep .nav-link.active .bank-account-icon {
+  background-image: url("../../../../assets/images/icons/bank-account-active-icon.svg");
+}
+
+::ng-deep .add-bank-account-modal .blue-cross-icon {
+  display: inline-block;
+  background-image: url("../../../../assets/images/icons/blue-cross.png");
+  background-repeat: no-repeat;
+  width: 12px;
+  height: 12px;
+  position: relative;
+  top: 1px;
+}
+
+::ng-deep .add-bank-account-modal .col-left,
+::ng-deep .add-bank-account-modal .col-right {
+  position: relative;
+  width: 100%;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+::ng-deep .add-bank-account-modal .tab-name {
+  margin-left: 10px;
+}
+
+/* #region media styles */
+
+@media (min-width: 768px) {
+  ::ng-deep .add-bank-account-modal .form-control {
+    padding-left: 20px;
+  }
+
+  ::ng-deep .add-bank-account-modal .col-left {
+    -ms-flex: 0 0 267px;
+    flex: 0 0 267px;
+    max-width: 267px;
+  }
+
+  ::ng-deep .add-bank-account-modal .col-right {
+    -ms-flex: 0 0 480px;
+    flex: 0 0 480px;
+    max-width: 480px;
+  }
+
+  ::ng-deep .add-bank-account-modal .footer-buttons {
+    padding-top: 100px;
+    padding-bottom: 50px;
+  }
+
+  ::ng-deep .add-bank-account-modal .footer-buttons .dnm-btn {
+    width: 200px;
+  }
+
+  ::ng-deep .add-bank-account-modal .row-title .bl-gradient-title {
+    position: relative;
+    line-height: 20px;
+    top: 5px;
+  }
+}
+
+/* #endregion */
+
+.remove-bank-account-btn .blue-cross-icon {
+  margin-left: 10px;
+}
+
+.dnm-btn-delete {
+  background: none;
+  box-shadow: none;
+  padding: 10px;
+}
+
+.dnm-btn-delete:hover {
+  background: @color-background-tertiary;
+}
+
+.table-premium {
+  margin: 18px 0;
+}
+
+/* #region media styles */
+@media (min-width: 768px) {
+  .row-title {
+    margin-bottom: 30px;
+  }
+}
+
+/* #endregion */
+

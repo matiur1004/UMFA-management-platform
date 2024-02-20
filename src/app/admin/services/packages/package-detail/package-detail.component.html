@@ -1,0 +1,439 @@
+<form *ngIf="formState$ | async as form" [ngrxFormState]="form">
+  <div class="page-content package-details">
+    <div class="container-fluid title-container">
+      <div class="row">
+        <div class="col-12 none-padding d-flex justify-content-between align-items-center">
+          <h1 class="page-title">Edit Package</h1>
+          <back-button></back-button>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid" data-general-info>
+      <div class="row">
+        <div class="col-6 none-padding">
+          <div class="bl-gradient-title section-title">General Info</div>
+          <div class="input-row line-div">
+            <div class="text-uppercase field-name text-form-field">Package Name</div>
+            <div class="field-value">
+              <div [ngClass]="{'dnm-invalid-inp': form.isSubmitted && form.errors._name?.required}">
+                <text-input [isRequired]=true [ngrxFormControlState]="form.controls.name" class="none-padding field-value" data-package-name maxlength="150"
+                            placeholder="Type name"></text-input>
+              </div>
+              <small *ngIf="form.isSubmitted && form.errors._name?.required" class="alert-danger">
+                A package name is required
+              </small>
+            </div>
+          </div>
+          <div class="input-row line-div">
+            <div class="text-uppercase field-name text-form-field">Version Number</div>
+            <div class="field-value">
+              <span class="version-value">{{form.controls.regNumber.value}}</span>
+            </div>
+          </div>
+          <div class="input-row line-div align-items-start">
+            <div class="text-uppercase field-name text-form-field field-name-top">
+              Package Category
+            </div>
+            <div class="field-value req-frm-hover" data-categ-chbx>
+              <div class="d-flex align-items-center checkbox-input">
+                <div class="dnm-checkbox">
+                  <input [ngrxFormControlState]="form.controls.packageCategoryIsFullMetering" class="checkbox-toggle"
+                         type="checkbox">
+                  <div class="state">
+                    <label></label>
+                  </div>
+                </div>
+                <span class="checkbox-input-lbl">Full metering</span>
+              </div>
+              <div class="d-flex align-items-center checkbox-input">
+                <div class="dnm-checkbox">
+                  <input [ngrxFormControlState]="form.controls.packageCategoryIsPartialMetering" class="checkbox-toggle req-frm-hover"
+                         type="checkbox"/>
+                  <div class="state">
+                    <label></label>
+                  </div>
+                </div>
+                <span class="checkbox-input-lbl">Partial metering</span>
+              </div>
+              <div class="d-flex align-items-center checkbox-input">
+                <div class="dnm-checkbox">
+                  <input [ngrxFormControlState]="form.controls.packageCategoryIsPrepaidMetering" class="checkbox-toggle"
+                         type="checkbox"/>
+                  <div class="state">
+                    <label></label>
+                  </div>
+                </div>
+                <span class="checkbox-input-lbl">Pre-paid metering</span>
+              </div>
+              <div class="d-flex align-items-center checkbox-input">
+                <div class="dnm-checkbox">
+                  <input [ngrxFormControlState]="form.controls.packageCategoryIsSingleTenant" class="checkbox-toggle"
+                         type="checkbox"/>
+                  <div class="state">
+                    <label></label>
+                  </div>
+                </div>
+                <span class="checkbox-input-lbl">Single tenant</span>
+              </div>
+            </div>
+          </div>
+          <div class="input-row line-div">
+            <div class="text-uppercase field-name text-form-field">Status</div>
+            <div class="field-value">
+              <label class="dnm-switch-btn package-status">
+                <input [ngrxFormControlState]="form.controls.isActive" data-status type="checkbox"/>
+                <span class="dnm-switch-slider round"></span>
+                <span class="dnm-switch-lbl"></span>
+              </label>
+            </div>
+          </div>
+          <div class="input-row line-div">
+            <div class="text-uppercase field-name text-form-field">Package Color</div>
+            <div class="field-value">
+              <div #colorPicker="ngbDropdown" [placement]="['bottom-right', 'top-right']"
+                   autoClose="outside"
+                   class="dropdown darkness d-inline-block" ngbDropdown>
+                <button [ngClass]="form.controls.color.value" class="dnm-btn package-color-btn"
+                        data-color ngbDropdownToggle></button>
+                <div class="package-colors-list dropdown-menu" ngbDropdownMenu>
+                  <package-colors (changeColor)="onChangeColor($event)" (close)="colorPicker.close();"
+                                  [currentColor]="form.controls.color.value"></package-colors>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid" data-supply-types>
+      <div class="row">
+        <div class="col none-padding">
+          <div class="bl-gradient-title section-title">Supply types and prices</div>
+          <div class="d-flex supply-types-row req-frm-hover">
+            <div class="d-flex align-items-center checkbox-input none-padding">
+              <div class="dnm-checkbox">
+                <input [ngrxFormControlState]="form.controls.hasElectricitySupplier" class="checkbox-toggle"
+                       type="checkbox"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+              <span class="checkbox-input-lbl">Electricity</span>
+            </div>
+            <div class="d-flex align-items-center checkbox-input">
+              <div class="dnm-checkbox">
+                <input [ngrxFormControlState]="form.controls.hasWaterSupplier" class="checkbox-toggle" type="checkbox"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+              <span class="checkbox-input-lbl">Water</span>
+            </div>
+            <div class="d-flex align-items-center checkbox-input">
+              <div class="dnm-checkbox">
+                <input [ngrxFormControlState]="form.controls.hasSewerageSupplier" class="checkbox-toggle"
+                       type="checkbox"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+              <span class="checkbox-input-lbl">Sewerage</span>
+            </div>
+            <div class="d-flex align-items-center checkbox-input">
+              <div class="dnm-checkbox">
+                <input [ngrxFormControlState]="form.controls.hasGasSupplier" class="checkbox-toggle" type="checkbox"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+              <span class="checkbox-input-lbl">Gas</span>
+            </div>
+            <div class="d-flex align-items-center checkbox-input">
+              <div class="dnm-checkbox">
+                <input [ngrxFormControlState]="form.controls.hasAdHocSupplier" class="checkbox-toggle" type="checkbox"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+              <span class="checkbox-input-lbl">Ad hoc</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid" data-charge-methods>
+      <div class="row">
+        <div class="col none-padding">
+          <div class="bl-gradient-title section-title">Charging methods</div>
+          <div class="d-flex supply-types-row req-frm-hover">
+            <div class="d-flex align-items-center checkbox-input none-padding">
+              <div class="dnm-checkbox">
+                <input [ngrxFormControlState]="form.controls.hasFixedPriceMethod" class="checkbox-toggle"
+                       type="checkbox"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+              <span class="checkbox-input-lbl">Fixed price</span>
+            </div>
+            <div class="d-flex align-items-center checkbox-input">
+              <div class="dnm-checkbox">
+                <input [ngrxFormControlState]="form.controls.hasPerTenantMethod" class="checkbox-toggle"
+                       type="checkbox"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+              <span class="checkbox-input-lbl">Per Tenant</span>
+            </div>
+            <div class="d-flex align-items-center checkbox-input">
+              <div class="dnm-checkbox">
+                <input [ngrxFormControlState]="form.controls.hasPerShopMethod" class="checkbox-toggle" type="checkbox"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+              <span class="checkbox-input-lbl">Per Shop</span>
+            </div>
+            <div class="d-flex align-items-center checkbox-input">
+              <div class="dnm-checkbox">
+                <input [ngrxFormControlState]="form.controls.hasPerMeterMethod" class="checkbox-toggle"
+                       type="checkbox"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+              <span class="checkbox-input-lbl">Per Meter</span>
+            </div>
+            <div class="d-flex align-items-center checkbox-input">
+              <div class="dnm-checkbox">
+                <input [ngrxFormControlState]="form.controls.hasPerSQMeterMethod" class="checkbox-toggle"
+                       type="checkbox"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+              <span class="checkbox-input-lbl">Per SQ Meter</span>
+            </div>
+            <div class="d-flex align-items-center checkbox-input">
+              <div class="dnm-checkbox">
+                <input [ngrxFormControlState]="form.controls.hasPerBuildingMethod" class="checkbox-toggle"
+                       type="checkbox"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+              <span class="checkbox-input-lbl">Per Building</span>
+            </div>
+            <div class="d-flex align-items-center checkbox-input">
+              <div class="dnm-checkbox">
+                <input [ngrxFormControlState]="form.controls.hasPerCouncilAccountMethod" class="checkbox-toggle"
+                       type="checkbox"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+              <span class="checkbox-input-lbl">Per Council Account</span>
+            </div>
+            <div class="d-flex align-items-center checkbox-input">
+              <div class="dnm-checkbox">
+                <input [ngrxFormControlState]="form.controls.hasPerHourMethod" class="checkbox-toggle" type="checkbox"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+              <span class="checkbox-input-lbl">Per Hour</span>
+            </div>
+            <div class="d-flex align-items-center checkbox-input">
+              <div class="dnm-checkbox">
+                <input [ngrxFormControlState]="form.controls.hasCustomMethod" class="checkbox-toggle" type="checkbox"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+              <span class="checkbox-input-lbl">Custom</span>
+            </div>
+          </div>
+          <div class="dnm-tabset service-types-tabset" data-service-types>
+           <ul ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]="tabId">
+              <li [ngbNavItem]="'tab-0'" *ngIf="form.controls.hasElectricitySupplier.value">
+                <a ngbNavLink>
+                  <i class="tab-icon dnm-icon-electricity"></i>
+                  <span class="tab-name text-uppercase client-tab-name">Electricity</span>
+                </a>
+                <ng-template ngbNavContent>
+                  <package-supplier-detail (applyRecomPrice)="onApplyRecomPrice($event)" [displayOptions]="displayOptions$ | async"
+                                           [highlightPrices]="form.controls.electricitySupplierPrice.controls.recomPrice.value"
+                                           [recommendedPrice]="(recommendSum$ | async).electricity"
+                                           [supplier]="form.controls.electricitySupplierPrice"
+                                           [supplyType]="0"></package-supplier-detail>
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="'tab-1'" *ngIf="form.controls.hasWaterSupplier.value">
+                <a ngbNavLink>
+                  <i class="tab-icon dnm-icon-water"></i>
+                  <span class="tab-name text-uppercase client-tab-name">Water</span>
+                </a>
+                <ng-template ngbNavContent>
+                  <package-supplier-detail (applyRecomPrice)="onApplyRecomPrice($event)" [displayOptions]="displayOptions$ | async"
+                                           [highlightPrices]="form.controls.waterSupplierPrice.controls.recomPrice.value"
+                                           [recommendedPrice]="(recommendSum$ | async).water"
+                                           [supplier]="form.controls.waterSupplierPrice"
+                                           [supplyType]="1"></package-supplier-detail>
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="'tab-2'" *ngIf="form.controls.hasSewerageSupplier.value">
+                <a ngbNavLink>
+                  <i class="tab-icon dnm-icon-sewerage"></i>
+                  <span class="tab-name text-uppercase client-tab-name">Sewerage</span>
+                </a>
+                <ng-template ngbNavContent>
+                  <package-supplier-detail (applyRecomPrice)="onApplyRecomPrice($event)" [displayOptions]="displayOptions$ | async"
+                                           [highlightPrices]="form.controls.sewerageSupplierPrice.controls.recomPrice.value"
+                                           [recommendedPrice]="(recommendSum$ | async).sewerage"
+                                           [supplier]="form.controls.sewerageSupplierPrice"
+                                           [supplyType]="2"></package-supplier-detail>
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="'tab-3'" *ngIf="form.controls.hasGasSupplier.value">
+                <a ngbNavLink>
+                  <i class="tab-icon dnm-icon-gas"></i>
+                  <span class="tab-name text-uppercase client-tab-name">Gas</span>
+                </a>
+                <ng-template ngbNavContent>
+                  <package-supplier-detail (applyRecomPrice)="onApplyRecomPrice($event)" [displayOptions]="displayOptions$ | async"
+                                           [highlightPrices]="form.controls.gasSupplierPrice.controls.recomPrice.value"
+                                           [recommendedPrice]="(recommendSum$ | async).gas"
+                                           [supplier]="form.controls.gasSupplierPrice"
+                                           [supplyType]="3"></package-supplier-detail>
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="'tab-4'" *ngIf="form.controls.hasAdHocSupplier.value">
+                <a ngbNavLink>
+                  <i class="tab-icon dnm-icon-other"></i>
+                  <span class="tab-name text-uppercase client-tab-name">Ad hoc</span>
+                </a>
+                <ng-template ngbNavContent>
+                  <package-supplier-detail (applyRecomPrice)="onApplyRecomPrice($event)" [displayOptions]="displayOptions$ | async"
+                                           [highlightPrices]="form.controls.adHocSupplierPrice.controls.recomPrice.value"
+                                           [recommendedPrice]="(recommendSum$ | async).adHoc"
+                                           [supplier]="form.controls.adHocSupplierPrice"
+                                           [supplyType]="4"></package-supplier-detail>
+                </ng-template>
+              </li>
+            </ul>
+            <div [ngbNavOutlet]="nav"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12 none-padding">
+          <div class="bl-gradient-title section-title">Services List</div>
+          <div class="row none-margin-hr nav-row">
+            <div class="col-12 none-padding">
+              <div class="d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                  <span class="results-lbl dnm-text-light">{{serviceCountTitle$ | async}}</span>
+                </div>
+                <div class="d-flex align-item-center justify-content-end">
+                  <div class="d-flex align-items-center filter-item">
+                    <span class="text-uppercase select-lbl">Show/Hide Price</span>
+                    <div class="service-switch">
+                      <label class="dnm-switch-btn">
+                        <input (change)="onShowPrices()" [ngModelOptions]="{standalone: true}" [ngModel]="showPrice$ | async"
+                               type="checkbox">
+                        <span class="dnm-switch-slider round"></span>
+                      </label>
+                      <div class="service-toggle-popup">
+                        <div class="service-toggle-msg">
+                          Service is enabled
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="d-flex align-items-center filter-item">
+                    <span class="text-uppercase select-lbl">Category:</span>
+                    <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+                      <button class="btn btn-secondary dropdown-toggle services-filter-btn text-left" ngbDropdownToggle
+                              type="button">
+                        {{serviceCategoryFilterTitle$ | async}}
+                      </button>
+                      <div class="dropdown-menu services-filter-menu" ngbDropdownMenu>
+                        <button (click)="onUpdateCategoryFilter(-1)" class="dropdown-item" type="button">All
+                          categories
+                        </button>
+                        <button (click)="onUpdateCategoryFilter(0)" class="dropdown-item" type="button">Full metering
+                        </button>
+                        <button (click)="onUpdateCategoryFilter(1)" class="dropdown-item" type="button">Partial
+                          metering
+                        </button>
+                        <button (click)="onUpdateCategoryFilter(2)" class="dropdown-item" type="button">Pre-paid
+                          metering
+                        </button>
+                        <button (click)="onUpdateCategoryFilter(3)" class="dropdown-item" type="button">Single tenant
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="d-flex align-items-center filter-item">
+                    <span class="text-uppercase select-lbl">Show:</span>
+                    <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+                      <button class="btn btn-secondary dropdown-toggle services-filter-btn text-left" ngbDropdownToggle
+                              type="button">
+                        {{serviceFilterTitle$ | async}}
+                      </button>
+                      <div class="dropdown-menu services-filter-menu" ngbDropdownMenu>
+                        <button (click)="onUpdateServiceFilter(0)" class="dropdown-item" type="button">All services
+                        </button>
+                        <button (click)="onUpdateServiceFilter(1)" class="dropdown-item" type="button">Active services
+                        </button>
+                        <button (click)="onUpdateServiceFilter(2)" class="dropdown-item" type="button">Inactive
+                          services
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <service-tree (changeServiceStatus)="onChangeServiceStatus($event)"
+                        (chargingMethodChanged)="onChargingMethodChanged($event)"
+                        (chargingTypeChanged)="onChargingTypeChanged($event)"
+                        (meterValueChanged)="onMeterValueChanged($event)"
+                        (toggleService)="onToggleServiceExpand($event)"
+                        (valueChanged)="onServiceValueChanged($event)"
+                        [displayActionMenu]="false" [displayChargingType]="true"
+                        [isCharging]="form.controls.hasCustomMethod.value"
+                        [isCustomize]="true" [services]="servicesWithFilter$ | async"
+                        [shouldDisplayAdHocSupplier]="form.controls.hasAdHocSupplier.value"
+                        [shouldDisplayElectricitySupplier]="form.controls.hasElectricitySupplier.value"
+                        [shouldDisplayFixedPriceMethod]="form.controls.hasFixedPriceMethod.value"
+                        [shouldDisplayGasSupplier]="form.controls.hasGasSupplier.value"
+                        [shouldDisplayPerBuildingMethod]="form.controls.hasPerBuildingMethod.value"
+                        [shouldDisplayPerCouncilAccountMethod]="form.controls.hasPerCouncilAccountMethod.value"
+                        [shouldDisplayPerHourMethod]="form.controls.hasPerHourMethod.value"
+                        [shouldDisplayPerMeterMethod]="form.controls.hasPerMeterMethod.value"
+                        [shouldDisplayPerSQMeterMethod]="form.controls.hasPerSQMeterMethod.value"
+                        [shouldDisplayPerShopMethod]="form.controls.hasPerShopMethod.value"
+                        [shouldDisplayPerTenantMethod]="form.controls.hasPerTenantMethod.value"
+                        [shouldDisplaySewerageSupplier]="form.controls.hasSewerageSupplier.value"
+                        [shouldDisplayWaterSupplier]="form.controls.hasWaterSupplier.value"
+                        [showPrice]="showPrice$ | async"></service-tree>
+          <div class="client-contact-info-footer">
+            <div class="row">
+              <div class="col-12 footer-buttons d-flex justify-content-end">
+                <button [routerLink]="['/admin','services','packages']" class="dnm-btn dnm-btn-cancel text-uppercase"
+                        type="button">Cancel
+                </button>
+                <button (click)="onSave()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

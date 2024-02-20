@@ -1,0 +1,262 @@
+<div class="container-fluid none-padding alloc-equip-to-shop">
+  <div class="row nav-row add-line-btn d-flex justify-content-start align-items-center">
+    <div class="col-2 list-item total-container d-flex align-items-center">
+      <span class="total-text">Total:</span>
+      <span class="total-value">{{total}} items</span>
+    </div>
+    <div class="col-auto d-flex align-items-center">
+      <ng-select  
+              (change)="onChangeFilterType($event)"
+              [(ngModel)]="filterTypeModel"
+              [clearable]="false"
+              [hideSelected]="true"
+              [searchable]="false"
+              class="dnm-dropdown-select ng-select ng-select-single mr-4">
+        <ng-option [value]="-1">All</ng-option>
+        <ng-option *ngFor="let item of filterTypesList" [value]="item.value">{{item.label}}</ng-option>
+      </ng-select>
+      <ng-container *ngIf="filterTypeModel == filterTypes.SupplyType">
+        <ng-select (change)="onSearchBySupplyType($event)"
+                [(ngModel)]="supplyTypeModel"
+                [clearable]="false"
+                [hideSelected]="true"
+                [searchable]="false"
+                class="dnm-dropdown-select ng-select ng-select-single">
+          <ng-option [value]="-1">All</ng-option>
+          <ng-option *ngFor="let item of supplyTypesList" [value]="item.value">{{item.label}}</ng-option>
+        </ng-select>
+      </ng-container>
+      <ng-container *ngIf="filterTypeModel == filterTypes.Location">
+        <ng-select (change)="onSearchByLocation($event)"
+                [(ngModel)]="locationModel"
+                [clearable]="false"
+                [hideSelected]="true"
+                [searchable]="false"
+                class="dnm-dropdown-select ng-select ng-select-single">
+          <ng-option [value]="-1">All</ng-option>
+          <ng-option *ngFor="let item of locationList" [value]="item.id">{{item.name}}</ng-option>
+        </ng-select>
+      </ng-container>
+      <ng-container *ngIf="filterTypeModel == filterTypes.EquipmentGroup">
+        <ng-select (change)="onSearchByEquipmentModel($event)"
+                [(ngModel)]="equipmentGroupModel"
+                [clearable]="false"
+                [hideSelected]="true"
+                [searchable]="false"
+                class="dnm-dropdown-select ng-select ng-select-single">
+          <ng-option [value]="-1">All</ng-option>
+          <ng-option *ngFor="let item of equipmentGroups" [value]="item.id">{{item.name}}</ng-option>
+        </ng-select>
+      </ng-container>
+      <ng-container *ngIf="filterTypeModel == filterTypes.DeviceType">
+        <ng-select (change)="onSearchByDeviceType($event)"
+                [(ngModel)]="deviceTypeModel"
+                [clearable]="false"
+                [hideSelected]="true"
+                [searchable]="false"
+                class="dnm-dropdown-select ng-select ng-select-single">
+          <ng-option [value]="-1">All</ng-option>
+          <ng-option *ngFor="let item of deviceTypes" [value]="item.id">{{item.model}}</ng-option>
+        </ng-select>
+      </ng-container>
+
+      <ng-container *ngIf="filterTypeModel == filterTypes.SerialNumber">
+        <div class="col-auto">
+          <simple-search-form (onSearch)="search($event)" [value]="searchTerm"
+                              placeholder="Search Equipment"></simple-search-form>
+        </div>
+      </ng-container>
+      
+    </div>
+    
+  </div>
+  <div class="none-margin-hr table-responsive vertical-table-scroll">
+    <table class="table table-custom table-white table-outside-border-body table-vertical-center" (cdkDropListDropped)="dropped($event)" cdkDropList>
+      <thead>
+      <tr>
+        <th class="cell-selection">
+          <div class="darkness bulk-actions-nav" ngbDropdown placement="bottom-left">
+            <div class="checkbox-input dropdown-checkbox-input d-flex align-items-center" ngbDropdownToggle>
+              <div class="dnm-checkbox list-header-checkbox">
+                <input (click)="onSelectAll()" [checked]="isSelectedAllMeters" class="checkbox-toggle" type="checkbox"/>
+                <div [ngClass]="{'indeterm-state': checkedAllPartly}" class="state">
+                  <label></label>
+                </div>
+              </div>
+            </div>
+            <div class="checkbox-menu" ngbDropdownMenu>
+              <div class="checkbox-menu-header">{{selectedItems}} items selected</div>
+
+              <button (click)="applyBulk.emit({step: step, actionType: actionType.SelectSupplyToAndLocationType})" class="dropdown-item d-flex justify-content-between"
+                      type="button">
+                Select Supply To and Location Type <i class="dnm-icon"></i>
+              </button>
+              <button (click)="applyBulk.emit({step: step, actionType: actionType.SetParentMeter})" class="dropdown-item d-flex justify-content-between"
+                      type="button">
+                Set Parent Meters <i class="dnm-icon"></i>
+              </button>
+              <button (click)="applyBulk.emit({step: step, actionType: actionType.SetUnits})" class="dropdown-item d-flex justify-content-between"
+                      type="button">
+                Set Units <i class="dnm-icon dnm-icon-equipment-locations"></i>
+              </button>
+              <button (click)="applyBulk.emit({step: step, actionType: actionType.SetDescription})" class="dropdown-item d-flex datepicker-wrp justify-content-between"
+                      type="button">
+                Set Description the same as<i class="dnm-icon dnm-calendar"></i>
+              </button>
+            </div>
+          </div>
+        </th>
+        <th>
+          <span class="head-col cell-assigned serial-number-header">Serial number</span>
+        </th>
+        <th>
+          <span class="head-col">Equipment group</span>
+        </th>
+        <th>
+          <span class="head-col">Device Type</span>
+        </th>
+        <th>
+          <span class="head-col">Parent</span>
+        </th>
+        <th>
+          <span class="head-col">Supply To</span>
+        </th>
+        <th>
+          <span class="head-col">Location Type</span>
+        </th>
+        <th>
+          <span class="head-col">Units</span>
+        </th>
+        <th>
+          <span class="head-col">Description</span>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let meter of meters.controls; let idx = index; first as isFirst; trackBy: trackById"
+          [ngClass]="{'selected-row': meter.controls.isSelected.value}"
+          cdkDrag cdkDragLockAxis="y">
+          <td class="cell cell-selection checkbox-input">
+            <div class="dnm-checkbox selection-checkbox">
+              <input [ngrxFormControlState]="meter.controls.isSelected" class="checkbox-toggle" type="checkbox"/>
+              <div class="state">
+                <label></label>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div [title]="meter.value.serialNumber" class="serial-number-label text-ellipsis meter-field">
+              <input [ngClass]="{'dnm-invalid-inp' : locationGroupMeters.isSubmitted && meter.controls.serialNumber?.errors?.required}"
+                     [ngClass]="{'dnm-invalid-inp' : locationGroupMeters.isSubmitted && meter.controls.serialNumber?.errors?.duplicated}"
+                     [ngrxFormControlState]="meter.controls.serialNumber"
+                     (keyup)="serialNumberChange.emit({locationId: meter.value.locationId, id: meter.value.id, serialNumber: $event.target.value})"
+                     class="form-control"
+                     type="text">
+              <small *ngIf="locationGroupMeters.isSubmitted &&  meter.controls.serialNumber?.errors?.required"
+                     class="alert-danger d-block">
+                Serial number is required
+              </small>
+              <small *ngIf="locationGroupMeters.isSubmitted &&  meter.controls.serialNumber?.errors?.duplicated"
+                     class="alert-danger d-block">
+                Serial number must be unique
+              </small>
+            </div>
+          </td>
+          <td>
+            <span class="text-ellipsis group-lbl">{{meter.value.equipmentGroupName}}</span>
+          </td>
+          <td>
+            <span class="text-ellipsis group-lbl">{{meter.value.deviceTypeName}}</span>
+          </td>
+          <td>
+            <ng-select #bulkParentMetersSelect
+                       [appendTo]="'body'"
+                       [clearable]="false" [closeOnSelect]="false" [dropdownPosition]="'bottom'"
+                       [hideSelected]="true"
+                       [items]="meter.value | parentMeterByGroup:existMeters:newMeters"
+                       [multiple]="true"
+                       [ngStyle]="{'min-width': '100px', 'max-width': '250px', 'text-overflow': 'elipsis'}"
+                       placeholder="ROOT"
+                       [ngrxFormControlState]="meter.controls.parentMeters" [searchable]="false" bindLabel="name" bindValue="id"
+                       (change)="parentChange.emit({locationId: meter.locationId, id: meter.value.id, existMeters: existMeters, newMeters: newMeters})"
+                       class="select-dropdown">
+              <ng-template let-clear="clear" let-item="item" ng-label-tmp>
+                <span (click)="clear(item)" aria-hidden="true" class="ng-value-icon left">×</span>
+                <span class="ng-value-label" title="{{item.name}}">{{item.name}}</span>
+              </ng-template>
+              <ng-template ng-header-tmp>
+                <div class="dnm-single-field-filter">
+                  <input (input)="bulkParentMetersSelect.filter($event.target.value)" class="dnm-single-input-field"
+                         type="text"/>
+                </div>
+              </ng-template>
+              <ng-template let-item="item" ng-option-tmp>
+                <div class="text-ellipsis" title="{{item.name}}">
+                  {{item.name}}
+                </div>
+              </ng-template>
+            </ng-select>
+          </td>
+          <td>
+            <ng-select (change)="supplyToChange.emit({locationId: meter.locationId, id: meter.value.id, supplyToId: $event.id})"
+                       [appendTo]="'body'"
+                       [clearable]="false"
+                       [dropdownPosition]="'bottom'"
+                       [hideSelected]="true"
+                       [items]="dropdownData[meter.value.id][bulkDropdownType.Supplies]"
+                       [ngrxFormControlState]="meter.controls.supplyToId" [searchable]="false" bindLabel="name" bindValue="id" class="select-dropdown">
+            </ng-select>
+          </td>
+          <td>
+            <ng-select (change)="locationTypeChange.emit({locationId: meter.locationId, id: meter.value.id, locationType: $event.name})"
+                       [appendTo]="'body'"
+                       [clearable]="false"
+                       [dropdownPosition]="'bottom'"
+                       [hideSelected]="true"
+                       [items]="dropdownData[meter.value.id][bulkDropdownType.LocationTypes]"
+                       [ngrxFormControlState]="meter.controls.locationType"
+                       [searchable]="false" bindLabel="name" class="select-dropdown">
+            </ng-select>
+          </td>
+          <td>
+            <ng-select #selectUnit 
+                       (change)="unitChange.emit({locationId: meter.locationId, id: meter.value.id})"
+                       [appendTo]="'body'"
+                       [clearable]="false" [closeOnSelect]="false" [dropdownPosition]="'bottom'" [hideSelected]="true"
+                       [items]="unitOptions"
+                       [multiple]="true"
+                       [ngStyle]="{'min-width': '100px', 'max-width': '250px', 'text-overflow': 'elipsis'}"
+                       [ngrxFormControlState]="meter.controls.unitIds" [searchable]="false" bindLabel="name" bindValue="id"
+                       class="select-dropdown">
+              <ng-template let-clear="clear" let-item="item" ng-label-tmp>
+                <span (click)="clear(item)" aria-hidden="true" class="ng-value-icon left">×</span>
+                <span class="ng-value-label" title="{{item.name}}">{{item.name}}</span>
+              </ng-template>
+              <ng-template ng-header-tmp>
+                <div class="dnm-single-field-filter">
+                  <input (input)="selectUnit.filter($event.target.value)" class="dnm-single-input-field" type="text"/>
+                </div>
+              </ng-template>
+              <ng-template let-item="item" ng-option-tmp>
+                <div class="text-ellipsis" title="{{item.name}}">
+                  {{item.name}}
+                </div>
+              </ng-template>
+            </ng-select>
+          </td>
+          <td>
+              <textarea [ngrxFormControlState]="meter.controls.description" class="form-control" maxlength="256"
+                        placeholder="Type here"></textarea>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="row none-margin-hr">
+    <div class="col-12 none-padding footer-btns d-flex justify-content-end">
+      <button (click)="close.emit()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+      <button (click)="nextStep.emit(2)" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Next</button>
+    </div>
+  </div>
+</div>

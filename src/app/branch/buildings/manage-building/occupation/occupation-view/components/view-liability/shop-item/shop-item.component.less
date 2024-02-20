@@ -1,0 +1,68 @@
+@import 'variables.less';
+
+.shop-item {
+  height: 70px;
+  border-bottom: 1px solid #e1e1e1;
+}
+
+.shop-item .shop-name {
+  font-family: Gotham Medium;
+  font-size: 13px;
+  line-height: 13px;
+  color: @color-text-tertiary;
+  margin-bottom: 5px;
+}
+
+.shop-item .tenant-name,
+.shop-item .no-tenant-name {
+  font-family: Gotham Book;
+  font-size: 12px;
+  line-height: 12px;
+  cursor: pointer;
+  margin-bottom: 6px;
+}
+
+.shop-item .tenant-name {
+  color: @color-text-tertiary;
+}
+
+.shop-item .no-tenant-name {
+  color: @color-description;
+}
+
+.shop-item .shop-data {
+  padding: 10px 20px;
+  border-right: 1px solid #e1e1e1;
+  width: 220px;
+}
+
+.shop-item .shop-square {
+  font-family: Gotham Book;
+  font-size: 12px;
+  height: 12px;
+  line-height: 12px;
+  color: @color-description;
+  padding-right: 10px;
+  margin-right: 10px;
+  white-space: nowrap;
+}
+
+.shop-item .input-datepicker {
+  font-family: Gotham Book;
+  font-size: 12px;
+  line-height: 12px;
+  height: 12px;
+  color: @color-description;
+  background-color: transparent;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+}
+
+.shop-item .input-datepicker:focus {
+  box-shadow: none;
+}
+
+.shop-item .shop-input {
+  width: 50px;
+}

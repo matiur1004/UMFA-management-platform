@@ -1,0 +1,164 @@
+<div class="row">
+  <div class="col-12 col-lg-9 col-xl-7">
+    <form [formGroup]="form">
+      <div class="general-info-block">
+        <!-- client logo -->
+        <div class="client-logo-block">
+          <div class="bl-gradient-title">Client Logo</div>
+          <upload-image (fileChange)="logoChanged($event)" [(file)]="model.logo" [(src)]="model.logoUrl"
+                        [outputFileName]="'client-logo'"></upload-image>
+        </div>
+        <!-- general info -->
+        <div class="client-gen-info-block">
+          <div class="bl-gradient-title editable-section-title">General Info</div>
+
+          <div class="input-row">
+            <div class="text-uppercase field-name">Company Name</div>
+            <div class="field-value none-padding">
+              <div [ngClass]="{'dnm-invalid-inp': formErrors['name']}">
+                <input class="form-control req-frm-fld" formControlName="name" maxlength="256" placeholder="Type here" type="text"/>
+              </div>
+            </div>
+            <div class="field-name"></div>
+            <div class="field-value none-padding">
+              <small *ngIf="formErrors['name']" class="alert-danger">
+                {{ formErrors["name"] }}
+              </small>
+            </div>
+          </div>
+
+          <div class="input-row">
+            <div class="text-uppercase field-name">Registration Number</div>
+            <div class="field-value none-padding">
+              <div [ngClass]="{'dnm-invalid-inp': formErrors['registrationNumber']}">
+                <input class="form-control" formControlName="registrationNumber" maxlength="256" placeholder="Type here"
+                       type="text"/>
+              </div>
+            </div>
+            <div class="field-name"></div>
+            <div class="field-value none-padding">
+              <small *ngIf="formErrors['registrationNumber']" class="alert-danger">
+                {{ formErrors["registrationNumber"] }}
+              </small>
+            </div>
+          </div>
+
+          <div class="input-row">
+            <div class="text-uppercase field-name">VAT Number</div>
+            <div class="field-value none-padding">
+              <div [ngClass]="{'dnm-invalid-inp': formErrors['vatNumber']}">
+                <input class="form-control" formControlName="vatNumber" maxlength="256" placeholder="Type here"
+                       type="text"/>
+              </div>
+            </div>
+            <div class="field-name"></div>
+            <div class="field-value none-padding">
+              <small *ngIf="formErrors['vatNumber']" class="alert-danger">
+                {{ formErrors["vatNumber"] }}
+              </small>
+            </div>
+          </div>
+
+          <div class="input-row">
+            <div class="text-uppercase field-name">Email</div>
+            <div class="field-value none-padding">
+              <div [ngClass]="{'dnm-invalid-inp': formErrors['email']}">
+                <input class="form-control req-frm-fld" formControlName="email" maxlength="256" placeholder="Type here"
+                       type="email"/>
+              </div>
+            </div>
+            <div class="field-name"></div>
+            <div class="field-value none-padding">
+              <small *ngIf="formErrors['email']" class="alert-danger">
+                {{ formErrors["email"] }}
+              </small>
+            </div>
+          </div>
+
+          <div class="input-row">
+            <div class="text-uppercase field-name">
+              Phone Number<br/>
+              <span class="undertext">*default number</span>
+            </div>
+            <div class="field-value none-padding">
+              <div [ngClass]="{'dnm-invalid-inp': formErrors['phone']}">
+                <input class="form-control req-frm-fld" formControlName="phone" maxlength="15" placeholder="Type here" type="text"/>
+              </div>
+            </div>
+            <div class="field-name"></div>
+            <div class="field-value none-padding">
+              <small *ngIf="formErrors['phone']" class="alert-danger">
+                {{ formErrors["phone"] }}
+              </small>
+            </div>
+          </div>
+
+          <div formArrayName="addresses">
+            <div *ngFor="let address of addresses.controls; index as i; let idx = index;">
+              <div class="row">
+                <div class="col">
+                  <address [formControlName]="i" [isSubmitted]="isSubmitted"
+                           [validationNotify]="submitNotify"></address>
+                </div>
+                <div *ngIf="addresses.length > 1" class="delete-address">
+                  <button (click)="onRemoveAddress(idx)" class="dnm-btn-icon">
+                    <i class="icon cross-icon"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="formErrors['addresses']" class="row client-input-row">
+            <small class="alert-danger">
+              {{ formErrors["addresses"] }}
+            </small>
+          </div>
+
+
+          <div class="input-row">
+            <a (click)="onAddAddress()" *ngIf="!editAddress" class="blue-text-btn client-gen-info-btn"
+               href="javascript:void(0);">
+              <i class="add-icon"></i> Add Address
+            </a>
+            <a (click)="addExternalLink()" *ngIf="!contactInformations.controls.length" class="blue-text-btn client-gen-info-btn"
+               href="javascript:void(0);">
+              <i class="add-icon"></i> Add External Link
+            </a>
+          </div>
+          <div *ngIf="contactInformations.controls.length" formArrayName="contactInformations">
+            <div class="bl-gradient-title el-title">External Links</div>
+            <div *ngFor="let contact of contactInformations.controls; index as i; let idx = index;">
+              <div class="row">
+                <div class="col">
+                  <div class="input-row">
+                    <dropdown-input [(model)]="contact.value.label" [values]="contactInformationTypes"
+                                    class="text-uppercase field-name"></dropdown-input>
+                    <text-input [isRequired]=true [(model)]="contact.value.value" class="field-value el-field-value"></text-input>
+                  </div>
+                </div>
+                <div class="delete-link">
+                  <button (click)="onRemoveContact(idx)" class="dnm-btn-icon">
+                    <i class="icon cross-icon"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="input-row">
+              <a (click)="addExternalLink()" class="blue-text-btn client-gen-info-btn" href="javascript:void(0);">
+                <i class="add-icon"></i> Add External Link
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="client-gen-info-footer">
+          <div class="row w-100 ml-0">
+            <div class="col-md-8 offset-md-4 none-padding footer-buttons">
+              <button (click)="onCancel()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+              <button (click)="onSubmit()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

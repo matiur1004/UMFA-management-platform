@@ -1,0 +1,231 @@
+<div class="row none-margin-hr">
+  <div class="col-12 none-padding">
+    <div class="bl-gradient-title">Recoverable</div>
+  </div>
+ </div>
+  <div class="container-fluid none-padding tenants-list">
+
+    <div class="row list-header none-margin-hr tree-header">
+      <div class="col-6 header-field d-flex align-items-center col-frst-lv">
+        <span class="col-lbl text-uppercase">Name</span>
+      </div>
+      <div class="col-2 header-field">
+        <span class="col-lbl text-uppercase">Shared<br />Total, R</span>
+      </div>
+      <div class="col-2 header-field d-flex align-items-center">
+        <span class="col-lbl text-uppercase">Vat, R</span>
+      </div>
+      <div class="col-2 header-field">
+        <span class="col-lbl text-uppercase">Total Inc.<br />Vat, R</span>
+      </div>
+    </div>
+
+    <div class="tree-view">
+      <ul>
+        <li *ngFor="let tenant of tenants" class="root-item">
+          <div class="item-content d-flex tenant-item">
+            <div class="col-left">
+              <div class="container-fluid none-padding">
+
+                <div class="row none-margin-hr row-total">
+                  <div class="col-6 col-frst-lv">
+                    <div class="txt-lg">
+                      {{tenant.tenantName}}<span *ngIf="tenant.isNew" class="new-tnt text-uppercase">
+                        <i class="dnm-icon new-info-gr-icon"></i>New
+                      </span>
+                    </div>
+                    <div class="txt-sm-light">
+                      <span class="tnt-code">
+                        Tenant code: <span class="txt-sm-bold">{{tenant.tenantCode}}</span>
+                      </span>
+                      <span>
+                        Shop area: <span class="txt-sm-bold">{{tenant.shopArea}} sq m</span>
+                      </span>
+                    </div>
+                  </div>
+                  <ng-container *ngIf="tenant.sum">
+                    <div class="col-2 txt-sm-total d-flex align-items-center">{{ tenant.sum.total | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                    <div class="col-2 txt-sm-total d-flex align-items-center">{{ (tenant.sum.totalIncVat - tenant.sum.total) | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                    <div class="col-2 txt-sm-total d-flex align-items-center">{{ tenant.sum.totalIncVat | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                  </ng-container>
+                </div>
+
+                <div *ngFor="let cost of tenant.totals" class="row none-margin-hr">
+                  <div class="col-6 col-frst-lv">
+                    <div class="service-type d-flex align-items-center">
+                      <div [supplyTypeClassSufix]="'-icon'" [supplyTypeClass]="cost.supplyType"
+                           class="service-icon"></div>
+                      <span [supplyTypeClassSufix]="'-lbl'" [supplyTypeClass]="cost.supplyType"
+                            class="type-lbl">{{serviceType[cost.supplyType]}}</span>
+                    </div>
+                  </div>
+                  <div class="col-2 txt-sm">{{ cost.total | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                  <div class="col-2 txt-sm">{{ (cost.totalIncVat - cost.total) | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                  <div class="col-2 txt-sm">{{ cost.totalIncVat | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-right d-flex align-content-center justify-content-end">
+              <div class="d-flex align-items-center justify-content-end">
+                <div (click)="expandToggleTenant(tenant.tenantId)" class="toggle-btn">
+                  <div [ngClass]="{'expand-icon': !tenant.isExpanded, 'collapse-icon': tenant.isExpanded}"
+                       class="toggle-icon"></div>
+                </div>
+                <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+                  <button title="ToggleExpand" class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle></button>
+                  <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                    <button class="dropdown-item d-flex justify-content-between">
+                      Tenant Statement
+                      <i class="dnm-icon edit-icon"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <ul *ngIf="tenant.isExpanded">
+            <ng-container *ngFor="let item of tenant.details">
+              <li class="shop-item">
+                <div class="d-flex align-items-center item-content">
+                  <div class="container-fluid none-padding">
+                    <div class="row none-margin-hr">
+                      <div class="col-5 none-padding d-flex align-items-center">
+                        <div class="bl-gradient-title shop-dtls-title">
+                          {{item.shopOwnCosts.shopName}} details
+                        </div>
+                      </div>
+                      <div class="col-7 d-flex align-items-center">
+                        <div class="stat-blck w-100 d-flex justify-content-between">
+                          <div *ngFor="let totalItem of item.totals" class="blck-item">
+                            <span [supplyTypeClassSufix]="'-grad'" [supplyTypeClass]="totalItem.supplyType"
+                                  class="item-val">{{ totalItem.totalIncVat | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</span>
+                            <span [supplyTypeClassSufix]="'-grad'" [supplyTypeClass]="totalItem.supplyType"
+                                  class="item-descr">
+                                  Total {{supplyTypeNames[totalItem.supplyType]}} inc. vat
+                            </span>
+                          </div>
+                          <div class="blck-item">
+                            <span class="item-val total-grad">{{ item.totalIncVat | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</span>
+                            <span class="item-descr total-grad">total inc. vat</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <ul>
+                  <li class="shop-detail" *ngIf="item.shopOwnCosts.totalIncVat">
+                    <div class="item-content d-flex align-items-center">
+                      <div class="container-fluid none-padding">
+                        <div class="row none-margin-hr">
+                          <div class="col-6 none-padding d-flex align-items-center">
+                            <div class="container-fluid none-padding">
+                              <div class="row none-margin-hr">
+                                <div class="col-6 none-padding txt-lg d-flex align-items-center">
+                                  {{item.shopOwnCosts.shopName}} area
+                                </div>
+                                <div class="col-3">
+                                  <div class="txt-sm-light">Shop code:</div>
+                                  <div class="txt-sm">{{item.shopOwnCosts.shopCode}}</div>
+                                </div>
+                                <div class="col-3">
+                                  <div class="txt-sm-light">Shop area:</div>
+                                  <div class="txt-sm">{{item.shopOwnCosts.shopArea}} sq m</div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-6">
+                            <div class="container-fluid none-padding">
+                              <div class="row none-margin-hr d-flex align-items-center">
+                                <div class="col-4">
+                                  <div class="txt-sm-light">
+                                    Total:
+                                  </div>
+                                  <div class="txt-sm">{{ item.shopOwnCosts.total | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                                </div>
+                                <div class="col-4">
+                                  <div class="txt-sm-light">VAT:</div>
+                                  <div class="txt-sm">{{ (item.shopOwnCosts.totalIncVat - item.shopOwnCosts.total) | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                                </div>
+                                <div class="col-4">
+                                  <div class="container-fluid none-padding">
+                                    <div class="row none-margin-hr">
+                                      <div class="col-auto none-padding d-flex align-items-center price-icn">
+                                        <i class="dnm-icon price-gr-icon"></i>
+                                      </div>
+                                      <div class="col-auto none-padding shop-tl-info">
+                                        <div class="gd-title-green txt-lg">{{ item.shopOwnCosts.totalIncVat | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                                        <div class="gd-title-green txt-sm-light txt-sm-descr">total inc. vat</div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <node-tariff-section [nodeTariffSections]="item.shopOwnCosts.nodeTariffSections"></node-tariff-section>
+                  </li>
+                  
+                  <ng-container *ngFor="let cmnArea of item.commonAreaCosts">
+                    <li class="cmn-area-item" *ngIf="cmnArea.totalIncVat">
+                      <div class="item-content d-flex align-items-center">
+                        <div class="container-fluid none-padding">
+                          <div class="row none-margin-hr">
+                            <div class="col-8 none-padding d-flex align-items-center">
+                              <div class="container-fluid none-padding">
+                                <div class="row none-margin-hr">
+                                  <div class="col-6 none-padding txt-lg d-flex align-items-center">
+                                    {{cmnArea.commonAreaName}}
+                                  </div>
+                                  <div class="col-6">
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-4">
+                              <div class="container-fluid none-padding">
+                                <div class="row none-margin-hr d-flex align-items-center">
+                                  <div class="col-4">
+                                    <div class="txt-sm-light">Total:</div>
+                                    <div class="txt-sm">{{ cmnArea.total | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                                  </div>
+                                  <div class="col-4">
+                                    <div class="txt-sm-light">VAT:</div>
+                                    <div class="txt-sm">{{ (cmnArea.totalIncVat - cmnArea.total) | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                                  </div>
+                                  <div class="col-4">
+                                    <div class="container-fluid none-padding">
+                                      <div class="row none-margin-hr">
+                                        <div class="col-auto none-padding d-flex align-items-center price-icn">
+                                          <i class="dnm-icon price-gr-icon"></i>
+                                        </div>
+                                        <div class="col-auto none-padding shop-tl-info">
+                                          <div class="gd-title-green txt-lg">{{ cmnArea.totalIncVat | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                                          <div class="gd-title-green txt-sm-light txt-sm-descr">total inc. vat</div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <node-tariff-section [nodeTariffSections]="cmnArea.nodeTariffSections"></node-tariff-section>
+                    </li>
+                  </ng-container>
+                </ul>
+              </li>
+              
+            </ng-container>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>

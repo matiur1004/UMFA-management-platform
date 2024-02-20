@@ -1,0 +1,86 @@
+@import 'variables.less';
+
+.discount-popup-wrp {
+  width: 450px;
+  min-width: 450px;
+  max-width: 450px;
+  background-color: @color-background-white;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.discount-popup-wrp::after,
+.discount-popup-wrp::before {
+  position: absolute;
+  content: '';
+  background: @color-background-white;
+  top: -10px;
+  right: calc(50% - 10px);
+  width: 22px;
+  height: 22px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: -1;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
+.discount-popup-wrp::before {
+  z-index: 1;
+  box-shadow: none;
+}
+
+.discount-popup-wrp .modal-header {
+  padding: 20px 20px 30px 30px;
+}
+
+.discount-popup-wrp .modal-header .modal-title {
+  font-family: Gotham Medium;
+  font-size: 18px;
+  color: @color-text-tertiary;
+  line-height: 18px;
+}
+
+.discount-popup-wrp .modal-header .close {
+  width: 13px;
+  height: 13px;
+  padding: 0;
+  margin: 0;
+  font-size: 13px;
+}
+
+.discount-popup-wrp .modal-body {
+  padding: 0 30px 18px;
+}
+
+.discount-popup-wrp .main-discount-lbl {
+  font-family: Gotham Medium;
+  font-size: 16px;
+  line-height: 1;
+  color: @color-text-secondary;
+  padding-bottom: 10px;
+}
+
+.discount-popup-wrp .discount-data-wrp,
+.discount-popup-wrp .provided-by-lbl {
+  font-family: Gotham Book;
+  font-size: 13px;
+  line-height: 1;
+  padding-bottom: 12px;
+}
+
+.discount-popup-wrp .discount-data-wrp {
+  margin-right: 20px;
+}
+
+.discount-popup-wrp .discount-fld-name {
+  margin-right: 5px;
+  color: @color-description;
+}
+
+.discount-popup-wrp .discount-fld-val {
+  color: @color-text-tertiary;
+}
+
+.discount-popup-wrp .provided-by-lbl {
+  color: @color-description;
+}

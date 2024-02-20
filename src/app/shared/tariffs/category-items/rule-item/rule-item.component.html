@@ -1,0 +1,98 @@
+<div [ngClass]="{ 'rule-item-wrp--first': isOne, 'rule-item-wrp--one': isOne && isOneGroup }" class="rule-item-wrp">
+  <label *ngIf="!isFirst" class="and-or-toggle">
+    <input [(ngModel)]="isLogicalOperatorChecked"
+           class="checkbox-toggle"
+           type="checkbox">
+    <span (click)="onLogicalOperatorChange(LogicalOperators.AND)"
+          class="and-toggle-lbl">AND</span>
+    <span (click)="onLogicalOperatorChange(LogicalOperators.OR)"
+          class="or-toggle-lbl">OR</span>
+  </label>
+  <div class="rule-row d-flex align-items-center">
+    <div class="rule-inpt d-flex align-items-center">
+      <ng-select (change)="onChangeAttribute($event)"
+                 [clearable]="false"
+                 [closeOnSelect]="true"
+                 [dropdownPosition]="'top'"
+                 [hideSelected]="true"
+                 [items]="attributes"
+                 [multiple]="false"
+                 [ngModel]="rule.attributeId"
+                 [searchable]="false"
+                 bindLabel="name"
+                 bindValue="id"
+                 class="select-dropdown drpdwn-attributes-inpt">
+        <ng-template let-item="item" ng-option-tmp>
+          <div title="{{item.name}}">{{item.name}}</div>
+        </ng-template>
+      </ng-select>
+      <ng-select (change)="onChangeComparison($event)"
+                 [clearable]="false"
+                 [closeOnSelect]="true"
+                 [dropdownPosition]="'top'"
+                 [hideSelected]="true"
+                 [items]="operatorsDropdown"
+                 [multiple]="false"
+                 [ngModel]="rule.comparisonOperator"
+                 [searchable]="false"
+                 bindLabel="label"
+                 bindValue="value"
+                 class="select-dropdown drpdwn-operators-inpt"></ng-select>
+      <div class="d-flex align-items-center">
+        <!-- style feature will change on ngIf statement -->
+        <div *ngIf="rule.attributeId && attributeComboValues[rule.attributeId] as comboValues; else simpleValue">
+          <ng-select (change)="onChangeCombo($event)"
+                     [bindLabel]="'value'"
+                     [bindValue]="'value'"
+                     [clearable]="false"
+                     [closeOnSelect]="true"
+                     [dropdownPosition]="'top'"
+                     [hideSelected]="true"
+                     [items]="comboValues"
+                     [multiple]="false"
+                     [ngModel]="rule.value"
+                     [searchable]="false"
+                     class="select-dropdown drpdwn-phase-val"></ng-select>
+        </div>
+        <ng-template #simpleValue>
+          <div>
+            <div class="d-flex align-items-center justify-content-between">
+              <input (ngModelChange)="onChangeValue($event)"
+                     [ngModel]="rule.value"
+                     [textMask]="{ mask: numberMask }"
+                     class="form-control numb-form-control"
+                     placeholder="0"
+                     type="text"/>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+    <div class="rule-nav d-flex align-items-center justify-content-end">
+      <div class="nav-items">
+        <div class="d-flex align-items-center">
+          <a (click)="onAddRule()"
+             class="rules-nav-item blue-text-btn"
+             href="javascript:void(0);">
+            <i class="add-icon"></i>Rule
+          </a>
+          <a (click)="onAddGroup()"
+             class="add-rules-group-btn rules-nav-item blue-text-btn"
+             href="javascript:void(0);">
+            <i class="add-icon"></i>Group
+          </a>
+          <div (click)="onDeleteRule()"
+               *ngIf="!(isOne && isOneGroup)"
+               class="delete-item d-flex align-items-center"
+               title="Remove Rule">
+            <span class="cross-icon"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <small *ngIf="errors && (errors?._attributeId || errors?._comparisonOperator || errors?._value)"
+           class="alert-danger">
+      Fill all fields
+    </small>
+  </div>
+</div>

@@ -1,0 +1,151 @@
+@import 'variables.less';
+
+.location-wizard-wrp {
+  padding-top: 65px;
+}
+
+.location-details {
+  padding: 40px 0;
+}
+
+.location-details .location-title {
+  margin-bottom: 20px;
+}
+
+.location-details .location-dets-title {
+  font-family: Gotham Medium;
+  font-size: 30px;
+  line-height: 30px;
+  color: @color-text-primary;
+}
+
+.location-details .location-dets-descr {
+  font-family: Gotham Book;
+  font-size: 16px;
+  line-height: 24px;
+  color: @color-description;
+  margin-bottom: 30px;
+}
+
+.location-details .dets-stat-row {
+  margin-bottom: 30px;
+}
+
+.location-details .dets-stat-item {
+  background: @color-background-white;
+  width: 150px;
+  height: 100px;
+  border-radius: 10px;
+  margin-right: 30px;
+}
+
+.location-details .sequence-number {
+  .gradient-black();
+}
+
+.location-details .allocated-units,
+.location-details .allocated-equipment {
+  .gradient-blue()
+}
+
+.location-details .dets-stat-val,
+.location-details .dets-stat-lbl {
+  font-family: Gotham Book;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.location-details .dets-stat-val {
+  font-size: 36px;
+  line-height: 36px;
+  margin-bottom: 10px;
+}
+
+.location-details .dets-stat-lbl {
+  font-size: 13px;
+}
+
+.location-details .search-row {
+  margin-bottom: 30px;
+}
+
+.location-details .group-search-input {
+  background-color: @color-background-white;
+}
+
+
+.location-details .nav-row {
+  margin-bottom: 30px;
+}
+
+.location-details .results-label {
+  font-size: 16px;
+  color: @color-text-tertiary;
+  margin-right: 20px;
+}
+
+.location-details .fltr-drpdwn-btn,
+.location-details .fltr-drpdwn-menu {
+  min-width: 200px;
+  width: 200px;
+  text-align: left;
+}
+
+.location-details .fltr-drpdwn-btn {
+  margin-right: 40px;
+}
+
+.location-details .filter-dropdown:last-child .dropdown-toggle {
+  margin-right: 0;
+}
+
+.location-details .list-header .header-field {
+  text-transform: uppercase;
+}
+
+.location-details .list-body {
+  border: 1px solid @color-line;
+  background-color: @color-background-white;
+}
+
+.location-details .body-row {
+  padding: 20px 0;
+  min-height: 70px;
+  border-bottom: 1px solid @color-line;
+}
+
+.location-details .body-row:last-child {
+  border-bottom: none;
+}
+
+.location-details .seq-no-lbl,
+.location-details .id-nunb-lbl {
+  font-family: Gotham Medium;
+  font-size: 16px;
+  line-height: 16px;
+  color: @color-text-secondary;
+}
+
+.location-details .brand-model-lbl,
+.location-details .units-numb-lbl,
+.location-details .location-lbl,
+.location-details .node-numb-lbl {
+  font-family: Gotham Book;
+  font-size: 13px;
+  line-height: 13px;
+  color: @color-text-tertiary;
+}
+
+.location-details .service-type {
+  margin-bottom: 0;
+}
+
+.location-details .location-info-icon {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  margin-right: 10px;
+  background: url('../../../../../../../assets/images/icons/info-icon.svg') no-repeat center;
+}

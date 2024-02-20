@@ -1,0 +1,59 @@
+@import 'variables.less';
+
+.service-price {
+  width: 220px;
+  margin-right: 5px;
+}
+
+.service-price.hided-price {
+  width: 50px;
+}
+
+.service-price .service-type {
+  margin-bottom: 12px;
+  font-family: Gotham Book;
+  font-size: 13px;
+}
+
+.service-price .price-popup {
+  display: none;
+  position: absolute;
+  box-sizing: content-box;
+  left: -89px;
+  top: 41px;
+  z-index: 1000;
+}
+
+.service-price .service-icon:hover .price-popup {
+  display: block;
+}
+
+.service-price .value-lbl {
+  font-family: Gotham Medium;
+  font-size: 12px;
+  color: @color-text-tertiary;
+}
+
+.service-price .per-square-lbl {
+  font-family: Gotham Light;
+  font-size: 11px;
+  color: @color-description;
+}
+
+.service-price .per-square-lbl.additional-info {
+  font-family: Gotham Medium;
+}
+
+.service-price .per-square-lbl:before {
+  content: "/";
+  color: @color-description;
+  font-family: Gotham Light;
+  font-size: 11px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.service-price .per-square-lbl.additional-info:before {
+  content: "";
+  margin-left: 3px;
+}

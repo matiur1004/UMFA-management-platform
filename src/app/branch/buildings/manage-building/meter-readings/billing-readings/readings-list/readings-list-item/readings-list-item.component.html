@@ -1,0 +1,61 @@
+<div class="readings-list-item">
+  <div class="row none-margin-hr mtr-rdngs-row">
+    <div class="col none-padding d-flex">
+      <div class="srl-numb-blck d-flex align-items-center">
+        <span (click)="toggleMeterReading.emit(meter.meterDetails)"
+              [ngClass]="{'collapse-icon': meter.meterDetails.isExpanded, 'expand-icon': !meter.meterDetails.isExpanded}"
+              class="icon-relative expand-btn collapse-icon"></span>
+        <a [routerLink]="['/branch', branchId, 'buildings', buildingId, 'version', 0, 'equipment', meter.meterDetails.meterId]"
+           class="srl-numb-lbl text-ellipsis cursor-poiner;"
+           title="{{meter.meterDetails.serialNumber}}">
+          {{meter.meterDetails.serialNumber | emptyValue | slice : -4}}
+          -{{meter.meterDetails.supplyType | supplyTypeLetter}}
+        </a>
+      </div>
+      <div class="w-100">
+        <reading-item-view
+          (confirmReading)="confirmReading.emit($event)"
+          (enterReadings)="onEnterReadings()"
+          (readingDetailsFileDownload)="readingDetailsFileDownload.emit($event)"
+          (readingDetailsUpdate)="readingDetailsUpdate.emit($event)"
+          (resetReading)="resetReading.emit($event)"
+          (startEstimation)="onStartEstimation($event)"
+          (updateReadingsList)="onUpdateReadingsList($event)"
+          *ngIf="(currentUsageChart$ | async) === billingReadingChartEnum.None"
+          [branchId]="branchId"
+          [buildingId]="buildingId"
+          [buildingPeriod]="buildingPeriod"
+          [isShowVirtualRegisters]="isShowVirtualRegisters"
+          [meter]="meter"
+          [readingSource]="readingSource"
+          [registersReadings]="registersReadings"
+          [virtualRegistersReadings]="virtualRegistersReadings"></reading-item-view>
+
+        <reading-item-chart-view
+          (toggleFilter)="onToggleFilter($event)"
+          *ngIf="(currentUsageChart$ | async) !== billingReadingChartEnum.None && meterReadingChart"
+          [currentUsageChart]="currentUsageChart$ | async"
+          [isShowVirtualRegisters]="isShowVirtualRegisters"
+          [registersInfo]="meterReadingChart.registersInfo"
+          [registersReadings]="registersReadings"
+          [virtualRegistersReadings]="virtualRegistersReadings"
+        ></reading-item-chart-view>
+      </div>
+    </div>
+  </div>
+
+  <!--  Expanded Meter-->
+  <div *ngIf="meter.meterDetails.isExpanded" class="row none-margin-hr rdngs-list-dets">
+    <div class="col-12 none-padding">
+      <meter-reading-stats (changeAverage)="onChangeAverage($event)"
+                           (changeChartView)="onChangeChartView($event)"
+                           (changeRegister)="onChangeRegister($event)"
+                           (changeTab)="onChangeTab($event)"
+                           *ngIf="meterReadingStatsChart && meter"
+                           [meterReadingStatsChart]="meterReadingStatsChart"
+                           [meter]="meter"
+                           [registers]="expandedRegisters">
+      </meter-reading-stats>
+    </div>
+  </div>
+</div>

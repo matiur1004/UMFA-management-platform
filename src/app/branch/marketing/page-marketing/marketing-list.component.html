@@ -1,0 +1,65 @@
+<div class="container-fluid top-container">
+  <div class="row content">
+    <div class="col-12 col-xl-2 none-padding">
+      <div class="client-header-title">
+        <h1 class="page-title text-uppercase">Marketing</h1>
+      </div>
+    </div>
+    <div class="col-12 col-xl-10 none-padding text-right row d-flex align-items-center">
+      <div class="col">
+        <div class="dropdown filter-dropdown d-inline-block" ngbDropdown>
+          <button class="btn btn-secondary dropdown-toggle text-left d-flex justify-content-between" id="ddCategories"
+                  ngbDropdownToggle>
+            {{ category ? category.name : 'All categories' }}
+          </button>
+          <div aria-labelledby="ddCategories" class="dropdown-menu" ngbDropdownMenu>
+            <button (click)="categorySelected(category)" *ngFor="let category of categories"
+                    class="dropdown-item">{{category.name}}</button>
+            <button (click)="categorySelected(null)" class="dropdown-item">All categories</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-4 col-sm-6">
+        <simple-search-form (onSearch)="search($event)" placeholder="Building Search"></simple-search-form>
+      </div>
+      <div class="col-12 col-xl-auto">
+        <button *ngIf="accessPermission.canCreateBuildings" class="dnm-btn dnm-btn-primary text-uppercase add-entity-btn minimum-button-width"
+                routerLink="new" type="button">
+          <span>Add Building</span>
+          <i class="icon-relative add-building-icon"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="buildings-container">
+  <div class="dnm-tabset">
+   <ul ngbNav #nav="ngbNav" (navChange)="onTabChange($event.nextId)" class="nav-tabs" [(activeId)]="active">
+      <li [ngbNavItem]="'tab-0'">
+        <a ngbNavLink>
+          <span class="d-flex text-uppercase">
+            <i class="tab-icon dnm-icon dnm-icon-buildings"></i>Building View
+          </span>
+        </a>
+        <ng-template ngbNavContent>
+          <marketing-view (delete)="delete($event)" (navigateToMap)="onShowOnMap($event)" [accessPermission]="accessPermission" [branchId]="branchId"
+                          [model]="model" [page]="page"></marketing-view>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="'tab-1'">
+        <a ngbNavLink>
+          <span class="d-flex text-uppercase">
+            <i class="tab-icon dnm-icon dnm-icon-map"></i>Map View
+          </span>
+        </a>
+        <ng-template ngbNavContent>
+          <!-- maps -->
+          <marketing-map [building]="selectedBuilding" [buildings]="buildingsOnMap" [clients]="clients"
+                         [model]="model"></marketing-map>
+        </ng-template>
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="nav"></div>
+  </div>
+</div>

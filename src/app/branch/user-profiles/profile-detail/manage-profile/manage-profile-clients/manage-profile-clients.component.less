@@ -1,0 +1,187 @@
+@import 'variables.less';
+
+.form-inline.main-search-input {
+  width: 100%;
+}
+
+.form-control.group-search-input {
+  background: @color-background-white;
+}
+
+::ng-deep .manage-profile-clients .list-item {
+  display: table;
+  width: 100%;
+  padding: 8px 15px;
+}
+
+::ng-deep .manage-profile-clients .item-details {
+  padding: 15px;
+  background: @color-background-secondary;
+}
+
+.filter-container {
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+.filter-res-label {
+  font-size: 16px;
+  font-family: 'Gotham Light';
+  color: @color-text-tertiary;
+}
+
+.filter-dropdown .dropdown-toggle {
+  padding-left: 20px;
+}
+
+.manage-clients-data-nav {
+  display: flex;
+  align-items: center;
+}
+
+.manage-clients-data-nav .data-nav-filter {
+  display: flex;
+  align-items: center;
+}
+
+.manage-clients-data-nav .filter-by {
+  margin-right: 20px;
+}
+
+.data-nav-filter .dd-filter-label {
+  margin-right: 20px;
+  font-family: 'Gotham Medium';
+  font-size: 15px;
+  color: @color-text-tertiary;
+}
+
+#ddManageClientsFilter,
+#ddManageClientsFilterShow {
+  width: 208px;
+}
+
+.header-row {
+  padding: 0 30px 5px 30px;
+}
+
+.header-checkbox-label {
+  display: flex;
+  align-items: center;
+  color: @color-description;
+  font-family: 'Gotham Light';
+  font-size: 14px;
+}
+
+.filter-select-checkbox {
+  margin-right: 30px;
+}
+
+.manage-client-item {
+  padding: 20px 14px;
+  background: @color-background-white;
+  border: 1px solid @color-line;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.manage-client-item-expanded {
+  position: relative;
+  z-index: 1;
+  box-shadow: 0px 3px 13px 0px rgba(0, 0, 0, 0.1);
+}
+
+.client-portfolio-item {
+  display: flex;
+  align-items: center;
+  padding: 20px 12px;
+  background: @color-background-white;
+  border-bottom: 1px solid @color-line;
+  border-right: 1px solid @color-line;
+  border-left: 3px solid @color-main-accent;
+}
+
+.client-building-item {
+  display: flex;
+  align-items: center;
+  padding: 20px 12px;
+  background: @color-background-secondary;
+  border-bottom: 1px solid @color-line;
+  border-right: 1px solid @color-line;
+  border-left: 3px solid @color-text-tertiary;
+}
+
+.client-company-name,
+.client-portfolio-name,
+.client-building-name {
+  color: @color-text-primary;
+  font-family: 'Gotham Medium';
+  font-size: 15px;
+  line-height: 15px;
+}
+
+.client-company-description,
+.client-portfolio-description,
+.client-building-description {
+  color: @color-description;
+  font-family: 'Gotham Book';
+  display: flex;
+  margin-top: 10px;
+  height: 13px;
+  line-height: 13px;
+}
+
+.building-description-item {
+  padding: 0 10px;
+  border-right: 1px solid @color-description;
+}
+
+.building-description-item:first-child {
+  padding-left: 0;
+}
+
+.building-description-item:last-child {
+  padding-right: 0;
+  border-right: none;
+}
+
+.client-company-description {
+  font-size: 12px;
+}
+
+.client-portfolio-description,
+.client-building-description {
+  font-size: 13px;
+}
+
+.client-building-item .building-tech-info {
+  color: @color-text-tertiary;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.footer-buttons {
+  padding-bottom: 50px;
+}
+
+.manage-profile-clients .clients-list {
+  max-height: calc(100vh - 528px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+@media (min-width: 768px) {
+  .footer-buttons .dnm-btn {
+    width: 200px;
+    margin-top: 50px;
+  }
+
+  .footer-buttons .dnm-btn:first-child {
+    margin-right: 30px;
+  }
+
+  .modal-header {
+    padding: 30px 40px;
+  }
+}

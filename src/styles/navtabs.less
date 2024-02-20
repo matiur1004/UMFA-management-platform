@@ -1,0 +1,586 @@
+@import 'variables.less';
+
+.nav-text {
+  text-transform: uppercase;
+  font-size: 12px;
+  font-family: Gotham Medium;
+  margin-left: 10px;
+}
+
+.dnm-tabset .nav-tabs {
+  position: relative;
+}
+
+.dnm-tabset .nav-tabs .nav-link {
+  font-family: Gotham Medium;
+  border: 0;
+  font-size: 15px;
+  padding: 35px 0 20px 0;
+  display: flex;
+  align-items: center;
+  position: relative;
+  color: @color-empty;
+  margin-left: 40px;
+  border-radius: 0;
+  width: auto;
+  background-color: transparent;
+}
+
+.dnm-tabset .nav-tabs .nav-link:before {
+  content: none;
+}
+
+.dnm-tabset .nav-tabs .nav-link.active,
+.dnm-tabset .nav-tabs .nav-link:hover {
+  color: @color-text-primary;
+}
+
+.dnm-tabset .nav-tabs .nav-link.active:before {
+  content: '';
+  width: 100%;
+  height: 3px;
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  background-color: #2c5693;
+  box-shadow: 0 2px 5px 0 rgba(168, 163, 209, .3);
+}
+
+.dnm-tabset .tab-content {
+  padding-top: 30px;
+}
+
+.dnm-tabset .tab-icon {
+  background-repeat: no-repeat;
+  display: inline-block;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.dnm-tabset .nav-item .alert-danger {
+  width: auto;
+  height: 14px;
+  padding-left: 30px;
+  padding-right: 0;
+  margin: 0;
+}
+
+.general-info-icon {
+  background-image: url('../assets/images/icons/general_info.svg');
+}
+
+.quantities-icon {
+  background-image: url('../assets/images/icons/tab-quantities.svg');
+}
+
+.contacts-icon {
+  background-image: url('../assets/images/icons/client_contacts.svg');
+}
+
+.client-portfolios-icon {
+  background-image: url('../assets/images/icons/client_portfolio.svg');
+}
+
+.bank-account-icon {
+  background-image: url('../assets/images/icons/bank-account-icon.svg');
+}
+
+.opr-agr-icon {
+  background-image: url('../assets/images/icons/operations-agreement-icon.svg');
+}
+
+.dnm-icon-userprofiles {
+  background-image: url("../assets/images/icons/up_user_profiles.svg");
+}
+
+.dnm-icon-users {
+  background-image: url("../assets/images/icons/up_users.svg");
+}
+
+.dnm-icon-roles {
+  background-image: url("../assets/images/icons/up_roles.svg");
+}
+
+.dnm-icon-services-list {
+  background-image: url('../assets/images/icons/services/tab-services-list.svg');
+}
+
+.dnm-icon-packages {
+  background-image: url('../assets/images/icons/services/tab-packages.svg');
+}
+
+.dnm-icon-meters {
+  background-image: url('../assets/images/icons/services/tab-equipment-types.svg');
+}
+
+.dnm-icon-notifications {
+  background-image: url("../assets/images/icons/tab-notifications.svg");
+}
+
+.dnm-icon-password {
+  background-image: url("../assets/images/icons/tab-password.svg");
+}
+
+.dnm-icon-electricity {
+  background-image: url('../assets/images/icons/services/electricity-white.svg');
+}
+
+.dnm-icon-water {
+  background-image: url('../assets/images/icons/services/water-white.svg');
+}
+
+.dnm-icon-sewerage {
+  background-image: url('../assets/images/icons/services/sewerage-white.svg');
+}
+
+.dnm-icon-gas {
+  background-image: url('../assets/images/icons/services/gas-white.svg');
+}
+
+.dnm-icon-other {
+  background-image: url('../assets/images/icons/occupation/other.svg');
+}
+
+.dnm-icon-shops {
+  background-image: url('../assets/images/icons/occupation/shops-icon.svg');
+}
+
+.dnm-icon-cmn-areas {
+  background-image: url('../assets/images/icons/occupation/common-areas-icon.svg');
+}
+
+.dnm-icon-liability {
+  background-image: url('../assets/images/icons/occupation/liability-icon.svg');
+}
+
+.dnm-icon-services {
+  background-image: url('../assets/images/icons/tab-services.svg');
+}
+
+.dnm-icon-supplier-list {
+  background-image: url('../assets/images/icons/suppliers/tab-supplier-list.svg');
+}
+
+.dnm-icon-supplier-settings {
+  background-image: url('../assets/images/icons/suppliers/tab-supplier-settings.svg');
+}
+
+.dnm-icon-meter-readings {
+  background-image: url('../assets/images/icons/meter-readings/tab-meter-readings.svg');
+}
+
+.dnm-icon-graph {
+  background-image: url('../assets/images/icons/meter-readings/tab-graph.svg');
+}
+
+.dnm-icon-building-periods {
+  background-image: url('../assets/images/icons/meter-readings/tab-building-periods.svg');
+}
+
+.dnm-icon-equipment-list {
+  background-image: url('../assets/images/icons/equipment/tab-equipment-list.svg');
+}
+
+.dnm-icon-equipment-locations {
+  width: 13px;
+  height: 13px;
+  background-image: url('../assets/images/icons/equipment/tab-equipment-locations.svg');
+}
+
+.dnm-icon-equipment-nodes {
+  background-image: url('../assets/images/icons/equipment/tab-equipment-nodes.svg');
+}
+
+.dnm-icon-equipment-settings {
+  background-image: url('../assets/images/icons/equipment/tab-equipment-settings.svg');
+}
+
+.dnm-icon-equipment-virtual-registers {
+  background-image: url("../assets/images/icons/equipment/vr.svg");
+}
+
+.dnm-icon-meter-readings {
+  background-image: url('../assets/images/icons/meter-readings/tab-meter-readings.svg');
+}
+
+.dnm-icon-graph {
+  background-image: url('../assets/images/icons/meter-readings/tab-graph.svg');
+}
+
+.dnm-icon-building-periods {
+  background-image: url('../assets/images/icons/meter-readings/tab-building-periods.svg');
+}
+
+.dnm-icon-splrs-dtls {
+  background-image: url('../assets/images/icons/suppliers/tab-supplier-details.svg');
+}
+
+.dnm-icon-splrs-ctgrs {
+  background-image: url('../assets/images/icons/suppliers/tab-categories.svg');
+}
+
+.dnm-icon-splrs-trfs {
+  background-image: url('../assets/images/icons/suppliers/tab-tariffs.svg');
+}
+
+.dnm-trend-up-icon {
+  background-image: url('../assets/images/icons/suppliers/trend-up.svg');
+}
+
+.dnm-trend-down-icon {
+  background-image: url('../assets/images/icons/suppliers/trend-down.svg');
+}
+
+.dnm-equipment-tab-icon {
+  background-image: url('../assets/images/icons/node-details-tabs/tab_allocated_equipment.svg');
+}
+
+.dnm-unit-tab-icon {
+  background-image: url('../assets/images/icons/node-details-tabs/tab_allocated_units.svg');
+}
+
+.dnm-tariffs-tab-icon {
+  background-image: url('../assets/images/icons/node-details-tabs/tab_allocated_tariffs.svg');
+}
+
+.dnm-calcs-tab-icon {
+  background-image: url('../assets/images/icons/node-details-tabs/tab_calculations.svg');
+}
+
+.dnm-cost-alloc-tab-icon {
+  background-image: url('../assets/images/icons/node-details-tabs/tab_cost_allocation.svg');
+}
+
+
+.dnm-custom-attributes-tab-icon {
+  background-image: url('../assets/images/icons/node-details-tabs/custom_attributes.svg');
+}
+
+.nav-tabs .nav-link.active .general-info-icon,
+.nav-tabs .nav-link:hover .general-info-icon {
+  background-image: url('../assets/images/icons/general_info_hover.svg');
+}
+
+.nav-tabs .nav-link.active .quantities-icon,
+.nav-tabs .nav-link:hover .quantities-icon {
+  background-image: url('../assets/images/icons/tab-quantities_hover.svg');
+}
+
+.nav-tabs .nav-link.active .contacts-icon,
+.nav-tabs .nav-link:hover .contacts-icon {
+  background-image: url('../assets/images/icons/client_contacts_hover.svg');
+}
+
+.nav-tabs .nav-link.active .client-portfolios-icon,
+.nav-tabs .nav-link:hover .client-portfolios-icon {
+  background-image: url('../assets/images/icons/client_portfolio_hover.svg');
+}
+
+.nav-tabs .nav-link.active .bank-account-icon,
+.nav-tabs .nav-link:hover .bank-account-icon {
+  background-image: url('../assets/images/icons/bank-account-active-icon.svg');
+}
+
+.nav-tabs .nav-link.active .opr-agr-icon,
+.nav-tabs .nav-link:hover .opr-agr-icon {
+  background-image: url('../assets/images/icons/operations-agreement-active-icon.svg');
+}
+
+.nav-link.active .dnm-icon-userprofiles,
+.nav-link:hover .dnm-icon-userprofiles {
+  background-image: url("../assets/images/icons/up_user_profiles_hover.svg");
+}
+
+.nav-link.active .dnm-icon-users,
+.nav-link:hover .dnm-icon-users {
+  background-image: url("../assets/images/icons/up_users_hover.svg");
+}
+
+.nav-link.active .dnm-icon-roles,
+.nav-link:hover .dnm-icon-roles {
+  background-image: url("../assets/images/icons/up_roles_hover.svg");
+}
+
+.nav-link.active .dnm-icon-services-list,
+.nav-link:hover .dnm-icon-services-list {
+  background-image: url('../assets/images/icons/services/tab-services-list-hover.svg');
+}
+
+.nav-link.active .dnm-icon-packages,
+.nav-link:hover .dnm-icon-packages {
+  background-image: url('../assets/images/icons/services/tab-packages-hover.svg');
+}
+
+.nav-link.active .dnm-icon-meters {
+  background-image: url('../assets/images/icons/services/tab-equipment-types-hover.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-icon-notifications,
+.nav-tabs .nav-link:hover .dnm-icon-notifications {
+  background-image: url("../assets/images/icons/tab-notifications-hover.svg");
+}
+
+.nav-tabs .nav-link.active .dnm-icon-password,
+.nav-tabs .nav-link:hover .dnm-icon-password {
+  background-image: url("../assets/images/icons/tab-password-hover.svg");
+}
+
+.nav-tabs .nav-link.active .dnm-icon-electricity,
+.nav-tabs .nav-link:hover .dnm-icon-electricity {
+  background-image: url('../assets/images/icons/occupation/electricity-hover.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-icon-water,
+.nav-tabs .nav-link:hover .dnm-icon-water {
+  background-image: url('../assets/images/icons/occupation/water-hover.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-icon-sewerage,
+.nav-tabs .nav-link:hover .dnm-icon-sewerage {
+  background-image: url('../assets/images/icons/occupation/sewerage-hover.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-icon-gas,
+.nav-tabs .nav-link:hover .dnm-icon-gas {
+  background-image: url('../assets/images/icons/occupation/gas-hover.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-icon-other,
+.nav-tabs .nav-link:hover .dnm-icon-other {
+  background-image: url('../assets/images/icons/occupation/other-hover.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-icon-shops,
+.nav-tabs .nav-link:hover .dnm-icon-shops {
+  background-image: url('../assets/images/icons/occupation/shops-icon-active.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-icon-equipment-virtual-registers,
+.nav-tabs .nav-link:hover .dnm-icon-equipment-virtual-registers {
+  background-image: url('../assets/images/icons/equipment/vr-hover.svg');
+}
+
+
+.nav-tabs .nav-link.active .dnm-icon-cmn-areas,
+.nav-tabs .nav-link:hover .dnm-icon-cmn-areas {
+  background-image: url('../assets/images/icons/occupation/common-areas-icon-active.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-icon-cmn-areas,
+.nav-tabs .nav-link:hover .dnm-icon-cmn-areas {
+  background-image: url('../assets/images/icons/occupation/common-areas-icon-active.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-icon-liability,
+.nav-tabs .nav-link:hover .dnm-icon-liability {
+  background-image: url('../assets/images/icons/occupation/liability-icon-hover.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-icon-services,
+.nav-tabs .nav-link:hover .dnm-icon-services {
+  background-image: url('../assets/images/icons/tab-services-hover.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-icon-meter-readings,
+.nav-tabs .nav-link:hover .dnm-icon-meter-readings {
+  background-image: url('../assets/images/icons/meter-readings/tab-meter-readings-hover.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-icon-graph,
+.nav-tabs .nav-link:hover .dnm-icon-graph {
+  background-image: url('../assets/images/icons/meter-readings/tab-graph-hover.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-icon-building-periods,
+.nav-tabs .nav-link:hover .dnm-icon-building-periods {
+  background-image: url('../assets/images/icons/meter-readings/tab-building-periods-hover.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-icon-equipment-list,
+.nav-tabs .nav-link:hover .dnm-icon-equipment-list {
+  background-image: url('../assets/images/icons/equipment/tab-equipment-list-hover.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-icon-equipment-locations,
+.nav-tabs .nav-link:hover .dnm-icon-equipment-locations {
+  background-image: url('../assets/images/icons/equipment/tab-equipment-locations-hover.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-icon-equipment-nodes,
+.nav-tabs .nav-link:hover .dnm-icon-equipment-nodes {
+  background-image: url('../assets/images/icons/equipment/tab-equipment-nodes-hover.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-icon-equipment-settings,
+.nav-tabs .nav-link:hover .dnm-icon-equipment-settings {
+  background-image: url('../assets/images/icons/equipment/tab-equipment-settings-hover.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-icon-meter-readings,
+.nav-tabs .nav-link:hover .dnm-icon-meter-readings {
+  background-image: url('../assets/images/icons/meter-readings/tab-meter-readings-hover.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-icon-graph,
+.nav-tabs .nav-link:hover .dnm-icon-graph {
+  background-image: url('../assets/images/icons/meter-readings/tab-graph-hover.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-icon-building-periods,
+.nav-tabs .nav-link:hover .dnm-icon-building-periods {
+  background-image: url('../assets/images/icons/meter-readings/tab-building-periods-hover.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-icon-supplier-list,
+.nav-tabs .nav-link:hover .dnm-icon-supplier-list {
+  background-image: url('../assets/images/icons/suppliers/tab-supplier-list-hover.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-icon-supplier-settings,
+.nav-tabs .nav-link:hover .dnm-icon-supplier-settings {
+  background-image: url('../assets/images/icons/suppliers/tab-supplier-settings-hover.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-icon-splrs-dtls,
+.nav-tabs .nav-link:hover .dnm-icon-splrs-dtls {
+  background-image: url('../assets/images/icons/suppliers/tab-supplier-details-hover.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-icon-splrs-ctgrs,
+.nav-tabs .nav-link:hover .dnm-icon-splrs-ctgrs {
+  background-image: url('../assets/images/icons/suppliers/tab-categories-hover.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-icon-splrs-trfs,
+.nav-tabs .nav-link:hover .dnm-icon-splrs-trfs {
+  background-image: url('../assets/images/icons/suppliers/tab-tariffs-hover.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-trend-up-icon,
+.nav-tabs .nav-link:hover .dnm-trend-up-icon {
+  background-image: url('../assets/images/icons/suppliers/trend-up-hover.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-trend-down-icon,
+.nav-tabs .nav-link:hover .dnm-trend-down-icon {
+  background-image: url('../assets/images/icons/suppliers/trend-down-hover.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-equipment-tab-icon,
+.nav-tabs .nav-link:hover .dnm-equipment-tab-icon {
+  background-image: url('../assets/images/icons/node-details-tabs/tab_allocated_equipment_hover.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-unit-tab-icon,
+.nav-tabs .nav-link:hover .dnm-unit-tab-icon {
+  background-image: url('../assets/images/icons/node-details-tabs/tab_allocated_units_hover.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-tariffs-tab-icon,
+.nav-tabs .nav-link:hover .dnm-tariffs-tab-icon {
+  background-image: url('../assets/images/icons/node-details-tabs/tab_allocated_tariffs_hover.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-calcs-tab-icon,
+.nav-tabs .nav-link:hover .dnm-calcs-tab-icon {
+  background-image: url('../assets/images/icons/node-details-tabs/tab_calculations_hover.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-cost-alloc-tab-icon,
+.nav-tabs .nav-link:hover .dnm-cost-alloc-tab-icon {
+  background-image: url('../assets/images/icons/node-details-tabs/tab_cost_allocation_hover.svg');
+}
+
+.nav-tabs .nav-link.active .dnm-custom-attributes-tab-icon,
+.nav-tabs .nav-link:hover .dnm-custom-attributes-tab-icon {
+  background-image: url('../assets/images/icons/node-details-tabs/custom_attributes_hover.svg');
+}
+
+/* #region files types icons */
+
+.file-type-icon {
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 35px;
+  width: 31px;
+  background-size: cover;
+}
+
+.doc-icon {
+  background-image: url('../assets/images/icons/files-types/doc.svg');
+}
+
+.jpg-icon {
+  background-image: url('../assets/images/icons/files-types/jpg.svg');
+}
+
+.pdf-icon {
+  background-image: url('../assets/images/icons/files-types/pdf.svg');
+}
+
+.txt-icon {
+  background-image: url('../assets/images/icons/files-types/txt.svg');
+}
+
+.xls-icon {
+  background-image: url('../assets/images/icons/files-types/xls.svg');
+}
+
+.bmp-icon {
+  background-image: url('../assets/images/icons/files-types/bmp.svg');
+}
+
+.gif-icon {
+  background-image: url('../assets/images/icons/files-types/gif.svg');
+}
+
+.png-icon {
+  background-image: url('../assets/images/icons/files-types/png.svg');
+}
+
+.ppt-icon {
+  background-image: url('../assets/images/icons/files-types/ppt.svg');
+}
+
+.xml-icon {
+  background-image: url('../assets/images/icons/files-types/xml.svg');
+}
+
+.zip-icon {
+  background-image: url('../assets/images/icons/files-types/zip.svg');
+}
+
+.other-icon {
+  background-image: url('../assets/images/icons/files-types/other.svg');
+}
+
+/* #endregion */
+
+.modal .dnm-tabset .nav-tabs .nav-link {
+  display: block;
+  margin-left: 40px;
+  padding: 7px 0 18px 0;
+  font-family: Gotham Medium;
+  font-size: 13px;
+}
+
+.dnm-tabset .nav-item:first-child .nav-link {
+  margin-left: 0;
+}
+
+.modal .dnm-tabset .nav-item:first-child .nav-link {
+  margin-left: 40px;
+}
+
+.modal .dnm-tabset .tab-name {
+  position: relative;
+  top: -4px;
+  margin-left: 5px;
+}
+
+.modal .dnm-tabset .tab-content {
+  padding: 40px 25px 0;
+}

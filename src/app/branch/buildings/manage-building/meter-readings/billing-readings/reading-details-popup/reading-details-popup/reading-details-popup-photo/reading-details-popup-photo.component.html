@@ -1,0 +1,28 @@
+<div class="photo-container w-100 d-flex flex-wrap align-items-center justify-content-center">
+  <div class="d-flex justify-content-center align-items-center">
+    <input #uploadPhoto (change)="uploadedPhoto($event)" [accept]="allowedImageTypes" class="d-none" type="file">
+
+    <img *ngIf="(!uploadedPhotoUrl && !readingDetails.photoUrl) && !readingDetails.isEditable"
+         [src]="defaultReadingIconUrl" alt="Default Photo">
+
+    <a (click)="uploadPhoto.click()" *ngIf="(!uploadedPhotoUrl && !readingDetails.photoUrl) && readingDetails.isEditable"
+       class="blue-text-btn" href="javascript:void(0)">
+      <i class="add-icon"></i>Add Photo
+    </a>
+
+    <image-options (uploadPhoto)="uploadedPhoto($event)"
+                   *ngIf="uploadedPhotoUrl || readingDetails.photoUrl"
+                   [imageFile]="imageFile || readingDetails.photoUrl"
+                   [isEditable]="readingDetails.isEditable"
+                   [photoName]="readingDetails.filesInfo.length && readingDetails.filesInfo[0].fileDisplayName"
+                   class="position-relative"></image-options>
+  </div>
+  <div *ngIf="showPhotosNavigation" class="slider-nav">
+    <i (click)="photoChange.emit(readingsNavigation.previousHistoryReadingId)"
+       *ngIf="!!readingsNavigation.previousHistoryReadingId"
+       class="dnm-icon cursor-pointer slider-nav__left"></i>
+    <i (click)="photoChange.emit(readingsNavigation.nextHistoryReadingId)"
+       *ngIf="!!readingsNavigation.nextHistoryReadingId"
+       class="dnm-icon cursor-pointer slider-nav__right"></i>
+  </div>
+</div>

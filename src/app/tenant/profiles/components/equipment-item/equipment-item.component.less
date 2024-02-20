@@ -1,0 +1,108 @@
+@import 'variables.less';
+
+.equip-item-wrp {
+  background-color: @color-background-white;
+}
+
+.equip-item-wrp .main-item-wrp {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.equip-item-wrp .meter-no-img {
+  background: url('../../../../../assets/images/icons/equipment/meter-no-img.svg') no-repeat center;
+  width: 35px;
+  height: 35px;
+  background-size: 35px;
+}
+
+.equip-item-wrp .item-img {
+  width: 50px;
+  height: 50px;
+  border: 1px solid @color-stroke;
+  background-color: @color-background-secondary;
+  padding: 0;
+  margin: 0 20px 0 15px;
+}
+
+.equip-item-wrp .history-item-wrp .item-img {
+  margin-left: 0;
+}
+
+.equip-item-wrp .serial-numb-lbl {
+  font-family: Gotham Medium;
+  font-size: 16px;
+  line-height: 1;
+  color: @color-text-primary;
+  margin-bottom: 10px;
+}
+
+.equip-item-wrp .equip-model-lbl,
+.equip-item-wrp .equip-descr-lbl,
+.equip-item-wrp .equipment-attr,
+.equip-item-wrp .supplier-name-lbl {
+  font-family: Gotham Book;
+  font-size: 13px;
+  color: @color-text-tertiary;
+}
+
+.equip-item-wrp .equip-model-lbl,
+.equip-item-wrp .supplier-name-lbl {
+  line-height: 13px;
+}
+
+.equip-item-wrp .equip-descr-lbl {
+  line-height: 18px;
+}
+
+.equip-item-wrp .equipment-attr {
+  width: 140px;
+  min-width: 140px;
+}
+
+.equip-item-wrp .equipment-attr-lbl {
+  color: @color-description;
+  margin-right: 5px;
+}
+
+.equip-item-wrp .equipment-attr-val {
+  color: @color-text-tertiary;
+}
+
+.equip-item-wrp .equipment-attr-lbl,
+.equip-item-wrp .equipment-attr-val {
+  line-height: 18px;
+}
+
+.equip-item-wrp .tariff-name-lbl {
+  font-family: Gotham Medium;
+  font-size: 13px;
+  line-height: 1;
+  color: @color-text-primary;
+  margin-bottom: 5px;
+}
+
+.equip-item-wrp .toggle-btn {
+  cursor: pointer;
+}
+
+.equip-item-wrp .equip-history-dtls {
+  border-top: 1px solid @color-line;
+  background-color: @color-background-secondary;
+  padding: 30px 30px 10px;
+}
+
+.equip-item-wrp .equip-history-dtls .list-header {
+  margin-bottom: 10px;
+  margin-top: 30px;
+}
+
+.equip-item-wrp .history-item-wrp {
+  border-bottom: 1px solid @color-line;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.equip-item-wrp .history-item-wrp:last-child {
+  border-bottom: none;
+}

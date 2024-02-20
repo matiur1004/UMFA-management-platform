@@ -1,0 +1,89 @@
+<div class="cmn-area-item">
+  <div class="item-header">
+    <div class="item-title d-flex justify-content-center">
+      <span class="text-ellipsis common-area-name" title="{{model.commonArea.name}}">{{model.commonArea.name}}</span>
+    </div>
+    <div class="item-data d-flex justify-content-center">
+      <div [ngClass]="{
+           'st-electricity' : model.liability.serviceType == serviceType.Electricity,
+           'st-water' : model.liability.serviceType == serviceType.Water,
+           'st-sewerage' : model.liability.serviceType == serviceType.Sewerage,
+           'st-gas' : model.liability.serviceType == serviceType.Gas
+
+        }" class="srv-type">{{serviceType[model.liability.serviceType]}}</div>
+      <div *ngIf="nodes" [ngbPopover]="nodesList" class="common-area-nodes" placement="bottom"
+           popoverClass="common-area-node-items">
+        <span>{{nodesCount}} {{ nodesCount > 1 ? 'nodes' : 'node' }}</span>
+      </div>
+      <ng-template #nodesList>
+        <div (click)="onNodeItemClick(node.key)" *ngFor="let node of nodes | keyvalue" class="common-area-node-item">
+          {{node.value}}
+        </div>
+      </ng-template>
+      <div class="common-area-floor">{{model.commonArea.floor}} floor</div>
+    </div>
+  </div>
+  <div class="item-nav-inputs d-flex justify-content-center flex-column">
+    <div class="item-switch d-flex align-items-center justify-content-center">
+      <label class="dnm-switch-btn">
+        <input (change)="updateCommonAreaHeader.emit({ commonAreaId: model.commonArea.id, serviceType: model.liability.serviceType, path: 'defaultSettings', value: $event.target.checked })" [checked]="model.liability.defaultSettings"
+               type="checkbox">
+        <span class="dnm-switch-slider round"></span>
+      </label>
+    </div>
+    <div class="item-switch d-flex align-items-center justify-content-center">
+      <label class="dnm-switch-btn">
+        <input (change)="updateCommonAreaHeader.emit({ commonAreaId: model.commonArea.id, serviceType: model.liability.serviceType, path: 'ownerLiable', value: $event.target.checked })" [checked]="model.liability.ownerLiable"
+               type="checkbox">
+        <span class="dnm-switch-slider round"></span>
+      </label>
+    </div>
+    <div class="item-switch d-flex align-items-center justify-content-center">
+      <label *ngIf="!model.liability.ownerLiable" class="dnm-switch-btn">
+        <input (change)="updateCommonAreaHeader.emit({ commonAreaId: model.commonArea.id, serviceType: model.liability.serviceType, path: 'includeVacantShopSqM', value: $event.target.checked })" [checked]="model.liability.includeVacantShopSqM"
+               type="checkbox">
+        <span class="dnm-switch-slider round"></span>
+      </label>
+    </div>
+    <div class="item-switch d-flex align-items-center justify-content-center">
+      <label *ngIf="!model.liability.ownerLiable" class="dnm-switch-btn">
+        <input (change)="updateCommonAreaHeader.emit({ commonAreaId: model.commonArea.id, serviceType: model.liability.serviceType, path: 'includeNotLiableShops', value: $event.target.checked })" [checked]="model.liability.includeNotLiableShops"
+               type="checkbox">
+        <span class="dnm-switch-slider round"></span>
+      </label>
+    </div>
+    <div class="dropdown-wrp">
+      <div *ngIf="!model.liability.ownerLiable" class="dropdown d-block fullwidth-dropdown" ngbDropdown>
+        <button class="btn btn-secondary dropdown-toggle text-left" ngbDropdownToggle>
+          {{splitTypeList[model.liability.splitType].label}}
+        </button>
+        <div class="dropdown-menu" ngbDropdownMenu>
+          <ng-container *ngFor="let item of splitTypeList">
+            <button (click)="onChangeSplitType(item.value)" class="dropdown-item">{{item.label}}</button>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-tbl-header d-flex align-items-center">
+    <div class="container-fluid none-padding">
+      <div class="row none-margin-hr">
+        <div class="col-6 none-padding d-flex align-items-center">
+          <div class="dnm-checkbox">
+            <input (click)="onSelected()" [checked]="checkedAll" type="checkbox"/>
+            <div [ngClass]="{'indeterm-state': checkedAllPartly}" class="state">
+              <label></label>
+            </div>
+          </div>
+          <span class="col-tbl-lbl text-uppercase">Allocat.</span>
+        </div>
+        <div class="col-4 d-flex align-items-center">
+          <span class="col-tbl-lbl text-uppercase">%</span>
+        </div>
+        <div class="col-2 none-padding d-flex align-items-center">
+          <span class="col-tbl-lbl text-uppercase">Liab.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,250 @@
+<div *ngIf="form" class="create-equipment" data-create-equipment>
+  <div class="modal-header">
+    <h5 class="modal-title">
+      <span *ngIf="isNew">Create</span>
+      <span *ngIf="!isNew">Edit</span> equipment
+    </h5>
+    <button (click)="dismiss()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container-fluid none-padding">
+      <form [formGroup]="form">
+        <div class="bl-gradient-title">Equipment group</div>
+        <div class="input-row none-margin-hr">
+          <div class="text-uppercase field-name">Supply type</div>
+          <div class="field-value none-padding d-flex">
+            <div *ngFor="let item of supplyTypesList" class="d-flex align-items-center">
+              <div class="dnm-radio-btn">
+                <input (click)="onSupplyTypeChange(item)" [checked]="model.supplyType === item" [value]="item" data-supply-type formControlName="supplyType"
+                       name="supplyType"
+                       type="radio"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+              <span class="radio-input-lbl">{{supplyType[item]}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name">Choose group</div>
+          <div class="field-value none-padding">
+            <div class="dropdown d-block fullwidth-dropdown none-padding" ngbDropdown>
+              <button class="btn btn-secondary dropdown-toggle text-left" data-choose-group ngbDropdownToggle
+                      type="button">
+                {{selectedEquipmentGroupText}}
+              </button>
+              <div aria-labelledby="ddCategory" class="dropdown-menu" ngbDropdownMenu>
+                <button (click)="onEquipmentGroupChange(item)" *ngFor="let item of equipmentGroupsBySupplyType"
+                        class="dropdown-item text-ellipsis"
+                        type="button">{{item.name}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bl-gradient-title">Model details</div>
+        <div class="input-row">
+          <div class="text-uppercase field-name">Brand name</div>
+          <div class="field-value none-padding">
+            <div [ngClass]="{'dnm-invalid-inp': isSubmitted && !form.controls.brandId}"
+                 class="dropdown d-block fullwidth-dropdown none-padding" ngbDropdown>
+              <button class="btn btn-secondary dropdown-toggle text-left" data-brand-name ngbDropdownToggle
+                      type="button">
+                {{selectedBrandText}}
+              </button>
+              <div aria-labelledby="ddCategory" class="dropdown-menu" ngbDropdownMenu>
+                <button (click)="onBrandChange(item)" *ngFor="let item of brandsByEquipmentGroup" class="dropdown-item text-ellipsis"
+                        type="button">{{item.name}}</button>
+              </div>
+            </div>
+            <small *ngIf="isSubmitted && !form.controls.brandId" class="alert-danger">
+              Brand is required
+            </small>
+          </div>
+        </div>
+        <div class="input-row none-margin-hr">
+          <div class="text-uppercase field-name">Model name</div>
+          <div class="field-value none-padding d-flex">
+            <div class="w-100">
+              <div [ngClass]="{'dnm-invalid-inp': formErrors.model}">
+                <input class="form-control req-frm-fld" data-model-name formControlName="model" maxlength="256" placeholder="Type here"
+                       type="text"/>
+              </div>
+              <small *ngIf="formErrors.model" class="alert-danger">
+                {{ formErrors.model }}
+              </small>
+            </div>
+            <div class="d-flex align-items-start checkbox-input model-name-checkbox">
+              <div class="dnm-checkbox">
+                <input [checked]="form.controls['isOldModel'].value" class="checkbox-toggle" data-mark-as-old formControlName="isOldModel"
+                       type="checkbox"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+              <span class="checkbox-input-lbl">Mark as old</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bl-gradient-title">Add image</div>
+        <upload-image (fileChange)="logoChanged($event)" [(defaultUrl)]="defaultImage" [(file)]="logo" [(src)]="logoUrl"
+                      outputFileName="equipment-image"></upload-image>
+
+        <div class="bl-gradient-title">Equipment attributes</div>
+        <div data-equip-atr formArrayName="equipmentAttributes">
+          <div *ngFor="let attrib of form.controls.equipmentAttributes.controls; let idx=index;"
+               [formGroupName]="idx" class="input-row none-margin-hr">
+            <div class="text-uppercase field-name">{{attrib.controls.name.value}}</div>
+            <div class="field-value none-padding">
+              <div [ngClass]="{'dnm-invalid-inp': isSubmitted && attrib.controls.value.invalid}"
+                   class="d-flex align-items-center">
+                <ng-container *ngIf="attrib.controls.fieldType.value === fieldTypes.Number">
+                  <input (input)="setNumber(idx)" [autoSelect] class="form-control" formControlName="numberValue"
+                         placeholder="Type here" type="text"/>
+                  <div
+                    class="margin-left-10">{{equipmentAttribs[idx]?.attribute?.unit ? equipmentAttribs[idx].attribute.unit.name : ''}}</div>
+                </ng-container>
+                <ng-container *ngIf="attrib.controls.fieldType.value === fieldTypes.Ratio">
+                  <input [autoSelect]
+                         [placeholder]="ratioPlaceholderMask(attrib.value.name)"
+                         [textMask]="{ mask: ratioMask, guide: false }"
+                         class="form-control"
+                         formControlName="value" type="text"/>
+                </ng-container>
+                <ng-container *ngIf="attrib.controls.fieldType.value === fieldTypes.Combo">
+                  <div class="field-value none-padding flex-grow-1">
+                    <div class="dropdown d-block fullwidth-dropdown none-padding" ngbDropdown>
+                      <button class="btn btn-secondary dropdown-toggle text-left" ngbDropdownToggle type="button">
+                        {{attrib.value.value || 'Select option'}}
+                      </button>
+                      <div aria-labelledby="ddCategory" class="dropdown-menu" ngbDropdownMenu>
+                        <button (click)="onComboSettingsChange(item.value, attrib.value.id)" *ngFor="let item of equipmentAttribs[idx].attribute.comboSettings"
+                                class="dropdown-item text-ellipsis"
+                                type="button">{{item.value}}</button>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+                <div *ngIf="equipmentAttribs[idx].attribute.isRequired !== true"
+                     class="delete-link d-flex align-items-center">
+                  <button (click)="deleteAttribute([attrib.value.id])" class="dnm-btn-icon" data-del-attr type="button">
+                    <i class="icon cross-icon"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="excludedEquipmentAttribs.length" class="input-row">
+          <div class="text-form-field field-name">Add Attribute</div>
+          <div class="field-value none-padding">
+            <div class="d-inline-block" ngbDropdown>
+              <button class="btn btn-outline-primary" data-select-attrib id="selectAttrib" ngbDropdownToggle
+                      type="button">Select
+              </button>
+              <div aria-labelledby="selectMeterType" ngbDropdownMenu>
+                <button (click)="addAttribute(attrib)" *ngFor="let attrib of excludedEquipmentAttribs" class="dropdown-item"
+                        type="button">{{attrib.name}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bl-gradient-title">Register</div>
+        <div class="d-flex align-items-center checkbox-input">
+          <div class="dnm-checkbox margin-right-10">
+            <input class="checkbox-toggle" formControlName="isFixedRegister" type="checkbox"/>
+            <div class="state">
+              <label></label>
+            </div>
+          </div>
+          <span class="checkbox-input-lbl">Fixed register</span>
+        </div>
+
+        <div class="input-row none-margin-hr align-items-start" data-register-map>
+          <div class="text-uppercase table-name">Default</div>
+          <div class="text-uppercase table-name">Register map</div>
+          <div class="text-uppercase table-name">Integer Digits</div>
+          <div class="text-uppercase table-name">Calc</div>
+          <div class="text-uppercase table-name">Obis Code</div>
+          <div class="none-padding d-flex">
+
+            <div (cdkDropListDropped)="onDropRegisters($event)" cdkDropList class="list-body">
+              <div class="field-value-col" formArrayName="equipmentRegisters">
+                <div *ngFor="let register of form.controls.equipmentRegisters.controls; let idx=index;trackBy: trackById"
+                     [formGroupName]="idx" class="d-flex align-items-center checkbox-input row" cdkDrag cdkDragLockAxis="y">
+                  <div class="dnm-checkbox padding-right-100">
+                    <input class="checkbox-toggle  " formControlName="isBilling" type="checkbox" />
+                    <div class="state">
+                      <label></label>
+                    </div>
+                  </div>
+                  <div class="checkbox-input-lbl text-ellipsis register-map" title="{{register.controls.name.value}}">
+                    {{register.controls.name.value}}
+                  </div>
+                  <div class="dial-count">
+                    <number-input [min]="1" formControlName="dialCount"></number-input>
+                  </div>
+                  <div *ngIf="register.controls.registerType.value==0">
+                    <div class="register-icon-align align-items-center">
+                      <img class="register-icon" name="registerIcon" id="registerIcon" src="{{selectedIcon0}}" title="{{selectedIconAlt0}}" alt="{{selectedIconAlt0}}" #registerIcon>
+                    </div>
+                  </div>
+                  <div *ngIf="register.controls.registerType.value==1">
+                    <div class="register-icon-align align-items-center">
+                      <img class="register-icon" name="registerIcon" id="registerIcon" src="{{selectedIcon1}}" title="{{selectedIconAlt1}}" alt="{{selectedIconAlt1}}" #registerIcon>
+                    </div>
+                  </div>
+                  <div *ngIf="register.controls.registerType.value==2">
+                    <div class="register-icon-align align-items-center">
+                      <img class="register-icon" name="registerIcon" id="registerIcon" src="{{selectedIcon2}}" title="{{selectedIconAlt2}}" alt="{{selectedIconAlt2}}" #registerIcon>
+                    </div>
+                  </div>
+                  <div class="dropdown d-block fullwidth-dropdown none-padding obis-code" ngbDropdown>
+                    <div [ngClass]="{'dnm-invalid-inp': form.isSubmitted && form.controls.obisCode.isInvalid}">
+                      <ng-select [clearable]="false" [closeOnSelect]="true" [dropdownPosition]="'top'" [items]="obisCodes"
+                                 [multiple]="false" [searchable]="false" bindLabel="displayValue" bindValue="obisCodeValue"
+                                 class="select-dropdown" name="obisCodes" formControlName="obisCode">
+                      </ng-select>
+                    </div>
+                  </div>
+                  <button (click)="deleteRegister([register.value.id])" class="dnm-btn-icon" data-del-attr type="button">
+                    <i class="icon cross-icon"></i>
+                  </button>
+                </div>
+                </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="excludedEquipmentRegisters.length" class="input-row">
+          <div class="text-form-field field-name">Add Register</div>
+          <div class="field-value none-padding">
+            <div class="d-inline-block" ngbDropdown>
+              <button class="btn btn-outline-primary req-frm-fld" data-select-attrib id="selectRegister" ngbDropdownToggle
+                      type="button">Select
+              </button>
+              <div aria-labelledby="selectMeterType" ngbDropdownMenu>
+                <button (click)="addRegister(register)" *ngFor="let register of excludedEquipmentRegisters" class="dropdown-item"
+                        type="button">{{register.name}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row none-margin-hr">
+          <div class="col-md-8 offset-md-4 none-padding footer-buttons">
+            <button (click)="dismiss()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+            <button (click)="save()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>

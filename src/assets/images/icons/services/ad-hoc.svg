@@ -1,0 +1,20 @@
+<svg data-name="Capa 1" id="Capa_1" viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <style>.cls-1 {
+      fill: url(#linear-gradient);
+    }
+
+    .cls-2 {
+      fill: url(#linear-gradient-2);
+    }</style>
+    <linearGradient gradientUnits="userSpaceOnUse" id="linear-gradient" x2="7.25" y1="7.5" y2="7.5">
+      <stop offset="0" stop-color="#222f3e"/>
+      <stop offset="1" stop-color="#576574"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="7.75" x2="15" xlink:href="#linear-gradient" y1="7.5" y2="7.5"/>
+  </defs>
+  <title>ad hoc</title>
+  <polygon class="cls-1" points="7.25 15 7.25 10.89 3.98 7.5 7.25 4.11 7.25 0.01 0 7.55 7.25 15"/>
+  <polygon class="cls-2" points="7.75 0 7.75 4.11 11.03 7.5 7.75 10.89 7.75 15 15 7.46 7.75 0"/>
+</svg>

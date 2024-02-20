@@ -1,0 +1,63 @@
+<div class="trf trf--allocated-building d-flex">
+
+  <div class="trf-name-wrp d-flex align-items-center">
+    <div>
+      <span class="trf-name-val">{{ tariff.name }}</span>
+      <div class="trf-name-dets">
+        <span class="details-fld-name">Tariff code: </span>
+        <span class="details-fld-val">{{ tariff.code }}</span>
+      </div>
+      <div class="trf-name-dets">
+        <span class="details-fld-name">Supplier: </span>
+        <span class="details-fld-val">{{ tariff.supplierName }}</span>
+      </div>
+      <div class="d-flex align-items-center service-types">
+        <ng-container *ngFor="let item of supplyTypes">
+          <div *ngIf="isSupplierSupplyType(tariff.supplyType, item)"
+               class="service-type d-flex align-items-center">
+            <div [ngClass]="getSupplyTypeIconClass(item)" class="service-icon electricity-icon"></div>
+            <span [ngClass]="getSupplyTypeLabelClass(item)"
+                  class="type-lbl">{{ supplyTypeText[item] }}</span>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <div class="trf-body d-flex align-items-center">
+    <div class="w-100">
+      <div *ngFor="let version of tariff.versions" class="row none-margin-hr trf-version-row">
+        <div class="col-3 d-flex align-items-center">
+            <span class="trf-version-val">Vers. {{ version.majorVersion }}
+              -{{ version.versionDate | date: 'dd/MM/yyyy'}}</span>
+        </div>
+        <div class="col-3 d-flex align-items-center">
+          {{ version.entity.createdOn | date: 'dd/MM/yyyy'}}
+        </div>
+        <div class="col-3 d-flex align-items-center">
+          359
+        </div>
+
+        <div class="col-3 d-flex align-items-center">
+          <ul class="trf-item-list">
+            <li *ngFor="let value of (version.entity.tariffValues | actualVersions)">
+              <span class="list-item-val">{{ value.name }}</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="trf-actions d-flex align-items-center justify-content-center">
+    <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+      <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle type="button"></button>
+      <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+        <button (click)="onDeleteTariff(tariff.id)" class="dropdown-item d-flex justify-content-between on-delete"
+                type="button" [disabled]="buildingPeriodIsFinalized">
+          Delete
+          <i class="dnm-icon delete-icon"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

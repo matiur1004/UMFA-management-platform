@@ -1,0 +1,103 @@
+@fontFamilyMedium: 'Gotham Medium', Arial, sans-serif;
+@fontFamilyBook: 'Gotham Book', Arial, sans-serif;
+@fontFamilyLight: 'Gotham Light', Arial, sans-serif;
+
+@baseFontSize: 12px;
+
+// Colors
+
+@color-text-primary: #19233c;
+@color-text-secondary: #3d4060;
+@color-text-tertiary: #566787;
+
+@color-description: #aeb4c0;
+@color-empty: #bfc5d1;
+@color-stroke: #cdd9ec;
+
+@color-main-accent: #00aeef;
+@color-accent: #6dcff6;
+
+@color-line: #e6e7e8;
+@color-warning: #f73045;
+
+// Background colors
+@color-background-button: #dee8f7;
+@color-background-primary: #f5f6fa;
+@color-background-secondary: #fafbfd;
+@color-background-tertiary: #eff4fc;
+@color-background-white: #ffffff;
+@color-background-dark: #19233c;
+@color-background-dark-green: #3f7d35;
+
+// Gradients
+
+.gradient(@origin, @end) {
+  background: linear-gradient(to right, @origin 0%, @end 100%);
+  background: -moz-linear-gradient(to, left, @origin 0%, @end 100%);
+  background: -webkit-linear-gradient(to, left, @origin 0%, @end 100%);
+  background: -o-linear-gradient(to, right, @origin 0%, @end 100%);
+}
+
+.gradient-heading() {
+  .gradient(#17b3da, #116eba);
+}
+
+.gradient-header() {
+  .gradient(#394fa3, #1d2c64);
+}
+
+.gradient-sidebar-menu() {
+  .gradient(#27325c, #1d264a);
+}
+
+.gradient-active-tab-icon() {
+  .gradient(#307ea6, #2a3a86);
+}
+
+.gradient-blue() {
+  .gradient(#6792e2, #405192);
+}
+
+.gradient-dark-green() {
+  .gradient(#1abc9c, #307769);
+}
+
+.gradient-green() {
+  .gradient(#6abe4d, #3f7d35);
+}
+
+.gradient-yellow() {
+  .gradient(#eac85f, #d58844);
+}
+
+.gradient-orange() {
+  .gradient(#e67e22, #d35400);
+}
+
+.gradient-red() {
+  .gradient(#e58d81, #ff082b);
+}
+
+.gradient-pink() {
+  .gradient(#f56a92, #cf1a4d);
+}
+
+.gradient-violet() {
+  .gradient(#a55eea, #513e6d);
+}
+
+.gradient-dark-violet() {
+  .gradient(#5d2bdc, #341f97);
+}
+
+.gradient-black() {
+  .gradient(#576574, #222f3e);
+}
+
+.gradient-grey() {
+  .gradient(#909d9e, #586162);
+}
+
+.gradient-slider-selection() {
+  .gradient(#17b3da, #116eba);
+}

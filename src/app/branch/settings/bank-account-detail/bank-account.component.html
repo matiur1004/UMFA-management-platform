@@ -1,0 +1,120 @@
+<div class="modal-header">
+  <h5 class="modal-title">Add Account</h5>
+  <button (click)="dismiss()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+    <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+  </button>
+</div>
+<div class="modal-body add-bank-account-modal">
+  <div class="container-fluid">
+    <form [formGroup]="form">
+      <div class="row">
+        <div class="col-left text-form-field text-uppercase">
+          Account Name
+        </div>
+        <div class="col-right">
+          <div class="form-group">
+            <div [ngClass]="{'dnm-invalid-inp': formErrors['accountName']}">
+              <input class="form-control req-frm-fld" formControlName="accountName" id="account-name" placeholder="Type here"
+                     type="text">
+            </div>
+            <small *ngIf="formErrors.accountName" class="alert-danger">
+              {{ formErrors.accountName }}
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-left text-form-field text-uppercase">
+          Bank Name
+        </div>
+        <div class="col-right">
+          <div class="form-group">
+            <div [ngClass]="{'dnm-invalid-inp': formErrors['bankName']}">
+              <input class="form-control req-frm-fld" formControlName="bankName" id="bank-name" placeholder="Type here" type="text">
+            </div>
+            <small *ngIf="formErrors.bankName" class="alert-danger">
+              {{ formErrors.bankName }}
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-left text-form-field text-uppercase">
+          Account Type
+        </div>
+        <div class="col-right">
+          <div class="form-group">
+            <div [ngClass]="{'dnm-invalid-inp': formErrors['accountType']}">
+              <input class="form-control req-frm-fld" formControlName="accountType" id="account-type" placeholder="Type here"
+                     type="text">
+            </div>
+            <small *ngIf="formErrors.accountType" class="alert-danger">
+              {{ formErrors.accountType }}
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-left text-form-field text-uppercase">
+          Account Number
+        </div>
+        <div class="col-right">
+          <div class="form-group">
+            <div [ngClass]="{'dnm-invalid-inp': formErrors['accountNumber']}">
+              <input class="form-control req-frm-fld" formControlName="accountNumber" id="account-number" placeholder="Type here"
+                     type="text">
+            </div>
+            <small *ngIf="formErrors.accountNumber" class="alert-danger">
+              {{ formErrors.accountNumber }}
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-left text-form-field text-uppercase">
+          Branch Code
+        </div>
+        <div class="col-right">
+          <div class="form-group">
+            <div [ngClass]="{'dnm-invalid-inp': formErrors['branchCode']}">
+              <input class="form-control req-frm-fld" formControlName="branchCode" id="branch-code" placeholder="Type here"
+                     type="text">
+            </div>
+            <small *ngIf="formErrors.branchCode" class="alert-danger">
+              {{ formErrors.branchCode }}
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-left text-form-field text-uppercase">
+          Swift Code
+        </div>
+        <div class="col-right">
+          <div class="form-group">
+            <input class="form-control" formControlName="swiftCode" id="swift-code" placeholder="Type here" type="text">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-left text-form-field text-uppercase">
+          Description
+          <br/>
+          <span class="undertext">(the purpose of the account)</span>
+        </div>
+        <div class="col-right">
+          <div class="form-group">
+            <textarea class="form-control" formControlName="description" id="account-description"
+                      placeholder="Type here"></textarea>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="row">
+      <div class="col-12 text-right footer-buttons">
+        <button (click)="dismiss()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+        <button (click)="submit()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

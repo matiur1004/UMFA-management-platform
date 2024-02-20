@@ -1,0 +1,61 @@
+@import 'variables.less';
+
+.node-shops-wrp {
+  background: @color-background-white;
+  min-width: 130px;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  right: -124px;
+  max-height: 400px;
+  overflow: auto;
+  bottom: 20px;
+}
+
+.node-shops-wrp::after,
+.node-shops-wrp::before {
+  position: absolute;
+  content: '';
+  background: @color-background-white;
+  top: -7px;
+  left: calc(100% - 30px);
+  width: 14px;
+  height: 14px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: -1;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
+.node-shops-wrp::before {
+  z-index: 1;
+  box-shadow: none;
+}
+
+.node-shops-wrp .modal-header {
+  padding: 20px 20px 13px 28px;
+  position: fixed;
+  background: @color-background-white;
+  z-index: 100;
+}
+
+.node-shops-wrp .modal-header .modal-title {
+  font-family: Gotham Medium;
+  font-size: 18px;
+  color: @color-text-tertiary;
+  line-height: 18px;
+}
+
+.node-shops-wrp .modal-body {
+  padding: 55px 20px 20px 28px;
+}
+
+.node-shops-wrp .modal-body-item {
+  font-family: Gotham Book;
+  font-size: 13px;
+  line-height: 24px;
+  color: @color-text-tertiary;
+  cursor: pointer;
+  margin-right: 0;
+}
+

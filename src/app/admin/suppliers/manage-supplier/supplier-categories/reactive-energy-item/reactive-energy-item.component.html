@@ -1,0 +1,56 @@
+<div class="react-energy-wrp">
+  <div class="row none-margin-hr">
+    <div class="col none-padding">
+      <div class="item-hdr-nav d-flex align-items-center justify-content-between">
+        <span class="text-uppercase ren-calc-name">Scheme #1</span>
+        <div class="del-step-btn d-flex align-items-center">
+          <span class="cross-icon"></span>
+          <span class="btn-lbl">Delete step</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="input-row line-div">
+    <div class="text-uppercase field-name text-form-field">
+      Name
+    </div>
+    <div class="field-value d-flex align-items-center">
+      <text-input class="none-padding w-100" maxlength="50" placeholder="Type here"></text-input>
+    </div>
+  </div>
+
+  <div class="input-row line-div">
+    <div class="text-uppercase field-name text-form-field">
+      Excess of KWH
+    </div>
+    <div class="field-value d-flex align-items-center">
+      <div class="d-flex align-items-center">
+        <number-input [placeholder]="0" input-class="numb-form-control"></number-input>
+        <span class="numb-input-lbl">percents</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="input-row line-div">
+    <div class="text-uppercase field-name text-form-field">
+      Seasonal
+    </div>
+    <div class="field-value d-flex align-items-center">
+      <ng-select [clearable]="false" [closeOnSelect]="false" [dropdownPosition]="'top'" [hideSelected]="true" [searchable]="false"
+                 class="w-100"></ng-select>
+    </div>
+  </div>
+
+  <div class="input-row line-div">
+    <div class="text-uppercase field-name text-form-field">
+      KWH Periods
+    </div>
+    <div class="field-value d-flex align-items-center">
+      <ng-select [clearable]="false" [closeOnSelect]="false" [dropdownPosition]="'top'" [hideSelected]="true"
+                 [multiple]="true" [searchable]="false"
+                 class="dnm-multiple-select w-100"></ng-select>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,22 @@
+<div *ngIf="buildingPeriod" class="bld-periods-popup">
+  <div class="popup-title d-flex align-items-center">{{buildingPeriod.name}}</div>
+  <div class="popup-body">
+    <div class="body-item">
+      <span class="item-field-lbl">Created:</span>
+      <span class="item-field-val">{{buildingPeriod.createdDate | date: 'dd/MM/yy, h:mm a'}}</span>
+    </div>
+    <div class="body-item">
+      <span class="item-field-lbl">User created:</span>
+      <span class="item-field-val">{{buildingPeriod.createdByUser.fullName }}</span>
+    </div>
+    <div class="body-item">
+      <span class="item-field-lbl">Updated:</span>
+      <span class="item-field-val">{{buildingPeriod.updatedDate | date: 'dd/MM/yy, h:mm a'}}</span>
+    </div>
+    <div class="body-item">
+      <span class="item-field-lbl">User updated:</span>
+      <span class="item-field-val">{{buildingPeriod.updatedByUser.fullName}}</span>
+    </div>
+
+  </div>
+</div>

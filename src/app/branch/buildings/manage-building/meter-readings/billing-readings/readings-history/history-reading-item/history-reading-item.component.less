@@ -1,0 +1,342 @@
+@import 'variables.less';
+@import "buttons.less";
+
+.history-reading-container {
+  background-color: transparent;
+  width: 100%;
+  min-width: 100%;
+  position: relative;
+  padding-left: 2px;
+  padding-right: 2px;
+  margin-bottom: 10px;
+
+  &.selected-item {
+    border-radius: 5px;
+    border: none;
+    background-image: linear-gradient(to top, #00aeef, #0097e4, #0080d5, #2068c4, #374fb0);
+    padding: 3px;
+  }
+
+  &.selected-item:after {
+    content: '';
+    display: inline-block;
+    background-image: url('../../../../../../../../assets/images/icons/meter-readings/selected-icon.svg');
+    background-position: center;
+    background-size: 30px;
+    background-repeat: no-repeat;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    left: -11px;
+    top: -11px;
+  }
+
+  &.checked-item {
+    opacity: 0.5;
+  }
+
+  .register-unit {
+    font-family: @fontFamilyMedium;
+    font-size: 15px;
+  }
+
+  .item-body {
+    padding: 20px;
+    background-color: @color-background-white;
+    border: 1px solid @color-line;
+    position: relative;
+
+    &.incorrect {
+      opacity: 0.38;
+    }
+  }
+
+  &.selected-item .item-body {
+    border-radius: 3px;
+    border: none;
+  }
+
+  .item-nav {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: transparent;
+  }
+
+  .pinned-item,
+  .opening-reading-item {
+    position: absolute;
+    width: 32px;
+    height: 46px;
+    top: 0;
+    right: 0;
+
+    &:before {
+      content: '';
+      width: 32px;
+      height: 46px;
+      position: absolute;
+      border-top: 23px solid transparent;
+      border-right: 16px solid transparent;
+      border-bottom: 23px solid @color-background-white;
+      border-left: 16px solid @color-background-white;
+      z-index: 1;
+    }
+  }
+
+  .pinned-item {
+    .gradient-violet();
+  }
+
+  .opening-reading-item {
+    .gradient-yellow();
+
+    .pin-icon {
+      right: 41px;
+      cursor: pointer;
+    }
+  }
+
+  .item-nav-icon {
+    position: absolute;
+    top: 7px;
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    background-size: 13px;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    z-index: 3;
+
+    &.reset-cursor {
+      cursor: default;
+    }
+
+    &.dnm-billing-icon-disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  }
+
+  .billing-icon {
+    right: 35px;
+  }
+
+  .pin-icon {
+    right: 7px;
+  }
+
+  .incorrect-icon {
+    right: 30px;
+    z-index: 2;
+  }
+
+  .pinned-icon,
+  .opening-reading-icon {
+    right: 5px;
+  }
+
+  .history-reading-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .item-img {
+    width: 74px;
+    min-width: 74px;
+    height: 74px;
+    min-height: 74px;
+    border: 1px solid @color-stroke;
+    border-radius: 5px;
+    cursor: pointer;
+
+    .reading-img {
+      max-width: 100%;
+      max-height: 100%;
+
+      &.default-reading-img {
+        width: 55px;
+        height: 55px;
+      }
+    }
+  }
+
+  .data-container {
+    padding-left: 20px;
+    padding-right: 20px;
+    border-right: 1px solid @color-line;
+  }
+
+  .data-row:first-child {
+    border-bottom: 1px solid @color-line;
+    padding-bottom: 10px;
+  }
+
+  .data-row:last-child {
+    padding-top: 10px;
+  }
+
+  .reading-status {
+    margin-right: 10px;
+    width: 25px;
+    min-width: 25px;
+    height: 25px;
+    min-height: 25px;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+  }
+
+  .data-item {
+    margin-right: 10px;
+  }
+
+  .data-item:last-child {
+    margin-right: 0;
+  }
+
+  .item-hdr {
+    font-family: @fontFamilyMedium;
+    font-size: 10px;
+    color: @color-description;
+    line-height: 10px;
+    margin-bottom: 7px;
+  }
+
+  .item-val {
+    font-family: @fontFamilyMedium;
+    font-size: 14px;
+    line-height: 14px;
+  }
+
+  .reading-val {
+    width: 54px;
+  }
+
+  .margin-refresh {
+    margin-bottom: -4px;
+    margin-top: -2px;
+    margin-left: 16px;
+  }
+
+  .reading-val-grdnt {
+    .gradient-blue();
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .item-val-grdnt {
+    .gradient-grey();
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .source-val {
+    font-size: 12px;
+  }
+
+  .item-descr {
+    font-family: @fontFamilyBook;
+    font-size: 13px;
+    color: @color-text-tertiary;
+    margin-top: 10px;
+    word-break: break-word;
+    max-height: 125px;
+    overflow-y: scroll;
+  }
+
+  .added-by-hdr {
+    font-family: @fontFamilyMedium;
+    font-size: 10px;
+    line-height: 10px;
+    margin-top: 10px;
+    color: @color-description;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .user-img {
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+    min-height: 36px;
+    border-radius: 18px;
+    margin-right: 10px;
+
+    .user-no-img {
+      .gradient-header();
+      border-radius: 18px;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: @color-main-accent;
+      font-family: @fontFamilyMedium;
+      font-size: 14px;
+      line-height: 36px;
+    }
+  }
+
+  .user-name {
+    font-family: @fontFamilyMedium;
+    font-size: 14px;
+    line-height: 14px;
+    color: @color-text-secondary;
+    margin-bottom: 10px;
+    word-break: break-word;
+  }
+
+  .publishing-date {
+    font-family: @fontFamilyBook;
+    font-size: 12px;
+    line-height: 12px;
+    color: @color-description;
+  }
+
+  &.sidebar-item {
+    .data-container {
+      padding-left: 10px;
+      border-right: none;
+      margin-bottom: 15px;
+    }
+
+    .description-container {
+      flex-direction: column;
+    }
+
+    .none-left-padding {
+      padding-left: 0;
+    }
+
+    .reading-status {
+      margin-right: 8px;
+    }
+
+    .data-item {
+      margin-right: 8px;
+    }
+
+    .reading-val {
+      width: 90px;
+    }
+  }
+}
+
+::ng-deep .history-reading-container ngb-tooltip-window {
+  top: -1px !important;
+}
+
+::ng-deep .history-reading-container .tooltip-inner {
+  background-color: @color-background-dark;
+  color: @color-empty;
+  font-size: 13px;
+  line-height: 21px;
+  width: auto;
+  min-width: 130px;
+  min-height: 30px;
+  padding: 2px;
+  white-space: normal;
+  display: inline-table;
+}

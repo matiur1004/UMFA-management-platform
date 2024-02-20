@@ -1,0 +1,98 @@
+@import 'variables.less';
+
+.users-list {
+  background: @color-background-white;
+  width: 540px;
+  height: 420px;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.users-list::after,
+.users-list::before {
+  position: absolute;
+  content: '';
+  background: @color-background-white;
+  top: -12px;
+  left: calc(50% + 8px);
+  width: 24px;
+  height: 24px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: -1;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
+.users-list::before {
+  z-index: 1;
+  box-shadow: none;
+}
+
+.users-list .modal-header {
+  padding: 20px 20px 13px 28px;
+}
+
+.users-list .modal-header .modal-title {
+  font-family: Gotham Medium;
+  font-size: 18px;
+  color: @color-text-tertiary;
+  line-height: 18px;
+}
+
+.users-list-block {
+  height: 348px;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.users-list-block .users-list-item {
+  padding: 15px 30px 15px 28px;
+  border-bottom: 1px solid @color-background-primary;
+}
+
+.user-img-block {
+  display: flex;
+  align-items: center;
+  padding-left: 0;
+}
+
+::ng-deep .user-img-block .user-img {
+  margin-right: 20px;
+}
+
+.user-img-block .user-no-img {
+  .gradient-header();
+  border-radius: 19px;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: @color-main-accent;
+  font-family: 'Gotham Medium';
+  font-size: 14px;
+  line-height: 38px;
+  margin-right: 20px;
+}
+
+.user-name {
+  font-family: 'Gotham Medium';
+  font-size: 18px;
+  color: @color-text-secondary;
+}
+
+.user-roles {
+  font-size: 13px;
+  font-family: Gotham Book;
+  line-height: 18px;
+}
+
+.user-roles .user-roles-label {
+  color: @color-description;
+  margin-right: 5px;
+}
+
+.user-roles .user-roles-data {
+  color: @color-text-tertiary;
+  white-space: normal;
+}

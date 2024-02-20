@@ -1,0 +1,365 @@
+@import 'variables.less';
+
+/* #region tree view */
+
+.tree-view {
+  min-height: 20px;
+  margin-bottom: 20px;
+  border: none;
+  border-top: none;
+  padding-bottom: 10px;
+}
+
+.tree-view ul {
+  -webkit-padding-start: 70px;
+  -moz-padding-start: 70px;
+}
+
+.tree-view > ul {
+  padding-left: 0;
+  -webkit-margin-before: 0;
+  -webkit-margin-after: 0;
+  -webkit-margin-start: 0;
+  -webkit-margin-end: 0;
+  -webkit-padding-start: 0;
+}
+
+.tree-view li {
+  list-style-type: none;
+  margin: 0;
+  position: relative;
+  padding-top: 21px;
+}
+
+.tree-view li.root-item {
+  padding-top: 0;
+}
+
+.tree-view li::before,
+.tree-view li::after {
+  content: '';
+  left: -40px;
+  position: absolute;
+  right: auto
+}
+
+.tree-view li::before {
+  border-left: 2px solid #7ad2f4;
+  bottom: 50px;
+  height: 100%;
+  top: 0;
+  width: 1px
+}
+
+.tree-view li::after {
+  border-top: 2px solid #7ad2f4;
+  height: 20px;
+  top: 85px;
+  width: 40px;
+}
+
+.tree-view li.tariff-item::before, .tree-view li.cmn-area-item::before {
+  height: 100%;
+}
+
+.tree-view > ul > li::before,
+.tree-view > ul > li::after {
+  border: 0;
+}
+
+.tree-view li:last-child::before {
+  height: 85px;
+}
+
+.tree-view .item-content {
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.tree-view .item-content::before {
+  content: "";
+  background: @color-background-white;
+  width: 15px;
+  height: 15px;
+  border: 2px solid @color-main-accent;
+  border-radius: 50%;
+  position: absolute;
+  top: 78px;
+  left: -7px;
+  z-index: 1;
+}
+
+.tree-view .root-item > .item-content::before {
+  content: none;
+}
+
+.item-content {
+  display: inline-block;
+  background: @color-background-white;
+  border: 1px solid @color-line;
+  padding: 25px 40px;
+  margin-bottom: 30px;
+}
+
+.item-content .col-left {
+  width: calc(100% - 100px);
+  float: left;
+}
+
+.item-content .col-right {
+  width: 100px;
+}
+
+.permission-name {
+  font-family: Gotham Medium;
+  font-size: 20px;
+  color: @color-text-primary;
+  margin-bottom: 7px;
+}
+
+.permission-description {
+  font-size: 14px;
+  color: @color-text-tertiary;
+  line-height: 22px;
+}
+
+/* #region services tree view */
+
+.srvc-tree-view {
+  padding: 0;
+}
+
+.srvc-tree-view .nav-row {
+  margin-bottom: 30px;
+}
+
+.srvc-tree-view .service-nav .serv-nav-item {
+  margin-right: 40px;
+}
+
+.srvc-tree-view .results-lbl {
+  margin-right: 20px;
+  font-size: 16px;
+  color: @color-text-tertiary;
+}
+
+.srvc-tree-view .select-lbl {
+  font-family: Gotham Medium;
+  font-size: 15px;
+  color: @color-text-tertiary;
+  margin-right: 20px;
+}
+
+.srvc-tree-view .services-per-page-btn,
+.srvc-tree-view .services-per-page-menu {
+  width: 200px;
+}
+
+.srvc-tree-view.tree-view ul:before {
+  content: '';
+  left: 70px;
+  position: absolute;
+  height: calc(100% - 77px);
+  top: 0;
+}
+
+.srvc-tree-view.tree-view > ul:before {
+  border-left: none;
+}
+
+.srvc-tree-view.tree-view li::before {
+  height: 113px;
+  top: -20px;
+}
+
+.srvc-tree-view.tree-view ul > service-tree-item:not(:last-child) > li::before {
+  height: calc(100% + 20px);
+}
+
+.srvc-tree-view ul.expanded-list {
+  z-index: 1;
+  position: relative;
+  left: -40px;
+  width: calc(100% + 40px);
+  -webkit-padding-start: 110px;
+  -moz-padding-start: 110px;
+}
+
+.srvc-tree-view ul.expanded-list > service-tree-item:not(:last-child) > li > ul.expanded-list {
+  border-left: 2px dashed @color-background-primary;
+}
+
+.srvc-tree-view ul.expanded-list > service-tree-item:last-child > li > ul.expanded-list:before {
+  height: calc(100% - 277px);
+}
+
+.srvc-tree-view .block-pointer {
+  cursor: pointer;
+}
+
+.srvc-tree-view .list-pd {
+  padding-bottom: 20px;
+  padding-top: 0;
+}
+
+.srvc-tree-view.tree-view li.root-item ul {
+  padding-top: 20px;
+}
+
+.srvc-tree-view.tree-view li::after {
+  top: 91px;
+}
+
+.srvc-tree-view.tree-view > ul li.root-item::before,
+.srvc-tree-view.tree-view > ul li.root-item::after {
+  border: 0;
+}
+
+.srvc-tree-view.tree-view .item-content {
+  min-height: 150px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.srvc-tree-view.tree-view .item-content::before {
+  top: 85px;
+}
+
+.srvc-tree-view.tree-view .item-content .title-row {
+  margin-bottom: 30px;
+}
+
+.srvc-tree-view.tree-view .item-content.is-charging-block .serv-nav-item {
+  margin-bottom: 8px;
+}
+
+.srvc-tree-view .col-left {
+  width: calc(100% - 135px);
+  float: left;
+}
+
+.srvc-tree-view .col-right {
+  width: 135px;
+  position: relative;
+}
+
+.srvc-tree-view .service-name {
+  font-family: Gotham Medium;
+  font-size: 20px;
+  line-height: 20px;
+  color: @color-text-primary;
+  margin-bottom: 12px;
+  padding-left: 0;
+}
+
+.srvc-tree-view .serv-stat-lbl {
+  color: @color-description;
+  margin-left: 5px;
+}
+
+.srvc-tree-view .service-description {
+  font-family: Gotham Book;
+  font-size: 14px;
+  line-height: 14px;
+  color: @color-description;
+  margin-bottom: 20px;
+  padding-left: 0;
+}
+
+.srvc-tree-view .is-charging-block .service-description {
+  margin-bottom: 0;
+}
+
+.srvc-tree-view .service-using-lbl {
+  font-family: Gotham Book;
+  font-size: 12px;
+  color: @color-text-tertiary;
+  margin-bottom: 20px;
+}
+
+.srvc-tree-view .service-using-val {
+  color: @color-main-accent;
+}
+
+.srvc-tree-view .service-toggle-popup {
+  display: none;
+  position: absolute;
+  display: none;
+  padding: 0;
+  margin: 0 0 12px 0;
+  left: -69px;
+  top: -40px;
+}
+
+.srvc-tree-view .dnm-btn.dnm-btn-menu {
+  margin-right: -7px;
+}
+
+.srvc-tree-view .row-nav {
+  position: absolute;
+  top: calc(50% - 13px);
+  width: 100%;
+}
+
+.srvc-tree-view .serv-nav-item {
+  margin-right: 13px;
+}
+
+.srvc-tree-view .service-switch {
+  position: relative;
+  height: 25px;
+}
+
+.srvc-tree-view .service-switch:hover .service-toggle-popup {
+  display: block;
+}
+
+.srvc-tree-view .service-toggle-msg {
+  border-radius: 4px;
+  overflow: hidden;
+  width: 180px;
+  height: 30px;
+  color: @color-empty;
+  font-family: Gotham Book;
+  font-size: 13px;
+  background: #242e45;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.srvc-tree-view .service-toggle-msg::after {
+  position: absolute;
+  content: '';
+  display: block;
+  border-color: transparent;
+  border-width: 6px;
+  border-style: solid;
+  border-top-color: @color-text-primary;
+  opacity: 0.95;
+  width: 6px;
+  bottom: -12px;
+  left: 87px;
+}
+
+.srvc-tree-view .toggle-icon {
+  margin-left: 7px;
+}
+
+.srvc-tree-view .is-charging-package {
+  min-width: 230px;
+  margin-right: 20px;
+}
+
+.srvc-tree-view .is-charging-package .charging-dropdown-lbl {
+  font-family: Gotham Medium;
+  font-size: 12px;
+  line-height: 14px;
+  text-transform: uppercase;
+  color: @color-empty;
+  margin-bottom: 7px;
+}
+
+.srvc-tree-view .service-price-list {
+  overflow-x: auto;
+}

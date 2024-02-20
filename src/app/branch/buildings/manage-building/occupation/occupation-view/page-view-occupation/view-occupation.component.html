@@ -1,0 +1,65 @@
+<div *ngIf="isComplete$ | async" class="container-fluid none-padding">
+  <div class="cmn-ar-content">
+    <div class="dnm-tabset">
+      <ul ngbNav #nav="ngbNav" (navChange)="beforeChange($event)" [(activeId)]="currentTab" class="nav-tabs">
+        <li [ngbNavItem]="'tabOccupation-0'">
+          <a ngbNavLink>
+            <i class="tab-icon dnm-icon-liability"></i>
+            <span class="tab-name text-uppercase client-tab-name">Liability</span>
+          </a>
+          <ng-template ngbNavContent>
+            <view-liability (addCommonAreaShop)="onAddCommonAreaShop($event)" (deleteCommonAreaShop)="onDeleteCommonAreaShop($event)" (goToNodeDetail)="onGoToNodeDetail($event)"
+              (saveOccupation)="saveOccupation()" (selectCommonAreaForAllShops)="onSelectCommonAreaForAllShops($event)"
+              (selectShopForAllCommonAreas)="onSelectShopForAllCommonAreas($event)" (unselectCommonAreaForAllShops)="onUnselectCommonAreaForAllShops($event)"
+              (unselectShopForAllCommonAreas)="onUnselectShopForAllCommonAreas($event)" (updateCommonAreaHeader)="onUpdateCommonAreaHeader($event)"
+              (updateCommonAreaSearchTerm)="onUpdateCommonAreaSearchTerm($event)" (updateShopAllocation)="onUpdateShopAllocation($event)"
+              (updateShopConnectFilter)="onUpdateShopConnectFilter($event)" (updateShopFilter)="onUpdateComplexShopFilter($event)" (updateShopLiable)="onUpdateShopLiable($event)"
+              (updateShopRentDetails)="onUpdateShopRentDetails($event)" (updateShopSearchTerm)="onUpdateShopSearchTerm($event)" [activeCommonAreas]="activeCommonAreas$ | async"
+              [allShops]="shops$ | async" [buildingId]="buildingId$ | async" [commonAreaServiceLiabilities]="commonAreaServiceLiabilities$ | async"
+              [commonAreasShopsData]="commonAreasShopsData$ | async" [filterBy]="complexLiabilityShopFilterBy$ | async"
+              [shops]="getShopsWithFilteringByStatusWithoutSpare$ | async"></view-liability>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="'tabOccupation-1'">
+          <a ngbNavLink>
+            <i class="tab-icon dnm-icon-shops"></i>
+            <span class="tab-name text-uppercase client-tab-name">Shops</span>
+          </a>
+          <ng-template ngbNavContent>
+            <view-shops (addShop)="onAddShop()" (cancel)="onCancel()" (closeShopHistory)="onCloseShopHistory($event)" (mergeShops)="onMergeShops($event)"
+              (openShopHistory)="onOpenShopHistory($event)" (save)="onSaveShopsList()" (setSpareStatusForShops)="onSetSpareStatusForShops($event)"
+              (setUnspareStatusForShops)="onSetUnspareStatusForShops($event)" (setVacantStatusForShops)="onSetVacantStatusForShops($event)" (splitShop)="onSplitShop($event)"
+              (updateShop)="onUpdateShop($event)" (updateShopOrderIndex)="onUpdateShopOrderIndex($event)" (updateShopRentDetails)="onUpdateShopRentDetails($event)"
+              (updateShopSearchTerm)="onUpdateShopSearchTerm($event)" (updateShopStatusFilter)="onUpdateShopStatusFilter($event)" [allShops]="shops$ | async"
+              [buildingId]="buildingId$ | async" [canEdit]="canEdit$ | async" [orderIndex]="shopOrderIndex$ | async" [shops]="shopWithFilteringAndSearching$ | async"
+              [tenantShopHistory]="tenantShopHistory$ | async"></view-shops>
+
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="'tabOccupation-2'">
+          <a ngbNavLink>
+            <i class="tab-icon dnm-icon-cmn-areas"></i>
+            <span class="tab-name text-uppercase client-tab-name">Common Areas</span>
+          </a>
+          <ng-template ngbNavContent>
+            <view-common-areas (addCommonArea)="onAddCommonArea($event)" (cancel)="onCancel($event)" (deleteCommonArea)="onDeleteCommonArea($event)"
+              (goToNodeDetail)="onGoToNodeDetail($event)" (save)="onSaveCommonAreasList()" (selectedCommonAreaById)="onSelectedCommonAreaById($event)"
+              (updateCommonArea)="onUpdateCommonArea($event)" (updateCommonAreaOrderIndex)="onUpdateCommonAreaOrderIndex($event)"
+              (updateCommonAreaServices)="onUpdateCommonAreaServices($event)" [canEdit]="canEdit$ | async" [commonAreas]="commonAreas$ | async"
+              [orderIndex]="commonAreaOrderIndex$ | async"></view-common-areas>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="'tabOccupation-3'">
+          <a ngbNavLink>
+            <i class="tab-icon dnm-icon-map"></i>
+            <span class="tab-name text-uppercase client-tab-name">Floor Plans</span>
+          </a>
+          <ng-template ngbNavContent="">
+            <view-floor-plans></view-floor-plans>
+          </ng-template>
+        </li>
+      </ul>
+      <div [ngbNavOutlet]="nav"></div>
+    </div>
+  </div>
+</div>

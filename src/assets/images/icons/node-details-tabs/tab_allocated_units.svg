@@ -1,0 +1,28 @@
+<svg data-name="Слой 1" id="Слой_1" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>.cls-1 {
+      fill: #bfc5d1;
+    }</style>
+  </defs>
+  <title>tab</title>
+  <path class="cls-1"
+        d="M17,6V0H3V6H0V20H20V6ZM1.5,18.53v-11H3V9H2.25v1.5H3V12H2.25v1.5H3V16H2.25v1.5H3v1Zm10.5,0V16H8v2.5H4.5v-17h11v17Zm6.5,0H17v-1h.75V16H17v-2.5h.75V12H17v-1.5h.75V9H17V7.53h1.5Z"/>
+  <rect class="cls-1" height="1.5" width="1.5" x="8" y="3.03"/>
+  <rect class="cls-1" height="1.5" width="1.5" x="10.5" y="3.03"/>
+  <rect class="cls-1" height="1.5" width="1.5" x="8" y="6.03"/>
+  <rect class="cls-1" height="1.5" width="1.5" x="10.5" y="6.03"/>
+  <rect class="cls-1" height="1.5" width="1.5" x="8" y="9.03"/>
+  <rect class="cls-1" height="1.5" width="1.5" x="10.5" y="9.03"/>
+  <rect class="cls-1" height="1.5" width="1.5" x="8" y="12.03"/>
+  <rect class="cls-1" height="1.5" width="1.5" x="10.5" y="12.03"/>
+  <rect class="cls-1" height="1.5" width="1.5" x="13.25" y="3.03"/>
+  <rect class="cls-1" height="1.5" width="1.5" x="13.25" y="6.03"/>
+  <rect class="cls-1" height="1.5" width="1.5" x="13.25" y="9.03"/>
+  <rect class="cls-1" height="1.5" width="1.5" x="13.25" y="12.03"/>
+  <rect class="cls-1" height="1.5" width="1.5" x="5.25" y="3.03"/>
+  <rect class="cls-1" height="1.5" width="1.5" x="5.25" y="6.03"/>
+  <rect class="cls-1" height="1.5" width="1.5" x="5.25" y="9.03"/>
+  <rect class="cls-1" height="1.5" width="1.5" x="5.25" y="12.03"/>
+  <rect class="cls-1" height="1.5" width="1.5" x="5.25" y="16.03"/>
+  <rect class="cls-1" height="1.5" width="1.5" x="13.25" y="16.03"/>
+</svg>

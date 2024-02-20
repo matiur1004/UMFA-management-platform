@@ -1,0 +1,79 @@
+<div [ngClass]="{'hided-price': !showPrice }" class="service-price">
+  <div class="service-type d-flex align-items-center">
+    <div [ngClass]="{
+       'electricity-icon': type == serviceType.Electricity,
+       'water-icon': type == serviceType.Water,
+       'sewerage-icon': type == serviceType.Sewerage,
+       'gas-icon': type == serviceType.Gas,
+        'ad-hoc-icon': type == serviceType.AdHoc }" class="service-icon">
+      <div *ngIf="!showPrice" class="price-popup">
+        <price-popup [model]="model" [serviceName]="serviceName"
+                     [shouldDisplayFixedPriceMethod]="shouldDisplayFixedPriceMethod"
+                     [shouldDisplayPerBuildingMethod]="shouldDisplayPerBuildingMethod"
+                     [shouldDisplayPerCouncilAccountMethod]="shouldDisplayPerCouncilAccountMethod"
+                     [shouldDisplayPerHourMethod]="shouldDisplayPerHourMethod"
+                     [shouldDisplayPerMeterMethod]="shouldDisplayPerMeterMethod"
+                     [shouldDisplayPerSQMeterMethod]="shouldDisplayPerSQMeterMethod"
+                     [shouldDisplayPerShopMethod]="shouldDisplayPerShopMethod"
+                     [shouldDisplayPerTenantMethod]="shouldDisplayPerTenantMethod"></price-popup>
+      </div>
+    </div>
+    <span *ngIf="showPrice" [ngClass]="{
+       'electricity-lbl': type == serviceType.Electricity,
+       'water-lbl': type == serviceType.Water,
+       'sewerage-lbl': type == serviceType.Sewerage,
+       'gas-lbl': type == serviceType.Gas,
+        'ad-hoc-lbl': type == serviceType.AdHoc }" class="type-lbl">{{serviceName}}</span>
+  </div>
+  <div *ngIf="showPrice">
+    <div *ngIf="model.minimalFee" class="d-flex flex-wrap">
+      <span class="value-lbl">{{ model.minimalFee | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</span>
+      <span class="per-square-lbl additional-info">minimum fee</span>
+    </div>
+    <div *ngIf="shouldDisplayFixedPriceMethod" class="d-flex flex-wrap">
+      <span class="value-lbl">{{ model.fixedPrice | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</span>
+      <span class="per-square-lbl">fixed price</span>
+    </div>
+    <div *ngIf="shouldDisplayPerTenantMethod" class="d-flex flex-wrap">
+      <span class="value-lbl">{{ model.perTenant | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</span>
+      <span class="per-square-lbl">per tenant</span>
+    </div>
+    <div *ngIf="shouldDisplayPerShopMethod" class="d-flex flex-wrap">
+      <span class="value-lbl">{{ model.perShop | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</span>
+      <span class="per-square-lbl">per shop</span>
+    </div>
+    <div *ngIf="shouldDisplayPerMeterMethod" class="d-flex flex-wrap">
+      <span class="value-lbl">{{ model.perMeter | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</span>
+      <span class="per-square-lbl">per meter</span>
+    </div>
+    <ng-container *ngIf="shouldDisplayPerMeterMethod">
+      <div *ngFor="let meterType of model.meterTypes" class="d-flex flex-wrap">
+        <span class="value-lbl">{{ meterType.value | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</span>
+        <span class="per-square-lbl">{{meterType.name}}</span>
+      </div>
+    </ng-container>
+    <div *ngIf="shouldDisplayPerSQMeterMethod" class="d-flex flex-wrap">
+      <span class="value-lbl">{{ model.perSquareMeter | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</span>
+      <span class="per-square-lbl">per sq meter</span>
+    </div>
+    <div *ngIf="shouldDisplayPerBuildingMethod" class="d-flex flex-wrap">
+      <span *ngIf="model.perBuilding!=null" class="value-lbl">{{ model.perBuilding |
+        dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</span>
+      <span *ngIf="model.perBuilding==null" class="value-lbl">{{ 0 | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</span>
+      <span class="per-square-lbl">per building</span>
+    </div>
+    <div *ngIf="shouldDisplayPerCouncilAccountMethod" class="d-flex flex-wrap">
+      <span *ngIf="model.perCouncilAccount!=null" class="value-lbl">{{ model.perCouncilAccount |
+        dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</span>
+      <span *ngIf="model.perCouncilAccount==null"
+            class="value-lbl">{{ 0 | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</span>
+      <span class="per-square-lbl">per council acc.</span>
+    </div>
+    <div *ngIf="shouldDisplayPerHourMethod" class="d-flex flex-wrap">
+      <span *ngIf="model.perHour!=null" class="value-lbl">{{ model.perHour | dynCurrency:'ZAR':'symbol-narrow':'1.2-2'
+        }}</span>
+      <span *ngIf="model.perHour==null" class="value-lbl">{{ 0 | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</span>
+      <span class="per-square-lbl">per hour</span>
+    </div>
+  </div>
+</div>

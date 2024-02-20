@@ -1,0 +1,121 @@
+<div class="manage-attributes" data-manage-attributes>
+  <div class="row title-row none-margin-hr">
+    <div class="col none-padding">
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="bl-gradient-title">Manage equipment attributes</div>
+        <a (click)="onAddNew()" class="blue-text-btn d-flex align-items-center" href="javascript:void(0);">
+          <i class="add-icon"></i>
+          <span>Add New</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="row search-row none-margin-hr">
+    <div class="col none-padding">
+      <form class="form-inline main-search-input w-100">
+        <div class="input-group">
+          <input #searchBox (keyup)="search(searchBox.value)" class="form-control group-search-input"
+                 placeholder="Equipment Attributes Search"
+                 type="search"/>
+          <div class="input-group-append">
+            <i class="icon-relative search-icon vertical-middle"></i>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="row stat-row none-margin-hr">
+    <div class="col none-padding">
+      <span class="stat-lbl">{{model.length}} equipment attributes</span>
+    </div>
+  </div>
+  <div class="attributes-table">
+    <div #tableColsHeader class="list-header d-flex">
+      <div #tableFirstColHeader class="tbl-col col-200 padding-left-none">
+        <a (click)="changeOrderIndex(1);" [ngClass]="{'active': orderIndex == 1 || orderIndex == -1}"
+           class="header-field d-flex align-items-center" href="javascript:void(0);">
+          <span class="text-ellipsis" title="Attribute">Attribute</span>
+          <i [ngClass]="{'inactive': orderIndex != 1 && orderIndex != -1, 'dnm-icon-sort-up': orderIndex == -1,'dnm-icon-sort-down': orderIndex != -1 }"
+             class="dnm-icon"></i>
+        </a>
+      </div>
+      <div class="tbl-col col-200 header-field d-flex align-items-center">
+        <span class="text-ellipsis cursor-pointer" title="Equipment group">Equipment group</span>
+      </div>
+      <div class="tbl-col col-150 header-field d-flex align-items-center">
+        <span class="text-ellipsis cursor-pointer" title="Field type">Field type</span>
+      </div>
+      <div class="tbl-col col-150 header-field d-flex align-items-center">
+        <span class="text-ellipsis cursor-pointer" title="Units">Units</span>
+      </div>
+      <div class="tbl-col col-100 header-field d-flex align-items-center">
+        <span class="text-ellipsis cursor-pointer" title="Allow Use For Tariff Configuration">Tariff</span>
+      </div>
+      <div class="tbl-col col-100 header-field d-flex align-items-center">
+        <span class="text-ellipsis cursor-pointer" title="Allow Adding Photo">Photo</span>
+      </div>
+      <div class="tbl-col col-100 header-field d-flex align-items-center padding-right-none">
+        <span class="text-ellipsis cursor-pointer" title="Importance">Importance</span>
+      </div>
+    </div>
+    <div (scroll)="onScroll($event)" class="list-body">
+      <div *ngFor="let item of model" class="body-row d-flex align-items-center none-margin-hr">
+        <div #tableRowsHeader class="tbl-col col-200 d-flex align-items-center padding-left-none">
+          <span class="attribute-lbl text-ellipsis" title="{{item.name}}">{{item.name}}</span>
+          <span *ngIf="item.isSystem" class="label-system-attribute">System</span>
+        </div>
+        <div class="tbl-col col-200 d-flex align-items-center">
+          <span class="equipment-group-lbl"
+                title="{{getEquipmentGroupsText(item)}}">{{getEquipmentGroupsText(item)}}</span>
+        </div>
+        <div class="tbl-col col-150 d-flex align-items-center">
+          <span *ngIf="item.comboSettings.length > 0" class="importance-lbl" title="Combo">Combo</span>
+          <span *ngIf="item.comboSettings.length === 0" class="importance-lbl" title="Number">Number</span>
+        </div>
+        <div class="tbl-col col-150 d-flex align-items-center">
+          <span *ngIf="item.comboSettings.length > 0" class="equipment-group-lbl"
+                title="{{getComboSettings(item.comboSettings)}}">{{getComboSettings(item.comboSettings)}}</span>
+          <span *ngIf="item.comboSettings.length === 0" class="equipment-group-lbl"
+                title="{{item.unit ? item.unit.name : ''}}">{{item.unit ? item.unit.name : ''}}</span>
+        </div>
+        <div class="tbl-col col-100 d-flex align-items-center">
+          <span *ngIf="item.isAvailableForTariff" class="importance-lbl">Yes</span>
+          <span *ngIf="!item.isAvailableForTariff" class="importance-lbl">No</span>
+        </div>
+        <div class="tbl-col col-100 d-flex align-items-center">
+          <span *ngIf="item.canAddPhoto" class="importance-lbl">Yes</span>
+          <span *ngIf="!item.canAddPhoto" class="importance-lbl">No</span>
+        </div>
+        <div class="tbl-col col-100 d-flex align-items-center justify-content-between padding-right-none">
+          <span *ngIf="item.isImportant" class="importance-lbl">Yes</span>
+          <span *ngIf="!item.isImportant" class="importance-lbl">No</span>
+          <div [container]="'body'" [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block"
+               ngbDropdown>
+            <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle></button>
+            <div class="darkness dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+              <button (click)="onClone(item)" class="dropdown-item d-flex justify-content-between" data-menu-item>
+                Clone
+                <i class="dnm-icon plus-icon"></i>
+              </button>
+              <button (click)="onEdit(item)" *ngIf="item.isSystem" class="dropdown-item d-flex justify-content-between"
+                      data-menu-item>
+                View
+                <i class="dnm-icon view-icon"></i>
+              </button>
+              <button (click)="onEdit(item)" *ngIf="!item.isSystem" class="dropdown-item d-flex justify-content-between"
+                      data-menu-item>
+                Edit
+                <i class="dnm-icon edit-icon"></i>
+              </button>
+              <button (click)="onDelete(item)" *ngIf="!item.isSystem" class="dropdown-item d-flex justify-content-between"
+                      data-menu-item>
+                Delete
+                <i class="dnm-icon delete-icon"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

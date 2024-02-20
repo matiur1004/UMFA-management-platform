@@ -1,0 +1,250 @@
+@import 'variables.less';
+
+.readings-list-item ::ng-deep {
+  border: 1px solid @color-line;
+
+  .mtr-rdngs-row {
+    background-color: @color-background-white;
+  }
+
+  .expand-btn {
+    margin-right: 10px;
+  }
+
+  .srl-numb-blck {
+    width: 170px;
+    min-width: 170px;
+    padding: 0 30px;
+    border-right: 1px solid @color-line;
+  }
+
+  .item-row {
+    border-bottom: 1px solid @color-line;
+    padding: 10px 15px;
+  }
+
+  .item-row:last-child {
+    border-bottom: none;
+  }
+
+  .rdngs-lst-col {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .srl-numb-lbl {
+    font-family: @fontFamilyMedium;
+    font-size: 16px;
+    line-height: 16px;
+    color: @color-text-primary;
+    width: 80px;
+  }
+
+  .cell-prop-val {
+    font-family: @fontFamilyBook;
+    font-size: 13px;
+    line-height: 13px;
+    color: @color-text-tertiary;
+    margin-right: 10px;
+  }
+
+  .minus-sublbl,
+  .plus-sublbl {
+    font-family: @fontFamilyBook;
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 18px;
+  }
+
+  .usage-lbl {
+    border-bottom: 1px solid #dadce1;
+    cursor: pointer;
+    margin-right: 0;
+    max-width: 125px;
+  }
+
+  .usage-lbl.dropdown-toggle::after {
+    display: none;
+  }
+
+  .minus-sublbl {
+    .gradient-yellow();
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .plus-sublbl {
+    .gradient-green();
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .rdng-list-btn-wrp {
+    line-height: 1;
+    min-width: 34px;
+  }
+
+  .rdng-list-btn {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-color: transparent;
+    border: none;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+  }
+
+  .rdng-list-btn:after {
+    display: none;
+  }
+
+  .rdng-list-btn,
+  .rdng-list-checkbox {
+    margin-right: 10px;
+  }
+
+  .note-popup-dropdown.dropdown-menu {
+    width: 310px;
+    top: -50px !important;
+    padding: 0;
+    margin: 0 0 0 20px;
+    border: none;
+    background: none;
+    z-index: 1600;
+  }
+
+  .warning-info-popup.dropdown-menu {
+    padding: 0;
+    margin: 24px 0 0;
+    left: -93px !important;
+    border: none;
+    background: none;
+    z-index: 1600;
+  }
+
+  .usage-history-popup.dropdown-menu {
+    padding: 0;
+    margin: 45px 0 0;
+    left: -290px !important;
+    border: none;
+    background: none;
+    z-index: 1600;
+  }
+
+  .rdngs-nav-btn {
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+
+
+  .approximately-icon,
+  .info-icon {
+    cursor: pointer;
+  }
+
+  .rdngs-list-dets {
+    border-top: 1px solid @color-line;
+    background-color: @color-background-secondary;
+    padding: 30px;
+  }
+
+  .rdngs-list-dets .service-icon:before {
+    background: none;
+  }
+
+  .details-item {
+    padding: 5px 0;
+    height: 40px;
+    min-height: 40px;
+    margin-right: 40px;
+  }
+
+  .item-div-line {
+    border-bottom: 1px solid #eeeff0;
+  }
+
+  .dets-field-name {
+    font-family: Gotham Medium;
+    font-size: 13px;
+    line-height: 13px;
+    text-transform: uppercase;
+    color: @color-text-tertiary;
+  }
+
+  .shops-list-popup-drpdwn.dropdown-menu {
+    padding: 0;
+    margin: 0;
+    border: none;
+    background: none;
+    right: -18px;
+    top: 26px !important;
+    left: unset !important;
+  }
+
+  .shops-list-popup-drpdwn.dropdown-menu {
+    width: 240px;
+  }
+
+  .rdngs-more-icon,
+  .dnm-icon-location {
+    margin-left: 15px;
+  }
+
+  .dnm-icon-location,
+  .dropdown .dropdown-toggle.dnm-icon-location {
+    display: inline-block;
+    background: url("../../../../../../../../assets/images/icons/show_on_map-01.svg") no-repeat center;
+    padding: 10px;
+    width: 5px;
+    height: 20px;
+    border: 0;
+  }
+
+  .dnm-icon-location:hover,
+  .dropdown.show .dropdown-toggle.dnm-icon-location,
+  .dropdown .dropdown-toggle.dnm-icon-location:hover {
+    background: url("../../../../../../../../assets/images/icons/show_on_map_hover-01.svg") no-repeat center;
+    cursor: pointer;
+    padding: 10px;
+  }
+
+  .dropdown-toggle.dnm-icon-location:after {
+    display: none;
+  }
+
+  .meters-location-dropdown.dropdown-menu {
+    width: 700px;
+    padding: 0;
+    margin: 0;
+    border: none;
+    background: none;
+    z-index: 1600;
+  }
+
+  .dets-field-value {
+    font-family: @fontFamilyBook;
+    font-size: 13px;
+    line-height: 13px;
+    color: @color-text-tertiary;
+  }
+
+  .prev-read-val {
+    width: 40%;
+    max-width: 125px;
+  }
+
+  .cursor-poiner:hover {
+    cursor: pointer;
+  }
+
+  .icon-position {
+    margin-right: 10px;
+  }
+
+}

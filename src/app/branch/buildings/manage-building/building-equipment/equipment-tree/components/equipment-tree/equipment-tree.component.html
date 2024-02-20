@@ -1,0 +1,26 @@
+<div class="row mb-2">
+  <div class="col-4">
+    <label>Select location</label>
+    <select (change)="onLoadNodesList()" [(ngModel)]="selectedLocation" class="form-control">
+      <option value="">All</option>
+      <ng-container *ngFor="let item of locationList$ | async">
+        <option [value]="item.id">{{item.name}}</option>
+      </ng-container>
+    </select>
+  </div>
+  <div class="col-4">
+    <label>Highlight node</label>
+    <ng-select [(ngModel)]="selectedNode" [clearable]="false" [items]="nodeList$ | async" bindLabel="name" bindValue="id"
+               class="no-value-style">
+      <ng-template let-item="item" ng-label-tmp>
+        {{item.name}} &nbsp;&nbsp;&nbsp;<i>{{item.nodeType | nodeTypeLabel: 'short'}}</i>
+      </ng-template>
+      <ng-template let-item="item" ng-option-tmp>
+        {{item.name}} <i>{{item.nodeType | nodeTypeLabel : 'short'}}</i>
+      </ng-template>
+    </ng-select>
+  </div>
+  <div class="col-4"></div>
+</div>
+<equipments-diagrame
+  [data]="equipment$ | async | filterByLocation : selectedLocation | markLikeHighlighted : selectedNode"></equipments-diagrame>

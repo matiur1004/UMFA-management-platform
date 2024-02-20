@@ -1,0 +1,211 @@
+<form *ngIf="formState$ | async as form" [ngrxFormState]="form">
+  <div class="create-service">
+    <div class="modal-header">
+      <h5 *ngIf="isNew" class="modal-title">Create New Service</h5>
+      <h5 *ngIf="!isNew" class="modal-title">Edit Service</h5>
+      <button (click)="dismiss()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+        <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="container-fluid section-container">
+        <div class="bl-gradient-title section-title">General Info</div>
+        <div class="input-row">
+          <div class="text-uppercase text-form-field field-name">Service Name</div>
+          <div class="field-value">
+            <div [ngClass]="{'dnm-invalid-inp': form.isSubmitted && form.errors._name?.required}">
+              <input [ngrxFormControlState]="form.controls.name" class="form-control req-frm-fld" maxlength="256" placeholder="Type here"
+                     type="text"/>
+            </div>
+            <small *ngIf="form.isSubmitted && form.errors._name?.required" class="alert-danger">
+              A service name is required
+            </small>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase text-form-field field-name">Description</div>
+          <div class="field-value">
+            <input [ngrxFormControlState]="form.controls.description" class="form-control" maxlength="256" placeholder="Type here"
+                   type="text"/>
+          </div>
+        </div>
+        <div class="input-row align-items-start">
+          <div class="text-uppercase field-name text-form-field field-name-top">
+            Service Category
+          </div>
+          <div class="field-value">
+            <div class="d-flex align-items-center radio-input">
+              <div class="dnm-checkbox">
+                <input [ngrxFormControlState]="form.controls.serviceCategoryIsFullMetering" type="checkbox"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+              <span class="radio-input-lbl">Full metering</span>
+            </div>
+            <div class="d-flex align-items-center radio-input">
+              <div class="dnm-checkbox">
+                <input [ngrxFormControlState]="form.controls.serviceCategoryIsPartialMetering" type="checkbox"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+              <span class="radio-input-lbl">Partial metering</span>
+            </div>
+            <div class="d-flex align-items-center radio-input">
+              <div class="dnm-checkbox">
+                <input [ngrxFormControlState]="form.controls.serviceCategoryIsPrepaidMetering" type="checkbox"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+              <span class="radio-input-lbl">Pre-paid metering</span>
+            </div>
+            <div class="d-flex align-items-center radio-input">
+              <div class="dnm-checkbox">
+                <input [ngrxFormControlState]="form.controls.serviceCategoryIsSingleTenant" type="checkbox"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+              <span class="radio-input-lbl">Single tenant</span>
+            </div>
+          </div>
+        </div>
+        <div class="input-row d-flex align-items-center">
+          <div class="text-uppercase text-form-field field-name">Status</div>
+          <div class="field-value d-flex align-items-center">
+            <label class="dnm-switch-btn service-status">
+              <input [ngrxFormControlState]="form.controls.isActive" type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+              <span class="dnm-switch-lbl"></span>
+            </label>
+          </div>
+        </div>
+        <div class="input-row d-flex align-items-center">
+          <div class="text-uppercase text-form-field field-name">Frequency</div>
+          <div class="field-value">
+            <div class="d-flex align-items-center radio-input">
+              <div class="dnm-radio-btn">
+                <input [ngrxFormControlState]="form.controls.chargingType" [value]="0" type="radio"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+              <span class="radio-input-lbl">Monthly</span>
+            </div>
+            <div class="d-flex align-items-center radio-input">
+              <div class="dnm-radio-btn">
+                <input [ngrxFormControlState]="form.controls.chargingType" [value]="1" type="radio"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+              <span class="radio-input-lbl">One-time</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container-fluid section-container">
+        <div class="bl-gradient-title section-title">Supply types and prices</div>
+        <div class="input-row-title d-flex align-items-center text-uppercase">
+          <div class="field-name">Supply Type</div>
+          <div class="field-value">Availability</div>
+        </div>
+        <div class="input-row serv-row d-flex align-items-center">
+          <div class="text-form-field field-name">Electricity</div>
+          <div class="field-value d-flex align-items-center">
+            <label class="dnm-switch-btn">
+              <input [ngrxFormControlState]="form.controls.electricity.controls.isActive" type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+              <span class="dnm-switch-lbl"></span>
+            </label>
+          </div>
+        </div>
+        <div *ngIf="form.controls.electricity.controls.isActive.value" class="prices-inputs">
+          <service-prices (addMeterType)="onAddMeterType($event, 'electricity')" (removeMeterType)="onRemoveMeterType($event, 'electricity')"
+                          [errors]="form.errors._electricity" [isSubmitted]="form.isSubmitted"
+                          [meterTypes]="(electricityExcludedMeterTypes$ | async)"
+                          [model]="form.controls.electricity.controls"></service-prices>
+        </div>
+        <div class="input-row serv-row d-flex align-items-center">
+          <div class="text-form-field field-name">Water</div>
+          <div class="field-value d-flex align-items-center">
+            <label class="dnm-switch-btn">
+              <input [ngrxFormControlState]="form.controls.water.controls.isActive" type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+              <span class="dnm-switch-lbl"></span>
+            </label>
+          </div>
+        </div>
+        <div *ngIf="form.controls.water.controls.isActive.value" class="prices-inputs">
+          <service-prices (addMeterType)="onAddMeterType($event, 'water')" (removeMeterType)="onRemoveMeterType($event, 'water')"
+                          [errors]="form.errors._water" [isSubmitted]="form.isSubmitted"
+                          [meterTypes]="(waterExcludedMeterTypes$ | async)"
+                          [model]="form.controls.water.controls"></service-prices>
+        </div>
+        <div class="input-row serv-row d-flex align-items-center">
+          <div class="text-form-field field-name">Sewerage</div>
+          <div class="field-value d-flex align-items-center">
+            <label class="dnm-switch-btn">
+              <input [ngrxFormControlState]="form.controls.sewerage.controls.isActive" type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+              <span class="dnm-switch-lbl"></span>
+            </label>
+          </div>
+        </div>
+        <div *ngIf="form.controls.sewerage.controls.isActive.value" class="prices-inputs">
+          <service-prices (addMeterType)="onAddMeterType($event, 'sewerage')" (removeMeterType)="onRemoveMeterType($event, 'sewerage')"
+                          [errors]="form.errors._sewerage" [isSubmitted]="form.isSubmitted"
+                          [meterTypes]="(sewerageExcludedMeterTypes$ | async)"
+                          [model]="form.controls.sewerage.controls"></service-prices>
+        </div>
+        <div class="input-row serv-row d-flex align-items-center">
+          <div class="text-form-field field-name">Gas Supply</div>
+          <div class="field-value d-flex align-items-center">
+            <label class="dnm-switch-btn">
+              <input [ngrxFormControlState]="form.controls.gas.controls.isActive" type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+              <span class="dnm-switch-lbl"></span>
+            </label>
+          </div>
+        </div>
+        <div *ngIf="form.controls.gas.controls.isActive.value" class="prices-inputs">
+          <service-prices (addMeterType)="onAddMeterType($event, 'gas')" (removeMeterType)="onRemoveMeterType($event, 'gas')"
+                          [errors]="form.errors._gas" [isSubmitted]="form.isSubmitted"
+                          [meterTypes]="(gasExcludedMeterTypes$ | async)"
+                          [model]="form.controls.gas.controls"></service-prices>
+        </div>
+        <div class="input-row-title serv-row-title d-flex align-items-center text-uppercase">
+          <div class="field-name">Other</div>
+          <div class="field-value">Availability</div>
+        </div>
+        <div class="input-row row-description d-flex align-items-center">
+          <div class="text-form-field field-name">Ad hoc</div>
+          <div class="field-value d-flex align-items-center">
+            <label class="dnm-switch-btn">
+              <input [ngrxFormControlState]="form.controls.adHoc.controls.isActive" type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+              <span class="dnm-switch-lbl"></span>
+            </label>
+          </div>
+        </div>
+        <div *ngIf="form.controls.adHoc.controls.isActive.value" class="prices-inputs">
+          <service-prices (addMeterType)="onAddMeterType($event, 'adHoc')" (removeMeterType)="onRemoveMeterType($event, 'adHoc')"
+                          [errors]="form.errors._adHoc" [isSubmitted]="form.isSubmitted"
+                          [meterTypes]="(adHocExcludedMeterTypes$ | async)"
+                          [model]="form.controls.adHoc.controls"></service-prices>
+        </div>
+      </div>
+      <div class="container-fluid none-padding">
+        <div class="row none-margin-hr">
+          <div class="col-12 none-padding footer-buttons d-flex justify-content-end">
+            <button (click)="dismiss()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+            <button (click)="onSave()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

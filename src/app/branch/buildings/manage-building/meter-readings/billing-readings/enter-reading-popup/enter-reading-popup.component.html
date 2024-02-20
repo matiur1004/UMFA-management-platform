@@ -1,0 +1,257 @@
+<form *ngIf="meterReadings$ | async as form" [ngrxFormState]="form">
+  <div class="enter-reading-modal">
+    <div class="modal-header">
+      <h5 class="modal-title">Enter readings</h5>
+      <button (click)="onClose()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+        <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <!-- First Row -->
+      <div class="row none-margin-hr nav-row">
+        <div class="col-12 none-padding">
+          <div class="row search-row  none-margin-hr mb-2">
+            <div class="col-6 none-padding mr-2">
+              <div class="form-inline main-search-input w-100">
+                <div class="input-group">
+                  <input #searchBox (keyup)="search(searchBox.value)" class="form-control group-search-input"
+                         data-search-field placeholder="Search meter by serial number" name="searchKey" type="search" [ngModel]="(searchKey$ | async)" />
+                  <div class="input-group-append">
+                    <i class="icon-relative search-icon vertical-middle"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col none-padding">
+              <div class="filter-blck-wrp">
+                <ng-select (change)="onLocationChanged($event)" [clearable]="false" [closeOnSelect]="true"
+                           [dropdownPosition]="'top'" [hideSelected]="true"
+                           [ngModel]="(searchLocation$ | async)" name='searchLocation' [searchable]="false" class="dnm-dropdown-select">
+                  <ng-option value="">All Locations</ng-option>
+                  <ng-option *ngFor="let location of locations$ | async"
+                             [value]="location.id">{{location.name}}</ng-option>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- Second Row -->
+    <div class="d-flex align-items-center justify-content-between">
+      <span class="results-lbl dnm-text-light">{{form.controls.readings.value.length}} meter(s)</span>
+      <div class="d-flex align-items-center">
+        <span class="text-uppercase datepicker-lbl">Show:</span>
+        <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+          <button class="btn btn-secondary dropdown-toggle bld-per-drpdwn-btn text-left" ngbDropdownToggle>
+            {{ showFilterText$ | async }}
+          </button>
+          <div class="dropdown-menu bld-per-drpdwn-menu" ngbDropdownMenu>
+            <button (click)="onShowAllReadings()" class="dropdown-item">All readings</button>
+            <button (click)="onShowHasNoReadings()" class="dropdown-item">Has no readings</button>
+          </div>
+        </div>
+        <span *ngIf="(showFilter$ | async) != enterReadingsShowFilter.AllReadings"
+              class="text-uppercase datepicker-lbl">On Date:</span>
+        <div *ngIf="(showFilter$ | async) != enterReadingsShowFilter.AllReadings"
+             class="datepicker-wrp nav-datepicker-wrp">
+          <input #asForDate="ngbDatepicker" (click)="asForDate.toggle()"
+                 (ngModelChange)="onShowFilterDateChange($event)" [ngModel]="filterDateFormatter$ | async" class="form-control nav-dtpickr-inpt"
+                 name="asForDate" ngbDatepicker placeholder="dd/mm/YYYY" readonly>
+          <i (click)="asForDate.toggle()" class="calendar"></i>
+        </div>
+      </div>
+      
+      <span class="text-uppercase datepicker-lbl">Version Dates:</span>
+      <div *ngIf="(versionsList$ | async).length" class="version-date-selection-control">
+        <ng-select [items]="versions$ | async" bindLabel="comment" bindValue="id" (change)="onVersionSelected($event)" [(ngModel)]="selectedVersionId" [clearable]="false"
+                   [disabled]="disableChangeVersion$ | async" [searchable]="false" groupBy="buildingPeriodName" [closeOnSelect]="true"
+                   [selectableGroup]="false" class="dnm-dropdown-select">
+          <ng-template ng-label-tmp let-item="item">
+            {{item.startDate | dateMediumFormat}} - {{item.comment}}
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item" let-index="index">
+            {{item.startDate | dateMediumFormat}} - {{item.comment}}
+          </ng-template>
+          <ng-template ng-optgroup-tmp let-item="item">
+            {{item.buildingPeriodName}}
+          </ng-template>
+        </ng-select>
+      </div>
+      
+      <span class="text-uppercase datepicker-lbl">Reading Date:</span>
+      <div class="datepicker-wrp nav-datepicker-wrp">
+        <input #readingDate="ngbDatepicker" (click)="readingDate.toggle()" (ngModelChange)="onDateChange($event)"
+               [ngModel]="dateFormater$ | async"
+               class="form-control nav-dtpickr-inpt" name="readingDate" ngbDatepicker placeholder="dd/mm/YYYY"
+               readonly>
+        <i (click)="readingDate.toggle()" class="calendar"></i>
+      </div>
+    </div>
+
+    <!-- Third Row -->
+      <div class="row none-margin-hr list-header">
+        <div class="col-1 header-field d-flex align-items-center">
+          <span class="text-uppercase" title="Serial Number">Serial Number</span>
+        </div>
+        <div class="col-11">
+          <div class="row none-margin-hr">
+            <div class="col-1 d-flex none-padding">
+              <div class="row none-margin-hr">
+                <div class="col-12 header-field d-flex align-items-center">
+                  <span class="text-uppercase" title="Register">Ratio</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 none-padding">
+              <div class="row none-margin-hr">
+                <div class="col-3 header-field d-flex align-items-center">
+                  <span class="text-uppercase" title="Register">Register</span>
+                </div>
+                <div class="col-3 header-field d-flex align-items-center">
+                  <span class="text-uppercase" title="Previous Readings">Previous Reading</span>
+                </div>
+                <div class="col-3 header-field d-flex align-items-center">
+                  <span class="text-uppercase" title="Average Usage">Average Usage</span>
+                </div>
+                <div class="col-3 header-field d-flex align-items-center">
+                  <span class="text-uppercase" title="Estimated Readings">Estimated Reading</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-5 none-padding">
+              <div class="row none-margin-hr">
+                <div class="col-4 header-field d-flex align-items-center">
+                  <span class="text-uppercase" title="Current Readings">Current Reading</span>
+                </div>
+                <div class="col-4 header-field d-flex align-items-center">
+                  <span class="text-uppercase" title="Usage">Usage</span>
+                </div>
+                <div class="col-4 header-field d-flex align-items-center"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngFor="let meterControl of (form.controls.readings.controls)"
+           class="enter-readings-item">
+        <div class="row none-margin-hr mtr-rdngs-row">
+          <div class="col-1 text-ellipsis d-flex align-items-center serial-numb-col">
+            <span [title]="meterControl.value.serialNumber" class="id-numb-lbl">
+              {{meterControl.value.meterName}}
+            </span>
+          </div>
+          <div class="col-11 none-padding d-flex">
+            <div class="w-100">
+              <div *ngFor="let registerControl of meterControl.controls.registers.controls; trackBy: trackById; let i = index"
+                   class="row none-margin-hr item-row">
+                <div class="col-1 none-padding d-flex align-items-center">
+                  <div class="row none-margin-hr w-100">
+                    <div class="col-12 d-flex align-items-center" [ngbTooltip]="'Scale(' + registerControl.value.registerScaleName +  ') x Ratio(' + registerControl.value.ratio + ') = ' + registerControl.value.registerScaleRatio * registerControl.value.ratio">
+                      <span class="cell-prop-val text-ellipsis">
+                        {{registerControl.value.ratio * registerControl.value.registerScaleRatio}}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6 none-padding d-flex align-items-center">
+                  <div class="row none-margin-hr w-100">
+                    <div class="col-3 d-flex align-items-center">
+                      <span class="cell-prop-val text-ellipsis cursor-pointer"
+                            title="{{registerControl.value.registerId | registerUnit | async}}">{{registerControl.value.registerId | registerUnit | async}}</span>
+                    </div>
+                    <div class="col-3 d-flex align-items-center">
+                      <span class="cell-prop-val text-ellipsis">{{registerControl.value.previousReadingValue | number:'1.0-2'}}</span>
+                    </div>
+                    <div class="col-3 d-flex align-items-center">
+                      <span class="cell-prop-val text-ellipsis">{{registerControl.value.averageUsage | number:'1.0-2'}}</span>
+                    </div>
+                    <!--Estimated Readings Changes - DUN3345
+                    <div class="col-3 d-flex align-items-center">
+                      <span
+                        class="cell-prop-val text-ellipsis">{{registerControl.value.previousReadingValue | number:'1.0-2'}}</span>
+                    </div>-->
+
+                    <div *ngIf="registerControl.value.registerType == 1" class="col-3 d-flex align-items-center">
+                      <span class="cell-prop-val text-ellipsis">{{registerControl.value.averageUsage | number:'1.0-2'}}</span>
+                    </div>
+                    <div *ngIf="registerControl.value.registerType == 0" class="col-3 d-flex align-items-center">
+                      <span class="cell-prop-val text-ellipsis">{{registerControl.value.previousReadingValue + registerControl.value.averageUsage | number:'1.0-2'}}</span>
+                    </div>
+                    <div *ngIf="registerControl.value.registerType == 2" class="col-3 d-flex align-items-center">
+                      <span class="cell-prop-val text-ellipsis">{{registerControl.value.averageUsage | number:'1.0-2'}}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div *ngIf="registerFiles$ | async as registerFiles" class="col-5 none-padding d-flex align-items-center">
+                  <div class="row none-margin-hr w-100">
+                    <div class="col-4 d-flex align-items-center input-with-tooltip">
+                      <input (blur)="onBlurEvent( meterControl.value.meterId,registerControl)" [meterId]="meterControl.value.meterId"
+                             [ngrxFormControlState]="registerControl.controls.currentReadingValue"
+                             [placeholder]="registerControl.value.lastReadingValue"
+                             [readingsForDate]="(readingsForDate$ | async)"
+                             [registerId]="registerControl.value.registerId"
+                             [inputVal]="registerControl.controls.currentReadingValue?.value"
+                             class="form-control form-number-input"
+                             enterReadingPopup
+                             tabindex="0"
+                             type="number"
+                             title="Enter Reading" />
+                      <i [ngClass] = "{'trend-up-icon' : (abnormalityStatusAndUsage$ | async) [meterControl.value.meterId][registerControl.value.registerTouKey].abnormalityLevel >= trendUpValue, 'trend-down-icon' : (abnormalityStatusAndUsage$ | async)[meterControl.value.meterId][registerControl.value.registerTouKey].abnormalityLevel <= trendDownValue}">
+                      </i>
+                      </div>
+                    <div class="col-4 d-flex align-items-center justify-content-between">
+                      <span class="cell-prop-val text-ellipsis"
+                            title="{{(abnormalityStatusAndUsage$ | async)[meterControl.value.meterId][registerControl.value.registerTouKey].usage}}">
+                        {{ (abnormalityStatusAndUsage$ | async)[meterControl.value.meterId][registerControl.value.registerTouKey].usage | number:'1.0-2'}}
+                      </span>
+                      <i *ngIf="registerControl.value.isRollover" class="refresh"></i>
+                    </div>
+                    <div class="col-4 d-flex align-items-center justify-content-between">
+                      <div class="d-flex align-items-center">
+                        <div #notePopup="ngbDropdown" [autoClose]="'outside'" class="dropdown" ngbDropdown
+                             placement="right-top">
+                          <button [ngClass]="{'dnm-btn-note' : getNotesLength(registerControl.value.notes), 'dnm-btn-note-add' : !getNotesLength(registerControl.value.notes)}" class="dnm-btn actual-rdng-btn dnm-btn-note" ngbDropdownToggle
+                                  tabindex="-1"
+                                  type="button" title="Add Note"></button>
+                          <div class="note-popup-dropdown dropdown-menu" ngbDropdownMenu>
+                            <note-popup (close)="notePopup.close();" (delete)="onDeleteNote(registerControl.controls.notes.id)" (edit)="onEditNote({id: registerControl.controls.notes.id, text: $event.currentReadingNotes})"
+                                        [comment]="registerControl.value.notes"
+                                        [editableNote]="true"
+                                        [maxTextLength]=150></note-popup>
+                          </div>
+                        </div>
+                        <div class="rdng-file-inpt-wrp">
+                          <input #fileInput (change)="onRegisterFileChange({meterId: meterControl.value.meterId, registerTouKey: registerControl.value.registerTouKey, files: $event.target.files})" accept="image/*" class="rdng-file-inpt" style="display: none;"
+                                 tabindex="-1"
+                                 type="file"
+                                 title="FileChange" />
+                          <button (click)="fileInput.click()" [ngClass]="{'dnm-btn-photo' : isExistRegisterFile(registerFiles, meterControl.value.meterId, registerControl.value.registerTouKey), 'dnm-btn-photo-add' : !isExistRegisterFile(registerFiles, meterControl.value.meterId, registerControl.value.registerTouKey)}" class="dnm-btn actual-rdng-btn"
+                                  tabindex="-1"
+                                  type="button" title="Add Photo"></button>
+                        </div>
+                        <div [style.visibility]="isExistRegisterFile(registerFiles, meterControl.value.meterId, registerControl.value.registerTouKey) ? 'visible' : 'hidden'"
+                             class="dnm-checkbox">
+                          <input [ngrxFormControlState]="registerControl.controls.confirmed" class="checkbox-toggle"
+                                 type="checkbox" title="Confirm" />
+                          <div class="state">
+                            <label></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 none-padding text-right footer-buttons">
+        <button (click)="onClose()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button" *ngIf="!isFromEquipment">Cancel</button>
+        <button (click)="onSave()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save</button>
+      </div>
+    </div>
+  </div>
+</form>
+

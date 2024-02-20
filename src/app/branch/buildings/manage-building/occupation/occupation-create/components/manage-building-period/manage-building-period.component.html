@@ -1,0 +1,73 @@
+<div class="container-fluid none-padding">
+  <form (ngSubmit)="onNext()" *ngIf="buildingPeriod && periodForm" [formGroup]="periodForm">
+    <div class="row manage-building-period-container">
+      <div class="col-sm-12 col-lg-10 col-xl-8">
+        <div class="input-row">
+          <div class="text-uppercase field-name text-form-field">
+            Start Date
+          </div>
+          <div class="field-value datepicker-wrp datepicker-wrp__width">
+            <input #startDatePicker="ngbDatepicker" (click)="startDatePicker.toggle()" (dateSelect)="onChangeStartDate($event)" [maxDate]="periodForm.controls.endDate.value"
+                   class="form-control"
+                   formControlName="startDate"
+                   name="startDate"
+                   ngbDatepicker placeholder="dd/mm/YYYY" readonly>
+            <i (click)="startDatePicker.toggle()" class="calendar"></i>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name text-form-field">
+            End Date
+          </div>
+          <div class="field-value datepicker-wrp datepicker-wrp__width">
+            <input #endDatePicker="ngbDatepicker" (click)="endDatePicker.toggle()" [minDate]="periodForm.controls.startDate.value"
+                   class="form-control"
+                   formControlName="endDate"
+                   name="endDate"
+                   ngbDatepicker placeholder="dd/mm/YYYY" readonly>
+            <i (click)="endDatePicker.toggle()" class="calendar"></i>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name text-form-field">
+            <label>
+              Building Period Name
+            </label>
+          </div>
+          <div class="field-value">
+            <ng-select [clearable]="false"
+                       [hideSelected]="true"
+                       [items]="allowedPeriodNames"
+                       [markFirst]="true"
+                       [searchable]="false"
+                       class="select-dropdown building-period-select"
+                       formControlName="name">
+            </ng-select>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name text-form-field">
+            Client Statement Name
+          </div>
+          <div class="field-value">
+            <ng-select [clearable]="false"
+                       [hideSelected]="true"
+                       [items]="allowedPeriodNames"
+                       [markFirst]="true"
+                       [searchable]="false"
+                       class="select-dropdown building-period-select"
+                       formControlName="clientStatementName">
+            </ng-select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mng-bld-period-footer">
+      <div class="col-12 text-right footer-buttons">
+        <button (click)="onCancel()" class="dnm-btn size-lg dnm-btn-cancel text-uppercase" type="button">Cancel
+        </button>
+        <button class="dnm-btn size-lg dnm-btn-primary text-uppercase" type="submit">Next</button>
+      </div>
+    </div>
+  </form>
+</div>

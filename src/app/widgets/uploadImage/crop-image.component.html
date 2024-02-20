@@ -1,0 +1,28 @@
+<div class="modal-header">
+  <h5 class="modal-title">Upload image</h5>
+  <button (click)="dismiss()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+    <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-8">
+      <image-cropper (imageCropped)="imageCropped($event)"
+                     (imageLoaded)="imageLoaded()"
+                     (loadImageFailed)="loadImageFailed()"
+                     [aspectRatio]="aspectRatio"
+                     [imageChangedEvent]="file"
+                     [maintainAspectRatio]="maintainAspectRatio"
+                     format="png"
+                     imageQuality="100"></image-cropper>
+    </div>
+    <div class="col-4">
+      <img [src]="croppedImage" class="cropped-image"/>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 text-right footer-buttons">
+      <button (click)="close()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Upload</button>
+    </div>
+  </div>
+</div>

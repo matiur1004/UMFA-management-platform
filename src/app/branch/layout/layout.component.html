@@ -1,0 +1,5 @@
+<branch-nav-menu (onStartToggleBar)="startToggleBar();"></branch-nav-menu>
+<top-bar [(isCollapsed)]="isLayoutCollapsed"></top-bar>
+<div [@layoutToggle]="isLayoutCollapsed" class="page-container">
+  <router-outlet></router-outlet>
+</div>

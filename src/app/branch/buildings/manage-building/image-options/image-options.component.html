@@ -1,0 +1,41 @@
+<div class="image-option-wrapper d-flex justify-content-center">
+  <canvas (confirmedPhoto)="uploadedPhoto($event)" [brightnessControl]="brightnessControl" [imageFilter]="imageFile" [photoName]="photoName"
+          class="img-fluid"
+          id="uploaded-canvas">
+  </canvas>
+  <div *ngIf="isEditable" class="image-options-filter">
+    <div [attr.data-name]="ImageOptions.inversion" class="image-option" title="Inversion">
+      <img alt="Inversion" src="/assets/images/meter-readings/image-options/invert-01.svg">
+    </div>
+    <div (click)="onSetActive()" [attr.data-name]="ImageOptions.brightness"
+         class="image-option">
+      <img alt="Brightness" src="/assets/images/meter-readings/image-options/brighntess.svg">
+      <div *ngIf="isActiveBrightness" class="brightness-option">
+        <ngx-slider [(ngModel)]="brightnessControl" [attr.style.display]="isActiveBrightness ? 'block' : 'none'"
+                    [options]="sliderOptions"
+                    class="brightness-slider">
+        </ngx-slider>
+      </div>
+    </div>
+    <div [attr.data-name]="ImageOptions.crop" class="image-option" title="Crop">
+      <img alt="Crop" src="/assets/images/meter-readings/image-options/crop.svg">
+    </div>
+    <div [attr.data-name]="ImageOptions.rotate" class="image-option" title="Rotate">
+      <img alt="Rotate" src="/assets/images/meter-readings/image-options/rotate.svg">
+    </div>
+    <div [attr.data-name]="ImageOptions.reset" class="image-option" title="Reset">
+      <img alt="Reset" src="/assets/images/meter-readings/image-options/reset.svg">
+    </div>
+    <div [attr.data-name]="ImageOptions.confirm" class="image-option" title="Confirm">
+      <img alt="Confirm" src="/assets/images/meter-readings/image-options/confirm.svg">
+    </div>
+
+    <div class="image-left-options">
+      <div (click)="filesUpload.click()" [attr.data-name]="ImageOptions.upload" class="image-option">
+        <input #filesUpload (change)="uploadImage($event)" [accept]="allowedFileTypes" class="d-none" multiple
+               type="file">
+        <img alt="Upload" src="/assets/images/icons/upload-icon-arrow.svg" title="Upload">
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,60 @@
+<div class="editable-section container-fluid none-padding">
+  <div class="bl-gradient-title editable-section-title">National Tenants</div>
+  <div class="row search-row none-margin-hr">
+
+    <div class="input-group">
+      <input #searchBox (keyup)="search(searchBox.value)" class="form-control group-search-input"
+             data-nt-search-field placeholder="National Tenant Search"
+             type="search"/>
+      <div class="input-group-append">
+        <i class="icon-relative search-icon vertical-middle"></i>
+      </div>
+    </div>
+
+  </div>
+  <table class="table table-premium">
+    <thead>
+    <tr class="table-header text-uppercase">
+      <th class="name-header">Name</th>
+      <th class="desc-header">Description</th>
+      <th class="count-header">Tenants Count</th>
+      <th></th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody class="scroll-table-body">
+    <tr *ngFor="let nationalTenant of filteredNationalTenants;">
+      <td>
+        <text-input (onFocusOut)="updateNationalTenant(nationalTenant)" [(model)]="nationalTenant.name" class="col-3 none-padding field-value"
+                    data-nt-name></text-input>
+      </td>
+      <td>
+        <text-input (onFocusOut)="updateNationalTenant(nationalTenant)" [(model)]="nationalTenant.description" class="col-3 none-padding field-value"
+                    data-nt-description input-class="text-ellipsis"
+                    title="{{nationalTenant.description}}"></text-input>
+      </td>
+      <td>
+        <span class="col-3 tnts-cnt-lbl" data-nt-count>{{nationalTenant.relatedTenantsCount}}</span>
+      </td>
+      <td class="text-right">
+        <button (click)="onOpenLogo(nationalTenant)" [ngClass]="{'dnm-btn-photo' : nationalTenant.logoUrl, 'dnm-btn-photo-add' : !nationalTenant.logoUrl}" class="dnm-btn photo-btn"
+                data-nt-photo-button
+                type="button"></button>
+      </td>
+      <td class="text-right">
+        <div class="delete-link">
+          <button (click)="removeNationalTenant(nationalTenant)" class="dnm-btn-icon" data-nt-delete-button
+                  type="button">
+            <i class="icon cross-icon"></i>
+          </button>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="row">
+    <a (click)="addNationalTenant()" class="blue-text-btn" data-nt-add-new href="javascript:void(0)">
+      <i class="add-icon"></i>Add One More National Tenant
+    </a>
+  </div>
+</div>

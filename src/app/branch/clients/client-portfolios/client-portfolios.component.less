@@ -1,0 +1,102 @@
+@import 'variables.less';
+
+/* without portfolios */
+
+.create-new-portfolio {
+  padding-top: 150px;
+}
+
+.create-new-portfolio a {
+  outline: none;
+}
+
+.create-new-portfolio .new-portfolio-icon {
+  display: flex;
+  justify-content: center;
+  height: 50px;
+}
+
+.create-new-portfolio .create-new-portfolio-msg {
+  font: 24px/30px Gotham Light;
+  color: @color-empty;
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+  margin-bottom: 20px;
+}
+
+::ng-deep .client-portfolio-block .add-icon {
+  margin-right: 10px;
+  top: 0;
+}
+
+.contacts-table-nav {
+  margin-bottom: 35px;
+}
+
+.total-accounts {
+  margin-right: 15px;
+}
+
+/* portfolios list */
+
+.client-portfolio-block .portfolio-quantity {
+  color: @color-text-tertiary;
+  font-size: 16px;
+  font-family: 'Gotham Light';
+  margin-bottom: 35px;
+}
+
+.portfolio-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: @color-background-white;
+  border: 1px solid @color-line;
+  padding: 20px 30px 20px 36px;
+  margin-bottom: 10px;
+}
+
+.portfolio-list-item {
+  cursor: pointer;
+}
+
+.portfolio-list-item:last-child {
+  margin-bottom: 150px;
+}
+
+.portfolio-info-block {
+  display: flex;
+  align-items: center;
+}
+
+.portfolio-info-block .portfolio-logo {
+  margin-right: 30px;
+}
+
+.portfolio-info-block .portfolio-logo-img {
+  width: 90px;
+  height: 60px;
+  border: 1px solid #ebf0f7;
+  margin-right: 10px;
+}
+
+.portfolio-info .portfolio-title {
+  color: @color-text-primary;
+  font-size: 20px;
+  line-height: 20px;
+  font-family: 'Gotham Medium';
+  margin-bottom: 10px;
+}
+
+.portfolio-info .portfolio-info-details span {
+  color: @color-description;
+  font-size: 13px;
+  line-height: 13px;
+  font-family: 'Gotham Book';
+  margin-right: 20px;
+}
+
+.portfolio-info .portfolio-info-details span:last-child {
+  margin-right: 0;
+}

@@ -1,0 +1,39 @@
+<div class="building-tariff-values">
+  <div class="container-fluid title-container">
+    <div class="row">
+      <div class="col-12 none-padding d-flex justify-content-between align-items-center">
+        <div>
+          <h1 class="page-title">Edit Tariff Value</h1>
+          <div class="d-flex flex-row align-items-center">
+            <div class="version-info">Version: {{formState.value.version}}
+              -{{formState.value.versionDate | date:'dd/MM/yyyy'}} -
+              <span class="text-uppercase">{{formState.value.isActual ? "Active" : "Inactive"}}</span>
+            </div>
+            <div class="button-row">
+              <a (click)="addValueVersion()" class="blue-text-btn" href="javascript:void(0);">
+                <i class="add-icon"></i>Add New Value Version
+              </a>
+            </div>
+          </div>
+        </div>
+        <back-button></back-button>
+      </div>
+    </div>
+  </div>
+  <ng-container *ngIf="formState as form">
+    <tariff-values-form [form]="form"></tariff-values-form>
+
+    <div class="client-contact-info-footer">
+      <div class="row">
+        <div class="col-12 mt-5 footer-buttons d-flex justify-content-end">
+          <button (click)="onCancel()" class="dnm-btn dnm-btn-cancel btn-lg text-uppercase" type="button">Cancel
+          </button>
+          <button (click)="onSave(form)" class="dnm-btn dnm-btn-primary btn-lg text-uppercase"
+                  type="submit">Save
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </ng-container>
+</div>

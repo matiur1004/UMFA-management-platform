@@ -1,0 +1,88 @@
+@import "variables";
+
+.group-bar-view ::ng-deep .x.axis .tick text {
+  text-anchor: end;
+  transform: rotate(0deg);
+}
+
+.group-bar-view ::ng-deep .x.axis .tick {
+  display: none;
+}
+
+.group-bar-view ::ng-deep .x.axis .tick:nth-child(3n) {
+  display: block;
+}
+
+::ng-deep .tooltip-content {
+  background: #fff;
+}
+
+.chart-row {
+  position: relative;
+
+  &:after {
+    content: "";
+    width: 100%;
+    border-bottom: 1px solid @color-line;
+    border-top: 1px solid @color-line;
+    height: 10px;
+    background: #F4F5F7;
+  }
+
+  .rdngs-lst-col {
+    border-right: 1px solid @color-line;
+
+    span {
+      display: block;
+      margin-left: 10px;
+    }
+  }
+}
+
+.filter-section {
+  border-left: 1px solid @color-line;
+}
+
+
+:host .dnm-tabset .nav-tabs .nav-link {
+  padding: 10px 0;
+}
+
+.switch-slider-lbl {
+  color: @color-text-tertiary;
+  font-family: @fontFamilyMedium;
+  font-size: 14px;
+}
+
+.stats-icon {
+  img {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    margin-right: 1rem;
+  }
+}
+
+::ng-deep .textDataLabel {
+  text-anchor: middle;
+  font-size: 12px !important;
+  transform: inherit;
+  color: #566787;
+  font-family: @fontFamilyBook;
+}
+
+::ng-deep .rdng-list-btn {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-color: transparent;
+  border: none;
+  margin-right: 10px;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+}
+
+::ng-deep .rdng-list-btn:after {
+  display: none;
+}

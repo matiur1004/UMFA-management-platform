@@ -1,0 +1,139 @@
+<div class="container-fluid none-padding gen-info-wrp">
+  <div class="row none-margin-hr">
+    <div class="col-6 first-col vert-blck-line">
+      <div class="shop-name-lbl">{{generalInfo.shopName}}</div>
+      <div class="input-row">
+        <div class="text-uppercase field-name">Shop name</div>
+        <div class="field-value">
+          <span class="first-blng-date">{{generalInfo.shopName}}</span>
+        </div>
+      </div>
+      <div class="input-row">
+        <div class="text-uppercase field-name">Area, SQ M</div>
+        <div class="field-value">
+          <span class="first-blng-date">{{generalInfo.area}}</span>
+        </div>
+      </div>
+      <div class="input-row">
+        <div class="text-uppercase field-name">Floor</div>
+        <div class="field-value">
+          <span class="first-blng-date">{{generalInfo.floor}}</span>
+        </div>
+      </div>
+      <div class="input-row">
+        <div class="text-uppercase field-name">First Billing Date</div>
+        <div class="field-value">
+          <span class="first-blng-date">{{generalInfo.firstTenantBillingDate | date:'dd/MM/yyyy'}}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-6 second-col">
+      <div class="bl-gradient-title history-title-blck">History</div>
+      <div class="row none-margin-hr list-header">
+        <div class="col-5 none-lt-padding header-field d-flex align-items-center">
+          <span class="text-ellipsis text-uppercase" title="Tenant Name">Tenant Name</span>
+        </div>
+        <div class="col-7 none-padding d-flex align-items-center">
+          <div class="row none-margin-hr w-100">
+            <div class="col-6 none-lt-padding header-field">
+              <span class="text-ellipsis text-uppercase" title="First Billing Date">First Billing Date</span>
+            </div>
+            <div class="col-6 none-lt-padding header-field">
+              <span class="text-ellipsis text-uppercase" title="Vacating Date">Vacating Date</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="list-body">
+        <div class="row none-margin-hr line-div">
+          <div class="col-5 none-padding d-flex align-items-center">
+            <span class="history-info-lbl tenant-name-lbl">Thomas Project</span>
+          </div>
+          <div class="col-7 none-padding d-flex align-items-center">
+            <div class="row none-margin-hr w-100">
+              <div class="col-6 none-lt-padding d-flex align-items-center">
+                <span class="history-info-lbl">08/05/2016</span>
+              </div>
+              <div class="col-6 none-lt-padding d-flex align-items-center">
+                <span class="history-info-lbl">15/02/2018</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row none-margin-hr line-div">
+          <div class="col-5 none-padding d-flex align-items-center">
+            <span class="history-info-lbl tenant-name-lbl">Apple Inc.</span>
+          </div>
+          <div class="col-7 none-padding d-flex align-items-center">
+            <div class="row none-margin-hr w-100">
+              <div class="col-6 none-lt-padding d-flex align-items-center">
+                <span class="history-info-lbl">08/05/2016</span>
+              </div>
+              <div class="col-6 none-lt-padding d-flex align-items-center">
+                <span class="history-info-lbl">15/02/2018</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row none-margin-hr line-div">
+          <div class="col-5 none-padding d-flex align-items-center">
+            <span class="history-info-lbl tenant-name-lbl">Thomas Project</span>
+          </div>
+          <div class="col-7 none-padding d-flex align-items-center">
+            <div class="row none-margin-hr w-100">
+              <div class="col-6 none-lt-padding d-flex align-items-center">
+                <span class="history-info-lbl">08/05/2016</span>
+              </div>
+              <div class="col-6 none-lt-padding d-flex align-items-center">
+                <span class="history-info-lbl">15/02/2018</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row none-margin-hr">
+    <div class="col none-padding">
+      <div class="bl-gradient-title stat-lbck-lbl">Meter readings stats</div>
+      <div class="dnm-tabset stat-tabset">
+        <div class="tabset-nav d-flex">
+          <div class="tabset-nav-item d-flex align-items-center">
+            <label class="dnm-switch-btn">
+              <input type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+            </label>
+            <span class="switch-btn-lbl current-usage-lbl">Current usage</span>
+          </div>
+          <div class="tabset-nav-item d-flex align-items-center">
+            <label class="dnm-switch-btn">
+              <input type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+            </label>
+            <span class="switch-btn-lbl average-usage-lbl">Average usage</span>
+          </div>
+        </div>
+       <ul ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]="tabId">
+          <li [ngbNavItem]="'tab-0'">
+            <a ngbNavLink>
+              <span class="tab-name text-uppercase">Current Period Analysis</span>
+            </a>
+            <ng-template ngbNavContent>
+              Chart for Current Period Analysis
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="'tab-1'">
+            <a ngbNavLink>
+              <span class="tab-name text-uppercase">Year Period Analysis</span>
+            </a>
+            <ng-template ngbNavContent>
+              Chart for Year Period Analysis
+            </ng-template>
+          </li>
+        </ul>
+        <div [ngbNavOutlet]="nav"></div>
+      </div>
+    </div>
+  </div>
+</div>

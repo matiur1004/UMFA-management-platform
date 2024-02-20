@@ -1,0 +1,67 @@
+<div class="select-units-modal">
+  <div class="modal-header">
+    <h5 class="modal-title">Select Meters</h5>
+    <button (click)="dismiss()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row pb-1">
+      <div class="col-6">
+        <label>Choose a supplier:</label>
+      </div>
+      <div class="col-6">
+        <ng-select [(ngModel)]="supplier" [clearable]="false" [hideSelected]="true"
+                   [items]="suppliers" [searchable]="false" bindLabel="name" class="select-dropdown">
+        </ng-select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <label>Choose a location type:</label>
+      </div>
+      <div class="col-6">
+        <ng-select [(ngModel)]="location" [clearable]="false" [hideSelected]="true" [searchable]="false"
+                   class="select-dropdown">
+          <ng-container *ngIf="supplier">
+            <ng-container *ngFor="let item of supplier.supplyTypes">
+              <ng-option *ngFor="let loc of item.supplyToLocations" [value]="loc">{{loc.name}}</ng-option>
+            </ng-container>
+          </ng-container>
+        </ng-select>
+      </div>
+    </div>
+    <div class="meter-list-container mt-3">
+      <table class="table table-custom table-outside-border-body table-striped table-vertical-center">
+        <thead>
+        <tr>
+          <th></th>
+          <th>Meter Name</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let meter of meters">
+          <td>
+            <div class="dnm-checkbox">
+              <input [(ngModel)]="meter.isSelected" [value]="meter.id" id="unit-id-{{ meter.id }}" name="meter_ids[]"
+                     type="checkbox"/>
+              <div class="state">
+                <label></label>
+              </div>
+            </div>
+          </td>
+          <td>{{ meter.serialNumber | shortMeterName : meter.supplyType }}</td>
+          <td>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button (click)="dismiss()" class="dnm-btn dnm-btn-cancel modal-btn">Cancel</button>
+    <button (click)="onAdd()" class="dnm-btn dnm-btn-primary modal-btn">Add</button>
+  </div>
+</div>

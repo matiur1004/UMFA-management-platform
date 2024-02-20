@@ -1,0 +1,47 @@
+<div class="package-colors">
+  <div class="modal-header">
+    <h5 class="modal-title">Select the package color:</h5>
+    <button (click)="onClose();" aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <div class="modal-body none-padding">
+    <div class="colors-block">
+      <div class="colors-row">
+        <div (click)="onChange('bg-gd-blue')" class="color-icon bg-gd-blue">
+          <span *ngIf="currentColor == 'bg-gd-blue'" class="check-mark-icon d-check-mark-white"></span>
+        </div>
+        <div (click)="onChange('bg-gd-turquoise')" class="color-icon bg-gd-turquoise">
+          <span *ngIf="currentColor == 'bg-gd-turquoise'" class="check-mark-icon d-check-mark-white"></span>
+        </div>
+        <div (click)="onChange('bg-gd-green')" class="color-icon bg-gd-green">
+          <span *ngIf="currentColor == 'bg-gd-green'" class="check-mark-icon d-check-mark-white"></span>
+        </div>
+        <div (click)="onChange('bg-gd-yellow')" class="color-icon bg-gd-yellow">
+          <span *ngIf="currentColor == 'bg-gd-yellow'" class="check-mark-icon d-check-mark-white"></span>
+        </div>
+        <div (click)="onChange('bg-gd-orange')" class="color-icon bg-gd-orange">
+          <span *ngIf="currentColor == 'bg-gd-orange'" class="check-mark-icon d-check-mark-white"></span>
+        </div>
+        <div (click)="onChange('bg-gd-red')" class="color-icon bg-gd-red">
+          <span *ngIf="currentColor == 'bg-gd-red'" class="check-mark-icon d-check-mark-white"></span>
+        </div>
+        <div (click)="onChange('bg-gd-darkpink')" class="color-icon bg-gd-darkpink">
+          <span *ngIf="currentColor == 'bg-gd-darkpink'" class="check-mark-icon d-check-mark-white"></span>
+        </div>
+        <div (click)="onChange('bg-gd-violet')" class="color-icon bg-gd-violet">
+          <span *ngIf="currentColor == 'bg-gd-violet'" class="check-mark-icon d-check-mark-white"></span>
+        </div>
+        <div (click)="onChange('bg-gd-violetblue')" class="color-icon bg-gd-violetblue">
+          <span *ngIf="currentColor == 'bg-gd-violetblue'" class="check-mark-icon d-check-mark-white"></span>
+        </div>
+        <div (click)="onChange('bg-gd-black')" class="color-icon bg-gd-black">
+          <span *ngIf="currentColor == 'bg-gd-black'" class="check-mark-icon d-check-mark-white"></span>
+        </div>
+        <div (click)="onChange('bg-gd-gray')" class="color-icon bg-gd-gray">
+          <span *ngIf="currentColor == 'bg-gd-gray'" class="check-mark-icon d-check-mark-white"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

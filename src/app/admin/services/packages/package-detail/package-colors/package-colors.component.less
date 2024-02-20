@@ -1,0 +1,78 @@
+@import 'variables.less';
+
+.package-colors {
+  background: @color-background-white;
+  width: 450px;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.package-colors .modal-header {
+  padding: 30px 38px 0 28px;
+}
+
+.package-colors .modal-header .modal-title {
+  font-family: Gotham Medium;
+  font-size: 18px;
+  color: @color-text-tertiary;
+  line-height: 18px;
+}
+
+/* #region building category icons */
+
+.package-colors button.close {
+  position: absolute;
+  top: 20px;
+  right: 37px;
+}
+
+.package-colors .colors-block {
+  padding: 30px 38px 30px 28px;
+}
+
+.package-colors .colors-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 50px;
+}
+
+.package-colors .color-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.package-colors .color-icon:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.package-colors .color-icon .check-mark-icon {
+  width: 10px;
+  height: 7px;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: inline-block;
+}
+
+.footer-nav-buttons {
+  display: flex;
+  padding: 0 38px 30px 28px;
+}
+
+.footer-nav-buttons button.dnm-btn {
+  flex-grow: 1;
+}
+
+.footer-nav-buttons button.dnm-btn:first-child {
+  margin-right: 10px;
+}
+
+.footer-nav-buttons button.dnm-btn:last-child {
+  margin-left: 10px;
+}

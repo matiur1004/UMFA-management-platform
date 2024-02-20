@@ -1,0 +1,147 @@
+@import 'variables.less';
+
+@media (min-width: 1550px) {
+  .table-attr {
+    overflow-x: auto;
+  }
+}
+
+.bulk-equipment-attributes {
+  .nav-row {
+    margin-bottom: 20px;
+  }
+
+
+  .table-custom th:first-child {
+    width: 60px;
+  }
+
+  .table-custom th:nth-child(2) {
+    width: 90px;
+  }
+
+  .table-custom th:nth-child(3) {
+    width: 90px;
+  }
+
+  .cell-selection.checkbox-input {
+    padding-left: 28px;
+  }
+
+  .dropdown-field {
+    padding-top: 0;
+    margin-right: 20px;
+  }
+
+  .dropdown-toggle {
+    white-space: normal;
+  }
+
+  .dropdown-wrapper {
+    margin-left: 50px;
+  }
+
+  .apply-btn {
+    width: 135px;
+  }
+
+  .table-container {
+    margin-bottom: 35px;
+  }
+
+  .form-check {
+    padding-left: 30px;
+    margin-right: 18px;
+  }
+
+  .serial-number-label {
+    font-size: 16px;
+    color: @color-text-primary;
+    font-family: Gotham Medium;
+  }
+
+  .equipment-attribute-field {
+    width: 210px;
+    max-width: 250px;
+
+    .equipment-attributes-dropdown {
+      min-width: 90px;
+      width: 100%;
+
+      .ng-value-label {
+        font-size: 14px;
+      }
+    }
+
+    .field-value {
+
+      &.unit-number-value {
+        margin-right: 10px;
+        max-width: 120px;
+        min-width: 90px;
+      }
+
+      &.ratio-value {
+        max-width: 120px;
+        min-width: 90px;
+
+        .form-control {
+          padding: 7px 11px;
+        }
+      }
+    }
+
+    .unit-name {
+      width: 50px;
+    }
+  }
+
+  .ng-option {
+    font-size: 14px;
+  }
+
+  .equipment-attributes-label {
+    font-family: @fontFamilyBook, sans-serif;
+    font-size: 14px;
+    line-height: 13px;
+    color: @color-text-tertiary;
+  }
+
+  .attr-photo-btn {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-color: transparent;
+    border: none;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    margin-left: 10px;
+  }
+
+  .footer-btns {
+    margin-top: 15px;
+  }
+
+  .dnm-btn-cancel {
+    margin-right: 30px;
+  }
+
+  .dnm-btn-cancel,
+  .dnm-btn-primary {
+    width: 200px;
+  }
+}
+
+.checkbox-menu {
+  height: 118vh;
+}
+
+.checkbox-input.dropdown-checkbox-input {
+  margin-left: 17px;
+}
+
+.ng-select.equipment-attributes-dropdown ::ng-deep .ng-select-container {
+  padding-left: 0;
+  padding-right: 24px;
+}

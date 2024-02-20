@@ -1,0 +1,118 @@
+@import 'variables.less';
+
+.floor-topbar {
+  margin-bottom: 25px;
+}
+
+.floor-topbar .select-dropdown {
+  width: 30%;
+  min-width: 150px;
+}
+
+.floor-topbar .btn-container {
+  margin-left: auto;
+}
+
+.floor-topbar .btn-container .dnm-btn:not(:last-child) {
+  margin-right: 20px;
+}
+
+.floor-plan-container {
+  position: relative;
+}
+
+.floor-plan {
+  position: relative;
+  overflow: hidden;
+  background-color: @color-background-white;
+  border: 1px solid #e1e1e1;
+}
+
+
+.toolbar {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  z-index: 2;
+  width: 30px;
+}
+
+.toolbar__item {
+  width: 30px;
+  height: 30px;
+  background-color: @color-background-white;
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.toolbar__item:not(:first-child) {
+  margin-top: -1px;
+}
+
+.toolbar__item.is-active {
+  background-color: lightgrey;
+}
+
+.toolbar__item-icon {
+  font-style: normal;
+}
+
+
+.zoom-bar {
+  position: absolute;
+  bottom: 3px;
+  right: 3px;
+  z-index: 2;
+  width: 30px;
+}
+
+.zoom-bar__item {
+  width: 30px;
+  height: 30px;
+  background-color: @color-background-white;
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.zoom-bar__item:not(:first-child) {
+  margin-top: -1px;
+}
+
+.zoom-bar__item-icon {
+  font-style: normal;
+}
+
+.zoom-informer {
+  position: absolute;
+  left: 203px;
+  bottom: 3px;
+  background-color: @color-background-white;
+  border: 1px solid black;
+  font-size: 12px;
+  padding: 2px 5px;
+  min-width: 40px;
+  margin-left: 1px;
+}
+
+.text-action {
+  display: none;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  min-width: 50px;
+  background-color: transparent;
+  font-size: 12px;
+  line-height: 1.4;
+  font-family: Arial;
+}
+
+.text-action:focus {
+  outline: 0;
+}
+

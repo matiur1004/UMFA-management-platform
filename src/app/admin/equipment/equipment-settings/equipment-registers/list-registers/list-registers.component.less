@@ -1,0 +1,75 @@
+@import 'variables.less';
+
+.manage-registers {
+  background-color: @color-background-white;
+  border: 1px solid @color-line;
+  padding: 30px;
+  height: 100%;
+}
+
+.manage-registers .title-row,
+.manage-registers .search-row,
+.manage-registers .stat-row {
+  margin-bottom: 30px;
+}
+
+.manage-registers .stat-lbl {
+  font-family: Gotham Light;
+  font-size: 16px;
+  line-height: 18px;
+  color: @color-text-tertiary;
+}
+
+.manage-registers .list-header {
+  margin-right: 5px;
+}
+
+.manage-registers .list-header .header-field {
+  text-transform: uppercase;
+}
+
+.manage-registers .list-body {
+  height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.manage-registers .body-row {
+  height: 50px;
+  border-bottom: 1px solid @color-line;
+}
+
+.manage-registers .body-row:last-child {
+  border-bottom: none;
+}
+
+.manage-registers .register-name-lbl {
+  font-family: Gotham Medium;
+  font-size: 16px;
+  line-height: 18px;
+  color: @color-text-primary;
+}
+
+.manage-registers .description-lbl {
+  display: inline-block;
+  font-family: Gotham Book;
+  font-size: 13px;
+  line-height: 15px;
+  color: @color-text-tertiary;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.manage-registers .registers-lbl {
+  display: inline-block;
+  font-family: Gotham Book;
+  font-size: 13px;
+  line-height: 15px;
+  color: @color-text-tertiary;
+}
+
+.manage-registers .service-type {
+  margin-bottom: 0;
+  margin-right: 10px;
+}

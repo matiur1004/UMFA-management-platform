@@ -1,0 +1,133 @@
+<div class="tenant-profiles">
+  <div class="container-fluid top-container">
+    <div class="row content">
+      <div class="col-12 col-xl-2 none-padding">
+        <div class="client-header-title">
+          <h1 class="page-title text-uppercase">Profiles</h1>
+        </div>
+      </div>
+      <div class="col-12 col-xl-10 none-padding text-right">
+        <div class="">
+          <div class="dropdown filter-dropdown d-inline-block" ngbDropdown>
+            <button class="btn btn-secondary dropdown-toggle text-left d-flex justify-content-between" id="ddBuildings"
+                    ngbDropdownToggle>
+              {{ (selectedBuilding$ | async)?.name || 'All buildings' }}
+            </button>
+            <div aria-labelledby="ddBuildings" class="dropdown-menu" ngbDropdownMenu>
+              <button (click)="onBuildingUpdate(null)" class="dropdown-item">All buildings</button>
+              <button (click)="onBuildingUpdate(building.id)" *ngFor="let building of buildings$ | async"
+                      class="dropdown-item">{{building.name}}</button>
+            </div>
+          </div>
+          <div class="form-inline my-lg-0 main-search-input">
+            <div class="input-group">
+              <input #searchBox (keyup)="onSearch(searchBox.value)" aria-label="Search"
+                     class="form-control group-search-input" data-search-field placeholder="Shop Search"
+                     type="search"/>
+              <div class="input-group-append">
+                <i class="icon-relative search-icon vertical-middle"></i>
+              </div>
+            </div>
+          </div>
+          <button add-new-profile-bind-dialog class="dnm-btn dnm-btn-primary text-uppercase add-entity-btn"
+                  type="button">
+            <span>Add Profile</span>
+            <i class="icon-relative add-profile-icon"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="buildings-container">
+    <div *ngFor="let tenantBuilding of tenantBuildings$ | async" class="building-item row dnm-text-medium">
+      <div class="building-info d-flex flex-column">
+        <div class="building-name dnm-text-bold text-ellipsis">{{tenantBuilding.buildingName}}
+          - {{tenantBuilding.branchName}}</div>
+        <div class="building-address text-ellipsis">{{tenantBuilding.buildingAddress}}</div>
+        <div class="d-flex justify-content-start align-items-center">
+          <i class="profiles-icon manage-users-icon"></i>
+          <div class="text-ellipsis">{{tenantBuilding.buildingContact.fullName}}</div>
+        </div>
+        <div class="d-flex justify-content-start align-items-center">
+          <i class="profiles-icon email-icon"></i>
+          <div class="text-ellipsis">{{tenantBuilding.buildingContact.email}}</div>
+        </div>
+        <div class="d-flex justify-content-start align-items-center">
+          <i class="profiles-icon phone-icon"></i>
+          <div class="text-ellipsis">{{tenantBuilding.buildingContact.phone}}</div>
+        </div>
+        <ng-container *ngFor="let tenant of tenantBuilding.tenants">
+          <div class="d-flex tenant-container justify-content-between">
+            <div class="tenant-name dnm-text-bold">
+              {{tenant.tenantName}}
+            </div>
+            <div (click)="onDeleteProfile(tenant.tenantId)" class="delete-item d-flex align-items-center">
+              <span class="cross-icon"></span>
+              <span class="cross-text">Delete profile</span>
+            </div>
+          </div>
+          <div *ngIf="tenant.shops.length" class="shop-header-name dnm-text-bold">
+            Shops
+          </div>
+          <div *ngIf="tenant.shops.length">
+            <div class="text-uppercase d-flex flex-wrap">
+              <div class="col-md-3">
+                <a class="header-field d-flex align-items-center" href="javascript:void(0);">
+                  <span class="text-ellipsis" title="Name">Name</span>
+                </a>
+              </div>
+              <div class="col-md-2">
+                <a class="header-field d-flex align-items-center" href="javascript:void(0);">
+                  <span class="text-ellipsis" title="Area, sq m">Area, sq m</span>
+                </a>
+              </div>
+              <div class="col-md-2">
+                <a class="header-field d-flex align-items-center" href="javascript:void(0);">
+                  <span class="text-ellipsis" title="Floor">Floor</span>
+                </a>
+              </div>
+              <div class="col-md-2">
+                <a class="header-field d-flex align-items-center" href="javascript:void(0);">
+                  <span class="text-ellipsis" title="Meters">Meters</span>
+                </a>
+              </div>
+              <div class="col-md-3">
+                <a class="header-field d-flex align-items-center" href="javascript:void(0);">
+                  <span class="text-ellipsis" title="Allocated tariffs">Allocated tariffs</span>
+                </a>
+              </div>
+            </div>
+            <div *ngFor="let shop of tenant.shops" class="d-flex flex-wrap shop-item">
+              <div class="col-md-3 d-flex flex-column justify-content-center ">
+                <div (click)="onShopDetailView(tenantBuilding.buildingId, shop.shopId)"
+                     class="shop-name dnm-text-bold text-ellipsis">{{shop.shopName}}</div>
+                <div class="account-name text-ellipsis">Account#1</div>
+                <div class="d-flex flex-row">
+                  <div *ngFor="let supplyType of shop.supplyTypes" [supplyTypeClassSufix]="'-icon'" [supplyTypeClass]="supplyType"
+                       class="service-icon"></div>
+                </div>
+              </div>
+              <div class="col-md-2 d-flex align-items-center">
+                <div class="text-ellipsis">{{shop.area}}</div>
+              </div>
+              <div class="col-md-2 d-flex align-items-center">
+                <div class="text-ellipsis">{{shop.floor}}</div>
+              </div>
+              <div class="col-md-2 d-flex flex-column justify-content-center">
+                <div *ngFor="let meter of shop.meters" class="text-ellipsis">
+                  {{meter}}
+                </div>
+              </div>
+              <div class="col-md-3 d-flex flex-column justify-content-center">
+                <div *ngFor="let allocatedTariff of shop.allocatedTariffs">
+                  {{allocatedTariff}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

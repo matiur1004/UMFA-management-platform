@@ -1,0 +1,48 @@
+<div class="modal-header">
+  <h5 *ngIf="isNew" class="modal-title">Create a new portfolio</h5>
+  <h5 *ngIf="!isNew" class="modal-title">Edit portfolio</h5>
+  <button (click)="onClose()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+    <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row none-margin-hr">
+    <div class="col-md-12 none-padding">
+      <form [formGroup]="form">
+        <!-- portfolio image -->
+        <div class="portfolio-upload-logo-block">
+          <div class="bl-gradient-title">Portfolio Image</div>
+          <upload-image (fileChange)="logoChanged($event)" [(file)]="file" [(src)]="model.logoUrl"
+                        [outputFileName]="'clientPortfolioLogo'"></upload-image>
+        </div>
+        <!-- portfolio info -->
+        <div class="client-portfolio-info-block">
+          <div class="bl-gradient-title editable-section-title">Portfolio Info</div>
+          <div class="input-row none-margin-hr">
+            <div class="text-uppercase field-name">Portfolio Name</div>
+            <div class="field-value none-padding">
+              <div [ngClass]="{'dnm-invalid-inp': formErrors['name']}">
+                <input class="form-control req-frm-fld" formControlName="name" placeholder="Type here" type="text"/>
+              </div>
+            </div>
+            <div class="field-name"></div>
+            <div class="field-value none-padding">
+              <small *ngIf="formErrors['name']" class="alert-danger">
+                {{ formErrors["name"] }}
+              </small>
+            </div>
+          </div>
+        </div>
+        <!-- save and cancel buttons -->
+        <div class="client-portfolio-info-footer">
+          <div class="row none-margin-hr">
+            <div class="col-md-8 offset-md-4 none-padding footer-buttons">
+              <button (click)="onClose()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+              <button (click)="onSave()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

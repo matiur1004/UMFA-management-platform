@@ -1,0 +1,39 @@
+<div class="popup-container">
+  <div class="modal-header">
+    <button (click)="close()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <div class="popup-body">
+    <div class="container-fluid text-center">
+      <i class="icon-relative dnm-warning-red"></i>
+      <div class="popup-title">Relations detected</div>
+      <div class="description">
+        <div class="text-center">
+          Object is used in
+        </div>
+
+        <div class="row">
+          <div class="col-6">
+            <b>SHOPS:</b>
+
+            <li *ngFor="let shopName of shopNames">
+              <span>{{shopName}}</span>
+            </li>
+          </div>
+          <div class="col-6">
+            <b>COMMON AREAS:</b>
+
+            <li *ngFor="let commonAreaName of commonAreaNames">
+              <span>{{commonAreaName}}</span>
+            </li>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer d-flex justify-content-center">
+    <button (click)="close()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+    <button (click)="removeAll()" class="dnm-btn dnm-btn-delete text-uppercase" type="button">Remove All</button>
+  </div>
+</div>
