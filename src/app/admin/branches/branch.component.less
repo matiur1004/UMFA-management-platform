@@ -1,0 +1,405 @@
+//@import 'variables.less';
+@import 'required-fields.less';
+
+.branch-item-wrp {
+  border: 1px solid @color-line;
+  margin-bottom: 10px;
+}
+
+.branch-item-wrp .list-item,
+.branch-item-wrp .item-details {
+  padding: 15px;
+}
+
+.branch-item-wrp .list-item {
+  background: @color-background-white;
+  display: table;
+  width: 100%;
+  padding: 8px 15px;
+  cursor: pointer;
+}
+
+.branch-item-wrp .item-details {
+  border-top: 1px solid @color-line;
+  background-color: @color-background-secondary;
+}
+
+.branch-item-wrp .collapse-list-item {
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+.branch-item-wrp .branch-name {
+  font-family: Gotham Medium;
+  font-size: 18px;
+}
+
+.branch-item-wrp .company-name {
+  color: @color-description;
+  font-family: Gotham Book;
+  font-size: 12px;
+}
+
+.branch-item-wrp .branches-icon {
+  display: inline-block;
+  position: relative;
+}
+
+.branch-item-wrp .toggle-icon {
+  top: 1px;
+  width: 15px;
+  height: 15px;
+  background-size: 15px 15px;
+  margin-left: 25px;
+  cursor: pointer;
+}
+
+.branch-item-wrp .expand-icon {
+  background: url("../../../assets/images/icons/expand-grey.svg") no-repeat;
+}
+
+.branch-item-wrp .expand-icon:hover {
+  background: url("../../../assets/images/icons/expand-blue.svg") no-repeat;
+}
+
+.branch-item-wrp .collapse-icon {
+  background: url("../../../assets/images/icons/collapse-grey.svg") no-repeat;
+}
+
+.branch-item-wrp .collapse-icon:hover {
+  background: url("../../../assets/images/icons/collapse-blue.svg") no-repeat;
+}
+
+.branch-item-wrp .add-icon {
+  display: inline-block;
+  background-image: url("../../../assets/images/icons/blue-add.png");
+  background-repeat: no-repeat;
+  height: 20px;
+  width: 20px;
+}
+
+.branch-item-wrp .edit-icon {
+  display: inline-block;
+  background-image: url("../../../assets/images/icons/blue-edit.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 17px;
+  height: 17px;
+  width: 17px;
+}
+
+.branch-item-wrp .item-details-title {
+  font-family: Gotham Medium;
+  font-size: 21px;
+  color: @color-text-tertiary;
+}
+
+.branch-item-wrp .email-icon {
+  background-image: url("../../../assets/images/icons/email.png");
+  background-repeat: no-repeat;
+  width: 16px;
+  height: 12px;
+}
+
+.branch-item-wrp .phone-icon {
+  background-image: url("../../../assets/images/icons/phone.png");
+  background-repeat: no-repeat;
+  width: 16px;
+  height: 16px;
+}
+
+.branch-item-wrp .bl-gradient-title {
+  line-height: 1;
+}
+
+.branch-item-wrp .field-name,
+.branch-item-wrp .field-value {
+  font-size: 13px;
+  color: @color-text-tertiary;
+}
+
+.branch-item-wrp .field-name {
+  font-family: Gotham Medium;
+  padding: 7px 0 0 20px;
+}
+
+.branch-item-wrp .field-name .undertext {
+  font-family: Gotham Book;
+  font-size: 11px;
+  color: @color-description;
+  text-transform: none;
+}
+
+.branch-item-wrp .field-name.sub-fld-name {
+  font-family: Gotham Book;
+  font-size: 12px;
+  line-height: 21px;
+  color: @color-description;
+}
+
+.branch-item-wrp .field-value {
+  font-family: Gotham Book;
+}
+
+.branch-item-wrp .bl-gradient-title {
+  margin-top: 40px;
+  margin-bottom: 23px;
+}
+
+.branch-item-wrp .editable-section > .row {
+  border-bottom: 1px solid #eeeff0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.branch-item-wrp .editable-section > .row:last-child {
+  border-bottom: 0;
+  padding-top: 20px;
+}
+
+.branch-item-wrp .editable-section .editable-section-title {
+  margin-left: -15px;
+}
+
+.branch-item-wrp .admin-info {
+  background: @color-background-tertiary;
+  padding: 50px 40px 50px 50px;
+}
+
+.branch-item-wrp .item-details .add-icon {
+  margin-right: 8px;
+}
+
+.branch-item-wrp .bank-accounts-tbl {
+  width: 100%;
+}
+
+.branch-item-wrp .bank-accounts-tbl td:first-child,
+.branch-item-wrp .bank-accounts-tbl th:first-child {
+  padding-left: 0;
+}
+
+.branch-item-wrp .account-name {
+  font-family: Gotham Medium;
+  font-size: 16px;
+  color: @color-text-secondary;
+}
+
+.branch-item-wrp .accounting-info {
+  display: table;
+}
+
+.branch-item-wrp .accounting-col {
+  display: table-cell;
+  vertical-align: top;
+}
+
+.branch-item-wrp .accounting-img {
+  background-image: url("../../../assets/images/icons/accounting.png");
+  background-repeat: no-repeat;
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.branch-item-wrp .contact-item {
+  position: relative;
+}
+
+.branch-item-wrp .contact-item .delete-item {
+  width: 30px;
+}
+
+.branch-item-wrp .blue-text-btn + .blue-text-btn {
+  margin-left: 30px;
+}
+
+.branch-item-wrp .admin-item:not(:last-child) {
+  border-bottom: 1px solid @color-line;
+  margin-bottom: 40px;
+  padding-bottom: 35px;
+}
+
+.branch-item-wrp .table-premium thead th {
+  padding-top: 15px;
+}
+
+.branch-item-wrp .table-premium tbody th,
+.branch-item-wrp .table-premium tbody td {
+  padding: 10px 10px 15px 10px;
+}
+
+.branch-item-wrp .dnm-btn-delete {
+  background: none;
+  box-shadow: none;
+  padding: 10px;
+}
+
+.branch-item-wrp .dnm-btn-delete:hover {
+  background: @color-background-tertiary;
+}
+
+.branch-item-wrp .admin-info .edit-lbl {
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.branch-item-wrp .upload-image {
+  margin-top: 30px;
+}
+
+.branch-item-wrp .upload-image label {
+  margin-bottom: 12px;
+  width: 130px;
+  text-align: center;
+}
+
+.branch-item-wrp .admin-info .admin-photo {
+  margin-left: 15px;
+  margin-right: 20px;
+}
+
+.branch-item-wrp .admin-photo-wrp {
+  margin-right: 5px;
+}
+
+.branch-item-wrp .admin-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+::ng-deep .branch-item-wrp .branch-logo {
+  border: 1px solid #ebf0f7;
+  float: left;
+  width: 120px;
+  height: 80px;
+  margin-right: 30px;
+}
+
+::ng-deep .branch-item-wrp .address-container input.form-control {
+  border: transparent solid 1px;
+  background-color: transparent !important;
+}
+
+::ng-deep .branch-item-wrp .address-container input.form-control:hover {
+  border: @color-stroke solid 1px;
+  background-color: @color-background-white !important;
+}
+
+::ng-deep .branch-item-wrp .address-container input.form-control:focus {
+  border: @color-main-accent solid 2px;
+  background-color: @color-background-white !important;
+  padding: 6px 29px 6px 19px;
+}
+
+@media (min-width: 768px) {
+  .branch-item-wrp .branch-logo {
+    width: 120px;
+    height: 80px;
+    margin-right: 30px;
+  }
+
+  .branch-item-wrp .list-item {
+    padding: 20px 25px;
+  }
+
+  .branch-item-wrp .list-item-title {
+    position: relative;
+    top: 15px;
+  }
+
+  .branch-item-wrp .branch-name {
+    font-size: 25px;
+    line-height: 25px;
+    color: @color-text-primary;
+  }
+
+  .branch-item-wrp .company-name {
+    font-size: 14px;
+  }
+
+  .branch-item-wrp .item-details-title {
+    font-size: 25px;
+    margin-bottom: 10px;
+    line-height: 25px;
+  }
+
+  .branch-item-wrp .toggle-icon {
+    top: 4px;
+    width: 20px;
+    height: 20px;
+    background-size: 20px 20px;
+    margin-left: 40px;
+  }
+
+  .branch-item-wrp .field-name {
+    font-size: 14px;
+  }
+
+  .branch-item-wrp .field-name .undertext {
+    font-size: 12px;
+  }
+
+  .branch-item-wrp .account-name {
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 20px;
+    margin-bottom: 2px;
+  }
+
+  .branch-item-wrp .item-details {
+    padding: 40px 25px 30px 25px;
+  }
+
+  .branch-item-wrp .text-link-lg:hover {
+    color: @color-text-primary;
+  }
+
+  .branch-item-wrp .bank-accounts-tbl {
+    margin-left: -15px;
+    margin-right: -15px;
+  }
+
+  .branch-item-wrp .accounting-info {
+    max-width: 450px;
+  }
+
+  .branch-item-wrp .accounting-img {
+    margin-right: 19px;
+  }
+
+  .branch-item-wrp .dnm-btn-secondary .edit-icon {
+    position: relative;
+    top: 2px;
+    margin-left: 12px;
+  }
+
+  .branch-item-wrp .upload-image .text-block-title {
+    position: relative;
+    margin-bottom: 8px;
+    top: -3px;
+  }
+
+  .branch-item-wrp .admin-info .contact-info {
+    margin-top: 18px;
+  }
+
+  .branch-item-wrp .contact-info .email-icon,
+  .branch-item-wrp .contact-info .phone-icon {
+    margin-right: 7px;
+  }
+
+  .branch-item-wrp .contact-info .email-icon {
+    top: 1px;
+  }
+
+  .branch-item-wrp .contact-info .phone-icon {
+    top: 3px;
+  }
+
+  ::ng-deep .branch-item-wrp .edit-logo-panel {
+    margin-top: 17px;
+    margin-bottom: 10px;
+  }
+}

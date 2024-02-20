@@ -1,0 +1,132 @@
+<div class="edit-registers">
+  <div class="modal-header">
+    <h5 class="modal-title">
+      <span *ngIf="!model">Create register</span>
+      <span *ngIf="model  && !model.isSystem">Edit register</span>
+      <span *ngIf="model && model.isSystem">Register details</span>
+    </h5>
+    <button (click)="dismiss()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container-fluid none-padding">
+      <form *ngIf="formState$ | async as form" [ngrxFormState]="form">
+        <div class="bl-gradient-title hedader-title">General Info</div>
+        <div class="register-form-input-container">
+          <div class="text-uppercase field-name register-form-label">Register name</div>
+          <div class="field-value none-padding register-form-input">
+            <div [ngClass]="{'dnm-invalid-inp': form.isSubmitted && form.controls.name.isInvalid}">
+              <input [(ngModel)]="form.controls.name.value" [disabled]="model && model.isSystem" [ngModelOptions]="{standalone: true}"
+                     [ngrxFormControlState]="form.controls.name" maxlength="10"
+                     class="form-control req-frm-fld" placeholder="Type here"/>
+            </div>
+            <small *ngIf="form.isSubmitted && form.controls.name.errors.required" class="alert-danger">
+              Register name is required
+            </small>
+          </div>
+        </div>
+        <div class="register-form-input-container">
+          <div class="text-uppercase field-name register-form-label">Description</div>
+          <div [ngClass]="{'dnm-invalid-inp': form.isSubmitted && form.controls.description.isInvalid}"
+               class="field-value none-padding register-form-input">
+            <textarea [(ngModel)]="form.controls.description.value" [disabled]="model && model.isSystem" [ngModelOptions]="{standalone: true}"
+                      [ngrxFormControlState]="form.controls.description"
+                      class="form-control textarea" placeholder="Type here"
+                      rows="3"></textarea>
+            <small *ngIf="form.isSubmitted && form.controls.description.errors.required" class="alert-danger">
+              Description is required
+            </small>
+          </div>
+        </div>
+        <div class="register-form-input-container select">
+          <div class="text-uppercase field-name register-form-label">Supply Type</div>
+          <div [ngClass]="{'dnm-invalid-inp': form.isSubmitted && form.controls.supplyTypes.isInvalid}"
+               class="field-value none-padding register-form-input req-frm-fld">
+            <ng-select (add)="selectSupplyType($event)" (remove)="deleteSupplyType($event)" [clearable]="false" [closeOnSelect]="false"
+                       [disabled]="model && model.isSystem" [dropdownPosition]="top"
+                       [hideSelected]="true" [items]="supplyTypes" [multiple]="true"
+                       [ngModel]="formValue.supplyTypes" [searchable]="false" bindLabel="name"
+                       bindValue="id" class="dnm-multiple-select"
+                       name="st"></ng-select>
+            <small *ngIf="form.isSubmitted && form.controls.supplyTypes.errors.required" class="alert-danger">
+              Supply Type is required
+            </small>
+          </div>
+        </div>
+        <div class="register-form-input-container select">
+          <div class="text-uppercase field-name register-form-label">Units Of Measurement</div>
+          <div class="field-value none-padding register-form-input">
+            <div [ngClass]="{'dnm-invalid-inp': form.isSubmitted && form.controls.unitOfMeasurement.isInvalid}"
+            class="req-frm-fld">
+              <ng-select [clearable]="false" [hideSelected]="true" [items]="unitsOfMeasurement"
+                         [ngrxFormControlState]="form.controls.unitOfMeasurement"
+                         [searchable]="false" bindLabel="unitOfMeasurementName" bindValue="unitOfMeasurementType"
+                         class="select-dropdown" name="units"></ng-select>
+            </div>
+            <small *ngIf="form.isSubmitted && form.controls.unitOfMeasurement.errors.required" class="alert-danger">
+              Units Of Measurement is required
+            </small>
+          </div>
+        </div>
+        <div class="register-form-input-container select">
+          <div class="text-uppercase field-name register-form-label">Time of use</div>
+          <div class="field-value none-padding register-form-input">
+            <div [ngClass]="{'dnm-invalid-inp': form.isSubmitted && form.controls.timeOfUse.isInvalid}">
+              <ng-select (ngModelChange)="changeTOU($event)" [(ngModel)]="form.controls.timeOfUse.value" [clearable]="false"
+                         [closeOnSelect]="true" [dropdownPosition]="'top'" [items]="touItems"
+                         [hideSelected]="true" [multiple]="false" [ngModelOptions]="{standalone: true}"
+                         [searchable]="false" class="select-dropdown" bindLabel="label" bindValue="value"
+                         name="tou_time">
+              </ng-select>
+            </div>
+            <small *ngIf="form.isSubmitted && form.controls.timeOfUse.errors.required" class="alert-danger">
+              Time of use is required
+            </small>
+          </div>
+        </div>
+        <div class="register-form-input-container select">
+          <div class="text-uppercase field-name register-form-label">Calculation method</div>
+          <div class="field-value none-padding register-type-input">
+            <div [ngClass]="{'dnm-invalid-inp': form.isSubmitted && form.controls.registerType.isInvalid}">
+              <ng-select [clearable]="false" [closeOnSelect]="true" [dropdownPosition]="'top'" [items]="registerTypes"
+                         [multiple]="false" [ngrxFormControlState]="form.controls.registerType" [onChange]="changeIcon()"
+                         [searchable]="false" bindLabel="name" bindValue="id" class="select-dropdown" 
+                         name="register-type">
+              </ng-select>
+            </div>
+            <small *ngIf="form.isSubmitted && form.controls.registerType.errors.required" class="alert-danger">
+              Calculation method is required
+            </small>
+          </div>
+          <div>
+            <img class="register-icon" name="registerIcon" id="registerIcon" src="{{selectedIcon}}" title="{{selectedIconAlt}}" alt="{{selectedIconAlt}}" #registerIcon>
+          </div>
+        </div>
+        <div class="register-form-input-container select">
+          <div class="text-uppercase field-name register-form-label">OBIS Code</div>
+          <div class="field-value none-padding register-form-input">
+            <div [ngClass]="{'dnm-invalid-inp': form.isSubmitted && form.controls.obisCode.isInvalid}">
+              <ng-select [clearable]="false" [closeOnSelect]="true" [dropdownPosition]="'top'" [items]="obisCodes"
+                         [multiple]="false" [ngrxFormControlState]="form.controls.obisCode"
+                         [searchable]="false" bindLabel="displayValue" bindValue="obisCodeValue" class="select-dropdown"
+                         name="obisCodes">
+              </ng-select>
+            </div>
+          </div>
+        </div>
+        <div class="footer-buttons">
+          <button (click)="dismiss()" *ngIf="!model  || model && !model.isSystem"
+                  class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel
+          </button>
+          <button (click)="save()" *ngIf="!model  || model && !model.isSystem"
+                  class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save
+          </button>
+          <button (click)="dismiss()" *ngIf="model && model.isSystem" class="dnm-btn dnm-btn-primary text-uppercase"
+                  type="button">Close
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

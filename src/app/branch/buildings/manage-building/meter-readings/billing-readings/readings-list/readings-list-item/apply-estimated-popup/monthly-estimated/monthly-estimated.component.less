@@ -1,0 +1,48 @@
+@import 'variables.less';
+
+.period-drp {
+  .ng-dropdown-panel {
+    right: -75px;
+    width: 490px;
+    height: max-content;
+    padding-bottom: 15px;
+  }
+
+  .ng-dropdown-panel .ng-dropdown-panel-items {
+    overflow: hidden;
+    height: max-content;
+  }
+
+  .ng-dropdown-header {
+    margin-bottom: 10px;
+  }
+
+  .ng-option.ng-star-inserted {
+    margin-left: 0px !important;
+  }
+
+  .ng-select-container {
+    border-radius: 15px;
+    border: 1px solid @color-line;
+    background: @color-background-white;
+  }
+
+  .ng-select.ng-select-opened .ng-select-container {
+    border-color: @color-line;
+  }
+
+  .ng-input {
+    display: none;
+  }
+}
+
+.apply-estimated-modal number-input {
+  width: 100% !important;
+}
+
+.monthly-row {
+  height: auto !important;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px;
+}

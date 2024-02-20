@@ -1,0 +1,79 @@
+<div *ngIf="{
+       charges: charges,
+       order: order$ | async
+     } as data"
+     class="additional-charges-list">
+  <div class="container-fluid">
+    <div class="row content">
+      <div class="col-12 col-xl-12 none-padding d-flex align-items-end justify-content-between">
+        <div class="bl-gradient-title">Additional charge</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="filter-block">
+      <div class="row">
+        <div class="col-12 none-padding">
+          <div class="d-flex justify-content-between">
+            <div class="d-flex align-items-center">
+              <span class="results-label dnm-text-light">{{ data.charges?.length || 0 }} charges</span>
+              <button add-new-charge-version-bind-dialog class="btn blue-text-btn d-flex align-items-center none-padding"
+                      type="button" [disabled]="buildingPeriodIsFinalized">
+                <i class="add-icon"></i> Add New Charge
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid none-padding">
+    <div class="row none-margin-hr list-header">
+      <div class="col-3 tariff-name-title d-flex align-items-center">
+        <a (click)="onChangeChargeOrder(ChargesListOrder.NameAsc)"
+           [ngClass]="getActiveOrderClass(data.order, ChargesListOrder.NameAsc, ChargesListOrder.NameDesc)"
+           class="header-field d-flex align-items-center"
+           href="javascript:void(0);">
+          <span class="text-ellipsis text-uppercase" title="Charge Name">Charge Name</span>
+          <i [ngClass]="getOrderClasses(data.order, ChargesListOrder.NameAsc, ChargesListOrder.NameDesc)"
+             class="dnm-icon"></i>
+        </a>
+      </div>
+      <div class="col-9">
+        <div class="row none-margin-hr">
+          <div class="col-5 header-field d-flex align-items-center">
+            <a (click)="onChangeChargeOrder(ChargesListOrder.ValueNameAsc)"
+               [ngClass]="getActiveOrderClass(data.order, ChargesListOrder.ValueNameAsc, ChargesListOrder.ValueNameDesc)"
+               class="header-field d-flex align-items-center"
+               href="javascript:void(0);">
+              <span class="text-ellipsis text-uppercase" title="Values">Values</span>
+              <i [ngClass]="getOrderClasses(data.order, ChargesListOrder.ValueNameAsc, ChargesListOrder.ValueNameDesc)"
+                 class="dnm-icon"></i>
+            </a>
+          </div>
+          <div class="col-3 header-field d-flex align-items-center">
+            <span class="text-uppercase" title="Created">Created</span>
+          </div>
+          <div class="col-3 header-field d-flex align-items-center">
+            <span class="text-uppercase" title="User Created">User Created</span>
+          </div>
+          <div class="col-1 header-field d-flex align-items-center">
+          </div>
+        </div>
+      </div>
+    </div>
+    <charge-item (chargeDeleted)="onDeleteCharge($event)"
+                 (chargeEdited)="onEditCharge($event)"
+                 (newValueAdded)="onAddNewValue($event)"
+                 (valueDeleted)="onDeleteValue($event)"
+                 (valueEdited)="onEditValue($event)"
+                 *ngFor="let charge of data.charges; trackBy: trackByFn;"
+                 [charge]="charge"
+                 [buildingPeriodIsFinalized]="buildingPeriodIsFinalized"></charge-item>
+  </div>
+</div>
+
+
+

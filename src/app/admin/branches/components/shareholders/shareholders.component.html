@@ -1,0 +1,94 @@
+<div class="container-fluid shareholders-container">
+  <ng-container *ngIf="!detailedShareholder">
+    <ng-container *ngIf="model.shareholders.length">
+      <div class="bl-gradient-title">Shareholders</div>
+      <table class="table table-premium">
+        <thead>
+        <tr class="table-header text-uppercase">
+          <th class="align-middle" scope="col">Full Name</th>
+          <th scope="col">Percentages</th>
+          <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let shareholder of model.shareholders; let idx = index; let last = last;">
+          <th scope="row">
+            <div class="accounting-info">
+              <div class="accounting-col">
+                <div class="account-name">{{shareholder.fullName}}</div>
+              </div>
+            </div>
+          </th>
+          <td>{{shareholder.percentages}}</td>
+          <td class="text-right">
+            <a (click)="editBank(idx)" class="dnm-btn dnm-btn-delete" href="javascript:void(0)">
+              <span class="blue-edit-icon"></span>
+            </a>
+            <a (click)="remove(idx)" class="dnm-btn dnm-btn-delete float-right" href="javascript:void(0)">
+              <span class='delete-icon'></span>
+            </a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngIf="detailedShareholder">
+    <form [formGroup]="form">
+      <div class="row">
+        <div class="col-left text-form-field text-uppercase">
+          Full Name
+        </div>
+        <div class="col-right">
+          <div class="form-group">
+            <div [ngClass]="{'dnm-invalid-inp': formErrors.fullName}">
+              <input class="form-control req-frm-fld" formControlName="fullName" id="full-name" placeholder="Type here" type="text">
+            </div>
+            <small *ngIf="formErrors.fullName" class="alert-danger">
+              {{ formErrors.fullName }}
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-left text-form-field text-uppercase">
+          Percentages
+        </div>
+        <div class="col-right">
+          <div class="form-group">
+            <div [ngClass]="{'dnm-invalid-inp': formErrors.percentages}">
+              <input class="form-control req-frm-fld" formControlName="percentages" id="percentages" placeholder="Type here"
+                     type="text">
+            </div>
+            <small *ngIf="formErrors.percentages" class="alert-danger">
+              {{ formErrors.percentages }}
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="row additional-links">
+        <div class="col-12">
+          <a (click)="update()" class="btn-form-section float-right" href="javascript:void(0);">
+            <i class='icon check-mark-icon'></i>Submit
+          </a>
+          <a (click)="cancelCreate()" class="btn-form-section float-right" href="javascript:void(0);">
+            <i class='icon cross-icon'></i>Cancel
+          </a>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+  <div *ngIf="!detailedShareholder" class="row additional-links">
+    <div class="col-12">
+      <a (click)="create()" class="blue-text-btn" href="javascript:void(0);">
+        <i class="add-icon"></i>Add Shareholder
+      </a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 text-right footer-buttons">
+      <button (click)="dismiss()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+      <button (click)="next()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Next</button>
+    </div>
+  </div>
+</div>

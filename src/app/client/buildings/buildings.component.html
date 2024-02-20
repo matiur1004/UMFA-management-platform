@@ -1,0 +1,68 @@
+<div class="client-buildings">
+  <div class="container-fluid top-container">
+    <div class="row content">
+      <div class="col-12 col-xl-2 none-padding">
+        <div class="client-header-title">
+          <h1 class="page-title text-uppercase">Buildings</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="(portfolios$ | async) as portfolios" class="buildings-container">
+    <div class="row dnm-text-light result-lbl">{{portfolios.length || 0}} portfolios, {{numberOfBuildings$ | async}}
+      buildings
+    </div>
+    <div *ngIf="portfolios.length" class="row list-header text-uppercase">
+      <div class="col-5">Name</div>
+      <div class="col-3">Suburb, town</div>
+      <div class="col-2">Total GLA</div>
+      <div class="col-2">Phone</div>
+    </div>
+    <ng-container *ngFor="let portfolio of portfolios; let idx = index">
+      <div class="building-item row dnm-text-medium">
+        <div class="col-5 none-padding d-flex align-items-center">
+          <div class="item-img d-flex align-items-center justify-content-center">
+            <logo-container [url]="(portfolio.logoUrl | image) | async"
+                            logo-class="logo-abbreviation d-flex justify-content-center align-items-center">
+              <span>{{portfolio.name[0].toUpperCase()}}</span>
+            </logo-container>
+          </div>
+          <div class="d-flex flex-column">
+            <span class="info-lbl portfolio-lbl">Portfolio #1 ({{portfolio.name}})</span>
+            <span class="buildings-number-lbl">{{portfolio.totalBuildings}} buildings</span>
+          </div>
+        </div>
+        <div class="col-3 d-flex align-items-center"></div>
+        <div class="col-2 d-flex align-items-center"></div>
+        <div class="col-2 d-flex align-items-center justify-content-between">
+          <div></div>
+          <div (click)="portfolioToggle(idx)">
+            <span [ngClass]="{'expand-icon': !portfolio.isSelected, 'collapse-icon': portfolio.isSelected}"
+                  class="icon-relative expand-btn"></span>
+          </div>
+        </div>
+      </div>
+      <ng-container *ngIf="portfolio.isSelected">
+        <div (click)="onGetBuildingView(building.id)" *ngFor="let building of portfolio.buildings"
+             class="row subdivision-item dnm-text-medium">
+          <div class="col-5 none-padding d-flex align-items-center">
+            <div class="item-img d-flex align-items-center justify-content-center">
+              <logo-container [url]="(building.logoUrl | image) | async"
+                              logo-class="logo-abbreviation d-flex justify-content-center align-items-center">
+                <span>{{building.name[0].toUpperCase()}}</span>
+              </logo-container>
+            </div>
+            <div class="d-flex flex-column">
+              <span class="info-lbl building-lbl">{{building.name}}</span>
+              <span class="buildings-desc-lbl">{{building.description}}</span>
+            </div>
+          </div>
+          <div
+            class="col-3 d-flex align-items-center">{{(building.address.suburb ? building.address.suburb + ', ' : '') + building.address.city}}</div>
+          <div class="col-2 d-flex align-items-center">{{building.totalGLA}}</div>
+          <div class="col-2 d-flex align-items-center">{{building.phone}}</div>
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>

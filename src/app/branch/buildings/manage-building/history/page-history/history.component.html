@@ -1,0 +1,172 @@
+<div class="container-fluid none-padding history-container">
+  <div class="row none-margin-hr justify-content-between search">
+    <div class="col-6 none-padding ">
+      <div class="form-inline main-search-input w-100">
+        <div class="input-group">
+          <input #searchBox (keyup)="search(searchBox.value)" class="form-control group-search-input" data-search-field
+                 placeholder="Search in history"
+                 type="search"/>
+          <div class="input-group-append">
+            <i class="icon-relative search-icon vertical-middle"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex align-items-center">
+      <span class="text-uppercase filter-drpdwn-lbl d-flex align-items-center">Building Period:</span>
+      <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+        <button class="btn btn-secondary dropdown-toggle bld-per-drpdwn-btn text-left" ngbDropdownToggle>
+          <span *ngIf="!selectedPeriod">Periods not found</span>
+          <span *ngIf="selectedPeriod">
+            {{selectedPeriod.name}} <ng-container *ngIf="selectedPeriod.id != ''">({{selectedPeriod.startDate | dateMediumFormat}}
+              - {{selectedPeriod.endDate | dateMediumFormat}})</ng-container>
+          </span>
+        </button>
+        <div class="dropdown-menu bld-per-drpdwn-menu" ngbDropdownMenu>
+          <button (click)="onPeriodChanged(period)" *ngFor="let period of periods;" class="dropdown-item">
+            {{period.name}} <ng-container *ngIf="period.id != ''">({{period.startDate | dateMediumFormat}} - {{period.endDate | dateMediumFormat}})</ng-container>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid history-tbl">
+    <!-- table stat -->
+    <div class="row none-margin-hr">
+      <div class="history-records">{{logs.length}} records in history</div>
+    </div>
+    <!-- table header -->
+    <div class="tbl-hdr-row d-flex align-items-center">
+      <div class="frst-hdr-col">
+        <a (click)="onChangeOrder(1)" class="col-header d-flex align-items-center" href="javascript:void(0);">
+          <span class="col-lbl text-uppercase" title="Version">Version</span>
+          <i [ngClass]="{'dnm-icon-sort-down': orderIndex == 1,'dnm-icon-sort-up': orderIndex != 1 }"
+             class="dnm-icon inactive"></i>
+        </a>
+      </div>
+      <div class="row tbl-header-item none-margin-hr">
+        <div class="col-2">
+          <a (click)="onChangeOrder(2)" class="col-header d-flex align-items-center" href="javascript:void(0);">
+            <span class="col-lbl text-uppercase" title="Created">Version date</span>
+            <i [ngClass]="{'dnm-icon-sort-down': orderIndex == 2,'dnm-icon-sort-up': orderIndex != 2 }"
+               class="dnm-icon inactive"></i>
+          </a>
+        </div>
+        <div class="col-2">
+          <a (click)="onChangeOrder(3)" class="col-header d-flex align-items-center" href="javascript:void(0);">
+            <span class="col-lbl text-uppercase" title="Created">Last updated</span>
+            <i [ngClass]="{'dnm-icon-sort-down': orderIndex == 2,'dnm-icon-sort-up': orderIndex != 2 }"
+               class="dnm-icon inactive"></i>
+          </a>
+        </div>
+        <div class="col-2">
+          <a (click)="onChangeOrder(4)" class="col-header d-flex align-items-center" href="javascript:void(0);">
+            <span class="col-lbl text-uppercase" title="Created by">Created by</span>
+            <i [ngClass]="{'dnm-icon-sort-down': orderIndex == 3,'dnm-icon-sort-up': orderIndex != 3 }"
+               class="dnm-icon inactive"></i>
+          </a>
+        </div>
+        <div class="col-3">
+          <a (click)="onChangeOrder(5)" class="col-header d-flex align-items-center" href="javascript:void(0);">
+            <span class="col-lbl text-uppercase" title="Changes">Changes</span>
+            <i [ngClass]="{'dnm-icon-sort-down': orderIndex == 4,'dnm-icon-sort-up': orderIndex != 4 }"
+               class="dnm-icon inactive"></i>
+          </a>
+        </div>
+        <div class="col-3">
+          <a (click)="onChangeOrder(6)" class="col-header d-flex align-items-center" href="javascript:void(0);">
+            <span class="col-lbl text-uppercase" title="Parent">Parent</span>
+            <i [ngClass]="{'dnm-icon-sort-down': orderIndex == 5,'dnm-icon-sort-up': orderIndex != 5 }"
+               class="dnm-icon inactive"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- table body -->
+    <div *ngFor="let root of filteredLogs" class="tree-view">
+      <ul>
+        <li class="root-item">
+          <div class="item-content d-flex align-items-center">
+            <div class="frst-body-col">
+              <span class="version-name-lbl">{{root.comment}}</span>
+            </div>
+            <div class="row tbl-body-item none-margin-hr">
+              <div class="col-2 d-flex align-items-center">
+                <span class="hstr-tbl-lbl">{{root.versionDate | date: 'dd/MM/yyyy'}},</span>
+                <span class="hstr-tbl-lbl hstr-time-lbl">{{root.versionDate | date: 'shortTime'}}</span>
+              </div>
+              <div class="col-2 d-flex align-items-center">
+                <span class="hstr-tbl-lbl">{{root.modifyDate | date: 'dd/MM/yyyy'}},</span>
+                <span class="hstr-tbl-lbl hstr-time-lbl">{{root.modifyDate | date: 'shortTime'}}</span>
+              </div>
+              <div class="col-2 d-flex align-items-center">
+                <span class="hstr-tbl-lbl">{{root.userFullName}}</span>
+              </div>
+              <div class="col-3 d-flex align-items-center">
+                <ul class="body-item-list">
+                  <li *ngFor="let rootChange of root.changes">
+                    <span class="list-item-val">{{rootChange}}</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-3 d-flex align-items-center justify-content-between">
+                <div class="d-flex flex-column">
+                  <span class="hstr-tbl-lbl">{{root.baseVersionName}}</span>
+                </div>
+                <span (click)="toggle(root)" *ngIf="root.items.length"
+                      [ngClass]="{'expand-icon': !root.isExpanded, 'collapse-icon': root.isExpanded}"
+                      class="icon-relative expand-btn"></span>
+              </div>
+            </div>
+          </div>
+          <ul *ngIf="root.items.length && root.isExpanded">
+            <li *ngFor="let child of root.items">
+              <div class="item-content tbl-body-subitem d-flex align-items-center">
+                <div class="frst-body-col">
+                  <span class="version-name-lbl">{{child.comment}}</span>
+                </div>
+                <div class="row tbl-body-item none-margin-hr">
+                  <div class="col-2 d-flex align-items-center">
+                    <span class="hstr-tbl-lbl">{{child.versionDate | date: 'shortDate'}},</span>
+                    <span class="hstr-tbl-lbl hstr-time-lbl">{{child.versionDate | date: 'shortTime'}}</span>
+                  </div>
+                  <div class="col-2 d-flex align-items-center">
+                    <span class="hstr-tbl-lbl">{{child.modifyDate | date: 'shortDate'}},</span>
+                    <span class="hstr-tbl-lbl hstr-time-lbl">{{child.modifyDate | date: 'shortTime'}}</span>
+                  </div>
+                  <div class="col-2 d-flex align-items-center">
+                    <span class="hstr-tbl-lbl">{{root.userFullName}}</span>
+                  </div>
+                  <div class="col-3 d-flex align-items-center">
+                    <ul class="body-item-list">
+                      <li *ngFor="let childChange of child.changes">
+                        <span class="list-item-val">{{childChange}}</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="col-3 d-flex align-items-center justify-content-between">
+                    <div class="d-flex flex-column">
+                      <span class="hstr-tbl-lbl">{{child.baseVersionName}}</span>
+                    </div>
+                    <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block"
+                         ngbDropdown>
+                      <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle title="Menu"></button>
+                      <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                        <button (click)="makeActual(child.id)" class="dropdown-item d-flex justify-content-between" data-menu-item
+                                type="button">
+                          Restore
+                          <i class="dnm-icon restore-icon"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</div>

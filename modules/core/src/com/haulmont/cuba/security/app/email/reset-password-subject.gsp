@@ -1,1 +1,0 @@
-[CUBA Application] Password reset

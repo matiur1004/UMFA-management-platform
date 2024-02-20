@@ -1,0 +1,70 @@
+@import 'variables.less';
+
+.shop-history-list {
+  background: @color-background-white;
+  width: 375px;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.shop-history-list .modal-header {
+  padding: 30px 38px 7px 28px;
+}
+
+.shop-history-list .modal-header .modal-title {
+  font-family: Gotham Medium;
+  font-size: 18px;
+  color: @color-text-tertiary;
+  line-height: 18px;
+}
+
+
+.shop-history-list button.close {
+  position: absolute;
+  top: 20px;
+  right: 37px;
+}
+
+.modal-close-icon {
+  width: 13px;
+  height: 13px;
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.history-list-block {
+  padding: 0 38px 30px 28px;
+  overflow-y: auto;
+  max-height: 340px;
+}
+
+.history-list-row {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  height: auto;
+}
+
+.history-list-row:first-child {
+  margin-top: 20px;
+}
+
+.history-title, .history-comment-text {
+  font-size: 13px;
+}
+
+.history-title {
+  color: @color-text-secondary;
+}
+
+.history-comment-text {
+  color: @color-text-tertiary;
+}
+
+.history-date-text {
+  font-family: Gotham Light;
+  font-size: 12px;
+  color: @color-text-tertiary;
+}

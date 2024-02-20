@@ -1,0 +1,25 @@
+<div class="chng-status-wrp">
+  <div class="modal-header d-flex align-items-center justify-content-end">
+    <div (click)="dismiss()" aria-label="Close" class="close-btn-wrp" data-dismiss="modal">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </div>
+  </div>
+
+  <div class="modal-body">
+    <div class="icon-wrp">
+      <div class="dnm-icon info-icon"></div>
+    </div>
+    <div class="header-text">
+      Do you want to change billing tariff?
+    </div>
+    <div class="changing-msg">
+      Changing one line item’s status to "{{status}}" would cause changing the status of the entire tariff
+    </div>
+    <div class="btns-wrp">
+      <button (click)="dismiss()" class="dnm-btn dnm-btn-cancel text-uppercase chng-status-btns" type="button">Cancel
+      </button>
+      <button (click)="close()" class="dnm-btn dnm-btn-primary text-uppercase chng-status-btns" type="button">Save
+      </button>
+    </div>
+  </div>
+</div>

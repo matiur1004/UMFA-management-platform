@@ -1,0 +1,74 @@
+@import 'variables.less';
+
+.page-404 {
+  height: 100vh;
+
+}
+
+.page-404-panel {
+  position: absolute;
+  background-repeat: no-repeat;
+  background-position: center top;
+  width: 620px;
+  height: 352px;
+  left: 50%;
+  top: 50%;
+  margin-left: -310px;
+  margin-top: -176px;
+  text-align: center;
+  padding: 196px 0px 0px 0px;
+
+  .meter-arrow {
+    position: absolute;
+    top: 85px;
+    left: 50%;
+    background-color: @color-accent;
+    width: 27px;
+    height: 27px;
+    margin-left: -12px;
+    border-radius: 14px;
+    transform: rotate(0deg);
+    animation: 0.25s linear 0s infinite alternate arrow_animate;
+
+    &:before {
+      content: '';
+      position: absolute;
+      bottom: 14px;
+      left: 8px;
+      width: 11px;
+      height: 35px;
+      background-color: @color-accent;
+      border-radius: 5px;
+    }
+  }
+
+  h1.title-1 {
+    color: @color-text-primary;
+
+    font-weight: bold;
+    font-size: 72px;
+  }
+
+  h2.title-2 {
+    color: @color-text-tertiary;
+    font-size: 18px;
+  }
+}
+
+@-webkit-keyframes arrow_animate {
+  from {
+    transform: rotate(-45deg);
+  }
+  to {
+    transform: rotate(45deg);
+  }
+}
+
+@keyframes arrow_animate {
+  from {
+    transform: rotate(-45deg);
+  }
+  to {
+    transform: rotate(45deg);
+  }
+}

@@ -1,0 +1,177 @@
+@import './variables.less';
+
+input:-webkit-autofill,
+input:focus:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 30px @color-background-white inset;
+}
+
+.form-check label {
+  padding-left: 30px;
+  display: inline;
+  cursor: pointer;
+}
+
+.form-check input[type=checkbox] {
+  display: none;
+}
+
+.form-check input[type=checkbox] + span {
+  position: absolute;
+  margin-left: -30px;
+  background: url("../assets/images/checkbox-unchecked.png") no-repeat;
+  height: 18px;
+  width: 18px;
+  display: inline-block;
+  padding: 0;
+}
+
+.form-check input[type=checkbox]:checked + span {
+  background: url("../assets/images/checkbox-checked.png") no-repeat;
+}
+
+.form-submited .form-control.ng-invalid {
+  border: 1px solid @color-warning;
+}
+
+.form-submited .ng-invalid + .checkbox-view {
+  box-shadow: 0px 0px 2px 0px @color-warning;
+}
+
+.alert-danger {
+  position: relative;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 14px;
+  background-color: transparent;
+  color: @color-warning;
+  text-transform: uppercase;
+  text-align: right;
+  width: 100%;
+  display: inline-block;
+  padding-right: 20px;
+  margin-top: 5px;
+}
+
+.alert-danger:after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  content: '';
+  display: inline-block;
+  background-image: url('../assets/images/icons/suppliers/warning-small-icon.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 14px;
+  width: 14px;
+  height: 14px;
+}
+
+.dnm-invalid-inp {
+  position: relative;
+}
+
+.dnm-invalid-inp input:not(:active):not(:focus),
+.dnm-invalid-inp .number-input-wrp input:not(:active):not(:focus),
+.dnm-invalid-inp .datepicker-wrp input:not(:active):not(:focus),
+.dnm-invalid-inp .number-input-wrp input:not(:active):not(:focus) ~ .input-suffix-lbl,
+.dnm-invalid-inp .number-input-wrp input:not(:active):not(:focus) ~ .input-btns-wrp,
+.dnm-invalid-inp textarea:not(:active):not(:focus),
+.dnm-invalid-inp textarea.form-control:not(:active):not(:focus),
+.dnm-invalid-inp select.form-control:not(:active):not(:focus),
+.dnm-invalid-inp .ng-select-container,
+.dnm-invalid-inp .select-dropdown.ng-select .ng-select-container,
+.dnm-invalid-inp.fullwidth-dropdown .dropdown-toggle,
+.range-inpt .dnm-invalid-inp .input-group-append button.dnm-btn {
+  border-color: @color-warning;
+}
+
+.dnm-invalid-inp .number-input-wrp input:not(:active):not(:focus) ~ .input-suffix-lbl {
+  border-left: none;
+  border-right: none;
+}
+
+.dnm-invalid-inp .number-input-wrp input:not(:active):not(:focus) ~ .input-btns-wrp {
+  border-left-color: @color-stroke;
+}
+
+.dnm-invalid-inp .dnm-multiple-select.ng-select-opened .ng-select-container {
+  border-color: @color-stroke;
+}
+
+.dnm-invalid-inp input.numb-form-control {
+  border-right: 1px solid @color-stroke !important;
+}
+
+.range-inpt .dnm-invalid-inp .input-group-append button.dnm-btn {
+  border-left: 1px solid @color-stroke;
+}
+
+.terms-conditions-text {
+  margin-top: 12px;
+}
+
+/* #region custom form styles */
+
+.input-row {
+  margin-bottom: 15px;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+
+  .field-name {
+    font-family: @fontFamilyMedium;
+    color: @color-text-tertiary;
+    font-size: 14px;
+    width: 250px;
+    padding-right: 15px;
+  }
+
+  .field-value {
+    width: calc(100% - 250px);
+    padding-left: 15px;
+  }
+
+  .field-value-in-list {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+
+    .field-value-case {
+      flex: 1;
+      display: flex;
+    }
+  }
+
+  .field-pass {
+    position: relative;
+    min-width: 275px;
+    max-width: 575px;
+  }
+}
+
+/* #endregion */
+
+/* #region styles for reading input field */
+
+input[type=number].form-number-input {
+  font-size: 13px;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-right: 5px;
+  -moz-appearance: textfield;
+}
+
+input[type=number].form-number-input:focus {
+  padding-left: 7px;
+  padding-right: 7px;
+}
+
+input[type=number].form-number-input::-webkit-inner-spin-button,
+input[type=number].form-number-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+/* #endregion */

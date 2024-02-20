@@ -1,0 +1,66 @@
+<div class="note-popup note-anchor-{{anchorSide}}">
+  <div class="note-popup-header">
+    <div class="d-flex align-items-center justify-content-between">
+      <span class="popup-header-title">Added by</span>
+      <button (click)="onClose($event)" *ngIf="!hideCloseButton" class="dnm-icon delete-icon" type="button"></button>
+    </div>
+    <div class="d-flex align-items-center note-user-dtls">
+      <img class="note-user-img"
+           src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/4QEKRXhpZgAATU0AKgAAAAgACwEAAAMAAAABE4gAAAEBAAMAAAABE4gAAAECAAMAAAADAAAAkgEGAAMAAAABAAIAAAEVAAMAAAABAAMAAAEaAAUAAAABAAAAmAEbAAUAAAABAAAAoAEoAAMAAAABAAIAAAExAAIAAAAOAAAAqAEyAAIAAAAUAAAAtodpAAQAAAABAAAAygAAAAAACAAIAAgAAABIAAAAAQAAAEgAAAABcGFpbnQubmV0IDQuMgAyMDE0OjAzOjA2IDEyOjI0OjA5AAAEkAAABwAAAAQwMjIxoAEAAwAAAAH//wAAoAIABAAAAAEAABOIoAMABAAAAAEAABOIAAAAAAAA/9sAQwACAQEBAQECAQEBAgICAgIEAwICAgIFBAQDBAYFBgYGBQYGBgcJCAYHCQcGBggLCAkKCgoKCgYICwwLCgwJCgoK/9sAQwECAgICAgIFAwMFCgcGBwoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoK/8AAEQgAJAAkAwEhAAIRAQMRAf/EAB8AAAEFAQEBAQEBAAAAAAAAAAABAgMEBQYHCAkKC//EALUQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX29/j5+v/EAB8BAAMBAQEBAQEBAQEAAAAAAAABAgMEBQYHCAkKC//EALURAAIBAgQEAwQHBQQEAAECdwABAgMRBAUhMQYSQVEHYXETIjKBCBRCkaGxwQkjM1LwFWJy0QoWJDThJfEXGBkaJicoKSo1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoKDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uLj5OXm5+jp6vLz9PX29/j5+v/aAAwDAQACEQMRAD8A/fyigCGy1PTtSEh07UIbjyZDHL5MobY46qcHgj061NQAUUAFfnv/AMHJ/wAdPjh8E/2BLOH4N6zqGkweKPGVvo/ijV9MkaOaKxa2uJfJ3rho1lkiRWYEZXKHiQggH45/8Ef/AI7fHH4K/wDBQn4Xw/BbWtQU+JvGenaN4g0e2lbydS0+4uFjnSZB8rBI2eQMwPlsgfjbmv6lKACigAr+cH/go1/wV6/a0+IP7YnxM8FSeMbXUfhrp/ii+0K2+G+t6ZFc6Pe2NrcNCpnhIDGRzF53mq6yxuwMbpsQqAeFeH/29NT+D9w+vfsmfALwb8JvEU8bRz+LvDs2o3+qRRsMPFazand3P2NGBILQqspUlTKVJU/uR/wb8ftu/F79tT9jHUr/AOPPiSXW/FHg7xZNpE2t3CKJr61MEM8MkpUANIvmPGTjJWNSSWJJAPuuigAr8kf2pv8Ag1ys/jN8fvFXxe+Fv7WS+H9M8Ua3c6q2h6t4Ta7kspp5WlkjWZLlN8Ydm25QMFwCWI3EA8//AOISjx3/ANHwaT/4Qcv/AMmV+i3/AAS0/wCCbfhX/gmX8A774R6R8Q7nxVqmua22q65rk1iLWOSUxJEscUId9kaog6uzMzMSQCFUA+mKKACigAooAKKAP//Z"/>
+      <div class="d-flex flex-column">
+        <span class="note-user-name">{{newUser}}</span>
+        <span *ngIf="!isEditState" class="user-note-date">{{noteDate | dateReadingDetails:true}}</span>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!editableNote">
+    <div class="note-popup-content">
+      <span *ngIf="reasonId && reasonId.length"
+            class="content-txt d-block font-weight-bold">Reason: {{(reasons | searchReason:reasonId)?.name}}</span>
+      <span *ngIf="newComment.length" class="content-txt">Comment: {{newComment}}</span>
+    </div>
+    <div *ngIf="attachFile" class="note-popup-content attach-file-container">
+      <div *ngIf="fileUrl &&  !file" class="file-link">
+        <a [href]="fileUrl" class="link" target="_blank">Attached file</a>
+      </div>
+      <div *ngIf="file" class="file-link">
+        <a (click)="onDownloadLocalFile($event)" class="link" href="#" target="_blank">Attached file</a>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="editableNote">
+    <div class="note-popup-content">
+      <span *ngIf="reasonId && reasonId.length"
+            class="content-txt d-block font-weight-bold">Reason: {{(reasons | searchReason:reasonId)?.name}}</span>
+
+      <span *ngIf="!isEditState && newComment.length" class="content-txt">Comment: {{newComment}}</span>
+
+      <textarea *ngIf="isEditState" [(ngModel)]="newComment" class="form-control" maxlength={{maxTextLength}}
+                placeholder="Type here" style="resize:none"></textarea>
+    </div>
+    <div *ngIf="attachFile" class="note-popup-content attach-file-container">
+      <div *ngIf="!isEditState" class="file-link">
+        <a *ngIf="fileUrl && !file" [href]="fileUrl" class="link" target="_blank">Attached file</a>
+        <a (click)="onDownloadLocalFile($event)" *ngIf="file" class="link" href="#" target="_blank">Attached file</a>
+      </div>
+      <div *ngIf="isEditState" class="d-flex align-items-center justify-content-between">
+        <div class="file-details">
+          <span *ngIf="file" class="file-name">{{file && file.name}}</span>
+          <span *ngIf="!file" class="file-name">Select file...</span>
+        </div>
+        <input (change)="onFileSelected($event)" [(ngModel)]="uploadedFile" [title]="file ? file.name : 'No file chosen'" class="input-file"
+               name="comment_file[]" type="file">
+        <button (click)="onDeleteFile()" *ngIf="file" class="dnm-icon delete-icon" type="button"></button>
+      </div>
+    </div>
+    <div *ngIf="isEditState" class="note-popup-btn-block">
+      <button (click)="onEdit($event)" class="w-50" type="button">Save<i class="dnm-icon delete-icon"></i></button>
+      <div class="separate-line"></div>
+      <button (click)="onCancel($event)" class="w-50" type="button">Cancel<i class="dnm-icon edit-icon"></i></button>
+    </div>
+    <div *ngIf="!isEditState" class="note-popup-btn-block">
+      <button (click)="onEditNote($event)" class="w-100" type="button">Edit<i class="dnm-icon edit-icon"></i></button>
+    </div>
+  </div>
+</div>
+<!-- user popup -->

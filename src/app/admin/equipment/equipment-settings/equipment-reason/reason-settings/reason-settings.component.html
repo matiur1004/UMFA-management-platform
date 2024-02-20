@@ -1,0 +1,45 @@
+<div class="edit-reasons">
+  <div class="modal-header">
+    <h5 class="modal-title">
+      <span *ngIf="isNew">Create Reason</span>
+      <span *ngIf="!isNew  && !model.isSystem">Edit reason</span>
+      <span *ngIf="model && model.isSystem">Reason details</span>
+    </h5>
+    <button (click)="dismiss()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container-fluid none-padding">
+      <form [formGroup]="form">
+        <div class="input-row none-margin-hr">
+          <div class="text-uppercase field-name">Reason Name</div>
+          <div class="field-value none-padding">
+            <div
+              [ngClass]="{'dnm-invalid-inp': form.controls.reason.invalid && (form.controls.reason.dirty || form.controls.reason.touched)}">
+              <input [disabled]="model && model.isSystem" class="form-control req-frm-fld"
+                     formControlName="reason"
+                     placeholder="Type here"
+                     required/>
+            </div>
+            <small *ngIf="form.controls.reason.invalid && (form.controls.reason.dirty || form.controls.reason.touched)"
+                   class="alert-danger">
+              Reason name is required
+            </small>
+          </div>
+        </div>
+        <div class="footer-buttons">
+          <button (click)="dismiss()" *ngIf="!model  || model && !model.isSystem"
+                  class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel
+          </button>
+          <button (click)="save()" *ngIf="!model  || model && !model.isSystem"
+                  class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save
+          </button>
+          <button (click)="dismiss()" *ngIf="model && model.isSystem" class="dnm-btn dnm-btn-primary text-uppercase"
+                  type="button">Close
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

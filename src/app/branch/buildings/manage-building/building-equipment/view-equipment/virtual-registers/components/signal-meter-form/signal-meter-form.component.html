@@ -1,0 +1,123 @@
+<div class="input-row">
+  <div class="text-uppercase field-name">Name</div>
+  <div *ngIf="form.controls.name as name" class="field-value">
+    <div [ngClass]="{'dnm-invalid-inp': (name.touched || showAllErrors) && name.invalid}">
+      <input [formControl]="name" class="form-control" maxlength="256" placeholder="Type here" required type="text"/>
+    </div>
+    <small *ngIf="name.invalid && (name.touched || showAllErrors) && name.errors.required"
+           class="alert-danger">
+      Name is required
+    </small>
+  </div>
+</div>
+
+<div class="input-row row-description">
+  <div class="text-uppercase field-name">Description</div>
+  <div *ngIf="form.controls.description as description" class="field-value">
+              <textarea [formControl]="description" class="form-control" maxlength="256"
+                        placeholder="Type here"></textarea>
+  </div>
+</div>
+
+<ng-container [formGroup]="signalMeterConfig">
+  <div class="input-row">
+    <div class="text-uppercase field-name">Signal Meter</div>
+    <div *ngIf="signalMeterConfig.controls.signalMeterId as signalMeter" class="field-value">
+      <ng-select
+        (change)="onChangeMeter($event)"
+        [clearable]="false" [dropdownPosition]="'top'"
+        [items]="equipments"
+        [ngClass]="{'dnm-invalid-inp': (signalMeter.touched || showAllErrors) && signalMeter.invalid}"
+        bindLabel="name"
+        bindValue="id"
+        class="select-dropdown w-100"
+        formControlName="signalMeterId"
+        required>
+      </ng-select>
+      <small
+        *ngIf="signalMeter.invalid && (signalMeter.touched || showAllErrors) && signalMeter.errors.required"
+        class="alert-danger">
+        Signal meter is required
+      </small>
+    </div>
+  </div>
+
+  <div class="input-row">
+    <div class="text-uppercase field-name">Signal Meter Register</div>
+    <div *ngIf="signalMeterConfig.controls.signalRegisterId as signalMeterRegister"
+         class="field-value">
+      <ng-select
+        [clearable]="false"
+        [dropdownPosition]="'top'" [hideSelected]="true"
+        [items]="registers"
+        [ngClass]="{'dnm-invalid-inp': (signalMeterRegister.touched || showAllErrors) && signalMeterRegister.invalid}"
+        [searchable]="false"
+        bindLabel="name"
+        bindValue="id"
+        class="select-dropdown w-100"
+        formControlName="signalRegisterId"
+        required>
+      </ng-select>
+      <small
+        *ngIf="signalMeterRegister.invalid && (signalMeterRegister.touched || showAllErrors) && signalMeterRegister.errors.required"
+        class="alert-danger">
+        Signal Meter Register is required
+      </small>
+    </div>
+  </div>
+
+  <div class="input-row">
+    <div class="text-uppercase field-name">Trigger Value</div>
+    <div *ngIf="signalMeterConfig.controls.triggerValue as triggerValue"
+         class="field-value">
+      <input class="form-control" formControlName="triggerValue" placeholder="Type here" type="number">
+      <small
+        *ngIf="triggerValue.invalid && (triggerValue.touched || showAllErrors) && triggerValue.errors.required"
+        class="alert-danger">
+        Trigger value is required
+      </small>
+    </div>
+  </div>
+
+  <div class="input-row">
+    <div class="text-uppercase field-name">Name Alternate</div>
+    <div *ngIf="signalMeterConfig.controls.nameOn as nameCtrl" class="field-value">
+      <div [ngClass]="{'dnm-invalid-inp': (nameCtrl.touched || showAllErrors) && nameCtrl.invalid}">
+        <input class="form-control" formControlName="nameOn" maxlength="256" placeholder="Type here" required
+               type="text"/>
+      </div>
+      <small *ngIf="nameCtrl.invalid && (nameCtrl.touched || showAllErrors) && nameCtrl.errors.required"
+             class="alert-danger">
+        Name is required
+      </small>
+    </div>
+  </div>
+  <div class="input-row row-description">
+    <div class="text-uppercase field-name">Description Alternate</div>
+    <div *ngIf="signalMeterConfig.controls.descriptionOn as description" class="field-value">
+              <textarea class="form-control" formControlName="descriptionOn" maxlength="256"
+                        placeholder="Type here"></textarea>
+    </div>
+  </div>
+  <div class="input-row">
+    <div class="text-uppercase field-name">Name Normal</div>
+    <div *ngIf="signalMeterConfig.controls.nameOff as nameCtrl" class="field-value">
+      <div [ngClass]="{'dnm-invalid-inp': (nameCtrl.touched || showAllErrors) && nameCtrl.invalid}">
+        <input class="form-control" formControlName="nameOff" maxlength="256" placeholder="Type here" required
+               type="text"/>
+      </div>
+      <small *ngIf="nameCtrl.invalid && (nameCtrl.touched || showAllErrors) && nameCtrl.errors.required"
+             class="alert-danger">
+        Name is required
+      </small>
+    </div>
+  </div>
+  <div class="input-row row-description">
+    <div class="text-uppercase field-name">Description Normal</div>
+    <div *ngIf="signalMeterConfig.controls.descriptionOff as description" class="field-value">
+              <textarea class="form-control" formControlName="descriptionOff" maxlength="256"
+                        placeholder="Type here"></textarea>
+    </div>
+  </div>
+</ng-container>
+

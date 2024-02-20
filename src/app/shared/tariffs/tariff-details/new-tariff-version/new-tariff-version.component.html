@@ -1,0 +1,24 @@
+<div class="new-tariff-version-wrp">
+  <div class="modal-header">
+    <div class="container-fluid text-center">
+      <i class="icon-relative tariff-version-icon"></i>
+    </div>
+    <button (click)="dismiss()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container-fluid text-center">
+      <div class="popup-title">
+        Are you sure you want to create <br/> a new tariff {{this.isSubVersion ? 'sub-' : ''}}version?
+      </div>
+      <div class="d-flex justify-content-center">
+        <span class="date-text-lbl">{{version}}-{{versionDate | date:'dd/MM/yyyy'}}</span>
+      </div>
+      <div class="button-container">
+        <button (click)="dismiss()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+        <button (click)="create()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Create</button>
+      </div>
+    </div>
+  </div>
+</div>

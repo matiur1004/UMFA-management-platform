@@ -1,0 +1,138 @@
+<div class="edit-charge-value">
+  <div class="container-fluid title-container">
+    <div class="row">
+      <div class="col-12 none-padding d-flex justify-content-between align-items-center">
+        <h1 class="page-title">Edit Charge Value</h1>
+        <back-button></back-button>
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="formState$ | async as formState">
+    <form [ngrxFormState]="formState">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-6 none-padding">
+            <div class="bl-gradient-title section-title">General Info</div>
+            <div class="input-row line-div">
+              <div class="text-uppercase field-name text-form-field">Value Name</div>
+              <div class="field-value">
+                <text-input [ngrxFormControlState]="formState.controls.editValue.controls.name"
+                            class="none-padding field-value"
+                            maxlength="150"
+                            placeholder="Value name"></text-input>
+                <small *ngIf="formState.isSubmitted && formState.errors._editValue?._name?.required"
+                       class="alert-danger">
+                  A value name is required
+                </small>
+              </div>
+            </div>
+            <div class="input-row line-div">
+              <div class="text-uppercase field-name text-form-field">Increase, %</div>
+              <div class="field-value">
+                <text-input [disabled]="true"
+                            [ngrxFormControlState]="formState.controls.editValue.controls.increase"
+                            class="none-padding field-value"
+                            input-class="disable-input"
+                            maxlength="150"
+                            placeholder="Increase, %"></text-input>
+              </div>
+            </div>
+            <div class="input-row line-div">
+              <div class="text-uppercase field-name text-form-field">Start date</div>
+              <div class="field-value datepicker-wrp">
+                <input #startDate="ngbDatepicker"
+                       (click)="startDate.toggle()"
+                       [ngrxFormControlState]="formState.controls.editValue.controls.startDate"
+                       [ngrxValueConverter]="ngbDateNgrxValueConverter"
+                       class="custom-input"
+                       name="startDate"
+                       ngbDatepicker
+                       placeholder="dd/mm/YYYY">
+                <small *ngIf="formState.isSubmitted && formState.controls.editValue.controls.startDate.errors.required"
+                       class="alert-danger">
+                  Start Date is required
+                </small>
+              </div>
+            </div>
+            <div class="input-row line-div">
+              <div class="text-uppercase field-name text-form-field">End date</div>
+              <div class="field-value datepicker-wrp">
+                <input #endDate="ngbDatepicker"
+                       (click)="endDate.toggle()"
+                       [ngrxFormControlState]="formState.controls.editValue.controls.endDate"
+                       [ngrxValueConverter]="ngbDateNgrxValueConverter"
+                       class="custom-input"
+                       name="endDate"
+                       ngbDatepicker
+                       placeholder="dd/mm/YYYY">
+                <small *ngIf="formState.isSubmitted && formState.controls.editValue.controls.endDate.errors.required"
+                       class="alert-danger">
+                  End Date is required
+                </small>
+                <small
+                  *ngIf="formState.isSubmitted && !formState.controls.editValue.controls.endDate.errors.required && formState.controls.editValue.controls.endDate.errors.greaterThan"
+                  class="alert-danger">
+                  End Date must be greater than Start Date
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container-fluid charge-section">
+        <div class="row">
+          <div class="col-12 none-padding">
+            <div class="bl-gradient-title section-title">Line item values</div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngFor="let lineItem of formState.controls.editValue.controls.lineItemValues.controls; trackBy: trackByFn"
+           class="container-fluid charge-section">
+        <div class="row">
+          <div class="col-6 none-padding">
+            <div class="input-row line-div">
+              <div class="text-uppercase field-name text-form-field">{{ lineItem.value.lineItemName }}</div>
+              <div class="field-value">
+                <text-input [ngrxFormControlState]="lineItem.controls.value"
+                            class="none-padding field-value"
+                            maxlength="150"
+                            placeholder="Type Here"></text-input>
+
+                <small *ngIf="lineItem.isSubmitted && lineItem.errors._value?.required" class="alert-danger">
+                  A value is required
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <charge-values-versions-list (addNewVersion)="onAddValueVersion(formState.value.editValue.additionalChargeId)"
+                                   (changeOrderIndex)="onChangeValueVersionOrder($event)"
+                                   (editVersion)="onEditValueVersion($event)"
+                                   [btnName]="'Add new value'"
+                                   [chargeVersions]="valuesVersions$ | async"
+                                   [orderIndex]="valuesVersionOrder$ | async"
+                                   [title]="'Value versions'">
+      </charge-values-versions-list>
+
+      <div class="client-contact-info-footer">
+        <div class="row">
+          <div class="col-12 footer-buttons d-flex justify-content-end">
+            <button (click)="onCancel(formState.value.editValue.additionalChargeId)" class="dnm-btn dnm-btn-cancel btn-lg text-uppercase"
+                    type="button">Cancel
+            </button>
+            <button (click)="onSave(formState.isValid, formState.value.editValue.additionalChargeId, formState.value.editValue.id, formState.value.editValue)"
+                    class="dnm-btn dnm-btn-primary btn-lg text-uppercase"
+                    type="submit">
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+</div>

@@ -1,0 +1,123 @@
+@import 'variables.less';
+
+.dnm-checkbox {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.dnm-checkbox * {
+  box-sizing: border-box;
+}
+
+.dnm-checkbox input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  min-width: 1em;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  opacity: 0;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.dnm-checkbox .state label {
+  position: initial;
+  display: inline-block;
+  font-weight: 400;
+  margin: 0;
+  text-indent: 1.5em;
+  min-width: calc(1em + 2px);
+}
+
+.dnm-checkbox .state label:before,
+.dnm-checkbox .state label:after {
+  content: '';
+  width: calc(1em + 2px);
+  height: calc(1em + 2px);
+  display: block;
+  box-sizing: border-box;
+  border-radius: 3px;
+  border: 1px solid transparent;
+  z-index: 0;
+  position: absolute;
+  left: 0;
+  top: calc(50% - 1em / 2);
+  background-color: @color-background-primary;
+  font-size: 1em;
+}
+
+.dnm-checkbox .state label:before {
+  border-color: #d6dae7;
+}
+
+.dnm-checkbox .state label:after {
+  -webkit-transform: scale(.9);
+  -ms-transform: scale(.9);
+  transform: scale(.9);
+}
+
+.dnm-checkbox input:checked ~ .state label:after {
+  content: '\2714';
+  background-color: @color-background-primary;
+  text-indent: initial;
+  text-align: center;
+  color: #e7eaf2;
+  font-size: 1em;
+}
+
+.dnm-checkbox input ~ .state.indeterm-state label:after {
+  content: '';
+  background-color: #324486;
+  -webkit-transform: scale(.55);
+  -ms-transform: scale(.55);
+  transform: scale(.55);
+}
+
+.dnm-checkbox input:checked ~ .state label:after,
+.dnm-checkbox.p-toggle .state label:after {
+  background-color: #324486 !important;
+}
+
+.checkbox-input.dropdown-checkbox-input {
+  width: 50px;
+  margin-left: 20px;
+  margin-right: 20px;
+  padding: 10px;
+
+  &:hover {
+    background-color: rgba(187, 200, 218, 0.75);
+    border: 1px solid rgba(50, 68, 134, 0.2);
+    padding: 9px;
+    cursor: pointer;
+  }
+
+  &:hover.dropdown-toggle::after {
+    display: block;
+  }
+
+  .list-header-checkbox {
+    margin-right: 5px;
+    line-height: 18px;
+
+    label:before,
+    label:after {
+      top: 0;
+    }
+  }
+}
+
+.checkbox-menu {
+  min-width: 250px;
+
+  .checkbox-menu-header {
+    padding: 20px;
+    font-size: 13px;
+    color: @color-background-primary;
+    background-color: @color-background-dark;
+  }
+}

@@ -1,0 +1,370 @@
+@import 'variables.less';
+
+.billing-readings {
+  margin-bottom: 60px;
+}
+
+.billing-readings .blng-prd-filter {
+  margin-bottom: 30px;
+}
+
+.billing-readings .filter-drpdwn-lbl {
+  font-family: @fontFamilyMedium;
+  font-size: 15px;
+  line-height: 15px;
+  color: @color-text-tertiary;
+  margin-right: 20px;
+}
+
+.billing-readings .bld-per-drpdwn-btn {
+  width: 380px;
+  min-width: 380px;
+}
+
+.billing-readings .imprt-exprt-btn {
+  position: relative;
+  background-color: @color-background-button;
+  color: @color-main-accent;
+  padding: 0 50px 0 20px;
+  font-size: 14px;
+  border-radius: 25px;
+  line-height: 14px;
+  height: 38px;
+  margin-right: 20px;
+
+  &:hover {
+    background-color: @color-background-tertiary;
+  }
+}
+
+.billing-readings label.imprt-exprt-btn {
+  margin-bottom: 0;
+}
+
+.billing-readings .imprt-exprt-icon {
+  background-position: center;
+  background-repeat: no-repeat;
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  background-size: 17px;
+  display: inline-block;
+  width: 17px;
+  height: 17px;
+}
+
+.billing-readings .search-row {
+  margin-bottom: 30px;
+}
+
+.billing-readings .main-search-input {
+  margin-right: 30px;
+}
+
+.billing-readings .group-search-input {
+  background-color: @color-background-white;
+}
+
+:host .dnm-btn-filter, ::ng-deep .dnm-btn-filter {
+  position: relative;
+  background-color: @color-background-white;
+  color: @color-text-tertiary;
+  padding: 0 40px 0 20px;
+  font-size: 14px;
+  border-radius: 25px;
+  line-height: 14px;
+  border: 2px solid @color-main-accent;
+  height: 38px;
+}
+
+:host .billing-readings .dnm-btn-filter.active-btn, ::ng-deep .billing-readings .dnm-btn-filter.active-btn {
+  background-color: @color-main-accent;
+  color: @color-background-white;
+}
+
+.billing-readings .upload-file-input {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.billing-readings .upload-file-input + label {
+  cursor: pointer;
+}
+
+/* #region billing filter */
+
+.billing-readings .billing-readings-filter {
+  border-top: 1px solid @color-line;
+  border-bottom: 1px solid @color-line;
+  margin-left: -40px;
+  margin-right: -40px;
+  padding: 40px;
+  background-color: @color-background-secondary;
+}
+
+.billing-readings .mr-filter-mrgn-bottom {
+  margin-bottom: 40px;
+}
+
+.billing-readings .first-col {
+  padding-left: 0;
+  padding-right: 40px;
+}
+
+.billing-readings .second-col {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.billing-readings .third-col {
+  padding-left: 40px;
+  padding-right: 0;
+}
+
+.billing-readings .vert-blck-line {
+  border-right: 1px solid @color-line;
+}
+
+.billing-readings .bl-gradient-title {
+  margin-bottom: 20px;
+  line-height: 1;
+}
+
+.billing-readings .filter-blck-wrp {
+  padding-bottom: 20px;
+}
+
+.billing-readings .blng-fltr-mrgn-right {
+  margin-right: -10px;
+}
+
+.billing-readings .filter-item {
+  min-width: 120px;
+  width: calc((100% / 3) - 10px);
+  height: 30px;
+  border: 1px solid @color-line;
+  background-color: @color-background-white;
+  border-radius: 15px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.billing-readings .filter-item.active {
+  border: none;
+  background-color: @color-main-accent;
+  color: @color-background-white;
+}
+
+.billing-readings .filter-item:not(.active):hover {
+  background-color: @color-background-tertiary;
+}
+
+.billing-readings .filter-item-lbl {
+  font-family: @fontFamilyBook;
+  font-size: 12px;
+  line-height: 12px;
+}
+
+.billing-readings .filter-item-lbl {
+  color: @color-text-tertiary;
+}
+
+.billing-readings .active .filter-item-lbl {
+  color: @color-background-white;
+}
+
+.billing-readings .service-icon {
+  background-size: 13px;
+  width: 25px;
+  height: 25px;
+}
+
+.billing-readings .service-icon:before {
+  width: 25px;
+  height: 25px;
+}
+
+.billing-readings .type-lbl {
+  padding-left: 0;
+  font-size: 12px;
+}
+
+.billing-readings .service-icon:before {
+  background: none;
+}
+
+.billing-readings .inpt-hyphen {
+  width: 50px;
+  line-height: 30px;
+  color: @color-text-tertiary;
+  font-family: Gotham Book;
+  font-size: 15px;
+  text-align: center;
+}
+
+::ng-deep .billing-readings .rng-sldr-wrp .ng5-slider {
+  margin-top: 25px;
+  margin-bottom: 7px;
+}
+
+.billing-readings .filter-item-drpdwn-btn,
+.billing-readings .filter-item-drpdwn-menu {
+  width: 100%;
+  min-width: 100%;
+}
+
+.billing-readings .filter-item-drpdwn-btn {
+  margin-bottom: 10px;
+}
+
+.billing-readings .footer-buttons {
+  margin: 15px 0 10px;
+}
+
+.billing-readings .filter-footer-btn {
+  width: 135px;
+}
+
+.billing-readings .dnm-btn-cancel {
+  margin-right: 20px;
+}
+
+.billing-readings .dnm-btn-reset {
+  background-color: transparent;
+  color: @color-text-tertiary;
+  padding: 13px 16px;
+  font-size: 13px;
+  border-radius: 25px;
+  line-height: 14px;
+  margin-right: 15px;
+}
+
+/* #endregion */
+
+.billing-readings .switch-slider-lbl,
+.billing-readings .per-page-lbl {
+  font-family: Gotham Medium;
+  font-size: 15px;
+  line-height: 15px;
+  color: @color-text-tertiary;
+  margin-right: 20px;
+}
+
+.billing-readings .results-lbl {
+  font-size: 16px;
+  line-height: 16px;
+  color: @color-text-tertiary;
+}
+
+.billing-readings .service-switch {
+  height: 25px;
+}
+
+.billing-readings .header-fltr-wrp {
+  margin-right: 40px;
+}
+
+.billing-readings .header-fltr-wrp:last-child {
+  margin-right: 0;
+}
+
+.billing-readings .show-rdng-drpdwn-btn,
+.billing-readings .show-rdng-drpdwn-menu {
+  width: 200px;
+  min-width: 200px;
+}
+
+.billing-readings .per-page-drpdwn-btn,
+.billing-readings .per-page-drpdwn-menu {
+  width: 100px;
+  min-width: 100px;
+}
+
+.filter-details__count {
+  font-family: @fontFamilyLight;
+  font-size: 16px;
+  color: @color-text-tertiary;
+}
+
+.filter-details__items {
+  overflow-y: scroll;
+  max-height: 70px;
+}
+
+.filter-details {
+  border-top: 1px solid #e6e7e8;
+  border-bottom: 1px solid #e6e7e8;
+  margin-left: -40px;
+  margin-right: -40px;
+  padding: 20px 25px;
+  margin-bottom: 30px;
+  background-color: #fafbfd;
+}
+
+.close-filter-item {
+  position: absolute;
+  right: 15px;
+  width: 10px;
+  height: 10px;
+}
+
+.filter-details__count {
+  font-family: @fontFamilyLight;
+  font-size: 16px;
+  color: @color-text-tertiary;
+}
+
+.filter-details__items {
+  overflow-y: auto;
+  max-height: 70px;
+}
+
+.filter-details {
+  border-top: 1px solid #e6e7e8;
+  border-bottom: 1px solid #e6e7e8;
+  margin-left: -40px;
+  margin-right: -40px;
+  padding: 20px 25px;
+  margin-bottom: 30px;
+  background-color: #fafbfd;
+}
+
+.billing-readings .filter-details__items .filter-item--custom {
+  position: relative;
+  min-width: 140px;
+  padding: 0 34px;
+  height: 30px;
+  border: 1px solid #e6e7e8;
+  background-color: #ffffff;
+  border-radius: 15px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.billing-readings .filter-details__items .filter-item--custom.active {
+  border: none;
+  background-color: @color-main-accent;
+  color: @color-background-white;
+}
+
+.billing-readings .filter-details__items .filter-item--custom:not(.active):hover {
+  background-color: @color-background-tertiary;
+}
+
+@media (max-width: 1600px) {
+  .billing-readings .filter-item {
+    width: calc(50% - 10px);
+  }
+}
+
+@media (max-width: 1200px) {
+  .billing-readings .filter-item {
+    width: calc(100%);
+  }
+}

@@ -1,0 +1,93 @@
+@import 'variables.less';
+
+.locations {
+  min-height: calc(100vh - 400px);
+  padding: 0 0 28px;
+}
+
+.locations .nav-row {
+  margin-bottom: 20px;
+}
+
+.locations .results-label {
+  font-size: 16px;
+  color: @color-text-tertiary;
+  margin-right: 20px;
+}
+
+.locations .list-header {
+  padding-left: 15px;
+  padding-right: 20px;
+}
+
+.locations .list-body {
+  border: 1px solid @color-line;
+  background-color: @color-background-white;
+  cursor: pointer;
+  min-height: 72px;
+  max-height: calc(100vh - 510px);
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.locations .body-row {
+  padding: 20px 15px;
+  min-height: 70px;
+  border-bottom: 1px solid @color-line;
+  align-items: center;
+}
+
+.locations .body-row:last-child {
+  border-bottom: none;
+}
+
+.locations .seq-no-lbl {
+  font-family: Gotham Medium;
+  font-size: 16px;
+  line-height: 16px;
+  color: @color-text-primary;
+}
+
+.locations .location-cell-lbl {
+  line-height: 20px;
+  font-family: Gotham Book;
+  font-size: 14px;
+  line-height: 14px;
+  color: @color-text-tertiary;
+}
+
+.locations-footer .dnm-btn-cancel,
+.locations-footer .dnm-btn-primary {
+  width: 200px;
+  min-width: 200px;
+}
+
+.locations-footer .dnm-btn-cancel {
+  margin-right: 30px;
+}
+
+.create-locations {
+  min-height: calc(100vh - 400px);
+  padding-top: 100px;
+  padding-bottom: 50px;
+}
+
+.create-locations .add-location-icon {
+  display: flex;
+  justify-content: center;
+  height: 50px;
+}
+
+.create-locations .create-locations-msg {
+  font: 24px/30px Gotham Light;
+  color: @color-empty;
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+  margin-bottom: 20px;
+}
+
+.create-locations .blue-text-btn {
+  outline: none;
+  font-size: 14px;
+}

@@ -1,0 +1,128 @@
+<div class="manage-liability-container">
+  <ng-container *ngIf="selectedCommonAreaLiablity">
+    <div class="d-flex align-items-center filter-item">
+      <span class="text-uppercase filter-item-lbl">Category:</span>
+      <ng-select [clearable]="false"
+                 [items]="commonAreaLiablities" [ngModel]="selectedCommonAreaLiablity.commonAreaId" [searchable]="false"
+                 bindLabel="commonArea.name"
+                 bindValue="commonArea.id" class="dnm-single-select dnm-dropdown-select" title="{{selectedCommonAreaLiablity.commonArea.name}}">
+        <ng-template let-index="index" let-item="item" ng-option-tmp>
+          <div (click)="onCommonAreaLiabilityChange(index)" class="category-item-wrp">
+            <span class="item-lbl" title="{{item.commonArea.name}}">{{item.commonArea.name}}</span>
+          </div>
+        </ng-template>
+      </ng-select>
+    </div>
+    <div class="dnm-tabset liability-tabset">
+     <ul ngbNav #nav="ngbNav" (navChange)="beforeChange($event)" [activeId]="selectedCommonAreaLiablityServiceType" class="nav-tabs">
+        <li [ngbNavItem]="'0'" *ngIf="selectedCommonAreaLiablity.commonArea.services.isElectricityEnable">
+          <a ngbNavLink>
+            <i class="tab-icon dnm-icon-electricity"></i>
+            <span class="tab-name text-uppercase client-tab-name">Electricity</span>
+          </a>
+          <ng-template ngbNavContent>
+            <liability-tab (defaultSettingsChanged)="defaultSettingsChanged.emit($event)"
+                           (includeNotLiableShopsChanged)="includeNotLiableShopsChanged.emit($event)"
+                           (includeVacantShopSqMChanged)="includeVacantShopSqMChanged.emit($event)"
+                           (ownerLiabilityChanged)="ownerLiabilityChanged.emit($event)"
+                           (updateShopAllocation)="updateShopAllocation.emit($event)"
+                           (updateShopFilter)="updateShopFilter.emit($event)"
+                           (updateShopLiability)="updateShopLiability.emit($event)"
+                           (updateShopTermSearch)="updateShopTermSearch.emit($event)"
+                           (updateSplit)="updateSplit.emit($event)"
+                           [filterBy]="liabilityShopFilterBy"
+                           [model]="selectedCommonAreaLiablityService"
+                           [searchTerm]="liabilityShopSearchTerm"></liability-tab>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="'0'" *ngIf="selectedCommonAreaLiablity.commonArea.services.isWaterEnable" id="1">
+          <a ngbNavLink>
+            <i class="tab-icon dnm-icon-water"></i>
+            <span class="tab-name text-uppercase client-tab-name">Water</span>
+          </a>
+          <ng-template ngbNavContent>
+            <liability-tab (defaultSettingsChanged)="defaultSettingsChanged.emit($event)"
+                           (includeNotLiableShopsChanged)="includeNotLiableShopsChanged.emit($event)"
+                           (includeVacantShopSqMChanged)="includeVacantShopSqMChanged.emit($event)"
+                           (ownerLiabilityChanged)="ownerLiabilityChanged.emit($event)"
+                           (updateShopAllocation)="updateShopAllocation.emit($event)"
+                           (updateShopFilter)="updateShopFilter.emit($event)"
+                           (updateShopLiability)="updateShopLiability.emit($event)"
+                           (updateShopTermSearch)="updateShopTermSearch.emit($event)"
+                           (updateSplit)="updateSplit.emit($event)"
+                           [filterBy]="liabilityShopFilterBy"
+                           [model]="selectedCommonAreaLiablityService"
+                           [searchTerm]="liabilityShopSearchTerm"></liability-tab>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="'0'" *ngIf="selectedCommonAreaLiablity.commonArea.services.isGasEnable" id="2">
+          <a ngbNavLink>
+            <i class="tab-icon dnm-icon-gas"></i>
+            <span class="tab-name text-uppercase client-tab-name">Gas</span>
+          </a>
+          <ng-template ngbNavContent>
+            <liability-tab (defaultSettingsChanged)="defaultSettingsChanged.emit($event)"
+                           (includeNotLiableShopsChanged)="includeNotLiableShopsChanged.emit($event)"
+                           (includeVacantShopSqMChanged)="includeVacantShopSqMChanged.emit($event)"
+                           (ownerLiabilityChanged)="ownerLiabilityChanged.emit($event)"
+                           (updateShopAllocation)="updateShopAllocation.emit($event)"
+                           (updateShopFilter)="updateShopFilter.emit($event)"
+                           (updateShopLiability)="updateShopLiability.emit($event)"
+                           (updateShopTermSearch)="updateShopTermSearch.emit($event)"
+                           (updateSplit)="updateSplit.emit($event)"
+                           [filterBy]="liabilityShopFilterBy"
+                           [model]="selectedCommonAreaLiablityService"
+                           [searchTerm]="liabilityShopSearchTerm"></liability-tab>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="'0'" *ngIf="selectedCommonAreaLiablity.commonArea.services.isSewerageEnable" id="3">
+          <a ngbNavLink>
+            <i class="tab-icon dnm-icon-sewerage"></i>
+            <span class="tab-name text-uppercase client-tab-name">Sewerage</span>
+          </a>
+          <ng-template ngbNavContent>
+            <liability-tab (defaultSettingsChanged)="defaultSettingsChanged.emit($event)"
+                           (includeNotLiableShopsChanged)="includeNotLiableShopsChanged.emit($event)"
+                           (includeVacantShopSqMChanged)="includeVacantShopSqMChanged.emit($event)"
+                           (ownerLiabilityChanged)="ownerLiabilityChanged.emit($event)"
+                           (updateShopAllocation)="updateShopAllocation.emit($event)"
+                           (updateShopFilter)="updateShopFilter.emit($event)"
+                           (updateShopLiability)="updateShopLiability.emit($event)"
+                           (updateShopTermSearch)="updateShopTermSearch.emit($event)"
+                           (updateSplit)="updateSplit.emit($event)"
+                           [filterBy]="liabilityShopFilterBy"
+                           [model]="selectedCommonAreaLiablityService"
+                           [searchTerm]="liabilityShopSearchTerm"></liability-tab>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="'0'" *ngIf="selectedCommonAreaLiablity.commonArea.services.isOtherEnable" id="4">
+          <a ngbNavLink>
+            <i class="tab-icon dnm-icon-other"></i>
+            <span class="tab-name text-uppercase client-tab-name">Other</span>
+          </a>
+          <ng-template ngbNavContent>
+            <liability-tab (defaultSettingsChanged)="defaultSettingsChanged.emit($event)"
+                           (includeNotLiableShopsChanged)="includeNotLiableShopsChanged.emit($event)"
+                           (includeVacantShopSqMChanged)="includeVacantShopSqMChanged.emit($event)"
+                           (ownerLiabilityChanged)="ownerLiabilityChanged.emit($event)"
+                           (updateShopAllocation)="updateShopAllocation.emit($event)"
+                           (updateShopFilter)="updateShopFilter.emit($event)"
+                           (updateShopLiability)="updateShopLiability.emit($event)"
+                           (updateShopTermSearch)="updateShopTermSearch.emit($event)"
+                           (updateSplit)="updateSplit.emit($event)"
+                           [filterBy]="liabilityShopFilterBy"
+                           [model]="selectedCommonAreaLiablityService"
+                           [searchTerm]="liabilityShopSearchTerm"></liability-tab>
+          </ng-template>
+        </li>
+      </ul>
+      <div [ngbNavOutlet]="nav"></div>
+    </div>
+  </ng-container>
+</div>
+<div class="container-fluid none-padding">
+  <div class="manage-liability-footer col-12 text-right footer-buttons">
+    <button (click)="previous.emit()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+    <button (click)="onNext()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Next</button>
+  </div>
+</div>

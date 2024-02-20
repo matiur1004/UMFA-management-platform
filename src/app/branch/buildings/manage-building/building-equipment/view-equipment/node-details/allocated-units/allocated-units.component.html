@@ -1,0 +1,128 @@
+<div class="alloc-units-wrp">
+
+  <div class="row search-row none-margin-hr">
+    <div class="col none-padding">
+      <form class="form-inline main-search-input w-100">
+        <div class="input-group">
+          <input #searchBox (keyup)="search.emit(searchBox.value)" class="form-control group-search-input"
+                 data-search-field placeholder="Search by Unit Name" type="search"/>
+          <div class="input-group-append">
+            <i class="icon-relative search-icon vertical-middle"></i>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="nav-row d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center">
+      <span class="results-label dnm-text-light">{{units.length}} unit(s)</span>
+    </div>
+    <div class="d-flex">
+      <div class="d-flex align-items-center drpdwn-wrp">
+        <span class="text-uppercase drpdwn-fltr-lbl">Show:</span>
+        <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+          <button class="btn btn-secondary fltr-drpdwn-btn dropdown-toggle" ngbDropdownToggle type="button">
+            {{selectedUnitFilterText}}
+          </button>
+          <div class="dropdown-menu fltr-drpdwn-menu" ngbDropdownMenu>
+            <button (click)="updateFilter.emit(unitFilter.AllUnits)" class="dropdown-item"
+                    type="button">{{selectedUnitFilter.ALL_UNITS}}</button>
+            <button (click)="updateFilter.emit(unitFilter.AllShops)" class="dropdown-item"
+                    type="button">{{selectedUnitFilter.ALL_SHOPS}}</button>
+            <button (click)="updateFilter.emit(unitFilter.AllCommonAreas)" class="dropdown-item"
+                    type="button">{{selectedUnitFilter.ALL_COMMON_AREAS}}</button>
+            <button (click)="updateFilter.emit(unitFilter.ConnectedUnits)" class="dropdown-item"
+                    type="button">{{selectedUnitFilter.CONNECTED_UNITS}}</button>
+            <button (click)="updateFilter.emit(unitFilter.NotConnectedUnits)" class="dropdown-item"
+                    type="button">{{selectedUnitFilter.NOT_CONNECTED_UNITS}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row none-margin-hr list-header">
+    <div class="col-3 none-padding">
+      <a (click)="onChangeOrderIndex(orderType.ShopNameAsc)" [ngClass]="{'active': orderIndex == orderType.ShopNameAsc || orderIndex == orderType.ShopNameDesc}"
+         class="header-field d-flex align-items-center"
+         href="javascript:void(0);">
+        <span class="text-ellipsis" title="Unit">Unit</span>
+        <i [ngClass]="{'inactive': orderIndex != orderType.ShopNameAsc && orderIndex != orderType.ShopNameDesc, 'dnm-icon-sort-up': orderIndex == orderType.ShopNameDesc,'dnm-icon-sort-down': orderIndex != orderType.ShopNameDesc }"
+           class="dnm-icon"></i>
+      </a>
+    </div>
+    <div class="col-2 none-padding">
+      <a class="header-field d-flex align-items-center" href="javascript:void(0);">
+        <span class="text-ellipsis" title="Type">Type</span>
+        <i class="dnm-icon"></i>
+      </a>
+    </div>
+    <div class="col-2 none-padding">
+      <a class="header-field d-flex align-items-center" href="javascript:void(0);">
+        <span class="text-ellipsis" title="Area square meters">Area square meters</span>
+        <i class="dnm-icon"></i>
+      </a>
+    </div>
+    <div class="col-3 none-padding">
+      <a (click)="onChangeOrderIndex(orderType.TenantNameAsc)" [ngClass]="{'active': orderIndex == orderType.TenantNameAsc || orderIndex == orderType.TenantNameDesc}"
+         class="header-field d-flex align-items-center"
+         href="javascript:void(0);">
+        <span class="text-ellipsis" title="Tenant name">Tenant name</span>
+        <i [ngClass]="{'inactive': orderIndex != orderType.TenantNameAsc && orderIndex != orderType.TenantNameDesc, 'dnm-icon-sort-up': orderIndex == orderType.TenantNameDesc,'dnm-icon-sort-down': orderIndex != orderType.TenantNameDesc }"
+           class="dnm-icon"></i>
+      </a>
+    </div>
+    <div class="col-1 none-padding">
+      <a (click)="onChangeOrderIndex(orderType.FloorAsc)" [ngClass]="{'active': orderIndex == orderType.FloorAsc || orderIndex == orderType.FloorDesc}"
+         class="header-field d-flex align-items-center"
+         href="javascript:void(0);">
+        <span class="text-ellipsis" title="Floor">Floor</span>
+        <i [ngClass]="{'inactive': orderIndex != orderType.FloorAsc && orderIndex != orderType.FloorDesc, 'dnm-icon-sort-up': orderIndex == orderType.FloorDesc,'dnm-icon-sort-down': orderIndex != orderType.FloorDesc }"
+           class="dnm-icon"></i>
+      </a>
+    </div>
+    <div class="col-1 none-padding">
+      <a class="header-field d-flex align-items-center" href="javascript:void(0);">
+        <span class="text-ellipsis" title="Add">Add</span>
+        <i class="dnm-icon"></i>
+      </a>
+    </div>
+  </div>
+
+  <div class="row none-margin-hr list-body">
+    <div *ngFor="let unit of units" [ngClass]="{'selected' : unit.isSelected}"
+         class="body-row row none-margin-hr w-100">
+      <div class="body-field col-3">
+        <span class="unit-field">{{unit.name}}</span>
+      </div>
+      <div class="body-field col-2">
+        <span>{{unitTypes[unit.unitType]}}</span>
+      </div>
+      <div class="body-field col-2">
+        <span>{{unit.area}}</span>
+      </div>
+      <div class="body-field col-3">
+        <span>{{unit.tenant?.name}}</span>
+      </div>
+      <div class="body-field col-1">
+        <span>{{unit.floor}}</span>
+      </div>
+      <div class="body-field col-1 d-flex align-items-center">
+        <a (click)="toggleUnit.emit(unit.id)" class="blue-text-btn" href="javascript:void(0)">
+          <i [ngClass]="unit.isSelected ? 'check-mark-icon' : 'add-icon'"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="row none-margin-hr">
+    <div class="col-12 none-padding footer-btns d-flex justify-content-end">
+      <button (click)="onCancel()" [routerLink]="['/branch', branchId, 'buildings', buildingId, 'version', versionId, 'equipment', 'nodes']" class="dnm-btn dnm-btn-cancel text-uppercase"
+              type="button">
+        Cancel
+      </button>
+      <button (click)="onSave()" class="dnm-btn dnm-btn-primary text-uppercase" type="button" [disabled]="buildingPeriodIsFinalized">Save</button>
+    </div>
+  </div>
+</div>

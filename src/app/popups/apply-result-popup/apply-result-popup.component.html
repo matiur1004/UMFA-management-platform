@@ -1,0 +1,22 @@
+<div class="modal-body">
+  <div class="container-fluid text-center">
+    <div class="popup-title">Result:</div>
+    <div class="description">
+      <div *ngFor="let version of applyVersions">
+        <div class="container-fluid text-center">
+          <i [ngClass]="{ 'delete-icon': !version.status, 'success-icon': version.status }"
+             class="icon-relative result-icon"></i>
+        </div>
+        <div class="operation-date">
+          {{version.versionDate | dateMediumFormat}}
+        </div>
+        <div class="comment">
+          {{version.comment}}
+        </div>
+      </div>
+    </div>
+    <div class="button-container">
+      <button (click)="onClose()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Ok</button>
+    </div>
+  </div>
+</div>

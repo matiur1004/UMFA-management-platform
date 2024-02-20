@@ -1,0 +1,154 @@
+<div class="popup-search-block">
+  <div *ngIf="model.clients && model.clients.length" class="search-results">
+    <div class="search-res-header">
+      <div class="search-res-header-name">Clients</div>
+      <!-- <div class="search-res-header-show-more">all results  > <i class="fa fa-angle-right"></i></div> -->
+    </div>
+    <div (click)="clientClick(client)" *ngFor="let client of model.clients" class="search-res-item">
+      <div class="res-item-header">
+        {{client.title}}
+      </div>
+      <div class="res-item-body">
+        {{client.description}}
+      </div>
+    </div>
+  </div>
+  <div *ngIf="model.buildings && model.buildings.length" class="search-results">
+    <div class="search-res-header">
+      <div class="search-res-header-name">Buildings</div>
+    </div>
+    <div (click)="buildingClick(building)" *ngFor="let building of model.buildings" class="search-res-item">
+      <div class="res-item-header">
+        {{building.title}}
+      </div>
+      <div class="res-item-body">
+        {{building.description}}
+      </div>
+    </div>
+  </div>
+  <div *ngIf="model.users && model.users.length" class="search-results">
+    <div class="search-res-header">
+      <div class="search-res-header-name">Users</div>
+    </div>
+    <div (click)="userClick(user)" *ngFor="let user of model.users" class="search-res-item">
+      <div class="res-item-header">
+        {{user.title}}
+      </div>
+      <div class="res-item-body">
+        {{user.description}}
+      </div>
+    </div>
+  </div>
+  <div *ngIf="model.equipments && model.equipments.length" class="search-results">
+    <div class="search-res-header">
+      <div class="search-res-header-name">Equipments</div>
+    </div>
+    <div (click)="equipmentClick(equipment)" *ngFor="let equipment of model.equipments" class="search-res-item">
+      <div class="res-item-header">
+        {{equipment.title}}
+      </div>
+      <div class="res-item-body">
+        {{equipment.description}}
+      </div>
+    </div>
+  </div>
+  <div *ngIf="model.suppliers && model.suppliers.length" class="search-results">
+    <div class="search-res-header">
+      <div class="search-res-header-name">Suppliers</div>
+    </div>
+    <div (click)="supplierClick(supplier)" *ngFor="let supplier of model.suppliers" class="search-res-item">
+      <div class="res-item-header">
+        {{supplier.title}}
+      </div>
+      <div class="res-item-body">
+        {{supplier.description}}
+      </div>
+    </div>
+  </div>
+  <div *ngIf="model.portfolios && model.portfolios.length" class="search-results">
+    <div class="search-res-header">
+      <div class="search-res-header-name">Portfolios</div>
+    </div>
+    <div (click)="portfolioClick(portfolio)" *ngFor="let portfolio of model.portfolios" class="search-res-item">
+      <div class="res-item-header">
+        {{portfolio.title}}
+      </div>
+    </div>
+  </div>
+  <div *ngIf="model.bankAccounts && model.bankAccounts.length" class="search-results">
+    <div class="search-res-header">
+      <div class="search-res-header-name">Bank Accounts</div>
+    </div>
+    <div (click)="bankAccountClick(bankAccount)" *ngFor="let bankAccount of model.bankAccounts" class="search-res-item">
+      <div class="res-item-header">
+        {{bankAccount.title}}
+      </div>
+    </div>
+  </div>
+  <div *ngIf="model.contacts && model.contacts.length" class="search-results">
+    <div class="search-res-header">
+      <div class="search-res-header-name">Contacts</div>
+    </div>
+    <div (click)="contactClick(contact)" *ngFor="let contact of model.contacts" class="search-res-item">
+      <div class="res-item-header">
+        {{contact.title}}
+      </div>
+      <div class="res-item-body">
+        {{contact.description}}
+      </div>
+    </div>
+  </div>
+  <div *ngIf="model.tenants && model.tenants.length" class="search-results">
+    <div class="search-res-header">
+      <div class="search-res-header-name">Tenants</div>
+    </div>
+    <div (click)="tenantClick(tenant)" *ngFor="let tenant of model.tenants" class="search-res-item">
+      <div class="res-item-header">
+        {{tenant.title}}
+      </div>
+      <div class="res-item-body">
+        {{tenant.description}}
+      </div>
+    </div>
+  </div>
+  <div *ngIf="model.shops && model.shops.length" class="search-results">
+    <div class="search-res-header">
+      <div class="search-res-header-name">Shops</div>
+    </div>
+    <div (click)="shopClick(shop)" *ngFor="let shop of model.shops" class="search-res-item">
+      <div class="res-item-header">
+        {{shop.title}}
+      </div>
+      <div class="res-item-body">
+        {{shop.description}}
+      </div>
+    </div>
+  </div>
+  <div *ngIf="model.nodes && model.nodes.length" class="search-results">
+    <div class="search-res-header">
+      <div class="search-res-header-name">Nodes</div>
+    </div>
+    <div (click)="nodeClick(node)" *ngFor="let node of model.nodes" class="search-res-item">
+      <div class="res-item-header">
+        {{node.title}}
+      </div>
+      <div class="res-item-body">
+        {{node.description}}
+      </div>
+    </div>
+  </div>
+  <div *ngIf="model.commonAreas && model.commonAreas.length" class="search-results">
+    <div class="search-res-header">
+      <div class="search-res-header-name">Common Areas</div>
+    </div>
+    <div (click)="commonAreaClick(commonArea)" *ngFor="let commonArea of model.commonAreas" class="search-res-item">
+      <div class="res-item-header">
+        {{commonArea.title}}
+      </div>
+      <div class="res-item-body">
+        {{commonArea.description}}
+      </div>
+    </div>
+  </div>
+</div>
+

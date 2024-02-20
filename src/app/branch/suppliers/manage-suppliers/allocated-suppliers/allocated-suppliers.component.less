@@ -1,0 +1,210 @@
+@import 'variables.less';
+
+/* Filter block */
+.filter-block {
+  margin-top: 35px;
+  margin-bottom: 20px;
+}
+
+.filter-block .results-label {
+  margin-right: 20px;
+}
+
+.filter-block .count-label {
+  font-family: Gotham Medium;
+  font-size: 14px;
+  color: @color-text-primary;
+  margin-right: 12px;
+  position: relative;
+  top: 1px;
+}
+
+.fltr-drpdwn-btn {
+  min-width: 200px;
+  text-align: left;
+}
+
+.fltr-drpdwn-menu {
+  min-width: 200px;
+}
+
+/* Supplier item */
+
+.list-header .col-3 a.header-field {
+  padding-left: 15px;
+}
+
+.supplier-item {
+  background-color: @color-background-white;
+  padding: 15px;
+}
+
+.supplier-item.expanded-splr-item {
+  box-shadow: 0 0 13px rgba(0, 0, 0, 0.1);
+}
+
+.supplier-item .supplier-name-lbl {
+  font-family: Gotham Medium;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 20px;
+  color: @color-text-primary;
+}
+
+/* Address */
+.physical-address {
+  font-size: 14px;
+}
+
+.physical-address .physical-address-lbl {
+  color: @color-description;
+}
+
+/* Supply types */
+.service-types {
+  flex-wrap: wrap;
+}
+
+.service-type {
+  margin: 6px 0;
+}
+
+.service-type:not(:last-child) {
+  margin-right: 20px;
+}
+
+.trf-name-lbl {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.expand-btn {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+/* Tree */
+.tree-view li {
+  padding-top: 0;
+}
+
+.tree-view li:not(:last-child) {
+  padding-bottom: 21px;
+}
+
+.tree-view li ul .item-content,
+.tree-view li ul li {
+  padding: 0;
+}
+
+.tree-view li ul li:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.tree-view li ul li.trf-item-val {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.tree-view li ul li.trf-item-val:after,
+.tree-view li ul li.trf-item-val:before {
+  display: none;
+}
+
+.tree-view li::before {
+  height: calc(100% + 53px);
+  top: -53px;
+}
+
+.tree-view li::after {
+  top: 50%;
+  margin-top: -1px;
+}
+
+.tree-view li:last-child::before {
+  height: calc(50% + 53px);
+  top: -53px;
+}
+
+.tree-view .item-content::before {
+  top: 50%;
+  margin-top: -7px;
+}
+
+.sub-tree-view .list-header {
+  padding-left: 70px;
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
+.tree-view ul.trf-item-list {
+  padding-left: 0;
+  -webkit-padding-start: 0;
+  -moz-padding-start: 0;
+}
+
+.trf-general-info {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  margin-right: -1px;
+  border-right: 1px solid @color-line;
+}
+
+.trf-item-list .trf-item-val {
+  list-style-type: disc;
+}
+
+.trf-item-val {
+  font-size: 13px;
+  line-height: 20px;
+  color: @color-text-primary;
+}
+
+.trf-version-val {
+  color: @color-text-primary;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.trf-version {
+  padding: 15px 0;
+  border-left: 1px solid @color-line;
+}
+
+.trf-version:not(:last-child) {
+  border-bottom: 1px solid @color-line;
+}
+
+/* Tooltip */
+.tooltip-content-item {
+  color: @color-empty;
+  position: relative;
+  padding-left: 10px;
+}
+
+.tooltip-content-item:before {
+  content: '';
+  position: absolute;
+  height: 4px;
+  width: 4px;
+  display: block;
+  border-radius: 50%;
+  background-color: @color-empty;
+  top: 50%;
+  margin-top: -2px;
+  left: 0;
+}
+
+.more-item {
+  font-size: 13px;
+  line-height: 13px;
+  margin-top: 5px;
+}
+
+.more-item:hover .icon {
+  background-image: url('../../../../../assets/images/icons/suppliers/info-primary.svg');
+}
+
+
+

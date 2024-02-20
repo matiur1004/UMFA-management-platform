@@ -1,0 +1,285 @@
+@import 'variables.less';
+
+/* without contacts */
+
+.create-new-contact {
+  padding-top: 150px;
+}
+
+.create-new-contact a {
+  outline: none;
+}
+
+.create-new-contact .new-contact-icon {
+  display: flex;
+  justify-content: center;
+  height: 50px;
+  margin-bottom: 20px;
+}
+
+.create-new-contact .create-new-contact-msg {
+  font-family: 'Gotham Light';
+  color: @color-empty;
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.create-new-contact a {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+}
+
+.create-new-contact a .add-icon {
+  margin-right: 10px;
+}
+
+/* contacts table */
+
+.client-contacts-block .bl-gradient-title {
+  margin: 40px 0;
+}
+
+.contacts-table-nav {
+  margin-bottom: 25px;
+}
+
+.contacts-table-nav .blue-text-btn {
+  position: relative;
+  top: -3px;
+}
+
+.contacts-table-nav .blue-text-btn > .add-icon {
+  margin-right: 10px;
+}
+
+.contacts-per-page {
+  display: flex;
+  align-items: center;
+}
+
+.contacts-per-page span {
+  margin-right: 10px;
+  font-family: 'Gotham Medium';
+  font-size: 14px;
+  color: @color-text-tertiary;
+}
+
+.text-label-light {
+  font-family: 'Gotham Light';
+  font-size: 16px;
+}
+
+.total-accounts {
+  margin-right: 13px;
+}
+
+.contacts-table-header-row {
+  padding-bottom: 20px;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.contacts-table-header-row .table-col-header {
+  font-family: 'Gotham Book';
+  font-size: 12px;
+  font-weight: 400;
+  color: @color-description;
+  text-transform: uppercase;
+}
+
+.contacts-table-body-row {
+  display: flex;
+  align-items: center;
+  background: @color-background-white;
+  height: 85px;
+  border-bottom: 1px solid #ecedef;
+  border-left: 1px solid #ecedef;
+  border-right: 1px solid #ecedef;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.contacts-table-body-row:first-child {
+  border-top: 1px solid #ecedef;
+}
+
+.contacts-table-body-row .table-col-cell {
+  font-family: 'Gotham Book';
+  font-size: 14px;
+  color: @color-text-tertiary;
+}
+
+.table-col-cell {
+  display: flex;
+  align-items: center;
+}
+
+.contact-user-img-block .contact-user-img {
+  border-radius: 18px;
+  width: 36px;
+  height: 36px;
+  margin-right: 20px;
+}
+
+.contact-user-img-block .contact-user-no-img {
+  .gradient-header();
+  border-radius: 18px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: @color-main-accent;
+  font-family: 'Gotham Medium';
+  font-size: 14px;
+  line-height: 36px;
+  margin-right: 20px;
+}
+
+.table-col-cell .contact-name {
+  font-family: 'Gotham Medium';
+  font-size: 18px;
+  color: @color-text-secondary;
+}
+
+.table-col-cell .contact-name .contact-name-description {
+  font-family: 'Gotham Light';
+  font-size: 13px;
+  line-height: 16px;
+  color: @color-description;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 32px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* external links */
+
+.user-external-links {
+  width: 100%;
+}
+
+.external-link-dropdown.dropdown-menu {
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
+.bank-accounts-tbl .table-header {
+  font: 12px/14px Gotham Book;
+  border: 0;
+}
+
+.bank-accounts-tbl .table-row {
+  background: @color-background-white;
+  border: 1px solid @color-line;
+}
+
+.bank-accounts-tbl tbody th, .bank-accounts-tbl tbody td {
+  padding: 15px 10px;
+}
+
+.bank-accounts-tbl thead th:first-child,
+.bank-accounts-tbl tbody th:first-child,
+.bank-accounts-tbl tbody td:first-child {
+  padding-left: 30px;
+}
+
+.bank-accounts-tbl tbody th:last-child,
+.bank-accounts-tbl tbody td:last-child {
+  padding-right: 30px;
+}
+
+.accounting-col {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.modal-body {
+  padding: 0;
+}
+
+::ng-deep .footer-buttons .dnm-btn {
+  margin-left: 25px;
+}
+
+.add-icon {
+  margin-right: 9px;
+  position: relative;
+}
+
+::ng-deep .general-info-icon, .super-admin-icon,
+::ng-deep .bank-account-icon {
+  background-repeat: no-repeat;
+}
+
+::ng-deep .edit-bnk-account-mdl-wrp .col-left,
+::ng-deep .edit-bnk-account-mdl-wrp .col-right {
+  position: relative;
+  width: 100%;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+::ng-deep .edit-bnk-account-mdl-wrp .text-form-field {
+  position: relative;
+  top: 5px;
+}
+
+.accounting-img {
+  background-image: url("../../../../../assets/images/icons/accounting.png");
+  background-repeat: no-repeat;
+  width: 40px;
+  height: 40px;
+  margin-right: 20px;
+}
+
+/* #region media styles */
+
+@media (min-width: 768px) {
+  ::ng-deep .edit-bnk-account-mdl-wrp .col-left {
+    -ms-flex: 0 0 267px;
+    flex: 0 0 267px;
+    max-width: 267px;
+  }
+
+  ::ng-deep .edit-bnk-account-mdl-wrp .col-right {
+    -ms-flex: 0 0 480px;
+    flex: 0 0 480px;
+    max-width: 480px;
+  }
+
+  ::ng-deep .client-contacts-block .blue-text-btn {
+    margin-right: 25px;
+  }
+
+  ::ng-deep .edit-bnk-account-mdl-wrp .footer-buttons {
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+
+  ::ng-deep .edit-bnk-account-mdl-wrp .footer-buttons .dnm-btn {
+    width: 200px;
+  }
+
+  ::ng-deep .row-title .bl-gradient-title {
+    position: relative;
+    line-height: 20px;
+    top: 5px;
+  }
+}
+
+/* #endregion */

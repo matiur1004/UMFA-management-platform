@@ -1,0 +1,103 @@
+<div class="container-fluid tariff-versions-list">
+  <div class="row">
+    <div class="col-12 none-padding">
+      <div class="bl-gradient-title section-title">{{ title }}</div>
+      <div class="row none-margin-hr list-header">
+        <div class="col-12">
+          <div class="row none-margin-hr">
+            <div class="col-2">
+              <a (click)="onOrder(orderType.ValuesAsc)" [ngClass]="getActiveOrderClass(orderIndex, orderType.ValuesAsc, orderType.ValuesDesc)"
+                 class="header-field d-flex align-items-center"
+                 href="javascript:void(0);">
+                <span class="text-ellipsis" title="Values">Versions</span>
+                <i [ngClass]="getOrderClasses(orderIndex, orderType.ValuesAsc, orderType.ValuesDesc)"
+                   class="dnm-icon"></i>
+              </a>
+            </div>
+            <div class="col-2">
+              <a (click)="onOrder(orderType.CreatedAsc)" [ngClass]="getActiveOrderClass(orderIndex, orderType.CreatedAsc, orderType.CreatedDesc)"
+                 class="header-field d-flex align-items-center"
+                 href="javascript:void(0);">
+                <span class="text-ellipsis" title="Created">Created</span>
+                <i [ngClass]="getOrderClasses(orderIndex, orderType.CreatedAsc, orderType.CreatedDesc)"
+                   class="dnm-icon"></i>
+              </a>
+            </div>
+            <div class="col-2">
+              <a (click)="onOrder(orderType.CreatedByAsc)" [ngClass]="getActiveOrderClass(orderIndex, orderType.CreatedByAsc, orderType.CreatedByDesc)"
+                 class="header-field d-flex align-items-center"
+                 href="javascript:void(0);">
+                <span class="text-ellipsis" title="Created By">Created By</span>
+                <i [ngClass]="getOrderClasses(orderIndex, orderType.CreatedByAsc, orderType.CreatedByDesc)"
+                   class="dnm-icon"></i>
+              </a>
+            </div>
+            <div class="col-2">
+              <a (click)="onOrder(orderType.UpdatedAsc)" [ngClass]="getActiveOrderClass(orderIndex, orderType.UpdatedAsc, orderType.UpdatedDesc)"
+                 class="header-field d-flex align-items-center"
+                 href="javascript:void(0);">
+                <span class="text-ellipsis" title="Updated">Updated</span>
+                <i [ngClass]="getOrderClasses(orderIndex, orderType.UpdatedAsc, orderType.UpdatedDesc)"
+                   class="dnm-icon"></i>
+              </a>
+            </div>
+            <div class="col-4">
+              <a (click)="onOrder(orderType.UpdatedByAsc)" [ngClass]="getActiveOrderClass(orderIndex, orderType.UpdatedByAsc, orderType.UpdatedByDesc)"
+                 class="header-field d-flex align-items-center"
+                 href="javascript:void(0);">
+                <span class="text-ellipsis" title="Updated By">Updated By</span>
+                <i [ngClass]="getOrderClasses(orderIndex, orderType.UpdatedByAsc, orderType.UpdatedByDesc)"
+                   class="dnm-icon"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="list-body">
+        <div *ngFor="let version of chargeVersions" class="row none-margin-hr body-row d-flex align-items-center">
+          <div class="col-12">
+            <div class="row none-margin-hr">
+              <div class="col-2 d-flex align-items-center">
+                <span
+                  class="values-lbl">{{ version.name }}</span>
+              </div>
+              <div class="col-2 d-flex align-items-center">
+                <span class="list-text-lbl">{{version.createdOn | date: 'dd/MM/yyyy'}}</span>
+              </div>
+              <div class="col-2 d-flex align-items-center">
+                <span class="list-text-lbl">{{version.createdByUser.fullName}}</span>
+              </div>
+              <div class="col-2 d-flex align-items-center">
+                <span class="list-text-lbl">{{version.updatedOn | date: 'dd/MM/yyyy'}}</span>
+              </div>
+              <div class="col-4 d-flex align-items-center justify-content-between">
+                <div>
+                  <span class="list-text-lbl">{{version.updatedByUser.fullName}}</span>
+                </div>
+                <div class="d-flex align-items-center">
+                  <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+                    <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle type="button"></button>
+                    <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                      <button (click)="onEditVersion(version)" class="dropdown-item d-flex justify-content-between"
+                              type="button">
+                        Edit
+                        <i class="dnm-icon edit-icon"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="row button-row">
+        <a (click)="addNewVersion.emit()" class="blue-text-btn" href="javascript:void(0);">
+          <i class="add-icon"></i>{{ btnName }}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

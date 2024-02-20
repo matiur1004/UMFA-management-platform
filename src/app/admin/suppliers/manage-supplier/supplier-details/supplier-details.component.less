@@ -1,0 +1,155 @@
+//@import 'variables.less';
+@import 'required-fields.less';
+
+.splr-dets-wrp .block-row {
+  width: 650px;
+  max-width: 650px;
+}
+
+.splr-dets-wrp .block-row {
+  margin-top: 35px;
+}
+
+.splr-dets-wrp .block-title {
+  margin-bottom: 12px;
+}
+
+.splr-dets-wrp .bl-gradient-title {
+  line-height: 1;
+}
+
+.splr-dets-wrp .line-div {
+  border-bottom: 1px solid #eeeff0;
+}
+
+.splr-dets-wrp .input-row.line-div {
+  padding: 7px 0 7px 20px;
+  margin-bottom: 0;
+}
+
+.splr-dets-wrp .text-form-field {
+  padding-top: 0;
+}
+
+.splr-dets-wrp .supply-types-fld-name {
+  padding-top: 13px;
+}
+
+.splr-dets-wrp .supply-types-wrp {
+  padding: 13px 0 13px 36px;
+}
+
+.splr-dets-wrp .checkbox-wrp {
+  width: 115px;
+  min-width: 115px;
+}
+
+.splr-dets-wrp .supply-types-row {
+  margin-bottom: 15px;
+}
+
+.splr-dets-wrp .checkbox-wrp .dnm-checkbox {
+  margin-right: 13px;
+}
+
+.splr-dets-wrp .checkbox-wrp .checkbox-input-lbl {
+  font-family: Gotham Light;
+  font-size: 14px;
+  line-height: 14px;
+  color: @color-text-tertiary;
+  white-space: nowrap;
+}
+
+.splr-dets-wrp address {
+  margin-bottom: 0;
+}
+
+.splr-dets-wrp .datepicker-wrp .form-control {
+  background: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.splr-dets-wrp .datepicker-wrp .calendar {
+  display: none;
+}
+
+.splr-dets-wrp .datepicker-wrp:hover .form-control {
+  border: 1px solid @color-stroke;
+  background: @color-background-white;
+}
+
+.splr-dets-wrp .datepicker-wrp:hover .calendar {
+  display: block;
+}
+
+/* TODO: add styles when datepicker dropdown menu is shown*/
+
+.splr-dets-wrp .datepicker-wrp ngb-datepicker.dropdown-menu.show input.form-control {
+  border: 2px solid @color-main-accent;
+  box-shadow: none;
+}
+
+.splr-dets-wrp .delete-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 30px;
+  cursor: pointer;
+}
+
+.splr-dets-wrp .dtpickr-fld-name .datepicker-wrp {
+  margin-left: -20px;
+}
+
+.splr-dets-wrp .dtpickr-fld-name .form-control {
+  font-family: Gotham Medium;
+  color: @color-text-tertiary;
+  font-size: 14px;
+}
+
+.splr-dets-wrp .tou-item-wrp:not(:first-child) {
+  padding-top: 24px;
+}
+
+.splr-dets-wrp .blue-text-btn {
+  margin-top: 30px;
+  margin-right: 30px;
+}
+
+.splr-dets-wrp .footer-buttons {
+  margin: 35px 0 50px;
+}
+
+.splr-dets-wrp .dnm-btn-cancel,
+.splr-dets-wrp .dnm-btn-primary {
+  width: 200px;
+}
+
+.splr-dets-wrp .dnm-btn-cancel {
+  margin-right: 25px;
+}
+
+/* #region ng-deep styles */
+
+::ng-deep .splr-dets-wrp upload-image .edit-logo-panel {
+  margin-bottom: 0;
+}
+
+::ng-deep .splr-dets-wrp address input.form-control {
+  background: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+::ng-deep .splr-dets-wrp address input.form-control:hover {
+  border-color: @color-stroke;
+  background: @color-background-white;
+}
+
+::ng-deep .splr-dets-wrp address input.form-control:focus {
+  border: 2px solid @color-main-accent;
+  box-shadow: none;
+}
+
+/* #endregion */

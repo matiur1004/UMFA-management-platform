@@ -1,0 +1,238 @@
+@import 'variables.less';
+
+.costs-wrp .filter-drpdwn-blck {
+  margin-bottom: 40px;
+}
+
+.costs-wrp .filter-drpdwn-lbl {
+  font-family: Gotham Medium;
+  font-size: 15px;
+  line-height: 15px;
+  color: @color-text-tertiary;
+  margin-right: 20px;
+}
+
+.costs-wrp .filter-dropdown {
+  margin-right: 20px;
+}
+
+.costs-wrp .stat-blck {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 30px;
+}
+
+.costs-wrp .blck-item {
+  height: 100px;
+  min-width: 119px;
+  background-color: @color-background-white;
+  border-radius: 8px;
+  margin-right: 25px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  width: calc(100% / 5);
+  max-width: 175px;
+  -webkit-box-shadow: 0 2px 59px 0 rgba(49, 68, 135, 0.08);
+  -moz-box-shadow: 0 2px 59px 0 rgba(49, 68, 135, 0.08);
+  box-shadow: 0 2px 59px 0 rgba(49, 68, 135, 0.08);
+}
+
+.costs-wrp .blck-item .item-val,
+.costs-wrp .blck-item .item-descr {
+  display: block;
+  font-family: Gotham Book;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.costs-wrp .blck-item .item-val {
+  font-size: 25px;
+  line-height: 25px;
+}
+
+.costs-wrp .blck-item .item-descr {
+  font-size: 12px;
+  line-height: 12px;
+  white-space: nowrap;
+}
+
+.costs-wrp .ad-hoc-grad {
+  .gradient-black();
+}
+
+.costs-wrp .total-grad {
+  .gradient-dark-green();
+}
+
+.costs-wrp .water-grad {
+  .gradient-blue();
+}
+
+.costs-wrp .gas-grad {
+  .gradient-yellow();
+}
+
+.costs-wrp .electricity-grad {
+  .gradient-red();
+}
+
+.costs-wrp .sewerage-grad {
+  background: linear-gradient(to right, #997db1, #886ea1, #785f92, #685183, #584374);
+}
+
+.costs-wrp .results-lbl {
+  font-size: 16px;
+  line-height: 16px;
+  color: @color-text-tertiary;
+}
+
+.costs-wrp .tree-view {
+  margin-top: 25px;
+  margin-bottom: 50px;
+}
+
+.costs-wrp .item-content {
+  padding: 25px 35px;
+}
+
+.costs-wrp .item-content.tenant-item,
+.costs-wrp .item-content.tariff-item {
+  width: 100%;
+  padding: 0;
+}
+
+.costs-wrp .shop-tl-info .gd-title-green {
+  display: block;
+}
+
+.costs-wrp .txt-lg,
+.costs-wrp .shop-tl-info .txt-lg {
+  font-family: Gotham Medium;
+  font-size: 20px;
+  color: #18233c;
+  line-height: 22px;
+}
+
+.costs-wrp .txt-md {
+  font-family: Gotham Medium;
+  font-size: 16px;
+}
+
+.costs-wrp .txt-sm,
+.costs-wrp .txt-sm-light {
+  font-family: Gotham Book;
+  font-size: 14px;
+}
+
+.costs-wrp .txt-sm {
+  color: @color-text-tertiary;
+}
+
+.costs-wrp .txt-sm-light {
+  color: @color-description;
+}
+
+.costs-wrp .sub-title {
+  font-family: Gotham Bold;
+  font-size: 13px;
+  color: @color-text-tertiary;
+}
+
+.costs-wrp .price-dt {
+  font-family: Gotham Book;
+  font-size: 13px;
+  color: @color-text-tertiary;
+}
+
+.costs-wrp .price-dt-lt {
+  color: @color-description;
+}
+
+.costs-wrp .rt-border {
+  border-right: 1px solid @color-line;
+}
+
+.costs-wrp .price-icn,
+.costs-wrp .service-type {
+  margin-right: 8px;
+}
+
+.costs-wrp .service-type {
+  margin-bottom: 0;
+}
+
+.costs-wrp .tariff-item {
+  width: 100%;
+  padding-top: 25px;
+}
+
+.costs-wrp .list-header {
+  margin-bottom: -10px;
+}
+
+.costs-wrp .frst-hdr-fld,
+.costs-wrp .frst-item-cell {
+  padding-left: 25px;
+}
+
+.costs-wrp .frst-item-cell {
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+
+.costs-wrp .item-content {
+  padding: 25px 35px;
+}
+
+.costs-wrp .line-item,
+.costs-wrp .price-sctn {
+  border-bottom: 1px solid @color-line;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.costs-wrp .price-sctn:first-child {
+  padding-top: 0;
+}
+
+.costs-wrp .line-item:last-child,
+.costs-wrp .price-sctn:last-child {
+  border-bottom: 0;
+}
+
+.costs-wrp .price-sctn:last-child {
+  padding-bottom: 0;
+}
+
+.costs-wrp .report-mistake-btn {
+  position: relative;
+  background-color: @color-background-white;
+  color: @color-text-tertiary;
+  padding: 0 40px;
+  font-size: 14px;
+  border-radius: 25px;
+  line-height: 14px;
+  border: 2px solid @color-main-accent;
+  height: 38px;
+}
+
+::ng-deep .costs-wrp .tree-view li::after {
+  top: unset;
+  bottom: calc(50% - 15px);
+  height: 2px;
+}
+
+::ng-deep .costs-wrp .tree-view li:first-child::after {
+  border: none;
+}
+
+::ng-deep .costs-wrp .tree-view .item-content::before {
+  top: unset;
+  bottom: calc(50% - 21px);
+}
+
+::ng-deep .costs-wrp .tree-view li:last-child::before {
+  height: calc(50% + 15px);
+}

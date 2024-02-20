@@ -1,0 +1,35 @@
+<div class="modal-body upload-data-body">
+  <div class="container-fluid none-padding">
+    <div class="row content-wrapper">
+      <div class="col">
+        <div class="d-flex justify-content-around">
+          <div class="file-nav-item">
+            <div class="upload-file-icon"></div>
+            <input #fileInput (change)="fileChangeEvent($event)" (click)="fileInput.value = null" class="upload-file-input" id="file-id"
+                   name="file" type="file"/>
+            <label class="dnm-btn dnm-btn-primary text-uppercase" for="file-id">
+              Upload File
+            </label>
+          </div>
+          <div class="file-nav-item">
+            <div class="download-file-icon"></div>
+            <a class="dnm-btn dnm-btn-primary text-uppercase" download
+               href="assets/file-templates/ShopAllocationTemplate.csv">Download Template</a>
+          </div>
+        </div>
+        <div class="upload-results-lbl">
+          <span *ngIf="file" class="d-flex align-items-center justify-content-center">Uploaded file: <i
+            class="uploaded-file-icon"></i> {{file.name}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="row body-footer none-margin-hr">
+      <div class="col-12 text-right footer-buttons none-padding d-flex justify-content-between">
+        <button (click)="dismiss()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Close</button>
+        <button (click)="close()" [disabled]="!file ? true: false" class="dnm-btn dnm-btn-primary text-uppercase"
+                type="button">Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

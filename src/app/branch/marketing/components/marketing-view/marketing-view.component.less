@@ -1,0 +1,133 @@
+@import 'variables.less';
+
+/* #region building */
+
+.filter-item-lbl {
+  font-family: Gotham Medium;
+  font-size: 14px;
+  line-height: 14px;
+  color: @color-text-tertiary;
+  margin-right: 20px;
+}
+
+.building-list-wrp,
+.building-list-header {
+  margin-bottom: 20px;
+}
+
+.building-list-header .header-field {
+  font-size: 12px;
+  white-space: nowrap;
+  color: @color-empty;
+  text-decoration: none;
+}
+
+.building-list-header .header-field .dnm-icon {
+  margin-left: 7px;
+}
+
+.building-list-header .header-field:hover {
+  color: @color-text-tertiary;
+}
+
+.building-list-header .header-field:hover .dnm-icon-sort-down {
+  background-image: url("../../../../../assets/images/icons/arrow_sort_selected-01.svg");
+}
+
+.building-list-header .header-field:hover .dnm-icon-sort-up {
+  background-image: url("../../../../../assets/images/icons/arrow_sort_selected-01.svg");
+}
+
+.building-item {
+  border: 1px solid @color-line;
+  margin-bottom: 10px;
+  background: @color-background-white;
+  position: relative;
+  min-height: 108px;
+  color: @color-text-tertiary;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.building-list-header .col-first,
+.building-item .col-first {
+  padding-left: 30px;
+}
+
+.building-item .bld-logo-wrp {
+  margin-right: 30px;
+}
+
+.building-name {
+  color: @color-text-primary;
+  font-size: 20px;
+}
+
+.building-details {
+  color: @color-description;
+  font-size: 12px;
+}
+
+.building-portfolioname {
+  color: @color-description;
+}
+
+.results-label {
+  font-size: 16px;
+  color: @color-text-tertiary;
+}
+
+.building-category {
+  width: 100%;
+}
+
+.action-buttons > .dnm-icon {
+  margin-right: 10px;
+}
+
+.action-buttons .dnm-icon-location:hover {
+  background-image: url("../../../../../assets/images/icons/show_on_map_hover-01.svg");
+}
+
+.paging-btn {
+  height: 40px;
+  width: 40px;
+  line-height: 40px;
+}
+
+.dnm-icon-location:hover {
+  cursor: pointer;
+}
+
+/* #endregion */
+
+@media (min-width: 768px) {
+
+  .bld-per-page-btn {
+    min-width: 100px;
+  }
+
+  .filter-dropdown.dropdown.small .dropdown-toggle.bld-per-page-btn {
+    padding-left: 20px;
+  }
+
+  .dropdown-toggle.bld-per-page-btn::after {
+    position: absolute;
+    right: 9px;
+    top: 13px;
+  }
+
+  .action-buttons {
+    position: relative;
+    top: 43px;
+  }
+
+  .count-label {
+    font-family: Gotham Medium;
+    font-size: 14px;
+    color: @color-text-tertiary;
+    margin-right: 12px;
+    position: relative;
+    top: 1px;
+  }
+}

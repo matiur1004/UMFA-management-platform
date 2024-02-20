@@ -1,0 +1,179 @@
+<div>
+  <div class="container-fluid">
+    <ng-container *ngIf="!detailedAccount">
+      <ng-container *ngIf="model.bankAccounts.length">
+        <div class="bl-gradient-title">Bank Accounts</div>
+        <table class="table table-premium">
+          <thead>
+          <tr class="table-header text-uppercase">
+            <th class="align-middle" scope="col">Account Name</th>
+            <th scope="col">Bank Name</th>
+            <th scope="col"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let bankAccount of model.bankAccounts; let idx = index; let last = last;">
+            <th scope="row">
+              <div class="accounting-info">
+                <div class="accounting-col">
+                  <div class="accounting-img"></div>
+                </div>
+                <div class="accounting-col">
+                  <div class="account-name">{{bankAccount.accountName}}</div>
+                  <span class="text-secondary">
+                        {{bankAccount.description}}
+                      </span>
+                </div>
+              </div>
+            </th>
+            <td>{{bankAccount.bankName}}</td>
+            <td class="text-right">
+              <a (click)="editBankAccount(idx)" class="dnm-btn btn-modify-account" href="javascript:void(0)">
+                <span class="blue-edit-icon"></span>
+              </a>
+              <a (click)="removeAccount(idx)" class="dnm-btn btn-modify-account" href="javascript:void(0)">
+                <span class="cross-icon"></span>
+              </a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngIf="detailedAccount">
+      <form [formGroup]="form">
+        <div class="row">
+          <div class="col-left text-form-field text-uppercase">
+            Account Name
+          </div>
+          <div class="col-right">
+            <div class="form-group">
+              <div [ngClass]="{'dnm-invalid-inp': formErrors.accountName}">
+                <input class="form-control req-frm-fld" formControlName="accountName" id="account-name" placeholder="Type here"
+                       type="text">
+              </div>
+              <small *ngIf="formErrors.accountName" class="alert-danger">
+                {{ formErrors.accountName }}
+              </small>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-left text-form-field text-uppercase">
+            Bank Name
+          </div>
+          <div class="col-right">
+            <div class="form-group">
+              <div [ngClass]="{'dnm-invalid-inp': formErrors.bankName}">
+                <input class="form-control req-frm-fld" formControlName="bankName" id="bank-name" placeholder="Type here"
+                       type="text">
+              </div>
+              <small *ngIf="formErrors.bankName" class="alert-danger">
+                {{ formErrors.bankName }}
+              </small>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-left text-form-field text-uppercase">
+            Account Type
+          </div>
+          <div class="col-right">
+            <div class="form-group">
+              <div [ngClass]="{'dnm-invalid-inp': formErrors.accountType}">
+                <input class="form-control req-frm-fld" formControlName="accountType" id="account-type" placeholder="Type here"
+                       type="text">
+              </div>
+              <small *ngIf="formErrors.accountType" class="alert-danger">
+                {{ formErrors.accountType }}
+              </small>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-left text-form-field text-uppercase">
+            Account Number
+          </div>
+          <div class="col-right">
+            <div class="form-group">
+              <div [ngClass]="{'dnm-invalid-inp': formErrors.accountNumber}">
+                <input class="form-control req-frm-fld" formControlName="accountNumber" id="account-number" placeholder="Type here"
+                       type="text">
+              </div>
+              <small *ngIf="formErrors.accountNumber" class="alert-danger">
+                {{ formErrors.accountNumber }}
+              </small>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-left text-form-field text-uppercase">
+            Branch Code
+          </div>
+          <div class="col-right">
+            <div class="form-group">
+              <div [ngClass]="{'dnm-invalid-inp': formErrors.branchCode}">
+                <input class="form-control req-frm-fld" formControlName="branchCode" id="branch-code" placeholder="Type here"
+                       type="text">
+              </div>
+              <small *ngIf="formErrors.branchCode" class="alert-danger">
+                {{ formErrors.branchCode }}
+              </small>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-left text-form-field text-uppercase">
+            Swift Code
+          </div>
+          <div class="col-right">
+            <div class="form-group">
+              <input class="form-control" formControlName="swiftCode" id="swift-code" placeholder="Type here" type="text">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-left text-form-field text-uppercase">
+            Description
+            <br/>
+            <span class="undertext">(the purpose of the account)</span>
+          </div>
+          <div class="col-right">
+            <div class="form-group">
+              <div [ngClass]="{'dnm-invalid-inp': formErrors.description}">
+                <textarea class="form-control" formControlName="description" id="account-description"
+                          placeholder="Type here"></textarea>
+              </div>
+              <small *ngIf="formErrors.description" class="alert-danger">
+                {{ formErrors.description }}
+              </small>
+            </div>
+          </div>
+        </div>
+        <div class="row additional-links">
+          <div class="col-12">
+            <a (click)="updateAccount()" class="btn-form-section float-right" href="javascript:void(0);">
+              <i class='icon check-mark-icon'></i>Submit
+            </a>
+            <a (click)="cancelCreateAccount()" class="btn-form-section float-right" href="javascript:void(0);">
+              <i class='icon cross-icon'></i>Cancel
+            </a>
+          </div>
+        </div>
+      </form>
+    </ng-container>
+    <div *ngIf="!detailedAccount" class="row additional-links">
+      <div class="col-12">
+        <a (click)="createAccount()" class="blue-text-btn" href="javascript:void(0);">
+          <i class="add-icon"></i>Add Account
+        </a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 text-right footer-buttons">
+        <button (click)="dismiss()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+        <button (click)="save($event)" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

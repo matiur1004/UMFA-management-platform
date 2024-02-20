@@ -1,0 +1,25 @@
+<div class="node-note-popup">
+  <div class="note-popup-header">
+    <div class="d-flex align-items-center justify-content-between">
+      <span class="popup-header-title">Added by</span>`
+      <i (click)="onClose()" class="dnm-icon delete-icon"></i>
+    </div>
+    <div class="d-flex align-items-center note-user-dtls">
+      <img class="note-user-img"
+           src="https://previews.123rf.com/images/mixov/mixov1403/mixov140300003/26717880-user-man-icon-flat-design.jpg"/>
+      <div class="d-flex flex-column">
+        <span class="note-user-name">Joe Roberts</span>
+        <span class="user-note-date">12 Aug 2018, 05:45 PM</span>
+      </div>
+    </div>
+  </div>
+  <div class="note-popup-content">
+    <span class="content-txt">Test text for category column. Test text for category column. </span>
+  </div>
+  <div *ngIf="editableNote" class="note-popup-btn-block">
+    <button (click)="onEdit()" class="w-50" type="button">Save<i class="dnm-icon delete-icon"></i></button>
+    <div class="separate-line"></div>
+    <button (click)="onClose()" class="w-50" type="button">Cancel<i class="dnm-icon edit-icon"></i></button>
+  </div>
+</div>
+<!-- user popup -->

@@ -1,0 +1,68 @@
+li.tariff-item {
+
+  &::after {
+    top: 105px;
+  }
+
+  &:last-child::before {
+    height: 105px;
+  }
+
+  .service-type {
+    margin-right: 8px;
+  }
+
+  .item-content {
+    padding: 20px 0;
+
+    &::before {
+      top: 98px;
+    }
+  }
+
+  .show-in-center {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .line-item {
+    border-bottom: 1px solid #e6e7e7;
+    padding-top: 15px;
+    padding-bottom: 15px;
+
+    &:first-child {
+      padding-top: 0;
+    }
+
+    &:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .price-sctn {
+      border-bottom: 1px solid #e6e7e7;
+      padding-top: 15px;
+      padding-bottom: 15px;
+
+      &:first-child {
+        padding-top: 0;
+      }
+
+      &:last-child {
+        border-bottom: 0;
+        padding-bottom: 0;
+      }
+    }
+
+    .sub-title.row i {
+      margin-right: 19px;
+    }
+  }
+
+  .col-frst-lv {
+    padding-left: 35px;
+  }
+}

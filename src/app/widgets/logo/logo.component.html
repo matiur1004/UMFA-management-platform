@@ -1,0 +1,4 @@
+<div [ngClass]="classes" class="container-block">
+  <img (error)="onError($event)" *ngIf="!showDefault && url" [src]="url" class="logo-img img-fluid"/>
+  <ng-content *ngIf="showDefault || !url" class="logo-content"></ng-content>
+</div>

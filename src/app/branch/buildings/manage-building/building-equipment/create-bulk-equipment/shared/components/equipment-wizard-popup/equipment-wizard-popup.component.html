@@ -1,0 +1,299 @@
+<div class="add-new-meter">
+  <div class="modal-header">
+    <ng-container [ngSwitch]="step">
+      <ng-container *ngSwitchCase="stepAction.ShopBulk">
+        <h5 class="modal-title">{{bulkShopActionText[bulkAction]}}</h5>
+      </ng-container>
+      <ng-container *ngSwitchCase="stepAction.EquipmentBulk">
+        <h5 class="modal-title">{{bulkStepActionText[bulkAction]}}</h5>
+      </ng-container>
+      <ng-container *ngSwitchCase="stepAction.Attributes">
+        <h3 class="modal-title">{{'Set ' + bulkAction?.name}}</h3>
+      </ng-container>
+      <ng-container *ngSwitchCase="stepAction.RegistersAndReadings">
+        <h5 class="modal-title">{{bulkRegistersActionText[bulkAction]}}</h5>
+      </ng-container>
+    </ng-container>
+
+    <button (click)="onCancel()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i (click)="activeModal.close()" aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <div class="modal-body">
+    <!--    Check step: 1 - Equipment Bulk, 2 - Unit allocation, 3- Attributes, 4 - Registers&Readings -->
+    <ng-container [ngSwitch]="step">
+      <!--  Each step contains actions -->
+      <ng-container *ngSwitchCase="stepAction.EquipmentBulk">
+        <ng-container [ngSwitch]="bulkAction">
+          <ng-container *ngSwitchCase="equipmentStepActionType.SetDevice">
+            <ng-container *ngFor="let templateId of objectDevices()">
+              <div class="input-row">
+                <div class="text-uppercase field-name">
+                  {{selectedDevices[templateId].group.name}}
+                </div>
+                <div class="field-value">
+                  <ng-select (change)="onSetDevice(selectedDevices[templateId].group.id, $event)"
+                             [clearable]="false"
+                             [closeOnSelect]="true"
+                             [dropdownPosition]="'bottom'"
+                             [hideSelected]="true"
+                             [multiple]="false"
+                             [searchable]="false"
+                             class="select-dropdown">
+                    <ng-option *ngFor="let item of selectedDevices[templateId].devices"
+                               [value]="item.id">{{item.model}}
+                    </ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngSwitchCase="equipmentStepActionType.SetLocation">
+            <div class="input-row">
+              <div class="text-uppercase field-name">Select Value:</div>
+              <div class="field-value none-padding">
+                <ng-select [(ngModel)]="bulkValue"
+                           [clearable]="false"
+                           [closeOnSelect]="true"
+                           [dropdownPosition]="'bottom'"
+                           [hideSelected]="true"
+                           [items]="locations$ | async"
+                           [multiple]="false"
+                           [searchable]="false"
+                           bindLabel="name"
+                           bindValue="id"
+                           class="select-dropdown"
+                           placeholder="Select Location"></ng-select>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *ngSwitchCase="equipmentStepActionType.SetManufactureDate">
+            <div class="input-row">
+              <div class="text-uppercase field-name">Select Value:</div>
+              <div class="datepicker-wrp">
+                <input #d="ngbDatepicker" (click)="d.toggle()" [(ngModel)]="bulkValue"
+                       class="form-control" name="dp" ngbDatepicker
+                       placeholder="dd/mm/YYYY" placement="bottom-left">
+                <i (click)="d.toggle()" class="calendar no-hover"></i>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *ngSwitchCase="equipmentStepActionType.SetNumber">
+            <div class="input-row">
+              <div class="text-uppercase field-name">Select Value:</div>
+              <div class="field-value none-padding">
+                <div class="dropdown d-block fullwidth-dropdown none-padding" ngbDropdown>
+                  <number-input [(ngModel)]="bulkValue"
+                                [max]="50" [min]="1"
+                                input-class="number-field"></number-input>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngSwitchCase="stepAction.Attributes">
+        <div *ngIf="equipmentGroupAttributes as attributes">
+          <ng-container *ngFor="let attr of equipmentGroup.headerAttributes; trackBy: trackById">
+            <ng-container
+              *ngIf="equipmentGroup.equipmentGroupId && attr.id == bulkAction.id">
+              <ng-container *ngIf="attributes[attr.id].attribute.fieldType == fieldTypes.Combo">
+                <div class="input-row">
+                  <div class="text-uppercase field-name">Select value:</div>
+                  <div class="field-value">
+                    <ng-select (change)="onBulkValueChanged(equipmentGroup.equipmentGroupId, $event)"
+                               [clearable]="false"
+                               [closeOnSelect]="true"
+                               [dropdownPosition]="'bottom'"
+                               [hideSelected]="true"
+                               [multiple]="false"
+                               [searchable]="false"
+                               class="select-dropdown">
+                      <ng-option *ngFor="let item of attributes[attr.id].attribute.comboSettings"
+                                 [value]="item.value">{{item.value}}
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="attributes[attr.id].attribute.fieldType == fieldTypes.Number"
+                            class="d-flex align-items-center">
+                <div class="input-row">
+                  <div class="text-uppercase field-name">Select value:</div>
+                  <div class="field-value">
+                    <number-input (change)="onBulkValueChanged(equipmentGroup.equipmentGroupId, $event)"
+                                  [min]="0"></number-input>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="attributes[attr.id].attribute.fieldType == fieldTypes.Ratio"
+                            class="d-flex align-items-center">
+                <div class="input-row">
+                  <span class="text-uppercase field-name">Select value:</span>
+                  <div class="field-value">
+                    <input (change)="onBulkValueChanged(equipmentGroup.equipmentGroupId, $event.target.value)"
+                           [textMask]="{ mask: ratioMask, guide: false }" class="form-control" placeholder="123/1">
+                  </div>
+                </div>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+        </div>
+      </ng-container>
+      <ng-container *ngSwitchCase="stepAction.ShopBulk">
+        <ng-container [ngSwitch]="bulkAction">
+          <ng-container *ngSwitchCase="shopStepActionType.SetUnits">
+            <div class="input-row">
+              <div class="text-uppercase field-name">Select Value:</div>
+              <div class="field-value none-padding">
+                <ng-select [(ngModel)]="bulkValue" [clearable]="false"
+                           [closeOnSelect]="false" [hideSelected]="true" [items]="unitOptions$ | async"
+                           [multiple]="true"
+                           [searchable]="false"
+                           bindLabel="name"
+                           bindValue="id"
+                           class="dnm-multiple-select">
+                </ng-select>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *ngSwitchCase="shopStepActionType.SetDescription">
+            <div class="input-row">
+              <div class="text-uppercase field-name">
+                Select Value:
+              </div>
+              <div class="field-value none-padding">
+                <ng-select [(ngModel)]="bulkValue" [clearable]="false"
+                           [closeOnSelect]="true" [hideSelected]="true" [items]="setDescriptionItems"
+                           [multiple]="false"
+                           [searchable]="false"
+                           bindLabel="name"
+                           bindValue="id"
+                           class="dnm-multiple-select">
+                </ng-select>
+                <textarea *ngIf="bulkValue==descriptionFieldtype.FreeText" [(ngModel)]="descriptionValue" class="form-control value-input description-input mt-2" maxlength="100"
+                          placeholder="Type here"
+                          type="text">
+                </textarea>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *ngSwitchCase="shopStepActionType.SetParentMeter">
+            <ng-container *ngFor="let groupId of objectParents()">
+              <div class="input-row">
+                <div class="text-uppercase field-name">
+                  {{selectedParents[groupId].groupName}}
+                </div>
+                <div class="field-value">
+                  <ng-select (change)="onSetParentMeters(groupId, $event)"
+                             [clearable]="false"
+                             [closeOnSelect]="false"
+                             [dropdownPosition]="'bottom'"
+                             [hideSelected]="true"
+                             [multiple]="true"
+                             [searchable]="false"
+                             class="dnm-multiple-select">
+                    <ng-option *ngFor="let item of selectedParents[groupId].parentMeters"
+                               [value]="item.id">{{item.name}}
+                    </ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngSwitchCase="shopStepActionType.SelectSupplyToAndLocationType">
+            <ng-container *ngFor="let groupId of objectLocationsSupplies()">
+              <div class="input-row">
+                <div class="text-uppercase field-name">
+                  {{selectedLocationsAndSupplies[groupId].groupName}}
+                </div>
+                <div class="field-value">
+                  <span class="text-uppercase field-name">Select Supply To:</span>
+                  <ng-select (change)="onChangeSupplyType(groupId, $event)"
+                             [clearable]="false"
+                             [dropdownPosition]="'bottom'"
+                             [hideSelected]="true"
+                             [items]="selectedLocationsAndSupplies[groupId].supplyTypes" [searchable]="false" bindLabel="name"
+                             bindValue="id"
+                             class="select-dropdown">
+                  </ng-select>
+                  <span class="text-uppercase field-name">Select Location Type:</span>
+                  <ng-select (change)="onChangeLocation(groupId, $event)"
+                             [(ngModel)]="locationType[groupId]"
+                             [clearable]="false"
+                             [dropdownPosition]="'bottom'"
+                             [hideSelected]="true"
+                             [items]="locationTypes[groupId]" [searchable]="false" bindLabel="name"
+                             bindValue="id"
+                             class="select-dropdown">
+                  </ng-select>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngSwitchCase="stepAction.RegistersAndReadings">
+        <ng-container [ngSwitch]="bulkAction">
+          <ng-container *ngSwitchCase="registersReadingsType.SetRegisterNote">
+            <div class="input-row">
+              <div class="text-uppercase field-name">Select value:</div>
+              <div class="field-value">
+                <textarea [(ngModel)]="bulkValue" class="form-control value-input" maxlength="100" placeholder="Type here"
+                          type="text"></textarea>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *ngSwitchCase="registersReadingsType.SetReading">
+            <div class="input-row">
+              <div class="text-uppercase field-name">Select value:</div>
+              <div class="field-value">
+                <number-input [(ngModel)]="bulkValue" [min]="0"></number-input>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *ngSwitchCase="registersReadingsType.SetRatio">
+            <div class="input-row">
+              <div class="text-uppercase field-name">Select value:</div>
+              <div class="field-value">
+                <number-input [(ngModel)]="bulkValue" [min]="0"></number-input>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *ngSwitchCase="registersReadingsType.SetReadingDate">
+            <div class="input-row">
+              <div class="text-uppercase field-name">Select value:</div>
+              <div class="datepicker-wrp">
+                <input #d="ngbDatepicker" (click)="d.toggle()" [(ngModel)]="bulkValue"
+                       class="form-control" name="dp" ngbDatepicker
+                       placeholder="dd/mm/YYYY" placement="bottom-left">
+                <i (click)="d.toggle()" class="calendar no-hover"></i>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *ngSwitchCase="registersReadingsType.SetBilling">
+            <div class="input-row">
+              <div class="text-uppercase field-name">Select value:</div>
+              <div class="field-value">
+                <div class="dnm-checkbox">
+                  <input [(ngModel)]="bulkValue" class="checkbox-toggle" type="checkbox"/>
+                  <div class="state">
+                    <label></label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+    <div class="container-fluid none-padding">
+      <div class="row none-margin-hr">
+        <div class="col-12 none-padding text-right footer-buttons">
+          <button (click)="onCancel()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+          <button (click)="onSet()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Set</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

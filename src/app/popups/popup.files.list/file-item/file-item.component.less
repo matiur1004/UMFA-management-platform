@@ -1,0 +1,59 @@
+// Colors
+@import 'variables.less';
+
+.file-item-wrp {
+  height: 65px;
+  padding-left: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.file-data {
+  width: calc(100% - 32px);
+}
+
+.file-data .file-img {
+  margin-right: 20px;
+}
+
+.file-info .file-name {
+  font-family: Gotham Book;
+  font-size: 16px;
+  line-height: 16px;
+  color: @color-text-secondary;
+  margin-bottom: 10px;
+  max-width: 360px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+}
+
+.file-info {
+  width: 100%;
+  padding-right: 20px;
+}
+
+.file-info .file-size {
+  font-family: Gotham Book;
+  font-size: 13px;
+  line-height: 13px;
+  color: @color-description;
+}
+
+.file-info .upld-progress-bg {
+  position: relative;
+  height: 8px;
+  width: 100%;
+  background-color: #d2d8db;
+  border-radius: 4px;
+}
+
+.file-info .upld-progress {
+  display: block;
+  position: absolute;
+  width: 50%;
+  background-image: linear-gradient(to right top, #1db396, #23a68c, #289982, #2b8c79, #2d806f);
+  height: 8px;
+  border-radius: 4px;
+}

@@ -1,0 +1,132 @@
+<div class="equipment-templates-container">
+  <ng-container *ngIf="!equipmentTemplates.length && !searchKey">
+    <div class="create-templates">
+      <div class="add-location-icon">
+        <img src="assets/images/icons/manage-locations-icon.svg"/>
+      </div>
+      <div class="create-locations-msg d-flex justify-content-center">There are no equipment templates here</div>
+    </div>
+
+    <div class="row">
+      <div class="col-12 text-right">
+        <button (click)="next.emit()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Skip</button>
+      </div>
+    </div>
+  </ng-container>
+
+  <div *ngIf="equipmentTemplates.length || searchKey" class="container-fluid none-padding equipment-list">
+    <div class="row search-row none-margin-hr">
+      <div class="col none-padding">
+        <form class="form-inline main-search-input">
+          <div class="input-group">
+            <input #searchEquipBox (keyup)="search.emit(searchEquipBox.value)" class="form-control group-search-input"
+                   data-search-field placeholder="Search equipment" type="search"/>
+            <div class="input-group-append">
+              <i class="icon-relative search-icon vertical-middle"></i>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="equipmentTemplates.length">
+    <div class="nav-row d-flex justify-content-between align-items-center">
+      <div class="d-flex align-items-center">
+        <span class="results-label dnm-text-light">{{equipmentTemplates.length}}
+          units of equipment / {{assignedEquipmentTemplatesCount}} units of equipment added</span>
+      </div>
+    </div>
+    <div class="row list-header">
+      <div class="col-6">
+        <div class="row none-margin-hr">
+          <div class="col-4">
+            <a (click)="changeOrderIndex(orderType.BrandModelAsc)" [ngClass]="{'active': orderIndex == orderType.BrandModelAsc || orderIndex == orderType.BrandModelDesc}"
+               class="header-field d-flex align-items-center"
+               href="javascript:void(0);">
+              <span class="text-ellipsis" title="Brand, Model">Brand, Model</span>
+              <i [ngClass]="{'inactive': orderIndex != 1 && orderIndex != -1, 'dnm-icon-sort-up': orderIndex == orderType.BrandModelDesc,'dnm-icon-sort-down': orderIndex != orderType.BrandModelDesc }"
+                 class="dnm-icon"></i>
+            </a>
+          </div>
+          <div class="col-4">
+            <a (click)="changeOrderIndex(orderType.SupplyTypeAsc)" [ngClass]="{'active': orderIndex == orderType.SupplyTypeAsc || orderIndex == orderType.SupplyTypeDesc}"
+               class="header-field d-flex align-items-center"
+               href="javascript:void(0);">
+              <span class="text-ellipsis" title="Supply Type">Supply Type</span>
+              <i [ngClass]="{'inactive': orderIndex != 2 && orderIndex != -2, 'dnm-icon-sort-up': orderIndex == orderType.SupplyTypeDesc,'dnm-icon-sort-down': orderIndex != orderType.SupplyTypeDesc }"
+                 class="dnm-icon"></i>
+            </a>
+          </div>
+          <div class="col-4">
+            <a (click)="changeOrderIndex(orderType.EquipmentGroupAsc)" [ngClass]="{'active': orderIndex == orderType.EquipmentGroupAsc || orderIndex == orderType.EquipmentGroupDesc}"
+               class="header-field d-flex align-items-center"
+               href="javascript:void(0);">
+              <span class="text-ellipsis" title="Equipment group">Equipment Group</span>
+              <i [ngClass]="{'inactive': orderIndex != 3 && orderIndex != -3, 'dnm-icon-sort-up': orderIndex == orderType.EquipmentGroupDesc,'dnm-icon-sort-down': orderIndex != orderType.EquipmentGroupDesc }"
+                 class="dnm-icon"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="col-5 header-field d-flex align-items-center">
+        <span class="text-ellipsis" title="Equipment Attributes">Equipment Attributes</span>
+      </div>
+      <div class="col-1 header-field d-flex align-items-center">
+        <span class="text-ellipsis" title="Add">Add</span>
+      </div>
+    </div>
+    <div class="list-body">
+      <div *ngFor="let equipmentTemplate of equipmentTemplates" class="row none-margin-hr body-row">
+        <div class="col-6">
+          <div class="row vertical-middle none-margin-hr">
+            <div class="col-4 none-padding d-flex align-items-center">
+              <span class="brand-model-lbl">{{equipmentTemplate.brand}} {{equipmentTemplate.model}} </span>
+            </div>
+            <div class="col-4 none-padding d-flex align-items-center">
+              <div class="service-type d-flex align-items-center">
+                <div [ngClass]="{'electricity-icon': equipmentTemplate.supplyType == supplyType.Electricity, 'water-icon': equipmentTemplate.supplyType == supplyType.Water, 'sewerage-icon': equipmentTemplate.supplyType == supplyType.Sewerage, 'gas-icon': equipmentTemplate.supplyType == supplyType.Gas, 'ad-hoc-icon': equipmentTemplate.supplyType == supplyType.AdHoc}"
+                     class="service-icon"></div>
+                <span [ngClass]="{'electricity-lbl': equipmentTemplate.supplyType == supplyType.Electricity, 'water-lbl': equipmentTemplate.supplyType == supplyType.Water, 'sewerage-lbl': equipmentTemplate.supplyType == supplyType.Sewerage, 'gas-lbl': equipmentTemplate.supplyType == supplyType.Gas, 'ad-hoc-lbl': equipmentTemplate.supplyType == supplyType.AdHoc}"
+                      class="type-lbl">
+                  {{supplyType[equipmentTemplate.supplyType]}}
+                </span>
+              </div>
+            </div>
+            <div class="col-4 none-padding d-flex align-items-center">
+              <span class="equipment-group-lbl">{{equipmentTemplate.equipmentGroup}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-5 none-padding d-flex align-items-center justify-content-between">
+          <div class="d-flex flex-wrap">
+            <ng-container *ngFor="let attribInfo of equipmentTemplate.attributes">
+              <div *ngIf="attribInfo.value || (attribInfo.numberValue || attribInfo.numberValue === 0)"
+                   class="equipment-attr">
+                <span class="equipment-attr-lbl">{{attribInfo.name}}:</span>
+                <span class="equipment-attr-val">{{attribInfo.value || attribInfo.numberValue}}</span>
+                <ng-container *ngIf="attribInfo.fieldType == fieldType.Number">
+                  <span class="equipment-attr-val">{{attribInfo.unitOfMeasurement}}</span>
+                </ng-container>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+        <div class="col-1 d-flex align-items-center">
+          <a (click)="onAddRemoveEquipmentTemplate(equipmentTemplate.id, equipmentTemplate.isAssigned)" class="blue-text-btn"
+             href="javascript:void(0)">
+            <i
+              [ngClass]="{'check-mark-icon': equipmentTemplate.isAssigned, 'add-icon': !equipmentTemplate.isAssigned}"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<div class="row">
+  <div class="col-12 text-right footer-buttons">
+    <button (click)="previous.emit()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+    <button (click)="onNext()" class="dnm-btn dnm-btn-primary size-lg text-uppercase" type="button">Next</button>
+  </div>
+</div>

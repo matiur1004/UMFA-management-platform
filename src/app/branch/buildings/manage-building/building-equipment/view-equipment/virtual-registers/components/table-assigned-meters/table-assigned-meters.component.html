@@ -1,0 +1,267 @@
+<div class="assigned-meters equipment-list">
+  <h3 class="bl-gradient-title">The list of assigned meters</h3>
+  <div class="row search-row none-margin-hr">
+    <div class="col none-padding">
+      <form class="form-inline main-search-input">
+        <div class="input-group">
+          <simple-search-form (onSearch)="onSearchMeter($event)" class="w-100"></simple-search-form>
+          <div class="input-group-append">
+            <i class="icon-relative search-icon vertical-middle"></i>
+          </div>
+        </div>
+      </form>
+      <button (click)="onShowFilter()" [ngClass]="{'active-btn' : showFilter}" class="dnm-btn dnm-btn-filter text-uppercase"
+              type="button">Filter<i
+        class="btn-filter-icon"></i></button>
+    </div>
+  </div>
+  <div *ngIf="showFilter" [ngClass]="{ 'mr-filter-mrgn-bottom': showFilter == true }" class="assigned-meter-fltr">
+    <div class="row none-margin-hr">
+      <div class="col-4 first-col vert-blck-line">
+        <div class="filter-blck-wrp">
+          <div class="bl-gradient-title">Supply type</div>
+          <div class="d-flex flex-wrap blng-fltr-mrgn-right">
+            <div (click)="onSupplyTypeChecked(supplyTypeItem.supplyType)"
+                 *ngFor="let supplyTypeItem of supplyTypesList" [ngClass]="{'active': supplyTypeItem.checked }"
+                 class="filter-item d-flex align-items-center justify-content-center">
+              <div *ngIf="supplyTypeItem.checked" [supplyTypeClassSufix]="'-white-icon'" [supplyTypeClass]="supplyTypeItem.supplyType"
+                   class="service-icon"></div>
+              <div *ngIf="!supplyTypeItem.checked" [supplyTypeClassSufix]="'-icon'" [supplyTypeClass]="supplyTypeItem.supplyType"
+                   class="service-icon"></div>
+              <span *ngIf="supplyTypeItem.checked" class="filter-item-lbl">
+                {{supplyType[supplyTypeItem.supplyType]}}
+              </span>
+              <span *ngIf="!supplyTypeItem.checked" [supplyTypeClassSufix]="'-lbl'" [supplyTypeClass]="supplyTypeItem.supplyType"
+                    class="type-lbl">{{supplyType[supplyTypeItem.supplyType]}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-4 second-col vert-blck-line">
+        <div class="filter-blck-wrp">
+          <div class="bl-gradient-title">Supply to</div>
+          <ng-select (change)="updateSupplyTo()" [(ngModel)]="searchForm.supplyToId"
+                     [clearable]="false" [closeOnSelect]="true" [dropdownPosition]="'top'"
+                     [searchable]="false" class="select-dropdown">
+            <ng-template *ngIf="suppliers && suppliers.length" ng-header-tmp>
+              <div class="dnm-single-field-filter">
+                <input autoFocus class="dnm-single-input-field" type="text"/>
+              </div>
+            </ng-template>
+            <ng-option *ngIf="suppliers && suppliers.length" [value]="''">All supply to</ng-option>
+            <ng-option *ngFor="let item of suppliers  | sortByPropery : 'name'"
+                       [value]="item.id">{{item.name}}</ng-option>
+          </ng-select>
+        </div>
+        <div class="filter-blck-wrp">
+          <div class="bl-gradient-title">Location type</div>
+          <ng-select [(ngModel)]="searchForm.locationTypeId"
+                     [clearable]="false" [closeOnSelect]="true" [dropdownPosition]="'top'"
+                     [placeholder]="'Select supply to'" [searchable]="false"
+                     class="select-dropdown">
+            <ng-option value="">All location types</ng-option>
+            <ng-option *ngFor="let item of locationTypes  | sortByPropery : 'name'"
+                       [value]="item.id">{{item.name}}</ng-option>
+          </ng-select>
+        </div>
+        <div class="filter-blck-wrp">
+          <div class="bl-gradient-title">Allocated Units</div>
+          <ng-select [(ngModel)]="searchForm.unitIds"
+                     [clearable]="false"
+                     [hideSelected]="true"
+                     [items]="units" [multiple]="true"
+                     [searchable]="false"
+                     bindLabel="name"
+                     bindValue="id"
+                     class="select-dropdown">
+          </ng-select>
+        </div>
+        <div class="filter-blck-wrp">
+          <div class="bl-gradient-title">Status</div>
+          <ng-select [(ngModel)]="searchForm.status" [clearable]="false" [dropdownPosition]="'top'"
+                     [hideSelected]="true"
+                     [multiple]="false" [searchable]="false"
+                     bindLabel="label" bindValue="value" class="select-dropdown">
+            <ng-option *ngFor="let item of status" [value]="item.value">{{item.label}}</ng-option>
+          </ng-select>
+        </div>
+      </div>
+      <div class="col-4 third-col vert-blck-line">
+        <div class="filter-blck-wrp">
+          <div class="bl-gradient-title">Node type</div>
+          <ng-select [(ngModel)]="searchForm.nodeType"
+                     [clearable]="false" [closeOnSelect]="true" [dropdownPosition]="'top'"
+                     [searchable]="false" class="select-dropdown">
+            <ng-option *ngFor="let item of nodeTypes" [value]="item.value">{{item.label}}</ng-option>
+          </ng-select>
+        </div>
+        <div class="filter-blck-wrp">
+          <div class="bl-gradient-title">CB size</div>
+          <div class="d-flex align-item-center">
+            <input (ngModelChange)="cbSizeMinChange($event)" [(ngModel)]="searchForm.cbSize.min" [ngClass]="{'dnm-invalid-inp': cbSizeError}"
+                   class="form-control cb-size-input"
+                   placeholder="Min"
+                   type="number">
+            <span class="cb-size-lbl">to</span>
+            <input (ngModelChange)="cbSizeMaxChange($event)" [(ngModel)]="searchForm.cbSize.max" [ngClass]="{'dnm-invalid-inp': cbSizeError}"
+                   class="form-control cb-size-input" placeholder="Max"
+                   type="number">
+          </div>
+          <small *ngIf="cbSizeError" class="alert-danger">CB size should be filled correctly.</small>
+        </div>
+        <div class="filter-blck-wrp">
+          <div class="bl-gradient-title">AMR Registers</div>
+          <ng-select [(ngModel)]="searchForm.amrRegisters" [clearable]="false" [dropdownPosition]="'top'"
+                     [hideSelected]="true"
+                     [items]="unitsOfMeasurement"
+                     [multiple]="true"
+                     [searchable]="false" bindLabel="defaultName"
+                     bindValue="unitType" class="select-dropdown" placeholder="Choose AMR registers">
+          </ng-select>
+        </div>
+      </div>
+    </div>
+    <div class="row none-margin-hr">
+      <div class="col-12 none-padding footer-buttons d-flex justify-content-end">
+        <button (click)="onResetFilter()" class="dnm-btn filter-footer-btn dnm-btn-reset text-uppercase" type="button">
+          Reset
+        </button>
+        <button (click)="onCancel()" class="dnm-btn filter-footer-btn dnm-btn-cancel text-uppercase"
+                type="button">Cancel
+        </button>
+        <button
+          (click)="onApply()"
+          [disabled]="cbSizeError" class="dnm-btn filter-footer-btn dnm-btn-primary text-uppercase" type="button">
+          Search
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-row d-flex justify-content-between align-items-center">
+    <span class="results-label dnm-text-light">{{getShowingItems()}}</span>
+    <div class="d-flex align-items-center">
+      <span class="text-uppercase drpdwn-fltr-lbl">Units Per Page:</span>
+      <ng-select (change)="onItemsPerPageChange($event)"
+                 [clearable]="false" [hideSelected]="true"
+                 [ngModel]="itemsPerPage" [searchable]="false" class="dnm-single-select dnm-dropdown-select per-page-select dnm-dropdown-large ">
+        <ng-option *ngFor="let item of itemsPerPageList" [value]="item">{{item}}</ng-option>
+        <ng-option [value]="0">ALL</ng-option>
+      </ng-select>
+    </div>
+  </div>
+
+  <table *ngIf="_equipments && _equipments.length"
+         class="table table-custom table-white table-outside-border-body table-vertical-center table-assigned-meters">
+    <thead>
+    <tr>
+      <th class="cell-selection">
+        <div class="darkness bulk-actions-nav" ngbDropdown placement="bottom-left">
+          <div class="checkbox-input dropdown-checkbox-input d-flex align-items-center" ngbDropdownToggle>
+            <div class="dnm-checkbox list-header-checkbox">
+              <input (change)="onSelectAll(isAllSelected)" [(ngModel)]="isAllSelected" [checked]="isAllSelected" class="checkbox-toggle"
+                     type="checkbox"/>
+              <div [ngClass]="{'indeterm-state': checkedAllPartly}" class="state">
+                <label></label>
+              </div>
+            </div>
+          </div>
+          <div class="checkbox-menu" ngbDropdownMenu>
+            <div class="checkbox-menu-header">{{_equipments | selectedArrayLength}} items selected</div>
+            <button (click)="setBillingStatus(true)" class="dropdown-item d-flex justify-content-between" type="button">
+              Set billing status <i class="dnm-icon dnm-equals-icon"></i>
+            </button>
+            <button (click)="setBillingStatus(false)" class="dropdown-item d-flex justify-content-between"
+                    type="button">
+              Set not-billing status <i class="dnm-icon delete-icon"></i>
+            </button>
+            <button (click)="onAssignSelected(true)" class="dropdown-item d-flex justify-content-between" type="button">
+              Assign selected <i class="dnm-icon dnm-equals-icon"></i>
+            </button>
+            <button (click)="onAssignSelected(false)" class="dropdown-item d-flex justify-content-between"
+                    type="button">
+              Unassign selected <i class="dnm-icon dnm-trash-icon"></i>
+            </button>
+          </div>
+        </div>
+      </th>
+      <th>
+        <span class="head-col">Name</span>
+      </th>
+      <th>
+        <span class="head-col cell-assigned">Status</span>
+      </th>
+      <th>
+        <span class="head-col">Location</span>
+      </th>
+      <th>
+        <span class="head-col">Allocated Units</span>
+      </th>
+      <th>
+        <span class="head-col">Supply To / Location Type</span>
+      </th>
+      <th>
+        <span class="head-col">Description</span>
+      </th>
+      <th>
+        <span class="head-col">Billing</span>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-container *ngFor="let equipment of _equipments">
+      <tr class="meter-item">
+        <td class="cell cell-selection">
+          <div class="dnm-checkbox selection-checkbox">
+            <input (change)="onSelect(equipment.id)" [checked]="equipment.isSelected" [value]="equipment.isSelected"
+                   type="checkbox"/>
+            <div class="state">
+              <label></label>
+            </div>
+          </div>
+        </td>
+        <td class="cell cell-equipment">
+          <div class="cell-name meter-name">{{equipment.serialNumber | emptyValue | slice : -4}}
+            -{{equipment.supplyType | supplyTypeLetter}}</div>
+          <span *ngIf="equipment.isDummy" class="equipment-type type-dummy">Dummy</span>
+          <span *ngIf="equipment.isFaulty" class="equipment-type type-faulty">Faulty</span>
+        </td>
+        <td class="cell cell-equipment">
+          <div *ngIf="equipment.isAssigned" class="cell-assigned">assigned</div>
+        </td>
+        <td class="cell cell-equipment">
+          <span class="location-lbl">{{equipment.location.location.name + ' (' + equipment.sequenceNumber + ')'}}</span>
+        </td>
+        <td class="cell cell-equipment">
+          <ng-container *ngFor="let shop of equipment.shops">
+            <div class="equipment-area">{{shop.name}} {{shop.tenant ? ' (' + shop.tenant.name + ')' : ''}}</div>
+          </ng-container>
+          <ng-container *ngFor="let commonArea of equipment.commonAreas">
+            <div class="equipment-area">{{commonArea.name}}</div>
+          </ng-container>
+        </td>
+
+        <td class="cell cell-equipment">
+          <span class="equipment-area"
+                title="{{equipment.location.supplyDetail.name}}">{{equipment.location.supplyDetail.name}} {{equipment.location.supplyDetail.name ? equipment.location.supplyDetail.name + ' ' + '/' + ' ' : ' '}}</span>
+          <span class="equipment-area"
+                title="{{equipment.location.supplyDetail.locationType}}">{{equipment.location.supplyDetail.locationType}}</span>
+        </td>
+        <td class="cell cell-equipment">
+          <span class="equipment-area">{{equipment.location.description}}</span>
+        </td>
+        <td class="cell cell-selection">
+          <div class="dnm-checkbox">
+            <input (change)="onUseForBilling(equipment.id)" [checked]="equipment.useForBilling" [value]="equipment.useForBilling"
+                   type="checkbox"/>
+            <div class="state">
+              <label></label>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </ng-container>
+    </tbody>
+  </table>
+  <pager (onPageChange)="onPageChange($event)" [pageSize]="itemsPerPage" [page]="page" [total]="total"></pager>
+</div>

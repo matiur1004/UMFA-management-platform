@@ -1,0 +1,115 @@
+<div class="container-fluid location-container none-padding">
+  <div class="row none-margin-hr">
+    <div class="col-6 none-padding">
+      <div class="bl-gradient-title">Choose location</div>
+      <div class="input-row">
+        <div class="text-uppercase field-name text-form-field">Location Name</div>
+        <div class="field-value">
+          <div class="dropdown d-block fullwidth-dropdown" ngbDropdown>
+            <button class="btn btn-secondary dropdown-toggle text-left" id="ddClientPortfolio" ngbDropdownToggle>
+              {{locationForm.value.name ? locationForm.value.name : 'Select location'}}
+            </button>
+            <div aria-labelledby="ddClientPortfolio" class="dropdown-menu" ngbDropdownMenu>
+              <button (click)="locationChange.emit(location)" *ngFor="let location of locations" class="dropdown-item"
+                      type="button">{{location.name}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="input-row">
+        <a (click)="createLocation.emit()" class="blue-text-btn" href="javascript:void(0)">
+          <i class="add-icon"></i>Add New Location
+        </a>
+      </div>
+      <div class="bl-gradient-title equip-det-title">Equipment details</div>
+      <div class="input-row">
+        <div class="text-uppercase field-name text-form-field">Supply to</div>
+        <div class="field-value">
+          <div class="dropdown d-block fullwidth-dropdown" ngbDropdown>
+            <button class="btn btn-secondary dropdown-toggle text-left" id="ddClientPortfolio" ngbDropdownToggle>
+              {{locationForm.value.supplyName ? locationForm.value.supplyName : 'Select supply'}}
+            </button>
+            <div aria-labelledby="ddClientPortfolio" class="dropdown-menu" ngbDropdownMenu>
+              <button (click)="supplieChange.emit(supply)" *ngFor="let supply of supplies" class="dropdown-item"
+                      type="button">{{supply.name}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="input-row">
+        <div class="text-uppercase field-name text-form-field">Location type</div>
+        <div class="field-value">
+          <div class="dropdown d-block fullwidth-dropdown" ngbDropdown>
+            <button class="btn btn-secondary dropdown-toggle text-left" id="ddClientPortfolio" ngbDropdownToggle>
+              {{locationForm.value.locationType ? locationForm.value.locationType : 'Select location type'}}
+            </button>
+            <div aria-labelledby="ddClientPortfolio" class="dropdown-menu" ngbDropdownMenu>
+              <button (click)="locationTypeChange.emit(locationType)" *ngFor="let locationType of locationTypes" class="dropdown-item"
+                      type="button">{{locationType.name}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="input-row row-description">
+        <div class="text-uppercase field-name text-form-field">Description</div>
+        <div class="field-value">
+          <textarea [ngrxFormControlState]="locationForm.controls.description" class="form-control"
+                    placeholder="Type here"></textarea>
+        </div>
+      </div>
+      <div class="input-row row-description">
+        <div class="text-uppercase field-name text-form-field">Verification</div>
+        <div class="field-value">
+          <div class="d-flex align-items-center checkbox-input">
+            <div class="dnm-checkbox">
+              <input [ngrxFormControlState]="locationForm.controls.isVerification" class="checkbox-toggle"
+                     type="checkbox">
+              <div class="state">
+                <label></label>
+              </div>
+            </div>
+            <span class="checkbox-input-lbl">Verified by switching test</span>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="locationForm.controls.isVerification.value">
+        <div class="bl-gradient-title equip-det-title">Verification details</div>
+        <div class="input-row">
+          <div class="text-uppercase field-name text-form-field">Date of Testing</div>
+          <div class="field-value datepicker-wrp">
+            <input #d="ngbDatepicker" (click)="d.toggle()" (dateSelect)="testingDateChange.emit($event)" class="form-control" name="dp"
+                   ngbDatepicker placeholder="dd/mm/YYYY" readonly>
+            <i (click)="d.toggle()" class="calendar"></i>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name text-form-field">Name of Technician</div>
+          <div class="field-value">
+            <div class="dropdown d-block fullwidth-dropdown" ngbDropdown>
+              <button class="btn btn-secondary dropdown-toggle text-left" id="ddClientPortfolio" ngbDropdownToggle>
+                {{locationForm.value.technicianName ? locationForm.value.technicianName : 'Select technician'}}
+              </button>
+              <div aria-labelledby="ddClientPortfolio" class="dropdown-menu" ngbDropdownMenu>
+                <button (click)="technicianChange.emit(technician)" *ngFor="let technician of technicians" class="dropdown-item"
+                        type="button">{{technician.fullName}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="input-row row-description">
+          <div class="text-uppercase field-name text-form-field">Testing Note</div>
+          <div class="field-value">
+            <textarea [ngrxFormControlState]="locationForm.controls.testingNote" class="form-control"
+                      placeholder="Type here"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row none-margin-hr">
+    <div class="col-12 none-padding footer-btns d-flex justify-content-end">
+      <button (click)="cancel.emit()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Close</button>
+      <button (click)="nextStep.emit(2)" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Next</button>
+    </div>
+  </div>
+</div>

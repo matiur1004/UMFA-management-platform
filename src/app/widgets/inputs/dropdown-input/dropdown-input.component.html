@@ -1,0 +1,7 @@
+<div class="d-inline-block dropdown" ngbDropdown>
+  <div class="dropdown-toggle" ngbDropdownToggle>{{text ? text[model] : model}}</div>
+  <div class="dropdown-menu" ngbDropdownMenu>
+    <span (click)="setModel($event, value)" *ngFor="let value of values"
+          class="dropdown-item">{{text ? text[value] : value}}</span>
+  </div>
+</div>

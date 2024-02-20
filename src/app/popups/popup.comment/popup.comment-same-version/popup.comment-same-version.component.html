@@ -1,0 +1,32 @@
+<div class="comment-modal">
+    <div class="modal-header">
+      <button (click)="dismiss()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+        <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="container-fluid">
+            <div class="row none-margin-hr">
+                <div class="col-12 d-flex justify-content-center">
+                    <div class="note-logo"></div>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-center">
+                <div class="col-12">
+                    <div class="comment-msg text-center">
+                        <ng-container *ngIf="type == 'CurrentVersion'; else elseTemplate">
+                            A version with the selected date already exist, please use one the first 2 options to update that version
+                        </ng-container>
+                        <ng-template #elseTemplate>
+                            A version with the selected date already exist, please change to that version and then use one the first 2 options to update that version
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-center comment-footer">
+                  <button (click)="dismiss()" class="dnm-btn dnm-btn-cancel size-lg text-uppercase" type="button">Close
+                  </button>
+            </div>
+        </div>
+    </div>
+</div>

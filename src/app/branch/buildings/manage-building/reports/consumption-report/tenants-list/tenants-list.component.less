@@ -1,0 +1,207 @@
+@import 'variables.less';
+
+.tenants-list .tree-view li.root-item {
+  margin-top: 20px;
+}
+
+.tenants-list .toggle-btn:hover {
+  cursor: pointer;
+}
+
+.tenants-list .tree-view li.root-item {
+  margin-top: 20px;
+}
+
+.tenants-list .item-content {
+  padding: 25px 35px;
+}
+
+.tenants-list .item-content.tenant-item {
+  width: 100%;
+  padding: 25px 0;
+}
+
+.tenants-list .item-content.tenant-item {
+  -webkit-box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.05);
+}
+
+.tenants-list .item-content .col-left {
+  position: relative;
+  -ms-flex: 0 0 calc(100% - 100px);
+  flex: 0 0 calc(100% - 100px);
+  max-width: calc(100% - 100px);
+}
+
+.tenants-list .item-content .col-right {
+  position: relative;
+  -ms-flex: 0 0 calc(100px);
+  flex: 0 0 calc(100px);
+  max-width: calc(100px);
+}
+
+.tenants-list .item-content .dnm-switch-btn {
+  margin-bottom: 0;
+}
+
+.tenants-list .col-frst-lv {
+  padding-left: 35px;
+}
+
+.tenants-list .list-header {
+  margin-bottom: 5px;
+}
+
+.tenants-list .tree-header {
+  width: calc(100% - 100px);
+}
+
+.tenants-list .tree-view .col-right {
+  padding-right: 20px;
+}
+
+.tenants-list .toggle-btn {
+  margin-right: 12px;
+}
+
+.tenants-list .new-tnt {
+  font-family: Gotham Book;
+  font-size: 14px;
+  color: #1ab296;
+  margin-left: 25px;
+}
+
+.tenants-list .tnt-code {
+  margin-right: 25px;
+}
+
+.tenants-list .row-total {
+  margin-bottom: 20px;
+}
+
+.tenants-list .stat-blck {
+  display: flex;
+}
+
+.tenants-list .blck-item {
+  height: 100px;
+  min-width: 119px;
+  background-color: @color-background-white;
+  border-radius: 8px;
+  margin-right: 25px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  width: calc(100% / 5);
+  max-width: 250px;
+  -webkit-box-shadow: 0 2px 59px 0 rgba(49, 68, 135, 0.08);
+  -moz-box-shadow: 0 2px 59px 0 rgba(49, 68, 135, 0.08);
+  box-shadow: 0 2px 59px 0 rgba(49, 68, 135, 0.08);
+}
+
+.tenants-list .blck-item .item-val,
+.tenants-list .blck-item .item-descr {
+  display: block;
+  font-family: Gotham Book;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.tenants-list .blck-item .item-val {
+  font-size: 25px;
+  line-height: 25px;
+  margin-bottom: 10px;
+}
+
+.tenants-list .blck-item .item-descr {
+  font-size: 12px;
+  line-height: 12px;
+  white-space: nowrap;
+}
+
+.tenants-list .ad-hoc-grad {
+  .gradient-black();
+}
+
+.tenants-list .total-grad {
+  .gradient-dark-green();
+}
+
+.tenants-list .water-grad {
+  .gradient-blue();
+}
+
+.tenants-list .gas-grad {
+  .gradient-yellow();
+}
+
+.tenants-list .electricity-grad {
+  .gradient-red();
+}
+
+.tenants-list .sewerage-grad {
+  background: linear-gradient(to right, #997db1, #886ea1, #785f92, #685183, #584374);
+}
+
+.tenants-list .shop-dtls {
+  margin-top: 10px;
+}
+
+.tenants-list .shop-dtls-title {
+  margin-bottom: 0px;
+}
+
+.tenants-list .new-info-gr-icon {
+  position: relative;
+  top: 1px;
+  margin-right: 3px;
+}
+
+.tenants-list .shop-tl-info .gd-title-green {
+  display: block;
+}
+
+.tenants-list .shop-tl-info .txt-sm-light {
+  line-height: 14px;
+}
+
+.tenants-list .shop-tl-info .txt-lg {
+  line-height: 22px;
+}
+
+.tenants-list .price-icn {
+  margin-right: 8px;
+}
+
+.tree-view li.shop-item:last-child::before {
+  height: 90px;
+}
+
+.tree-view li.shop-item::after {
+  top: 90px;
+}
+
+.tree-view .shop-item .item-content::before {
+  top: 84px;
+}
+
+.tree-view li.cmn-area-item:last-child::before {
+  height: 70px;
+}
+
+.tree-view li.cmn-area-item::after {
+  top: 70px;
+}
+
+.tree-view .cmn-area-item .item-content::before {
+  top: 63px;
+}
+
+.tree-view li.shop-item::after {
+  top: 90px;
+}
+// .tree-view li.shop-detail::before {
+//   height: 1500px;
+// }

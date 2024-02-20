@@ -1,0 +1,10 @@
+<svg id="Слой_1" data-name="Слой 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+  <defs>
+    <style>.cls-1 {
+      fill: #fff;
+    }</style>
+  </defs>
+  <title>filter_X</title>
+  <polygon class="cls-1"
+           points="20.01 1.35 18.65 -0.01 10.01 8.62 1.38 -0.01 0.01 1.35 8.65 9.99 0.01 18.62 1.38 19.99 10.01 11.35 18.65 19.99 20.01 18.62 11.38 9.99 20.01 1.35"/>
+</svg>

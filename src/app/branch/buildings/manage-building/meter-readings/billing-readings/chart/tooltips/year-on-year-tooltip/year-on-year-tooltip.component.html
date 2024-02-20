@@ -1,0 +1,56 @@
+<div class="custom-tooltip-wrapper enter-reading-modal">
+  <div>
+    <div class="d-flex flex-row justify-content-between align-items-start">
+      <h3 class="d-inline-block">
+        {{periodName | dateReadingFormat:readingDate:false:previousReadingDate}}
+      </h3>
+      <div class="custom-tooltip-wrapper__right d-inline-block">
+        <button [ngClass]="{'trend-up-icon' : abnormalityLevel(usage, previousUsage) >= trendUpValue,
+                          'trend-down-icon' : abnormalityLevel(usage, previousUsage) <= trendDownValue}" class="dnm-btn rdng-list-btn" type="button"></button>
+        <span>{{calculateReadingByUsage(usage, previousUsage)}} {{registerInfo.registerId | registerUnit | async}}
+          / {{percentUsage(usage, previousUsage)}} %
+        </span>
+      </div>
+    </div>
+    <div class="d-flex flex-row justify-content-between align-items-center">
+      <div class="period-info">{{periodsDates}}</div>
+      <div class="period-info">{{periodsDuration}}</div>
+    </div>
+  </div>
+  <div class="custom-tooltip-content">
+    <div class="row">
+      <div class="col">
+        <div class="content">
+          <div [style.border-color]="selectedColor[0].value" class="current_usage circle"></div>
+          <span class="content-title">Current usage {{previousReadingDate | date:'y'}}</span>
+          <div *ngIf="!isStats" [ngClass]="'status-' + (selectedColor[0].key | readingStatusText | lowercase)"
+               [ngbTooltip]="(selectedColor[0].key | readingStatusText)" class="reading-status"
+               placement="top">
+          </div>
+        </div>
+      </div>
+      <div class="col text-right">
+        <div class="usages">
+          <h4>{{previousUsage}} {{registerInfo.registerId | registerUnit | async}}</h4>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="content">
+          <div [style.border-color]="selectedColor[1].value" class="current_usage circle"></div>
+          <span class="content-title">Current usage {{readingDate | date:'y'}}</span>
+          <div *ngIf="!isStats" [ngClass]="'status-' + (selectedColor[1].key | readingStatusText | lowercase)"
+               [ngbTooltip]="(selectedColor[1].key | readingStatusText)" class="reading-status"
+               placement="top">
+          </div>
+        </div>
+      </div>
+      <div class="col text-right">
+        <div class="usages">
+          <h4>{{usage}} {{registerInfo.registerId | registerUnit | async}}</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

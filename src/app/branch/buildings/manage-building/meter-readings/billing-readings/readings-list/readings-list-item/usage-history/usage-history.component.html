@@ -1,0 +1,38 @@
+<div class="usage-history">
+  <div class="modal-header">
+    <h5 class="modal-title">Usage history:</h5>
+    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <div class="modal-body none-padding">
+    <div class="usg-hstr-header">
+      <div class="row none-margin-hr">
+        <div class="col-7 none-padding">
+          Building period
+        </div>
+        <div class="col-3 none-padding">
+          Days
+        </div>
+        <div class="col-2 none-padding">
+          Usage
+        </div>
+      </div>
+    </div>
+    <div class="usg-lst-wrp">
+      <div *ngFor="let usage of history" class="usg-hstr-row">
+        <div class="row none-margin-hr">
+          <div class="col-7 none-padding">
+            <span class="bld-prd-lbl">{{usage.name}}</span>
+          </div>
+          <div class="col-3 none-padding">
+            <span class="days-lbl">{{usage.periodDurationDays}}</span>
+          </div>
+          <div class="col-2 none-padding">
+            <span class="usage-lbl">{{usage.usage}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,58 @@
+<div class="package-info">
+  <div class="modal-header d-flex align-items-center">
+    <h5 class="modal-title">Select the category icon:</h5>
+    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <div class="modal-body none-padding">
+    <div class="container-fluid none-padding">
+      <div class="row none-margin-hr header-row">
+        <div class="col none-padding">
+          <div class="row">
+            <div class="col-7 col-title">
+              Service Name
+            </div>
+            <div class="col-5 col-title">
+              Charging method
+            </div>
+          </div>
+        </div>
+        <div class="col none-padding">
+          <div class="row">
+            <div class="col col-title">Price per unit</div>
+            <div class="col col-title"># of units</div>
+            <div class="col col-title">Service Price</div>
+          </div>
+        </div>
+      </div>
+      <div class="body-wrapper">
+        <ng-container *ngFor="let service of services">
+          <div class="row none-margin-hr body-row">
+            <div class="col none-padding">
+              <div class="row">
+                <div class="col-7 service-name">
+                  {{service.name}}
+                </div>
+                <div class="col-5 charging-method">
+                  {{service.chargingName}}
+                </div>
+              </div>
+            </div>
+            <div class="col none-padding">
+              <div class="row">
+                <div class="col unit-price">R {{service.unitPrice}}</div>
+                <div class="col numb-of-units">{{service.quantity}}</div>
+                <div class="col service-price">R {{service.totalPrice}}</div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer justify-content-center">
+    <div class="tot-price-lbl">Total price</div>
+    <div class="tot-price-value">R {{total}}</div>
+  </div>
+</div>

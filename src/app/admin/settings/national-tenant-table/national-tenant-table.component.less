@@ -1,0 +1,108 @@
+@import 'variables.less';
+
+.bl-gradient-title {
+  line-height: 1;
+  margin-bottom: 30px;
+}
+
+.editable-section .row {
+  border-bottom: 1px solid #eeeff0;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin-left: 0;
+}
+
+.editable-section .row:last-child {
+  border-bottom: none;
+  margin-bottom: 42px;
+}
+
+.editable-section .editable-section-title {
+  margin-bottom: 25px;
+}
+
+.add-icon {
+  margin-right: 8px;
+}
+
+.blue-text-btn {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.blue-text-btn:first-child {
+  margin-right: 30px;
+}
+
+.scroll-table-body {
+  display: block;
+  width: 100%;
+  overflow: auto;
+  max-height: 400px;
+}
+
+.scroll-table-body tr {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.table {
+  display: block;
+}
+
+.table-header .name-header {
+  width: 35%;
+}
+
+.table-header .desc-header {
+  width: 34%;
+}
+
+.table-header .count-header {
+  width: 10%;
+}
+
+.input-group-append {
+  position: absolute;
+  right: 10px;
+  top: 18px;
+}
+
+.table-premium thead th,
+.table-premium tbody td {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.table-premium thead th {
+  padding-left: 20px;
+}
+
+.table-premium tbody td {
+  padding-left: 0;
+}
+
+/* #region ng-deep section */
+
+::ng-deep .editable-section text-input.field-value input {
+  background-color: @color-background-primary;
+}
+
+::ng-deep .editable-section text-input.field-value input:hover, ::ng-deep .editable-section text-input.field-value input:focus {
+  background-color: @color-background-white;
+}
+
+/* #endregion */
+
+.photo-btn {
+  background-color: @color-background-white;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 20px;
+  border: 1px solid @color-stroke;
+  width: 35px;
+  height: 35px;
+  display: inline-block;
+}

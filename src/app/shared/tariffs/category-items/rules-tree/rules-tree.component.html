@@ -1,0 +1,37 @@
+<div class="rules-tree-wrp">
+  <div *ngFor="let group of groups; trackBy: trackByIndex; first as isGroupFirst"
+       class="row none-margin-hr">
+    <div class="col none-padding">
+      <div [ngClass]="{'inputs-left-wrp' : group.controls.rules.value?.length !== 1 || !isGroupFirst}"
+           class="group-item-wrp ">
+        <label *ngIf="!isGroupFirst" class="and-or-toggle">
+          <input [ngModel]="getCheckedRelationships(groupRelationships.value, group.value.id)"
+                 class="checkbox-toggle"
+                 type="checkbox">
+          <span (click)="onChangeGroupLogicalOperator(group.value.id, LogicalOperators.AND)"
+                class="and-toggle-lbl">AND</span>
+          <span (click)="onChangeGroupLogicalOperator(group.value.id, LogicalOperators.OR)"
+                class="or-toggle-lbl">OR</span>
+        </label>
+        <rule-item
+          (groupAdded)="onAddGroup(group.value.id)"
+          (ruleAdded)="onAddNewRule(group.value.id, rule.id)"
+          (ruleChanged)="onRuleChanged(group.value.id, $event)"
+          (ruleDeleted)="onDeleteRule(group.value.id, rule.id)"
+          (ruleLogicalOperatorChanged)="onChangeRuleLogicalOperator(group.value.id, rule.id, $event)"
+          *ngFor="let rule of group.controls.rules.value; index as i; trackBy: trackByIndex; first as isRuleFirst"
+          [attributeComboValues]="attributeComboValues"
+          [attributes]="attributes"
+          [errors]="getErrors(group.controls.rules.controls[i])"
+          [isFirst]="isRuleFirst"
+          [isLogicalOperatorChecked]="getCheckedRelationships(group.controls.ruleRelationships.value, rule.id)"
+          [isOneGroup]="groups.length === 1"
+          [isOne]="group.controls.rules.value?.length === 1 && isGroupFirst"
+          [operatorsDropdown]="operatorsDropdown"
+          [rule]="rule"></rule-item>
+      </div>
+    </div>
+  </div>
+</div>
+
+

@@ -1,0 +1,131 @@
+<div class="container-fluid top-container">
+  <div class="row content">
+    <div class="client-header-title">
+      <h1 class="page-title text-uppercase">Enter Readings</h1>
+    </div>
+    <back-button></back-button>
+  </div>
+</div>
+
+<div class="container-fluid none-padding enter-readings">
+  <div class="row search-row none-margin-hr">
+    <div class="col none-padding">
+      <form class="form-inline main-search-input">
+        <div class="input-group">
+          <input #searchBox class="form-control group-search-input" data-search-field
+                 placeholder="Search meter by serial number" type="search"/>
+          <div class="input-group-append">
+            <i class="icon-relative search-icon vertical-middle"></i>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="row none-margin-hr nav-row">
+    <div class="col-12 none-padding">
+      <div class="d-flex justify-content-between">
+        <div class="d-flex align-items-center">
+          <span class="results-lbl dnm-text-light">12 meters</span>
+        </div>
+        <div class="d-flex align-item-center justify-content-end">
+          <div class="d-flex align-items-center">
+
+            <span class="text-uppercase filter-drpdwn-lbl">Show:</span>
+            <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+              <button class="btn btn-secondary dropdown-toggle bld-per-drpdwn-btn text-left" ngbDropdownToggle>
+                Has no readings
+              </button>
+              <div class="dropdown-menu bld-per-drpdwn-menu" ngbDropdownMenu>
+                <button class="dropdown-item">Reading 1</button>
+                <button class="dropdown-item">Reading 2</button>
+                <button class="dropdown-item">Reading 3</button>
+                <button class="dropdown-item">Reading 4</button>
+                <button class="dropdown-item">Reading 5</button>
+              </div>
+            </div>
+
+            <span class="text-uppercase datepicker-lbl">On Date:</span>
+            <div class="datepicker-wrp nav-datepicker-wrp">
+              <input #asForDate="ngbDatepicker" (click)="asForDate.toggle()" class="form-control nav-dtpickr-inpt"
+                     name="asForDate" ngbDatepicker placeholder="dd/mm/YYYY" readonly>
+              <i (click)="asForDate.toggle()" class="calendar"></i>
+            </div>
+            <span class="text-uppercase datepicker-lbl">Reading Date:</span>
+            <div class="datepicker-wrp nav-datepicker-wrp">
+              <input #readingDate="ngbDatepicker" (click)="readingDate.toggle()" class="form-control nav-dtpickr-inpt"
+                     name="readingDate" ngbDatepicker placeholder="dd/mm/YYYY" readonly>
+              <i (click)="readingDate.toggle()" class="calendar"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row none-margin-hr list-header">
+    <div class="col-3">
+      <div class="row none-margin-hr">
+        <div class="col-4">
+          <a (click)="changeOrderIndex(2);" [ngClass]="{'active': orderIndex == 2 || orderIndex == -2}" class="header-field d-flex align-items-center"
+             href="javascript:void(0);">
+            <span class="text-ellipsis" title="Serial No">Serial No</span>
+            <i [ngClass]="{'inactive': orderIndex != 2 && orderIndex != -2, 'dnm-icon-sort-up': orderIndex == -2,'dnm-icon-sort-down': orderIndex != -2 }"
+               class="dnm-icon"></i>
+          </a>
+        </div>
+        <div class="col-4">
+          <a (click)="changeOrderIndex(2);" [ngClass]="{'active': orderIndex == 2 || orderIndex == -2}" class="header-field d-flex align-items-center"
+             href="javascript:void(0);">
+            <span class="text-ellipsis" title="Location">Location</span>
+            <i [ngClass]="{'inactive': orderIndex != 2 && orderIndex != -2, 'dnm-icon-sort-up': orderIndex == -2,'dnm-icon-sort-down': orderIndex != -2 }"
+               class="dnm-icon"></i>
+          </a>
+        </div>
+        <div class="col-4">
+          <a (click)="changeOrderIndex(2);" [ngClass]="{'active': orderIndex == 2 || orderIndex == -2}" class="header-field d-flex align-items-center"
+             href="javascript:void(0);">
+            <span class="text-ellipsis" title="Seq No">Seq No</span>
+            <i [ngClass]="{'inactive': orderIndex != 2 && orderIndex != -2, 'dnm-icon-sort-up': orderIndex == -2,'dnm-icon-sort-down': orderIndex != -2 }"
+               class="dnm-icon"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="col-9">
+      <div class="row none-margin-hr">
+        <div class="col-7 none-padding">
+          <div class="row none-margin-hr">
+            <div class="col-3 header-field d-flex align-items-center">
+              <span class="text-ellipsis" title="Register">Register</span>
+            </div>
+            <div class="col-3 header-field d-flex align-items-center">
+              <span class="text-ellipsis" title="Previous Readings">Previous Reading</span>
+            </div>
+            <div class="col-3 header-field d-flex align-items-center">
+              <span class="text-ellipsis" title="Average Usage">Average Usage</span>
+            </div>
+            <div class="col-3 header-field d-flex align-items-center">
+              <span class="text-ellipsis" title="Estimated Readings">Estimated Reading</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-5 none-padding">
+          <div class="row none-margin-hr">
+            <div class="col-5 header-field d-flex align-items-center">
+              <span class="text-ellipsis" title="Current Readings">Current Reading</span>
+            </div>
+            <div class="col-7 header-field d-flex align-items-center">
+              <span class="text-ellipsis" title="Usage">Usage</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="list-body">
+    <reading-item></reading-item>
+    <reading-item></reading-item>
+    <reading-item></reading-item>
+    <reading-item></reading-item>
+    <reading-item></reading-item>
+  </div>
+</div>

@@ -1,0 +1,109 @@
+<div class="allocated-tariffs-list">
+  <div class="bl-gradient-title">Allocated Tariffs</div>
+  <div *ngIf="{
+          tariffs: tariffs,
+          order: tariffsOrder$ | async,
+          supplierTypeFilter: supplierTypeFilter$ | async,
+          supplierFilter: supplierFilter$ | async,
+          supplierList: suppliersDropdownItems$ | async
+        } as data"
+       class="container-fluid">
+    <div class="filter-block">
+      <div class="row">
+        <div class="col-12 none-padding">
+          <div class="d-flex justify-content-between">
+            <div class="d-flex align-items-center">
+              <span class="results-label dnm-text-light">{{ data.tariffs?.length }} items of tariffs</span>
+              <button [branchId]="branchId" [buildingId]="buildingId"
+                      add-new-allocated-tariff-bind-dialog class="btn blue-text-btn d-flex align-items-center none-padding" type="button" [disabled]="buildingPeriodIsFinalized">
+                <i class="add-icon"></i> Add New
+              </button>
+            </div>
+            <div class="d-flex">
+              <div class="d-flex align-items-center filter-block__item">
+                <span class="text-uppercase count-label">Supplier Type:</span>
+                <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+                  <button class="btn btn-secondary fltr-drpdwn-btn supply-fltr-btn dropdown-toggle" ngbDropdownToggle
+                          type="button">
+                    {{ getActiveDropdownItemFromList(supplierTypes, data.supplierTypeFilter).label }}
+                  </button>
+                  <div class="dropdown-menu fltr-drpdwn-menu" ngbDropdownMenu>
+                    <button (click)="onSupplyTypeChanged(item.value)" *ngFor="let item of supplierTypes" class="dropdown-item"
+                            type="button">{{ item.label }}</button>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex align-items-center filter-block__item">
+                <span class="text-uppercase count-label">Supplier:</span>
+                <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+                  <button class="btn btn-secondary fltr-drpdwn-btn supply-fltr-btn dropdown-toggle" ngbDropdownToggle
+                          type="button">
+                    {{ getActiveDropdownItemFromList(data.supplierList, data.supplierFilter)?.label || 'All' }}
+                  </button>
+                  <div class="dropdown-menu fltr-drpdwn-menu" ngbDropdownMenu>
+                    <button (click)="onSupplierChanged(item.value)" *ngFor="let item of data.supplierList" class="dropdown-item"
+                            type="button">{{ item.label }}</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="list-header list-header-allocated-tariffs d-flex align-items-center">
+      <div class="header-field header-field-name">
+        <a (click)="onTariffOrderChanged(data.order, tariffListOrder.NameAsc)" [ngClass]="getActiveOrderClass(data.order, tariffListOrder.NameAsc, tariffListOrder.NameDesc)"
+           class="header-field d-flex align-items-center"
+           href="javascript:void(0);">
+          <span class="text-ellipsis text-uppercase" title="Tariff Name">Tariff name</span>
+          <i [ngClass]="getOrderClasses(data.order, tariffListOrder.NameAsc, tariffListOrder.NameDesc)"
+             class="dnm-icon"></i>
+        </a>
+      </div>
+      <div class="header-field header-field-version">
+        <a (click)="onTariffOrderChanged(data.order, tariffListOrder.VersionsAsc)" [ngClass]="getActiveOrderClass(data.order, tariffListOrder.VersionsAsc, tariffListOrder.VersionsDesc)"
+           class="header-field d-flex align-items-center"
+           href="javascript:void(0);">
+          <span class="text-ellipsis text-uppercase" title="Versions">Versions</span>
+          <i [ngClass]="getOrderClasses(data.order, tariffListOrder.VersionsAsc, tariffListOrder.VersionsDesc)"
+             class="dnm-icon"></i>
+        </a>
+      </div>
+      <div class="header-field header-field-created">
+        <a (click)="onTariffOrderChanged(data.order, tariffListOrder.CreatedOnAsc)" [ngClass]="getActiveOrderClass(data.order, tariffListOrder.CreatedOnAsc, tariffListOrder.CreatedOnDesc)"
+           class="header-field d-flex align-items-center"
+           href="javascript:void(0);">
+          <span class="text-ellipsis text-uppercase" title="Created On">Created On</span>
+          <i [ngClass]="getOrderClasses(data.order, tariffListOrder.CreatedOnAsc, tariffListOrder.CreatedOnDesc)"
+             class="dnm-icon"></i>
+        </a>
+      </div>
+      <div class="header-field header-field-applies">
+        <a (click)="onTariffOrderChanged(data.order, tariffListOrder.OfAppliesAsc)" [ngClass]="getActiveOrderClass(data.order, tariffListOrder.OfAppliesAsc, tariffListOrder.OfAppliesDesc)"
+           class="header-field d-flex align-items-center"
+           href="javascript:void(0);">
+          <span class="text-ellipsis text-uppercase" title="#Of Applies">#Of Applies</span>
+          <i [ngClass]="getOrderClasses(data.order, tariffListOrder.OfAppliesAsc, tariffListOrder.OfAppliesDesc)"
+             class="dnm-icon"></i>
+        </a>
+      </div>
+      <div class="header-field header-field-values">
+        <span class="text-ellipsis text-uppercase" title="Values">Values</span>
+      </div>
+      <div class="header-field header-field-actions d-flex align-items-center"></div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 none-padding">
+        <tariff-item (tariffDeleted)="onTariffDeleted($event)"
+                     *ngFor="let tariff of tariffs"
+                     [tariff]="tariff"
+                     [buildingPeriodIsFinalized]="buildingPeriodIsFinalized"></tariff-item>
+      </div>
+    </div>
+  </div>
+</div>

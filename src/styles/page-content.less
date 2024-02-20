@@ -1,0 +1,237 @@
+@import 'variables.less';
+
+html,
+body {
+  background-color: @color-background-primary !important;
+  font-family: Gotham Medium, Arial, sans-serif;
+}
+
+.page-title {
+  font-family: Gotham Medium;
+  font-size: 19px;
+  margin: 0;
+}
+
+.none-padding {
+  padding: 0 !important;
+}
+
+.none-lt-padding {
+  padding-left: 0 !important;
+}
+
+.none-rt-padding {
+  padding-right: 0 !important;
+}
+
+.text-link-lg {
+  font-family: Gotham Medium;
+  font-size: 13px;
+  color: @color-main-accent;
+  border-bottom: 2px solid #d4ecfb;
+}
+
+.text-link-lg:hover {
+  color: @color-text-primary;
+  text-decoration: none;
+  border-bottom: 2px solid #d6d7d9;
+}
+
+.bl-gradient-title {
+  display: inline-block;
+  font-family: Gotham Book;
+  font-size: 18px;
+  .gradient-heading();
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gd-title-green {
+  display: inline-block;
+  background: linear-gradient(90deg, #4fbfa6 0, #358f7d 20%, #358f7d 30%, #2d8070 45%, #2d8070 60%, #2d8070 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-block-title {
+  font-family: Gotham Medium;
+  font-size: 21px;
+  color: @color-text-tertiary;
+}
+
+.text-secondary {
+  font-family: Gotham Light;
+  font-size: 12px;
+  color: @color-description !important;
+}
+
+.text-standard {
+  font-family: Gotham Book;
+  font-size: 12px;
+  color: @color-text-tertiary;
+}
+
+.text-legend {
+  font-family: Gotham Book;
+  font-size: 13px;
+  color: @color-description;
+}
+
+.text-form-field {
+  font-family: Gotham Medium;
+  font-size: 13px;
+  color: @color-text-tertiary;
+  line-height: 1;
+  padding-top: 12px;
+}
+
+.text-note-field {
+  font-family: Gotham Book;
+  font-size: 12px;
+  color: @color-text-tertiary;
+}
+
+.undertext {
+  font-family: Gotham Book;
+  font-size: 11px;
+  color: @color-description;
+  text-transform: none;
+}
+
+.bg-blue-gradient {
+  .gradient-header();
+}
+
+.bg-gd-blue {
+  .gradient-blue();
+}
+
+.bg-gd-turquoise {
+  background-image: linear-gradient(to right, #1db496, #23a68c, #289983, #2b8c79, #2d7f6f) !important;
+}
+
+.bg-gd-green {
+  .gradient-green();
+}
+
+.bg-gd-yellow {
+  .gradient-yellow();
+}
+
+.bg-gd-orange {
+  .gradient-orange() !important;
+}
+
+.bg-gd-red {
+  .gradient-red();
+}
+
+.bg-gd-darkpink {
+  .gradient-pink() !important;
+}
+
+.bg-gd-violet {
+  .gradient-violet() !important;
+}
+
+.bg-gd-violetblue {
+  .gradient-dark-violet();
+}
+
+.bg-gd-black {
+  .gradient-black();
+}
+
+.bg-gd-gray {
+  .gradient-grey();
+}
+
+.vertical-middle {
+  position: relative;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  /* IE 9 */
+  -webkit-transform: translateY(-50%);
+  /* Safari */
+  transform: translateY(-50%);
+}
+
+.vertical-bottom {
+  vertical-align: bottom;
+}
+
+.top-container {
+  background-color: @color-background-white;
+  width: auto;
+  min-height: 90px;
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+}
+
+.top-container .content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 25px;
+  width: 100%;
+}
+
+.inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.inputfile:focus {
+  outline: none;
+}
+
+.inputfile + label {
+  font-family: Gotham Medium;
+  font-size: 12px;
+  color: white;
+  background-image: linear-gradient(to right, #8490a7, #7a87a0, #717f99, #677693, #5e6e8c);
+  display: inline-block;
+  cursor: pointer;
+  padding: 5px 15px;
+  border-radius: 12.5px;
+  -webkit-box-shadow: 0 2px 10px 0 rgba(126, 125, 171, .8);
+  -moz-box-shadow: 0 2px 10px 0 rgba(126, 125, 171, .8);
+  box-shadow: 0 2px 10px 0 rgba(126, 125, 171, .8);
+}
+
+.inputfile + label:hover {
+  box-shadow: none;
+}
+
+input[type=checkbox] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.add-entity-btn > span {
+  position: relative;
+  top: -13px;
+  margin-right: 20px;
+}
+
+.file-upld {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  width: 14px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.file-upld input[type="file"] {
+  position: absolute;
+  top: 0;
+  opacity: 0;
+  color: transparent;
+  display: none;
+}

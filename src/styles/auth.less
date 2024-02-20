@@ -1,0 +1,165 @@
+@import './variables.less';
+
+.auth-page {
+  font-size: 14px;
+
+  .btn {
+    font-size: 14px;
+  }
+
+  .auth-left {
+    background-color: #ebeef6;
+    background-size: cover;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .centered-block {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    width: 50%;
+  }
+
+  .main-logo-cnt {
+    width: 300px;
+    height: 170px;
+    margin-bottom: 65px;
+
+    .logo-img {
+      max-height: 100%;
+      margin: 0 auto;
+      width: auto;
+    }
+  }
+
+
+  .input-box {
+    position: relative;
+  }
+
+  .form-group .input-box {
+    position: relative;
+  }
+
+  .form-group label {
+    color: @color-empty;
+    margin-bottom: 10px;
+  }
+
+
+  .submit-buttons button {
+    .gradient-active-tab-icon();
+    color: @color-background-white;
+    text-transform: uppercase;
+    border-radius: 20px;
+    border: none;
+    box-shadow: 1px 2px 4px rgba(50, 68, 134, .5);
+    margin-top: 10px;
+    padding: 9px 12px;
+  }
+
+  .submit-buttons button:hover {
+    box-shadow: none;
+    opacity: 0.9;
+  }
+
+  .submit-buttons button:active {
+    .gradient-active-tab-icon() !important;
+  }
+
+  .submit-buttons {
+    margin: 0 0 40px 0;
+  }
+
+  .check-icon,
+  .cross-icon {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+  }
+
+  .form-group input[type="email"],
+  .form-group input[type="password"],
+  .form-group input[type="text"] {
+    height: 43px;
+    border-radius: 3px;
+    border: none;
+  }
+
+  .form-group input[type="email"]:focus,
+  .form-group input[type="password"]:focus,
+  .form-group input[type="text"]:focus {
+    border: @color-main-accent solid 2px;
+    padding: 4px 33px 4px 18px;
+  }
+
+  .form-group input[type="email"].ng-valid,
+  .form-group input[type="password"] {
+    padding-right: 35px;
+  }
+
+  .dnm-invalid-inp input:not(:active):not(:focus) {
+    border: 1px solid @color-warning;
+  }
+
+  .pass-alter-danger {
+    margin-bottom: 15px;
+  }
+
+  .remember-me-block a {
+    float: right;
+  }
+
+  .remember-me-block .form-check label {
+    color: #000;
+  }
+
+
+  @media only screen and (max-width: 1230px) {
+    form img {
+      width: 232px;
+    }
+  }
+
+  @media only screen and (max-width: 768px) {
+    .submit-buttons button + button {
+      margin-top: 20px;
+    }
+  }
+
+  @media only screen and (max-width: 500px) {
+    .main-logo-cnt .logo-img {
+      width: 100%;
+    }
+
+    .remember-me-block {
+      text-align: center;
+    }
+
+    .remember-me-block a {
+      display: block;
+      float: none;
+    }
+
+    .remember-me-block .form-check {
+      display: block;
+    }
+  }
+
+}
+
+//---------------------------------------
+.auth-right {
+  background-image: data-uri("../assets/images/login-background-large.jpg");
+  background-color: #182859;
+  background-repeat: no-repeat;
+}
+
+@media only screen and (min-width: 2400px) {
+  .auth-right {
+    background-size: cover;
+  }
+}

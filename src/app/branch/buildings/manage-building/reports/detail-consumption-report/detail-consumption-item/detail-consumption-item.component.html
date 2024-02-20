@@ -1,0 +1,63 @@
+<div class="row table-row">
+    <div class="col-8 d-flex align-items-center">
+      <div class="row w-full">
+        <div class="col-3 d-flex align-items-center">
+          <span class="tenant-name text-ellipsis">{{item.tenantName}}</span>
+        </div>
+        <div class="col-2 d-flex align-items-center">
+          <span class="tenant-name text-ellipsis">{{item.shopName}}</span>
+        </div>
+        <div class="col-2 d-flex align-items-center">
+          <span class="tenant-name text-ellipsis">{{item.shopDetailName}}</span>
+        </div>
+        <div class="col-3 d-flex align-items-center">
+          <span class="tenant-name text-ellipsis">{{item.supplyName}}</span>
+        </div>
+        <div class="col-2 d-flex align-items-center">
+          <span class="tenant-name text-ellipsis">{{item.itemName}}</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-4 align-items-center">
+      <div class="row">
+        <div class="col-11">
+          <ng-container *ngIf="item.isFirst; else childTemplate">
+            <div class="d-flex align-items-center row">
+              <div class="col-3 txt-sm" *ngFor="let cost of item.costs">
+                {{cost.totalIncVat | dynCurrency:'ZAR':'symbol-narrow':'1.2-2'}} <br>
+                {{serviceType[cost.supplyType]}}
+              </div>
+              <div class="col-3 txt-sm">
+                {{this.costSum | dynCurrency:'ZAR':'symbol-narrow':'1.2-2'}} <br> Total 
+              </div>
+            </div>
+          </ng-container>
+          <ng-template #childTemplate>
+            <div class="d-flex align-items-center justify-content-between " *ngFor="let cost of item.costs">
+              <div class="service-type-section">
+                <div class="service-type d-flex align-items-center" *ngIf="cost.supplyType > -1">
+                  <div [supplyTypeClassSufix]="'-icon'" [supplyTypeClass]="cost.supplyType"
+                       class="service-icon"></div>
+                  <span [supplyTypeClassSufix]="'-lbl'" [supplyTypeClass]="cost.supplyType"
+                        class="type-lbl">{{serviceType[cost.supplyType]}}</span>
+                </div>
+              </div>
+              <div class="txt-sm">{{ cost.totalExel | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+              <div class="txt-sm">{{ cost.vat | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+              <div class="txt-sm">{{ cost.totalIncl | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>                  
+            </div>
+          </ng-template>
+          
+        </div>
+        <div class="col-1 d-flex">
+          <div class="d-flex align-items-center justify-content-end" *ngIf="!item.isLast">
+            <span (click)="onTenantExpand(item)"
+                      [ngClass]="{'expand-icon': !item.isExpanded, 'collapse-icon': item.isExpanded}"
+                      class="icon-relative expand-btn collapse-icon"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+</div>

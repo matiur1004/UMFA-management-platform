@@ -1,0 +1,185 @@
+<div class="category-item text-uppercase text-form-field text-category">Line #{{lineItemNumber}}
+  <div class="delete-item none-padding">
+    <div (click)="deleteLineItem.emit({id: lineItem.controls.id.value, chargingType: lineItem.controls.chargingType.value})"
+         class="cross-custom">
+      <span class="cross-icon"></span>
+      <span class="cross-text">Delete line item</span>
+    </div>
+  </div>
+</div>
+<div class="input-row line-div">
+  <div class="text-uppercase field-name text-form-field">Line name</div>
+  <div class="field-value">
+    <div [ngClass]="{'dnm-invalid-inp': isSubmitted && lineItem.controls.name.isInvalid}">
+      <text-input [ngrxFormControlState]="lineItem.controls.name" class="none-padding field-value"
+                  maxlength="150"
+                  placeholder="Line name"></text-input>
+    </div>
+    <small *ngIf="isSubmitted && lineItem.controls.name.errors.required" class="alert-danger">
+      A line item name is required
+    </small>
+  </div>
+</div>
+<div class="input-row line-div">
+  <div class="text-uppercase field-name text-form-field">Charging type</div>
+  <div class="field-value">
+    <div class="dropdown d-block fullwidth-dropdown" ngbDropdown>
+      <button class="btn btn-secondary dropdown-toggle text-left" id="ddClientPortfolio" ngbDropdownToggle
+              type="button">
+        {{chargingTypeText[lineItem.controls.chargingType.value]}}
+      </button>
+      <div aria-labelledby="ddClientPortfolio" class="dropdown-menu" ngbDropdownMenu>
+        <button (click)="onUpdateChargingType(item)" *ngFor="let item of filterChargingType(lineItem.controls.chargingType.value)"
+                class="dropdown-item"
+                type="button">
+          {{chargingTypeText[item]}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="input-row line-div">
+  <div class="text-uppercase field-name text-form-field">Choose a unit of measurement</div>
+  <div class="field-value">
+    <div [ngClass]="{'dnm-invalid-inp': isSubmitted && lineItem.controls.unitOfMeasurement.isInvalid}"
+         class="dropdown d-block fullwidth-dropdown" ngbDropdown>
+      <button class="btn btn-secondary dropdown-toggle text-left" id="ddClientPortfolio" ngbDropdownToggle
+              type="button">
+        {{lineItem.controls.unitOfMeasurement.value ? getSelectedUnit(lineItem.controls.unitOfMeasurement.value) : 'Select unit of measurement'}}
+      </button>
+      <div aria-labelledby="ddClientPortfolio" class="dropdown-menu" ngbDropdownMenu>
+        <button (click)="onUpdateUnitOfMeasurement(lineItem.controls.id.value, item.unitType)" *ngFor="let item of getFilteredUnits(lineItem.controls.unitOfMeasurement.value)"
+                class="dropdown-item"
+                type="button">
+          {{item.defaultName}}
+        </button>
+      </div>
+    </div>
+    <small *ngIf="isSubmitted && lineItem.controls.unitOfMeasurement.errors.required" class="alert-danger">
+      Choose unit of measurement
+    </small>
+  </div>
+</div>
+<div class="input-row line-div">
+  <div class="text-uppercase field-name text-form-field">Charging method</div>
+  <div class="field-value">
+    <div [ngClass]="{'dnm-invalid-inp': isSubmitted && lineItem.controls.chargingMethod.isInvalid}">
+      <text-input [ngrxFormControlState]="lineItem.controls.chargingMethod" class="none-padding field-value"
+                  maxlength="150" placeholder="Charging method"></text-input>
+    </div>
+    <small *ngIf="isSubmitted && lineItem.controls.chargingMethod.errors.required" class="alert-danger">
+      A charging method is required
+    </small>
+  </div>
+</div>
+<div *ngIf="showCostTariffProperty && isSupportCostProvider">
+  <div class="input-row line-div">
+    <div class="text-uppercase field-name text-form-field">Cost price line item</div>
+    <div class="d-flex field-value align-item-center">
+      <label class="dnm-switch-btn package-status">
+        <input (change)="onCostPriceLineItemChanged()" [checked]="costPriceLineItem" type="checkbox" value="1"/>
+        <span class="dnm-switch-slider round"></span>
+      </label>
+    </div>
+  </div>
+  <div *ngIf="costPriceLineItem" class="input-row line-div field-сost-provider-nodes">
+    <div class="text-uppercase field-name text-form-field">Cost provider</div>
+    <div [ngClass]="{'dnm-invalid-inp': isSubmitted && lineItem.controls.costProviderId.errors.required}"
+         class="field-value align-item-center">
+      <ng-select [clearable]="false" [closeOnSelect]="true" [hideSelected]="true"
+                 [ngrxFormControlState]="lineItem.controls.costProviderId" [searchable]="false"
+                 class="w-100 dnm-single-select dnm-transparent-select сost-provider-nodes">
+        <ng-option [disabled]="true" [value]="''">Select Cost Provider Node</ng-option>
+        <ng-option *ngFor="let node of costProviderNodes.nodes" [value]="node.nodeId">{{node.name}}</ng-option>
+      </ng-select>
+      <small *ngIf="isSubmitted && lineItem.controls.costProviderId.errors.required" class="d-block alert-danger">
+        Cost provider is required
+      </small>
+    </div>
+  </div>
+</div>
+<div *ngIf="!costPriceLineItem">
+  <div class="input-row line-div">
+    <div class="text-uppercase field-name text-form-field">Seasonal changes</div>
+    <div class="d-flex field-value align-item-center">
+      <label class="dnm-switch-btn package-status">
+        <input [ngrxFormControlState]="lineItem.controls.hasSeasonalChanges" type="checkbox"/>
+        <span class="dnm-switch-slider round"></span>
+      </label>
+    </div>
+  </div>
+  <div class="input-row line-div">
+    <div class="text-uppercase field-name text-form-field">Time of use</div>
+    <div class="d-flex field-value align-item-center">
+      <label class="dnm-switch-btn package-status">
+        <input [ngrxFormControlState]="lineItem.controls.hasTou" type="checkbox"/>
+        <span class="dnm-switch-slider round"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="input-row line-div">
+    <div class="text-uppercase field-name text-form-field">Step tariff</div>
+    <div class="d-flex field-value checkbox-row align-items-center">
+      <div class="d-flex align-items-center checkbox-input">
+        <div class="dnm-radio-btn">
+          <input [name]="'step-schema-' + lineItemNumber"
+                 [ngrxFormControlState]="lineItem.controls.stepSchema"
+                 [value]="''"
+                 type="radio"/>
+          <div class="state">
+            <label></label>
+          </div>
+        </div>
+        <span class="checkbox-input-lbl">Not Use</span>
+      </div>
+      <div *ngFor="let step of getSteps(lineItem.controls.unitOfMeasurement.value, steps)"
+           class="d-flex align-items-center checkbox-input">
+        <div class="dnm-radio-btn">
+          <input [name]="'step-schema-' +  + lineItemNumber"
+                 [ngrxFormControlState]="lineItem.controls.stepSchema"
+                 [value]="step.id"
+                 type="radio"/>
+          <div class="state">
+            <label></label>
+          </div>
+        </div>
+        <span class="checkbox-input-lbl">{{ step.name }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="input-row line-div">
+    <div class="text-uppercase field-name text-form-field">Categories</div>
+    <div class="field-value">
+      <ng-select (remove)="onRemoveLineItemCategory($event)" [clearable]="false" [closeOnSelect]="false"
+                 [dropdownPosition]="top"
+                 [hideSelected]="true" [items]="categories" [multiple]="true" [ngrxFormControlState]="lineItem.controls.categories"
+                 [searchable]="false"
+                 bindLabel="name" class="dnm-multiple-select"></ng-select>
+    </div>
+  </div>
+  <div class="input-row line-div">
+    <div class="text-uppercase field-name text-form-field">Duplication factor</div>
+    <div class="d-flex field-value checkbox-row">
+      <div class="d-flex align-items-center checkbox-input">
+        <div class="dnm-radio-btn">
+          <input [ngrxFormControlState]="lineItem.controls.hasDuplicationFactor" [value]="false" type="radio"/>
+          <div class="state">
+            <label></label>
+          </div>
+        </div>
+        <span class="checkbox-input-lbl">Not Use</span>
+      </div>
+      <div class="d-flex align-items-center checkbox-input">
+        <div class="dnm-radio-btn">
+          <input [ngrxFormControlState]="lineItem.controls.hasDuplicationFactor" [value]="true" type="radio"/>
+          <div class="state">
+            <label></label>
+          </div>
+        </div>
+        <span class="checkbox-input-lbl">Number of units in a building</span>
+      </div>
+    </div>
+  </div>
+
+</div>

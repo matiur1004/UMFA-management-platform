@@ -1,0 +1,152 @@
+<ul>
+  <li *ngFor="let nodeTariff of nodeTariffSections; let first = first;" class="tariff-item">
+    <div *ngIf="first" class="row list-header none-margin-hr d-flex align-items-center">
+      <div class="col-2 header-field col-frst-lv">
+        <span class="col-lbl text-uppercase">Supply Type/<br />Tariff/Supplier</span>
+      </div>
+      <div class="col-10 none-padding">
+        <div class="container-fluid none-padding">
+          <div class="row none-margin-hr d-flex align-items-center">
+            <div class="col-2 header-field">
+              <span class="col-lbl text-uppercase">Line item</span>
+            </div>
+            <div class="col row">
+              <div class="col-2 header-field d-flex align-items-center">
+                <span class="col-lbl text-uppercase">Usage</span>
+              </div>
+              <div class="col-4 header-field">
+                <span class="col-lbl text-uppercase">Price details</span>
+              </div>
+              <div class="col-2 header-field">
+                <span class="col-lbl text-uppercase">Total</span>
+              </div>
+              <div class="col-2 header-field">
+                <span class="col-lbl text-uppercase">Vat</span>
+              </div>
+              <div class="col-2 header-field">
+                <span class="col-lbl text-uppercase">Total<br />Inc. Vat</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="item-content d-flex align-items-center">
+      <div class="container-fluid none-padding">
+        <div class="row none-margin-hr">
+          <div class="col-2 d-flex align-items-center col-frst-lv">
+            <div class="container-fluid none-padding">
+              <div class="row none-margin-hr">
+                <div class="col-auto none-padding d-flex align-items-center">
+                  <div class="service-type d-flex align-items-center">
+                    <div [supplyTypeClassSufix]="'-icon'" [supplyTypeClass]="nodeTariff.supplyType"
+                         class="service-icon"></div>
+                  </div>
+                </div>
+                <div class="col-auto none-padding">
+                  <div class="txt-md">{{nodeTariff.tariffName}} <ng-container *ngIf="nodeTariff.tariffCode">({{nodeTariff.tariffCode}})</ng-container></div>
+                  <div class="txt-sm">{{nodeTariff.supplierName}}</div>
+                  <div *ngIf="+nodeTariff.calculationFactor !== 1" class="txt-sm-light">
+                    Calculation Factor: <span class="txt-sm">{{nodeTariff.calculationFactor | number:'1.0-5'}}</span>
+                  </div>
+                  <div class="txt-sm-light">
+                    Liability: <span class="txt-sm">{{(nodeTariff.liability * 100) | number:'1.2-2'}}%</span>
+                  </div>
+                  <ng-container *ngIf="+nodeTariff.liability !== 1">
+                    <div class="txt-sm-light">
+                      Allocation: <span class="txt-sm">
+                        {{nodeTariff.nodeAllocation | number:'1.0-5'}} of
+                        {{nodeTariff.totalNodeAllocation | number:'1.0-5'}}
+                      </span>
+                    </div>
+                    <div *ngIf="nodeTariff.totalCommonAreaAllocation" class="txt-sm-light">
+                      Common Area Liability: <span class="txt-sm">
+                        {{nodeTariff.commonAreaAllocation | number:'1.0-5'}} of
+                        {{nodeTariff.totalCommonAreaAllocation | number:'1.0-5'}}
+                      </span>
+                    </div>
+                  </ng-container>
+                  <div class="txt-sm-light">
+                    Days (length of the BP): <span class="txt-sm">{{nodeTariff.buildingPeriod | number:'1.0-1'}} days</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-10 none-padding">
+            <div class="container-fluid none-padding">
+              <div *ngFor="let lineItemsGroup of nodeTariff.lineItemGroups | keyvalue"
+                   class="row none-margin-hr d-flex align-items-center line-item">
+                <div class="col-2">
+                  <div class="sub-title row">
+                    <i *ngIf="lineItemsGroup.value[0].isVirtual" class="dnm-icon-virtual-registers"></i>
+                    {{lineItemsGroup.value[0].lineItemName}}
+                  </div>
+                  <div *ngIf="lineItemsGroup.value[0].categoryName" class="txt-sm">
+                    ({{lineItemsGroup.value[0].categoryName}})
+                  </div>
+                </div>
+                <div class="col">
+                  <div *ngFor="let lineItem of lineItemsGroup.value" class="row">
+                    <div class="col-2 txt-sm show-in-center">
+                      <span *ngIf="lineItem.amount">{{lineItem.amount | number:'1.0-5'}}</span>
+                      <span *ngIf="lineItem.amountUnit">{{lineItem.amountUnit}}</span>
+                    </div>
+                    <div class="col-4 price-dt">
+                      <div *ngFor="let priceItem of lineItem.priceDetails" class="price-sctn">
+                        <div>
+                          ({{priceItem.tariffValue}}<span *ngIf="priceItem.season"> {{priceItem.season}}</span>)
+                          <span class="txt-sm-light">{{priceItem.duration}} days</span>
+                        </div>
+                        <div *ngFor="let calcItem of priceItem.calculations">
+                          <span *ngIf="calcItem.stepRangeId" class="price-dt-lt">{{calcItem.stepRangeName}}</span>
+                          <span *ngIf="calcItem.stepRangeId && calcItem.timeOfUse" class="price-dt-lt">, </span>
+                          <span *ngIf="calcItem.timeOfUse"
+                                class="price-dt-lt">{{timeOfUseNames[calcItem.timeOfUse]}}</span>
+                          <span *ngIf="lineItem.isVirtual && calcItem.stepRangeName"
+                                class="price-dt-lt">{{calcItem.stepRangeName}}</span>
+                          <span *ngIf="calcItem.stepRangeId || calcItem.timeOfUse || (lineItem.isVirtual && calcItem.stepRangeName)"
+                                class="price-dt-lt">: </span>
+                          {{transformFormula(calcItem.formula)}} = {{calcItem.total | number:'1.2-2'}}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-2 txt-sm show-in-center">{{ lineItem.total | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                    <div class="col-2 txt-sm show-in-center">{{ (lineItem.totalIncVat - lineItem.total) | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                    <div class="col-2 sub-title show-in-center">{{ lineItem.totalIncVat | dynCurrency:'ZAR':'symbol-narrow':'1.2-2'}}</div>
+                  </div>
+                </div>
+              </div>
+              <div class="row none-margin-hr d-flex align-items-center line-item">
+                <div class="col-2">
+                  <div class="sub-title row">
+                    <span>{{nodeTariff.tariffName}} Totals</span>
+                  </div>
+                 </div>
+                <div class="col">
+                  <div class="row">
+                    <div class="col-2 txt-sm show-in-center">
+                      <span>&nbsp;</span>
+                    </div>
+                    <div class="col-4 price-dt">
+                      <div class="price-sctn">
+                        <div>
+                          <span class="txt-sm-light">&nbsp;</span>
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class="col-2 sub-title show-in-center">{{ nodeTariff.lineItemsTotalPrice | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                    <div class="col-2 sub-title show-in-center">{{ (nodeTariff.lineItemsTotalPriceVatInc - nodeTariff.lineItemsTotalPrice) | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                    <div class="col-2 sub-title show-in-center">{{ nodeTariff.lineItemsTotalPriceVatInc | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </li>
+</ul>

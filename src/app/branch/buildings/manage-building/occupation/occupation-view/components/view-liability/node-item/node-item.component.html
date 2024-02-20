@@ -1,0 +1,15 @@
+<div class="node-item">
+  <div class="item-header">
+    <div class="item-title d-flex justify-content-center">Nodes <br/></div>
+  </div>
+  <div class="supply-types-container d-flex align-items-stretch">
+    <div *ngFor="let typeIndex of supplyTypeIndexesToShow" class="spl-type-item d-flex align-items-center flex-grow-1">
+      <div class="supply-type d-flex align-items-center">
+        <div [supplyTypeClassSufix]="'-icon'"
+             [supplyTypeClass]="typeIndex" class="service-icon"></div>
+        <span [supplyTypeClassSufix]="'-lbl'"
+              [supplyTypeClass]="typeIndex" class="type-lbl">{{supplyType[typeIndex]}}</span>
+      </div>
+    </div>
+  </div>
+</div>

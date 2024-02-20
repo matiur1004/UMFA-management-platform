@@ -1,0 +1,61 @@
+<div class="charges-table-container">
+  <div *ngIf="subtitle" class="charges-table-subtitle text-uppercase">
+    {{ subtitle }}
+  </div>
+
+  <div class="charges-table-title d-flex">
+    <div *ngIf="ranges" class="title-item text-uppercase">Steps</div>
+    <div *ngIf="viewMode !== 'season-time' && viewMode !== 'simple-time'" class="title-item text-uppercase">Category
+    </div>
+    <div class="title-item text-uppercase">1-st value</div>
+    <div class="title-item text-uppercase">Increase %</div>
+    <div class="title-item text-uppercase">Increase R</div>
+    <div class="title-item text-uppercase">History</div>
+    <div class="title-item text-uppercase">Current value</div>
+  </div>
+
+  <ng-container *ngFor="let c of values.controls; trackBy: trackByFn">
+    <div *ngIf="isShow(c, seasonIndex, timeOfUse)" class="charges-table-content d-flex">
+      <div *ngIf="ranges" class="charges-table-content-item">
+        <div class="text-uppercase field-name">{{ getRangeData(c.value.stepRangeId, ranges)}}</div>
+      </div>
+      <div *ngIf="viewMode !== 'season-time' && viewMode !== 'simple-time'" class="charges-table-content-item">
+        <div class="text-uppercase field-name">{{ getCategoryName(c.value.tariffCategoryId) }}</div>
+      </div>
+      <div class="charges-table-content-item field-value">
+        <span class="text-disabled">{{ c.value.previousValue || '-' }}</span>
+      </div>
+      <div class="charges-table-content-item field-value">
+        <span class="text-disabled">{{ getIncrease(c.value.value, c.value.previousValue) }}</span>
+      </div>
+      <div class="charges-table-content-item field-value">
+        <span class="text-disabled">{{ getIncreaseR(c.value.value, c.value.previousValue) }}</span>
+      </div>
+      <div class="charges-table-content-item field-value d-flex align-items-center">
+        <i (shown)="setActiveHistory(c.value.history, c.value.previousValue)"
+           [ngbTooltip]="tipContent"
+           class="tab-icon general-info-icon"
+           placement="bottom"></i>
+      </div>
+      <div [ngClass]="{ 'dnm-invalid-inp': c.controls.value.isSubmitted && c.controls.value.isInvalid}"
+           class="charges-table-content-item field-value">
+        <input [ngrxFormControlState]="c.controls.value" [textMask]="{ mask: numberMask }"
+               class="form-control numb-form-control numb-form-control--clear" placeholder="Type here" type="text">
+      </div>
+    </div>
+  </ng-container>
+
+</div>
+
+<!-- Tooltip history content-->
+<ng-template #tipContent>
+  <div class="tooltip-header">History of value changes</div>
+  <div class="tooltip-content">
+    <div *ngFor="let history of activeHistories.histories; trackBy: trackByFn" class="tooltip-content-item">
+      <span class="date">{{ history.tariffValueName }}:</span>
+      <span>
+        {{ getHistoryItem(history, activeHistories.previousValue) }}
+      </span>
+    </div>
+  </div>
+</ng-template>

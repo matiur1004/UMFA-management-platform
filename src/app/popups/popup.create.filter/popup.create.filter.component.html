@@ -1,0 +1,27 @@
+<div class="container-fluid none-padding create-virtual-register">
+  <div class="modal-header">
+    <h5 class="modal-title">{{isNew ? 'Save Filter' : 'Update Filter'}}</h5>
+    <button (click)="onCancel()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="input-row">
+      <div class="text-uppercase field-name">{{isNew ? 'Add New Filter' : 'Edit Filter'}}</div>
+      <div class="field-value">
+        <div [ngClass]="{'dnm-invalid-inp': !filterName.length && isSubmit}">
+          <input [(ngModel)]="filterName" class="form-control" maxlength="50" type="text">
+        </div>
+      </div>
+      <small *ngIf="!filterName.length && isSubmit" class="alert-danger">
+        Filter Name is required
+      </small>
+    </div>
+    <div class="row none-margin-hr">
+      <div class="col-12 none-padding text-right footer-buttons">
+        <button (click)="onCancel();" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+        <button (click)="onSave();" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

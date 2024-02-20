@@ -1,0 +1,129 @@
+<div class="category-item text-uppercase text-form-field text-category">
+  Line #{{lineItemNumber}}
+  <div class="delete-item none-padding">
+    <div (click)="deleteLineItem.emit({id: lineItem.controls.id.value, chargingType: lineItem.controls.chargingType.value})"
+         class="cross-custom">
+      <span class="cross-icon"></span>
+      <span class="cross-text">Delete line item</span>
+    </div>
+  </div>
+</div>
+<div class="input-row line-div">
+  <div class="text-uppercase field-name text-form-field">Line name</div>
+  <div class="field-value">
+    <div [ngClass]="{'dnm-invalid-inp': isSubmitted && lineItem.controls.name.isInvalid}">
+      <text-input [ngrxFormControlState]="lineItem.controls.name" class="none-padding field-value"
+                  maxlength="150" placeholder="Line name"></text-input>
+    </div>
+    <small *ngIf="isSubmitted && lineItem.controls.name.errors.required" class="alert-danger">
+      A line item name is required
+    </small>
+  </div>
+</div>
+<div class="input-row line-div">
+  <div class="text-uppercase field-name text-form-field">Charging type</div>
+  <div class="field-value">
+    <div class="dropdown d-block fullwidth-dropdown" ngbDropdown>
+      <button class="btn btn-secondary dropdown-toggle text-left" id="ddClientPortfolio" ngbDropdownToggle
+              type="button">
+        {{chargingTypeText[lineItem.controls.chargingType.value]}}
+      </button>
+      <div aria-labelledby="ddClientPortfolio" class="dropdown-menu" ngbDropdownMenu>
+        <button (click)="onUpdateChargingType(item)" *ngFor="let item of filterChargingType(lineItem.controls.chargingType.value)"
+                class="dropdown-item"
+                type="button">
+          {{chargingTypeText[item]}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="input-row line-div">
+  <div class="text-uppercase field-name text-form-field">Choose an attribute</div>
+  <div class="field-value">
+    <div class="dropdown d-block fullwidth-dropdown" ngbDropdown>
+      <button class="btn btn-secondary dropdown-toggle text-left" id="ddClientPortfolio" ngbDropdownToggle
+              type="button">
+        {{lineItem.controls.attributeId.value ? getSelectedAttribute(lineItem.controls.attributeId.value) : 'Select attribute'}}
+      </button>
+      <div aria-labelledby="ddClientPortfolio" class="dropdown-menu" ngbDropdownMenu>
+        <button *ngIf="getFilteredAttributes(lineItem.controls.attributeId.value).length == 0" class="dropdown-item"
+                type="button">
+          Attributes not found
+        </button>
+        <button (click)="updateAttributeId.emit({id: lineItem.controls.id.value, attributeId: item.id})" *ngFor="let item of getFilteredAttributes(lineItem.controls.attributeId.value)"
+                class="dropdown-item"
+                type="button">
+          {{item.name}}
+        </button>
+      </div>
+    </div>
+    <small *ngIf="isSubmitted && lineItem.controls.attributeId.errors.required" class="alert-danger">
+      Choose attribute
+    </small>
+  </div>
+</div>
+
+<div class="input-row line-div">
+  <div class="text-uppercase field-name text-form-field">Basic period</div>
+  <div class="d-flex field-value checkbox-row">
+    <div class="d-flex align-items-center checkbox-input">
+      <div class="dnm-radio-btn">
+        <input [ngrxFormControlState]="lineItem.controls.basicPeriod" [value]="basicPeriod.Custom" type="radio" />
+        <div class="state">
+          <label></label>
+        </div>
+      </div>
+      <span class="checkbox-input-lbl">Per Building Period</span>
+    </div>
+    <div class="d-flex align-items-center checkbox-input">
+      <div class="dnm-radio-btn">
+        <input [ngrxFormControlState]="lineItem.controls.basicPeriod" [value]="basicPeriod.Day" type="radio" />
+        <div class="state">
+          <label></label>
+        </div>
+      </div>
+      <span class="checkbox-input-lbl">Daily</span>
+    </div>
+    <div class="d-flex align-items-center checkbox-input" title="Monthly value will be calculated as daily value and applied to reading period">
+      <div class="dnm-radio-btn">
+        <input [ngrxFormControlState]="lineItem.controls.basicPeriod" [value]="basicPeriod.Month" type="radio" />
+        <div class="state">
+          <label></label>
+        </div>
+      </div>
+      <span class="checkbox-input-lbl">Monthly applied Daily</span>
+    </div>
+  </div>
+</div>
+<div class="input-row line-div">
+  <div class="text-uppercase field-name text-form-field">Charging method</div>
+  <div class="field-value">
+    <div [ngClass]="{'dnm-invalid-inp': isSubmitted && lineItem.controls.chargingMethod.isInvalid}">
+      <text-input [ngrxFormControlState]="lineItem.controls.chargingMethod" class="none-padding field-value"
+                  maxlength="150" placeholder="Charging method"></text-input>
+    </div>
+    <small *ngIf="isSubmitted && lineItem.controls.chargingMethod.errors.required" class="alert-danger">
+      A charging method is required
+    </small>
+  </div>
+</div>
+<div class="input-row line-div">
+  <div class="text-uppercase field-name text-form-field">Seasonal changes</div>
+  <div class="d-flex field-value align-item-center">
+    <label class="dnm-switch-btn package-status">
+      <input [ngrxFormControlState]="lineItem.controls.hasSeasonalChanges" type="checkbox"/>
+      <span class="dnm-switch-slider round"></span>
+    </label>
+  </div>
+</div>
+<div class="input-row line-div">
+  <div class="text-uppercase field-name text-form-field">Categories</div>
+  <div class="field-value">
+    <ng-select (remove)="onRemoveLineItemCategory($event)" [clearable]="false" [closeOnSelect]="false"
+               [dropdownPosition]="'top'"
+               [hideSelected]="true" [items]="categories" [multiple]="true" [ngrxFormControlState]="lineItem.controls.categories"
+               [searchable]="false"
+               bindLabel="name" class="dnm-multiple-select"></ng-select>
+  </div>
+</div>

@@ -1,0 +1,321 @@
+@import 'variables.less';
+
+.tariff-details .section-title {
+  line-height: 1;
+}
+
+.tariff-details ::ng-deep .line-div {
+  border-bottom: 1px solid #eeeff0;
+}
+
+.tariff-details ::ng-deep .version-value {
+  font-size: 14px;
+  color: @color-description;
+  font-family: Gotham Book;
+  margin-left: 21px;
+}
+
+.tariff-details ::ng-deep .input-row {
+  padding: 10px 0 10px 20px;
+  margin-bottom: 0;
+}
+
+.tariff-details .field-name {
+  position: relative;
+}
+
+.tariff-details .field-name-top {
+  margin-top: 3px;
+}
+
+.tariff-details .field-dropdown {
+  width: 400px;
+}
+
+.tariff-details .price-icon {
+  background: url('../../../../../../assets/images/icons/services/info-price.svg') center no-repeat;
+  background-size: 12px;
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  position: relative;
+  top: 1px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.tariff-details .price-icon:hover {
+  background: url('../../../../../../assets/images/icons/services/info-price-hover.svg') center no-repeat;
+}
+
+.tariff-details .input-row-title {
+  font-family: Gotham Medium;
+  font-size: 12px;
+  line-height: 12px;
+  color: @color-empty;
+  text-transform: uppercase;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.tariff-details .price-info-popup {
+  display: none;
+  position: absolute;
+  display: none;
+  padding: 0;
+  margin: 0 0 12px 0;
+  right: -81px;
+  top: 23px;
+  z-index: 100;
+}
+
+.tariff-details .price-icon:hover .price-info-popup {
+  display: block;
+}
+
+.tariff-details ::ng-deep .checkbox-input {
+  padding-left: 22px;
+  padding-right: 5px;
+  margin-bottom: 15px;
+}
+
+.tariff-details ::ng-deep .checkbox-input:first-child {
+  margin-top: 8px;
+}
+
+.tariff-details ::ng-deep .checkbox-input .dnm-checkbox {
+  margin-right: 13px;
+}
+
+.tariff-details ::ng-deep .checkbox-input .dnm-radio-btn {
+  margin-right: 13px;
+}
+
+.tariff-details ::ng-deep .checkbox-input-lbl {
+  font-family: Gotham Light;
+  font-size: 14px;
+  line-height: 14px;
+  color: @color-text-tertiary;
+}
+
+.tariff-details .text-lbl {
+  margin-left: 21px;
+}
+
+.tariff-details ::ng-deep .dnm-switch-btn.package-status {
+  margin-left: 22px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.tariff-details ::ng-deep .checkbox-row .checkbox-input {
+  margin: 0;
+  height: 24px;
+}
+
+.tariff-details ::ng-deep .checkbox-row .ng-select {
+  width: 40%;
+  margin-left: auto;
+}
+
+.tariff-details ::ng-deep .text-form-field {
+  padding-top: 0;
+}
+
+.tariff-details .footer-buttons {
+  display: flex;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+.tariff-details .footer-buttons button {
+  width: 200px;
+}
+
+.tariff-details .footer-buttons button:last-child {
+  margin-left: 30px;
+}
+
+.tariff-details ::ng-deep .category-item {
+  position: relative;
+}
+
+.tariff-details ::ng-deep .category-item .delete-item {
+  width: 30px;
+}
+
+.tariff-details ::ng-deep .category-item .cross-icon {
+  position: absolute;
+  right: -30px;
+  top: 50%;
+  margin-top: -6px;
+  cursor: pointer;
+}
+
+.tariff-details ::ng-deep .category-item .cross-custom {
+  position: absolute;
+  right: -30px;
+  top: 70%;
+  margin-top: -6px;
+  cursor: pointer;
+}
+
+.tariff-details ::ng-deep .cross-custom .cross-icon {
+  right: 120px;
+}
+
+.tariff-details ::ng-deep .cross-custom .cross-text {
+  display: inline-block;
+  font-family: Gotham Medium;
+  font-size: 14px;
+  background: linear-gradient(to right, #cc9966, #d08752, #d47243, #d9593b, #dc3939);
+  text-transform: none;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.tariff-details .add-icon {
+  margin-right: 8px;
+}
+
+.tariff-details .blue-text-btn {
+  margin: 15px 0px 15px 0px;
+  display: flex;
+  align-items: center;
+}
+
+.tariff-details .blue-text-btn:first-child {
+  margin-right: 30px;
+}
+
+.tariff-details .button-row {
+  padding: 10px 0 10px 15px;
+}
+
+.tariff-details ::ng-deep .text-category {
+  color: @color-empty;
+  font-size: 12px;
+  padding: 25px 0px 7px 0px;
+}
+
+.tariff-details .custom-input {
+  font-size: 13px;
+  color: @color-text-tertiary;
+  font-family: Gotham Book;
+  width: 100%;
+  border: transparent solid 1px;
+  border-radius: 5px;
+  padding: 7px 30px 7px 20px;
+  transition: border-color .15s ease-in-out;
+  background-color: transparent;
+}
+
+.tariff-details .custom-input:hover {
+  border: @color-stroke solid 1px;
+  cursor: pointer;
+}
+
+.tariff-details .custom-input:active,
+.tariff-details .custom-input:focus {
+  cursor: text;
+  border: @color-main-accent solid 2px;
+  outline: 0;
+  padding: 6px 29px 6px 19px;
+  background-color: @color-background-white;
+}
+
+/* #region input datepicker */
+
+.tariff-details .datepicker-wrp .custom-input:hover {
+  background: url('../../../../../../assets/images/icons/calendar-blue-icon.svg') no-repeat @color-background-white;
+  background-position: right 10px center;
+  background-size: 17px 17px;
+  cursor: pointer;
+}
+
+/* endregion */
+
+/* #region dropdown */
+
+.tariff-details ::ng-deep .dnm-invalid-inp.fullwidth-dropdown .dropdown-toggle {
+  border-color: @color-warning;
+}
+
+.tariff-details ::ng-deep .fullwidth-dropdown.show .dropdown-toggle,
+.tariff-details ::ng-deep .dnm-invalid-inp.fullwidth-dropdown.show .dropdown-toggle,
+.tariff-details ::ng-deep .dnm-invalid-inp.fullwidth-dropdown.show .dropdown-toggle:hover,
+.tariff-details ::ng-deep .fullwidth-dropdown.dropdown .dropdown-toggle:active,
+.tariff-details ::ng-deep .fullwidth-dropdown.dropdown .dropdown-toggle:focus {
+  background: @color-background-white;
+  border: 2px solid @color-main-accent;
+  padding: 5px 29px 5px 19px;
+  box-shadow: none;
+}
+
+.tariff-details ::ng-deep .fullwidth-dropdown .dropdown-toggle {
+  border: 1px solid transparent;
+  background: transparent;
+  padding-left: 20px;
+}
+
+.tariff-details ::ng-deep .fullwidth-dropdown .dropdown-toggle:hover {
+  border: 1px solid @color-stroke;
+  background: @color-background-white;
+}
+
+.tariff-details ::ng-deep .dnm-invalid-inp.fullwidth-dropdown .dropdown-toggle:hover {
+  border-color: @color-warning;
+}
+
+.tariff-details ::ng-deep .fullwidth-dropdown .dropdown-toggle::after {
+  background-image: none;
+}
+
+.tariff-details ::ng-deep .fullwidth-dropdown .dropdown-toggle:hover::after,
+.tariff-details ::ng-deep .fullwidth-dropdown .dropdown-toggle:active::after,
+.tariff-details ::ng-deep .fullwidth-dropdown .dropdown-toggle:focus::after {
+  background-image: url('../../../../../../assets/images/icons/arrow_dropdown-01.svg');
+}
+
+.tariff-details ::ng-deep .fullwidth-dropdown .dropdown-toggle:active::after,
+.tariff-details ::ng-deep .fullwidth-dropdown .dropdown-toggle:focus::after {
+  right: 14px;
+  top: 14px;
+}
+
+/* endregion */
+
+/* region number input */
+
+.tariff-details ::ng-deep .numb-form-control {
+  font-family: Gotham Book;
+  font-size: 14px;
+  padding: 5px 8px 5px 19px;
+  height: 35px;
+  width: 100%;
+  cursor: pointer;
+  border: transparent solid 1px;
+  border-radius: 5px;
+  background-color: transparent;
+}
+
+.tariff-details ::ng-deep .numb-form-control:hover {
+  background-color: @color-background-white;
+  border: 1px solid @color-stroke;
+}
+
+.tariff-details ::ng-deep .numb-form-control:focus {
+  box-shadow: none;
+  padding: 4px 7px 4px 18px;
+  border: @color-main-accent solid 2px;
+  outline: 0;
+  background-color: @color-background-white;
+}
+
+/* end region */
+
+edit-tariff,
+tariff-versions-list {
+  display: block;
+  margin-bottom: 50px;
+}

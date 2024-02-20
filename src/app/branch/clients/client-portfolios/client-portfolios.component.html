@@ -1,0 +1,48 @@
+<!-- create new contact -->
+<div *ngIf="!portfolios.length" class="create-new-portfolio text-center">
+  <div class="new-portfolio-icon">
+    <img src="assets/images/icons/no-portfolios-icon.svg"/>
+  </div>
+  <div class="create-new-portfolio-msg">There are no portfolios here</div>
+  <a (click)="onCreate()" class="blue-text-btn d-flex justify-content-center" href="javascript:void(0);">
+    <i class="add-icon"></i> Create a New Portfolio
+  </a>
+</div>
+<div *ngIf="portfolios.length" class="client-portfolio-block">
+  <!-- quantity of portfolios -->
+  <div *ngIf="portfolios.length" class="d-flex contacts-table-nav">
+    <span class="text-label-light total-accounts">{{portfolios.length}} portfolio(s)</span>
+    <a (click)="onCreate()" class="blue-text-btn d-flex align-items-center" data-add-new href="javascript:void(0);">
+      <i class="add-icon"></i>Add Portfolio
+    </a>
+  </div>
+  <!-- portfolio list item -->
+  <div (click)="onEdit($event, portfolio)" *ngFor="let portfolio of portfolios; let idx = index"
+       class="portfolio-list-item">
+    <!-- general portfolio info block -->
+    <div class="portfolio-info-block">
+      <logo-container [url]="portfolio.logoUrl" class="portfolio-logo"
+                      logo-class="logo d-flex justify-content-center full-height">
+        <div class="logo-abbreviation d-flex align-items-center">
+          <span>{{portfolio.name[0].toUpperCase()}}</span>
+        </div>
+      </logo-container>
+      <!--<img class="portfolio-logo-img" src="https://www.42gears.com/wp-content/uploads/2015/07/abc_supply_co.jpg" alt="Logo" />-->
+      <div class="portfolio-info">
+        <div class="portfolio-title">Portfolio #{{idx + 1}} ({{portfolio.name}})</div>
+        <div class="portfolio-info-details">
+          <span>{{portfolio.totalBuildings}} building(s)</span>
+        </div>
+      </div>
+    </div>
+    <!-- vertical dots -->
+    <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+      <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle title="Menu"></button>
+      <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+        <button class="dropdown-item d-flex justify-content-between">Edit<i class="dnm-icon edit-icon"></i></button>
+        <button (click)="onDelete(portfolio, idx)" class="dropdown-item d-flex justify-content-between on-delete">Delete<i
+          class="dnm-icon delete-icon"></i></button>
+      </div>
+    </div>
+  </div>
+</div>

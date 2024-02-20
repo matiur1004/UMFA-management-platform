@@ -1,0 +1,173 @@
+<div class="splr-tou-tbl-wrp">
+  <div class="row horizontal-line none-margin-hr">
+    <div class="col-4 none-padding vertical-line">
+      <div class="text-uppercase field-name col-header">Weekdays:</div>
+      <div class="tbl-inpt-row d-flex align-items-start">
+        <div class="text-uppercase field-name">
+          Peak
+        </div>
+        <div class="field-value">
+          <div class="position-relative">
+            <ng-select [(ngModel)]="touSelectedRanges.weekdays.p" [clearable]="false" [closeOnSelect]="false" [dropdownPosition]="'top'"
+                       [hideSelected]="true"
+                       [items]="touRanges" [multiple]="true" [ngModelOptions]="{standalone: true}" [searchable]="false"
+                       bindLabel="name"
+                       bindValue="name" class="dnm-ng-select dnm-multiple-select"
+                       placeholder="hh:mm - hh:mm"></ng-select>
+            <i class="time-icon"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-4 col-padding vertical-line">
+      <div class="text-uppercase field-name col-header">Saturday:</div>
+      <div class="tbl-inpt-row d-flex align-items-start">
+        <div class="text-uppercase field-name">
+          Peak
+        </div>
+        <div class="field-value">
+          <div class="position-relative">
+            <ng-select [(ngModel)]="touSelectedRanges.saturday.p" [clearable]="false" [closeOnSelect]="false" [dropdownPosition]="'top'"
+                       [hideSelected]="true"
+                       [items]="touRanges" [multiple]="true" [ngModelOptions]="{standalone: true}" [searchable]="false"
+                       bindLabel="name"
+                       bindValue="name" class="dnm-ng-select dnm-multiple-select"
+                       placeholder="hh:mm - hh:mm"></ng-select>
+            <i class="time-icon"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="text-uppercase field-name col-header">Sunday:</div>
+      <div class="tbl-inpt-row d-flex align-items-start">
+        <div class="text-uppercase field-name">
+          Peak
+        </div>
+        <div class="field-value">
+          <div class="position-relative">
+            <ng-select [(ngModel)]="touSelectedRanges.sunday.p" [clearable]="false" [closeOnSelect]="false" [dropdownPosition]="'top'"
+                       [hideSelected]="true"
+                       [items]="touRanges" [multiple]="true" [ngModelOptions]="{standalone: true}" [searchable]="false"
+                       bindLabel="name"
+                       bindValue="name" class="dnm-ng-select dnm-multiple-select"
+                       placeholder="hh:mm - hh:mm"></ng-select>
+            <i class="time-icon"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row horizontal-line none-margin-hr">
+    <div class="col-4 none-padding vertical-line">
+      <div class="tbl-inpt-row d-flex align-items-start">
+        <div class="text-uppercase field-name">
+          Standart
+        </div>
+        <div class="field-value">
+          <div class="position-relative">
+            <ng-select [(ngModel)]="touSelectedRanges.weekdays.s" [clearable]="false" [closeOnSelect]="false" [dropdownPosition]="'top'"
+                       [hideSelected]="true"
+                       [items]="touRanges" [multiple]="true" [ngModelOptions]="{standalone: true}" [searchable]="false"
+                       bindLabel="name"
+                       bindValue="name" class="dnm-ng-select dnm-multiple-select"
+                       placeholder="hh:mm - hh:mm"></ng-select>
+            <i class="time-icon"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-4 col-padding vertical-line">
+      <div class="tbl-inpt-row d-flex align-items-start">
+        <div class="text-uppercase field-name">
+          Standart
+        </div>
+        <div class="field-value">
+          <div class="position-relative">
+            <ng-select [(ngModel)]="touSelectedRanges.saturday.s" [clearable]="false" [closeOnSelect]="false" [dropdownPosition]="'top'"
+                       [hideSelected]="true"
+                       [items]="touRanges" [multiple]="true" [ngModelOptions]="{standalone: true}" [searchable]="false"
+                       bindLabel="name"
+                       bindValue="name" class="dnm-ng-select dnm-multiple-select"
+                       placeholder="hh:mm - hh:mm"></ng-select>
+            <i class="time-icon"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="tbl-inpt-row d-flex align-items-start">
+        <div class="text-uppercase field-name">
+          Standart
+        </div>
+        <div class="field-value">
+          <div class="position-relative">
+            <ng-select [(ngModel)]="touSelectedRanges.sunday.s" [clearable]="false" [closeOnSelect]="false" [dropdownPosition]="'top'"
+                       [hideSelected]="true"
+                       [items]="touRanges" [multiple]="true" [ngModelOptions]="{standalone: true}" [searchable]="false"
+                       bindLabel="name"
+                       bindValue="name" class="dnm-ng-select dnm-multiple-select"
+                       placeholder="hh:mm - hh:mm"></ng-select>
+            <i class="time-icon"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row none-margin-hr">
+    <div class="col-4 none-padding vertical-line">
+      <div class="tbl-inpt-row d-flex align-items-start">
+        <div class="text-uppercase field-name">
+          Off peak
+        </div>
+        <div class="field-value">
+          <div class="position-relative">
+            <ng-select [(ngModel)]="touSelectedRanges.weekdays.o" [clearable]="false" [closeOnSelect]="false" [dropdownPosition]="'top'"
+                       [hideSelected]="true"
+                       [items]="touRanges" [multiple]="true" [ngModelOptions]="{standalone: true}" [searchable]="false"
+                       bindLabel="name"
+                       bindValue="name" class="dnm-ng-select dnm-multiple-select"
+                       placeholder="hh:mm - hh:mm"></ng-select>
+            <i class="time-icon"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-4 col-padding vertical-line">
+      <div class="tbl-inpt-row d-flex align-items-start">
+        <div class="text-uppercase field-name">
+          Off peak
+        </div>
+        <div class="field-value">
+          <div class="position-relative">
+            <ng-select [(ngModel)]="touSelectedRanges.saturday.o" [clearable]="false" [closeOnSelect]="false" [dropdownPosition]="'top'"
+                       [hideSelected]="true"
+                       [items]="touRanges" [multiple]="true" [ngModelOptions]="{standalone: true}" [searchable]="false"
+                       bindLabel="name"
+                       bindValue="name" class="dnm-ng-select dnm-multiple-select"
+                       placeholder="hh:mm - hh:mm"></ng-select>
+            <i class="time-icon"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="tbl-inpt-row d-flex align-items-start">
+        <div class="text-uppercase field-name">
+          Off peak
+        </div>
+        <div class="field-value">
+          <div class="position-relative">
+            <ng-select [(ngModel)]="touSelectedRanges.sunday.o" [clearable]="false" [closeOnSelect]="false" [dropdownPosition]="'top'"
+                       [hideSelected]="true"
+                       [items]="touRanges" [multiple]="true" [ngModelOptions]="{standalone: true}" [searchable]="false"
+                       bindLabel="name"
+                       bindValue="name" class="dnm-ng-select dnm-multiple-select"
+                       placeholder="hh:mm - hh:mm"></ng-select>
+            <i class="time-icon"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

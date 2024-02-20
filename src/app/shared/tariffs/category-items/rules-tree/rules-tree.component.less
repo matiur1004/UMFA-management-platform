@@ -1,0 +1,34 @@
+@import 'variables.less';
+
+.rules-tree-wrp {
+  padding-top: 20px;
+}
+
+::ng-deep .rules-tree-wrp rule-item .add-rules-group-btn {
+  visibility: hidden;
+}
+
+::ng-deep .rules-tree-wrp rule-item:last-child .add-rules-group-btn {
+  visibility: visible;
+  display: flex;
+  align-items: center;
+  line-height: 20px;
+}
+
+.group-item-wrp {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.group-item-wrp.inputs-left-wrp:before {
+  content: "";
+  display: block;
+  position: absolute;
+  height: calc(100% - 54.5px);
+  width: 2px;
+  left: 19px;
+  top: 17px;
+  background-color: @color-main-accent;
+}
+
+

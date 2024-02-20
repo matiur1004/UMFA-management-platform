@@ -1,0 +1,35 @@
+<div class="container-fluid none-padding alloc-equip-list">
+  <div class="nav-row d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center">
+      <span class="results-label dnm-text-light">{{allocatedEquipment.length}} units of actual equipment</span>
+    </div>
+  </div>
+  <div class="bl-gradient-title">Actual equipment</div>
+  <div class="row none-margin-hr list-header">
+    <div class="col-2 header-field d-flex align-items-center">
+      <span class="text-ellipsis text-uppercase" title="Equipment">Equipment</span>
+    </div>
+    <div class="col-2 header-field d-flex align-items-center">
+      <span class="text-ellipsis text-uppercase" title="Description">Description</span>
+    </div>
+    <div class="col-2 header-field d-flex align-items-center">
+      <span class="text-ellipsis text-uppercase" title="Billing Registers">Billing Registers</span>
+    </div>
+    <div class="col-6 none-padding d-flex align-items-center">
+      <div class="row none-margin-hr w-100">
+        <div class="col-7 header-field d-flex align-items-center">
+          <span class="text-ellipsis text-uppercase" title="Equipment Attributes">Equipment Attributes</span>
+        </div>
+        <div class="col-5 header-field d-flex align-items-center">
+          <span class="text-ellipsis text-uppercase" title="Tariff / Suppliers">Tariff / Suppliers</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="list-body">
+    <div *ngFor="let equipment of allocatedEquipment" class="item-wrp">
+      <equipment-item [equipment]="equipment"></equipment-item>
+    </div>
+  </div>
+  <button class="dnm-btn report-mistake-btn text-uppercase" type="button">Report Mistake</button>
+</div>

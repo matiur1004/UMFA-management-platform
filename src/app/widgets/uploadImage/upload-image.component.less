@@ -1,0 +1,65 @@
+@import 'variables.less';
+
+.logo-preview {
+  border: none;
+  width: 225px;
+  height: 150px;
+  float: left;
+  margin-right: 40px;
+  position: relative;
+}
+
+.logo-preview-img {
+  max-width: 100%;
+  max-height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.default-img {
+  border: none;
+  width: 225px;
+  height: 150px;
+  float: left;
+  margin-right: 40px;
+  position: relative;
+}
+
+.logo-description {
+  font-family: Gotham Book;
+  font-size: 13px;
+  color: @color-description;
+  padding-left: 30px;
+  padding-top: 25px;
+}
+
+.logo-description .max-size-error {
+  width: auto;
+  margin-top: 0;
+  margin-left: 10px;
+  position: relative;
+  top: -1px;
+}
+
+.logo-description label {
+  width: 125px;
+  min-width: 130px;
+  text-align: center;
+}
+
+.logo-description label.disabled {
+  cursor: not-allowed;
+}
+
+@media (min-width: 768px) {
+  ::ng-deep .edit-logo-panel,
+  .editable-section {
+    margin: 8px -15px 35px;
+  }
+
+  .logo-description .inputfile, .logo-description .inputfile + label {
+    margin-top: 15px;
+  }
+}

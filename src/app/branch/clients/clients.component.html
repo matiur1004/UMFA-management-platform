@@ -1,0 +1,380 @@
+<div class="container-fluid top-container">
+  <div class="row content">
+    <div class="col-12 col-lg-2 none-padding">
+      <div class="client-header-title">
+        <h1 class="page-title text-uppercase">Clients</h1>
+      </div>
+    </div>
+    <div class="col-12 col-lg-10 none-padding text-right">
+      <form class="form-inline my-lg-0 main-search-input">
+        <div class="input-group">
+          <input #searchBox (keyup)="search(searchBox.value)" aria-label="Search"
+                 class="form-control group-search-input" data-search-field placeholder="Client Search" type="search"/>
+          <div class="input-group-append">
+            <i class="icon-relative search-icon vertical-middle"></i>
+          </div>
+        </div>
+      </form>
+      <button [routerLink]="['/branch',currentBranchId,'clients','new']" class="dnm-btn dnm-btn-primary text-uppercase add-entity-btn minimum-button-width"
+              type="button">
+        <span>Add Client</span>
+        <i class="icon-relative add-branch-icon"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid filter-container">
+  <div class="row">
+    <div class="col-12 none-padding">
+      <div class="paging-container">
+        <div class="paging-list d-flex justify-content-between flex-wrap">
+          <button (click)="filter(null)" [ngClass]="{active: !charectFilter}"
+                  class="paging-all-btn paging-btn text-uppercase">
+            All
+          </button>
+          <button (click)="filter('A')" [ngClass]="{active: charectFilter === 'A' && isSymbolSelected}"
+                  class="paging-btn">A
+          </button>
+          <button (click)="filter('B')" [ngClass]="{active: charectFilter === 'B' && isSymbolSelected}"
+                  class="paging-btn">B
+          </button>
+          <button (click)="filter('C')" [ngClass]="{active: charectFilter === 'C' && isSymbolSelected}"
+                  class="paging-btn">C
+          </button>
+          <button (click)="filter('D')" [ngClass]="{active: charectFilter === 'D' && isSymbolSelected}"
+                  class="paging-btn">D
+          </button>
+          <button (click)="filter('E')" [ngClass]="{active: charectFilter === 'E' && isSymbolSelected}"
+                  class="paging-btn">E
+          </button>
+          <button (click)="filter('F')" [ngClass]="{active: charectFilter === 'F' && isSymbolSelected}"
+                  class="paging-btn">F
+          </button>
+          <button (click)="filter('G')" [ngClass]="{active: charectFilter === 'G' && isSymbolSelected}"
+                  class="paging-btn">G
+          </button>
+          <button (click)="filter('H')" [ngClass]="{active: charectFilter === 'H' && isSymbolSelected}"
+                  class="paging-btn">H
+          </button>
+          <button (click)="filter('I')" [ngClass]="{active: charectFilter === 'I' && isSymbolSelected}"
+                  class="paging-btn">I
+          </button>
+          <button (click)="filter('J')" [ngClass]="{active: charectFilter === 'J' && isSymbolSelected}"
+                  class="paging-btn">J
+          </button>
+          <button (click)="filter('K')" [ngClass]="{active: charectFilter === 'K' && isSymbolSelected}"
+                  class="paging-btn">K
+          </button>
+          <button (click)="filter('L')" [ngClass]="{active: charectFilter === 'L' && isSymbolSelected}"
+                  class="paging-btn">L
+          </button>
+          <button (click)="filter('M')" [ngClass]="{active: charectFilter === 'M' && isSymbolSelected}"
+                  class="paging-btn">M
+          </button>
+          <button (click)="filter('N')" [ngClass]="{active: charectFilter === 'N' && isSymbolSelected}"
+                  class="paging-btn">N
+          </button>
+          <button (click)="filter('O')" [ngClass]="{active: charectFilter === 'O' && isSymbolSelected}"
+                  class="paging-btn">O
+          </button>
+          <button (click)="filter('P')" [ngClass]="{active: charectFilter === 'P' && isSymbolSelected}"
+                  class="paging-btn">P
+          </button>
+          <button (click)="filter('Q')" [ngClass]="{active: charectFilter === 'Q' && isSymbolSelected}"
+                  class="paging-btn">Q
+          </button>
+          <button (click)="filter('R')" [ngClass]="{active: charectFilter === 'R' && isSymbolSelected}"
+                  class="paging-btn">R
+          </button>
+          <button (click)="filter('S')" [ngClass]="{active: charectFilter === 'S' && isSymbolSelected}"
+                  class="paging-btn">S
+          </button>
+          <button (click)="filter('T')" [ngClass]="{active: charectFilter === 'T' && isSymbolSelected}"
+                  class="paging-btn">T
+          </button>
+          <button (click)="filter('U')" [ngClass]="{active: charectFilter === 'U' && isSymbolSelected}"
+                  class="paging-btn">U
+          </button>
+          <button (click)="filter('V')" [ngClass]="{active: charectFilter === 'V' && isSymbolSelected}"
+                  class="paging-btn">V
+          </button>
+          <button (click)="filter('W')" [ngClass]="{active: charectFilter === 'W' && isSymbolSelected}"
+                  class="paging-btn">W
+          </button>
+          <button (click)="filter('X')" [ngClass]="{active: charectFilter === 'X' && isSymbolSelected}"
+                  class="paging-btn">X
+          </button>
+          <button (click)="filter('Y')" [ngClass]="{active: charectFilter === 'Y' && isSymbolSelected}"
+                  class="paging-btn">Y
+          </button>
+          <button (click)="filter('Z')" [ngClass]="{active: charectFilter === 'Z' && isSymbolSelected}"
+                  class="paging-btn">Z
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid items-per-page none-padding">
+  <page-limit (limitChaged)="setItemsPerPage($event)" [itemName]="'client'" [itemsPerPageList]="itemsPerPageList" [itemsPerPage]="pageSize"
+              [itemsTotal]="model.total" [page]="page"></page-limit>
+</div>
+<!-- clients list -->
+<div class="container-fluid clients-list">
+  <!-- client general info -->
+  <div class="row list-header text-uppercase">
+    <div class="col-lg-5">
+      <a (click)="changeOrderIndex(1);" [ngClass]="{'active': orderIndex == 1 || orderIndex == -1}"
+         class="header-field sortable d-flex align-items-center"
+         href="javascript:void(0);">
+        <span class="text-ellipsis" title="Client name">Client Name</span>
+        <i [ngClass]="{'inactive': orderIndex != 1 && orderIndex != -1, 'dnm-icon-sort-up': orderIndex == -1,'dnm-icon-sort-down': orderIndex != -1 }"
+           class="dnm-icon"></i>
+      </a>
+    </div>
+    <div class="col-lg-4 d-flex align-items-center">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-8">
+            <a (click)="changeOrderIndex(2);" [ngClass]="{'active': orderIndex == 2 || orderIndex == -2}"
+               class="header-field sortable d-flex align-items-center"
+               href="javascript:void(0);">
+              <span class="text-ellipsis" title="Suburb, Town">Suburb, Town</span>
+              <i [ngClass]="{'inactive': orderIndex != 2 && orderIndex != -2, 'dnm-icon-sort-up': orderIndex == -2,'dnm-icon-sort-down': orderIndex != -2 }"
+                 class="dnm-icon"></i>
+            </a>
+          </div>
+          <div class="col-4">
+            <a (click)="changeOrderIndex(3);" [ngClass]="{'active': orderIndex == 3 || orderIndex == -3}"
+               class="header-field sortable d-flex align-items-center"
+               href="javascript:void(0);">
+              <span class="text-ellipsis" title="Total GLA">Total GLA</span>
+              <i [ngClass]="{'inactive': orderIndex != 3 && orderIndex != -3, 'dnm-icon-sort-up': orderIndex == -3,'dnm-icon-sort-down': orderIndex != -3 }"
+                 class="dnm-icon"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 last-col d-flex align-items-center">
+      <span class="header-field">Phone</span>
+    </div>
+  </div>
+  <ng-container *ngFor="let client of model.items;">
+    <div [ngClass]="{'list-item-expanded': client.isSelected}" class="row clients-list-item">
+      <div (click)="clientToggle($event, client)" class="col-lg-5">
+        <div class="d-flex align-items-center">
+          <div class="client-logo-wrp text-center">
+            <logo-container [url]="client.logoUrl" logo-class="logo d-flex justify-content-center full-height">
+              <div class="logo-abbreviation d-flex align-items-center">
+                <span>{{client.name.slice(0, 2).toUpperCase()}}</span>
+              </div>
+            </logo-container>
+          </div>
+          <div class="d-flex flex-column">
+            <span class="client-name text-ellipsis" title="{{client.name}}">{{client.name}}</span>
+            <span
+              class="client-details">{{client.totalProfiles + ' portfolio(s) + ' + client.totalBuildings + ' building(s)'}}</span>
+          </div>
+        </div>
+      </div>
+      <div (click)="clientToggle($event, client)" class="col-lg-4">
+        <div class="container-fluid vertical-middle">
+          <div class="row">
+            <div class="col-8">
+              <span class="text-value">{{client.addressDescription}}</span>
+            </div>
+            <div class="col-4">
+              <span class="text-value">{{client.totalGLA | number}} sq m</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 d-flex align-items-center">
+        <div class="container-fluid">
+          <div class="row">
+            <div (click)="clientToggle($event, client)" class="col-8">
+              <span class="text-value">{{client.phone}}</span>
+            </div>
+            <div (click)="clientToggle($event, client)"
+                 class="col-4 none-padding d-flex align-items-center justify-content-end">
+              <span *ngIf="client.totalProfiles" [ngClass]="{'expand-icon': !client.isSelected, 'collapse-icon': client.isSelected}"
+                    class="icon-relative expand-btn"></span>
+              <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block cntx-menu"
+                   ngbDropdown>
+                <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle title="Menu"></button>
+                <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                  <button [routerLink]="['/branch',currentBranchId,'clients',client.id]"
+                          class="dropdown-item d-flex justify-content-between">
+                    Edit<i class="dnm-icon edit-icon"></i>
+                  </button>
+                  <button (click)="onDelete(client)" class="dropdown-item d-flex justify-content-between"
+                          data-menu-item>
+                    Delete<i class="dnm-icon delete-icon"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-container *ngIf="client.isSelected">
+      <ng-container *ngFor="let clientPortfolio of client.portfolios; let cpIdx = index;">
+        <!-- client portfolio -->
+        <div (click)="portfolioToggle($event, client, clientPortfolio)" class="row subdivision-item">
+          <div class="col-10">
+            <div class="container-fluid vertical-middle">
+              <div class="row">
+                <div class="col-auto none-padding">
+                  <div class="sub-logo-wrp text-center">
+                    <logo-container [url]="clientPortfolio.logoUrl"
+                                    logo-class="logo d-flex justify-content-center full-height">
+                      <div class="logo-abbreviation d-flex align-items-center">
+                        <span>{{clientPortfolio.name.slice(0, 2).toUpperCase()}}</span>
+                      </div>
+                    </logo-container>
+                  </div>
+                </div>
+                <div class="col-auto none-padding">
+                  <div class="client-subdivision vertical-middle">
+                    <div class="client-name">Portfolio #{{cpIdx + 1}} ({{clientPortfolio.name}})</div>
+                    <span class="client-details">{{clientPortfolio.totalBuildings}} building(s)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-2 d-flex align-items-center justify-content-end">
+            <span *ngIf="clientPortfolio.totalBuildings" [ngClass]="{'expand-icon': !clientPortfolio.isSelected, 'collapse-icon': clientPortfolio.isSelected}"
+                  class="icon-relative expand-btn"></span>
+            <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+              <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle title="Menu"></button>
+              <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                <button [routerLink]="['/branch',currentBranchId,'clients',client.id,'portfolios',clientPortfolio.id]"
+                        class="dropdown-item">
+                  Edit<i class="dnm-icon edit-icon"></i>
+                </button>
+                <button (click)="onDeletePortfolio(client, clientPortfolio)" class="dropdown-item">
+                  Delete<i class="dnm-icon delete-icon"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- building info -->
+        <ng-container *ngIf="clientPortfolio.isSelected">
+          <ng-container *ngFor="let building of clientPortfolio.buildings;">
+            <div class="row building-info-item">
+              <div [routerLink]="['/branch',currentBranchId,'buildings',building.id, 'version', 0, 'occupation']"
+                   class="col-lg-5 pointer">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-auto none-padding">
+                      <div class="sub-logo-wrp text-center">
+                        <logo-container [url]="building.logoUrl"
+                                        logo-class="logo d-flex justify-content-center full-height">
+                          <div class="logo-abbreviation d-flex align-items-center">
+                            <span>{{building.name[0].toUpperCase()}}</span>
+                          </div>
+                        </logo-container>
+                      </div>
+                    </div>
+                    <div class="col-auto none-padding d-flex align-items-center">
+                      <div class="building-info-title">
+                        <div class="client-name">{{building.name}}</div>
+                        <span class="client-details">Building Description</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div [routerLink]="['/branch',currentBranchId,'buildings',building.id, 'version', 0, 'occupation']"
+                   class="col-lg-4 pointer">
+                <div class="container-fluid vertical-middle">
+                  <div class="row">
+                    <div class="col-8 d-flex align-items-center">
+                      <span class="text-value">{{building.address.line1}}</span>
+                    </div>
+                    <div class="col-4 d-flex align-items-center">
+                      <span class="text-value">{{building.totalGLA | number}} sq m</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3 d-flex align-items-center">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div [routerLink]="['/branch',currentBranchId,'buildings',building.id, 'version', 0, 'occupation']"
+                         class="col-8 pointer">
+                      <span class="text-value">+27 11 978 5313</span>
+                    </div>
+                    <div class="col-4 none-padding d-flex align-items-center justify-content-end">
+                      <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block"
+                           ngbDropdown>
+                        <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle title="Menu"></button>
+                        <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                          <button [routerLink]="['/branch',currentBranchId,'buildings',building.id,'version', 0,'occupation']"
+                                  class="dropdown-item">
+                            View<i class="dnm-icon view-icon"></i>
+                          </button>
+                          <button [routerLink]="['/branch',currentBranchId,'buildings',building.id, 'edit']"
+                                  class="dropdown-item">
+                            Edit<i class="dnm-icon edit-icon"></i>
+                          </button>
+                          <button (click)="onDeleteBuilding(clientPortfolio, building)" class="dropdown-item">
+                            Delete<i class="dnm-icon delete-icon"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngFor="let building of client.buildings; let blIdx = index;">
+        <!-- building details -->
+        <div class="row subdivision-item">
+          <div class="col-lg-3">
+            <div class="client-subdivision vertical-middle">
+              <div class="client-name">{{building.name }}</div>
+              <span class="client-details">Building Description</span>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="vertical-middle">
+              <span class="text-value">Adress here 2618 E Santa Ana 63</span>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="vertical-middle">
+              <span class="text-value">Building type</span>
+            </div>
+          </div>
+          <div class="col-lg-2 text-right">
+            <button class="dnm-btn dnm-btn-simple text-uppercase vertical-middle">View</button>
+            <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+              <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle title="Menu"></button>
+              <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                <button [routerLink]="['/branch',currentBranchId,'clients','new']" class="dropdown-item">
+                  View<i class="dnm-icon view-icon"></i>
+                </button>
+                <button [routerLink]="['/branch',currentBranchId,'clients','new']" class="dropdown-item">
+                  Edit<i class="dnm-icon edit-icon"></i>
+                </button>
+                <button class="dropdown-item">
+                  Delete<i class="dnm-icon delete-icon"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+  <pager (onPageChange)="setPage($event)" [pageSize]="pageSize" [page]="page" [total]="model.total"></pager>
+</div>

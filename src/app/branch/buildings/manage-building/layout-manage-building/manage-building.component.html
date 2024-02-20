@@ -1,0 +1,88 @@
+<div class="container-fluid top-container manage-building">
+  <div class="row content">
+    <div class="col-auto none-padding">
+      <ul class="navbar-nav mr-auto">
+        <li #buildingNavDrop="ngbDropdown" class="nav-item dropdown" ngbDropdown>
+          <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle dropdown-arrow"
+             data-toggle="dropdown" href="javascript:void(0);" id="navbarDropdown"
+             ngbDropdownToggle role="button">
+            <div class="building-name text-ellipsis" title="{{building?.name}}">{{building?.name}}</div>
+            <span class="type-name">Building</span>
+          </a>
+          <div aria-labelledby="navbarDropdown" class="dropdown-menu dnm-popup-wrp" ngbDropdownMenu>
+            <buildings-list-popup (branchSelected)="onBuildingSelected($event); buildingNavDrop.close();"
+                                  [model]="buildings"></buildings-list-popup>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="col none-padding">
+      <ul *ngIf="building" class="manage-building-nav-menu dnm-horizontal-list" style="list-style: none;">
+        <li class="nav-menu-item">
+          <a [ngClass]="{'active': isActive('/occupation')}" [routerLink]="['/branch', currentBranchId, 'buildings', building.id, 'version', 0, 'occupation']"
+             class="btn nav-btn d-flex align-items-center justify-content-center"
+             title="Occupation">
+            <span class="nav-icon occupation-icon"></span>
+            <span class="nav-text">Occupation</span>
+          </a>
+        </li>
+        <ng-container *ngIf="(isComplete$ | async) || isComplete">
+          <li class="nav-menu-item">
+            <a [ngClass]="{'active': isActive('/tenants')}" [routerLink]="['/branch', currentBranchId, 'buildings', building.id, 'tenants']"
+               class="btn nav-btn d-flex align-items-center justify-content-center"
+               title="Tenants">
+              <span class="nav-icon tenants-icon"></span>
+              <span class="nav-text">Tenants</span>
+            </a>
+          </li>
+          <li class="nav-menu-item">
+            <a [ngClass]="{'active': isActive('/equipment')}" [routerLink]="['/branch', currentBranchId, 'buildings', building.id, 'version', 0, 'equipment']"
+               class="btn nav-btn d-flex align-items-center justify-content-center"
+               title="Equipment">
+              <span class="nav-icon building-equipment-icon"></span>
+              <span class="nav-text">Equipment</span>
+            </a>
+          </li>
+          <li class="nav-menu-item">
+            <a [ngClass]="{'active': isActive('/meter-readings')}" [routerLink]="['/branch', currentBranchId, 'buildings', building.id, 'meter-readings']"
+               class="btn nav-btn d-flex align-items-center justify-content-center"
+               title="Meter Readings">
+              <span class="nav-icon meter-readings-icon"></span>
+              <span class="nav-text">Meter Readings</span>
+            </a>
+          </li>
+          <li class="nav-menu-item">
+            <a [ngClass]="{'active': isActive('/tariffs/')}" [routerLink]="['/branch', currentBranchId, 'buildings', building.id, 'version', 0, 'tariffs', 'allocated-tariffs']"
+               class="btn nav-btn d-flex align-items-center justify-content-center"
+               title="Tariffs Assignment"
+            >
+              <span class="nav-icon tariffs-assignment-icon"></span>
+              <span class="nav-text">Tariffs Assignment</span>
+            </a>
+          </li>
+          <li class="nav-menu-item">
+            <a [ngClass]="{'active': isActive('/reports')}" [routerLink]="['/branch', currentBranchId, 'buildings', building.id, 'reports']"
+               class="btn nav-btn d-flex align-items-center justify-content-center"
+               title="Reports"
+            >
+              <span class="nav-icon reports-icon"></span>
+              <span class="nav-text">Reports</span>
+            </a>
+          </li>
+          <li class="nav-menu-item">
+            <a [ngClass]="{'active': isActive('/history')}" [routerLink]="['/branch', currentBranchId, 'buildings', building.id, 'history']"
+               class="btn nav-btn d-flex align-items-center justify-content-center"
+               title="History">
+              <span class="nav-icon bld-history-icon"></span>
+              <span class="nav-text">History</span>
+            </a>
+          </li>
+        </ng-container>
+      </ul>
+    </div>
+  </div>
+
+</div>
+<div>
+  <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,17 @@
+<div class="edit-logo-panel row">
+  <div class="col-12">
+    <div class="logo-preview text-center">
+      <img (error)="onError($event)" [ngClass]="{'default-img': src == defaultUrl }" [src]="src" alt="Logo"
+           class="logo-preview-img"/>
+    </div>
+    <div *ngIf="!disabled" class="logo-description">
+      <div>Max. {{maxSize}} MB <small *ngIf="!isValidFileSize" class="alert-danger max-size-error ng-star-inserted">file
+        size limit is exceeded</small></div>
+      <div>JPG, GIF or PNG formats</div>
+      <div>Recommended size: {{imgWidth}}px x {{imgHeight}}px</div>
+      <input #fileInput (change)="fileChangeEvent($event)" (click)="fileInput.value = null" [accept]="types" class="inputfile" id="file-{{id}}"
+             name="file" type="file"/>
+      <label class="text-uppercase" for="file-{{id}}">{{buttonText}}</label>
+    </div>
+  </div>
+</div>

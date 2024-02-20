@@ -1,0 +1,52 @@
+@import 'variables.less';
+
+/* #region and/or toggle styles */
+
+.and-or-toggle {
+  position: relative;
+  border: 1px solid @color-main-accent;
+  border-radius: 13px;
+  margin-bottom: 20px;
+  font-family: @fontFamilyBook;
+  font-size: 12px;
+  text-transform: uppercase;
+  line-height: 25px;
+}
+
+.and-or-toggle input {
+  display: none;
+}
+
+.and-or-toggle .and-toggle-lbl,
+.and-or-toggle .or-toggle-lbl {
+  text-align: center;
+  display: inline-block;
+  width: 65px;
+  cursor: pointer;
+}
+
+.and-or-toggle .and-toggle-lbl {
+  background-color: @color-main-accent;
+  color: @color-background-white;
+  border-top-left-radius: 13px;
+  border-bottom-left-radius: 13px;
+}
+
+.and-or-toggle .or-toggle-lbl {
+  background-color: @color-background-white;
+  color: @color-text-tertiary;
+  border-top-right-radius: 13px;
+  border-bottom-right-radius: 13px;
+}
+
+.and-or-toggle input:checked ~ .and-toggle-lbl {
+  background-color: @color-background-white;
+  color: @color-text-tertiary;
+}
+
+.and-or-toggle input:checked ~ .or-toggle-lbl {
+  background-color: @color-main-accent;
+  color: @color-background-white;
+}
+
+/* #endregion */

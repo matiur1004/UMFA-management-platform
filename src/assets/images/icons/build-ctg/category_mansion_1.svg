@@ -1,0 +1,19 @@
+<svg data-name="Layer 1" id="Layer_1" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>.cls-1 {
+      fill: #18233c;
+    }</style>
+  </defs>
+  <title>category</title>
+  <rect class="cls-1" height="3.52" width="1.18" x="10.59" y="13.55"/>
+  <rect class="cls-1" height="3.52" width="1.18" x="8.23" y="13.55"/>
+  <path class="cls-1"
+        d="M0,17.07H7.06V12.38h5.88v4.69H20V7.7H0ZM17.26,9.45h1.17V11.8H17.26Zm0,3.52h1.17v2.34H17.26ZM14.51,9.45h1.17V11.8H14.51Zm0,3.52h1.17v2.34H14.51ZM7.06,9.45h5.88v1.17H7.06Zm-2.74,0H5.49V11.8H4.32Zm0,3.52H5.49v2.34H4.32ZM1.57,9.45H2.74V11.8H1.57Zm0,3.52H2.74v2.34H1.57Z"/>
+  <rect class="cls-1" height="1.76" width="3.54" x="8.23" y="18.24"/>
+  <rect class="cls-1" height="1.76" width="7.06" y="18.24"/>
+  <polygon class="cls-1" points="18.83 2.93 18.83 4.77 15.88 4.77 15.88 6.52 20 6.52 20 2.93 18.83 2.93"/>
+  <polygon class="cls-1" points="4.12 4.77 1.17 4.77 1.17 2.93 0 2.93 0 6.52 4.12 6.52 4.12 4.77"/>
+  <rect class="cls-1" height="1.76" width="7.06" x="12.94" y="18.24"/>
+  <polygon class="cls-1" points="13.54 0 6.46 0 5.29 2.34 14.71 2.34 13.54 0"/>
+  <rect class="cls-1" height="3.01" width="9.41" x="5.29" y="3.52"/>
+</svg>

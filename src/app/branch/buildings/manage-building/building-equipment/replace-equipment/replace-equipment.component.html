@@ -1,0 +1,83 @@
+<div class="replace-equipment">
+  <div class="modal-header">
+    <h5 class="modal-title">Replace Meter</h5>
+    <button (click)="onCancel()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container-fluid none-padding">
+      <div class="dnm-tabstep">
+        <div class="tab-line"></div>
+        <div class="tab-pr-line checked-tab-{{ step$ | async}}"></div>
+       <ul ngbNav #nav="ngbNav" (navChange)="beforeChange($event)" [activeId]="step$ | async" class="nav-tabs">
+          <li [ngbNavItem]="'0'">
+            <a ngbNavLink>
+              <span *ngIf="(step$ | async) < 1" class="tab-lbl text-uppercase">1</span>
+              <span *ngIf="(step$ | async) >= 1" class="chckd-tab-lbl chckd-tab-lbl-1"><i class="tab-checked-icon"></i></span>
+              <div class="tab-txt-lbl">Add closing readings</div>
+            </a>
+            <ng-template ngbNavContent>
+              <add-closing-readings (changeRegisterFile)="onChangeRegisterFile($event)"
+                                    (close)="onCloseWizard()"
+                                    (editNote)="onEditNote($event)"
+                                    (nextStep)="onNextStep($event)"
+                                    [form]="readingsForm$ | async"
+                                    [registerFiles]="registerFiles$ | async">
+              </add-closing-readings>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="'1'">
+            <a ngbNavLink>
+              <span *ngIf="(step$ | async) < 2" class="tab-lbl text-uppercase">2</span>
+              <span *ngIf="(step$ | async) >= 2" class="chckd-tab-lbl chckd-tab-lbl-1"><i class="tab-checked-icon"></i></span>
+              <div class="tab-txt-lbl">Replace equipment</div>
+            </a>
+            <ng-template ngbNavContent>
+              <replace-equipment-attributes (actualPhotoChange)="onActualPhotoChange($event)"
+                                            (addRegister)="onAddRegister($event)"
+                                            (attributePhotoChange)="onAttributePhotoChange($event)"
+                                            (close)="onCloseWizard()"
+                                            (comboSettingsChange)="onComboSettingsChange($event)"
+                                            (deviceChanges)="onDeviceChanges($event)"
+                                            (nextStep)="onNextStep($event)"
+                                            (parentMeterChanges)="onParentMeterChange($event)"
+                                            (registerFileChange)="onRegisterFileChange($event)"
+                                            (registerScaleChange)="onRegisterScaleChange($event)"
+                                            (registerSequenceChange)="onRegisterSequenceChange($event)"
+                                            (removeRegister)="onRemoveRegister($event)"
+                                            [actualPhotoUrl]="actualPhotoUrl"
+                                            [equipmentRegistersDict]="equipmentRegistersDict$ | async"
+                                            [equipmentTemplateForm]="equipmentTemplateForm$ | async"
+                                            [equipmentTemplates]="equipmentTemplates$ | async"
+                                            [meters]="meters$ | async"
+                                            [notIncludedRegisters]="notIncludedRegisters$ | async"
+                                            [parentMeter]="parentMeter$ | async"
+                                            [registerFiles]="registeFiles$ | async"
+                                            [replacementDate]="replacementDate$ | async">
+              </replace-equipment-attributes>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="'2'">
+            <a ngbNavLink>
+              <span *ngIf="(step$ | async) < 3" class="tab-lbl text-uppercase">3</span>
+              <span *ngIf="(step$ | async) >= 3" class="chckd-tab-lbl chckd-tab-lbl-1"><i class="tab-checked-icon"></i></span>
+              <div class="tab-txt-lbl">Update tariffs</div>
+            </a>
+            <ng-template ngbNavContent>
+              <node-tariff (close)="onCloseWizard()"
+                           (nextStep)="onNextStep($event)"
+                           (toggleLineItemIsActive)="onToggleLineItemIsActive($event)"
+                           (updateLineItemCategory)="onUpdateLineItemCategory($event)"
+                           (updateTariff)="onUpdateTariff($event)"
+                           [nodes]="nodes$ | async"
+                           [tariffs]="tariffs$ | async">
+              </node-tariff>
+            </ng-template>
+          </li>
+        </ul>
+        <div [ngbNavOutlet]="nav"></div>
+      </div>
+    </div>
+  </div>
+</div>

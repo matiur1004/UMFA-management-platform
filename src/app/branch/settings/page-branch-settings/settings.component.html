@@ -1,0 +1,427 @@
+<div class="container-fluid top-container">
+  <div class="row content">
+    <div class="col-12 none-padding">
+      <div class="client-header-title">
+        <h1 class="page-title text-uppercase">Settings</h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid branch-st-container">
+  <div class="row">
+    <div class="col-12 col-xl-8 col-lg-10 none-padding">
+      <!-- upload image block -->
+      <div class="bl-gradient-title">Branch Logo</div>
+      <upload-image (fileChange)="logoChanged($event)" [(file)]="model.logo" [outputFileName]="model.id"
+                    [src]="model.logoUrl"></upload-image>
+
+      <!-- general info block -->
+      <div class="editable-section container-fluid none-padding">
+        <div class="bl-gradient-title editable-section-title">General Info</div>
+
+        <div class="input-row">
+          <div class="text-uppercase field-name">
+            Branch Name
+          </div>
+          <div class="field-value">
+            <text-input [isRequired]=true (onFocusOut)="updateBranch()" [(model)]="model.name" class="none-padding field-value"
+                        maxlength="256"
+                        placeholder="Type here"></text-input>
+          </div>
+        </div>
+
+        <div class="input-row">
+          <div class="text-uppercase field-name">
+            Registered Name
+          </div>
+          <div class="field-value">
+            <text-input [isRequired]=true (onFocusOut)="updateBranch()" [(model)]="model.registeredName" class="none-padding field-value"
+                        maxlength="256"
+                        placeholder="Type here"></text-input>
+          </div>
+        </div>
+
+        <div class="input-row">
+          <div class="text-uppercase field-name">
+            Registration Number
+          </div>
+          <div class="field-value">
+            <text-input [isRequired]=true (onFocusOut)="updateBranch()" [(model)]="model.registeredNumber" class="none-padding field-value"
+                        maxlength="256"
+                        placeholder="Type here"></text-input>
+          </div>
+        </div>
+
+        <div class="input-row">
+          <div class="text-uppercase field-name">
+            Vat No.
+          </div>
+          <div class="field-value">
+            <text-input [isRequired]=true (onFocusOut)="updateBranch()" [(model)]="model.vatNumber" class="none-padding field-value"
+                        maxlength="256"
+                        placeholder="Type here"></text-input>
+          </div>
+        </div>
+
+        <div class="input-row hr-division">
+          <div class="text-uppercase field-name">Physical Address Description</div>
+          <text-input [isRequired]=true (onFocusOut)="updateBranch()" [(model)]="model.physicalAddress.description"
+                      [placeholder]="'Address description'" class="field-value"></text-input>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name">Street line 1</div>
+          <text-input [isRequired]=true (onFocusOut)="updateBranch()" [(model)]="model.physicalAddress.line1" [placeholder]="'Street line 1'"
+                      class="field-value"></text-input>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name">Street line 2</div>
+          <text-input (onFocusOut)="updateBranch()" [(model)]="model.physicalAddress.line2" [placeholder]="'Street line 2'"
+                      class="field-value"></text-input>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name">Suburb</div>
+          <text-input (onFocusOut)="updateBranch()" [(model)]="model.physicalAddress.suburb" [placeholder]="'Suburb (optional)'"
+                      class="field-value"></text-input>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name">City</div>
+          <text-input [isRequired]=true (onFocusOut)="updateBranch()" [(model)]="model.physicalAddress.city" [placeholder]="'City'"
+                      class="field-value"></text-input>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name">Postal code</div>
+          <text-input [isRequired]=true (onFocusOut)="updateBranch()" [(model)]="model.physicalAddress.code" [placeholder]="'Postal code'"
+                      class="field-value"></text-input>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name">Province</div>
+          <text-input [isRequired]=true (onFocusOut)="updateBranch()" [(model)]="model.physicalAddress.province"
+                      [placeholder]="'Province (optional)'" class="field-value"></text-input>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name">Country</div>
+          <text-input [isRequired]=true (onFocusOut)="updateBranch()" [(model)]="model.physicalAddress.country"
+                      [placeholder]="'Country (default South Africa for now)'"
+                      class="field-value"></text-input>
+        </div>
+
+        <div class="input-row hr-division">
+          <div class="text-uppercase field-name">Postal Address Description</div>
+          <text-input [isRequired]=true (onFocusOut)="updateBranch()" [(model)]="model.postAddress.description"
+                      [placeholder]="'Address description'" class="field-value"></text-input>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name">Street line 1</div>
+          <text-input [isRequired]=true (onFocusOut)="updateBranch()" [(model)]="model.postAddress.line1" [placeholder]="'Street line 1'"
+                      class="field-value"></text-input>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name">Street line 2</div>
+          <text-input (onFocusOut)="updateBranch()" [(model)]="model.postAddress.line2" [placeholder]="'Street line 2'"
+                      class="field-value"></text-input>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name">Suburb</div>
+          <text-input (onFocusOut)="updateBranch()" [(model)]="model.postAddress.suburb" [placeholder]="'Suburb (optional)'"
+                      class="field-value"></text-input>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name">City</div>
+          <text-input [isRequired]=true (onFocusOut)="updateBranch()" [(model)]="model.postAddress.city" [placeholder]="'City'"
+                      class="field-value"></text-input>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name">Postal code</div>
+          <text-input [isRequired]=true (onFocusOut)="updateBranch()" [(model)]="model.postAddress.code" [placeholder]="'Postal code'"
+                      class="field-value"></text-input>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name">Province</div>
+          <text-input [isRequired]=true (onFocusOut)="updateBranch()" [(model)]="model.postAddress.province" [placeholder]="'Province (optional)'"
+                      class="field-value"></text-input>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name">Country</div>
+          <text-input [isRequired]=true (onFocusOut)="updateBranch()" [(model)]="model.postAddress.country"
+                      [placeholder]="'Country (default South Africa for now)'"
+                      class="field-value"></text-input>
+        </div>
+
+        <div class="input-row hr-division">
+          <div class="text-uppercase field-name">
+            Email
+          </div>
+          <div class="field-value">
+            <text-input [isRequired]=true (onFocusOut)="updateBranch()" [(model)]="model.email" class="none-padding field-value"
+                        maxlength="256"
+                        placeholder="Type here"></text-input>
+          </div>
+        </div>
+
+        <div class="input-row">
+          <div class="text-uppercase field-name">
+            Phone Number
+            <br/>
+            <span class="undertext">*default number</span>
+          </div>
+          <div class="field-value">
+            <text-input [isRequired]=true (onFocusOut)="updateBranch()" [(model)]="model.phone" class="none-padding field-value"
+                        maxlength="256"
+                        placeholder="Type here"></text-input>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-xl-8 col-lg-10 none-padding">
+      <div class="phns-container editable-section container-fluid none-padding">
+        <div *ngFor="let contact of model.phoneContacts; let idx = index;">
+          <div class="row">
+            <div class="col padding-left-none">
+              <div class="input-row">
+                <dropdown-input (onFocusOut)="updatePhoneContact(idx)" [(model)]="contact.label"
+                                [values]="phoneContactLabels"
+                                class="text-uppercase field-name"></dropdown-input>
+                <text-input [isRequired]=true (onFocusOut)="updatePhoneContact(idx)" [(model)]="contact.value"
+                            class="field-value"></text-input>
+              </div>
+            </div>
+            <div class="delete-link">
+              <button (click)="removePhoneContact(idx)" class="dnm-btn-icon">
+                <i class="icon cross-icon"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="row gi-footer">
+          <a (click)="addPhoneContact($event)" class="blue-text-btn" href="javascript:void(0);">
+            <i class="add-icon"></i>Add Phone Number
+          </a>
+          <a (click)="addExternalLink($event)" *ngIf="!model.externalLinks.length" class="blue-text-btn"
+             href="javascript:void(0);">
+            <i class="add-icon"></i>Add External Link
+          </a>
+          <a (click)="addBankAccount()" *ngIf="!model.bankAccounts.length" class="blue-text-btn"
+             href="javascript:void(0);">
+            <i class="add-icon"></i>Add Bank Account
+          </a>
+        </div>
+        <div *ngIf="model.externalLinks.length"
+             class="extrl-lnks-container editable-section container-fluid none-padding">
+          <div class="bl-gradient-title editable-section-title">External Links</div>
+          <div *ngFor="let contact of model.externalLinks; let idx = index;">
+            <div class="row">
+              <div class="col padding-left-none">
+                <div class="input-row">
+                  <dropdown-input (onFocusOut)="updateExternalLink(idx)" [(model)]="contact.label"
+                                  [values]="externalLinkLabels"
+                                  class="text-uppercase field-name"></dropdown-input>
+                  <text-input [isRequired]=true (onFocusOut)="updateExternalLink(idx)" [(model)]="contact.value"
+                              class="field-value"></text-input>
+                </div>
+              </div>
+              <div class="delete-link">
+                <button (click)="removeExternalLink(idx)" class="dnm-btn-icon">
+                  <i class="icon cross-icon"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <a (click)="addExternalLink($event)" class="blue-text-btn" href="javascript:void(0);">
+              <i class="add-icon"></i>Add External Link
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 none-padding">
+      <div class="editable-section container-fluid none-padding">
+        <div *ngIf="model.bankAccounts.length" class="editable-section container-fluid none-padding">
+          <div class="bl-gradient-title editable-section-title">Bank Accounts</div>
+          <table class="table table-premium bank-accounts-tbl">
+            <thead>
+            <tr class="table-header text-uppercase">
+              <th class="align-middle" scope="col" title="Account Name">Account Name</th>
+              <th scope="col" title="Bank Name">Bank Name</th>
+              <th scope="col" title="Account Type">Account Type</th>
+              <th scope="col" title="Account Number">Account Number</th>
+              <th scope="col" title="Branch Code">Branch Code</th>
+              <th scope="col" title="Swift Code">Swift Code</th>
+              <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let bankAccount of model.bankAccounts; let idx = index;">
+              <th scope="row">
+                <div class="accounting-info">
+                  <div class="accounting-col">
+                    <div class="accounting-img"></div>
+                  </div>
+                  <div class="accounting-col">
+                    <div class="account-name">
+                      <text-input (onFocusOut)="updateBankAccount(idx)" [(model)]="bankAccount.accountName"
+                                  class="col-8 none-padding field-value"
+                                  input-class="bold"></text-input>
+                    </div>
+                    <span class="text-secondary">
+                        <text-input (onFocusOut)="updateBankAccount(idx)" [(model)]="bankAccount.description"
+                                    class="col-8 none-padding field-value"></text-input>
+                      </span>
+                  </div>
+                </div>
+              </th>
+              <td>
+                <text-input [isRequired]=true (onFocusOut)="updateBankAccount(idx)" [(model)]="bankAccount.bankName"
+                            class="col-8 none-padding field-value"></text-input>
+              </td>
+              <td>
+                <text-input [isRequired]=true (onFocusOut)="updateBankAccount(idx)" [(model)]="bankAccount.accountType"
+                            class="col-8 none-padding field-value"></text-input>
+              </td>
+              <td>
+                <text-input [isRequired]=true (onFocusOut)="updateBankAccount(idx)" [(model)]="bankAccount.accountNumber"
+                            class="col-8 none-padding field-value"></text-input>
+              </td>
+              <td>
+                <text-input [isRequired]=true (onFocusOut)="updateBankAccount(idx)" [(model)]="bankAccount.branchCode"
+                            class="col-8 none-padding field-value"></text-input>
+              </td>
+              <td>
+                <text-input [isRequired]=true (onFocusOut)="updateBankAccount(idx)" [(model)]="bankAccount.swiftCode"
+                            class="col-8 none-padding field-value"></text-input>
+              </td>
+              <td class="text-right">
+                <div class="delete-link">
+                  <button (click)="removeBankAccount(idx)" class="dnm-btn-icon">
+                    <i class="icon cross-icon"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <div class="row">
+            <a (click)="addBankAccount()" class="blue-text-btn" href="javascript:void(0)">
+              <i class="add-icon"></i>Add Account
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 none-padding">
+      <div class="editable-section container-fluid none-padding">
+        <div class="editable-section container-fluid none-padding">
+          <div class="bl-gradient-title editable-section-title">Automatic Meter Reading Accounts</div>
+          <table class="table table-premium">
+            <thead>
+            <tr class="table-header text-uppercase">
+              <th scope="col" title="No.">No.</th>
+              <th scope="col" title="SubDomain">SubDomain</th>
+              <th scope="col" title="Username">Username</th>
+              <th scope="col" title="Password">Password</th>
+              <th scope="col" title="Description">Description</th>
+              <th scope="col" title="Call frequency">Call frequency</th>
+              <th scope="col" title="Get readings on last day of BP">Retrieve per BP</th>
+              <th class="building-header" scope="col" title="Buildings">Buildings</th>
+              <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let amrAccount of model.amrAccounts; let idx = index;">
+              <td>
+                <span class="bold">{{idx + 1}}</span>
+              </td>
+              <td>
+                <text-input (onFocusOut)="updateAutomaticMeterReadingAccount(idx)" [(model)]="amrAccount.subDomain"
+                            class="col-8 none-padding field-value"></text-input>
+              </td>
+              <td>
+                <text-input (onFocusOut)="updateAutomaticMeterReadingAccount(idx)" [(model)]="amrAccount.username"
+                            class="col-8 none-padding field-value"></text-input>
+              </td>
+              <td>
+                <text-input (onFocusOut)="updateAutomaticMeterReadingAccount(idx)" [(model)]="amrAccount.password" [type]="'password'"
+                            class="col-8 none-padding field-value"></text-input>
+              </td>
+              <td>
+                <text-input (onFocusOut)="updateAutomaticMeterReadingAccount(idx)" [(model)]="amrAccount.description"
+                            class="col-8 none-padding field-value" input-class="text-ellipsis"
+                            title="{{amrAccount.description}}"></text-input>
+              </td>
+              <td>
+                <dropdown-input (onFocusOut)="updateAutomaticMeterReadingAccount(idx)"
+                                [(model)]="amrAccount.callFrequency" [text]="callFrequencyText"
+                                [values]="getFilteredFrequency(amrAccount.callFrequency)">
+                </dropdown-input>
+              </td>
+              <td>
+                <label class="dnm-switch-btn">
+                  <input (change)="updateAutomaticMeterReadingAccount(idx)" [(ngModel)]="amrAccount.shouldCallPerBuildingPeriod"
+                         type="checkbox">
+                  <span class="dnm-switch-slider round"></span>
+                </label>
+              </td>
+              <td>
+                <ng-select (change)="updateAutomaticMeterReadingAccount(idx)" [(ngModel)]="amrAccount.buildingIds" [clearable]="false"
+                           [dropdownPosition]="top" [hideSelected]="true"
+                           [items]="amrAccountsBuildings[idx]" [multiple]="true" [ngModelOptions]="{standalone: true}"
+                           [searchable]="true" bindLabel="name"
+                           bindValue="id" class="dnm-multiple-select">
+                </ng-select>
+              </td>
+              <td class="text-right">
+                <div class="delete-link">
+                  <button (click)="removeAutomaticMeterReadingAccount(idx)" class="dnm-btn-icon">
+                    <i class="icon cross-icon"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <div class="row">
+            <a (click)="addAutomaticMeterReadingAccount()" class="blue-text-btn" href="javascript:void(0)">
+              <i class="add-icon"></i>Add Account
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-6 none-padding">
+      <div class="dpts-container editable-section container-fluid none-padding">
+        <!-- management company departments block -->
+        <div class="bl-gradient-title editable-section-title">Management Company Departments</div>
+        <div *ngFor="let department of departmens">
+          <div class="row d-flex align-items-center">
+            <div class="col padding-left-none">
+              <div class="input-row">
+                <div class="text-uppercase text-form-field">
+                  {{department.name}}
+                </div>
+              </div>
+            </div>
+            <div class="delete-link d-flex align-items-center">
+              <label class="dnm-switch-btn">
+                <input (change)="onChangeDepartment(department)" [checked]="department.isSelected" type="checkbox">
+                <span class="dnm-switch-slider round"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

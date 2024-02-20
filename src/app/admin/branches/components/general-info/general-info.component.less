@@ -1,0 +1,42 @@
+
+@import 'required-fields.less';
+
+::ng-deep .general-info-tab .edit-logo-panel.row {
+  margin-bottom: 40px;
+}
+
+::ng-deep .general-info-tab .input-row .field-name {
+  font-family: Gotham Medium;
+  width: 267px;
+  padding: 0;
+}
+
+::ng-deep .general-info-tab .input-row .field-value {
+  width: calc(100% - 267px);
+  padding-left: 0;
+}
+
+::ng-deep .general-info-tab .edit-logo-panel {
+  margin-top: 0;
+  margin-bottom: 40px;
+}
+
+/* #region media styles */
+
+@media (min-width: 768px) {
+  .logo-description {
+    margin-top: 0;
+    padding-left: 0;
+  }
+
+  .logo-description .inputfile + label {
+    margin-top: 15px;
+  }
+
+  .additional-links {
+    margin-top: 10px;
+  }
+}
+
+/* #endregion */
+

@@ -1,0 +1,15 @@
+<div class="node-shop-item none-padding d-flex align-items-stretch">
+  <div *ngFor="let typeIndex of availableSupplyTypes" class="node-row-item d-flex align-items-center flex-grow-1">
+    <ng-container *ngIf="allNodes[typeIndex] as nodes">
+      <div *ngIf="nodes?.length >= 1" [container]="'body'" [placement]="['bottom-right', 'top-right']"
+           class="dropdown d-flex align-items-center" ngbDropdown>
+        <span class="node-item-lbl text-ellipsis" ngbDropdownToggle>
+          {{nodes.length}}
+        </span>
+        <div class="spl-type-popup dropdown-menu" ngbDropdownMenu>
+          <node-shops-popup (goToNodeDetail)="onGoToNodeDetail($event)" [nodes]="nodes"></node-shops-popup>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

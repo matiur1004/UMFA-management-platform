@@ -1,0 +1,66 @@
+//@import 'variables.less';
+@import 'required-fields.less';
+
+.modal-body {
+  padding: 0;
+}
+
+.meter-reading-account-modal {
+  padding: 40px 25px 0;
+}
+
+::ng-deep .meter-reading-account-modal .footer-buttons .dnm-btn {
+  margin-left: 25px;
+}
+
+
+::ng-deep .meter-reading-account-modal .col-left,
+::ng-deep .meter-reading-account-modal .col-right {
+  position: relative;
+  width: 100%;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+/* #region media styles */
+
+@media (min-width: 768px) {
+  ::ng-deep .meter-reading-account-modal .form-control {
+    padding-left: 20px;
+  }
+
+  ::ng-deep .meter-reading-account-modal .col-left {
+    -ms-flex: 0 0 267px;
+    flex: 0 0 267px;
+    max-width: 267px;
+  }
+
+  ::ng-deep .meter-reading-account-modal .col-right {
+    -ms-flex: 0 0 480px;
+    flex: 0 0 480px;
+    max-width: 480px;
+  }
+
+  ::ng-deep .meter-reading-account-modal .footer-buttons {
+    padding-top: 100px;
+    padding-bottom: 50px;
+  }
+
+  ::ng-deep .meter-reading-account-modal .footer-buttons .dnm-btn {
+    width: 200px;
+  }
+}
+
+/* #endregion */
+
+
+.meter-reading-account-modal .dnm-btn-delete {
+  background: none;
+  box-shadow: none;
+  padding: 10px;
+}
+
+.meter-reading-account-modal .dnm-btn-delete:hover {
+  background: @color-background-tertiary;
+}

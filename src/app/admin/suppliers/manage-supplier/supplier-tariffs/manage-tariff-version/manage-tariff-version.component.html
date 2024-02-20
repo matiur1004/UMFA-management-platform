@@ -1,0 +1,43 @@
+<div class="manage-tariff-version page-content">
+  <div class="container-fluid title-container">
+    <div class="row">
+      <div class="col-12 none-padding d-flex justify-content-between align-items-center">
+        <div>
+          <h1 class="page-title">{{(formState$ | async).value.name}}</h1>
+          <div class="d-flex flex-row align-items-center">
+            <div class="version-info">Version: {{(formState$ | async).value.version}}
+              -{{(formState$ | async).value.versionDate | date:'dd/MM/yyyy'}}</div>
+            <div class="button-row">
+              <a (click)="addTariffVersion()" class="blue-text-btn" href="javascript:void(0);">
+                <i class="add-icon"></i>Add New Tariff Version
+              </a>
+            </div>
+          </div>
+        </div>
+        <back-button [redirectPath]="redirectPath"></back-button>
+      </div>
+    </div>
+  </div>
+  <div class="dnm-tabset">
+   <ul ngbNav #nav="ngbNav" (navChange)="onBeforeTabChange($event)" [(activeId)]="tabId" class="nav-tabs">
+      <li [ngbNavItem]="'tab-0'">
+        <a ngbNavLink>
+          <i class="tab-icon dnm-icon-splrs-dtls"></i>
+          <span class="tab-name text-uppercase">Tariff details</span>
+        </a>
+        <ng-template ngbNavContent>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="'tab-1'">
+        <a ngbNavLink>
+          <i class="tab-icon dnm-icon-splrs-ctgrs"></i>
+          <span class="tab-name text-uppercase">Settings</span>
+        </a>
+        <ng-template ngbNavContent>
+        </ng-template>
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="nav"></div>
+  </div>
+  <router-outlet></router-outlet>
+</div>

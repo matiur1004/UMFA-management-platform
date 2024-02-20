@@ -1,0 +1,101 @@
+<ng-container *ngIf="!locations.length">
+  <div class="create-locations">
+    <div class="add-location-icon">
+      <img src="assets/images/icons/manage-locations-icon.svg"/>
+    </div>
+    <div class="create-locations-msg d-flex justify-content-center">There are no locations here</div>
+    <a (click)="onCreate()" class="blue-text-btn d-flex align-items-center justify-content-center"
+       href="javascript:void(0);">
+      <i class="add-icon"></i> Create Locations
+    </a>
+  </div>
+
+  <div class="row">
+    <div class="col-12 text-right footer-buttons">
+      <button (click)="next.emit()" class="dnm-btn dnm-btn-primary size-lg text-uppercase" type="button">Skip</button>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="locations.length">
+  <div class="container-fluid locations">
+    <div class="nav-row">
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+          <span class="results-label dnm-text-light">
+            {{locations.length}} locations
+          </span>
+          <a (click)="onCreate()" class="blue-text-btn" href="javascript:void(0)">
+            <i class="add-icon"></i> Add Location
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <ng-container>
+      <div class="row none-margin-hr list-header">
+        <div class="col-3 none-padding">
+          <div class="row none-margin-hr">
+            <div class="col-5 header-field d-flex align-items-center">
+              <span class="text-ellipsis text-uppercase" title="Seq No">Seq No</span>
+            </div>
+            <div class="col-7 header-field d-flex align-items-center">
+              <span class="text-ellipsis text-uppercase" title="Location Name">Location Name</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-9 header-field d-flex align-items-center">
+          <span class="text-ellipsis text-uppercase" title="Description">Description</span>
+        </div>
+      </div>
+
+      <div (cdkDropListDropped)="dropped($event)" cdkDropList class="list-body">
+        <div *ngFor="let location of locations; let i = index;" cdkDrag
+             cdkDragLockAxis="y" class="row none-margin-hr body-row">
+          <div class="col-3 none-padding">
+            <div class="row none-margin-hr">
+              <div class="col-5">
+                <span class="seq-no-lbl">{{location.sequenceNumber}}</span>
+              </div>
+              <div class="col-7">
+                <span class="location-cell-lbl">{{location.name}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-9 d-flex align-items-center justify-content-between">
+            <span class="location-cell-lbl">{{location.description}}</span>
+            <div class="d-flex align-items-center justify-content-between">
+              <div [container]="'body'" [placement]="['bottom-right', 'top-right']"
+                   class="dropdown darkness d-inline-block" ngbDropdown>
+                <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle></button>
+                <div class="darkness dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                  <button (click)="onClone(location)" class="dropdown-item d-flex justify-content-between dropdown-clone"
+                          type="button">
+                    Clone
+                    <i class="dnm-icon plus-icon"></i>
+                  </button>
+                  <button (click)="onEdit(i)" class="dropdown-item d-flex justify-content-between dropdown-edit"
+                          type="button">
+                    Edit
+                    <i class="dnm-icon edit-icon"></i>
+                  </button>
+                  <button (click)="onDelete(location.sequenceNumber)" class="dropdown-item d-flex justify-content-between dropdown-delete"
+                          type="button">
+                    Delete
+                    <i class="dnm-icon delete-icon"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+  <div class="row locations-footer">
+    <div class="col-12 text-right footer-buttons">
+      <button (click)="previous.emit()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+      <button (click)="onNext()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Next</button>
+    </div>
+  </div>
+</ng-container>

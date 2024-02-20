@@ -1,0 +1,121 @@
+<div class="container-fluid tariff-versions-list">
+  <div class="row">
+    <div class="col-12 none-padding">
+      <div class="title d-flex flex-row align-items-center">
+        <div class="bl-gradient-title section-title">{{ title }}</div>
+        <div class="row button-row">
+          <a (click)="addNewVersion.emit()" class="blue-text-btn" href="javascript:void(0);">
+            <i class="add-icon"></i>Add new sub-version
+          </a>
+        </div>
+      </div>
+      <div class="row none-margin-hr list-header">
+        <div class="col-12">
+          <div class="row none-margin-hr">
+            <div class="col-2">
+              <a (click)="changeOrderIndex.emit(orderType.ValuesAsc)" [ngClass]="{'active': orderIndex == orderType.ValuesAsc || orderIndex == orderType.ValuesDesc}"
+                 class="header-field d-flex align-items-center"
+                 href="javascript:void(0);">
+                <span class="text-ellipsis" title="Sub-versions">Sub-Versions</span>
+                <i [ngClass]="{'inactive': orderIndex != orderType.ValuesAsc && orderIndex != orderType.ValuesDesc, 'dnm-icon-sort-up': orderIndex == orderType.ValuesDesc,'dnm-icon-sort-down': orderIndex != orderType.ValuesDesc }"
+                   class="dnm-icon"></i>
+              </a>
+            </div>
+            <div class="col-2">
+              <a (click)="changeOrderIndex.emit(orderType.StartDateAsc)" [ngClass]="{'active': orderIndex == orderType.StartDateAsc || orderIndex == orderType.StartDateAsc}"
+                 class="header-field d-flex align-items-center"
+                 href="javascript:void(0);">
+                <span class="text-ellipsis" title="Started date">Start date</span>
+                <i [ngClass]="{'inactive': orderIndex != orderType.StartDateAsc && orderIndex != orderType.StartDateDesc, 'dnm-icon-sort-up': orderIndex == orderType.StartDateDesc,'dnm-icon-sort-down': orderIndex != orderType.StartDateDesc }"
+                   class="dnm-icon"></i>
+              </a>
+            </div>
+            <div class="col-2">
+              <a (click)="changeOrderIndex.emit(orderType.CreatedByAsc)" [ngClass]="{'active': orderIndex == orderType.CreatedByAsc || orderIndex == orderType.CreatedByDesc}"
+                 class="header-field d-flex align-items-center"
+                 href="javascript:void(0);">
+                <span class="text-ellipsis" title="Created By">Created By</span>
+                <i [ngClass]="{'inactive': orderIndex != orderType.CreatedByAsc && orderIndex != orderType.CreatedByDesc, 'dnm-icon-sort-up': orderIndex == orderType.CreatedByDesc,'dnm-icon-sort-down': orderIndex != orderType.CreatedByDesc }"
+                   class="dnm-icon"></i>
+              </a>
+            </div>
+            <div class="col-2">
+              <a (click)="changeOrderIndex.emit(orderType.UpdatedAsc)" [ngClass]="{'active': orderIndex == orderType.UpdatedAsc || orderIndex == orderType.UpdatedDesc}"
+                 class="header-field d-flex align-items-center"
+                 href="javascript:void(0);">
+                <span class="text-ellipsis" title="Updated">Updated</span>
+                <i [ngClass]="{'inactive': orderIndex != orderType.UpdatedAsc && orderIndex != orderType.UpdatedDesc, 'dnm-icon-sort-up': orderIndex == orderType.UpdatedDesc,'dnm-icon-sort-down': orderIndex != orderType.UpdatedDesc }"
+                   class="dnm-icon"></i>
+              </a>
+            </div>
+            <div class="col-2">
+              <a (click)="changeOrderIndex.emit(orderType.UpdatedByAsc)" [ngClass]="{'active': orderIndex == orderType.UpdatedByAsc || orderIndex == orderType.UpdatedByDesc}"
+                 class="header-field d-flex align-items-center"
+                 href="javascript:void(0);">
+                <span class="text-ellipsis" title="Updated By">Updated By</span>
+                <i [ngClass]="{'inactive': orderIndex != orderType.UpdatedByAsc && orderIndex != orderType.UpdatedByDesc, 'dnm-icon-sort-up': orderIndex == orderType.UpdatedByDesc,'dnm-icon-sort-down': orderIndex != orderType.UpdatedByDesc }"
+                   class="dnm-icon"></i>
+              </a>
+            </div>
+            <div class="col-2">
+              <a (click)="changeOrderIndex.emit(orderType.IsActiveAsc)" [ngClass]="{'active': orderIndex == orderType.IsActiveAsc || orderIndex == orderType.IsActiveDesc}"
+                 class="header-field d-flex align-items-center"
+                 href="javascript:void(0);">
+                <span class="text-ellipsis" title="Active value">Active value</span>
+                <i [ngClass]="{'inactive': orderIndex != orderType.IsActiveAsc && orderIndex != orderType.IsActiveDesc, 'dnm-icon-sort-up': orderIndex == orderType.IsActiveDesc,'dnm-icon-sort-down': orderIndex != orderType.IsActiveDesc }"
+                   class="dnm-icon"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="list-body">
+        <div *ngFor="let version of tariffVersions"
+             [ngClass]="{'active-version': version.isActual}" class="row none-margin-hr body-row d-flex align-items-center">
+          <div class="col-12">
+            <div class="row none-margin-hr">
+              <div class="col-2 d-flex align-items-center">
+                <span class="values-lbl">{{version.name}} {{version.version}}</span>
+              </div>
+              <div class="col-2 d-flex align-items-center">
+                <span class="list-text-lbl">{{version.versionDate | date: 'dd/MM/yyyy'}}</span>
+              </div>
+              <div class="col-2 d-flex align-items-center">
+                <span class="list-text-lbl">{{version.createdByUser.fullName}}</span>
+              </div>
+              <div class="col-2 d-flex align-items-center">
+                <span class="list-text-lbl">{{version.updatedOn | date: 'dd/MM/yyyy'}}</span>
+              </div>
+              <div class="col-2 d-flex align-items-center">
+                <span class="list-text-lbl">{{version.updatedByUser.fullName}}</span>
+              </div>
+              <div class="col-2 d-flex align-items-center justify-content-between">
+                <div>
+                  <span class="list-text-lbl text-uppercase">{{version.isActual ? 'Active' : 'Inactive'}}</span>
+                </div>
+                <div class="d-flex align-items-center">
+                  <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+                    <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle type="button"></button>
+                    <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                      <button (click)="editVersion.emit(version.versionId)" class="dropdown-item d-flex justify-content-between" data-menu-item
+                              type="button">
+                        View
+                        <i class="dnm-icon edit-icon"></i>
+                      </button>
+                      <button (click)="deleteVersion.emit(version.versionId)" *ngIf="version.isActual"
+                              class="dropdown-item d-flex justify-content-between" data-menu-item
+                              type="button">
+                        Delete
+                        <i class="dnm-icon delete-icon"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

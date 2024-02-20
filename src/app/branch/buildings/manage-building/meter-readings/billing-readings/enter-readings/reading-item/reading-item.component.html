@@ -1,0 +1,163 @@
+<div class="reading-item">
+  <div class="row none-margin-hr mtr-rdngs-row">
+    <div class="col-3 d-flex align-items-center rdng-srtbl-col">
+      <div class="w-100">
+        <div class="row none-margin-hr">
+          <div class="col-4 text-ellipsis">
+            <span class="id-numb-lbl">1564</span>
+          </div>
+          <div class="col-4 text-ellipsis">
+            <span class="location-lbl">Location name</span>
+          </div>
+          <div class="col-4 text-ellipsis">
+            <span class="cell-prop-val">6</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-9 none-padding d-flex">
+      <div class="w-100">
+        <div class="row none-margin-hr item-row">
+          <div class="col-7 none-padding d-flex align-items-center">
+            <div class="row none-margin-hr w-100">
+              <div class="col-3 d-flex align-items-center">
+                <span class="cell-prop-val text-ellipsis">kWh-S</span>
+              </div>
+              <div class="col-3 d-flex align-items-center">
+                <span class="cell-prop-val text-ellipsis">714</span>
+              </div>
+              <div class="col-3 d-flex align-items-center">
+                <span class="cell-prop-val text-ellipsis">5</span>
+              </div>
+              <div class="col-3 d-flex align-items-center">
+                <span class="cell-prop-val text-ellipsis">720</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-5 none-padding d-flex align-items-center">
+            <div class="row none-margin-hr w-100">
+              <div class="col-5 d-flex align-items-center">
+                <input class="form-control actual-reading-inpt" placeholder="" type="text">
+              </div>
+              <div class="col-7 d-flex align-items-center justify-content-between">
+                <span class="cell-prop-val text-ellipsis">5</span>
+                <div class="d-flex align-items-center">
+                  <div [autoClose]="'outside'" class="dropdown" ngbDropdown placement="right-top">
+                    <button class="dnm-btn actual-rdng-btn dnm-btn-note-add" ngbDropdownToggle type="button"></button>
+                    <div class="note-popup-dropdown dropdown-menu" ngbDropdownMenu>
+                      <note-popup [maxTextLength]=150></note-popup>
+                    </div>
+                  </div>
+
+                  <div class="rdng-file-inpt-wrp">
+                    <input #fileInput class="rdng-file-inpt" type="file"/>
+                    <button class="dnm-btn actual-rdng-btn dnm-btn-photo-add" type="button"></button>
+                  </div>
+
+                  <div class="dnm-checkbox">
+                    <input class="checkbox-toggle" type="checkbox"/>
+                    <div class="state">
+                      <label></label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row none-margin-hr item-row">
+          <div class="col-7 none-padding d-flex align-items-center">
+            <div class="row none-margin-hr w-100">
+              <div class="col-3 d-flex align-items-center">
+                <span class="cell-prop-val text-ellipsis">kWh-S</span>
+              </div>
+              <div class="col-3 d-flex align-items-center">
+                <span class="cell-prop-val text-ellipsis">714</span>
+              </div>
+              <div class="col-3 d-flex align-items-center">
+                <span class="cell-prop-val text-ellipsis">5</span>
+              </div>
+              <div class="col-3 d-flex align-items-center">
+                <span class="cell-prop-val text-ellipsis">720</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-5 none-padding d-flex align-items-center">
+            <div class="row none-margin-hr w-100">
+              <div class="col-5 d-flex align-items-center">
+                <input class="form-control actual-reading-inpt" placeholder="" type="text">
+              </div>
+              <div class="col-7 d-flex align-items-center justify-content-between">
+                <span class="cell-prop-val text-ellipsis">5</span>
+                <div class="d-flex align-items-center">
+                  <div [autoClose]="'outside'" class="dropdown" ngbDropdown placement="right-top">
+                    <button class="dnm-btn actual-rdng-btn dnm-btn-note" ngbDropdownToggle type="button"></button>
+                    <div class="note-popup-dropdown dropdown-menu" ngbDropdownMenu>
+                      <note-popup [maxTextLength]=150></note-popup>
+                    </div>
+                  </div>
+                  <div class="rdng-file-inpt-wrp">
+                    <input #fileInput class="rdng-file-inpt" type="file"/>
+                    <button class="dnm-btn actual-rdng-btn dnm-btn-photo" type="button"></button>
+                  </div>
+                  <div class="dnm-checkbox">
+                    <input class="checkbox-toggle" type="checkbox"/>
+                    <div class="state">
+                      <label></label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row none-margin-hr item-row">
+          <div class="col-7 none-padding d-flex align-items-center">
+            <div class="row none-margin-hr w-100">
+              <div class="col-3 d-flex align-items-center">
+                <span class="cell-prop-val text-ellipsis">kWh-S</span>
+              </div>
+              <div class="col-3 d-flex align-items-center">
+                <span class="cell-prop-val text-ellipsis">714</span>
+              </div>
+              <div class="col-3 d-flex align-items-center">
+                <span class="cell-prop-val text-ellipsis">5</span>
+              </div>
+              <div class="col-3 d-flex align-items-center">
+                <span class="cell-prop-val text-ellipsis">720</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-5 none-padding d-flex align-items-center">
+            <div class="row none-margin-hr w-100">
+              <div class="col-5 d-flex align-items-center">
+                <input class="form-control actual-reading-inpt" placeholder="" type="text">
+              </div>
+              <div class="col-7 d-flex align-items-center justify-content-between">
+                <span class="cell-prop-val text-ellipsis">5</span>
+                <div class="d-flex align-items-center">
+                  <div [autoClose]="'outside'" class="dropdown" ngbDropdown placement="right-top">
+                    <button class="dnm-btn actual-rdng-btn dnm-btn-note" ngbDropdownToggle type="button"></button>
+                    <div class="note-popup-dropdown dropdown-menu" ngbDropdownMenu>
+                      <note-popup [maxTextLength]=150></note-popup>
+                    </div>
+                  </div>
+                  <div class="rdng-file-inpt-wrp">
+                    <input #fileInput class="rdng-file-inpt" type="file"/>
+                    <button class="dnm-btn actual-rdng-btn dnm-btn-photo" type="button"></button>
+                  </div>
+                  <div class="dnm-checkbox">
+                    <input class="checkbox-toggle" type="checkbox"/>
+                    <div class="state">
+                      <label></label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

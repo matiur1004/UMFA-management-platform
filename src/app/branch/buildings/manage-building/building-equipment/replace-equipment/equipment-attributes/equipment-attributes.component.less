@@ -1,0 +1,306 @@
+//@import 'variables.less';
+@import 'required-fields.less';
+
+.replace-equipment-attributes .left-col-wrapper {
+  padding-right: 35px;
+}
+
+.replace-equipment-attributes .right-col-wrapper {
+  padding-left: 35px;
+}
+
+.replace-equipment-attributes .bl-gradient-title {
+  margin-bottom: 30px;
+}
+
+.replace-equipment-attributes .equip-attr-title {
+  margin-top: 35px;
+}
+
+.replace-equipment-attributes .main-equipment-img {
+  width: 350px;
+  min-width: 350px;
+  height: 350px;
+  min-height: 350px;
+  background-color: @color-background-white;
+  border: 1px solid @color-stroke;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 30px;
+}
+
+::ng-deep .replace-equipment-attributes .main-equipment-img .logo-img {
+  max-height: 330px;
+  max-width: 330px;
+}
+
+.replace-equipment-attributes .gallery-block {
+  width: 350px;
+  min-width: 350px;
+}
+
+.replace-equipment-attributes .gallery-item {
+  width: 90px;
+  min-width: 90px;
+  margin-right: 40px;
+}
+
+.replace-equipment-attributes .item-img,
+.replace-equipment-attributes .upld-img {
+  width: 90px;
+  min-width: 90px;
+  height: 90px;
+  min-height: 90px;
+  border: 1px solid @color-stroke;
+  border-radius: 5px;
+  background-color: @color-background-white;
+  margin-bottom: 15px;
+  cursor: pointer;
+  position: relative;
+}
+
+.replace-equipment-attributes .item-img > img {
+  width: 88px;
+  height: 88px;
+  border-radius: 5px;
+}
+
+.replace-equipment-attributes .item-lbl {
+  font-family: Gotham Book;
+  font-size: 12px;
+  line-height: 14px;
+  color: @color-text-tertiary;
+}
+
+.replace-equipment-attributes .upld-logo {
+  width: 50px;
+  height: 50px;
+  background-size: 50px;
+  margin-bottom: 5px;
+}
+
+.replace-equipment-attributes .upld-img-lbl {
+  font-family: Gotham Medium;
+  font-size: 10px;
+  line-height: 12px;
+  color: @color-stroke;
+}
+
+.replace-equipment-attributes .header-field {
+  text-transform: uppercase;
+}
+
+.replace-equipment-attributes .list-body {
+  margin-bottom: 30px;
+}
+
+.replace-equipment-attributes .body-row {
+  margin-bottom: 15px;
+}
+
+.replace-equipment-attributes .list-header,
+.replace-equipment-attributes .data-row {
+  width: calc(100% - 40px);
+}
+
+.replace-equipment-attributes .equip-inpt-wrp {
+  position: relative;
+  line-height: 1;
+}
+
+.replace-equipment-attributes .equip-file-inpt {
+  width: 23px;
+  height: 23px;
+  overflow: hidden;
+  opacity: 0;
+  position: absolute;
+  z-index: 1;
+  cursor: pointer;
+  left: 0;
+  top: 0;
+}
+
+.replace-equipment-attributes .attr-img {
+  position: relative;
+}
+
+.replace-equipment-attributes .item-img .equip-file-inpt {
+  width: 90px;
+  height: 90px;
+}
+
+.replace-equipment-attributes .attr-img .equip-file-inpt {
+  width: 35px;
+  height: 35px;
+}
+
+
+.replace-equipment-attributes .view-equip-img,
+.replace-equipment-attributes .add-equip-img {
+  width: 23px;
+  height: 23px;
+  display: inline-block;
+  cursor: pointer;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.replace-equipment-attributes .view-equip-img {
+  background-image: url('../../../../../../../assets/images/icons/equipment/photo.svg');
+
+}
+
+.replace-equipment-attributes .view-equip-img:hover,
+.replace-equipment-attributes .equip-file-inpt:hover ~ .view-equip-img {
+  background-image: url('../../../../../../../assets/images/icons/equipment/photo-hover.svg');
+}
+
+.replace-equipment-attributes .add-equip-img {
+  background-image: url('../../../../../../../assets/images/icons/equipment/photo-add.svg');
+}
+
+.replace-equipment-attributes .add-equip-img:hover,
+.replace-equipment-attributes .equip-file-inpt:hover ~ .add-equip-img {
+  background-image: url('../../../../../../../assets/images/icons/equipment/photo-add-hover.svg');
+}
+
+.replace-equipment-attributes .datepicker-lbl {
+  font-family: Gotham Medium;
+  font-size: 14px;
+  line-height: 14px;
+  color: @color-text-tertiary;
+  margin-left: 20px;
+  margin-right: 15px;
+}
+
+.replace-equipment-attributes .nav-datepicker-wrp {
+  width: 110px !important;
+}
+
+.replace-equipment-attributes .nav-datepicker-wrp .calendar {
+  height: 35px;
+  background-size: 15px 15px;
+}
+
+::ng-deep .replace-equipment-attributes .nav-datepicker-wrp ngb-datepicker.dropdown-menu {
+  left: unset !important;
+  right: 0;
+}
+
+
+.replace-equipment-attributes .nav-dtpickr-inpt {
+  height: 35px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.replace-equipment-attributes .footer-btns {
+  margin-top: 35px;
+}
+
+.replace-equipment-attributes .dnm-btn-cancel,
+.replace-equipment-attributes .dnm-btn-red {
+  margin-right: 30px;
+}
+
+.replace-equipment-attributes .attr-photo-btn {
+  background-color: @color-background-white;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 20px;
+  border: 1px solid @color-stroke;
+  width: 35px;
+  height: 35px;
+  display: inline-block;
+}
+
+.replace-equipment-attributes .dnm-btn-cancel,
+.replace-equipment-attributes .dnm-btn-red {
+  margin-right: 30px;
+}
+
+.replace-equipment-attributes .dnm-btn-cancel,
+.replace-equipment-attributes .dnm-btn-red,
+.replace-equipment-attributes .dnm-btn-primary {
+  width: 200px;
+  min-width: 200px;
+}
+
+.replace-equipment-attributes .item-container {
+  margin-bottom: 15px;
+}
+
+.replace-equipment-attributes .reg-tou-f-col {
+  padding-left: 30px;
+}
+
+.input-row.has-photo .field-value {
+  width: calc(100% - 300px);
+  margin-right: 10px;
+}
+
+.unit-name {
+  width: 50px;
+}
+
+.combo-value {
+  border-color: @color-stroke;
+}
+
+.register-dtls-name {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.register-dtls-name > .text-form-field {
+  padding-top: 0;
+}
+
+.text-form-field.replace-equipment-attributes-field-name {
+  padding-top: 0;
+}
+
+::ng-deep .replace-equipment-attributes input.date ~ ngb-datepicker.dropdown-menu {
+  width: 234px;
+}
+
+.replace-equipment-attributes .input-unit-wrapper .input-sufix {
+  line-height: 19px;
+  border: 1px solid @color-stroke;
+  padding: 7px 30px 7px 7px;
+  border-color: @color-stroke;
+  border-radius: 0 .25rem .25rem 0;
+  border-left: none;
+  background-color: @color-background-white;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.replace-equipment-attributes .input-unit-wrapper .form-control:focus + .input-sufix {
+  border: 2px solid @color-main-accent;
+  padding: 6px 29px 6px 6px;
+  border-left: none;
+}
+
+.replace-equipment-attributes .input-unit-wrapper .form-control.has-sufix {
+  border-right: none;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.cdk-drag-preview.row {
+  z-index: 10100 !important;
+
+  div.data-row {
+
+    input[type='file'] {
+      display: none;
+    }
+
+    div.datepicker-wrp {
+      width: auto !important;
+    }
+  }
+}

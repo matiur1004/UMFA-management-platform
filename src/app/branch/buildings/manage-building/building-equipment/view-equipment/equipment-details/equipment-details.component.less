@@ -1,0 +1,364 @@
+//@import 'variables.less';
+@import 'required-fields.less';
+
+.equipment-details {
+  margin-top: 40px;
+  margin-bottom: 50px;
+}
+
+.target-meter-register {
+  font-size: 13px;
+  font-family: 'Gotham Book', Arial, sans-serif;
+}
+
+.equipment-details .add-bulk-meter {
+  margin-bottom: 35px;
+}
+
+.equipment-details .add-bulk-meter .specify-vr {
+  margin-bottom: 0;
+  margin-right: 30px;
+}
+
+.specify-vr__input {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.equipment-details .equipment-dets-title {
+  font-family: Gotham Medium;
+  font-size: 30px;
+  line-height: 35px;
+  color: @color-text-primary;
+  margin-bottom: 15px;
+}
+
+.equipment-details .service-icon {
+  margin-right: 12px;
+}
+
+.equipment-details .equipment-dets-descr {
+  font-family: Gotham Book;
+  font-size: 16px;
+  line-height: 24px;
+  color: @color-description;
+  margin-bottom: 40px;
+}
+
+.equipment-details .left-col-wrapper {
+  padding-right: 35px;
+}
+
+.equipment-details .right-col-wrapper {
+  padding-left: 35px;
+}
+
+.equipment-details .bl-gradient-title {
+  margin-bottom: 30px;
+}
+
+.equipment-details .equip-dtls-title {
+  margin-top: 35px;
+}
+
+.equipment-parents-select {
+  .ng-placeholder {
+    white-space: nowrap;
+    background-color: @color-background-tertiary;
+    padding: 0px 10px;
+    margin: 5px;
+    border-radius: 10px;
+    border: 1px solid @color-stroke;
+    color: @color-stroke;
+    font-size: 13px;
+    line-height: 18px;
+    height: 20px;
+    position: relative !important;
+  }
+
+  .ng-has-value .ng-placeholder {
+    display: none
+  }
+}
+
+.equipment-details .main-equipment-img {
+  width: 350px;
+  min-width: 350px;
+  height: 350px;
+  min-height: 350px;
+  background-color: @color-background-white;
+  border: 1px solid @color-stroke;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 30px;
+}
+
+.equipment-details .main-equipment-img > img {
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.equipment-details .gallery-block {
+  width: 350px;
+  min-width: 350px;
+}
+
+.equipment-details .gallery-item {
+  width: 90px;
+  min-width: 90px;
+  margin-right: 40px;
+}
+
+.equipment-details .item-img,
+.equipment-details .upld-img {
+  width: 90px;
+  min-width: 90px;
+  height: 90px;
+  min-height: 90px;
+  border: 1px solid @color-stroke;
+  border-radius: 5px;
+  background-color: @color-background-white;
+  margin-bottom: 15px;
+}
+
+.equipment-details .item-img > img {
+  width: 88px;
+  height: 88px;
+  border-radius: 5px;
+}
+
+.equipment-details .item-lbl {
+  font-family: Gotham Book;
+  font-size: 12px;
+  line-height: 14px;
+  color: @color-stroke;
+}
+
+.equipment-details .upld-logo {
+  width: 50px;
+  height: 50px;
+  background-size: 50px;
+  margin-bottom: 5px;
+}
+
+.equipment-details .upld-img-lbl {
+  font-family: Gotham Medium;
+  font-size: 10px;
+  line-height: 12px;
+  color: @color-stroke;
+}
+
+.equipment-details .header-field {
+  text-transform: uppercase;
+}
+
+.equipment-details .list-body {
+  margin-bottom: 30px;
+}
+
+.equipment-details .body-row {
+  margin-bottom: 15px;
+}
+
+.equipment-details .list-header,
+.equipment-details .data-row {
+  width: calc(100% - 40px);
+
+  .expand-col {
+    padding-top: 7px;
+    width: 40px;
+
+    .expand-btn {
+      cursor: pointer;
+    }
+  }
+
+  .expand-col-space {
+    margin-left: 25px;
+
+    .text-form-field {
+      padding-left: 11px;
+    }
+
+    .meter-title {
+      font-size: 13px;
+      font-family: 'Gotham Book', Arial, sans-serif;
+    }
+
+    .form-field-name {
+      font-size: 13px;
+      font-family: 'Gotham Medium', Arial, sans-serif;
+    }
+
+    .form-field-label {
+      font-family: 'Gotham Medium', Arial, sans-serif;
+    }
+  }
+
+  .text-form-field {
+    line-height: 35px;
+    padding-top: 0;
+    display: inline-block;
+
+    &.form-field-label {
+      display: inline-block;
+      border-bottom: 1px solid @color-empty;
+    }
+  }
+
+  .checkbox-is-billing {
+    margin-top: 9px;
+  }
+
+  .dnm-btn-icon {
+    width: 35px;
+    height: 35px;
+  }
+
+}
+
+.equipment-details .add-meter-to-vr {
+  margin-left: 15px;
+}
+
+
+.equipment-details .rdngs-val {
+  font-family: 'Gotham Book';
+  font-size: 14px;
+  color: @color-stroke;
+  line-height: 38px;
+}
+
+.equipment-details .date {
+  background-color: @color-background-white;
+  min-width: 100px;
+  width: 120px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.equipment-details .view-equip-img,
+.equipment-details .add-equip-img {
+  display: inline-block;
+  cursor: pointer;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.equipment-details .view-equip-img {
+  background-image: url('../../../../../../../assets/images/icons/equipment/view-equip-img.svg');
+  width: 23px;
+  height: 23px;
+  background-size: contain;
+
+  &:hover {
+    background-image: url('../../../../../../../assets/images/icons/equipment/view-equip-img-hover.svg');
+  }
+}
+
+.equipment-details .add-equip-img {
+  background-image: url('../../../../../../../assets/images/icons/equipment/add-equip-img.svg');
+  width: 25px;
+  height: 22px;
+  background-size: contain;
+
+  &:hover {
+    background-image: url('../../../../../../../assets/images/icons/equipment/add-equip-img-hover.svg');
+  }
+}
+
+.equipment-details .footer-btns {
+  margin-top: 35px;
+}
+
+.equipment-details .dnm-btn-cancel,
+.equipment-details .dnm-left-btn {
+  margin-right: 30px;
+}
+
+.equipment-details .dnm-btn-cancel,
+.equipment-details .dnm-btn-primary {
+  width: 200px;
+  min-width: 200px;
+}
+
+.equipment-details .attr-photo-btn {
+  background-color: @color-background-white;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 20px;
+  border: 1px solid @color-stroke;
+  width: 35px;
+  height: 35px;
+  display: inline-block;
+}
+
+.equipment-details .item-container {
+  margin-bottom: 10px;
+}
+
+.equipment-details .reg-tou-f-col {
+  padding-left: 30px;
+}
+
+.input-row.has-photo .field-value {
+  width: calc(100% - 300px);
+  margin-right: 10px;
+}
+
+.unit-name {
+  width: 50px;
+}
+
+.obis-code {
+  width: 150px;
+}
+
+.combo-value {
+  border-color: @color-stroke;
+}
+
+::ng-deep .equipment-details .main-equipment-img .logo-img {
+  max-height: 348px;
+  max-width: 348px;
+}
+
+::ng-deep .equipment-details input.date ~ ngb-datepicker.dropdown-menu {
+  width: 234px;
+}
+
+.equipment-details .input-unit-wrapper .input-sufix {
+  line-height: 19px;
+  border: 1px solid @color-stroke;
+  padding: 7px 30px 7px 7px;
+  border-color: @color-stroke;
+  border-radius: 0 .25rem .25rem 0;
+  border-left: none;
+  background-color: @color-background-white;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.equipment-details .input-unit-wrapper .form-control:focus + .input-sufix {
+  border: 2px solid @color-main-accent;
+  padding: 6px 29px 6px 6px;
+  border-left: none;
+}
+
+/*.equipment-details .input-unit-wrapper .form-control.has-sufix {
+  border-right: none;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}*/
+
+.cdk-drag-preview .data-row {
+  width: 100%;
+  line-height: 38px;
+}
+
+.register-icon {
+  height: 25px;
+  margin: 5px;
+  image-resolution: initial;
+  border-radius: 3px 5px;
+}

@@ -1,0 +1,83 @@
+<div class="container-fluid services-list">
+  <div class="row none-margin-hr nav-row">
+    <div class="col-12 none-padding">
+      <div class="d-flex justify-content-between">
+        <div class="d-flex align-items-center">
+          <span class="results-lbl dnm-text-light">{{getServiceCount$ | async}}</span>
+          <a (click)="onCreate('')" class="blue-text-btn d-flex align-items-center" data-add-new
+             href="javascript:void(0);">
+            <i class="add-icon"></i>
+            <span>Add 1st-level service</span>
+          </a>
+        </div>
+        <div class="d-flex align-item-center justify-content-end">
+          <div class="d-flex align-items-center filter-item">
+            <span class="text-uppercase select-lbl">Show/Hide Price</span>
+            <div class="service-switch serv-nav-item">
+              <label class="dnm-switch-btn">
+                <input (change)="onShowPrices()" [ngModel]="showPrice$ | async" type="checkbox">
+                <span class="dnm-switch-slider round"></span>
+              </label>
+              <div class="service-toggle-popup">
+                <div class="service-toggle-msg">
+                  Service is enabled
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex align-items-center filter-item">
+            <span class="text-uppercase select-lbl">Category:</span>
+            <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+              <button class="btn btn-secondary dropdown-toggle services-filter-btn text-left" ngbDropdownToggle>
+                {{serviceCategoryFilterText$ | async}}
+              </button>
+              <div class="dropdown-menu services-filter-menu" ngbDropdownMenu>
+                <button (click)="onChangeCategoryFilter(serviceCategoryFilter.AllCategories)" class="dropdown-item"
+                        type="button">All categories
+                </button>
+                <button (click)="onChangeCategoryFilter(serviceCategoryFilter.FullMetering)" class="dropdown-item"
+                        type="button">Full metering
+                </button>
+                <button (click)="onChangeCategoryFilter(serviceCategoryFilter.PartialMetering)" class="dropdown-item"
+                        type="button">Partial metering
+                </button>
+                <button (click)="onChangeCategoryFilter(serviceCategoryFilter.PrepaidMetering)" class="dropdown-item"
+                        type="button">Pre-paid metering
+                </button>
+                <button (click)="onChangeCategoryFilter(serviceCategoryFilter.SingleTenant)" class="dropdown-item"
+                        type="button">Single tenant
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex align-items-center filter-item">
+            <span class="text-uppercase select-lbl">Show:</span>
+            <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+              <button class="btn btn-secondary dropdown-toggle services-filter-btn text-left" ngbDropdownToggle>
+                {{ serviceFilterText$ | async}}
+              </button>
+              <div class="dropdown-menu services-filter-menu" ngbDropdownMenu>
+                <button (click)="onChangeFilter(serviceStatusFilter.AllServices)" class="dropdown-item">All services
+                </button>
+                <button (click)="onChangeFilter(serviceStatusFilter.ActiveServices)" class="dropdown-item">Active
+                  services
+                </button>
+                <button (click)="onChangeFilter(serviceStatusFilter.InactiveServices)" class="dropdown-item">Inactive
+                  services
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row none-margin-hr">
+    <div class="col-12 none-padding">
+      <service-tree (changeServiceStatus)="onChangeServiceStatus($event)" (create)="onCreate($event)" (delete)="onDelete($event)"
+                    (edit)="onEdit($event)" (toggleService)="onToggleService($event)"
+                    [services]="servicesList$ | async"
+                    [showPrice]="showPrice$ | async"></service-tree>
+    </div>
+  </div>
+</div>

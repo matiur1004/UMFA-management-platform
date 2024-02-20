@@ -1,0 +1,172 @@
+//@import 'variables.less';
+@import 'required-fields.less';
+
+/* #region media styles */
+
+.create-new-account {
+  font-family: Gotham Medium;
+  font-size: 13px;
+  color: @color-text-tertiary;
+}
+
+.separate-line {
+  border-top: 1px solid @color-line;
+}
+
+.user-photo-preview {
+  width: 90px;
+  height: 90px;
+  line-height: 90px;
+  border: 1px solid @color-stroke;
+  text-align: center;
+  border-radius: 45px;
+  float: left;
+  margin-right: 40px;
+  position: relative;
+  top: 5px;
+}
+
+.user-photo-img {
+  display: inline-block;
+  background-image: url("../../../assets/images/icons/user-photo.png");
+  background-repeat: no-repeat;
+  width: 45px;
+  height: 44px;
+  margin: auto 0;
+  position: relative;
+  top: 15px;
+}
+
+.admin-logo {
+  float: left;
+}
+
+::ng-deep .branch-admin-container .existing-users .dropdown-menu {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+::ng-deep .branch-admin-fm .logo-preview,
+::ng-deep .branch-admin-fm .logo-preview-img {
+  border-radius: 50%;
+}
+
+::ng-deep .branch-admin-fm .logo-preview {
+  width: 90px;
+  height: 90px;
+}
+
+::ng-deep .branch-admin-fm .logo-description {
+  position: relative;
+  padding-top: 0;
+  top: -3px;
+}
+
+.email-icon, .phone-icon {
+  top: 2px;
+  margin-right: 3px;
+}
+
+.user-fullname {
+  font-family: Gotham Book;
+  font-size: 13px;
+  color: @color-text-tertiary;
+}
+
+.email-info .text-standard,
+.phone-info .text-standard {
+  font-size: 12px;
+}
+
+.dnm-btn-secondary {
+  padding: 7px 10px;
+}
+
+.cross-icon,
+.dnm-btn-secondary .edit-icon {
+  margin-left: 0;
+}
+
+.dnm-btn-delete {
+  background: none;
+  box-shadow: none;
+  padding: 10px;
+}
+
+.dnm-btn-delete:hover {
+  background: @color-background-tertiary;
+}
+
+
+.branch-admin-no-img {
+  .gradient-header();
+  border-radius: 17px;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: @color-main-accent;
+  font-family: 'Gotham Medium';
+  font-size: 14px;
+  line-height: 35px;
+  margin-right: 10px;
+}
+
+.branch-admin-container .delete-icon {
+  display: inline-block;
+  background: url(../../../assets/images/icons/cross-red.svg);
+}
+
+.branch-admin-container .dnm-btn-delete {
+  line-height: 10px;
+}
+
+@media (min-width: 768px) {
+  .row-title .create-new-account {
+    float: right;
+  }
+
+  .row-title .blue-text-btn {
+    margin-right: 0;
+    margin-left: 6px;
+    line-height: 21px;
+  }
+
+  .create-new-account {
+    font-size: 14px;
+  }
+
+  .existing-users {
+    margin-top: 20px;
+  }
+
+  .existing-users .separate-line {
+    margin-top: 30px;
+    border-top: 1px solid @color-line;
+  }
+
+  .create-admin-title {
+    margin-bottom: 20px;
+  }
+
+  .create-admin-title .separate-line {
+    margin-top: 30px;
+    margin-bottom: 15px;
+  }
+
+  .logo-description {
+    padding-top: 0;
+  }
+
+  .uploading-image {
+    margin-bottom: 35px;
+  }
+
+  .user-fullname {
+    font-size: 14px;
+  }
+}
+
+/* #endregion */
+

@@ -1,0 +1,144 @@
+@import 'variables.less';
+@import "buttons.less";
+
+.apply-estimated-modal th span {
+  font-weight: initial;
+}
+
+::ng-deep .ngx-charts .grid-panel.odd rect {
+  fill: none !important;
+}
+
+
+.group-bar-view ::ng-deep .x.axis .tick {
+  display: none;
+}
+
+.group-bar-view ::ng-deep .x.axis .tick:nth-child(3n) {
+  display: block;
+}
+
+.apply-estimated-modal th {
+  border: none;
+}
+
+.apply-estimated-modal .close {
+  outline-color: transparent;
+}
+
+.apply-estimated-modal .modal-body {
+  padding: 0 40px 40px 40px;
+}
+
+.apply-estimated-modal .table-header {
+  padding: 10px 0;
+}
+
+.apply-estimated-modal .tbl-col {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.apply-estimated-modal .table-header .col-lbl {
+  display: inline-block;
+  font-family: @fontFamilyMedium;
+  font-size: 12px;
+  line-height: 12px;
+  color: @color-description;
+}
+
+.input-row {
+  margin-bottom: 40px;
+}
+
+.apply-estimated-modal .table-header .rdng-date-lbl {
+  margin-left: 61px;
+}
+
+.apply-estimated-modal .bl-gradient-title {
+  line-height: 1;
+  margin-bottom: 20px;
+}
+
+.apply-estimated-modal .table-body {
+  background-color: @color-background-white;
+  border: 1px solid @color-line;
+}
+
+.apply-estimated-modal .table-row {
+  height: 50px;
+  min-height: 50px;
+  border-bottom: 1px solid @color-line;
+}
+
+.apply-estimated-modal .table-row:last-child {
+  border-bottom: none;
+}
+
+.apply-estimated-modal .est-radio-slct {
+  margin-right: 30px;
+  margin-left: 15px;
+  width: 16px;
+  height: 16px;
+}
+
+.apply-estimated-modal number-input {
+  width: 70%;
+}
+
+.apply-estimated-modal .bd-col-lbl {
+  font-family: @fontFamilyBook;
+  font-size: 13px;
+  line-height: 13px;
+  color: @color-text-tertiary;
+  display: inline-block;
+}
+
+.apply-estimated-modal .max-col-width {
+  max-width: 70px;
+}
+
+.apply-estimated-modal .mdl-hr-line {
+  border-bottom: 1px solid @color-line;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.apply-estimated-modal .apl-estmd-txtarea {
+  min-height: 100px;
+  max-height: 100px;
+}
+
+.apply-estimated-modal .footer-errors {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.apply-estimated-modal .reason-label {
+  margin-bottom: 0;
+}
+.apply-estimated-modal .reason-dropdown {
+  width: 480px;
+}
+
+.apply-estimated-modal .table-body {
+  margin-bottom: 20px;
+}
+
+.apply-estimated-modal .footer-buttons {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.apply-estimated-modal .dnm-btn {
+  width: 200px;
+  min-width: 200px;
+}
+
+.apply-estimated-modal .dnm-btn:first-child {
+  margin-right: 30px;
+}
+
+span.col-lbl {
+  &:extend(.apply-estimated-modal .table-header .col-lbl);
+}

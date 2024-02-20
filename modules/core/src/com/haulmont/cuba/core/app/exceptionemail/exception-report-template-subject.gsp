@@ -1,1 +1,0 @@
-[${systemId}] [${userLogin}] Exception Report

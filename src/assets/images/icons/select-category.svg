@@ -1,0 +1,14 @@
+<svg data-name="Layer 1" id="Layer_1" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>.cls-1 {
+      fill: url(#linear-gradient);
+    }</style>
+    <linearGradient gradientUnits="userSpaceOnUse" id="linear-gradient" x2="20" y1="10" y2="10">
+      <stop offset="0" stop-color="#3950a3"/>
+      <stop offset="1" stop-color="#242e63"/>
+    </linearGradient>
+  </defs>
+  <title>select_category</title>
+  <path class="cls-1"
+        d="M8.86,15V11.14H5V8.86H8.86V5h2.28V8.86H15v2.28H11.14V15H8.86ZM20,6.9V1.14A1.14,1.14,0,0,0,18.86,0H13.1V2.28h4.61V6.89H20Zm0,12V13.1H17.72v4.61H13.11V20h5.75A1.14,1.14,0,0,0,20,18.86ZM1.14,20H6.9V17.72H2.28V13.11H0v5.75A1.14,1.14,0,0,0,1.14,20ZM0,1.14V6.9H2.28V2.28H6.89V0H1.14A1.14,1.14,0,0,0,0,1.14Zm0,0"/>
+</svg>

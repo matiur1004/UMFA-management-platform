@@ -1,0 +1,27 @@
+<svg data-name="Layer 1" id="Layer_1" viewBox="0 0 30 35" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>.cls-1 {
+      fill: #740f36;
+    }
+
+    .cls-2 {
+      fill: url(#New_Gradient_Swatch_1);
+    }
+
+    .cls-3 {
+      fill: #fff;
+    }</style>
+    <linearGradient gradientUnits="userSpaceOnUse" id="New_Gradient_Swatch_1" x2="30" y1="15" y2="15">
+      <stop offset="0" stop-color="#e58d81"/>
+      <stop offset="1" stop-color="#ff082b"/>
+    </linearGradient>
+  </defs>
+  <title>pin</title>
+  <path class="cls-1" d="M27,30H15v5Z" data-name="Rectangle 756 copy 21" id="Rectangle_756_copy_21"/>
+  <rect class="cls-2" data-name="Rectangle 755 copy 21" height="30" id="Rectangle_755_copy_21" rx="3" ry="3"
+        width="30"/>
+  <path class="cls-3"
+        d="M24.67,12.72,15.5,6.18a.78.78,0,0,0-1,0L5.33,12.72a.82.82,0,0,0,.5,1.47H7.5v9a.78.78,0,0,0,.83.82H21.67a.78.78,0,0,0,.83-.82v-9h1.67A.82.82,0,0,0,24.67,12.72ZM15,22.37a4.91,4.91,0,1,1,5-4.91A5,5,0,0,1,15,22.37Z"/>
+  <polygon class="cls-3"
+           points="16.25 13.78 13.75 13.78 13.75 16.24 11.25 16.24 11.25 18.69 13.75 18.69 13.75 21.14 16.25 21.14 16.25 18.69 18.75 18.69 18.75 16.24 16.25 16.24 16.25 13.78"/>
+</svg>

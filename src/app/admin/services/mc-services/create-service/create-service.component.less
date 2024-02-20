@@ -1,0 +1,106 @@
+//@import 'variables.less';
+@import 'required-fields.less';
+
+.create-service .modal-body {
+  padding: 0 40px;
+}
+
+.create-service .section-container {
+  padding: 0 0 20px 0;
+}
+
+.create-service .section-title {
+  margin-bottom: 30px;
+  line-height: 1;
+}
+
+.create-service .field-name-top {
+  margin-top: 8px;
+}
+
+.create-service .radio-input {
+  margin-bottom: 15px;
+}
+
+.create-service .radio-input:first-child {
+  margin-top: 8px;
+}
+
+.create-service .radio-input .dnm-radio-btn {
+  margin-right: 13px;
+}
+
+.create-service .radio-input .dnm-checkbox {
+  margin-right: 13px;
+}
+
+.create-service .radio-input-lbl {
+  font-family: Gotham Light;
+  font-size: 14px;
+  line-height: 14px;
+  color: @color-text-tertiary;
+}
+
+.create-service .dnm-switch-btn.package-status {
+  margin-left: 22px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.dnm-switch-btn.service-status input ~ .dnm-switch-lbl:after {
+  content: "Inactive";
+}
+
+.dnm-switch-btn.service-status input:checked ~ .dnm-switch-lbl:after {
+  content: "Active";
+}
+
+.create-service .serv-row,
+.create-service .input-row-title {
+  margin-bottom: 20px;
+}
+
+.create-service .input-row-title {
+  font-family: Gotham Medium;
+  font-size: 12px;
+  line-height: 12px;
+  color: @color-empty;
+}
+
+.dnm-switch-btn.service-frequency input ~ .dnm-switch-lbl:after {
+  content: "Monthly";
+}
+
+.dnm-switch-btn.service-frequency input:checked ~ .dnm-switch-lbl:after {
+  content: "One-time";
+}
+
+.create-service .serv-row-title {
+  padding-top: 10px;
+}
+
+.input-row-title .field-name {
+  width: 250px;
+}
+
+.input-row-title .field-value {
+  width: calc(100% - 250px);
+  padding-left: 15px;
+}
+
+.create-service .prices-inputs {
+  margin: 5px -40px 20px;
+}
+
+.create-service .footer-buttons {
+  margin: 10px 0 50px;
+}
+
+.create-service .dnm-btn-cancel,
+.create-service .dnm-btn-primary {
+  width: 200px;
+}
+
+.create-service .dnm-btn-cancel {
+  margin-right: 25px;
+}

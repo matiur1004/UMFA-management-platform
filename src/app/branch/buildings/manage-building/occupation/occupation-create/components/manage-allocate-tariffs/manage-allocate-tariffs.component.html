@@ -1,0 +1,118 @@
+<div class="allocated-tariffs-list">
+  <ng-container
+    *ngIf="{
+          tariffs: tariffs$ | async,
+          order: tariffsOrder$ | async,
+          supplierTypeFilter: supplierTypeFilter$ | async,
+          supplierFilter: supplierFilter$ | async,
+          supplierList: suppliersDropdownItems$ | async
+        } as data">
+    <div class="filter-block">
+      <div class="row">
+        <div class="col">
+          <div class="d-flex justify-content-between">
+            <div class="d-flex align-items-center">
+              <span class="results-label dnm-text-light">{{ data.tariffs?.length }} items of tariffs</span>
+              <button (click)="onAddTariff()"
+                      class="btn blue-text-btn d-flex align-items-center none-padding"
+                      type="button">
+                <i class="add-icon"></i> Add New
+              </button>
+            </div>
+            <div class="d-flex">
+              <div class="d-flex align-items-center filter-block__item">
+                <span class="text-uppercase count-label">Supplier Type:</span>
+                <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+                  <button class="btn btn-secondary fltr-drpdwn-btn supply-fltr-btn dropdown-toggle" ngbDropdownToggle
+                          type="button">
+                    {{ getActiveDropdownItemFromList(supplierTypes, data.supplierTypeFilter).label }}
+                  </button>
+                  <div class="dropdown-menu fltr-drpdwn-menu" ngbDropdownMenu>
+                    <button (click)="onSupplyTypeChanged(item.value)" *ngFor="let item of supplierTypes" class="dropdown-item"
+                            type="button">
+                      {{ item.label }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex align-items-center filter-block__item">
+                <span class="text-uppercase count-label">Supplier:</span>
+                <ng-select (change)="onSupplierChanged($event)"
+                           [clearable]="false"
+                           [closeOnSelect]="true"
+                           [hideSelected]="true" [ngModel]="data.supplierFilter"
+                           [searchable]="false" class="select-dropdown ng-filter-selector fltr-drpdwn-btn">
+                  <ng-option [value]="''">All</ng-option>
+                  <ng-option *ngFor="let item of data.supplierList"
+                             [value]="item.value">{{item.label}}</ng-option>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="list-header list-header--allocated-tariffs d-flex align-items-center">
+      <div class="header-field header-field-name">
+        <a (click)="onTariffOrderChanged(data.order, tariffListOrder.NameAsc)" [ngClass]="getActiveOrderClass(data.order, tariffListOrder.NameAsc, tariffListOrder.NameDesc)"
+           class="header-field d-flex align-items-center"
+           href="javascript:void(0);">
+          <span class="text-ellipsis text-uppercase" title="Tariff Name">Tariff name</span>
+          <i [ngClass]="getOrderClasses(data.order, tariffListOrder.NameAsc, tariffListOrder.NameDesc)"
+             class="dnm-icon"></i>
+        </a>
+      </div>
+      <div class="header-field header-field-version">
+        <a (click)="onTariffOrderChanged(data.order, tariffListOrder.VersionsAsc)" [ngClass]="getActiveOrderClass(data.order, tariffListOrder.VersionsAsc, tariffListOrder.VersionsDesc)"
+           class="header-field d-flex align-items-center"
+           href="javascript:void(0);">
+          <span class="text-ellipsis text-uppercase" title="Versions">Versions</span>
+          <i [ngClass]="getOrderClasses(data.order, tariffListOrder.VersionsAsc, tariffListOrder.VersionsDesc)"
+             class="dnm-icon"></i>
+        </a>
+      </div>
+      <div class="header-field header-field-created">
+        <a (click)="onTariffOrderChanged(data.order, tariffListOrder.CreatedOnAsc)" [ngClass]="getActiveOrderClass(data.order, tariffListOrder.CreatedOnAsc, tariffListOrder.CreatedOnDesc)"
+           class="header-field d-flex align-items-center"
+           href="javascript:void(0);">
+          <span class="text-ellipsis text-uppercase" title="Created On">Created On</span>
+          <i [ngClass]="getOrderClasses(data.order, tariffListOrder.CreatedOnAsc, tariffListOrder.CreatedOnDesc)"
+             class="dnm-icon"></i>
+        </a>
+      </div>
+      <div class="header-field header-field-applies">
+        <a (click)="onTariffOrderChanged(data.order, tariffListOrder.OfAppliesAsc)" [ngClass]="getActiveOrderClass(data.order, tariffListOrder.OfAppliesAsc, tariffListOrder.OfAppliesDesc)"
+           class="header-field d-flex align-items-center"
+           href="javascript:void(0);">
+          <span class="text-ellipsis text-uppercase" title="#Of Applies">#Of Applies</span>
+          <i [ngClass]="getOrderClasses(data.order, tariffListOrder.OfAppliesAsc, tariffListOrder.OfAppliesDesc)"
+             class="dnm-icon"></i>
+        </a>
+      </div>
+      <div class="header-field header-field-values">
+        <span class="text-ellipsis text-uppercase" title="Values">Values</span>
+      </div>
+      <div class="header-field header-field-actions d-flex align-items-center"></div>
+    </div>
+  </ng-container>
+  <div class="row">
+    <div class="col-12 pr-0 allocated-tariffs-container">
+      <tariff-item (tariffDeleted)="onTariffDeleted($event)"
+                   *ngFor="let tariff of tariffs$ | async"
+                   [tariff]="tariff"></tariff-item>
+    </div>
+  </div>
+</div>
+<div class="container-fluid">
+  <div class="row mng-lblt-footer">
+    <div *ngIf="isComplete" class="col-12 none-padding text-right footer-buttons">
+      <button (click)="previous.emit(-1)" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Close</button>
+      <button (click)="onFinalSave()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save</button>
+    </div>
+    <div *ngIf="!isComplete" class="col-12 none-padding text-right footer-buttons">
+      <button (click)="previous.emit(-1)" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+      <button (click)="onFinalSave()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Final Save</button>
+    </div>
+  </div>
+</div>

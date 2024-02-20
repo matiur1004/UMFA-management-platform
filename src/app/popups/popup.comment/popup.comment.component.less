@@ -1,0 +1,98 @@
+@import 'variables.less';
+
+.comment-modal .modal-header {
+  padding-bottom: 10px;
+}
+
+.comment-modal .modal-body {
+  padding-top: 0;
+}
+
+.comment-modal .note-logo {
+  background: url('../../../assets/images/icons/history/note-icon.svg') no-repeat center;
+  width: 57px;
+  height: 50px;
+  margin-bottom: 50px;
+}
+
+.comment-modal .comment-row {
+  margin-bottom: 5px;
+}
+
+.comment-modal .comment-title {
+  font-family: Gotham Medium;
+  font-size: 30px;
+  line-height: 30px;
+  color: @color-text-primary;
+}
+
+.comment-modal .comment-msg {
+  font-family: Gotham Book;
+  font-size: 18px;
+  line-height: 28px;
+  color: @color-text-primary;
+  margin: 20px 0;
+}
+
+.comment-modal textarea.form-control {
+  height: 80px;
+  margin: 0;
+  resize: none;
+}
+
+.comment-footer {
+  margin-top: 55px;
+  margin-bottom: 40px;
+}
+
+.comment-footer .dnm-btn-cancel {
+  margin-right: 30px;
+}
+
+.comment-modal .radio-btn-row {
+  line-height: 50px;
+}
+
+.comment-modal .new-ver-r-btn {
+  float: left;
+}
+
+.comment-modal .date {
+  width: 216px;
+  margin-left: 20px;
+  background-color: @color-background-white;
+}
+
+.comment-modal .dnm-radio-btn .state label {
+  font-size: 14px;
+}
+
+.comment-modal .dnm-radio-btn .state label:before,
+.comment-modal .dnm-radio-btn .state label:after {
+  top: calc((0% - (100% - 17px)) - 8%);
+}
+
+.comment-modal .dnm-radio-btn input:checked ~ .state label:after {
+  font-size: 14px;
+}
+
+.comment-modal .dnm-radio-btn input:checked ~ .state label:after,
+.comment-modal .dnm-radio-btn .state label:after {
+  -webkit-transform: scale(.50);
+  transform: scale(.50);
+}
+
+::ng-deep .comment-modal input.date ~ ngb-datepicker.dropdown-menu {
+  width: 234px;
+}
+
+.version {
+  font-weight: bold;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 150px;
+  height: 2em;
+  margin-bottom: -2px;
+}

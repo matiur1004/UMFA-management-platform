@@ -1,0 +1,46 @@
+@import 'variables.less';
+
+.supplier-item {
+  border: 1px solid @color-line;
+  background-color: @color-background-white;
+  padding: 15px;
+}
+
+.supplier-item:hover {
+  cursor: pointer;
+}
+
+.supplier-item logo-container {
+  margin-right: 30px;
+}
+
+.supplier-item .supplier-name-lbl {
+  font-family: Gotham Medium;
+  font-size: 20px;
+  line-height: 20px;
+  color: @color-text-primary;
+  margin-bottom: 10px;
+}
+
+.supplier-item .service-icon {
+  margin-right: 10px;
+}
+
+.supplier-item .supplier-name-descr,
+.supplier-item .physical-address-lbl,
+.supplier-item .email-lbl,
+.supplier-item .phone-numb-lbl {
+  font-family: Gotham Book;
+  font-size: 13px;
+}
+
+.supplier-item .supplier-name-descr {
+  color: @color-description;
+}
+
+.supplier-item .physical-address-lbl,
+.supplier-item .email-lbl,
+.supplier-item .phone-numb-lbl {
+  line-height: 20px;
+  color: @color-text-tertiary;
+}

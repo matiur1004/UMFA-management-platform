@@ -1,0 +1,135 @@
+<form [@addressHidden]="collapsed" [formGroup]="form" [ngClass]="{'form-submited': isSubmitted}" class="address-form">
+  <div class="address-container">
+    <div [hidden]="!collapsed" class="input-row">
+      <div class="text-uppercase field-name text-form-field">{{name}}</div>
+      <div class="field-value">
+        <input #addressLineElement (focus)="addressLineFocus($event)" class="form-control col" maxlength="100"
+               name="address-line" placeholder="{{name}} Details" type="text"/>
+      </div>
+    </div>
+
+    <div class="input-row">
+      <div class="text-uppercase field-name text-form-field">{{name}}</div>
+      <div class="field-value">
+        <div [ngClass]="{'dnm-invalid-inp': formErrors['description']}">
+          <input (change)="addressChanged($event)" class="form-control col" formControlName="description"
+                 placeholder="{{name}}" type="text"/>
+        </div>
+      </div>
+      <div class="field-name"></div>
+      <div class="field-value">
+        <small *ngIf="formErrors['description']" class="alert-danger">
+          {{ formErrors["description"] }}
+        </small>
+      </div>
+    </div>
+
+    <div class="input-row">
+      <div class="text-uppercase field-name address-field-name">Street line 1</div>
+      <div class="field-value">
+        <div [ngClass]="{'dnm-invalid-inp': formErrors['line1']}">
+          <input (change)="addressChanged($event)" class="form-control col req-frm-fld" formControlName="line1" maxlength="50"
+                 name="line1" placeholder="Street line 1" type="text"/>
+        </div>
+      </div>
+      <div class="field-name"></div>
+      <div class="field-value">
+        <small *ngIf="formErrors['line1']" class="alert-danger">
+          {{ formErrors["line1"] }}
+        </small>
+      </div>
+    </div>
+
+    <div class="input-row">
+      <div class="text-uppercase field-name address-field-name">Street line 2 (optional)</div>
+      <div class="field-value">
+        <div [ngClass]="{'dnm-invalid-inp': formErrors['line2']}">
+          <input (change)="addressChanged($event)" class="form-control col" formControlName="line2" maxlength="50"
+                 name="line2" placeholder="Street line 2" type="text"/>
+        </div>
+      </div>
+      <div class="field-name"></div>
+      <div class="field-value">
+        <small *ngIf="formErrors['line2']" class="alert-danger">
+          {{ formErrors["line2"] }}
+        </small>
+      </div>
+    </div>
+
+    <div class="input-row">
+      <div class="text-uppercase field-name address-field-name">Suburb (optional)</div>
+      <div class="field-value">
+        <input (change)="addressChanged($event)" class="form-control col" formControlName="suburb" maxlength="50"
+               placeholder="Suburb" type="text"/>
+      </div>
+    </div>
+
+    <div class="input-row">
+      <div class="text-uppercase field-name address-field-name">City</div>
+      <div class="field-value">
+        <div [ngClass]="{'dnm-invalid-inp': formErrors['city']}">
+          <input (change)="addressChanged($event)" class="form-control col req-frm-fld" formControlName="city" maxlength="50"
+                 placeholder="City" type="text"/>
+        </div>
+      </div>
+      <div class="field-name"></div>
+      <div class="field-value">
+        <small *ngIf="formErrors['city']" class="alert-danger">
+          {{ formErrors["city"] }}
+        </small>
+      </div>
+    </div>
+
+    <div class="input-row">
+      <div class="text-uppercase field-name address-field-name">Code</div>
+      <div class="field-value">
+        <div [ngClass]="{'dnm-invalid-inp': formErrors['code']}">
+          <input (change)="addressChanged($event)" class="form-control col req-frm-fld" formControlName="code" maxlength="50"
+                 placeholder="Postal code" type="text"/>
+        </div>
+      </div>
+      <div class="field-name"></div>
+      <div class="field-value">
+        <small *ngIf="formErrors['code']" class="alert-danger">
+          {{ formErrors["code"] }}
+        </small>
+      </div>
+    </div>
+
+    <div class="input-row">
+      <div class="text-uppercase field-name address-field-name">Province (optional)</div>
+      <div class="field-value">
+        <input (change)="addressChanged($event)" class="form-control col" formControlName="province" maxlength="50"
+               placeholder="Province" type="text"/>
+      </div>
+    </div>
+
+    <div class="input-row">
+      <div class="text-uppercase field-name address-field-name">Country</div>
+      <div class="field-value">
+        <div [ngClass]="{'dnm-invalid-inp': formErrors['country']}">
+          <input (change)="addressChanged($event)" class="form-control col req-frm-fld" formControlName="country" maxlength="50"
+                 placeholder="Country" type="text"/>
+        </div>
+      </div>
+      <div class="field-name"></div>
+      <div class="field-value">
+        <small *ngIf="formErrors['country']" class="alert-danger">
+          {{ formErrors["country"] }}
+        </small>
+      </div>
+    </div>
+
+    <div class="input-row">
+      <div class="text-uppercase field-name"></div>
+      <div class="field-value">
+        <a (click)="save($event)" class="btn-form-section float-right" href="javascript:void(0);">
+          <i class='icon check-mark-icon'></i>Submit
+        </a>
+        <a (click)="close($event)" class="btn-form-section float-right" href="javascript:void(0);">
+          <i class='icon cross-icon'></i>Cancel
+        </a>
+      </div>
+    </div>
+  </div>
+</form>

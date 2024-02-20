@@ -1,0 +1,120 @@
+//@import 'variables.less';
+@import 'required-fields.less';
+
+.client-logo-block .bl-gradient-title,
+.client-gen-info-block .bl-gradient-title {
+  margin-bottom: 40px;
+}
+
+.client-logo-block .bl-gradient-title {
+  margin-top: 10px;
+}
+
+.client-gen-info-block .bl-gradient-title {
+  margin-top: 50px;
+}
+
+.client-gen-info-block .el-title.bl-gradient-title {
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+::ng-deep .client-logo-block .edit-logo-panel.row {
+  margin: 0 -15px !important;
+}
+
+.client-input-row {
+  margin: 0 0 15px 0;
+  display: flex;
+  align-items: center;
+}
+
+.client-input-row .field-name {
+  color: @color-text-tertiary;
+  font-size: 14px;
+}
+
+.client-input-row .field-name > .undertext {
+  display: block;
+}
+
+.client-input-row textarea.field-value {
+  height: 80px;
+  resize: none;
+}
+
+.client-gen-info-btn {
+  font-family: 'Gotham Medium';
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.client-gen-info-btn:first-child {
+  margin-right: 30px;
+}
+
+.client-gen-info-btn .add-icon {
+  margin-right: 10px;
+  top: 0;
+}
+
+.footer-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 35px;
+  margin-bottom: 45px;
+}
+
+.footer-buttons button:first-child {
+  width: calc(50% - 15px);
+  margin-right: 15px;
+}
+
+.footer-buttons button:last-child {
+  width: calc(50% - 15px);
+  margin-left: 15px;
+}
+
+::ng-deep .general-info-block .address-container .field-value {
+  padding-left: 0;
+}
+
+::ng-deep .general-info-block input.dnm-txt-input {
+  width: calc(100% - 41px);
+}
+
+.contact-item .dnm-btn-icon {
+  margin-left: 5px;
+}
+
+.dnm-btn-icon .icon {
+  vertical-align: -2px;
+}
+
+.delete-address,
+.delete-link {
+  margin-right: 15px;
+}
+
+::ng-deep .general-info-block .editable-ctrl {
+  width: calc(100% - 42px);
+  display: inline-block;
+  margin-right: 3px;
+}
+
+.el-field-value {
+  padding-left: 0;
+}
+
+.el-field-value ::ng-deep input {
+  border: @color-stroke solid 1px;
+  color: @color-text-tertiary;
+  background-color: @color-background-white;
+  width: 100%;
+}
+
+.el-field-value ::ng-deep input:focus {
+  background-color: @color-background-white;
+}

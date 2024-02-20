@@ -1,0 +1,68 @@
+@import 'variables.less';
+
+.manage-liability-container {
+  position: relative;
+  min-height: calc(100vh - 400px);
+  margin-bottom: 12px;
+  max-height: 700px;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  .filter-item {
+    position: absolute;
+    right: 0;
+    top: 2px;
+    z-index: 1;
+
+    .filter-item-lbl {
+      font-family: Gotham Medium;
+      font-size: 14px;
+      line-height: 14px;
+      color: @color-text-tertiary;
+      margin-right: 20px;
+    }
+
+    .dnm-dropdown-select {
+      width: 200px;
+
+      .ng-select-container {
+        min-width: 200px;
+        width: 200px;
+      }
+    }
+
+    .category-item-wrp {
+      margin: -7px -10px;
+
+      .item-lbl {
+        line-height: 34px;
+        padding-left: 10px;
+      }
+    }
+
+  }
+}
+
+.manage-liability-footer {
+  padding: 0;
+
+  .dnm-btn-primary,
+  .dnm-btn-cancel {
+    width: 200px;
+  }
+
+  .dnm-btn-cancel {
+    margin-right: 30px;
+  }
+}
+
+::ng-deep .liability-tabset .nav-tabs {
+  margin: 0 !important;
+  padding: 0 !important;
+  justify-content: flex-start !important;
+
+  .nav-link {
+    padding-top: 20px;
+    padding-bottom: 28px;
+  }
+}

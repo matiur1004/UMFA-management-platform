@@ -1,0 +1,92 @@
+@import 'variables.less';
+
+.cost-totals-wrp {
+  padding: 0 !important;
+  margin-bottom: 20px;
+}
+
+.cost-totals-wrp .list-header {
+  margin-top: 30px;
+  padding: 0 40px;
+}
+
+.cost-totals-wrp .frst-hdr-col,
+.cost-totals-wrp .frst-body-col {
+  width: 420px;
+  min-width: 420px;
+}
+
+.cost-totals-wrp .frst-lvl-item .frst-body-col {
+  width: 350px;
+  min-width: 350px;
+}
+
+.cost-totals-wrp .scnd-lvl-item .frst-body-col {
+  width: 280px;
+  min-width: 280px;
+}
+
+.cost-totals-wrp .cost-tot-lbl {
+  font-family: Gotham Medium;
+  font-size: 16px;
+  line-height: 18px;
+  color: @color-text-primary;
+}
+
+.cost-totals-wrp .cost-tot-val {
+  font-family: Gotham Book;
+  font-size: 14px;
+  line-height: 24px;
+  color: @color-text-tertiary;
+}
+
+.cost-totals-wrp .tree-view .item-content {
+  position: relative;
+  padding-right: 25px;
+}
+
+.cost-totals-wrp .tree-view .item-content:before {
+  content: "";
+  background: @color-background-white;
+  width: 15px;
+  height: 15px;
+  border: 2px solid @color-main-accent;
+  border-radius: 50%;
+  position: absolute;
+  top: calc(50% - 7px);
+  left: -7px;
+  z-index: 1;
+}
+
+.cost-totals-wrp .tree-view .item-content:after {
+  content: "";
+  height: calc(50% + 24px);
+  width: 40px;
+  border-bottom: 2px solid #7ad2f4;
+  position: absolute;
+  top: -22px;
+  left: -41px;
+}
+
+.cost-totals-wrp .tree-view li:last-child .item-content:after {
+  border-left: 2px solid #7ad2f4;
+}
+
+.cost-totals-wrp .tree-view .root-item > .item-content:before,
+.cost-totals-wrp .tree-view .root-item > .item-content:after {
+  display: none;
+}
+
+
+::ng-deep .cost-totals-wrp .tree-view li:last-child::before {
+  border: none;
+}
+
+::ng-deep .cost-totals-wrp .tree-view li::after {
+  border: none;
+}
+
+::ng-deep .cost-totals-wrp .tree-view .item-content::before {
+  top: unset;
+  bottom: calc(50% - 21px);
+}

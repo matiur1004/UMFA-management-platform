@@ -1,0 +1,36 @@
+<div class="occupation-file-upload d-flex align-items-center justify-content-center">
+  <ngx-file-drop (onFileDrop)="dropped($event)" (onFileLeave)="fileLeave($event)" (onFileOver)="fileOver($event)" *ngIf="!file"
+             class="file-drop">
+    <ng-container *ngIf="!isOver">
+      <div>
+        <div class="occupation-file-upload-icon">
+          <img src="assets/images/icons/occupation.svg"/>
+        </div>
+        <div class="occupation-file-upload-msg">There are no occupation here</div>
+        <div class="d-flex justify-content-center">
+          <span class="mr-2">drag and drop or</span>
+          <input #fileInput (change)="fileChangeEvent($event)" (click)="fileInput.value = null" class="upload-file-input" id="file-id"
+                 name="file" type="file"/>
+          <label class="blue-text-btn d-flex align-items-center m-0" for="file-id">
+            <i class="add-icon"></i>
+            Upload File
+          </label>
+        </div>
+      </div>
+    </ng-container>
+  </ngx-file-drop>
+  <div *ngIf="file" class="uploaded-file d-flex align-items-center justify-content-around">
+    <div>{{ file.name }}</div>
+    <div class="d-flex align-items-center">
+      <span class="file-size">{{ file.size / 1024}} kb</span>
+      <button (click)="removeFiles()" class="dnm-btn-icon ml-2">
+        <i class="icon cross-icon"></i>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12 text-right footer-buttons">
+    <button (click)="next.emit(1)" class="dnm-btn dnm-btn-primary size-lg text-uppercase" type="button">Skip</button>
+  </div>
+</div>

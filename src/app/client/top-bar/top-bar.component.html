@@ -1,0 +1,36 @@
+<nav class="navbar fixed-top navbar-expand-md bg-blue-gradient dnm-navbar">
+  <a [@layoutToggle]="isCollapsed" [routerLink]='["/"]' class="navbar-brand d-flex">
+    <img [ngClass]="{'small-logo': isCollapsed, 'large-logo': !isCollapsed}" alt="Logo"
+         class="company-logo" src="{{isCollapsed ? smallLogoRoute : largeLogoRoute}}">
+  </a>
+  <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+          data-target="#navbarSupportedContent"
+          data-toggle="collapse" type="button">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+    <div class="profile-menu d-flex align-items-center">
+      <logo-container [url]="(logoUrl| image) | async" logo-class="profile-photo">
+        <div class="profile-photo-abbreviation">
+          <span>{{fullName[0].toUpperCase()}}</span>
+        </div>
+      </logo-container>
+      <div class="profile-dropdown darkness" ngbDropdown placement="bottom">
+        <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown"
+           href="javascript:void(0);" id="navbarDropdown"
+           ngbDropdownToggle role="button">
+          <span class="user-name">{{fullName}}</span>
+        </a>
+        <div aria-labelledby="navbarDropdown" class="dropdown-menu" ngbDropdownMenu>
+          <a (click)="onSettings()" class="dropdown-item d-flex justify-content-between" href="javascript:void(0);">
+            My Settings<i class="dnm-icon dnm-ua-settings"></i>
+          </a>
+          <a (click)="onLogout()" class="dropdown-item d-flex justify-content-between" href="javascript:void(0);">
+            Sign out<i class="dnm-icon dnm-ua-logout"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

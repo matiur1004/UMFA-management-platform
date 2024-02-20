@@ -1,0 +1,120 @@
+@import 'variables.less';
+
+.manage-attributes {
+  background-color: @color-background-white;
+  border: 1px solid @color-line;
+  padding: 30px;
+  height: 100%;
+
+  .title-row,
+  .search-row,
+  .stat-row {
+    margin-bottom: 30px;
+  }
+
+  .stat-lbl {
+    font-family: Gotham Light;
+    font-size: 16px;
+    line-height: 18px;
+    color: @color-text-tertiary;
+  }
+
+  .attributes-table {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+
+    .tbl-col {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+
+    .col-200 {
+      width: 200px;
+      min-width: 200px;
+    }
+
+    .col-150 {
+      width: 150px;
+      min-width: 150px;
+    }
+
+    .col-100 {
+      width: 100px;
+      min-width: 100px;
+    }
+
+    .list-header {
+      position: relative;
+      width: 100%;
+      overflow: visible;
+
+      .header-field {
+        text-transform: uppercase;
+      }
+
+      .tbl-col:nth-child(1) {
+        position: relative;
+        background-color: @color-background-white;
+        z-index: 1;
+      }
+    }
+
+    .list-body {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 300px;
+      overflow: scroll;
+
+      .body-row .tbl-col {
+        height: 50px;
+        border-bottom: 1px solid @color-line;
+      }
+
+      .body-row:last-child .tbl-col {
+        border-bottom: none;
+      }
+
+      .body-row .tbl-col:nth-child(1) {
+        position: relative;
+        background-color: @color-background-white;
+        z-index: 1;
+      }
+
+      .attribute-lbl {
+        font-family: Gotham Medium;
+        font-size: 16px;
+        line-height: 18px;
+        color: @color-text-primary;
+      }
+
+      .equipment-group-lbl {
+        display: inline-block;
+        font-family: Gotham Book;
+        font-size: 14px;
+        line-height: 16px;
+        color: @color-text-tertiary;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .importance-lbl {
+        display: inline-block;
+        font-family: Gotham Book;
+        font-size: 14px;
+        line-height: 16px;
+        color: @color-text-primary;
+      }
+    }
+  }
+
+  .padding-right-none {
+    padding-right: 0 !important;
+  }
+
+  .padding-left-none {
+    padding-left: 0 !important;
+  }
+}

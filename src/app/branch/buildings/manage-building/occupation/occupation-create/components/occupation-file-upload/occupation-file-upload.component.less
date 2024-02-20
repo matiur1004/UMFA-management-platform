@@ -1,0 +1,49 @@
+@import 'variables.less';
+
+::ng-deep .occupation-file-upload .upload-file-input {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+::ng-deep .occupation-file-upload .upload-file-input:focus {
+  outline: none;
+}
+
+::ng-deep .occupation-file-upload .upload-file-input + label {
+  cursor: pointer;
+}
+
+.occupation-file-upload {
+  min-height: calc(100vh - 460px);
+}
+
+.occupation-file-upload .uploaded-file {
+  height: 100%;
+  border: 2px dashed #d2d8db !important;
+  border-radius: 5px;
+  height: 43vh;
+  width: 45vw;
+}
+
+.occupation-file-upload .occupation-file-upload-icon {
+  display: flex;
+  justify-content: center;
+  height: 50px;
+}
+
+.occupation-file-upload .occupation-file-upload-msg {
+  font: 24px/30px Gotham Light;
+  color: @color-empty;
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+  margin-bottom: 20px;
+}
+
+.occuaption-file-upload .file-size {
+  font-size: 13px;
+}

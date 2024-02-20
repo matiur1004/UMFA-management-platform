@@ -1,0 +1,124 @@
+//@import 'variables.less';
+@import 'required-fields.less';
+
+.splt-md-bd {
+  padding: 20px 40px;
+}
+
+.crnt-data {
+  padding: 0 0 10px 0;
+  border-bottom: 1px solid @color-line;
+}
+
+.crnt-data .crnt-data-row {
+  margin-bottom: 20px;
+}
+
+.crnt-data .crnt-data-ttl {
+  font-family: Gotham Medium;
+  font-size: 14px;
+  text-transform: uppercase;
+  line-height: 1;
+  color: @color-text-tertiary;
+}
+
+.crnt-data .crnt-data-inf {
+  font-family: Gotham Book;
+  font-size: 13px;
+  line-height: 1;
+  color: @color-text-tertiary;
+}
+
+.splt-data {
+  padding: 20px 0 0 0;
+}
+
+.splt-data .splt-nav-row {
+  padding-bottom: 30px;
+}
+
+.splt-data .splt-row {
+  padding-bottom: 20px;
+}
+
+.splt-data .splt-cell {
+  padding-right: 30px;
+}
+
+.splt-row .mng-shps-stat {
+  border-radius: 13px;
+  color: @color-background-white;
+  font-family: Gotham Book;
+  font-size: 13px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  margin-top: 16px;
+}
+
+.splt-row .mng-shps-stat.st-occupied {
+  background-image: linear-gradient(to right, #628ad8, #5b7ec9, #5472ba, #4d66ab, #465a9d);
+}
+
+.splt-row .mng-shps-stat.st-vacant {
+  background-image: linear-gradient(to right, #e7c05c, #e4b456, #e1a850, #dd9d4c, #d89148);
+}
+
+.splt-row .mng-shps-stat.st-spare {
+  background-image: linear-gradient(to right, #899696, #7e8a8b, #747f80, #697475, #5f696a);
+}
+
+.splt-nav-row .fullwidth-dropdown {
+  width: 95px;
+}
+
+.splt-nav-row .dropdown-menu {
+  min-width: 95px;
+}
+
+.splt-nav-row .nav-lbl {
+  font-family: Gotham Medium;
+  font-size: 14px;
+  text-transform: uppercase;
+  line-height: 1;
+  color: @color-text-tertiary;
+}
+
+.splt-nav-row .nav-inp-lbl {
+  margin-left: 15px;
+  font-family: Gotham Book;
+  font-size: 14px;
+  line-height: 1;
+  color: @color-text-tertiary;
+}
+
+.splt-cell .splt-cell-lbl {
+  display: block;
+  margin-bottom: 10px;
+  font-family: Gotham Medium;
+  font-size: 12px;
+  line-height: 12px;
+  text-transform: uppercase;
+  color: @color-description;
+}
+
+.splt-cell .delete-link {
+  margin-left: 5px;
+  margin-right: -10px;
+}
+
+.splt-footer {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.splt-footer .dnm-btn-cancel,
+.splt-footer .dnm-btn-primary {
+  width: 200px;
+}
+
+.splt-footer .dnm-btn-cancel {
+  margin-right: 30px;
+}

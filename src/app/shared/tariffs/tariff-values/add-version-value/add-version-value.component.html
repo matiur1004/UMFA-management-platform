@@ -1,0 +1,136 @@
+<div class="version-value-wrp">
+  <div class="modal-header">
+    <h5 class="modal-title">Add new Value</h5>
+    <button (click)="dismiss()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ng-container>
+      <form [formGroup]="versionForm">
+        <div class="container-fluid none-padding">
+          <div class="bl-gradient-title">General Info</div>
+          <div class="input-row none-margin-hr">
+            <div class="text-uppercase field-name">Value name</div>
+            <div class="field-value none-padding">
+              <div
+                [ngClass]="{'dnm-invalid-inp': (showAllErrors || versionForm.controls.name.touched) && versionForm.controls.name.invalid }">
+                <input class="form-control req-frm-fld" formControlName="name" maxlength="255" placeholder="Type here" type="text"/>
+              </div>
+            </div>
+            <div class="field-name"></div>
+            <div class="field-value">
+              <small
+                *ngIf="(showAllErrors || versionForm.controls.name.touched) && versionForm.controls.name.errors?.required"
+                class="alert-danger">
+                Name is required
+              </small>
+            </div>
+          </div>
+          <div class="input-row none-margin-hr">
+            <div class="text-uppercase field-name">Tariff Version</div>
+            <div class="field-value none-padding">
+              <span class="tariff-version-lbl">{{tariff.name}} {{tariff.version}}
+                -{{tariff.versionDate | date: 'dd/MM/yyyy'}}</span>
+            </div>
+          </div>
+          <div class="input-row none-margin-hr">
+            <div class="text-uppercase field-name">Increase, %</div>
+            <div class="field-value none-padding">
+              <number-input [placeholder]="0" formControlName="increasePercentage"></number-input>
+            </div>
+          </div>
+          <div *ngIf="versionForm.controls.startDate as startDateCtrl" class="input-row none-margin-hr">
+            <div class="text-uppercase field-name">Start date</div>
+            <div class="field-value none-padding">
+              <div [ngClass]="{'dnm-invalid-inp': (showAllErrors || startDateCtrl.touched) && startDateCtrl.invalid}">
+                <div class="datepicker-wrp nav-datepicker-wrp">
+                  <input #startDate="ngbDatepicker" [disabled]="true"
+                         [maxDate]="versionForm.controls.endDate.value"
+                         [ngClass]="{'dnm-disabled' : lastTariffValueEndDate}"
+                         class="form-control nav-dtpickr-inpt"
+                         formControlName="startDate" name="startDate"
+                         ngbDatepicker
+                         placeholder="dd/mm/YYYY"
+                         readonly/>
+                  <i class="calendar no-hover"></i>
+                </div>
+              </div>
+            </div>
+            <div class="field-name"></div>
+            <div class="field-value">
+              <small *ngIf="(showAllErrors || startDateCtrl.touched) && startDateCtrl.errors?.required"
+                     class="alert-danger">
+                Start Date is required
+              </small>
+            </div>
+          </div>
+          <div *ngIf="versionForm.controls.endDate as endDateCtrl" class="input-row none-margin-hr">
+            <div class="text-uppercase field-name">End date</div>
+            <div class="field-value none-padding">
+              <div [ngClass]="{'dnm-invalid-inp': (showAllErrors ||endDateCtrl.touched) && endDateCtrl.invalid }">
+                <div class="datepicker-wrp nav-datepicker-wrp">
+                  <input #endDate="ngbDatepicker" (click)="endDate.toggle()" [minDate]="minEndDateForNewTariffValue"
+                         class="form-control nav-dtpickr-inpt req-frm-fld"
+                         formControlName="endDate" name="endDate"
+                         ngbDatepicker
+                         placeholder="dd/mm/YYYY"
+                         readonly>
+                  <i (click)="endDate.toggle()" class="calendar"></i>
+                </div>
+              </div>
+            </div>
+            <div class="field-name"></div>
+            <div class="field-value">
+              <small *ngIf="(showAllErrors || endDateCtrl.touched) && endDateCtrl.errors?.required"
+                     class="alert-danger">
+                End Date is required
+              </small>
+              <small
+                *ngIf="(showAllErrors || endDateCtrl.touched) && !endDateCtrl.errors?.required && endDateCtrl.errors?.greaterThan"
+                class="alert-danger">
+                End Date must be greater than Start Date
+              </small>
+            </div>
+          </div>
+          <ng-container *ngIf="lineItemIncreases.length">
+            <div class="bl-gradient-title">Increase settings</div>
+            <div class="row list-header">
+              <div class="col-5 header-field d-flex align-items-center">
+                <span class="text-ellipsis text-uppercase" title="Line Items">Line Items</span>
+              </div>
+              <div class="col-3 header-field d-flex align-items-center">
+                <span class="text-ellipsis text-uppercase" title="Individual %">Apply increase</span>
+              </div>
+              <div class="col-4 header-field d-flex align-items-center">
+                <span class="text-ellipsis text-uppercase" title="Increase %">Increase %</span>
+              </div>
+            </div>
+            <div *ngFor="let lineItem of lineItemIncreases.controls; trackBy: trackById" [formGroup]="lineItem"
+                 class="row input-row">
+              <div class="col-5 d-flex align-items-center">
+                <div class="text-uppercase field-name">{{ lineItem.controls.name.value }}</div>
+              </div>
+              <div class="col-3 d-flex align-items-center">
+                <label class="dnm-switch-btn">
+                  <input formControlName="enabled" type="checkbox">
+                  <span class="dnm-switch-slider round"></span>
+                  <span class="dnm-switch-lbl"></span>
+                </label>
+              </div>
+              <div class="col-4 d-flex align-items-center">
+                <number-input [placeholder]="0" formControlName="increasePercentage"></number-input>
+              </div>
+            </div>
+          </ng-container>
+          <div class="row none-margin-hr">
+            <div class="col none-padding footer-buttons d-flex justify-content-end">
+              <button (click)="dismiss()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+              <button (click)="create()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Create</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </ng-container>
+  </div>
+</div>

@@ -1,0 +1,154 @@
+@import 'variables.less';
+
+.building-periods {
+  margin-bottom: 60px;
+}
+
+.building-periods .search-row {
+  margin-bottom: 30px;
+}
+
+.building-periods .main-search-input {
+  margin-right: 0;
+}
+
+.building-periods .group-search-input {
+  background-color: @color-background-white;
+}
+
+.building-periods .nav-row {
+  margin-top: 40px;
+  margin-bottom: 30px;
+}
+
+.building-periods .results-label {
+  font-size: 16px;
+  color: @color-text-tertiary;
+  margin-right: 20px;
+}
+
+.building-periods .drpdwn-fltr-lbl {
+  font-family: Gotham Medium;
+  font-size: 15px;
+  line-height: 15px;
+  color: @color-text-tertiary;
+  margin-right: 20px;
+  margin-left: 40px;
+}
+
+.building-periods .per-page-btn {
+  width: 100px;
+  min-width: 100px;
+}
+
+.building-periods .per-page-btn,
+.building-periods .per-page-menu {
+  text-align: left;
+}
+
+.building-periods .list-header .header-field {
+  text-transform: uppercase;
+}
+
+.building-periods .list-body {
+  border: 1px solid @color-line;
+  background-color: @color-background-white;
+}
+
+.building-periods .body-row {
+  padding: 20px 0;
+  min-height: 70px;
+  border-bottom: 1px solid @color-line;
+}
+
+.building-periods .body-row:last-child {
+  border-bottom: none;
+}
+
+.building-periods .active-body-row {
+  .gradient-heading();
+}
+
+.building-periods .period-name-lbl {
+  font-family: Gotham Medium;
+  font-size: 16px;
+  line-height: 16px;
+  color: @color-text-primary;
+}
+
+.building-periods .period-name-descr {
+  display: none;
+  font-family: Gotham Book;
+  font-size: 10px;
+  line-height: 10px;
+  color: @color-background-white;
+  margin-top: 10px;
+}
+
+.building-periods .active-body-row .period-name-descr {
+  display: block;
+  text-transform: uppercase;
+}
+
+.building-periods .start-date-lbl,
+.building-periods .end-date-lbl,
+.building-periods .linked-period-lbl,
+.building-periods .client-statement-lbl {
+  font-family: Gotham Book;
+  font-size: 13px;
+  line-height: 13px;
+  color: @color-text-tertiary;
+}
+
+.building-periods .active-body-row .period-name-lbl,
+.building-periods .active-body-row .start-date-lbl,
+.building-periods .active-body-row .end-date-lbl,
+.building-periods .active-body-row .linked-period-lbl,
+.building-periods .active-body-row .client-statement-lbl {
+  color: @color-background-white !important;
+}
+
+.building-periods .bld-period-info {
+  position: relative;
+  background: url('../../../../../../assets/images/icons/info-icon.svg') no-repeat center;
+  background-size: 20px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  margin-right: 35px;
+}
+
+.building-periods .active-body-row .bld-period-info {
+  background: url('../../../../../../assets/images/icons/meter-readings/info-white-icon.svg') no-repeat center;
+  margin-right: 15px;
+}
+
+.building-periods .bld-period-info:hover,
+.building-periods .active-body-row .bld-period-info:hover {
+  background-image: url('../../../../../../assets/images/icons/meter-readings/info-icon-hover.svg');
+}
+
+.building-periods bld-periods-popup {
+  padding-top: 5px;
+  position: absolute;
+  display: none;
+  top: 30px;
+  right: -35px;
+  z-index: 10;
+}
+
+.building-periods .bld-period-info:hover bld-periods-popup {
+  display: block;
+}
+
+.building-periods .drpdwn-nav-btn {
+  display: none;
+}
+
+.building-periods .active-body-row .drpdwn-nav-btn {
+  display: block;
+}
+
+.building-rollback-modal {
+  width: 500px;
+}

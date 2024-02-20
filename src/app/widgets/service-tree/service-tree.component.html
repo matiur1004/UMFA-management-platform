@@ -1,0 +1,30 @@
+<div class="tree-view srvc-tree-view">
+  <ul>
+    <service-tree-item (changeServiceStatus)="changeServiceStatus.emit($event)" (chargingMethodChanged)="chargingMethodChanged.emit($event)" (chargingTypeChanged)="chargingTypeChanged.emit($event)"
+                       (create)="create.emit($event)" (delete)="delete.emit($event)" (edit)="edit.emit($event)"
+                       (meterValueChanged)="meterValueChanged.emit($event)" (toggleService)="toggleService.emit($event)"
+                       (valueChanged)="valueChanged.emit($event)" *ngFor="let service of services; trackBy:trackById"
+                       [deepLevel]="1"
+                       [displayActionMenu]="displayActionMenu" [displayChargingType]="displayChargingType"
+                       [displaySwitch]="displaySwitch"
+                       [isCharging]="isCharging" [isCustomize]="isCustomize" [isRootItem]="true"
+                       [maxDeepLevel]="maxDeepLevel"
+                       [parentId]="service.id"
+                       [service]="service"
+                       [shouldDisplayAdHocSupplier]="shouldDisplayAdHocSupplier"
+                       [shouldDisplayElectricitySupplier]="shouldDisplayElectricitySupplier"
+                       [shouldDisplayFixedPriceMethod]="shouldDisplayFixedPriceMethod"
+                       [shouldDisplayGasSupplier]="shouldDisplayGasSupplier"
+                       [shouldDisplayPerBuildingMethod]="shouldDisplayPerBuildingMethod"
+                       [shouldDisplayPerCouncilAccountMethod]="shouldDisplayPerCouncilAccountMethod"
+                       [shouldDisplayPerHourMethod]="shouldDisplayPerHourMethod"
+                       [shouldDisplayPerMeterMethod]="shouldDisplayPerMeterMethod"
+                       [shouldDisplayPerSQMeterMethod]="shouldDisplayPerSQMeterMethod"
+                       [shouldDisplayPerShopMethod]="shouldDisplayPerShopMethod"
+                       [shouldDisplayPerTenantMethod]="shouldDisplayPerTenantMethod"
+                       [shouldDisplaySewerageSupplier]="shouldDisplaySewerageSupplier"
+                       [shouldDisplayWaterSupplier]="shouldDisplayWaterSupplier"
+                       [showPrice]="showPrice"
+    ></service-tree-item>
+  </ul>
+</div>

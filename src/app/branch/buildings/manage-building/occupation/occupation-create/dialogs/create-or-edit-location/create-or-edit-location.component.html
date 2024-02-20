@@ -1,0 +1,41 @@
+<form [formGroup]="form">
+  <div class="create-or-edit-location">
+    <div class="modal-header">
+      <h5 class="modal-title">{{ title }}</h5>
+      <button (click)="dismiss()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+        <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-12">
+          <div class="input-row">
+            <div class="text-uppercase field-name">Location Name</div>
+            <div class="field-value">
+              <div [ngClass]="{'dnm-invalid-inp': isSubmitted && form.controls.name.errors?.required}">
+                <input class="form-control" formControlName="name" maxlength="256" placeholder="Type here" type="text"/>
+                <i class="dnm-invalid-inp-icon"></i>
+              </div>
+              <small *ngIf="isSubmitted && form.controls.name.errors?.required" class="alert-danger">
+                A location name is required
+              </small>
+            </div>
+          </div>
+          <div class="input-row row-description">
+            <div class="text-uppercase field-name text-form-field">Description</div>
+            <div class="field-value">
+              <textarea class="form-control" formControlName="description" maxlength="256"
+                        placeholder="Type here"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row none-margin-hr">
+        <div class="col-12 none-padding footer-btns d-flex justify-content-end">
+          <button (click)="dismiss()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+          <button (click)="submit()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

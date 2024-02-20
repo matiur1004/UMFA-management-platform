@@ -1,0 +1,242 @@
+//@import 'variables.less';
+@import 'required-fields.less';
+
+.super-admin-settings-block .page-title {
+  margin-bottom: 50px;
+}
+
+.super-admin-settings-block .bl-gradient-title {
+  line-height: 1;
+  margin-bottom: 30px;
+}
+
+.super-admin-settings-block .editable-section .row {
+  border-bottom: 1px solid #eeeff0;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin-left: 0;
+}
+
+.super-admin-settings-block .line-div {
+  border-bottom: 1px solid #eeeff0;
+}
+
+.super-admin-settings-block .input-row.line-div {
+  padding: 7px 0 7px 20px;
+  margin-bottom: 0;
+}
+
+.super-admin-settings-block .editable-section .gi-footer {
+  padding-top: 8px;
+  padding-bottom: 25px;
+  margin-bottom: 25px;
+}
+
+.super-admin-settings-block .editable-section .row:last-child {
+  border-bottom: none;
+  margin-bottom: 42px;
+}
+
+.super-admin-settings-block .editable-section .editable-section-title {
+  margin-bottom: 25px;
+}
+
+.super-admin-settings-block .editable-section .field-name {
+  font-size: 14px;
+  font-family: 'Gotham Medium';
+  color: @color-text-tertiary;
+}
+
+.super-admin-settings-block .editable-section .field-name.align-item-center {
+  display: flex;
+  align-items: center;
+}
+
+.super-admin-settings-block .editable-section .field-name.top-field-name-align {
+  margin-top: 6px;
+}
+
+
+.super-admin-settings-block .contact-item {
+  position: relative;
+}
+
+.super-admin-settings-block .contact-item .cross-icon {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  margin-top: -6px;
+  cursor: pointer;
+}
+
+.super-admin-settings-block .contact-item .delete-item {
+  width: 30px;
+}
+
+.super-admin-settings-block .add-icon {
+  margin-right: 8px;
+}
+
+.super-admin-settings-block .blue-text-btn {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.super-admin-settings-block .blue-text-btn:first-child {
+  margin-right: 30px;
+}
+
+.super-admin-settings-block .select-building-category {
+  display: flex;
+  align-items: center;
+}
+
+.super-admin-settings-block .ctg-icon {
+  width: 30px;
+  height: 35px;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.super-admin-settings-block .ctg-icon.select-category-icon {
+  width: 25px;
+  height: 25px;
+}
+
+.super-admin-settings-block .ctg-icon:hover {
+  width: 40px;
+  height: 40px;
+}
+
+.super-admin-settings-block .ctg-icon.select-category-icon:hover {
+  width: 30px;
+  height: 30px;
+}
+
+.super-admin-settings-block .select-building-category .field-value {
+  width: 100%;
+}
+
+.super-admin-settings-block .scroll-table-body {
+  display: block;
+  width: 100%;
+  overflow: auto;
+  height: 400px;
+}
+
+.super-admin-settings-block .scroll-table-body tr {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.super-admin-settings-block .table {
+  display: block;
+}
+
+.super-admin-settings-block .table-header .name-header {
+  width: 35%;
+}
+
+.super-admin-settings-block .table-header .desc-header {
+  width: 34%;
+}
+
+.super-admin-settings-block .table-header .count-header {
+  width: 10%;
+}
+
+.super-admin-settings-block .input-group-append {
+  position: absolute;
+  right: 10px;
+  top: 18px;
+}
+
+/* #region building categories modal */
+
+.d-buil-categ-btn {
+  background: none;
+  border: none;
+  margin-right: 20px;
+  padding: 0;
+  flex: 0 0 40px;
+  -ms-flex: 0 0 40px;
+  height: 40px;
+  width: 40px;
+}
+
+.d-buil-categ-btn::after {
+  content: none;
+}
+
+.d-buil-categ-btn:hover {
+  cursor: pointer;
+}
+
+.build-categ-list-dropdown.dropdown-menu {
+  padding: 0;
+  margin: 0;
+  border: none;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  left: 0 !important;
+}
+
+.admin-st-container .table-premium thead th,
+.admin-st-container .table-premium tbody td {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.admin-st-container .table-premium thead th {
+  padding-left: 20px;
+}
+
+.admin-st-container .table-premium tbody td {
+  padding-left: 0;
+}
+
+.admin-st-container .tnts-cnt-lbl {
+  padding-left: 20px;
+}
+
+/* #endregion */
+/* #region media styles */
+@media (min-width: 768px) {
+  .page-content {
+    padding: 28px 50px 80px 50px;
+  }
+}
+
+/* #endregion */
+
+/* #region ng-deep section */
+
+::ng-deep .super-admin-settings-block .edit-logo-panel {
+  margin-bottom: 50px;
+}
+
+::ng-deep .super-admin-settings-block .editable-section text-input.field-value input {
+  background-color: @color-background-primary;
+}
+
+::ng-deep .super-admin-settings-block .editable-section text-input.field-value input:hover,
+::ng-deep .super-admin-settings-block .editable-section text-input.field-value input:focus {
+  background-color: @color-background-white;
+}
+
+/* #endregion */
+
+.photo-btn {
+  background-color: @color-background-white;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 20px;
+  border: 1px solid @color-stroke;
+  width: 35px;
+  height: 35px;
+  display: inline-block;
+}

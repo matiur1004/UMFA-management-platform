@@ -1,0 +1,191 @@
+@import 'variables.less';
+
+.arrow::before,
+.bs-tooltip-top .arrow::before {
+  top: 0;
+  border-width: .4rem .4rem 0;
+  border-top-color: @color-background-dark;
+}
+
+.arrow::before,
+.bs-tooltip-left .arrow::before {
+  left: 0;
+  border-width: .4rem .4rem .4rem;
+  border-left-color: @color-background-dark;
+}
+
+.tooltip-inner {
+  background-color: @color-background-dark;
+  color: @color-empty;
+  font-size: 13px;
+  padding: 8px;
+  white-space: nowrap;
+}
+
+.tooltip-break-words {
+  .tooltip-inner {
+    white-space: normal;
+  }
+}
+
+/* Tooltip */
+.tooltip-header {
+  font-size: 16px;
+  font-family: Gotham Medium;
+  color: @color-background-primary;
+  padding: 20px;
+  text-align: left;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.tooltip-content {
+  font-size: 14px;
+  font-family: Gotham Light;
+  color: @color-background-primary;
+  padding: 20px;
+  text-align: left;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background-color: @color-text-primary;
+}
+
+.tooltip--full-content .tooltip-inner {
+  max-width: 100%;
+  padding: 0;
+}
+
+.note-in-tooltip {
+  .tooltip-inner {
+    max-width: initial;
+    padding: 0px;
+    text-align: left;
+  }
+}
+
+.warning-tooltip {
+  .tooltip-inner {
+    white-space: normal;
+    text-align: left;
+    max-width: 300px;
+  }
+}
+
+.alert-bottom {
+  position: absolute;
+  top: 40px;
+  right: 80px;
+}
+
+
+// Chart Tooltip
+
+.ngx-charts-tooltip-content.type-tooltip .tooltip-content {
+  background-color: #fff;
+  padding: 0;
+  border: none;
+}
+
+.ngx-charts-tooltip-content.type-tooltip .tooltip-caret.position-top {
+  border-top: 7px solid rgba(255, 255, 255, 1) !important;
+}
+
+.ngx-charts-tooltip-content.type-tooltip .tooltip-caret.position-bottom {
+  border-bottom: 7px solid rgba(255, 255, 255, 1) !important;
+}
+
+
+.ngx-charts-tooltip-content .tooltip-caret {
+  border: none;
+  display: none;
+}
+
+.textDataLabel {
+  text-anchor: middle;
+  font-size: 12px !important;
+  transform: inherit;
+  color: #566787;
+  font-family: 'Gotham Book', Arial, sans-serif;
+}
+
+.custom-tooltip-wrapper {
+  box-shadow: none;
+  background: #ffffff;
+  justify-content: space-between;
+
+  h3 {
+    margin-top: 18px;
+    font-family: @fontFamilyMedium;
+    font-weight: 500;
+    color: @color-text-primary;
+    font-size: 18px;
+  }
+
+  &__right {
+    margin-top: 18px;
+
+    span {
+      color: @color-description;
+      font-size: 14px;
+    }
+  }
+
+  .custom-tooltip-content {
+    .circle {
+      width: 11px;
+      height: 11px;
+      padding: 3px;
+      border-radius: 50%;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .current_usage {
+      border: 2px solid;
+    }
+
+    .average_usage {
+      border: 2px solid @color-text-tertiary;
+    }
+
+    .usages {
+      h4 {
+        font-family: @fontFamilyMedium;
+        font-weight: 500;
+        color: #19233C;
+        font-size: 16px;
+      }
+    }
+
+    .content-title {
+      font-size: 14px;
+      margin-left: 9px;
+      margin-right: 9px;
+      font-family: @fontFamilyBook;
+      color: @color-text-tertiary;
+    }
+
+    .reading-status {
+      font-size: 14px;
+      margin-left: 9px;
+      margin-right: 9px;
+      font-family: @fontFamilyBook;
+      font-weight: 700;
+      color: @color-text-tertiary;
+    }
+
+    .content-year {
+      color: #19233C;
+      font-size: 14px;
+    }
+  }
+}
+
+.ngx-charts .circle circle {
+  fill: transparent;
+}
+
+.bar-chart-parent {
+  display: grid;
+  height: 100%;
+}

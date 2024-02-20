@@ -1,0 +1,116 @@
+@import 'required-fields.less';
+
+.create-branch-popup.modal-body {
+  padding: 0;
+}
+
+.create-branch-popup .edit-container {
+  padding: 40px 25px 0;
+}
+
+::ng-deep .create-branch-popup .footer-buttons .dnm-btn {
+  margin-left: 25px;
+}
+
+.add-icon {
+  margin-right: 9px;
+}
+
+::ng-deep .general-info-icon, .super-admin-icon,
+::ng-deep .bank-account-icon {
+  background-repeat: no-repeat;
+}
+
+::ng-deep .create-branch-popup .nav-tabs .nav-link {
+  line-height: 1;
+  padding-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+::ng-deep .shareholders-icon {
+  background-image: url("../../../../../assets/images/icons/shareholders-icon.svg");
+  width: 20px;
+  height: 20px;
+}
+
+::ng-deep .nav-link.active .general-info-icon {
+  background-image: url("../../../../../assets/images/icons/info-active-icon.svg");
+}
+
+::ng-deep .nav-link.active .super-admin-icon {
+  background-image: url("../../../../../assets/images/icons/admin-active-icon.svg");
+}
+
+::ng-deep .nav-link.active .bank-account-icon {
+  background-image: url("../../../../../assets/images/icons/bank-account-active-icon.svg");
+}
+
+::ng-deep .nav-link.active .shareholders-icon {
+  background-image: url("../../../../../assets/images/icons/shareholders-active-icon.svg");
+}
+
+::ng-deep .blue-cross-icon {
+  display: inline-block;
+  background-image: url("../../../../../assets/images/icons/blue-cross.png");
+  background-repeat: no-repeat;
+  width: 12px;
+  height: 12px;
+  position: relative;
+  top: 1px;
+}
+
+::ng-deep .create-branch-popup .col-left,
+::ng-deep .create-branch-popup .col-right {
+  position: relative;
+  width: 100%;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+::ng-deep .create-branch-popup .tab-name {
+  margin-left: 10px;
+}
+
+/* #region media styles */
+
+@media (min-width: 768px) {
+  ::ng-deep .create-branch-popup .form-control {
+    padding-left: 20px;
+  }
+
+  ::ng-deep .create-branch-popup .col-left {
+    -ms-flex: 0 0 267px;
+    flex: 0 0 267px;
+    max-width: 267px;
+  }
+
+  ::ng-deep .create-branch-popup .col-right {
+    -ms-flex: 0 0 480px;
+    flex: 0 0 480px;
+    max-width: 480px;
+  }
+
+  ::ng-deep .create-branch-popup .blue-text-btn {
+    margin-right: 25px;
+  }
+
+  ::ng-deep .create-branch-popup .footer-buttons {
+    padding-top: 30px;
+    padding-bottom: 50px;
+  }
+
+  ::ng-deep .create-branch-popup .footer-buttons .dnm-btn {
+    width: 200px;
+  }
+
+  ::ng-deep .create-branch-popup .row-title .bl-gradient-title {
+    position: relative;
+    line-height: 20px;
+    top: 5px;
+  }
+}
+
+/* #endregion */
+

@@ -1,0 +1,263 @@
+<div class="popup-content container-fluid">
+  <button (click)="dismiss()" aria-label="Close" class="close close-modal" data-dismiss="modal" type="button">
+    <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+  </button>
+  <ng-container *ngIf="!isResetMode; else resetModePopupContent">
+    <div class="row">
+      <div class="col img-container item-img d-flex align-items-center justify-content-center position-relative">
+        <reading-details-popup-photo (photoChange)="emitReading.emit($event)" (photoUpload)="updatePhotoToUpload($event)"
+                                     [allowPhotoUpload]="!isMarkAsIncorrectMode"
+                                     [readingDetails]="readingDetails" [readingsNavigation]="readingsNavigation"
+                                     [showPhotosNavigation]="isDetailsOnlyMode" [uploadedPhotoUrl]="uploadedPhotoUrl">
+        </reading-details-popup-photo>
+      </div>
+      <div *ngIf="!isMarkAsIncorrectMode" class="col-md-4 description-container d-flex column flex-wrap">
+        <div class="w-100">
+          <reading-details-popup-title [meter]="meter" [readingDetails]="readingDetails"></reading-details-popup-title>
+          <div class="data-container">
+            <div class="data-row">
+              <div [ngClass]="'status-' + (readingDetails.confirmed | readingStatus : readingDetails.readingSource | lowercase)"
+                   class="reading-status"
+                   ngbTooltip="{{readingDetails.confirmed | readingStatus : readingDetails.readingSource}}"
+                   placement="top"></div>
+              <div class="data-item">
+                <span class="item-header">Reading</span>
+                <span class="item-val reading-val-gradient">{{readingDetails.value}}</span>
+              </div>
+              <div class="data-item">
+                <span class="item-header">Date</span>
+                <span
+                  class="item-val item-val-gradient">{{readingDetails.date | dateReadingDetails: shouldDisplayTime(readingDetails)}}</span>
+              </div>
+            </div>
+            <div class="data-row">
+              <div class="data-item">
+                <span class="item-header">Ratio</span>
+                <span class="item-val item-val-gradient">{{registerRatio}}</span>
+              </div>
+              <div class="data-item">
+                <span class="item-header">Usage</span>
+                <span class="item-val item-val-gradient">{{readingDetails.usage | number:'1.0-2'}}</span>
+              </div>
+              <div class="data-item">
+                <span class="item-header">Source</span>
+                <span class="item-val item-val-gradient">{{readingDetails.readingSource | readingSourceLabel}}</span>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="readingDetails.recordingUrl" class="record-container">
+            <i (click)="onPlayAudio(readingDetails.recordingUrl)" [ngClass]="{'play-icon': !audioPlayback,
+                              'pause-icon': audioPlayback}" class="record-icon"></i>
+            <span class="record-name">{{readingDetails.recordName}}</span>
+            <span class="record-duration">{{readingDetails.recordDuration}}</span>
+          </div>
+          <div class="reading-description">
+            <textarea [(ngModel)]="newNotes" [disabled]="!isEditable" class="form-control" maxlength=150 name="notes"
+                      rows="5"></textarea>
+          </div>
+          <div class="author-container">
+            <div class="added-by-hdr">Added by</div>
+            <div class="added-by-wrp d-flex">
+              <logo-container [url]="readingDetails.createdByUserPhotoUrl" class="user-img">
+                <div class="user-no-img">
+                  <span>{{readingDetails.createdByUserName | shortName}}</span>
+                </div>
+              </logo-container>
+              <div class="d-flex flex-column">
+                <span class="user-name">{{readingDetails.createdByUserName}}</span>
+                <span class="publishing-date">{{readingDetails.createdDate | dateReadingDetails:true}}</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <ng-container [ngTemplateOutlet]="files"></ng-container>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="isMarkAsIncorrectMode" class="col-md-4 description-container">
+        <div>
+          <reading-details-popup-title [meter]="meter" [readingDetails]="readingDetails"></reading-details-popup-title>
+          <ng-container [ngTemplateOutlet]="formDataContainer">
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!isMarkAsIncorrectMode && !isResetMode" class="row">
+      <div class="col registers-slider d-flex justify-content-center pb-4">
+        <ng-container *ngIf="isDetailsOnlyMode">
+          <div (click)="onChangeReading(registerReading.readingId)" *ngFor="let registerReading of readingsNavigation.registerReadings"
+               [ngClass]="{'active': registerReading.active}"
+               class="register__item d-flex flex-column">
+            <img [src]="registerReading.image || defaultReadingIconUrl" alt="reading photo" class="default-reading-img">
+            <span class="register-unit d-block">{{registerReading.registerId | registerUnit | async}}</span>
+            <span
+              class="register-serial-number d-block">{{meter.serialNumber | shortMeterName : meter.supplyType}}</span>
+          </div>
+        </ng-container>
+      </div>
+      <div class="col-md-4 description-container navigation-buttons-container pb-4">
+        <div *ngIf="readingDetails.confirmed !== false" class="buttons container">
+          <div class="row">
+            <div *ngIf="allowMarkAsIncorect" [ngbTooltip]="'Mark reading as incorrect'" class="col-12">
+              <button (click)="goToInvalidate()" class="dnm-btn dnm-btn-red text-uppercase" [disabled]="buildingPeriod && buildingPeriod.isFinalized">Incorrect</button>
+            </div>
+            <div *ngIf="isDetailsOnlyMode" [ngbTooltip]="readingDetails.confirmed ? 'Reading is verified' : 'Verify reading (photo is required)'"
+                 class="col-12">
+              <button (click)="confirm()" [disabled]="readingDetails.confirmed || !readingDetails.photoUrl" [ngClass]="{'dnm-btn-green': readingDetails.confirmed}"
+                      class="dnm-btn dnm-btn-primary"
+                      type="button">
+                <ng-container *ngIf="readingDetails.confirmed; else isNotVerified">Verified</ng-container>
+                <ng-template #isNotVerified>Verify</ng-template>
+              </button>
+            </div>
+          </div>
+          <div *ngIf="isDetailsOnlyMode" class="row navigation">
+            <div class="col-6 text-center prev-meter pr-0">
+              <button (click)="onPrevMeter()" [disabled]="!readingsNavigation.previousMeterReadingId"
+                      class="text-uppercase navigation__meter  cursor-pointer">Previous meter
+              </button>
+              <i class="slide-prev"></i>
+            </div>
+            <div class="col-6 text-center pl-0">
+              <button (click)="onNextMeter()" [disabled]="!readingsNavigation.nextMeterReadingId"
+                      class="text-uppercase navigation__meter cursor-pointer">Next Meter
+              </button>
+              <i class="slide-next"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #resetModePopupContent>
+    <div class="row">
+      <div class="col img-container item-img d-flex align-items-center justify-content-center position-relative pb-4">
+        <reading-details-popup-photo (photoChange)="emitReading.emit($event)" (photoUpload)="updatePhotoToUpload($event)"
+                                     [allowPhotoUpload]="false"
+                                     [readingDetails]="readingDetails"
+                                     [readingsNavigation]="readingsNavigation" [showPhotosNavigation]="!isResetMode && !isMarkAsIncorrectMode"
+                                     [uploadedPhotoUrl]="uploadedPhotoUrl"></reading-details-popup-photo>
+      </div>
+      <div class="col-md-4 description-container d-flex flex-column flex-wrap pb-4">
+        <reading-details-popup-title [meter]="meter" [popupWarning]="'Reset meter reading'"
+                                     [readingDetails]="readingDetails"></reading-details-popup-title>
+        <ng-container [ngTemplateOutlet]="formDataContainer">
+        </ng-container>
+      </div>
+    </div>
+  </ng-template>
+</div>
+
+<ng-template #formDataContainer>
+  <div [ngClass]="{'reset-reading': isResetMode}" class="new-reading-value">
+    <div *ngIf="isSubmitted">
+      <div *ngIf="newValue == null; else invalidNotes" class="field-value none-padding warning-message">
+        <i class="dnm-icon dnm-warning-red"></i>
+        <p>Incorrect meter reading</p>
+      </div>
+      <ng-template #invalidNotes>
+        <div *ngIf="notes.invalid" class="field-value none-padding warning-message">
+          <i class="dnm-icon dnm-warning-red"></i>
+          <p>Incorrect reading description</p>
+        </div>
+      </ng-template>
+    </div>
+    <div class="form-group">
+      <label for="value">Previous reading</label>
+      <number-input [isReadonly]="true" [ngModel]="readingDetails.value" id="previous-value"></number-input>
+    </div>
+    <div class="form-group">
+      <label for="value">Enter the correct meter reading below</label>
+      <number-input #value="ngModel" [(ngModel)]="newValue" [min]="0" id="value"></number-input>
+    </div>
+    <div class="form-group">
+      <label for="notes">Leave a note</label>
+      <textarea #notes="ngModel" [(ngModel)]="newNotes" class="form-control" id="notes" maxlength=150 placeholder="Type here" required
+                rows="5" type="text"></textarea>
+    </div>
+  </div>
+  <div class="buttons container">
+    <div class="row">
+      <div class="col-6">
+        <button (click)="cancel()" class="dnm-btn dnm-btn-cancel text-uppercase">Cancel</button>
+      </div>
+      <div class="col-6">
+        <button (click)="submit(newValue != null && notes.valid)" class="dnm-btn dnm-btn-primary text-uppercase">
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #files>
+  <div class="files-info-container d-flex flex-column justify-content-between">
+    <div class="files-data mb-4">
+      <div *ngIf="hasFiles || hasPhotos">
+        <div *ngIf="hasFiles" class="files-group">
+          <label>Files:</label>
+          <div *ngFor="let file of readingDetails.filesInfo | readingFileInfoFileType:readingFileInfoType.File:readingDetailsUpdateModel.filesToDelete"
+               class="d-flex align-items-center">
+            <label (click)="download(file)" class="file-item item-download prev-read-val text-ellipsis"
+                   title="Download">{{file.fileDisplayName}}</label>
+            <span (click)="deleteExistingFile(file)" *ngIf="isEditable" class="icon cross-icon cursor-pointer"></span>
+          </div>
+          <div *ngFor="let file of readingDetailsUpdateModel.filesToUpload" class="d-flex align-items-center">
+            <label class="file-item prev-read-val text-ellipsis">{{file.name}}</label>
+            <span (click)="deleteUnsavedFile(file)" *ngIf="isEditable" class="icon cross-icon cursor-pointer"
+                  title="Delete File"></span>
+          </div>
+        </div>
+        <div *ngIf="hasPhotos" class="files-group">
+          <label>Photos:</label>
+          <div *ngFor="let file of readingDetails.filesInfo | readingFileInfoFileType:readingFileInfoType.Photo:readingDetailsUpdateModel.filesToDelete"
+               class="d-flex align-items-center">
+            <label (click)="download(file)" [ngClass]="{'item-active': !readingDetailsUpdateModel.photosToUpload.length && file.isDefaultPhoto}" class="file-item item-download prev-read-val text-ellipsis"
+                   title="Download">{{file.fileDisplayName}}</label>
+            <span (click)="updateDefaultPhoto(file)" *ngIf="!readingDetailsUpdateModel.photosToUpload.length"
+                  [ngClass]="{'status-confirmed': file.isDefaultPhoto, 'make-default-image-icon': !file.isDefaultPhoto}"
+                  class="icon status-icon" title="{{ file.isDefaultPhoto ? 'Selected Image' : 'Select Image'}} "></span>
+          </div>
+          <div *ngFor="let photo of readingDetailsUpdateModel.photosToUpload; let i = index"
+               class="d-flex align-items-center">
+            <label class="file-item item-active prev-read-val text-ellipsis">{{photo.name}}</label>
+            <span [ngClass]="{'status-confirmed' : i === 0}" class="icon status-icon"
+                  title="{{ i===0 ? 'Selected Image' : 'Select Image'}} "></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row justify-content-stretch">
+      <input #filesUpload (change)="updateFilesToUpload($event)" [accept]="allowedFileTypes" class="d-none" multiple
+             type="file">
+      <div class="col-12">
+        <ng-container *ngIf="!isEditable">
+          <button (click)="changeEditable(true)"
+                  class="dnm-btn dnm-btn-cancel text-uppercase col-12 d-flex justify-content-center align-items-center">
+            <div>Edit</div>
+          </button>
+        </ng-container>
+      </div>
+
+      <div *ngIf="isEditable" class="col-12">
+        <button (click)="filesUpload.click()" *ngIf="isEditable"
+                class="dnm-btn dnm-btn-cancel mb-3 text-uppercase col-12 d-flex justify-content-center align-items-center">
+          <div>Upload</div>
+          <i class="upload-icon-arrow"></i>
+        </button>
+      </div>
+
+      <ng-container *ngIf="isEditable">
+        <div class="col-6">
+          <button (click)="changeEditable(false)"
+                  class="dnm-btn dnm-btn-cancel text-uppercase col-12 d-flex justify-content-center align-items-center">
+            <div>Cancel</div>
+          </button>
+        </div>
+        <div class="col-6">
+          <button (click)="saveDetails()" class="dnm-btn dnm-btn-primary text-uppercase col-12">Save</button>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</ng-template>

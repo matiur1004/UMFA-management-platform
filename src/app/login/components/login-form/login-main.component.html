@@ -1,0 +1,51 @@
+<form (keyup.enter)="onOpenHome()" [formGroup]="loginForm">
+  <div class="container-fluid none-padding d-flex justify-content-center">
+    <div class="main-logo-cnt d-flex align-items-end">
+      <img [src]="logoUrl" class="logo-img img-fluid ng-star-inserted"/>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="email">Email Address</label>
+    <div [ngClass]="{'dnm-invalid-inp': isSubmitted && loginForm.controls.email.invalid}" class="input-box">
+      <input class="form-control" formControlName="email" id="email" name="email" required spellcheck="false"
+             type="email">
+    </div>
+    <small *ngIf="isSubmitted && loginForm.controls.email.errors?.required" class="alert-danger">
+      Email is required
+    </small>
+    <small *ngIf="isSubmitted && loginForm.controls.email.errors?.pattern" class="alert-danger">
+      Email is invalid
+    </small>
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    <div [ngClass]="{'dnm-invalid-inp': isSubmitted && loginForm.controls.password.invalid}" class="input-box">
+      <input class="form-control" formControlName="password" id="password" name="password" required type="password">
+      <span class="eye-icon" showPassword></span>
+    </div>
+    <small *ngIf="isSubmitted && loginForm.controls.password.errors?.required" class="alert-danger pass-alter-danger">
+      Password is required
+    </small>
+  </div>
+  <div *ngIf="!isNavigationForm" class="form-group remember-me-block d-flex justify-content-between">
+    <div class="form-check form-check-inline">
+      <label for="remember-me">
+        <input formControlName="rememberMe" id="remember-me" name="rememberMe" type="checkbox">
+        <span></span>
+        Remember Me
+      </label>
+    </div>
+    <div class="form-check d-flex justify-content-start">
+      <a [routerLink]="['/forgot-password']" class="link">Forgot Password?</a>
+    </div>
+  </div>
+  <div class="row submit-buttons">
+    <div class="offset-md-3"></div>
+    <!-- <button (click)="onOpenHome()" class="btn col-md-6" type="button">Login</button> -->
+    <button (click)="onContinue()" class="btn col-md-6" type="button">Login</button>
+  </div>
+  <div class="d-flex justify-content-center">
+    <span>Don't have an account? &nbsp;</span>
+    <a [routerLink]="['/sign-up']" class="link">Sign up</a>
+  </div>
+</form>

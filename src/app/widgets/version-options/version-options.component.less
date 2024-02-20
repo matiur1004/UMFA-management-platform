@@ -1,0 +1,81 @@
+@import 'variables.less';
+
+.version-options {
+  .note-logo {
+    width: 57px;
+    height: 50px;
+    margin-bottom: 50px;
+  }
+
+  .comment-row {
+    margin-bottom: 5px;
+  }
+
+  .comment-title {
+    font-family: Gotham Medium;
+    font-size: 30px;
+    line-height: 30px;
+    color: @color-text-primary;
+  }
+
+  .comment-msg {
+    font-family: Gotham Book;
+    font-size: 18px;
+    line-height: 28px;
+    color: @color-text-primary;
+    margin: 20px 0;
+  }
+
+  textarea.form-control {
+    height: 80px;
+    margin: 0;
+    resize: none;
+  }
+
+  .comment-footer {
+    margin-top: 55px;
+    margin-bottom: 40px;
+  }
+
+  .comment-footer .dnm-btn-cancel {
+    margin-right: 30px;
+  }
+
+  .radio-btn-row {
+    line-height: 50px;
+  }
+
+  .new-ver-r-btn {
+    float: left;
+  }
+
+  .date {
+    width: 234px;
+    margin-left: 20px;
+    background-color: @color-background-white;
+  }
+
+  .dnm-radio-btn .state label {
+    font-size: 14px;
+  }
+
+  .dnm-radio-btn .state label:before,
+  .dnm-radio-btn .state label:after {
+    top: calc((0% - (100% - 17px)) - 8%);
+  }
+
+  .dnm-radio-btn input:checked ~ .state label:after {
+    font-size: 14px;
+  }
+
+  .dnm-radio-btn input:checked ~ .state label:after,
+  .dnm-radio-btn .state label:after {
+    -webkit-transform: scale(.50);
+    transform: scale(.50);
+  }
+
+  ::ng-deep input.date ~ ngb-datepicker.dropdown-menu {
+    width: 234px;
+  }
+
+}

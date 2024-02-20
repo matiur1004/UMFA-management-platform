@@ -1,0 +1,224 @@
+<form [ngrxFormState]="form" class="edit-tariff">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-8 none-padding">
+        <div class="bl-gradient-title section-title">General Info</div>
+        <div class="input-row line-div">
+          <div class="text-uppercase field-name text-form-field">Tariff Name</div>
+          <div class="field-value">
+            <div [ngClass]="{'dnm-invalid-inp': form.isSubmitted && form.errors._name?.required}">
+              <text-input [isRequired]=true [ngrxFormControlState]="form.controls.name" class="none-padding field-value" maxlength="150"
+                          placeholder="Tariff name"></text-input>
+            </div>
+            <small *ngIf="form.isSubmitted && form.errors._name?.required" class="alert-danger">
+              A tariff name is required
+            </small>
+          </div>
+        </div>
+        <div class="input-row line-div">
+          <div class="text-uppercase field-name text-form-field">Tariff Code</div>
+          <div class="field-value">
+            <div [ngClass]="{'dnm-invalid-inp': form.isSubmitted && form.errors._code?.required}">
+              <text-input [isRequired]=true [ngrxFormControlState]="form.controls.code" class="none-padding field-value" maxlength="150"
+                          placeholder="Enter Tariff Code"></text-input>
+            </div>
+            <small *ngIf="form.isSubmitted && form.errors._code?.required" class="alert-danger">
+              A tariff code is required
+            </small>
+          </div>
+        </div>
+        <div class="input-row line-div">
+          <div class="text-uppercase field-name text-form-field">Supply Type</div>
+          <div class="field-value">
+            <div *ngIf="form.controls.canEditSupplyType.value" class="dropdown d-block fullwidth-dropdown" ngbDropdown>
+              <button class="btn btn-secondary dropdown-toggle text-left" id="ddClientPortfolio" ngbDropdownToggle
+                      type="button">
+                {{form.controls.supplyType.value > -1 ? supplyTypeText[form.controls.supplyType.value] : 'Select supply type'}}
+              </button>
+              <div aria-labelledby="ddClientPortfolio" class="dropdown-menu" ngbDropdownMenu>
+                <button (click)="onSupplyTypeChanged(form.controls.supplyType.id, item)" *ngFor="let item of supplyTypes" class="dropdown-item"
+                        type="button">{{supplyTypeText[item]}}</button>
+              </div>
+            </div>
+            <span *ngIf="!form.controls.canEditSupplyType.value"
+                  class="version-value">{{supplyTypeText[form.controls.supplyType.value]}}</span>
+          </div>
+        </div>
+        <div class="input-row line-div">
+          <div class="text-uppercase field-name text-form-field">Version Number</div>
+          <div class="field-value">
+            <ng-select (change)="navigateToVersion($event)" [bindValue]="'majorVersion'" [clearable]="false"
+                       [dropdownPosition]="'top'" [items]="tariffVersions" [multiple]="false" [ngModel]="form.value.majorVersion"
+                       [searchable]="false" class="dnm-single-select versions-select"
+                       name="versionNumber">
+              <ng-template let-item="item" ng-label-tmp>
+                <ng-container [ngTemplateOutletContext]="{version: item.majorVersion, date: item.versionDate}"
+                              [ngTemplateOutlet]="dropdownVersionDisplayTemplate"></ng-container>
+              </ng-template>
+              <ng-template let-item="item" ng-option-tmp>
+                <ng-container [ngTemplateOutletContext]="{version: item.majorVersion, date: item.versionDate}"
+                              [ngTemplateOutlet]="dropdownVersionDisplayTemplate"></ng-container>
+              </ng-template>
+            </ng-select>
+          </div>
+        </div>
+        <div class="input-row line-div">
+          <div class="text-uppercase field-name text-form-field">Sub-Version Number</div>
+          <div class="field-value">
+            <ng-select (change)="navigateToVersion($event)" [bindValue]="'versionId'" [clearable]="false"
+                       [dropdownPosition]="'top'" [items]="subVersions" [multiple]="false"
+                       [ngModel]="form.value.versionId" [searchable]="false" class="dnm-single-select versions-select"
+                       name="subVersionNumber">
+              <ng-template let-item="item" ng-label-tmp>
+                <ng-container [ngTemplateOutletContext]="{version: item.minorVersion, date: item.versionDate}"
+                              [ngTemplateOutlet]="dropdownVersionDisplayTemplate"></ng-container>
+              </ng-template>
+              <ng-template let-item="item" ng-option-tmp>
+                <ng-container [ngTemplateOutletContext]="{version: item.minorVersion, date: item.versionDate}"
+                              [ngTemplateOutlet]="dropdownVersionDisplayTemplate"></ng-container>
+              </ng-template>
+            </ng-select>
+          </div>
+        </div>
+        <div class="input-row line-div">
+          <div class="text-uppercase field-name text-form-field">
+            Consumer Type
+          </div>
+          <div [ngClass]="{'dnm-invalid-inp': form.isSubmitted && form.errors._buildingCategoriesIds?.required}"
+               class="d-flex flex-wrap field-value checkbox-row">
+            <div *ngFor="let category of buildingCategories" class="d-flex align-items-center checkbox-input">
+              <div class="dnm-checkbox">
+                <input (change)="onBuildingCategoryToggled(category, form.controls.buildingCategoriesIds)" [checked]="isBuildingCategoryChecked(category, form.controls.buildingCategoriesIds)"
+                       class="checkbox-toggle"
+                       type="checkbox"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+              <span class="checkbox-input-lbl">{{category.name}}</span>
+            </div>
+          </div>
+          <small *ngIf="form.isSubmitted && form.errors._buildingCategoriesIds?.required" class="alert-danger">
+            Consumer Type is required
+          </small>
+        </div>
+        <div class="input-row line-div">
+          <div class="text-uppercase field-name text-form-field">Disable for new customers</div>
+          <div class="d-flex field-value align-item-center">
+            <label class="dnm-switch-btn package-status">
+              <input (change)="onDisableForNewCustomersChanged()" [ngrxFormControlState]="form.controls.disableForNewCustomers"
+                     type="checkbox"/>
+              <span class="dnm-switch-slider round"></span>
+            </label>
+          </div>
+        </div>
+        <div *ngIf="form.controls.disableForNewCustomers.value === true" class="input-row line-div">
+          <div class="text-uppercase field-name text-form-field">Disable after</div>
+          <div class="field-value datepicker-wrp">
+            <input #dp="ngbDatepicker" (click)="dp.toggle()" [ngrxFormControlState]="form.controls.disableAfter" [ngrxValueConverter]="ngbDateNgrxValueConverter" class="custom-input"
+                   name="dp"
+                   ngbDatepicker placeholder="dd/mm/YYYY">
+          </div>
+        </div>
+        <div class="input-row line-div">
+          <div class="text-uppercase field-name text-form-field">Seasonal changes</div>
+          <div class="d-flex field-value align-item-center">
+            <label class="dnm-switch-btn package-status">
+              <input [ngrxFormControlState]="form.controls.seasonalChangesEnabled" type="checkbox"/>
+              <span class="dnm-switch-slider round"></span>
+            </label>
+          </div>
+        </div>
+        <div class="input-row line-div">
+          <div class="text-uppercase field-name text-form-field">Time of use changes</div>
+          <div class="d-flex field-value align-item-center">
+            <label class="dnm-switch-btn package-status">
+              <input [ngrxFormControlState]="form.controls.touChangesEnabled" type="checkbox"/>
+              <span class="dnm-switch-slider round"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid categories-container">
+    <div class="row">
+      <div class="col-8 none-padding">
+        <div class="bl-gradient-title section-title">Custom Categories</div>
+        <div class="input-row line-div">
+          <div class="text-uppercase field-name text-form-field">Tariff Categories</div>
+          <div class="field-value">
+            <ng-select [clearable]="false" [closeOnSelect]="false" [dropdownPosition]="'top'"
+                       [hideSelected]="true" [items]="tariffVersionCategories"
+                       [multiple]="true" [ngrxFormControlState]="form.controls.tariffCategories" [searchable]="false" bindLabel="name"
+                       class="dnm-multiple-select"></ng-select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid line-items-container">
+    <div class="row">
+      <div class="col-8 none-padding">
+        <div class="bl-gradient-title section-title">Line items</div>
+        <ng-container *ngFor="let item of lineItemControls; let idx = index; trackBy:trackByControlId">
+          <based-on-attributes-line-item (deleteLineItem)="onDeleteLineItem($event)"
+                                         (updateAttributeId)="onUpdateAttribute(item.lineItem.id, $event.attributeId)" (updateChargingType)="onUpdateChargingType($event)"
+                                         *ngIf="item.type === lineItemChargingTypes.BasedOnAttributes"
+                                         [attributes]="attributes" [categories]="tariffVersionCategories"
+                                         [chargingTypes]="chargingTypes"
+                                         [isSubmitted]="form.isSubmitted"
+                                         [lineItemNumber]="getLineItemSectionNumber(lineItemControls.indexOf(item))"
+                                         [lineItem]="item.lineItem">
+          </based-on-attributes-line-item>
+          <based-on-readings-line-item (deleteLineItem)="onDeleteLineItem($event)"
+                                       (resetCostProviderId)="onResetCostProviderId($event, item.lineItem.id)" (updateChargingType)="onUpdateChargingType($event)"
+                                       (updateUnitOfMeasurement)="onUpdateUnitOfMeasurement(item.lineItem.id, $event.unitOfMeasurement)"
+                                       *ngIf="item.type === lineItemChargingTypes.BasedOnReadings"
+                                       [categories]="tariffVersionCategories"
+                                       [chargingTypes]="chargingTypes" [costProviderNodes]="costProviderNodes"
+                                       [isSubmitted]="form.isSubmitted" [lineItemNumber]="getLineItemSectionNumber(lineItemControls.indexOf(item))"
+                                       [lineItem]="item.lineItem"
+                                       [showCostTariffProperty]="showCostTariffProperty"
+                                       [steps]="tariffVersionSteps"
+                                       [supplyType]="form.controls.supplyType.value"
+                                       [units]="units">
+          </based-on-readings-line-item>
+          <based-on-readings-and-settings-line-item
+            (deleteLineItem)="onDeleteLineItem($event)" (updateChargingType)="onUpdateChargingType($event)"
+            *ngIf="item.type === lineItemChargingTypes.BasedOnReadingsAndSettings" [categories]="tariffVersionCategories"
+            [chargingTypes]="chargingTypes"
+            [isSubmitted]="form.isSubmitted" [lineItemNumber]="getLineItemSectionNumber(lineItemControls.indexOf(item))"
+            [lineItem]="item.lineItem">
+          </based-on-readings-and-settings-line-item>
+          <fixed-price-line-item (deleteLineItem)="onDeleteLineItem($event)" (updateChargingType)="onUpdateChargingType($event)"
+                                 *ngIf="item.type === lineItemChargingTypes.FixedPrice"
+                                 [categories]="tariffVersionCategories"
+                                 [chargingTypes]="chargingTypes" [isSubmitted]="form.isSubmitted"
+                                 [lineItemNumber]="getLineItemSectionNumber(lineItemControls.indexOf(item))"
+                                 [lineItem]="item.lineItem">
+          </fixed-price-line-item>
+          <based-on-calculations-line-item (changeDependentLineItems)="onChangeDependentLineItems(item.lineItem.id, $event.dependentLineItemIds)"
+                                           (deleteLineItem)="onDeleteLineItem($event)" (updateChargingType)="onUpdateChargingType($event)"
+                                           *ngIf="item.type === lineItemChargingTypes.BasedOnCalculations"
+                                           [categories]="tariffVersionCategories"
+                                           [chargingTypes]="chargingTypes"
+                                           [isSubmitted]="form.isSubmitted"
+                                           [lineItemNumber]="getLineItemSectionNumber(lineItemControls.indexOf(item))"
+                                           [lineItem]="item.lineItem"
+                                           [lineItems]="lineItems">
+          </based-on-calculations-line-item>
+        </ng-container>
+        <div class="row button-row">
+          <a (click)="onAddLineItem()" class="blue-text-btn" href="javascript:void(0);">
+            <i class="add-icon"></i>Add new line item
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<ng-template #dropdownVersionDisplayTemplate let-date="date" let-version="version">
+  {{version}}-{{date | date:"dd/MM/yyyy"}}
+</ng-template>

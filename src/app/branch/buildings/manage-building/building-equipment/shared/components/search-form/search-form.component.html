@@ -1,0 +1,137 @@
+<div class="row search-row none-margin-hr">
+  <div class="col none-padding">
+    <div class="form-inline main-search-input">
+      <div class="input-group">
+        <input (input)="onChangeQuickFilter()" [(ngModel)]="searchForm.name" class="form-control group-search-input"
+               placeholder="Search a node by name" type="search"/>
+        <div class="input-group-append">
+          <i class="icon-relative search-icon vertical-middle"></i>
+        </div>
+      </div>
+    </div>
+    <button (click)="onToggleAdvanceSearch()" [ngClass]="{'active-btn' : isAdvanceSearchDisplayed}"
+            class="dnm-btn dnm-btn-filter text-uppercase" type="button">Filter<i
+      class="btn-filter-icon"></i></button>
+  </div>
+</div>
+
+<div [ngClass]="{ 'mr-filter-mrgn-bottom': showFilter == true, 'd-none': !isAdvanceSearchDisplayed }"
+     class="set-nodes-filter">
+  <div class="row none-margin-hr">
+    <div class="col-12 col-xl-4">
+      <div class="filter-blck-wrp">
+        <div class="bl-gradient-title">Node type</div>
+        <ng-select #selectGoupNodeType
+                   [(ngModel)]="searchForm.nodeType" [clearable]="false" [closeOnSelect]="true"
+                   [dropdownPosition]="'top'" [searchable]="false" class="select-dropdown">
+          <ng-template ng-header-tmp>
+            <div class="dnm-single-field-filter">
+              <input (input)="selectGoupNodeType.filter($event.target.value)" autoFocus class="dnm-single-input-field"
+                     type="text"/>
+            </div>
+          </ng-template>
+          <ng-option [value]="''">All types</ng-option>
+          <ng-option *ngFor="let item of nodeTypes" [value]="item.value">{{item.label}}</ng-option>
+        </ng-select>
+      </div>
+    </div>
+    <div class="col-12 col-xl-4">
+      <div class="filter-blck-wrp">
+        <div class="bl-gradient-title">Tariff assigned</div>
+        <ng-select #selectGoupTariffAssigned
+                   [(ngModel)]="searchForm.tariffIds" [clearable]="false" [closeOnSelect]="false" [dropdownPosition]="'top'"
+                   [hideSelected]="true"
+                   [multiple]="true" [placeholder]="'All tariffs'" [searchable]="false"
+                   class="dnm-multiple-select">
+          <ng-template *ngIf="tariffs && tariffs.length" ng-header-tmp>
+            <div class="dnm-single-field-filter">
+              <input (input)="selectGoupTariffAssigned.filter($event.target.value)" autoFocus class="dnm-single-input-field"
+                     type="text"/>
+            </div>
+          </ng-template>
+          <ng-option *ngFor="let item of tariffs" [value]="item.id">{{item.name}}</ng-option>
+        </ng-select>
+      </div>
+    </div>
+    <div class="col-12 col-xl-4">
+      <div class="filter-blck-wrp">
+        <div class="bl-gradient-title">Supply to</div>
+        <ng-select #selectGoupSupplyTo (change)="updateSupplyTo()"
+                   [(ngModel)]="searchForm.supplyToId" [clearable]="false" [closeOnSelect]="true"
+                   [dropdownPosition]="'top'" [searchable]="false" class="select-dropdown">
+          <ng-template *ngIf="suppliers && suppliers.length" ng-header-tmp>
+            <div class="dnm-single-field-filter">
+              <input (input)="selectGoupSupplyTo.filter($event.target.value)" autoFocus class="dnm-single-input-field"
+                     type="text"/>
+            </div>
+          </ng-template>
+          <ng-option *ngIf="suppliers && suppliers.length" [value]="''">All supply to</ng-option>
+          <ng-option *ngFor="let item of suppliers  | sortByPropery : 'name'"
+                     [value]="item.id">{{item.name}}</ng-option>
+        </ng-select>
+      </div>
+    </div>
+    <div class="col-12 col-xl-4">
+      <div *ngIf="areas" class="filter-blck-wrp">
+        <div class="bl-gradient-title">Area</div>
+        <ng-select #selectGoupArea
+                   [(ngModel)]="searchForm.areaId" [clearable]="false" [closeOnSelect]="true"
+                   [dropdownPosition]="top" [searchable]="false" class="select-dropdown">
+          <ng-template *ngIf="areas.length" ng-header-tmp>
+            <div class="dnm-single-field-filter">
+              <input (input)="selectGoupArea.filter($event.target.value)" autoFocus class="dnm-single-input-field"
+                     type="text"/>
+            </div>
+          </ng-template>
+          <ng-option [value]="''">All areas</ng-option>
+          <ng-option *ngFor="let item of areas | sortByPropery : 'name'" [value]="item.id">{{item.name}}</ng-option>
+        </ng-select>
+      </div>
+    </div>
+    <div class="col-12 col-xl-4">
+      <div class="filter-blck-wrp">
+        <div class="bl-gradient-title">CB size</div>
+        <div class="d-flex align-item-center">
+          <input [(ngModel)]="searchForm.attributeValueFilter.min" class="form-control cb-size-input" name="cbSizeMin" placeholder="Min"
+                 type="text">
+          <span class="cb-size-lbl">to</span>
+          <input [(ngModel)]="searchForm.attributeValueFilter.max" class="form-control cb-size-input" name="cbSizeMax" placeholder="Max"
+                 type="text">
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-xl-4">
+      <div class="filter-blck-wrp">
+        <div class="bl-gradient-title">Location type</div>
+        <ng-select #selectGoupLocationType
+                   [(ngModel)]="searchForm.locationTypeId" [clearable]="false" [closeOnSelect]="true"
+                   [dropdownPosition]="'top'" [placeholder]="'Select supply to'" [searchable]="false"
+                   class="select-dropdown">
+          <ng-template *ngIf="locationTypes && locationTypes.length" ng-header-tmp>
+            <div class="dnm-single-field-filter">
+              <input (input)="selectGoupLocationType.filter($event.target.value)" autoFocus class="dnm-single-input-field"
+                     type="text"/>
+            </div>
+          </ng-template>
+          <ng-option *ngIf="locationTypes.length" [value]="''">All location types</ng-option>
+          <ng-option *ngFor="let item of locationTypes  | sortByPropery : 'name'"
+                     [value]="item.id">{{item.name}}</ng-option>
+        </ng-select>
+      </div>
+    </div>
+  </div>
+
+  <div class="row none-margin-hr">
+    <div class="col-12 none-padding footer-buttons d-flex justify-content-end">
+      <button (click)="onResetFilter()" class="dnm-btn filter-footer-btn dnm-btn-reset text-uppercase"
+              type="button">Reset
+      </button>
+      <button (click)="onToggleAdvanceSearch()" class="dnm-btn filter-footer-btn dnm-btn-cancel text-uppercase"
+              type="button">Cancel
+      </button>
+      <button (click)="onSubmit()" class="dnm-btn filter-footer-btn dnm-btn-primary text-uppercase"
+              type="submit">Apply
+      </button>
+    </div>
+  </div>
+</div>

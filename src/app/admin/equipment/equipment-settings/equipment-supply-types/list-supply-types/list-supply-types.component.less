@@ -1,0 +1,78 @@
+@import 'variables.less';
+
+.manage-supply-types {
+  background-color: @color-background-white;
+  border: 1px solid @color-line;
+  padding: 30px;
+  height: 100%;
+
+  .title-row,
+  .search-row,
+  .stat-row {
+    margin-bottom: 30px;
+  }
+
+  .stat-lbl {
+    font-family: Gotham Light;
+    font-size: 16px;
+    line-height: 18px;
+    color: @color-text-tertiary;
+  }
+
+  .services-filter-btn {
+    width: 200px;
+    min-width: 200px;
+  }
+
+  .list-header .header-field {
+    text-transform: uppercase;
+  }
+
+  .list-body {
+    height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .body-row {
+    min-height: 50px;
+    border-bottom: 1px solid @color-line;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+  }
+
+  .body-row:last-child {
+    border-bottom: none;
+  }
+
+  .supply-to-lbl {
+    font-family: Gotham Medium;
+    font-size: 16px;
+    line-height: 18px;
+    color: @color-text-primary;
+  }
+
+  .location-type-lbl,
+  .bld-categ-lbl {
+    display: inline-block;
+    font-family: Gotham Book;
+    font-size: 14px;
+    line-height: 16px;
+    color: @color-text-tertiary;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .service-type {
+    margin-bottom: 0;
+  }
+
+  .sp-location-row {
+    min-height: 25px;
+  }
+
+  .sp-type-row {
+    margin-bottom: 10px;
+  }
+}

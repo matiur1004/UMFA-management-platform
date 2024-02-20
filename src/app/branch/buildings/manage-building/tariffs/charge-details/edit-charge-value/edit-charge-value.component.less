@@ -1,0 +1,103 @@
+@import 'variables.less';
+
+::ng-deep .bl-gradient-title {
+  margin-top: 32px;
+}
+
+.page-title {
+  font-size: 30px;
+  line-height: 25px;
+}
+
+.edit-charge-value {
+  margin-top: 20px;
+}
+
+.input-row {
+  padding: 10px 0 10px 20px;
+  margin-bottom: 0;
+}
+
+.charge-title {
+  font-size: 20px;
+  color: @color-text-primary;
+  font-family: Gotham Medium;
+  margin-top: 30px;
+}
+
+.blue-text-btn {
+  margin: 15px 0px 15px 0px;
+  display: flex;
+  align-items: center;
+}
+
+.footer-buttons {
+  display: flex;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+.footer-buttons button {
+  width: 200px;
+}
+
+.footer-buttons button:last-child {
+  margin-left: 30px;
+}
+
+/* Custom input */
+::ng-deep .custom-input {
+  font-size: 14px;
+  font-weight: 700;
+  color: @color-text-tertiary;
+  font-family: Gotham Book;
+  width: 100%;
+  border: transparent solid 1px;
+  border-radius: 5px;
+  padding: 7px 30px 7px 20px;
+  transition: border-color .15s ease-in-out;
+  background-color: transparent;
+}
+
+::ng-deep .custom-input:hover {
+  border: @color-stroke solid 1px;
+  cursor: pointer;
+}
+
+::ng-deep .custom-input:active,
+::ng-deep .custom-input:focus {
+  cursor: text;
+  border: @color-main-accent solid 2px;
+  outline: 0;
+  padding: 6px 29px 6px 19px;
+  background-color: @color-background-white;
+}
+
+::ng-deep .field-value.error input {
+  border: @color-warning solid 1px;
+}
+
+/* Datepicker */
+::ng-deep .datepicker-wrp .custom-input:hover {
+  background: url('../../../../../../../assets/images/icons/calendar-blue-icon.svg') no-repeat @color-background-white;
+  background-position: right 10px center;
+  background-size: 17px 17px;
+  cursor: pointer;
+}
+
+::ng-deep .datepicker-wrp .calendar.no-hover {
+  pointer-events: none;
+  background-image: url('../../../../../../../assets/images/icons/suppliers/calendar-mc-admin.svg');
+}
+
+::ng-deep .date-container {
+  padding: 0;
+}
+
+::ng-deep .date-container .date-picker {
+  position: relative;
+}
+
+::ng-deep .datepicker-wrp {
+  width: calc(100% - 250px) !important;
+}

@@ -1,0 +1,186 @@
+<div class="page-content tariff-values">
+  <div class="container-fluid title-container">
+    <div class="row">
+      <div class="col-12 none-padding d-flex justify-content-between align-items-center">
+        <div>
+          <h1 class="page-title">Edit Tariff Value</h1>
+          <div class="d-flex flex-row align-items-center">
+            <div class="version-info">Version: {{formState.value.version}}
+              -{{formState.value.versionDate | date:'dd/MM/yyyy'}} -
+              <span class="text-uppercase">{{formState.value.isActual ? "Active" : "Inactive"}}</span>
+            </div>
+            <div class="button-row">
+              <a (click)="addValueVersion()" class="blue-text-btn" href="javascript:void(0);">
+                <i class="add-icon"></i>Add New Value Version
+              </a>
+            </div>
+          </div>
+        </div>
+        <back-button></back-button>
+      </div>
+    </div>
+  </div>
+  <ng-container *ngIf="formState as form">
+    <form [ngrxFormState]="form">
+      <div class="container-fluid general-info-container">
+        <div class="row">
+          <div class="col-12 col-lg-10 col-xl-6 none-padding">
+            <div class="bl-gradient-title section-title">General Info</div>
+            <div class="input-row line-div">
+              <div class="text-uppercase field-name text-form-field">Value Name</div>
+              <div class="field-value">
+                <div [ngClass]="{'dnm-invalid-inp': form.isInvalid && form.errors._name?.required}">
+                  <text-input [isRequired]=true [ngrxFormControlState]="form.controls.name" class="none-padding field-value" maxlength="150"
+                              placeholder="Value name"></text-input>
+                </div>
+                <small *ngIf="form.isInvalid && form.errors._name?.required" class="alert-danger">
+                  A value name is required
+                </small>
+              </div>
+            </div>
+
+            <div class="input-row line-div">
+              <div class="text-uppercase field-name text-form-field">Tariff Version</div>
+              <div class="field-value">
+                <text-input [disabled]="true" [ngrxFormControlState]="form.controls.tariffVersion" class="field-value none-padding"
+                            input-class="disable-input">
+                </text-input>
+              </div>
+            </div>
+
+            <div class="input-row line-div">
+              <div class="text-uppercase field-name text-form-field">Increase, %</div>
+              <div class="field-value">
+                <text-input [disabled]="true" [ngrxFormControlState]="form.controls.increase" class="none-padding field-value"
+                            input-class="disable-input" maxlength="150"
+                            placeholder="Increase, %"></text-input>
+              </div>
+            </div>
+
+            <div class="input-row line-div">
+              <div class="text-uppercase field-name text-form-field">Start date</div>
+              <div class="field-value">
+                <span class="disabled-label">{{form.controls.startDate.value | date: 'dd/MM/yyyy'}}</span>
+              </div>
+            </div>
+
+            <div class="input-row line-div">
+              <div class="text-uppercase field-name text-form-field">End date</div>
+              <div [ngClass]="{'dnm-invalid-inp': form.isSubmitted && form.controls.endDate.isInvalid}"
+                   class="field-value">
+                <div class="datepicker-wrp">
+                  <input #endDate="ngbDatepicker" (click)="endDate.toggle()" [ngrxFormControlState]="form.controls.endDate" [ngrxValueConverter]="ngbDateNgrxValueConverter"
+                         class="custom-input req-frm-hover" name="endDate"
+                         ngbDatepicker
+                         placeholder="dd/mm/YYYY">
+                </div>
+                <small *ngIf="form.isSubmitted && form.controls.endDate.errors.required" class="alert-danger">
+                  End Date is required
+                </small>
+                <small
+                  *ngIf="form.isSubmitted && !form.controls.endDate.errors.required && form.controls.endDate.errors.greaterThan"
+                  class="alert-danger">
+                  End Date must be greater than Start Date
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--<public-holidays [holidays]="holidayArray" [treatedDays]="treatedDays"></public-holidays>-->
+
+      <div class="container-fluid charge-section">
+        <div class="row">
+          <div class="col-12 none-padding">
+            <div class="bl-gradient-title section-title">Line item values</div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngFor="let lineItem of form.controls.lineItemValues.controls; trackBy: trackByFn"
+           [ngClass]="{'charge-section--lg': lineItem.value.timeOfUses || lineItem.value.seasons}"
+           class="container-fluid charge-section">
+        <div class="row">
+          <div class="col-12 none-padding">
+            <div class="editable-section">
+              <div class="charge-title">
+                {{ lineItem.value.lineItemName }} ({{ lineItem.value.chargingMethod }})
+              </div>
+
+              <!-- Simple charge -->
+              <div *ngIf="isSimpleCharge(lineItem.value)" class="charges-container">
+                <charges-table [categories]="lineItem.value.categories" [ranges]="lineItem.controls.stepSchema.value?.ranges"
+                               [values]="lineItem.controls.values"></charges-table>
+              </div>
+
+              <!-- Simple charge and time of use -->
+              <div *ngIf="isSimpleTimeOfUseCharge(lineItem.value)" class="charges-container">
+                <consumption-charge [categories]="lineItem.value.categories" [ranges]="lineItem.controls.stepSchema.value?.ranges"
+                                    [timeOfUsesArr]="getTimeOfUsesArr(lineItem.value.timeOfUses)"
+                                    [values]="lineItem.controls.values"
+                                    [viewMode]="'simple-time'"></consumption-charge>
+              </div>
+
+              <!-- Season charge -->
+              <div *ngIf="isSeasonCharge(lineItem.value)" class="dnm-tabset dnm-tabset--compressed">
+               <ul ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]="tabId">
+                  <li [ngbNavItem]="'demand-charge-{{ i }}'" *ngFor="let season of seasonsArr; let i = index; trackBy: trackByFn">
+                    <a ngbNavLink>
+                      <i class="tab-icon dnm-trend-up-icon"></i>
+                      <span class="tab-name text-uppercase">{{ season }} season</span>
+                      <small *ngIf="isTabInvalid(form, lineItem.controls.values.controls, i)" class="alert-danger"
+                             title="Please fill required fields"></small>
+                    </a>
+                    <ng-template ngbNavContent>
+                      <div class="charges-container">
+                        <charges-table [categories]="lineItem.value.categories" [ranges]="lineItem.controls.stepSchema.value?.ranges" [seasonIndex]="i"
+                                       [values]="lineItem.controls.values"
+                                       [viewMode]="'season'"></charges-table>
+                      </div>
+                    </ng-template>
+                  </li>
+                </ul>
+                <div [ngbNavOutlet]="nav"></div>
+              </div>
+
+              <!-- Season and time of use charge -->
+              <div *ngIf="isSeasonTimeOfUseCharge(lineItem.value)" class="dnm-tabset dnm-tabset--compressed">
+               <ul ngbNav #tabs class="nav-tabs" [(actionId)]="otherTabId">
+                  <li [ngbNavItem]="'tab-consumption-{{ i }}'" *ngFor="let season of seasonsArr; let i = index;">
+                    <a ngbNavLink>
+                      <i class="tab-icon dnm-trend-up-icon"></i>
+                      <span class="tab-name text-uppercase">{{ season }} season</span>
+                      <small *ngIf="isTabInvalid(form, lineItem.controls.values.controls, i)" class="alert-danger"
+                             title="Please fill required fields"></small>
+                    </a>
+                    <ng-template ngbNavContent>
+                      <div class="charges-container">
+                        <consumption-charge [categories]="lineItem.value.categories" [ranges]="lineItem.controls.stepSchema.value?.ranges"
+                                            [seasonIndex]="i" [timeOfUsesArr]="getTimeOfUsesArr(lineItem.value.timeOfUses)"
+                                            [values]="lineItem.controls.values"
+                                            [viewMode]="'season-time'"></consumption-charge>
+                      </div>
+                    </ng-template>
+                  </li>
+                </ul>
+                <div [ngbNavOutlet]="tabs"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="client-contact-info-footer">
+        <div class="row">
+          <div class="col-12 mt-5 footer-buttons d-flex justify-content-end">
+            <button (click)="onCancel()" class="dnm-btn dnm-btn-cancel btn-lg text-uppercase" type="button">Cancel
+            </button>
+            <button (click)="onSave(form)" class="dnm-btn dnm-btn-primary btn-lg text-uppercase" type="submit">Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+</div>

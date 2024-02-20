@@ -1,0 +1,104 @@
+<div class="container-fluid add-closing-readings none-padding">
+  <div class="row none-margin-hr">
+    <div class="col-12 none-padding">
+      <div class="row none-margin-hr justify-content-end">
+        <div class="d-flex align-items-center justify-content-end">
+          <span class="text-uppercase datepicker-lbl">Replacement Date:</span>
+          <div class="datepicker-wrp nav-datepicker-wrp">
+            <input #replacementDate="ngbDatepicker" (click)="replacementDate.toggle()"
+                   [maxDate]="ngbDateNgrxValueConverter.convertStateToViewValue(null)"
+                   [ngrxFormControlState]="form.controls.replacementDate" [ngrxValueConverter]="ngbDateNgrxValueConverter"
+                   class="form-control nav-dtpickr-inpt" name="replacementDate"
+                   ngbDatepicker
+                   placeholder="dd/mm/YYYY" readonly>
+            <i (click)="replacementDate.toggle()" class="calendar"></i>
+          </div>
+        </div>
+      </div>
+      <div class="row none-margin-hr list-header">
+        <div class="col-6 none-padding">
+          <div class="row none-margin-hr">
+            <div class="col-5 header-field d-flex align-items-center">
+              <span class="text-uppercase" title="Register">Register</span>
+            </div>
+            <div class="col-5 header-field d-flex align-items-center">
+              <span class="text-uppercase" title="Date">Date</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 none-padding">
+          <div class="row none-margin-hr">
+            <div class="col-5 header-field d-flex align-items-center">
+              <span class="text-uppercase" title="Current Readings">Current Readings</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngFor="let reading of readings.controls; trackBy: trackById" class="row none-margin-hr item-row">
+        <div class="col-6 none-padding d-flex align-items-center">
+          <div class="row none-margin-hr w-100">
+            <div class="col-5 d-flex align-items-center">
+              <span class="cell-prop-val text-ellipsis cursor-pointer"
+                    title="{{reading.value.name}}">{{reading.value.name}}</span>
+            </div>
+            <div class="col-5 d-flex align-items-center">
+              <div class="datepicker-wrp nav-datepicker-wrp">
+                <input #readingDate="ngbDatepicker" (click)="readingDate.toggle()"
+                       [maxDate]="ngbDateNgrxValueConverter.convertStateToViewValue(form.controls.replacementDate.value)"
+                       [ngrxFormControlState]="reading.controls.date" [ngrxValueConverter]="ngbDateNgrxValueConverter"
+                       class="form-control nav-dtpickr-inpt"
+                       name="readingDate" ngbDatepicker
+                       placeholder="dd/mm/YYYY"
+                       readonly>
+                <i (click)="readingDate.toggle()" class="calendar"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 none-padding d-flex align-items-center">
+          <div class="row none-margin-hr w-100">
+            <div class="col-5 d-flex align-items-center">
+              <number-input [ngrxFormControlState]="reading.controls.readings"></number-input>
+            </div>
+            <div class="col-7 d-flex align-items-center justify-content-center">
+              <div class="d-flex align-items-center">
+                <div #notePopup="ngbDropdown" [autoClose]="'outside'" class="dropdown" ngbDropdown
+                     placement="right-top">
+                  <button [ngClass]="{'dnm-btn-note' : reading.value.notes , 'dnm-btn-note-add' : !reading.value.notes}" class="dnm-btn actual-rdng-btn dnm-btn-note"
+                          ngbDropdownToggle
+                          type="button" title="Add Note"></button>
+                  <div class="note-popup-dropdown dropdown-menu" ngbDropdownMenu>
+                    <note-popup (close)="notePopup.close();" (edit)="editNote.emit({id: reading.controls.notes.id, text: $event.currentReadingNotes})" [comment]="reading.value.notes"
+                                [editableNote]="true"
+                                [userData]="reading.value.userData"></note-popup>
+                  </div>
+                </div>
+                <div class="rdng-file-inpt-wrp">
+                  <input #fileInput (change)="changeRegisterFile.emit({registerTouKey: reading.value.registerTouKey, files: $event.target.files})" accept="image/*" class="rdng-file-inpt" style="display: none;"
+                         type="file"/>
+                  <button (click)="fileInput.click()" [ngClass]="{'dnm-btn-photo' : registerFiles[reading.value.registerTouKey], 'dnm-btn-photo-add' : !registerFiles[reading.value.registerTouKey]}"
+                          class="dnm-btn actual-rdng-btn"
+                          type="button" title="Add Photo"></button>
+                </div>
+                <div [style.visibility]="registerFiles[reading.value.registerTouKey] ? 'visible' : 'hidden'"
+                     class="dnm-checkbox">
+                  <input [ngrxFormControlState]="reading.controls.confirmed" class="checkbox-toggle" type="checkbox"/>
+                  <div class="state">
+                    <label></label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row none-margin-hr">
+    <div class="col-12 none-padding footer-buttons d-flex justify-content-end">
+      <button (click)="close.emit()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+      <button (click)="nextStep.emit(1)" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Next</button>
+    </div>
+  </div>
+</div>

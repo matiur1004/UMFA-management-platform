@@ -1,0 +1,27 @@
+<svg data-name="Layer 1" id="Layer_1" viewBox="0 0 30 35" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>.cls-1 {
+      fill: #740f36;
+    }
+
+    .cls-2 {
+      fill: url(#New_Gradient_Swatch_1);
+    }
+
+    .cls-3 {
+      fill: #fff;
+    }</style>
+    <linearGradient gradientUnits="userSpaceOnUse" id="New_Gradient_Swatch_1" x2="30" y1="15" y2="15">
+      <stop offset="0" stop-color="#e58d81"/>
+      <stop offset="1" stop-color="#ff082b"/>
+    </linearGradient>
+  </defs>
+  <title>pin</title>
+  <path class="cls-1" d="M27,30H15v5Z" data-name="Rectangle 756 copy 21" id="Rectangle_756_copy_21"/>
+  <rect class="cls-2" data-name="Rectangle 755 copy 21" height="30" id="Rectangle_755_copy_21" rx="3" ry="3"
+        width="30"/>
+  <path class="cls-3"
+        d="M24.75,7A1,1,0,0,0,24,6.61H9.6L9.4,5.32a1.06,1.06,0,0,0-1-.93H6A1.07,1.07,0,0,0,5,5.5,1.07,1.07,0,0,0,6,6.61H7.5L9.43,19a.78.78,0,0,0,.05.14.84.84,0,0,0,0,.17l.13.2.1.12a1.49,1.49,0,0,0,.2.15l.11.07a1,1,0,0,0,.38.08H21.88a1.11,1.11,0,0,0,0-2.22H11.33l-.17-1.11H22.92a1.06,1.06,0,0,0,1-.95l1-7.78A1.21,1.21,0,0,0,24.75,7Zm-11.18,7.4H10.82l-.35-2.23h3.1Zm0-3.34H10.45a.42.42,0,0,0-.15,0L10,8.83h3.62Zm4.16,3.34H14.61V12.16h3.12Zm0-3.34H14.61V8.83h3.12ZM22,14.39H18.77V12.16h3.55Zm.45-3.34h-3.7V8.83h4Z"/>
+  <path class="cls-3" d="M12,21.05a1.67,1.67,0,1,0,1.56,1.67A1.62,1.62,0,0,0,12,21.05Z"/>
+  <path class="cls-3" d="M21.36,21.05a1.67,1.67,0,1,0,1.56,1.67A1.61,1.61,0,0,0,21.36,21.05Z"/>
+</svg>

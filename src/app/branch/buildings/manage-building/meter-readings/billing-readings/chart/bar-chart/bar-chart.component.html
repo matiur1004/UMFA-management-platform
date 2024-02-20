@@ -1,0 +1,39 @@
+<div #barChart [style.height]="configurations.minHeight" class="bar-chart-parent bar-chart w-100">
+  <ngx-charts-bar-vertical
+    (activate)="onSelectGroupItem($event)"
+    [barPadding]="configurations.barPadding"
+    [customColors]="customColors"
+    [dataLabelFormatting]="dataLabelFn"
+    [gradient]="true"
+    [legend]="configurations.showLegend"
+    [noBarWhenZero]="true"
+    [results]="data"
+    [roundEdges]="false"
+    [showDataLabel]="configurations.showDataLabel"
+    [showXAxisLabel]="configurations.showXAxisLabel"
+    [showYAxisLabel]="configurations.showYAxisLabel"
+    [view]="[barChart.offsetWidth, barChart.offsetHeight]"
+    [xAxis]="configurations.xAxis"
+    [yAxis]="configurations.yAxis">
+    <ng-template #tooltipTemplate let-model="model">
+      <current-period-tooltip
+        *ngIf="!isYearOnYearBar && selectedColor.length"
+        [isStats]="isStats"
+        [registerInfo]="registerInfo"
+        [selectedColor]="selectedColor"
+        [selectedReadingInfo]="selectedReadingInfo"
+      >
+      </current-period-tooltip>
+      <year-on-year-tooltip
+        *ngIf="isYearOnYearBar && selectedColor.length"
+        [isStats]="isStats"
+        [registerInfo]="registerInfo"
+        [selectedColor]="selectedColor"
+        [selectedReadingInfo]="selectedReadingInfo"
+      >
+      </year-on-year-tooltip>
+    </ng-template>
+
+  </ngx-charts-bar-vertical>
+</div>
+

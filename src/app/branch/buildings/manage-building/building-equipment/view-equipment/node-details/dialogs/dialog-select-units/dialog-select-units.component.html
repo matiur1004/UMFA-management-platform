@@ -1,0 +1,122 @@
+<div class="select-units-modal">
+  <div class="modal-header">
+    <h5 class="modal-title">Select Units</h5>
+    <button (click)="dismiss()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <div class="alloc-units-wrp">
+        <div class="pb-3">
+          <simple-search-form (onSearch)="search($event)"></simple-search-form>
+        </div>
+        <div class="nav-row d-flex justify-content-between align-items-center pb-3">
+          <div class="d-flex align-items-center">
+            <span class="results-label dnm-text-light">
+              {{units | filterUnitsShowing : selectedUnitFilterText : selectedFloor | filterByProperty : 'name' : searchText | arrayLength}}
+              units
+            </span>
+          </div>
+          <div class="d-flex">
+            <div class="d-flex align-items-center drpdwn-wrp pr-3">
+              <span class="text-uppercase label-dropdown-filter">Floor:</span>
+              <ng-select [(ngModel)]="selectedFloor" [clearable]="false" [closeOnSelect]="true" [searchable]="false"
+                         class="dnm-dropdown-select">
+                <ng-option *ngFor="let item of floors" [value]="item.value">{{item.label}}</ng-option>
+              </ng-select>
+            </div>
+            <div class="d-flex align-items-center drpdwn-wrp">
+              <span class="text-uppercase label-dropdown-filter">Show:</span>
+              <ng-select [(ngModel)]="selectedUnitFilterText" [clearable]="false" [closeOnSelect]="true" [searchable]="false"
+                         class="dnm-dropdown-select">
+                <ng-option *ngFor="let item of unitsFiltersList" [value]="item.id">{{item.label}}</ng-option>
+              </ng-select>
+            </div>
+          </div>
+        </div>
+        <div class="table-container table-list-units">
+          <table class="table table-custom table-white table-outside-border-body">
+            <thead>
+            <tr>
+              <th>
+                <div class="dnm-checkbox list-header-checkbox">
+                  <input (change)="onSelectAll()" [checked]="isAllSelected" [value]="-1" type="checkbox"/>
+                  <div class="state">
+                    <label></label>
+                  </div>
+                </div>
+              </th>
+              <th>
+                <a (click)="onChangeOrderIndex(orderType.ShopNameAsc)"
+                   [ngClass]="{'active': orderIndex == orderType.ShopNameAsc || orderIndex == orderType.ShopNameDesc}"
+                   class="head-col">
+                  <span class="text-ellipsis" title="Unit">Unit</span>
+                  <i [ngClass]="{'inactive': orderIndex != orderType.ShopNameAsc && orderIndex != orderType.ShopNameDesc, 'dnm-icon-sort-up': orderIndex == orderType.ShopNameDesc,'dnm-icon-sort-down': orderIndex != orderType.ShopNameDesc }"
+                     class="dnm-icon"></i>
+                </a>
+              </th>
+              <th>
+                <span class="head-col" title="Type">Type</span>
+              </th>
+              <th>
+                <span class="head-col" title="Area square meters">Area (sq m)</span>
+              </th>
+              <th class="col-tenant">
+                <a (click)="onChangeOrderIndex(orderType.TenantNameAsc)"
+                   [ngClass]="{'active': orderIndex == orderType.TenantNameAsc || orderIndex == orderType.TenantNameDesc}"
+                   class="head-col">
+                  <span class="text-ellipsis" title="Tenant name">Tenant name</span>
+                  <i [ngClass]="{'inactive': orderIndex != orderType.TenantNameAsc && orderIndex != orderType.TenantNameDesc, 'dnm-icon-sort-up': orderIndex == orderType.TenantNameDesc,'dnm-icon-sort-down': orderIndex != orderType.TenantNameDesc }"
+                     class="dnm-icon"></i>
+                </a>
+              </th>
+              <th class="col-floor">
+                <a (click)="onChangeOrderIndex(orderType.FloorAsc)"
+                   [ngClass]="{'active': orderIndex == orderType.FloorAsc || orderIndex == orderType.FloorDesc}"
+                   class="head-col">
+                  <span class="text-ellipsis" title="Floor">Floor</span>
+                  <i [ngClass]="{'inactive': orderIndex != orderType.FloorAsc && orderIndex != orderType.FloorDesc, 'dnm-icon-sort-up': orderIndex == orderType.FloorDesc,'dnm-icon-sort-down': orderIndex != orderType.FloorDesc }"
+                     class="dnm-icon"></i>
+                </a>
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <ng-container
+              *ngFor="let unit of units | filterUnitsShowing : selectedUnitFilterText : selectedFloor | filterByProperty : ['name', 'tenantName'] : searchText | sortUnits : orderIndex">
+              <tr>
+                <td>
+                  <div class="dnm-checkbox">
+                    <input [(ngModel)]="unit.isSelected" [value]="unit.id" id="unit-id-{{ unit.id }}" name="unit_ids[]"
+                           type="checkbox"/>
+                    <div class="state">
+                      <label></label>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div [title]="unit.name" class="unit-field">{{unit.name}}</div>
+                </td>
+                <td><span>{{unit.unitType | unitTypeLabel}}</span></td>
+                <td><span *ngIf="unit.area">{{unit.area | number : '1.0-2'}}</span></td>
+                <td class="col-tenant">
+                  <div [title]="unit.tenantName" class="unit-field text-ellipsis">{{unit.tenantName}}</div>
+                </td>
+                <td class="col-floor">
+                  <div>{{unit.floor}}</div>
+                </td>
+              </tr>
+            </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button (click)="dismiss()" class="dnm-btn dnm-btn-cancel modal-btn">Cancel</button>
+    <button (click)="onAdd()" class="dnm-btn dnm-btn-primary modal-btn">Add</button>
+  </div>
+</div>

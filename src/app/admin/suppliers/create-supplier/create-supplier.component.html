@@ -1,0 +1,83 @@
+<div class="create-supplier">
+  <div class="modal-header">
+    <h5 class="modal-title">Create Supplier</h5>
+    <button (click)="dismiss()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container-fluid none-padding">
+      <form *ngIf="formState$ | async as form" [ngrxFormState]="form">
+        <div class="input-row none-margin-hr">
+          <div class="text-uppercase field-name">Supplier name</div>
+          <div class="field-value none-padding">
+            <div [ngClass]="{'dnm-invalid-inp': showErrors && form.controls.name.isInvalid}">
+              <input [ngrxFormControlState]="form.controls.name" class="form-control" maxlength="255"
+                     placeholder="Type here" type="text"/>
+            </div>
+          </div>
+          <div class="field-name"></div>
+          <div class="field-value none-padding">
+            <small *ngIf="showErrors && form.controls.name.errors.required" class="alert-danger">
+              Supplier Name is required
+            </small>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="text-uppercase field-name">Supply Types</div>
+          <div class="d-flex supply-types-row flex-wrap">
+            <div class="d-flex align-items-center checkbox-input none-padding col-xl-4 col-lg-6 col-md-6">
+              <div class="dnm-checkbox">
+                <input [ngrxFormControlState]="form.controls.supplyTypes.controls[SupplyType.Electricity]" class="checkbox-toggle"
+                       type="checkbox">
+                <div class="state"><label></label></div>
+              </div>
+              <span class="checkbox-input-lbl">Electricity</span>
+            </div>
+            <div class="d-flex align-items-center checkbox-input none-padding col-xl-4 col-lg-6 col-md-6">
+              <div class="dnm-checkbox">
+                <input [ngrxFormControlState]="form.controls.supplyTypes.controls[SupplyType.Water]" class="checkbox-toggle" id="supplier.hasWaterSupplier"
+                       type="checkbox">
+                <div class="state"><label></label></div>
+              </div>
+              <span class="checkbox-input-lbl">Water</span>
+            </div>
+            <div class="d-flex align-items-center checkbox-input none-padding col-xl-4 col-lg-6 col-md-6">
+              <div class="dnm-checkbox">
+                <input [ngrxFormControlState]="form.controls.supplyTypes.controls[SupplyType.Sewerage]" class="checkbox-toggle" id="supplier.hasSewerageSupplier"
+                       type="checkbox">
+                <div class="state"><label></label></div>
+              </div>
+              <span class="checkbox-input-lbl">Sewerage</span>
+            </div>
+            <div class="d-flex align-items-center checkbox-input none-padding col-xl-4 col-lg-6 col-md-6">
+              <div class="dnm-checkbox">
+                <input [ngrxFormControlState]="form.controls.supplyTypes.controls[SupplyType.Gas]" class="checkbox-toggle" id="supplier.hasGasSupplier"
+                       type="checkbox">
+                <div class="state"><label></label></div>
+              </div>
+              <span class="checkbox-input-lbl">Gas</span>
+            </div>
+            <div class="d-flex align-items-center checkbox-input none-padding col-xl-4 col-lg-6 col-md-6">
+              <div class="dnm-checkbox">
+                <input [ngrxFormControlState]="form.controls.supplyTypes.controls[SupplyType.AdHoc]" class="checkbox-toggle" id="supplier.hasAdHocSupplier"
+                       type="checkbox">
+                <div class="state"><label></label></div>
+              </div>
+              <span class="checkbox-input-lbl">Ad hoc</span>
+            </div>
+          </div>
+          <small *ngIf="showErrors && form.controls.supplyTypes.errors.required" class="alert-danger">
+            At list one supply type must be selected
+          </small>
+        </div>
+        <div class="row none-margin-hr">
+          <div class="col-md-8 offset-md-4 none-padding footer-buttons">
+            <button (click)="dismiss()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+            <button (click)="save()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

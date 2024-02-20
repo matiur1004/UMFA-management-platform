@@ -1,0 +1,185 @@
+<div class="container-fluid tariff-versions-list">
+  <div class="row">
+    <div class="col-12 none-padding">
+      <div class="d-flex flex-row align-items-center">
+        <div class="bl-gradient-title section-title">{{ title }}</div>
+        <div class="row button-row">
+          <a (click)="addNewValue.emit()" class="blue-text-btn" href="javascript:void(0);">
+            <i class="add-icon"></i>Add new value
+          </a>
+        </div>
+      </div>
+
+      <div class="container-fluid values-table">
+        <!-- table header -->
+        <div class="tbl-hdr-row d-flex align-items-center list-header">
+          <div class="frst-body-col">
+            <a (click)="onOrder(orderType.ValuesAsc)" [ngClass]="getActiveOrderClass(orderIndex, orderType.ValuesAsc, orderType.ValuesDesc)"
+               class="header-field d-flex align-items-center"
+               href="javascript:void(0);">
+              <span class="text-ellipsis" title="Values">Versions</span>
+              <i [ngClass]="getOrderClasses(orderIndex, orderType.ValuesAsc, orderType.ValuesDesc)"
+                 class="dnm-icon"></i>
+            </a>
+          </div>
+          <div class="row tbl-body-item none-margin-hr justify-content-between">
+            <div class="col-2">
+              <a (click)="onOrder(orderType.StartDateAsc)" [ngClass]="getActiveOrderClass(orderIndex, orderType.StartDateAsc, orderType.StartDateDesc)"
+                 class="header-field d-flex align-items-center"
+                 href="javascript:void(0);">
+                <span class="text-ellipsis" title="Start date">Start date</span>
+                <i [ngClass]="getOrderClasses(orderIndex, orderType.StartDateAsc, orderType.StartDateDesc)"
+                   class="dnm-icon"></i>
+              </a>
+            </div>
+            <div class="col-2">
+              <a (click)="onOrder(orderType.CreatedByAsc)" [ngClass]="getActiveOrderClass(orderIndex, orderType.CreatedByAsc, orderType.CreatedByDesc)"
+                 class="header-field d-flex align-items-center"
+                 href="javascript:void(0);">
+                <span class="text-ellipsis" title="Created By">Created By</span>
+                <i [ngClass]="getOrderClasses(orderIndex, orderType.CreatedByAsc, orderType.CreatedByDesc)"
+                   class="dnm-icon"></i>
+              </a>
+            </div>
+            <div class="col-2">
+              <a (click)="onOrder(orderType.UpdatedAsc)" [ngClass]="getActiveOrderClass(orderIndex, orderType.UpdatedAsc, orderType.UpdatedDesc)"
+                 class="header-field d-flex align-items-center"
+                 href="javascript:void(0);">
+                <span class="text-ellipsis" title="Updated">Updated</span>
+                <i [ngClass]="getOrderClasses(orderIndex, orderType.UpdatedAsc, orderType.UpdatedDesc)"
+                   class="dnm-icon"></i>
+              </a>
+            </div>
+            <div class="col-2">
+              <a (click)="onOrder(orderType.UpdatedByAsc)" [ngClass]="getActiveOrderClass(orderIndex, orderType.UpdatedByAsc, orderType.UpdatedByDesc)"
+                 class="header-field d-flex align-items-center"
+                 href="javascript:void(0);">
+                <span class="text-ellipsis" title="Updated By">Updated By</span>
+                <i [ngClass]="getOrderClasses(orderIndex, orderType.UpdatedByAsc, orderType.UpdatedByDesc)"
+                   class="dnm-icon"></i>
+              </a>
+            </div>
+            <div class="col-2">
+              <a (click)="onOrder(orderType.IsActiveAsc)" [ngClass]="getActiveOrderClass(orderIndex, orderType.IsActiveAsc, orderType.IsActiveDesc)"
+                 class="header-field d-flex align-items-center"
+                 href="javascript:void(0);">
+                <span class="text-ellipsis" title="Active value">Active value</span>
+                <i [ngClass]="getOrderClasses(orderIndex, orderType.IsActiveAsc, orderType.IsActiveDesc)"
+                   class="dnm-icon"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- table body -->
+        <div class="table-body">
+          <div *ngFor="let value of tariffVersions" [ngClass]="{'value-expanded': value.isExpanded}" class="tree-view">
+            <ul>
+              <li class="root-item">
+                <div class="item-content d-flex align-items-center">
+                  <div class="frst-body-col d-flex align-items-center">
+                    <span class="values-lbl">{{ value.name + ' v' + value.majorVersion }}</span>
+                  </div>
+                  <div class="row tbl-body-item none-margin-hr justify-content-between">
+                    <div class="col-2 d-flex align-items-center">
+                      <span class="list-text-lbl">{{value.startDate | date: 'dd/MM/yyyy'}}</span>
+                    </div>
+                    <div class="col-2 d-flex align-items-center">
+                      <span class="list-text-lbl">{{value.createdByUser.fullName}}</span>
+                    </div>
+                    <div class="col-2 d-flex align-items-center">
+                      <span class="list-text-lbl">{{value.updatedOn | date: 'dd/MM/yyyy'}}</span>
+                    </div>
+                    <div class="col-2 d-flex align-items-center">
+                      <span class="list-text-lbl">{{value.updatedByUser.fullName}}</span>
+                    </div>
+                    <div class="col-2 d-flex align-items-center justify-content-between">
+                      <div>
+                        <span class="list-text-lbl">{{value.name + ' v' + value.version}}</span>
+                      </div>
+                      <div class="d-flex align-items-center justify-content-end">
+                        <span (click)="expandOrCollapseValue(value)"
+                              [ngClass]="{'expand-icon': !value.isExpanded, 'collapse-icon': value.isExpanded}"
+                              class="icon-relative expand-btn"></span>
+                        <div class="d-flex align-items-center">
+                          <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block"
+                               ngbDropdown>
+                            <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle
+                                    type="button"></button>
+                            <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                              <button (click)="addNewVersion.emit(value.valueId)" class="dropdown-item d-flex justify-content-between"
+                                      type="button">
+                                Add new version
+                                <i class="dnm-icon edit-icon"></i>
+                              </button>
+                              <button (click)="onValueDelete(value.valueId)" *ngIf="isLastTariffVersion"
+                                      class="dropdown-item d-flex justify-content-between"
+                                      type="button">
+                                Delete
+                                <i class="dnm-icon delete-icon"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <ul *ngIf="value.isExpanded" class="sub-tree">
+                  <li *ngFor="let version of value.subVersions">
+                    <div [ngClass]="{'active-version': version.isActual}"
+                         class="item-content tbl-body-subitem d-flex align-items-center">
+                      <div (click)="editVersion.emit(version.versionId)"
+                           class="frst-body-col d-flex align-items-center">
+                        <span class="values-lbl">{{ version.name + ' v' + version.version }}</span>
+                      </div>
+                      <div class="row tbl-body-item none-margin-hr justify-content-between">
+                        <div class="col-2 d-flex align-items-center">
+                          <span class="hstr-tbl-lbl list-text-lbl">{{version.startDate | date: 'dd/MM/yyyy'}}</span>
+                        </div>
+                        <div class="col-2 d-flex align-items-center">
+                          <span class="list-text-lbl">{{version.createdByUser.fullName}}</span>
+                        </div>
+                        <div class="col-2 d-flex align-items-center">
+                          <span class="list-text-lbl">{{version.updatedOn | date: 'dd/MM/yyyy'}}</span>
+                        </div>
+                        <div class="col-2 d-flex align-items-center">
+                          <span class="list-text-lbl">{{version.updatedByUser.fullName}}</span>
+                        </div>
+                        <div class="col-2 d-flex align-items-center justify-content-between">
+                          <div>
+                            <span
+                              class="list-text-lbl text-uppercase">{{version.isActual ? "Active" : "Inactive"}}</span>
+                          </div>
+                          <div class="d-flex align-items-center">
+                            <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block"
+                                 ngbDropdown>
+                              <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle
+                                      type="button"></button>
+                              <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                                <button (click)="editVersion.emit(version.versionId)" class="dropdown-item d-flex justify-content-between"
+                                        type="button">
+                                  Edit
+                                  <i class="dnm-icon edit-icon"></i>
+                                </button>
+                                <button (click)="onVersionDelete(version.versionId)" *ngIf="version.isActual && isLastTariffVersion"
+                                        class="dropdown-item d-flex justify-content-between"
+                                        type="button">
+                                  Delete
+                                  <i class="dnm-icon delete-icon"></i>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

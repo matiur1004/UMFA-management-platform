@@ -1,0 +1,157 @@
+//@import 'variables.less';
+@import 'required-fields.less';
+
+.step-item-wrp {
+  margin-top: 40px;
+}
+
+.step-item-wrp .item-hdr-nav {
+  margin-bottom: 10px;
+}
+
+.step-item-wrp .step-name {
+  font-family: Gotham Medium;
+  font-size: 12px;
+  color: @color-empty;
+}
+
+.field-value .range-inpt-wrp:not(:last-child) .delete-item {
+  visibility: hidden;
+}
+
+.step-item-wrp .del-step-btn {
+  cursor: pointer;
+  line-height: 1;
+}
+
+.step-item-wrp .del-step-btn .btn-lbl {
+  margin-left: 10px;
+  font-family: Gotham Book;
+  font-size: 14px;
+  background: linear-gradient(to right, #e4877a, #dc3939);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.step-item-wrp .line-div {
+  border-bottom: 1px solid #eeeff0;
+}
+
+.step-item-wrp .input-row {
+  margin: 0;
+  min-height: 50px;
+  padding: 7px 0 7px 20px;
+}
+
+.step-item-wrp .text-form-field {
+  padding-top: 0;
+}
+
+.step-item-wrp .radio-input-wrp {
+  margin-left: 21px;
+}
+
+.step-item-wrp .radio-input-lbl,
+.step-item-wrp .range-lbl {
+  font-family: Gotham Light;
+  font-size: 14px;
+  line-height: 14px;
+  color: @color-text-tertiary;
+  white-space: nowrap;
+}
+
+.step-item-wrp .radio-input-lbl {
+  padding-right: 20px;
+  padding-left: 10px;
+}
+
+.step-item-wrp .ranges-fld-name {
+  padding-top: 10px;
+}
+
+.step-item-wrp .range-inpt-wrp {
+  margin-bottom: 15px;
+}
+
+.step-item-wrp .range-inpt-wrp:last-child {
+  margin-bottom: 0;
+}
+
+.step-item-wrp .range-lbl {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+.step-item-wrp .delete-item {
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+.step-item-wrp .blue-text-btn {
+  margin-top: 30px;
+  margin-right: 20px;
+}
+
+::ng-deep .ctgr-row .steps-wrp step-item:first-child .step-item-wrp {
+  margin-top: 25px;
+}
+
+::ng-deep .ctgr-row .steps-wrp step-item .step-item-wrp .add-step-btn {
+  display: none;
+}
+
+::ng-deep .ctgr-row .steps-wrp step-item:last-child .step-item-wrp .add-step-btn {
+  display: flex;
+}
+
+/* Range Input */
+.range-inpt .input-group {
+  width: 140px;
+}
+
+.range-inpt .dnm-btn {
+  height: 35px;
+  padding: 5px 8px;
+  line-height: 14px;
+  font-size: 14px;
+  background-color: @color-background-tertiary;
+  color: @color-text-tertiary;
+  border: 1px solid @color-stroke;
+  transition: opacity .8s ease-in-out;
+}
+
+.range-inpt .dnm-btn:hover {
+  opacity: .5;
+}
+
+.range-inpt .dnm-btn {
+  background-color: @color-background-tertiary;
+}
+
+.range-inpt .input-group-append .dnm-btn {
+  border-radius: 0 3px 3px 0;
+  border-left: 0;
+}
+
+.range-inpt .input-group:not(.input-group--infinity) .dnm-btn {
+  display: none;
+}
+
+.range-inpt .is-infinity .dnm-btn {
+  background-color: @color-background-tertiary;
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, .225);
+  opacity: .8;
+}
+
+.input-group:not(.input-group--infinity) > .form-control:not(:last-child) {
+  border-top-right-radius: .25rem;
+  border-bottom-right-radius: .25rem;
+}
+
+.step-type-option {
+  padding-bottom: 5px;
+}
+
+.numb-form-control {
+  padding-left: 10px;
+}

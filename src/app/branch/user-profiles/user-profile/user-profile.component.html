@@ -1,0 +1,90 @@
+<div class="container-fluid dnm-text-medium none-padding">
+
+  <div class="user-profile-header">
+    <page-limit (limitChaged)="setItemsPerPage($event)" [itemName]="'user profile'" [itemsPerPageList]="itemsPerPageList" [itemsPerPage]="pageSize"
+                [itemsTotal]="model.total"
+                [page]="page"></page-limit>
+  </div>
+
+  <!-- users grid -->
+  <div class="row">
+    <div *ngFor="let profile of model.items" class="col-4 col-lg-4 col-xl-4">
+      <div class="user-profile">
+        <div class="info-block">
+          <div class="title dnm-text-bold text-ellipsis">{{profile.name}}</div>
+          <div class="sub-title">
+          </div>
+        </div>
+        <div class="statistics-block d-flex flex-nowrap">
+          <div class="statistics-item align-self-center text-center">{{profile.clients.length}}<span>Clients</span>
+          </div>
+          <div class="statistics-item align-self-center text-center">{{profile.clientPortfolios.length}}
+            <span>Portfolios</span></div>
+          <div class="statistics-item align-self-center text-center">{{profile.buildings.length}}<span>Buildings</span>
+          </div>
+        </div>
+        <div class="users-block">
+          <div class="caption">Users ({{profile.users.length}}):</div>
+          <div class="d-flex">
+            <div *ngFor="let user of profile.users | slice:0:4; let idx = index;" class="dropdown" ngbDropdown
+                 placement="bottom-center">
+              <button class="dnm-btn user-profile-img" ngbDropdownToggle>
+                <logo-container [file]="user.logo" [url]="user.logoUrl" logo-class="round-logo-wrp d-flex">
+                  <div class="logo-no-img">
+                    <span>{{user.fullName[0].toUpperCase()}}</span>
+                  </div>
+                </logo-container>
+              </button>
+              <div (click)="$event.stopPropagation();" class="user-roles-dropdown dropdown-menu" ngbDropdownMenu>
+                <app-popup-user (remove)="onUserRemove(profile, idx)" [profileId]="profile.id"
+                                [user]="user"></app-popup-user>
+              </div>
+            </div>
+            <div *ngIf="profile.users.length > 4;">
+              <div [autoClose]="'outside'" class="dropdown" ngbDropdown placement="bottom-right">
+                <button class="dnm-btn user-profile-img" ngbDropdownToggle>
+                  <div class="logo-no-img numb-of-users">
+                    <span>+{{profile.users.length - 4}}</span>
+                  </div>
+                </button>
+                <div (click)="$event.stopPropagation();" class="users-roles-dropdown dropdown-menu" ngbDropdownMenu>
+                  <popup-users-list [model]="profile.users"></popup-users-list>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="controls-block d-flex">
+          <button [routerLink]="['/branch', branchId, 'user-profiles', profile.id]" class="w-100 dnm-text-bold">View <i
+            class="dnm-icon view-icon"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <pager (onPageChange)="onPageChange($event)" [pageSize]="pageSize" [page]="page" [total]="model.total"></pager>
+</div>
+<!-- user list popup -->
+
+<ng-template>
+  <div class="popup-users-block">
+    <div class="top-block d-flex justify-content-between">
+      <span class="title dnm-text-bold">Users:</span>
+      <button (click)="p.close()" aria-label="Close" class="close" type="button">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="users-block-content">
+      <ul class="user-list">
+        <li class="user-list-item d-flex align-items-center">
+          <span>
+            <span class="user-photo"><img src="https://dummyimage.com/40x40/479927/fff"/></span>
+          </span>
+          <span class="user-name dnm-text-bold">Dustin Ferguson</span>
+          <span class="user-roles">
+            <span class="label">Roles:</span> Role name 1, Role name 2, Role name 3, Role name 4
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</ng-template>

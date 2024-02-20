@@ -1,0 +1,181 @@
+@import 'variables.less';
+@import "buttons.less";
+
+.enter-reading-modal .close {
+  outline-color: transparent;
+}
+
+.enter-reading-modal .modal-body {
+  padding: 0 40px 40px 40px;
+}
+
+.enter-reading-modal .datepicker-lbl {
+  font-family: Gotham Medium;
+  font-size: 14px;
+  line-height: 14px;
+  color: @color-text-tertiary;
+  margin-left: 20px;
+  margin-right: 15px;
+}
+
+.estimate-input {
+  width: 46%;
+}
+
+.enter-reading-modal .nav-datepicker-wrp {
+  width: 150px !important;
+}
+
+.enter-reading-modal .nav-datepicker-wrp .calendar {
+  height: 30px;
+  background-size: 15px 15px;
+}
+
+::ng-deep .enter-reading-modal .nav-datepicker-wrp ngb-datepicker.dropdown-menu {
+  left: unset !important;
+  right: 0;
+}
+
+
+.enter-reading-modal .nav-dtpickr-inpt {
+  height: 30px;
+  border-radius: 15px;
+}
+
+.enter-reading-modal .list-header {
+  margin-top: 20px;
+  margin-bottom: 15px;
+}
+
+.enter-reading-modal .serial-numb-title, .enter-reading-modal .serial-numb-col {
+  padding-left: 20px !important;
+}
+
+.enter-reading-modal .header-field {
+  white-space: normal;
+}
+
+.enter-reading-modal .enter-readings-item {
+  border: 1px solid @color-line;
+}
+
+.enter-reading-modal .mtr-rdngs-row {
+  background-color: @color-background-white;
+}
+
+.enter-reading-modal .serial-numb-col {
+  padding-left: 30px;
+  border-right: 1px solid @color-line;
+}
+
+.enter-reading-modal .item-row {
+  border-bottom: 1px solid @color-line;
+  padding: 10px 15px;
+}
+
+.enter-reading-modal .item-row:last-child {
+  border-bottom: none;
+}
+
+.enter-reading-modal .id-numb-lbl {
+  font-family: Gotham Medium;
+  font-size: 16px;
+  line-height: 16px;
+  color: @color-text-primary;
+}
+
+.enter-reading-modal .cell-prop-val {
+  font-family: Gotham Book;
+  font-size: 13px;
+  line-height: 13px;
+  color: @color-text-tertiary;
+}
+
+.enter-reading-modal number-input {
+  margin-right: 10px;
+}
+
+.enter-reading-modal .rdng-trend {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: auto;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+}
+
+.enter-reading-modal .trend-up-icon {
+  background-image: url('../../../../../../../assets/images/icons/meter-readings/trend-icon-up.svg');
+}
+
+.enter-reading-modal .trend-down-icon {
+  background-image: url('../../../../../../../assets/images/icons/meter-readings/trend-icon-down.svg');
+}
+
+.enter-reading-modal .cursor-pointer:hover {
+  cursor: pointer;
+}
+
+.enter-reading-modal .actual-rdng-btn {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-color: transparent;
+  border: none;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.enter-reading-modal .actual-rdng-btn:after {
+  display: none;
+}
+
+.enter-reading-modal .note-popup-dropdown.dropdown-menu,
+.enter-reading-modal .rdngs-photo-dropdown.dropdown-menu {
+  width: 310px;
+  top: -122px !important;
+  left: -355px !important;
+  padding: 0;
+  margin: 0 20px 0 0;
+  border: none;
+  background: none;
+  z-index: 1600;
+}
+
+::ng-deep .enter-reading-modal .note-popup-dropdown.dropdown-menu .note-popup:before {
+  display: none;
+}
+
+::ng-deep .enter-reading-modal .note-popup-dropdown.dropdown-menu .note-popup:after {
+  position: absolute;
+  content: '';
+  display: block;
+  border-color: transparent;
+  border-width: 18px;
+  border-style: solid;
+  border-left-color: @color-text-primary;
+  opacity: 0.95;
+  width: 18px;
+  top: 115px;
+  right: -36px;
+}
+
+.enter-reading-modal .footer-buttons {
+  margin-top: 35px;
+  margin-bottom: 10px;
+}
+
+.enter-reading-modal .footer-buttons .dnm-btn {
+  width: 200px;
+  min-width: 200px;
+}
+
+.enter-reading-modal .footer-buttons .dnm-btn:first-child {
+  margin-right: 30px;
+}
+
+.rollover {
+  display: contents
+}

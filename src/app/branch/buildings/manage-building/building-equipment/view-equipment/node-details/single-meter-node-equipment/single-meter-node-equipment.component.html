@@ -1,0 +1,44 @@
+<div class="table-container">
+  <table class="table table-custom table-striped table-outside-border-body table-vertical-center">
+    <thead>
+    <tr>
+      <th><span class="head-col">Meter</span></th>
+      <th><span class="head-col">Brand, Model</span></th>
+      <th><span class="head-col">Supply to</span></th>
+      <th><span class="head-col">Description</span></th>
+      <th><span class="head-col">Attributes</span></th>
+      <th><span class="head-col">Registers</span></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>
+        <label (click)="onMeterClick(meter.id)" [title]="meter.serialNumber" class="meter-label">
+          {{meter.serialNumber | emptyValue | slice : -4}}-{{meter.equipment?.supplyType | supplyTypeLetter}}
+        </label>
+      </td>
+      <td>{{meter.equipment.equipmentModel}}</td>
+      <td>{{meter.location?.supplyDetail?.name}}&nbsp;{{meter.location?.supplyDetail?.locationType}}</td>
+      <td>{{meter.location?.description}}</td>
+      <td>
+        <div *ngFor="let attr of  meter.equipment.attributes">
+          <label class="attribute-name">{{attr.attribute.name}}:</label>
+          <span *ngIf="attr.attribute.fieldType == fieldType.Number">{{attr.numberValue}}
+            {{attr.attribute.unit?.name}}</span>
+          <span *ngIf="attr.attribute.fieldType !== fieldType.Number">{{attr.value}}</span>
+        </div>
+      </td>
+      <td>
+        <div *ngFor="let register of  meter.registers">
+          <span>{{register.id | registerUnit | async}}</span> -
+          <span>{{register.useForBilling ? 'Billing' : 'Readonly'}}</span>
+        </div>
+        <div *ngFor="let register of  meter.virtualRegisters">
+          <span>{{register.id | registerUnit | async}}</span> -
+          <span>{{register.useForBilling ? 'Billing' : 'Readonly'}}</span>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

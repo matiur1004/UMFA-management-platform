@@ -1,0 +1,43 @@
+<div class="add-category-or-step-container">
+  <div class="modal-header">
+    <h5 class="modal-title">Add new {{modeFeatureName}}</h5>
+    <button (click)="dismiss()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container-fluid d-flex flex-column">
+      <h5 class="bl-gradient-title body-info">Generel info</h5>
+      <div class="d-flex flex-row popup-field radio-btn-row">
+        <div class="popup-field-title text-uppercase d-flex flex-row align-items-center">
+          <div class="dnm-radio-btn pay-pln-input d-flex flex-row align-items-center">
+            <input [(ngModel)]="addNew" [value]="false" id="select-existing" type="radio"/>
+            <div class="state">
+              <label></label>
+            </div>
+          </div>
+          <label class="m-0 pl-1" for="select-existing">Select the existing {{modeFeatureName}} </label>
+        </div>
+        <ng-select [(ngModel)]="selectedItems" [clearable]="false" [disabled]="addNew" [hideSelected]="true"
+                   [items]="items"
+                   [multiple]="true" [searchable]="true" bindLabel="name" class="dnm-multiple-select">
+        </ng-select>
+      </div>
+      <div class="d-flex flex-row align-items-start popup-field radio-btn-row">
+        <div class="popup-field-title text-uppercase d-flex flex-row align-items-center">
+          <div class="dnm-radio-btn pay-pln-input d-flex flex-row align-items-center">
+            <input [(ngModel)]="addNew" [value]="true" id="add-new" type="radio"/>
+            <div class="state">
+              <label></label>
+            </div>
+          </div>
+          <label class="m-0 pl-1" for="add-new">Create a new {{modeFeatureName}} </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex flex-row justify-content-end buttons-container">
+    <button (click)="dismiss()" class="dnm-btn dnm-btn-cancel text-uppercase btn-lg" type="button">Cancel</button>
+    <button (click)="add()" class="dnm-btn dnm-btn-primary text-uppercase btn-lg" type="button">Add</button>
+  </div>
+</div>

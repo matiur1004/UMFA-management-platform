@@ -1,0 +1,183 @@
+<div class="service-prices">
+  <div class="container-fluid none-padding">
+    <div class="row none-margin-hr">
+      <div class="col-12 none-padding">
+        <div class="input-row">
+          <div class="text-form-field field-name">Fixed Price</div>
+          <div class="field-value">
+            <div
+              [ngClass]="{'dnm-invalid-inp': (isSubmitted && errors?._fixedPrice?.required) || (isSubmitted && errors?._fixedPrice?.greaterThanAndLessThan)}">
+              <input [autoSelect] [ngrxFormControlState]="model.fixedPrice" class="form-control" placeholder="Type here"
+                     type="text"/>
+            </div>
+            <small *ngIf="isSubmitted && errors?._fixedPrice?.required" class="alert-danger">
+              Fixed price is required
+            </small>
+            <small *ngIf="isSubmitted && errors?._fixedPrice?.greaterThanAndLessThan" class="alert-danger">
+              {{errors?._fixedPrice?.greaterThanAndLessThan}}
+            </small>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="text-form-field field-name">Minimum Fee</div>
+          <div class="field-value">
+            <div
+              [ngClass]="{'dnm-invalid-inp': (isSubmitted && errors?._minimalFee?.required) || (isSubmitted && errors?._minimalFee?.greaterThanAndLessThan)}">
+              <input [autoSelect] [ngrxFormControlState]="model.minimalFee" class="form-control" placeholder="Type here"
+                     type="text"/>
+            </div>
+            <small *ngIf="isSubmitted && errors?._minimalFee?.required" class="alert-danger">
+              Minimum fee is required
+            </small>
+            <small *ngIf="isSubmitted && errors?._minimalFee?.greaterThanAndLessThan" class="alert-danger">
+              {{errors?._minimalFee?.greaterThanAndLessThan}}
+            </small>
+          </div>
+        </div>
+        <div class="input-row-title d-flex align-items-center text-uppercase">
+          <div class="field-name">Required Charging methods</div>
+          <div class="field-value">Recommended price</div>
+        </div>
+        <div class="input-row">
+          <div class="text-form-field field-name">Per Tenant</div>
+          <div class="field-value">
+            <div
+              [ngClass]="{'dnm-invalid-inp': (isSubmitted && errors?._perTenant?.required) || (isSubmitted && errors?._perTenant?.greaterThanAndLessThan)}">
+              <input [autoSelect] [ngrxFormControlState]="model.perTenant" class="form-control" placeholder="Type here"
+                     type="text"/>
+            </div>
+            <small *ngIf="isSubmitted && errors?._perTenant?.required" class="alert-danger">
+              Per tenant is required
+            </small>
+            <small *ngIf="isSubmitted && errors?._perTenant?.greaterThanAndLessThan" class="alert-danger">
+              {{errors?._perTenant?.greaterThanAndLessThan}}
+            </small>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="text-form-field field-name">Per Shop</div>
+          <div class="field-value">
+            <div
+              [ngClass]="{'dnm-invalid-inp': (isSubmitted && errors?._perShop?.required) || (isSubmitted && errors?._perShop?.greaterThanAndLessThan)}">
+              <input [autoSelect] [ngrxFormControlState]="model.perShop" class="form-control" placeholder="Type here"
+                     type="text"/>
+            </div>
+            <small *ngIf="isSubmitted && errors?._perShop?.required" class="alert-danger">
+              Per shop is required
+            </small>
+            <small *ngIf="isSubmitted && errors?._perShop?.greaterThanAndLessThan" class="alert-danger">
+              {{errors?._perShop?.greaterThanAndLessThan}}
+            </small>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="text-form-field field-name">Per Meter</div>
+          <div class="field-value">
+            <div
+              [ngClass]="{'dnm-invalid-inp': (isSubmitted && errors?._perMeter?.required) || (isSubmitted && errors?._perMeter?.greaterThanAndLessThan)}">
+              <input [autoSelect] [ngrxFormControlState]="model.perMeter" class="form-control" placeholder="Type here"
+                     type="text"/>
+            </div>
+            <small *ngIf="isSubmitted && errors?._perMeter?.required" class="alert-danger">
+              Per shop is required
+            </small>
+            <small *ngIf="isSubmitted && errors?._perMeter?.greaterThanAndLessThan" class="alert-danger">
+              {{errors?._perMeter?.greaterThanAndLessThan}}
+            </small>
+          </div>
+        </div>
+        <div *ngFor="let meterType of model.meterTypes.controls; let idx = index; trackBy: trackById" class="input-row">
+          <div class="text-form-field field-name">{{meterType.controls.name.value}}</div>
+          <div class="field-value">
+            <div class="d-flex">
+              <div
+                [ngClass]="{'dnm-invalid-inp': (isSubmitted && meterType.errors?._value?.required) || (isSubmitted && meterType.errors?._value?.greaterThanAndLessThan)}">
+                <input [autoSelect] [ngrxFormControlState]="meterType.controls.value" class="form-control"
+                       placeholder="Type here" type="text"/>
+              </div>
+              <div class="delete-link d-flex align-items-center">
+                <button (click)="removeMeterType.emit(idx)" class="dnm-btn-icon" type="button"><i
+                  class="icon cross-icon"></i></button>
+              </div>
+            </div>
+            <small *ngIf="isSubmitted && meterType.errors?._value?.required" class="alert-danger">
+              Value is required
+            </small>
+            <small *ngIf="isSubmitted && meterType.errors?._value?.greaterThanAndLessThan" class="alert-danger">
+              {{meterType.errors?._value?.greaterThanAndLessThan}}
+            </small>
+          </div>
+        </div>
+        <div *ngIf="meterTypes.length" class="input-row">
+          <div class="text-form-field field-name">Add Meter Type</div>
+          <div class="field-value">
+            <div class="d-inline-block" ngbDropdown>
+              <button class="btn btn-outline-primary" id="selectMeterType" ngbDropdownToggle>Select</button>
+              <div aria-labelledby="selectMeterType" ngbDropdownMenu>
+                <button (click)="addMeterType.emit(meterType)" *ngFor="let meterType of meterTypes" class="dropdown-item"
+                        type="button">{{meterType.name}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="text-form-field field-name">Per Square Meter</div>
+          <div class="field-value">
+            <div
+              [ngClass]="{'dnm-invalid-inp': (isSubmitted && errors?._perSquareMeter?.required) || (isSubmitted && errors?._perSquareMeter?.greaterThanAndLessThan)}">
+              <input [autoSelect] [ngrxFormControlState]="model.perSquareMeter" class="form-control"
+                     placeholder="Type here" type="text"/>
+            </div>
+            <small *ngIf="isSubmitted && errors?._perSquareMeter?.required" class="alert-danger">
+              Per square meter is required
+            </small>
+            <small *ngIf="isSubmitted && errors?._perSquareMeter?.greaterThanAndLessThan" class="alert-danger">
+              {{errors?._perSquareMeter?.greaterThanAndLessThan}}
+            </small>
+          </div>
+        </div>
+        <div class="input-row-title d-flex align-items-center text-uppercase">
+          <div class="field-name">Optional Charging Methods</div>
+          <div class="field-value">Recommended Price</div>
+        </div>
+        <div class="input-row">
+          <div class="text-form-field field-name">Per Building</div>
+          <div class="field-value">
+            <div [ngClass]="{'dnm-invalid-inp': isSubmitted && errors?._perBuilding?.greaterThanAndLessThan}">
+              <input [autoSelect] [ngrxFormControlState]="model.perBuilding" class="form-control" placeholder="Type here"
+                     type="text"/>
+            </div>
+            <small *ngIf="isSubmitted && errors?._perBuilding?.greaterThanAndLessThan" class="alert-danger">
+              {{errors?._perBuilding?.greaterThanAndLessThan}}
+            </small>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="text-form-field field-name">Per Council Account</div>
+          <div class="field-value">
+            <div [ngClass]="{'dnm-invalid-inp': isSubmitted && errors?._perCouncilAccount?.greaterThanAndLessThan}">
+              <input [autoSelect] [ngrxFormControlState]="model.perCouncilAccount" class="form-control"
+                     placeholder="Type here" type="text"/>
+            </div>
+            <small *ngIf="isSubmitted && errors?._perCouncilAccount?.greaterThanAndLessThan" class="alert-danger">
+              {{errors?._perCouncilAccount?.greaterThanAndLessThan}}
+            </small>
+          </div>
+        </div>
+        <div class="input-row">
+          <div class="text-form-field field-name">Per Hour</div>
+          <div class="field-value">
+            <div [ngClass]="{'dnm-invalid-inp': isSubmitted && errors?._perHour?.greaterThanAndLessThan}">
+              <input [autoSelect] [ngrxFormControlState]="model.perHour" class="form-control" placeholder="Type here"
+                     type="text"/>
+            </div>
+            <small *ngIf="isSubmitted && errors?._perHour?.greaterThanAndLessThan" class="alert-danger">
+              {{errors?._perHour?.greaterThanAndLessThan}}
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

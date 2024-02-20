@@ -1,0 +1,100 @@
+@import 'variables.less';
+
+.datepicker-wrp {
+  position: relative;
+}
+
+.datepicker-wrp input:read-only {
+  background-color: @color-background-white;
+}
+
+.datepicker-wrp .calendar {
+  content: '';
+  background-image: url('../assets/images/icons/calendar-icon.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px 20px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 40px;
+  height: 35px;
+  cursor: pointer;
+}
+
+.datepicker-wrp .calendar:hover {
+  background-image: url('../assets/images/icons/calendar-icon-hover.svg');
+}
+
+.datepicker-wrp .dropdown-menu {
+  width: 234px;
+}
+
+.datepicker-wrp .ngb-dp-header {
+  padding-top: 20px !important;
+  padding-bottom: 20px;
+}
+
+.datepicker-wrp .btn-light {
+  color: @color-text-tertiary !important;
+  font-family: @fontFamilyBook;
+  font-size: 14px;
+}
+
+.datepicker-wrp .btn-link {
+  color: @color-description;
+}
+
+.datepicker-wrp .btn-link:focus {
+  outline: none !important;
+}
+
+.datepicker-wrp .ngb-dp-weekday {
+  font-family: Gotham Medium;
+  font-size: 10px;
+  color: @color-text-tertiary !important;
+  text-transform: uppercase;
+}
+
+.datepicker-wrp .ngb-dp-weekday:nth-child(6),
+.datepicker-wrp .ngb-dp-weekday:nth-child(7) {
+  color: @color-accent !important;
+}
+
+.datepicker-wrp .bg-light {
+  background: @color-background-white !important;
+}
+
+.datepicker-wrp .btn-light:hover {
+  background-color: @color-background-tertiary !important;
+}
+
+.datepicker-wrp .ngb-dp-weekdays {
+  border-bottom: none !important;
+}
+
+.datepicker-wrp .bg-primary {
+  background-color: @color-background-tertiary !important;
+  font-family: @fontFamilyMedium;
+  color: @color-background-primary;
+}
+
+.datepicker-wrp .ngb-dp-day:hover,
+.datepicker-wrp .ngb-dp-day:focus {
+  outline: none;
+}
+
+ngb-datepicker ngb-datepicker-navigation .ngb-dp-arrow {
+  display: none;
+}
+
+ngb-datepicker ngb-datepicker-navigation ngb-datepicker-navigation-select {
+  padding: 0 .25rem;
+}
+
+ngb-datepicker ngb-datepicker-navigation ngb-datepicker-navigation-select select.custom-select {
+  border-radius: 15px;
+  margin: 0 .25rem;
+  padding: 0 10px 0 20px;
+  background-image: url('../assets/images/icons/arrow_dropdown-01.svg');
+}

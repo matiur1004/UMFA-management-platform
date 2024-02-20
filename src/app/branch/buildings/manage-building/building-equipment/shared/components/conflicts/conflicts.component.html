@@ -1,0 +1,17 @@
+<div class="category-warning-icon">
+  <i [ngbTooltip]="isTariff ? 'This tariff is not recommended for this node': 'This category is not recommended for this line item'" class="dnm-icon dnm-warning-red margin-left-icon" container="body"
+     tooltipClass="tooltip-break-words"></i>
+</div>
+<div *ngIf="approvalInfo" class="category-warning-info">
+  <ng-template #tipContentLineItem>
+    <note-popup (close)="tooltipItem.close()" (edit)="edit.emit($event)" [attachFile]="true" [comment]="approvalInfo.comment"
+                [editableNote]="true"
+                [fileUrl]="approvalInfo.fileLocalPath" [file]="approvalInfo.file" [noteDate]="approvalInfo.date"
+                [userData]="approvalInfo.userName" anchorSide="none">
+    </note-popup>
+  </ng-template>
+  <button #tooltipItem="ngbTooltip" [autoClose]="false" [ngClass]="approvalInfo?.comment ? 'dnm-btn-text': 'dnm-btn-note-add'" [ngbTooltip]="tipContentLineItem" class="dnm-btn categ-note-btn "
+          container="body"
+          tooltipClass="note-in-tooltip" triggers="click"
+          type="button"></button>
+</div>

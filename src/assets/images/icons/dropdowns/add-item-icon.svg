@@ -1,0 +1,10 @@
+<svg data-name="Layer 1" id="Layer_1" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>.cls-1 {
+      fill: #2aace2;
+    }</style>
+  </defs>
+  <title>plus_v2</title>
+  <rect class="cls-1" height="1.7" rx="0.85" width="11.75" x="0.12" y="5.15"/>
+  <rect class="cls-1" height="1.7" rx="0.85" transform="translate(12 0) rotate(90)" width="11.75" x="0.12" y="5.15"/>
+</svg>

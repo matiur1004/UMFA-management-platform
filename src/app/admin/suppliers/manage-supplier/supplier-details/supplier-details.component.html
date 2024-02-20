@@ -1,0 +1,315 @@
+<div class="splr-dets-wrp">
+  <div class="row none-margin-hr">
+    <div class="col none-padding">
+      <form *ngIf="formState$ | async as form" [ngrxFormState]="form">
+
+        <div class="row none-margin-hr">
+          <div class="col none-padding">
+            <div class="bl-gradient-title block-title">Supplier Logo</div>
+            <upload-image (fileChange)="logoChanged($event)" [src]="logoUrl$ | async"></upload-image>
+          </div>
+        </div>
+
+        <div class="row block-row none-margin-hr">
+          <div class="col none-padding">
+            <div class="bl-gradient-title block-title">General Info</div>
+            <div class="input-row line-div">
+              <div class="text-uppercase field-name text-form-field">
+                Supplier Name
+              </div>
+              <div class="field-value">
+                <div [ngClass]="{'dnm-invalid-inp': form.controls.name.isInvalid}">
+                  <text-input [isRequired]= true [ngrxFormControlState]="form.controls.name" class="none-padding w-100"></text-input>
+                </div>
+              </div>
+              <div class="field-name"></div>
+              <div class="field-value none-padding">
+                <small *ngIf="form.controls.name.errors.required" class="alert-danger">
+                  Supplier Name is required
+                </small>
+              </div>
+            </div>
+            <div class="input-row line-div">
+              <div class="text-uppercase field-name text-form-field">
+                Description
+              </div>
+              <div class="field-value d-flex align-items-center">
+                <text-input [ngrxFormControlState]="form.controls.description" class="none-padding w-100"
+                            placeholder="Type description here"></text-input>
+              </div>
+            </div>
+            <div class="input-row line-div d-flex align-items-start">
+              <div class="text-uppercase field-name text-form-field supply-types-fld-name">
+                Supply Types
+              </div>
+              <div class="field-value supply-types-wrp">
+                <div class="d-flex align-items-center supply-types-row">
+                  <div class="checkbox-wrp d-flex align-items-center">
+                    <div class="dnm-checkbox">
+                      <input [ngrxFormControlState]="form.controls.supplyTypes.controls[SupplyType.Electricity]" class="checkbox-toggle" id="supplier.hasElectricitySupplier"
+                             type="checkbox">
+                      <div class="state">
+                        <label></label>
+                      </div>
+                    </div>
+                    <span class="checkbox-input-lbl">Electricity</span>
+                  </div>
+                  <div class="checkbox-wrp d-flex align-items-center">
+                    <div class="dnm-checkbox">
+                      <input [ngrxFormControlState]="form.controls.supplyTypes.controls[SupplyType.Sewerage]" class="checkbox-toggle" id="supplier.hasSewerageSupplier"
+                             type="checkbox">
+                      <div class="state">
+                        <label></label>
+                      </div>
+                    </div>
+                    <span class="checkbox-input-lbl">Sewerage</span>
+                  </div>
+                  <div class="checkbox-wrp d-flex align-items-center">
+                    <div class="dnm-checkbox">
+                      <input [ngrxFormControlState]="form.controls.supplyTypes.controls[SupplyType.AdHoc]" class="checkbox-toggle" id="supplier.hasAdHocSupplier"
+                             type="checkbox">
+                      <div class="state">
+                        <label></label>
+                      </div>
+                    </div>
+                    <span class="checkbox-input-lbl">Ad hoc</span>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center">
+                  <div class="checkbox-wrp d-flex align-items-center">
+                    <div class="dnm-checkbox">
+                      <input [ngrxFormControlState]="form.controls.supplyTypes.controls[SupplyType.Water]" class="checkbox-toggle" id="supplier.hasWaterSupplier"
+                             type="checkbox">
+                      <div class="state">
+                        <label></label>
+                      </div>
+                    </div>
+                    <span class="checkbox-input-lbl">Water</span>
+                  </div>
+                  <div class="checkbox-wrp d-flex align-items-center">
+                    <div class="dnm-checkbox">
+                      <input [ngrxFormControlState]="form.controls.supplyTypes.controls[SupplyType.Gas]" class="checkbox-toggle" id="supplier.hasGasSupplier"
+                             type="checkbox">
+                      <div class="state">
+                        <label></label>
+                      </div>
+                    </div>
+                    <span class="checkbox-input-lbl">Gas</span>
+                  </div>
+                </div>
+              </div>
+              <div class="field-name"></div>
+              <div class="field-value none-padding">
+                <div class="d-flex justify-content-end">
+                  <small *ngIf="form.controls.supplyTypes.errors.required" class="alert-danger">
+                    At list one supply type must be selected
+                  </small>
+                </div>
+              </div>
+            </div>
+            <div class="input-row line-div">
+              <address [isSubmitted]="isSubmitted" [ngrxFormControlState]="form.controls.physicalAddress"
+                       [validationNotify]="submitNotify"
+                       name="Physical Address"></address>
+            </div>
+            <div class="input-row line-div">
+              <address [isSubmitted]="isSubmitted" [ngrxFormControlState]="form.controls.postalAddress"
+                       [validationNotify]="submitNotify" name="Postal Address"></address>
+            </div>
+            <div class="input-row line-div">
+              <div class="text-uppercase field-name text-form-field">
+                Registration number
+              </div>
+              <div class="field-value d-flex align-items-center">
+                <text-input [ngrxFormControlState]="form.controls.registrationNumber"
+                            class="none-padding w-100"></text-input>
+              </div>
+            </div>
+            <div class="input-row line-div">
+              <div class="text-uppercase field-name text-form-field">
+                VAT number
+              </div>
+              <div class="field-value d-flex align-items-center">
+                <text-input [ngrxFormControlState]="form.controls.vatNumber" class="none-padding w-100"></text-input>
+              </div>
+            </div>
+            <div class="input-row line-div">
+              <div class="text-uppercase field-name text-form-field">
+                Web address
+              </div>
+              <div class="field-value d-flex align-items-center">
+                <text-input [ngrxFormControlState]="form.controls.webAddress" class="none-padding w-100"></text-input>
+              </div>
+            </div>
+            <div class="input-row line-div">
+              <div class="text-uppercase field-name text-form-field">
+                Email
+              </div>
+              <div class="field-value d-flex align-items-center">
+                <text-input [ngrxFormControlState]="form.controls.email" class="none-padding w-100"></text-input>
+              </div>
+            </div>
+            <div class="input-row line-div">
+              <div class="text-uppercase field-name text-form-field">
+                Phone number
+              </div>
+              <div class="field-value d-flex align-items-center">
+                <text-input [ngrxFormControlState]="form.controls.phone" class="none-padding w-100"></text-input>
+              </div>
+            </div>
+            <div class="input-row line-div">
+              <div class="text-uppercase field-name text-form-field">
+                Annual Increase schedule
+              </div>
+              <div class="field-value d-flex align-items-center">
+                <div class="datepicker-wrp">
+                  <input #d1="ngbDatepicker" (click)="d1.toggle()" class="form-control" name="dp" ngbDatepicker
+                         placeholder="dd/mm/YYYY" readonly>
+                  <i (click)="d1.toggle()" class="calendar no-hover"></i>
+                </div>
+              </div>
+            </div>
+            <!-- TODO: This functionality has not implemented yet. -->
+            <div class="input-row d-none">
+              <a class="blue-text-btn" href="javascript:void(0);">
+                <i class="add-icon"></i>Add Phone Number
+              </a>
+              <a class="blue-text-btn" href="javascript:void(0);">
+                <i class="add-icon"></i>Add External Link
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!--<div class="row block-row none-margin-hr">
+          <div class="col none-padding">
+            <div class="d-flex align-items-center justify-content-between block-title">
+              <div class="bl-gradient-title">Seasonal changes</div>
+              <div class="field-value d-flex align-items-center">
+                <label class="dnm-switch-btn">
+                  <input (change)="hasSeasonalChanges = !hasSeasonalChanges" [checked]="hasSeasonalChanges"
+                         type="checkbox">
+                  <span class="dnm-switch-slider round"></span>
+                </label>
+              </div>
+            </div>
+            <div *ngIf="hasSeasonalChanges" class="input-row line-div">
+              <div class="text-uppercase field-name text-form-field">
+                High Season
+              </div>
+              <div class="field-value d-flex align-items-center">
+                <ng-select (change)="highSeasonChangeOptions($event)" [(ngModel)]="highSeasonSelectedOptions" [clearable]="false"
+                           [closeOnSelect]="false" [dropdownPosition]="top"
+                           [hideSelected]="true"
+                           [items]="highSeasonOptions" [multiple]="true" [ngModelOptions]="{standalone: true}" [searchable]="false"
+                           bindLabel="name"
+                           bindValue="name" class="dnm-multiple-select dnm-ng-select w-100"
+                           placeholder="Type here"></ng-select>
+              </div>
+            </div>
+            <div *ngIf="hasSeasonalChanges" class="input-row line-div">
+              <div class="text-uppercase field-name text-form-field">
+                Low Season
+              </div>
+              <div class="field-value d-flex align-items-center">
+                <ng-select (change)="lowSeasonChangeOptions($event)" [(ngModel)]="lowSeasonSelectedOptions" [clearable]="false"
+                           [closeOnSelect]="false" [dropdownPosition]="top"
+                           [hideSelected]="true"
+                           [items]="lowSeasonOptions" [multiple]="true" [ngModelOptions]="{standalone: true}" [searchable]="false"
+                           bindLabel="name"
+                           bindValue="name" class="dnm-multiple-select dnm-ng-select w-100"
+                           placeholder="Type here"></ng-select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row block-row none-margin-hr">
+          <div class="col none-padding">
+            <div class="d-flex align-items-center justify-content-between block-title">
+              <div class="bl-gradient-title">Public holidays</div>
+              <div class="field-value d-flex align-items-center">
+                <label class="dnm-switch-btn">
+                  <input (change)="hasPublicHolidays = !hasPublicHolidays" [checked]="hasPublicHolidays"
+                         type="checkbox">
+                  <span class="dnm-switch-slider round"></span>
+                </label>
+              </div>
+            </div>
+            <ng-container *ngIf="hasPublicHolidays">
+              <div *ngFor="let item of dateList; let idx = index" class="input-row line-div">
+                <div class="field-name dtpickr-fld-name">
+                  <div class="datepicker-wrp">
+                    <input #d="ngbDatepicker" (click)="d.toggle()" class="form-control" name="dp" ngbDatepicker
+                           placeholder="dd/mm/YYYY" readonly>
+                    <i (click)="d.toggle()" class="calendar no-hover"></i>
+                  </div>
+                </div>
+                <div class="field-value d-flex align-items-center justify-content-between">
+                  <text-input (onFocusOut)="updateCompany($event)" [(ngModel)]="hollidayArray[idx].descr" class="none-padding w-100"
+                              maxlength="256" name="{{item + idx}}"
+                              placeholder="Type here"></text-input>
+                  <div class="delete-item">
+                    <span class="cross-icon"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="input-row">
+                <a class="blue-text-btn" href="javascript:void(0);">
+                  <i class="add-icon"></i>Add New Holiday
+                </a>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+
+        <div class="row none-margin-hr">
+          <div class="col none-padding">
+            <div class="row block-row none-margin-hr">
+              <div class="col none-padding">
+                <div class="d-flex align-items-center justify-content-between block-title">
+                  <div class="bl-gradient-title">Time of use settings</div>
+                  <div class="field-value d-flex align-items-center">
+                    <label class="dnm-switch-btn">
+                      <input (change)="hasTou = !hasTou" [checked]="hasTou" type="checkbox">
+                      <span class="dnm-switch-slider round"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ng-container *ngIf="hasTou">
+              <div class="row none-margin-hr">
+                <div class="col none-padding">
+                  <div class="tou-item-wrp">
+                    <supplier-tou [isTabset]="false"></supplier-tou>
+                  </div>
+                  <div class="tou-item-wrp">
+                    <supplier-tou [isTabset]="true"></supplier-tou>
+                  </div>
+                </div>
+              </div>
+              <div class="row none-margin-hr">
+                <div class="col none-padding">
+                  <a class="blue-text-btn" href="javascript:void(0);">
+                    <i class="add-icon"></i>Add New Configuration
+                  </a>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>-->
+
+        <div class="row none-margin-hr">
+          <div class="col none-padding">
+            <div class="d-flex justify-content-end footer-buttons">
+              <button (click)="cancel()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+              <button (click)="save()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save</button>
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

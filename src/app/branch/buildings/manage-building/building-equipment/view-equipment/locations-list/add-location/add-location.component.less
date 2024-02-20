@@ -1,0 +1,62 @@
+//@import 'variables.less';
+@import 'required-fields.less';
+
+.add-location .modal-body {
+  padding: 40px;
+}
+
+.add-location .row-description {
+  align-items: baseline;
+}
+
+.add-location .radio-btn-row {
+  line-height: 50px;
+}
+
+.add-location .dnm-radio-btn .state label {
+  font-size: 14px;
+}
+
+.add-location .dnm-radio-btn .state label:before,
+.add-location .dnm-radio-btn .state label:after {
+  top: calc((0% - (100% - 17px)) - 8%);
+}
+
+.add-location .dnm-radio-btn input:checked ~ .state label:after {
+  font-size: 14px;
+}
+
+.add-location .dnm-radio-btn input:checked ~ .state label:after,
+.add-location .dnm-radio-btn .state label:after {
+  -webkit-transform: scale(.50);
+  transform: scale(.50);
+}
+
+.add-location .new-ver-r-btn {
+  float: left;
+  width: 250px;
+}
+
+.add-location .date {
+  width: 234px;
+  margin-left: 20px;
+  background-color: @color-background-white;
+}
+
+.add-location .footer-btns {
+  margin-top: 50px;
+}
+
+.add-location .dnm-btn-cancel,
+.add-location .dnm-btn-primary {
+  width: 200px;
+  min-width: 200px;
+}
+
+.add-location .dnm-btn-cancel {
+  margin-right: 30px;
+}
+
+::ng-deep .add-location input.date ~ ngb-datepicker.dropdown-menu {
+  width: 234px;
+}

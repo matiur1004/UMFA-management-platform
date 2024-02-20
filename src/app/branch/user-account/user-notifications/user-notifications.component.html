@@ -1,0 +1,83 @@
+<div class="row none-margin-hr user-notifications">
+  <div class="col-xl-11 col-lg-11 col-md-12 col-sm-12 none-padding">
+
+    <!-- user notifications -->
+    <div class="ntf-tab">
+      <div class="bl-gradient-title">Notification Preferences</div>
+      <div *ngIf="model" class="container-fluid permissions-container none-padding">
+        <div class="item-content d-flex align-items-center">
+          <div class="col-left">
+            <div class="permission-name">Assigning to a user profile</div>
+            <div class="permission-description">
+              You will receive a notification of assigning you to any user profile.
+            </div>
+          </div>
+          <div class="col-right text-right d-flex align-items-center justify-content-end">
+            <label class="dnm-switch-btn">
+              <input (ngModelChange)="onValueChanged()" [(ngModel)]="model.userAssigned" type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+            </label>
+          </div>
+        </div>
+        <div class="item-content d-flex align-items-center">
+          <div class="col-left">
+            <div class="permission-name">New permissions granted</div>
+            <div class="permission-description">
+              You will be notified if new permissions are granted to you.
+            </div>
+          </div>
+          <div class="col-right text-right d-flex align-items-center justify-content-end">
+            <label class="dnm-switch-btn">
+              <input (ngModelChange)="onValueChanged()" [(ngModel)]="model.permissionGranted" type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+            </label>
+          </div>
+        </div>
+        <div class="item-content d-flex align-items-center">
+          <div class="col-left">
+            <div class="permission-name">Client added to a user profile</div>
+            <div class="permission-description">
+              You will be notified when any client is added to the user profile.
+            </div>
+          </div>
+          <div class="col-right text-right d-flex align-items-center justify-content-end">
+            <label class="dnm-switch-btn">
+              <input (ngModelChange)="onValueChanged()" [(ngModel)]="model.clientAdded" type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+            </label>
+          </div>
+        </div>
+        <div class="item-content d-flex align-items-center">
+          <div class="col-left">
+            <div class="permission-name">Portfolio added to a user profile</div>
+            <div class="permission-description">
+              You will be notified when any portfolio is added to the user profile.
+            </div>
+          </div>
+          <div class="col-right text-right d-flex align-items-center justify-content-end">
+            <label class="dnm-switch-btn">
+              <input (ngModelChange)="onValueChanged()" [(ngModel)]="model.portfolioAdded" type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+            </label>
+          </div>
+        </div>
+        <div class="item-content d-flex align-items-center">
+          <div class="col-left">
+            <div class="permission-name">Building added to a user profile</div>
+            <div class="permission-description">
+              You will be notified when any building is added to the user profile.
+            </div>
+          </div>
+          <div class="col-right text-right d-flex align-items-center justify-content-end">
+            <label class="dnm-switch-btn">
+              <input (ngModelChange)="onValueChanged()" [(ngModel)]="model.buildingAdded" type="checkbox">
+              <span class="dnm-switch-slider round"></span>
+            </label>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,172 @@
+<div class="container-fluid none-padding admin-users-roles">
+  <!-- left side roles container -->
+  <div class="roles-container">
+    <div class="row-header">
+      <span class="roles-container_title">All Roles ({{model.total}})</span>
+      <a (click)="onAddRole()" *ngIf="!isNew" class="blue-text-btn add-role-btn d-flex align-items-center"
+         href="javascript:void(0)">
+        <i class="add-icon"></i>
+        Add Role
+      </a>
+    </div>
+    <div class="roles-list-container">
+      <ul class="roles-list">
+        <li (click)="onRoleSelected(role)"
+            *ngFor="let role of model.items"
+            [ngClass]="{'selected':role.isSelected}" class="list-item text-uppercase text-ellipsis d-flex flex-row justify-content-between align-items-center">
+          <span class="d-block">{{role.name}}</span>
+          <span (click)="onRoleDelete($event, role)" *ngIf="role.canDelete" class="cross-icon"></span>
+        </li>
+      </ul>
+    </div>
+
+    <pager (onPageChange)="setPage($event)" [pageSize]="pageSize" [page]="page" [total]="model.total"></pager>
+  </div>
+
+  <!-- right side permissions container -->
+  <ng-container *ngIf="role">
+    <div class="container-fluid permissions-container">
+
+      <div *ngIf="!isNew && !role.canEdit" class="role-not-editable">
+        <div class="row title-row">
+          <div class="col-12 d-flex align-items-center">
+            <span class="text-title text-ellipsis">{{role.name}}</span>
+            <span>
+              <i class="d-flex align-items-center icon-relative uneditable-icon" ngbTooltip="Global role cannot be edited"
+                 placement="top"></i>
+            </span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <span class="text-undertitle">
+              {{role.description}}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <form *ngIf="!isNew && role.canEdit" [formGroup]="form">
+        <div class="title-row">
+          <div [ngClass]="{'dnm-invalid-inp': formErrors['name']}">
+            <text-input (onFocusOut)="onRoleUpdate()" [placeholder]="'Type a name here'" class="text-title"
+                        formControlName="name"></text-input>
+          </div>
+          <small *ngIf="formErrors['name']" class="alert-danger">
+            {{ formErrors["name"] }}
+          </small>
+        </div>
+        <div>
+          <div [ngClass]="{'dnm-invalid-inp': formErrors['description']}">
+            <text-input (onFocusOut)="onRoleUpdate()" [placeholder]="'Type a description here'" class="text-undertitle"
+                        formControlName="description"></text-input>
+          </div>
+          <small *ngIf="formErrors['description']" class="alert-danger">
+            {{ formErrors["description"] }}
+          </small>
+        </div>
+      </form>
+
+      <form *ngIf="isNew" [formGroup]="form">
+        <div class="input-row">
+          <div class="field-name">
+            <span class="list-header_title text-uppercase">Role name:</span>
+          </div>
+          <div class="field-value">
+            <div [ngClass]="{'dnm-invalid-inp': formErrors['name']}">
+              <input class="form-control req-frm-fld" formControlName="name" placeholder="Type here" type="text"/>
+            </div>
+          </div>
+          <div class="field-name"></div>
+          <div class="field-value">
+            <small *ngIf="formErrors['name']" class="alert-danger">
+              {{ formErrors["name"] }}
+            </small>
+          </div>
+        </div>
+        <div class="input-row align-items-baseline">
+          <div class="field-name">
+            <span class="list-header_title text-uppercase">Description:</span>
+          </div>
+          <div class="field-value">
+            <div [ngClass]="{'dnm-invalid-inp': formErrors['description']}">
+              <textarea class="form-control" formControlName="description" placeholder="Type here"></textarea>
+            </div>
+          </div>
+          <div class="field-name"></div>
+          <div class="field-value">
+            <small *ngIf="formErrors['description']" class="alert-danger">
+              {{ formErrors["description"] }}
+            </small>
+          </div>
+        </div>
+      </form>
+
+      <div class="row list-header">
+        <div class="col-6">
+          <span class="list-header_title text-uppercase">Permission Type:</span>
+        </div>
+      </div>
+
+      <!-- <div class="row list-header">
+        <div class="col-12 d-flex align-items-center">
+          <span class="list-header_title text-uppercase">Selectable inside branch:</span>
+          <label class="dnm-switch-btn">
+            <input type="checkbox" [ngModel]="role.isGlobal" (ngModelChange)="onGlobalStatusChanged()"
+                   [disabled]="!role.canEdit">
+            <span class="dnm-switch-slider round"></span>
+          </label>
+        </div>
+      </div> -->
+
+      <div *ngFor="let permission of role.permissions" class="tree-view">
+        <ul>
+          <li class="root-item">
+            <div class="item-content d-flex align-items-center">
+              <div class="col-left">
+                <div class="permission-name">{{permission.name}}</div>
+                <div class="permission-description">
+                  {{permission.description}}
+                </div>
+              </div>
+              <div class="col-right d-flex align-items-center justify-content-end">
+                <label class="dnm-switch-btn">
+                  <input (ngModelChange)="onValueChanged(permission)" [disabled]="!role.canEdit" [ngModel]="permission.isActive"
+                         checked="checked" type="checkbox">
+                  <span class="dnm-switch-slider round"></span>
+                </label>
+              </div>
+            </div>
+            <ul>
+              <li *ngFor="let childPermission of permission.permissions">
+                <div class="item-content d-flex align-items-center">
+                  <div class="col-left">
+                    <div class="permission-name">{{childPermission.name}}</div>
+                    <div class="permission-description">
+                      {{childPermission.description}}
+                    </div>
+                  </div>
+                  <div class="col-right d-flex align-items-center justify-content-end">
+                    <label class="dnm-switch-btn">
+                      <input (ngModelChange)="onValueChanged(childPermission)" [disabled]="!role.canEdit" [ngModel]="childPermission.isActive"
+                             checked="checked" type="checkbox">
+                      <span class="dnm-switch-slider round"></span>
+                    </label>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <div *ngIf="isNew" class="none-padding footer-buttons justify-content-end">
+        <button (click)="onCancel()" class="dnm-btn dnm-btn-cancel text-uppercase size-lg" type="button">Cancel</button>
+        <button (click)="onSubmit()" class="dnm-btn dnm-btn-primary text-uppercase size-lg" type="button">Save</button>
+      </div>
+
+    </div>
+  </ng-container>
+
+</div>

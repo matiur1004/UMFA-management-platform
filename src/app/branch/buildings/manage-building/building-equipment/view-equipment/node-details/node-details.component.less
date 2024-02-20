@@ -1,0 +1,231 @@
+//@import 'variables.less';
+@import 'required-fields.less';
+
+.node-details {
+  padding: 40px 0;
+}
+
+.node-details .node-details-header {
+  margin-bottom: 40px;
+}
+
+.node-details .location-dets-title {
+  font-family: Gotham Medium;
+  font-size: 30px;
+  line-height: 30px;
+  color: @color-text-primary;
+}
+
+.node-details .location-dets-lbl {
+  margin-left: 20px;
+  display: inline-block;
+  font-size: 12px;
+  height: 20px;
+  color: @color-background-white;
+  border-radius: 20px;
+  line-height: 20px;
+  padding: 0 10px;
+  .gradient-grey();
+}
+
+.node-details .location-dets-title, .node-details .location-dets-lbl {
+  vertical-align: middle;
+}
+
+.node-details .location-dets-title ~ .input-row {
+  margin-bottom: 40px;
+}
+
+.node-details .bl-gradient-title {
+  line-height: 1;
+  margin-bottom: 40px;
+}
+
+.node-details .changes-btns {
+  padding-top: 15px;
+  padding-bottom: 25px;
+}
+
+.node-details .changes-btns .dnm-btn-cancel {
+  margin-right: 20px;
+}
+
+.node-details .alloc-equip-row {
+  margin-bottom: 30px;
+}
+
+
+.node-details .alloc-equip-item {
+  background: @color-background-white;
+  width: 150px;
+  height: 100px;
+  border-radius: 10px;
+  margin-right: 30px;
+}
+
+.node-details .service-icon {
+  background-size: 26px;
+  margin-bottom: 10px;
+}
+
+.node-details .electricity-icon:before {
+  background: @color-background-white;
+}
+
+.node-details .alloc-units,
+.node-details .alloc-equipment {
+  .gradient-blue();
+}
+
+.node-details .alloc-equip-val,
+.node-details .alloc-equip-lbl {
+  font-family: Gotham Book;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.node-details .alloc-equip-val {
+  font-size: 36px;
+  line-height: 36px;
+  margin-bottom: 10px;
+}
+
+.node-details .alloc-equip-lbl {
+  font-size: 13px;
+}
+
+.node-details .search-row {
+  margin-bottom: 30px;
+}
+
+.node-details .group-search-input {
+  background-color: @color-background-white;
+}
+
+
+.node-details .nav-row {
+  margin-bottom: 30px;
+}
+
+.node-details .results-label {
+  font-size: 16px;
+  color: @color-text-tertiary;
+  margin-right: 20px;
+}
+
+.node-details .drpdwn-fltr-lbl {
+  font-family: Gotham Medium;
+  font-size: 15px;
+  line-height: 15px;
+  color: @color-text-tertiary;
+  margin-right: 20px;
+}
+
+.node-details .fltr-drpdwn-btn,
+.node-details .fltr-drpdwn-menu {
+  min-width: 200px;
+  width: 200px;
+  text-align: left;
+}
+
+.node-details .list-header {
+  padding: 0 16px;
+}
+
+.node-details .list-header .header-field {
+  text-transform: uppercase;
+}
+
+.node-details .list-body {
+  border: 1px solid @color-line;
+  background-color: @color-background-white;
+}
+
+.node-details .body-row {
+  padding: 10px 15px;
+  min-height: 70px;
+  border-bottom: 1px solid @color-line;
+}
+
+.node-details .body-row:last-child {
+  border-bottom: none;
+}
+
+.node-details .equip-id-lbl {
+  font-family: Gotham Medium;
+  font-size: 16px;
+  line-height: 16px;
+  color: @color-text-secondary;
+}
+
+.node-details .brand-model-lbl,
+.node-details .register-lbl {
+  font-family: Gotham Book;
+  font-size: 13px;
+  line-height: 13px;
+  color: @color-text-tertiary;
+}
+
+.node-details .register-lbl,
+.node-details .form-control {
+  line-height: 30px;
+  margin-bottom: 10px;
+}
+
+.node-details .register-lbl:last-child,
+.node-details .form-control:last-child {
+  margin-bottom: 0;
+}
+
+.node-details .register-lbl {
+  line-height: 30px;
+}
+
+.node-details .form-control.calc-fact-input {
+  height: 30px;
+  width: 100px;
+}
+
+.node-details .node-dtls-textarea {
+  height: 80px;
+  resize: none;
+}
+
+.node-details .node-gen-info-title {
+  padding-top: 0;
+}
+
+.node-dtls-descr-wrp {
+  display: flex;
+  align-items: flex-start;
+}
+
+.node-dtls-descr-wrp > .node-gen-info-title {
+  padding-top: 10px;
+}
+
+.node-dtls-descr-wrp .node-dtls-textarea {
+  line-height: 1.5;
+}
+
+.node-details .fullwidth-dropdown .dropdown-toggle {
+  border-color: @color-stroke;
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+
+.node-details .dnm-btn-primary,
+.node-details .dnm-btn-cancel {
+  width: 184px;
+}
+
+.node-details .dnm-tabset .nav-tabs {
+  .nav-link {
+    margin-left: 0;
+    margin-right: 65px;
+  }
+
+  .nav-item:last-child .nav-link {
+    margin-right: 0;
+  }
+}

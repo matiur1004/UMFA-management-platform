@@ -1,0 +1,253 @@
+@import 'variables.less';
+
+.manage-shops-nav {
+  margin-bottom: 8px;
+
+  .col {
+    display: flex;
+    align-items: center;
+  }
+
+  .shops-action-menu {
+    margin-left: 30px;
+  }
+
+  .filter-res-lbl {
+    font-size: 16px;
+    color: @color-text-tertiary;
+    white-space: nowrap;
+  }
+
+  .upload-file-input {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+
+  .upload-file-input + label {
+    cursor: pointer;
+  }
+
+  .import-data-btn {
+    position: relative;
+    background-color: @color-background-button;
+    color: @color-main-accent;
+    padding: 0 50px 0 20px;
+    font-size: 14px;
+    border-radius: 25px;
+    line-height: 14px;
+    height: 38px;
+    margin-right: 20px;
+
+    &:hover {
+      background-color: @color-background-tertiary;
+    }
+  }
+
+  label.import-data-btn {
+    margin-bottom: 0;
+  }
+
+  .import-data-icon {
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    background-size: 17px;
+    display: inline-block;
+    width: 17px;
+    height: 17px;
+  }
+
+  .dnm-dropdown-select,
+  .dropdown-toggle {
+    width: 200px;
+  }
+
+  .dropdown-title {
+    border-bottom: 1px solid @color-line;
+    padding: 10px;
+    font-family: Gotham Medium;
+    font-size: 12px;
+    color: @color-description;
+    text-transform: uppercase;
+  }
+
+  .dropdown-item {
+    text-transform: none;
+    font-family: Gotham Book;
+    font-size: 15px;
+  }
+
+  .dd-filter-lbl {
+    margin-right: 20px;
+    font-family: Gotham Medium;
+    font-size: 15px;
+    color: @color-text-tertiary;
+  }
+}
+
+.mng-shps-tbl {
+  padding-bottom: 28px;
+
+  &.table-vertical-scroll {
+    height: calc(100vh - 446px);
+  }
+
+  .dnm-checkbox {
+    margin-right: 20px;
+  }
+
+  .field-value {
+    width: 100%;
+  }
+
+  .mng-shps-floor {
+    width: 100px;
+  }
+
+  .field-value .form-control:disabled {
+    background-color: @color-background-primary;
+  }
+
+  .status-col {
+    width: 120px;
+  }
+
+  .floor-col {
+    width: 150px;
+  }
+
+  .mng-shps-stat {
+    border-radius: 13px;
+    color: @color-background-white;
+    font-family: Gotham Book;
+    font-size: 13px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+  }
+
+  .mng-shps-stat.st-occupied {
+    background-image: linear-gradient(to right, #628ad8, #5b7ec9, #5472ba, #4d66ab, #465a9d);
+  }
+
+  .mng-shps-stat.st-vacant {
+    background-image: linear-gradient(to right, #e7c05c, #e4b456, #e1a850, #dd9d4c, #d89148);
+  }
+
+  .mng-shps-stat.st-spare {
+    background-image: linear-gradient(to right, #899696, #7e8a8b, #747f80, #697475, #5f696a);
+  }
+}
+
+.mng-shps-footer .dnm-btn-cancel {
+  margin-right: 30px;
+}
+
+.add-shop-btn {
+  margin-left: 25px;
+  white-space: nowrap;
+}
+
+.checkbox-col {
+  flex: 0 0 50px;
+  max-width: 50px;
+  padding-left: 15px;
+}
+
+.shop-name-col {
+  flex: 0 0 calc(100% - 50px);
+  max-width: calc(100% - 50px);
+  padding-right: 15px;
+}
+
+/* #region create new common areas */
+
+.create-new-shop {
+  padding-top: 150px;
+}
+
+.create-new-shop a {
+  outline: none;
+  font-size: 14px;
+}
+
+.create-new-shop a:first-child {
+  margin-right: 32px;
+}
+
+.create-new-shop .shop-icon {
+  height: 50px;
+  background-image: url('../../../../../../../../assets/images/icons/occupation/common-areas-icon.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 50px;
+  margin-bottom: 20px;
+}
+
+.create-new-shop .new-shop-msg {
+  font-family: 'Gotham Light';
+  color: @color-empty;
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 30px;
+}
+
+.create-new-shop a .add-icon {
+  margin-right: 10px;
+}
+
+/* #endregion */
+
+.shops-list-cont {
+  min-height: calc(100vh - 400px);
+}
+
+.shops-list-cont .main-search-input {
+  margin: 0 20px;
+}
+
+@media (max-width: 1500px) {
+  .col.small-nav {
+    .main-search-input {
+      margin: 0 10px;
+    }
+
+    .dropdown-toggle {
+      width: 140px;
+    }
+
+    .dnm-dropdown-select {
+      width: 140px;
+
+      .ng-select-container {
+        min-width: 140px;
+        width: 140px;
+      }
+    }
+
+    .form-control.group-search-input {
+      width: 250px;
+    }
+
+    .add-shop-btn {
+      margin-left: 10px;
+    }
+
+    .import-data-btn,
+    .dd-filter-lbl {
+      margin-right: 10px;
+    }
+
+    .shops-action-menu {
+      margin-left: 10px;
+    }
+  }
+}

@@ -1,0 +1,210 @@
+<div class="custom-node-attributes">
+  <table class="table table-custom table-striped table-outside-border-body">
+    <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th><span class="head-col">Recommended value</span></th>
+      <th><span class="head-col">Billing value</span></th>
+      <th class="custom-attributes-actions">&nbsp;</th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-container *ngIf="model">
+      <tr class="line-phase">
+        <td class="attrib-name">{{phase.attribute.name}}</td>
+        <td>{{phase.recommendedValue | emptyValue : '-'}}</td>
+        <td>
+          <span>{{phase.billingValue | emptyValue : '-'}}</span>
+        </td>
+        <td class="custom-attributes-actions">
+          <ng-template #tipContentPhase>
+            <note-popup [attachFile]="true" [comment]="phase.comment" [fileUrl]="phase.fileUrl" [file]="phase.file"
+                        [hideCloseButton]="true" anchorSide="none"></note-popup>
+          </ng-template>
+          <button *ngIf="phase.billingValue && phase.comment" [autoClose]="'outside'"
+                  [ngbTooltip]="tipContentPhase" class="dnm-btn attribute-note-btn dnm-btn-note" placement="left"
+                  tooltipClass="note-in-tooltip" triggers="click" type="button"></button>
+          <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+            <button class="dnm-btn dnm-btn-menu" ngbDropdownToggle ngbTooltip="Menu"></button>
+            <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+              <button (confirmAction)="onCustomizeField(phase, $event)" [set-custom-attribute-bind-dialog]="phase"
+                      class="dropdown-item d-flex justify-content-between">
+                Customize
+                <i class="dnm-icon split-icon"></i>
+              </button>
+              <button (confirmAction)="onResetField(phase)" class="dropdown-item d-flex justify-content-between"
+                      confirm-dialog>
+                Reset to recommended
+                <i class="dnm-icon spare-icon"></i>
+              </button>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr class="line-cb-size-1">
+        <td class="attrib-name">1 phase CB size</td>
+        <td>
+          {{totalOnePhaseAmperage | number : '1.0-2' | emptyValue : '-'}}
+          <span>{{cbSize.attribute.unit.name}}</span>
+        </td>
+        <td>-</td>
+        <td class="custom-attributes-actions">&nbsp;</td>
+      </tr>
+      <tr class="line-cb-size-3">
+        <td class="attrib-name">3 phase CB size</td>
+        <td>
+          {{totalThreePhasesAmperage | number : '1.0-2' | emptyValue : '-'}}
+          <span>{{cbSize.attribute.unit.name}}</span>
+        </td>
+        <td>-</td>
+        <td class="custom-attributes-actions">&nbsp;</td>
+      </tr>
+      <tr class="line-cb-size">
+        <td class="attrib-name">{{cbSize.attribute.name}}</td>
+        <td>
+          {{cbSize.recommendedValue | number : '1.0-2' | emptyValue : '-'}}
+          <span *ngIf="cbSize.recommendedValue">{{cbSize.attribute.unit.name}}</span>
+        </td>
+        <td>
+          {{cbSize.billingValue | number : '1.0-2' | emptyValue : '-'}}
+          <span *ngIf="cbSize.billingValue">{{cbSize.attribute.unit.name}}</span>
+        </td>
+        <td class="custom-attributes-actions">
+          <ng-template #tipContentCBSize>
+            <note-popup [attachFile]="true" [comment]="cbSize.comment" [fileUrl]="cbSize.fileUrl" [file]="cbSize.file"
+                        [hideCloseButton]="true" anchorSide="none"></note-popup>
+          </ng-template>
+          <button *ngIf="cbSize.billingValue && cbSize.comment" [autoClose]="'outside'"
+                  [ngbTooltip]="tipContentCBSize" class="dnm-btn attribute-note-btn dnm-btn-note" placement="left"
+                  tooltipClass="note-in-tooltip" triggers="click" type="button"></button>
+          <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+            <button class="dnm-btn dnm-btn-menu" ngbDropdownToggle ngbTooltip="Menu"></button>
+            <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+              <button (confirmAction)="onCustomizeField(cbSize, $event)" [set-custom-attribute-bind-dialog]="cbSize"
+                      class="dropdown-item d-flex justify-content-between">
+                Customize
+                <i class="dnm-icon split-icon"></i>
+              </button>
+              <button (confirmAction)="onResetField(cbSize)" class="dropdown-item d-flex justify-content-between"
+                      confirm-dialog>
+                Reset to recommended
+                <i class="dnm-icon spare-icon"></i>
+              </button>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr class="line-total-cb-size">
+        <td class="attrib-name">{{totalCbSize.attribute.name}}</td>
+        <td>
+          {{totalCbSize.recommendedValue | number : '1.0-2' | emptyValue : '-'}}
+          <span *ngIf="totalCbSize.recommendedValue">{{totalCbSize.attribute.unit?.name}}</span>
+        </td>
+        <td>
+          {{totalCbSize.billingValue | number : '1.0-2' | emptyValue : '-'}}
+          <span *ngIf="totalCbSize.billingValue">{{totalCbSize.attribute.unit?.name}}</span>
+        </td>
+        <td class="custom-attributes-actions">
+          <ng-template #tipContentTotalCbSize>
+            <note-popup [attachFile]="true" [comment]="totalCbSize.comment" [fileUrl]="totalCbSize.fileUrl"
+                        [file]="totalCbSize.file" [hideCloseButton]="true" anchorSide="none">
+            </note-popup>
+          </ng-template>
+          <button *ngIf="totalCbSize.billingValue && totalCbSize.comment" [autoClose]="'outside'"
+                  [ngbTooltip]="tipContentTotalCbSize" class="dnm-btn attribute-note-btn dnm-btn-note"
+                  placement="left" tooltipClass="note-in-tooltip" triggers="click"
+                  type="button"></button>
+          <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+            <button class="dnm-btn dnm-btn-menu" ngbDropdownToggle ngbTooltip="Menu"></button>
+            <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+              <button (confirmAction)="onCustomizeField(totalCbSize, $event)"
+                      [set-custom-attribute-bind-dialog]="totalCbSize"
+                      class="dropdown-item d-flex justify-content-between">
+                Customize
+                <i class="dnm-icon split-icon"></i>
+              </button>
+              <button (confirmAction)="onResetField(totalCbSize)" class="dropdown-item d-flex justify-content-between"
+                      confirm-dialog>
+                Reset to recommended
+                <i class="dnm-icon spare-icon"></i>
+              </button>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr class="line-voltage">
+        <td class="attrib-name">{{voltage.attribute.name}}</td>
+        <td>{{voltage.recommendedValue | emptyValue : '-'}} </td>
+        <td>{{voltage.billingValue | emptyValue : '-'}}</td>
+        <td class="custom-attributes-actions">
+          <ng-template #tipContentVoltage>
+            <note-popup [attachFile]="true" [comment]="voltage.comment" [fileUrl]="voltage.fileUrl"
+                        [file]="voltage.file" [hideCloseButton]="true" anchorSide="none"></note-popup>
+          </ng-template>
+          <button *ngIf="voltage.billingValue && voltage.comment" [autoClose]="'outside'"
+                  [ngbTooltip]="tipContentVoltage" class="dnm-btn attribute-note-btn dnm-btn-note" placement="left"
+                  tooltipClass="note-in-tooltip" triggers="click" type="button"></button>
+          <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+            <button class="dnm-btn dnm-btn-menu" ngbDropdownToggle ngbTooltip="Menu"></button>
+            <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+              <button (confirmAction)="onCustomizeField(voltage, $event)" [set-custom-attribute-bind-dialog]="voltage"
+                      class="dropdown-item d-flex justify-content-between">
+                Customize
+                <i class="dnm-icon split-icon"></i>
+              </button>
+              <button (confirmAction)="onResetField(voltage)" class="dropdown-item d-flex justify-content-between"
+                      confirm-dialog>
+                Reset to recommended
+                <i class="dnm-icon spare-icon"></i>
+              </button>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr class="line-max-demand">
+        <td class="attrib-name">{{maxDemand.attribute.name}}</td>
+        <td>
+          {{maxDemand.recommendedValue | number : '1.0-2' | emptyValue : '-'}}
+          <span *ngIf="maxDemand.recommendedValue">{{maxDemand.attribute.unit.name}}</span>
+        </td>
+        <td>
+          {{maxDemand.billingValue | number : '1.0-2' | emptyValue : '-'}}
+          <span *ngIf="maxDemand.billingValue">{{maxDemand.attribute.unit.name}}</span>
+        </td>
+        <td class="custom-attributes-actions">
+          <ng-template #tipContentMaxDemand>
+            <note-popup [attachFile]="true" [comment]="maxDemand.comment" [fileUrl]="maxDemand.fileUrl"
+                        [file]="maxDemand.file" [hideCloseButton]="true" anchorSide="none"></note-popup>
+          </ng-template>
+          <button *ngIf="maxDemand.billingValue && maxDemand.comment" [autoClose]="'outside'"
+                  [ngbTooltip]="tipContentMaxDemand" class="dnm-btn attribute-note-btn dnm-btn-note"
+                  placement="left" tooltipClass="note-in-tooltip" triggers="click" type="button"></button>
+          <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+            <button class="dnm-btn dnm-btn-menu" ngbDropdownToggle ngbTooltip="Menu"></button>
+            <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+              <button (confirmAction)="onCustomizeField(maxDemand, $event)"
+                      [set-custom-attribute-bind-dialog]="maxDemand"
+                      class="dropdown-item d-flex justify-content-between">
+                Customize
+                <i class="dnm-icon split-icon"></i>
+              </button>
+              <button (confirmAction)="onResetField(maxDemand)" class="dropdown-item d-flex justify-content-between"
+                      confirm-dialog>
+                Reset to recommended
+                <i class="dnm-icon spare-icon"></i>
+              </button>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </ng-container>
+    </tbody>
+  </table>
+  <div class="d-flex justify-content-end actions-btns">
+    <button (click)="onCancelForm()" [routerLink]="['/branch', branchId, 'buildings', buildingId, 'version', versionDay, 'equipment', 'nodes']" class="dnm-btn dnm-btn-cancel text-uppercase"
+            type="button">
+      Cancel
+    </button>
+    <button (click)="onSaveFormData()" class="dnm-btn dnm-btn-primary text-uppercase" type="button" [disabled]="buildingPeriodIsFinalized">Save</button>
+  </div>
+</div>

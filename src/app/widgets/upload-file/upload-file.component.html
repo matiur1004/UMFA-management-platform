@@ -1,0 +1,14 @@
+<div #uploadForm [ngClass]="{'file-selected': selectedFileName, 'disabled': disabled}" class="upload-form">
+  <form autocomplete="" enctype="multipart/form-data" method="post">
+    <input #fileInput (change)="onChange($event)" [(ngModel)]="files" [disabled]="!!disabled" name="file_input" required
+           type="file">
+    <span [hidden]="!selectedFileName" class="selected-file-name">{{ selectedFileName }}
+      <br/>
+      </span>
+    <span class="select-file-message">
+        Drag here or
+        <span (click)="onClickSelectFile()" class="click-attach">attach</span>
+      {{fileExtend}} file
+      </span>
+  </form>
+</div>

@@ -1,0 +1,12 @@
+<svg data-name="Layer 1" id="Layer_1" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>.cls-1 {
+      fill: #edeff0;
+    }</style>
+  </defs>
+  <title>left menu</title>
+  <path class="cls-1"
+        d="M15,5A5,5,0,1,0,5,5H0V20H20V5ZM10,1.5A3.5,3.5,0,0,1,13.5,5h-7A3.5,3.5,0,0,1,10,1.5Zm7.57,5-2.5,5H4.93l-2.5-5ZM1.5,18.5V8L4,13H16l2.5-5V18.5Z"/>
+  <rect class="cls-1" height="1.5" width="2" x="4" y="14"/>
+  <rect class="cls-1" height="1.5" width="2" x="14" y="14"/>
+</svg>

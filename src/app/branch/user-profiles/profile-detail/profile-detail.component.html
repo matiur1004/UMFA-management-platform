@@ -1,0 +1,425 @@
+<div class="profile-detail">
+  <div class="container-fluid top-container">
+    <div class="row content">
+      <div class="col-12 col-lg-10 none-padding">
+        <h1 class="page-title text-uppercase">User profiles</h1>
+      </div>
+      <div class="col-12 col-lg-2 none-padding text-right">
+        <button (click)="onEdit()"
+                class="dnm-btn dnm-btn-primary dnm-btn-primary_red size-lg text-uppercase add-entity-btn text-left"
+                type="button">
+          <span>Manage</span>
+          <i class="icon-relative manage-profile-icon"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!isNew" class="profile-title">
+    <text-input (onFocusOut)="profileTitleChanged()" [(model)]="model.name" [placeholder]="'Type a name here'"
+                class="profile-title-field profile-name"></text-input>
+    <text-input (onFocusOut)="profileTitleChanged()" [(model)]="model.description"
+                [placeholder]="'Type a description here'" class="profile-title-field profile-description"></text-input>
+  </div>
+
+  <div *ngIf="!isNew" class="container-fluid none-padding">
+    <div class="row">
+      <div class="col">
+        <div class="filters-container container-fluid none-padding">
+          <div class="row">
+            <span class="clients-selected-label col-12 col-lg-4">{{model.clients | arrayLength}}
+              Client(s) selected</span>
+            <div class="col-12 col-lg-8 text-left text-sm-right">
+              <span class="filter-by-label d-md-inline-block d-sm-block">Filter By:</span>
+              <div class="dropdown filter-dropdown d-md-inline-block small d-sm-block" ngbDropdown
+                   placement="bottom-right">
+                <button
+                  class="btn btn-secondary dropdown-toggle bld-per-page-btn text-left d-flex justify-content-between"
+                  id="ddFilterBy" ngbDropdownToggle>
+                  {{filterBy}}
+                </button>
+                <div aria-labelledby="ddFilterBy" class="dropdown-menu" ngbDropdownMenu>
+                  <button (click)="onFilterBy('Clients')" class="dropdown-item">Clients</button>
+                  <button (click)="onFilterBy('Portfolios')" class="dropdown-item">Portfolios</button>
+                  <button (click)="onFilterBy('Buildings')" class="dropdown-item">Buildings</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="selectedClients.length > 0" class="client-list container-fluid">
+
+          <ng-container *ngFor="let client of selectedClients">
+            <!-- Clients -->
+            <div (click)="expandClient($event, client)"
+                 [ngClass]="{'client-item-expanded': client.isDetailed, 'd-none' : filterBy === 'Portfolios' || filterBy === 'Buildings'}"
+                 class="row client-item align-items-center">
+              <div class="col-10 col-lg-10">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-auto none-padding">
+                      <logo-container [url]="client.logoUrl"
+                                      logo-class="client-logo-wrp d-flex justify-content-center full-height">
+                        <div class="logo-abbreviation d-flex align-items-center">
+                          <span>{{client.name[0].toUpperCase()}}</span>
+                        </div>
+                      </logo-container>
+                    </div>
+                    <div class="col-auto none-padding">
+                      <div class="client-name vertical-middle">
+                        {{client.name}}
+                        <div class="caption">{{client.portfoliosLength}} portfolio(s) + {{client.buildingsLength}}
+                          buildings selected
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-2 col-lg-2 text-right">
+                <span [ngClass]="{'expand-icon': !client.isDetailed, 'collapse-icon': client.isDetailed}"
+                      class="icon-relative expand-btn">
+                </span>
+                <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+                  <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle></button>
+                  <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                    <button (click)="onEdit(false)" class="dropdown-item d-flex justify-content-between" data-menu-item>
+                      Manage
+                      <i class="dnm-icon edit-icon"></i>
+                    </button>
+                    <button (click)="onClientRemove(client.id)" class="dropdown-item d-flex justify-content-between"
+                            data-menu-item>
+                      Remove
+                      <i class="dnm-icon delete-icon"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <ng-container *ngIf="client.isDetailed">
+              <ng-container *ngFor="let portfolio of client.portfolios">
+                <!-- Portfolio -->
+                <div (click)="expandPortfolio($event, portfolio)" [ngClass]="{'d-none': filterBy === 'Buildings'}"
+                     class="row portfolio-item align-items-center">
+                  <div class="col-9 col-lg-9">
+                    <div class="container-fluid">
+                      <div class="row">
+                        <div class="col-auto none-padding">
+                          <logo-container [url]="client.logoUrl"
+                                          logo-class="portfolio-logo-wrp d-flex justify-content-center full-height">
+                            <div class="logo-abbreviation d-flex align-items-center">
+                              <span>{{portfolio.name[0].toUpperCase()}}</span>
+                            </div>
+                          </logo-container>
+                        </div>
+                        <div class="col-auto none-padding">
+                          <div class="vertical-middle">
+                            <div class="portfolio-name">Portfolio #1 ({{portfolio.name}})</div>
+                            <span class="portfolio-details">{{portfolio.buildingsLength}} buildings</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-3 col-lg-3 text-right">
+                    <span [ngClass]="{'expand-icon': !portfolio.isDetailed, 'collapse-icon': portfolio.isDetailed}"
+                          class="icon-relative expand-btn">
+                    </span>
+                    <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block"
+                         ngbDropdown>
+                      <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle></button>
+                      <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                        <button (click)="onEdit(false)" class="dropdown-item d-flex justify-content-between"
+                                data-menu-item>
+                          Manage
+                          <i class="dnm-icon edit-icon"></i>
+                        </button>
+                        <button (click)="onPortfolioRemove(client, portfolio.id)" class="dropdown-item d-flex justify-content-between"
+                                data-menu-item>
+                          Remove
+                          <i class="dnm-icon delete-icon"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Buildings -->
+                <ng-container *ngIf="portfolio.isDetailed">
+                  <div *ngFor="let building of portfolio.buildings" class="row building-item align-items-center">
+                    <div class="col-5 col-lg-5">
+                      <div class="container-fluid">
+                        <div class="row">
+                          <div class="col-auto none-padding">
+                            <logo-container [url]="client.logoUrl"
+                                            logo-class="building-logo-wrp d-flex justify-content-center full-height">
+                              <div class="logo-abbreviation d-flex align-items-center">
+                                <span>{{building.name[0].toUpperCase()}}</span>
+                              </div>
+                            </logo-container>
+                          </div>
+                          <div class="col-auto none-padding">
+                            <div class="building-name vertical-middle">
+                              {{building.name}}
+                              <div class="building-details"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-6 col-lg-6">
+                      <div class="d-flex align-items-center">
+                        <div class="address">
+                          {{building.addressDescription}}
+                        </div>
+                        <div class="total-gla">{{building.totalGla | number}} sq m</div>
+                        <div class="total-meters"></div>
+                      </div>
+                    </div>
+                    <div class="col-1 col-lg-1 text-right">
+                      <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block"
+                           ngbDropdown>
+                        <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle></button>
+                        <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                          <button (click)="onEdit(false)" class="dropdown-item d-flex justify-content-between"
+                                  data-menu-item>
+                            Manage
+                            <i class="dnm-icon edit-icon"></i>
+                          </button>
+                          <button (click)="onBuildingRemove(portfolio, building.id)" class="dropdown-item d-flex justify-content-between"
+                                  data-menu-item>
+                            Remove
+                            <i class="dnm-icon delete-icon"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+
+              </ng-container>
+            </ng-container>
+
+          </ng-container>
+          <!--
+          <div class="row client-item align-items-center client-item-expanded">
+            <div class="col-11 col-lg-11">
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-auto none-padding">
+                    <div class="client-logo-wrp text-center">
+                      <img class="client-logo vertical-middle" src="https://dummyimage.com/600x900/1c4220/fff&text=company" alt="Logo" />
+                    </div>
+                  </div>
+                  <div class="col-auto none-padding">
+                    <div class="client-name vertical-middle">
+                      Client's company name
+                      <div class="caption">2 portfolios + 4 buildings selected</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-1 col-lg-1 text-right">
+              <span class="icon-relative expand-icon expand-btn">
+              </span>
+              <div class="dropdown darkness d-inline-block" placement="bottom-right" ngbDropdown>
+                <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle></button>
+                <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                  <button class="dropdown-item">
+                    Edit
+                    <i class="dnm-icon edit-icon"></i>
+                  </button>
+                  <button class="dropdown-item">
+                    Remove
+                    <i class="dnm-icon delete-icon"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row portfolio-item align-items-center">
+            <div class="col-6 col-lg-6">
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-auto none-padding">
+                    <div class="portfolio-logo-wrp text-center">
+                      <img class="portfolio-logo vertical-middle" src="https://www.42gears.com/wp-content/uploads/2015/07/abc_supply_co.jpg" alt="Logo"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-auto none-padding">
+                    <div class="vertical-middle">
+                      <div class="portfolio-name">Portfolio #1</div>
+                      <span class="portfolio-details">2 buildings</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 col-lg-6 text-right">
+              <span class="icon-relative expand-icon expand-btn">
+              </span>
+              <div class="dropdown darkness d-inline-block" placement="bottom-right" ngbDropdown>
+                <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle></button>
+                <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                  <button class="dropdown-item">
+                    Edit
+                    <i class="dnm-icon edit-icon"></i>
+                  </button>
+                  <button class="dropdown-item">
+                    Remove
+                    <i class="dnm-icon delete-icon"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row building-item portfolio-item-expanded align-items-center">
+            <div class="col-4 col-lg-4">
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-auto none-padding">
+                    <div class="building-logo-wrp text-center">
+                      <img class="building-logo vertical-middle" src="https://dummyimage.com/600x900/1c4220/fff&text=company" alt="Logo" />
+                    </div>
+                  </div>
+                  <div class="col-auto none-padding">
+                    <div class="building-name vertical-middle">
+                      Building name
+                      <div class="building-details">Shops: 121 | Services: W</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-7 col-lg-7 ">
+              <div class="d-flex align-items-center">
+                <div class="address">
+                  Aspen Hills Nature Estate, Johannesburg
+                </div>
+                <div class="total-gla">120,000 sq m</div>
+                <div class="total-meters">45 meters</div>
+              </div>
+            </div>
+            <div class="col-1 col-lg-1 text-right">
+              <div class="dropdown darkness d-inline-block" placement="bottom-right" ngbDropdown>
+                <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle></button>
+                <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                  <button class="dropdown-item">
+                    Edit
+                    <i class="dnm-icon edit-icon"></i>
+                  </button>
+                  <button class="dropdown-item">
+                    Remove
+                    <i class="dnm-icon delete-icon"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          -->
+        </div>
+
+        <!-- <div class="container-fluid">
+          <div class="row">
+            <div class="col-12 col-xl-12 none-padding">
+              <div class="paging-container text-center">
+                <span class="paging-ctrl mr-4" disabled>Prev</span>
+                <div class="paging-list">
+                  <button class="paging-btn">1</button>
+                  <button class="paging-btn">2</button>
+                  <button class="paging-btn active">3</button>
+                  <button class="paging-btn">4</button>
+                  <button class="paging-btn">5</button>
+                  ...
+                  <button class="paging-btn">10</button>
+                </div>
+                <span class="paging-ctrl ml-4">Next</span>
+              </div>
+            </div>
+          </div>
+        </div> -->
+      </div>
+
+      <div class="col-side-menu col-md-12">
+        <div class="users-side-menu">
+          <div class="side-menu-heading">Users({{model.users.length}}):</div>
+          <ul class="user-list usr-pf-users">
+            <li *ngFor="let user of model.users; let idx = index;" class="user-item">
+              <div class="controls-block">
+                <button [routerLink]="['../users', user.id]">
+                  <i class="dnm-icon edit-icon"></i>
+                </button>
+                <button (click)="onRemoveUser(user, idx)">
+                  <i class="dnm-icon delete-icon"></i>
+                </button>
+              </div>
+              <div class="user-info d-flex">
+                <logo-container [url]="user.logoUrl"
+                                logo-class="round-logo-wrp d-flex justify-content-center full-height">
+                  <div class="logo-no-img d-flex align-items-center">
+                    <span>{{user.fullName[0].toUpperCase()}}</span>
+                  </div>
+                </logo-container>
+                <div class="user-name flex-auto">
+                  <div class="text-ellipsis">{{user.fullName}}</div>
+                  <div class="user-email text-ellipsis">{{user.email}}</div>
+                </div>
+              </div>
+              <div class="tags-container">
+                <span (click)="onRemoveRole(user, role, rIdx)" *ngFor="let role of user.descriptionRoles; let rIdx = index;"
+                      class="tag-item">
+                  {{role.name}}
+                  <i class="dnm-icon delete-icon"></i>
+                </span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div *ngIf="isNew" class="profile-title">
+    <text-input [(model)]="model.name" [placeholder]="'Type a name here'"
+                class="profile-title-field profile-name"></text-input>
+    <text-input [(model)]="model.description" [placeholder]="'Type a description here'"
+                class="profile-title-field profile-description"></text-input>
+  </div>
+  <div *ngIf="isNew" class="container-fluid none-padding">
+    <div class="row">
+      <div class="col">
+        <div class="client-list-placeholder text-center">
+          <div class="data-empty-container">
+            <span class="dnm-icon dnm-icon-noclients"></span>
+            <div class="empty-list-label">There are no selected clients here</div>
+            <div class="d-flex justify-content-center">
+              <a (click)="onEdit()" class="blue-text-btn" href="javascript:void(0);">
+                <i class="add-icon"></i>Add Client
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-side-menu col-md-12">
+        <div class="users-side-menu empty">
+          <div class="side-menu-heading">Users(0):</div>
+          <div class="empty-list-controls text-center data-empty-container">
+            <span class="dnm-icon-nousers dnm-icon"></span>
+            <div class="empty-list-label">There are no selected users here</div>
+            <div class="d-flex justify-content-center">
+              <a (click)="onEdit()" class="blue-text-btn" href="javascript:void(0);">
+                <i class="add-icon"></i>Add User
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

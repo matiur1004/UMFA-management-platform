@@ -1,0 +1,308 @@
+<div class="page-content">
+  <div class="container-fluid super-admin-settings-block">
+    <div class="row">
+      <div class="col-6 none-padding">
+        <h1 class="page-title">Management Company Settings</h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid super-admin-settings-block admin-st-container">
+    <div class="row">
+      <div class="col-6 none-padding">
+
+        <!-- upload image block -->
+        <div class="bl-gradient-title">Management Company Logo</div>
+        <upload-image (fileChange)="logoChanged($event)" [(file)]="model.logo" [outputFileName]="model.id" [src]="model.logoUrl" data-upload-logo-button
+                      xSize="200" ySize="300"></upload-image>
+        <!-- general info block -->
+        <div class="editable-section container-fluid none-padding">
+          <div class="bl-gradient-title editable-section-title">General Info</div>
+
+          <div class="input-row line-div">
+            <div class="text-uppercase field-name text-form-field">
+              Registered Name
+            </div>
+            <div class="field-value">
+              <text-input [isRequired]=true (onFocusOut)="updateCompany()" [(model)]="model.registrationName" class="none-padding field-value"
+                          data-registered-name maxlength="256"
+                          placeholder="Type here"></text-input>
+            </div>
+          </div>
+
+          <div class="input-row line-div">
+            <div class="text-uppercase field-name text-form-field">
+              Registration Number
+            </div>
+            <div class="field-value">
+              <text-input [isRequired]=true (onFocusOut)="updateCompany()" [(model)]="model.registrationNumber" class="none-padding field-value"
+                          data-registration-number maxlength="256"
+                          placeholder="Type here"></text-input>
+            </div>
+          </div>
+
+          <div class="input-row line-div">
+            <div class="text-uppercase field-name text-form-field">
+              Vat No.
+            </div>
+            <div class="field-value">
+              <text-input [isRequired]=true (onFocusOut)="updateCompany()" [(model)]="model.vatNumber" class="none-padding field-value"
+                          data-vat-number maxlength="256"
+                          placeholder="Type here"></text-input>
+            </div>
+          </div>
+
+          <div class="input-row line-div">
+            <div class="text-uppercase field-name text-form-field">
+              Email
+            </div>
+            <div class="field-value">
+              <text-input [isRequired]=true (onFocusOut)="updateCompany()" [(model)]="model.email" class="none-padding field-value" data-email
+                          maxlength="256"
+                          placeholder="Type here"></text-input>
+            </div>
+          </div>
+
+          <div class="input-row line-div">
+            <div class="text-uppercase field-name text-form-field">
+              Phone Number
+              <br/>
+              <span class="undertext">*default number</span>
+            </div>
+            <div class="field-value">
+              <text-input [isRequired]=true (onFocusOut)="updateCompany()" [(model)]="model.phone" class="none-padding field-value"
+                          data-phone-number maxlength="256"
+                          placeholder="Type here"></text-input>
+            </div>
+          </div>
+
+          <div *ngFor="let contact of model.phoneContacts; let idx = index;" class="row contact-item">
+            <dropdown-input (onFocusOut)="dropdownChanged(contact)" [(model)]="contact.label"
+                            [values]="phoneContactLabels" class="col-4 none-padding text-uppercase field-name"
+                            data-mobile-number></dropdown-input>
+            <text-input [isRequired]=true (onFocusOut)="updateCompany()" [(model)]="contact.value" class="col none-padding field-value"
+                        data-mobile-number-item></text-input>
+            <div class="delete-item none-padding">
+              <span (click)="removePhoneContact(idx)" class="cross-icon"></span>
+            </div>
+          </div>
+
+          <div class="gi-footer">
+            <a (click)="addPhoneContact($event)" class="blue-text-btn" data-add-phone-number href="#">
+              <i class="add-icon"></i>Add Phone Number
+            </a>
+            <a (click)="addExternalLink($event)" *ngIf="!model.externalLinks.length" class="blue-text-btn" data-add-external-link
+               href="#">
+              <i class="add-icon"></i>Add External Link
+            </a>
+          </div>
+
+          <div *ngIf="model.externalLinks.length" class="editable-section container-fluid none-padding">
+            <div class="bl-gradient-title editable-section-title">External Links</div>
+            <div *ngFor="let contact of model.externalLinks; let idx = index;" class="row contact-item">
+              <dropdown-input (onFocusOut)="dropdownChanged(contact)" [(model)]="contact.label"
+                              [values]="externalLinkLabels" class="col-4 none-padding text-uppercase field-name"
+                              data-external-link-dd></dropdown-input>
+              <text-input [isRequired]=true (onFocusOut)="updateCompany()" [(model)]="contact.value" class="col none-padding field-value"
+                          data-external-link-item></text-input>
+              <div class="delete-item none-padding">
+                <span (click)="removeExternalLink(idx)" class="cross-icon"></span>
+              </div>
+            </div>
+            <div class="row">
+              <a (click)="addExternalLink($event)" class="blue-text-btn" data-add-external-link href="#">
+                <i class="add-icon"></i>Add External Link
+              </a>
+            </div>
+          </div>
+
+          <!-- management company departments block -->
+          <div class="editable-section container-fluid none-padding">
+            <div class="bl-gradient-title editable-section-title">Management Company Departments</div>
+
+            <div *ngFor="let department of model.departments; let idx = index;" class="contact-item input-row line-div">
+              <div class="text-uppercase field-name text-form-field">
+                Department #{{idx + 1}}
+              </div>
+              <div class="field-value col">
+                <text-input (onFocusOut)="updateCompany($event)" [(model)]="department.name" [autoSelect]="true"
+                            class="none-padding field-value" data-company-dep
+                            maxlength="50" placeholder="Type here"></text-input>
+              </div>
+              <div class="delete-item none-padding">
+                <span (click)="removeDepartment(idx)" class="cross-icon"></span>
+              </div>
+            </div>
+
+            <div *ngIf="department" class="input-row line-div">
+              <div class="text-uppercase field-name text-form-field">
+                New Department
+              </div>
+              <div class="field-value">
+                <div [ngClass]="{'dnm-invalid-inp': departmentError}">
+                  <text-input [isRequired]=true [(model)]="department.name" [autoSelect]="true" class="none-padding field-value"
+                              data-company-dep-custom maxlength="50" placeholder="Type here"></text-input>
+                </div>
+              </div>
+              <small *ngIf="departmentError" class="alert-danger">
+                {{ departmentError }}
+              </small>
+            </div>
+            <div *ngIf="!department" class="row">
+              <a (click)="onAddDepartment()" class="blue-text-btn" data-add-depp href="javascript:void(0)">
+                <i class="add-icon"></i>Add One More Department
+              </a>
+            </div>
+            <div *ngIf="department" class="row">
+              <a (click)="onSaveDepartment()" class="blue-text-btn" data-save-depp href="javascript:void(0)">
+                <i class="icon check-icon"></i>Save Department
+              </a>
+              <a (click)="onCancelDepartment()" class="blue-text-btn" data-cancel-depp href="javascript:void(0)">
+                <i class="icon cross-icon"></i>Cancel
+              </a>
+            </div>
+          </div>
+
+          <!-- clients departments block -->
+          <div class="editable-section container-fluid none-padding">
+            <div class="bl-gradient-title editable-section-title">Clients Departments</div>
+
+            <div *ngFor="let department of model.clientDepartments; let idx = index;"
+                 class="contact-item input-row line-div">
+              <div class="text-uppercase field-name text-form-field">
+                Department #{{idx + 1}}
+              </div>
+              <div class="field-value col">
+                <text-input (onFocusOut)="updateCompany($event)" [(model)]="department.name" [autoSelect]="true"
+                            class="none-padding field-value" data-client-depp
+                            maxlength="50" placeholder="Type here"></text-input>
+              </div>
+              <div class="delete-item none-padding">
+                <span (click)="removeClientDepartment(idx)" class="cross-icon"></span>
+              </div>
+            </div>
+
+            <div *ngIf="clientDepartment" class="input-row line-div">
+              <div class="text-uppercase field-name text-form-field">
+                New Client Department
+              </div>
+              <div class="field-value">
+                <text-input [isRequired]=true [(model)]="clientDepartment.name" [autoSelect]="true" class="none-padding field-value"
+                            data-client-depp-new maxlength="50" placeholder="Type here"></text-input>
+              </div>
+            </div>
+
+            <div *ngIf="!clientDepartment" class="row">
+              <a (click)="onAddClientDepartment()" class="blue-text-btn" data-add-client-depp href="javascript:void(0)">
+                <i class="add-icon"></i>Add One More Department
+              </a>
+            </div>
+
+            <div *ngIf="clientDepartment" class="row">
+              <a (click)="onSaveClientDepartment()" class="blue-text-btn" data-client-depp-save
+                 href="javascript:void(0)">
+                <i class="icon check-icon"></i>Save Client Department
+              </a>
+              <a (click)="onCancelClientDepartment()" class="blue-text-btn" data-client-depp-cancel
+                 href="javascript:void(0)">
+                <i class="icon cross-icon"></i>Cancel
+              </a>
+            </div>
+
+          </div>
+
+          <!-- building categories block -->
+          <div class="editable-section container-fluid none-padding">
+            <div class="bl-gradient-title editable-section-title">Consumer Type</div>
+
+            <div *ngFor="let category of model.categories; let idx = index" class="contact-item input-row line-div">
+              <div class="text-uppercase field-name text-form-field" data-categ-name>
+                Category #{{idx + 1}}
+              </div>
+              <div class="field-value select-building-category" ngbDropdown>
+                <div class="dnm-btn d-social-btn d-buil-categ-btn d-flex align-items-center justify-content-center"
+                     data-add-icon
+                     ngbDropdownToggle>
+                  <i [ngClass]="{'b-categ-pin-commercial': category.icon == 'commercial',
+                                                  'b-categ-pin-residential': category.icon == 'residential',
+                                                  'b-categ-pin-retail': category.icon == 'retail',
+                                                  'b-categ-pin-industrial': category.icon == 'industrial',
+                                                  'b-categ-pin-auto': category.icon == 'auto',
+                                                  'b-categ-pin-building': category.icon == 'building',
+                                                  'b-categ-pin-medical': category.icon == 'medical',
+                                                  'b-categ-pin-mus-ulib': category.icon == 'museum_university_library',
+                                                  'b-categ-pin-power': category.icon == 'power',
+                                                  'b-categ-pin-water': category.icon == 'water' }" class="ctg-icon" ngbTooltip="Select the category icon"
+                     placement="top"></i>
+                </div>
+
+                <div class="build-categ-list-dropdown dropdown-menu" ngbDropdownMenu>
+                  <popup-building-categories (selectedIcon)="onCategoryIconChanged($event, category)"
+                                             data-icon-popup></popup-building-categories>
+                </div>
+                <text-input (onFocusOut)="updateCompany($event)" [(model)]="category.name" [autoSelect]="true"
+                            class="field-value col" data-categ-name maxlength="50"></text-input>
+              </div>
+              <div class="delete-item none-padding">
+                <span (click)="removeBuildingCategory(idx)" class="cross-icon"></span>
+              </div>
+            </div>
+
+            <div *ngIf="category" class="input-row line-div">
+              <div class="text-uppercase field-name text-form-field">
+                Category #{{model.categories.length + 1}}
+              </div>
+              <div class="field-value select-building-category">
+                <div #myDrop class="dropdown" ngbDropdown placement="bottom-center">
+                  <div class="dnm-btn d-social-btn d-buil-categ-btn d-flex align-items-center justify-content-center"
+                       ngbDropdownToggle>
+                    <span [ngClass]="{'select-category-icon': category.icon == '',
+                                                            'b-categ-pin-commercial': category.icon == 'commercial',
+                                                            'b-categ-pin-residential': category.icon == 'residential',
+                                                            'b-categ-pin-retail': category.icon == 'retail',
+                                                            'b-categ-pin-industrial': category.icon == 'industrial',
+                                                            'b-categ-pin-auto': category.icon == 'auto',
+                                                            'b-categ-pin-building': category.icon == 'building',
+                                                            'b-categ-pin-medical': category.icon == 'medical',
+                                                            'b-categ-pin-mus-ulib': category.icon == 'museum_university_library',
+                                                            'b-categ-pin-power': category.icon == 'power',
+                                                            'b-categ-pin-water': category.icon == 'water' }" class="ctg-icon"
+                          ngbTooltip="Select the category icon"></span>
+                  </div>
+                  <div class="build-categ-list-dropdown dropdown-menu" ngbDropdownMenu>
+                    <popup-building-categories
+                      (selectedIcon)="onCategoryIconSelected($event)"></popup-building-categories>
+                  </div>
+                </div>
+                <text-input [isRequired]=true [(model)]="category.name" [autoSelect]="true" class="field-value"
+                            maxlength="50"></text-input>
+              </div>
+              <small *ngIf="categoryError" class="alert-danger">
+                {{ categoryError }}
+              </small>
+            </div>
+            <div class="row">
+              <a (click)="onAddCategory()" *ngIf="!category" class="blue-text-btn" data-add-categ
+                 href="javascript:void(0);">
+                <i class="add-icon"></i>Add One More Category
+              </a>
+              <div *ngIf="category" class="col-12">
+                <a (click)="onSaveCategory()" class="btn-form-section float-right" data-categ-submit
+                   href="javascript:void(0);">
+                  <i class='icon check-icon'></i>Submit
+                </a>
+                <a (click)="onCancelCategory()" class="btn-form-section float-right" data-categ-cancel
+                   href="javascript:void(0);">
+                  <i class='icon cross-icon'></i>Cancel
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <app-national-tenant-table [model]="nationalTenantsModel"></app-national-tenant-table>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

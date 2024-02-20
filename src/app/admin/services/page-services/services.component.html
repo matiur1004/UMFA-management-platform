@@ -1,0 +1,49 @@
+<div class="page-content branches-page">
+  <!-- header -->
+  <div class="container-fluid">
+    <div class="row d-flex align-items-center">
+      <div class="col-12 none-padding">
+        <h1 class="page-title">Services</h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid none-padding">
+    <div class="dnm-tabset">
+     <ul ngbNav #nav='ngbNav' (navChange)="onBeforeTabChange($event)" [(activeId)]="tabId" [destroyOnHide]="true" class="nav-tabs">
+        <li [ngbNavItem]="'tab-0'">
+          <a ngbNavLink>
+            <span class="d-flex text-uppercase">
+              <i class="tab-icon dnm-icon-services-list"></i>Full Services List
+            </span>
+          </a>
+          <ng-template ngbNavContent>
+            <services-list></services-list>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="'tab-1'">
+          <a ngbNavLink>
+            <span class="d-flex text-uppercase">
+              <i class="tab-icon dnm-icon-packages"></i>Standard Packages
+            </span>
+          </a>
+          <ng-template ngbNavContent>
+            <package-list></package-list>
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="'tab-2'">
+          <a ngbNavLink>
+            <span class="d-flex text-uppercase">
+              <i class="tab-icon dnm-icon-meters"></i>Meter Types
+            </span>
+          </a>
+          <ng-template ngbNavContent>
+            <meter-types-list (onChangeTab)="t.select($event)"></meter-types-list>
+          </ng-template>
+        </li>
+      </ul>
+      <div [ngbNavOutlet]="nav"></div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,156 @@
+@import './variables.less';
+
+.table-container {
+  &.table-horisontal-scroll {
+    overflow-x: auto;
+  }
+
+  &.table-vertical-scroll {
+    table {
+      display: flex;
+      flex-flow: column;
+      max-height: 100%;
+      width: 100%;
+
+      thead {
+        flex: 0 0 auto;
+        width: 100%;
+        width: calc(100% - 20px);
+        display: table;
+        table-layout: fixed;
+      }
+
+      tbody {
+        flex: 1 1 auto;
+        display: block;
+        overflow: hidden;
+        overflow-y: scroll;
+
+        tr {
+          width: 100%;
+          display: table;
+          table-layout: fixed;
+        }
+      }
+    }
+  }
+}
+
+.table-custom {
+  min-width: 600px;
+  max-width: 100%;
+  font-size: 13px;
+  margin-bottom: 0;
+
+  &.table-outside-border-body tbody {
+    border: 1px solid #E8E9EA;
+  }
+
+  &.table-striped tbody tr {
+    background-color: @color-background-primary;
+  }
+
+  &.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #FCFCFE;
+  }
+
+  &.table-white tbody tr {
+    background-color: @color-background-white;
+  }
+
+  &.table-white tbody tr.selected-row {
+    background-color: @color-background-primary;
+  }
+
+  &.table-vertical-center th,
+  &.table-vertical-center td {
+    vertical-align: middle;
+  }
+
+  &.table-header-word-break .head-col {
+    white-space: normal;
+  }
+
+  a:not([href]):not([tabindex]),
+  .head-col,
+  a.head-col {
+    color: @color-empty;
+  }
+
+  .head-col {
+    .text-ellipsis();
+    text-transform: uppercase;
+    font-family: @fontFamilyMedium;
+    font-size: @baseFontSize;
+    font-weight: normal;
+    cursor: default;
+    display: block;
+  }
+
+  a.head-col {
+    text-decoration: none;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    &:hover,
+    &.active {
+      color: @color-text-tertiary;
+    }
+
+    .dnm-icon {
+      margin-left: 7px;
+    }
+
+    &:hover .dnm-icon-sort-down {
+      background-image: url("../assets/images/icons/arrow_sort_selected-01.svg");
+    }
+  }
+
+  tbody th {
+    font-size: 16px;
+  }
+
+  thead th {
+    border: none;
+    position: sticky;
+    top: 0;
+    background: @color-background-primary;
+    z-index: 10;
+  }
+
+  tbody tr:first-child th,
+  tbody tr:first-child td {
+    border-top: none;
+  }
+
+  td, th {
+    &.cell-fixed {
+      background: inherit;
+      position: sticky;
+      z-index: 1;
+    }
+
+    &.cell-fixed-right {
+      right: 0px;
+    }
+
+    &.cell-fixed-left {
+      left: 0px;
+    }
+  }
+}
+
+.vertical-table-scroll {
+  min-height: 35vh;
+  max-height: 60vh;
+  overflow-x: auto;
+}
+
+
+@media (min-width: 1550px) {
+  .vertical-table-scroll {
+    overflow-x: hidden;
+  }
+}

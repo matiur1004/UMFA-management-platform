@@ -1,0 +1,107 @@
+<div *ngIf="packageDetail$ | async" class="package-customization">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 none-padding">
+        <div class="d-flex justify-content-between align-items-center">
+          <h1 class="page-title">Customize Package</h1>
+          <back-button></back-button>
+        </div>
+        <div class="page-description">
+          The total price of the customized package will be calculated on the building page
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bl-gradient-title section-title">Supply types</div>
+  <div class="d-flex supply-types-row">
+    <div *ngIf="(packageDetail$ | async).hasElectricitySupplierDefault"
+         class="d-flex align-items-center checkbox-input">
+      <div class="dnm-checkbox">
+        <input (change)="supplyTypeChange('hasElectricitySupplier')" [ngModel]="(packageDetail$ | async).hasElectricitySupplier" class="checkbox-toggle"
+               type="checkbox"/>
+        <div class="state">
+          <label></label>
+        </div>
+      </div>
+      <span class="checkbox-input-lbl">Electricity</span>
+    </div>
+    <div *ngIf="(packageDetail$ | async).hasWaterSupplierDefault" class="d-flex align-items-center checkbox-input">
+      <div class="dnm-checkbox">
+        <input (change)="supplyTypeChange('hasWaterSupplier')" [ngModel]="(packageDetail$ | async).hasWaterSupplier" class="checkbox-toggle"
+               type="checkbox"/>
+        <div class="state">
+          <label></label>
+        </div>
+      </div>
+      <span class="checkbox-input-lbl">Water</span>
+    </div>
+    <div *ngIf="(packageDetail$ | async).hasSewerageSupplierDefault" class="d-flex align-items-center checkbox-input">
+      <div class="dnm-checkbox">
+        <input (change)="supplyTypeChange('hasSewerageSupplier')" [ngModel]="(packageDetail$ | async).hasSewerageSupplier" class="checkbox-toggle"
+               type="checkbox"/>
+        <div class="state">
+          <label></label>
+        </div>
+      </div>
+      <span class="checkbox-input-lbl">Sewerage</span>
+    </div>
+    <div *ngIf="(packageDetail$ | async).hasGasSupplierDefault" class="d-flex align-items-center checkbox-input">
+      <div class="dnm-checkbox">
+        <input (change)="supplyTypeChange('hasGasSupplier')" [ngModel]="(packageDetail$ | async).hasGasSupplier" class="checkbox-toggle"
+               type="checkbox"/>
+        <div class="state">
+          <label></label>
+        </div>
+      </div>
+      <span class="checkbox-input-lbl">Gas</span>
+    </div>
+    <div *ngIf="(packageDetail$ | async).hasAdHocSupplierDefault" class="d-flex align-items-center checkbox-input">
+      <div class="dnm-checkbox">
+        <input (change)="supplyTypeChange('hasAdHocSupplier')" [ngModel]="(packageDetail$ | async).hasAdHocSupplier" class="checkbox-toggle"
+               type="checkbox"/>
+        <div class="state">
+          <label></label>
+        </div>
+      </div>
+      <span class="checkbox-input-lbl">AdHoc</span>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 none-padding">
+        <div class="tot-price">
+          <div class="row">
+            <div class="col">
+              <div class="tot-price-lbl">Total price</div>
+            </div>
+            <div class="col">
+              <div class="tot-price-val">R {{totalPrice$ | async}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="tree-header d-flex align-items-center justify-content-between">
+          <span class="active-services-numb">{{serviceCount$ | async}}</span>
+        </div>
+        <service-tree (changeServiceStatus)="onChangeServiceStatus($event)"
+                      (chargingMethodChanged)="onChargingMethodChanged($event)"
+                      (chargingTypeChanged)="onChargingTypeChanged($event)"
+                      (meterValueChanged)="onMeterValueChanged($event)"
+                      (toggleService)="onToggleServiceExpand($event)" (valueChanged)="onServiceValueChanged($event)"
+                      [displayActionMenu]="false"
+                      [displayChargingType]="true" [displaySwitch]="true" [isCharging]="true"
+                      [isCustomize]="true"
+                      [services]="(services$ | async)"
+                      [shouldDisplayAdHocSupplier]="(packageDetail$ | async).hasAdHocSupplier"
+                      [shouldDisplayElectricitySupplier]="(packageDetail$ | async).hasElectricitySupplier"
+                      [shouldDisplayGasSupplier]="(packageDetail$ | async).hasGasSupplier"
+                      [shouldDisplaySewerageSupplier]="(packageDetail$ | async).hasSewerageSupplier" [shouldDisplayWaterSupplier]="(packageDetail$ | async).hasWaterSupplier">
+        </service-tree>
+
+        <div class="footer-buttons d-flex justify-content-end">
+          <button (click)="onCancel()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+          <button (click)="onSave()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

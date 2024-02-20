@@ -1,0 +1,133 @@
+@import 'variables.less';
+
+/* #region css for custom radio button */
+
+.building-item label {
+  margin: 0;
+}
+
+.building-item-radio {
+  position: relative;
+  display: block;
+  cursor: pointer;
+  height: 18px;
+  width: 18px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.building-item-radio input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 18px;
+  width: 18px;
+  background-color: @color-background-white;
+  border-radius: 50%;
+}
+
+.building-item:hover .building-item-radio input:not(:checked) ~ .checkmark {
+  background-color: @color-main-accent;
+}
+
+.building-item:hover .building-item-radio input:not(:checked) ~ .checkmark:after {
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: @color-background-white;
+}
+
+.building-item:hover .building-item-radio input:not(:checked) ~ .checkmark:after {
+  display: block;
+}
+
+.building-item-radio input:checked ~ .checkmark {
+  background-color: @color-background-white;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.building-item-radio input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.building-item-radio .checkmark:after {
+  top: 4px;
+  left: 4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: @color-main-accent;
+}
+
+/* #endregion */
+
+.popup-building-block {
+  font-family: Gotham Book;
+  max-height: 450px;
+  width: 315px;
+  background: @color-background-dark;
+  border-radius: 4px;
+  opacity: .95;
+
+  .search-item {
+    padding-right: 18px;
+  }
+
+  .scroll-list {
+    max-height: 387px;
+    overflow: hidden;
+    overflow-y: auto;
+  }
+}
+
+.building-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 10px 10px 18px;
+  border-top: 1px dashed #6a7183;
+  cursor: pointer;
+}
+
+.building-item:first-child {
+  border-top: none;
+}
+
+.building-item.all-brns-item {
+  border-top: 1px solid #6a7183;
+  padding: 18px 10px 18px 18px;
+}
+
+.building-item .building-item-header {
+  font-size: 15px;
+  color: @color-background-white;
+  font-weight: 400;
+}
+
+.building-item .building-item-details {
+  font-size: 13px;
+  color: @color-description;
+  font-weight: 400;
+}
+
+.building-item.selected .building-item-header,
+.building-item:hover .building-item-header,
+.building-item.selected .building-item-details,
+.building-item:hover .building-item-details {
+  color: @color-accent;
+}

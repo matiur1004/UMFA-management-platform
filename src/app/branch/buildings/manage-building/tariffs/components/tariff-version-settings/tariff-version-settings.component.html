@@ -1,0 +1,20 @@
+<div class="tariff-version-settings">
+  <!-- Categories -->
+  <category-items *ngIf="(categoriesFormState$ | async)" [formState]="(categoriesFormState$ | async)"
+                  [isVersionSprecific]="true"></category-items>
+  <!-- /Categories -->
+
+  <!-- Steps -->
+  <step-items *ngIf="(stepsFormState$ | async)" [formState]="(stepsFormState$ | async)"
+              [isVersionSprecific]="true"></step-items>
+  <!-- /Steps -->
+
+  <div class="client-contact-info-footer">
+    <div class="row">
+      <div class="col-12 footer-buttons d-flex justify-content-end">
+        <button (click)="cancel()" class="dnm-btn dnm-btn-cancel text-uppercase btn-lg" type="button">Cancel</button>
+        <button (click)="save()" class="dnm-btn dnm-btn-primary text-uppercase btn-lg" type="button">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

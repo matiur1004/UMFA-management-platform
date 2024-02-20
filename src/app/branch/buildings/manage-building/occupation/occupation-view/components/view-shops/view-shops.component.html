@@ -1,0 +1,276 @@
+<div class="container-fluid none-padding view-shops">
+  <div class="row none-margin-hr view-shops-filter">
+    <div class="col-12 none-padding">
+      <form class="form-inline main-search-input w-100">
+        <div class="input-group">
+          <input #searchShopsList (keyup)="updateShopSearchTerm.emit(searchShopsList.value)" class="form-control group-search-input" data-search-field
+                 placeholder="Shop Search" type="search"
+          />
+          <div class="input-group-append">
+            <i class="icon-relative search-icon vertical-middle"></i>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- filter container -->
+  <div class="row none-margin-hr view-shops-filter">
+    <div class="col-6 none-padding d-flex align-items-center">
+      <span class="filter-res-lbl dnm-text-light">{{shopsInfoText}}</span>
+      <div *ngIf="showActionMenu" class="dropdown filter-dropdown d-inline-block small shops-action-menu"
+           ngbDropdown
+           placement="bottom-right">
+        <button class="btn btn-secondary dropdown-toggle d-flex justify-content-between" ngbDropdownToggle>
+          Action
+        </button>
+        <div class="dropdown-menu" ngbDropdownMenu>
+          <div class="dropdown-title">Status</div>
+          <button (click)="onSetVacantMultiple()" class="dropdown-item">Vacant</button>
+          <button (click)="onSetSpareMultiple()" *ngIf="isSpareAvailable()" class="dropdown-item">Spare</button>
+          <div class="dropdown-title">Merge</div>
+          <button (click)="onMerge()" class="dropdown-item">Merge shops</button>
+        </div>
+      </div>
+      <a (click)="onCreate()" class="blue-text-btn add-shop-btn" href="javascript:void(0);">
+        <i class="add-icon"></i> Add Shop
+      </a>
+    </div>
+    <div class="col-6 none-padding d-flex align-items-center justify-content-end">
+      <span class="text-uppercase dd-filter-lbl">Filter By:</span>
+      <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+        <button class="btn btn-secondary dropdown-toggle d-flex justify-content-between" id="ddShopsStatusFilter"
+                ngbDropdownToggle>
+          {{filterBy}}
+        </button>
+        <div aria-labelledby="ddShopsStatusFilter" class="dropdown-menu" ngbDropdownMenu>
+          <button (click)="onFilterBy('All shops', 0)" class="dropdown-item">All shops</button>
+          <button (click)="onFilterBy('Active shops', 1)" class="dropdown-item">Active shops</button>
+          <button (click)="onFilterBy('Inactive shops', 2)" class="dropdown-item">Inactive shops</button>
+          <div class="dropdown-title">Status</div>
+          <button (click)="onFilterBy('Vacant', 3)" class="dropdown-item">Vacant</button>
+          <button (click)="onFilterBy('Occupied', 4)" class="dropdown-item">Occupied</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid none-padding">
+    <div class="view-shops-tbl">
+      <!-- table header -->
+      <div class="row table-header none-margin-hr">
+        <div class="col-3">
+          <div class="dnm-checkbox">
+            <input (click)="onSelectAll()" [checked]="checkedAll" type="checkbox"/>
+            <div [ngClass]="{'indeterm-state': checkedAllPartly}" class="state">
+              <label></label>
+            </div>
+          </div>
+          <a (click)="changeOrderIndex(1);" [ngClass]="{'active': orderIndex == 1 || orderIndex == -1}" class="col-lbl header-field sortable"
+             href="javascript:void(0);">
+            <span class="col-lbl text-uppercase">Shop Name</span>
+            <i [ngClass]="{'inactive': orderIndex != 1 && orderIndex != -1, 'dnm-icon-sort-up': orderIndex == -1,'dnm-icon-sort-down': orderIndex != -1 }"
+               class="dnm-icon"></i>
+          </a>
+        </div>
+        <div class="col-3">
+          <a (click)="changeOrderIndex(2);" [ngClass]="{'active': orderIndex == 2 || orderIndex == -2}" class="col-lbl header-field sortable"
+             href="javascript:void(0);">
+            <span class="col-lbl text-uppercase">Tenant Name</span>
+            <i [ngClass]="{'inactive': orderIndex != 2 && orderIndex != -2, 'dnm-icon-sort-up': orderIndex == -2,'dnm-icon-sort-down': orderIndex != -2 }"
+               class="dnm-icon"></i>
+          </a>
+        </div>
+        <div class="col-2">
+          <a (click)="changeOrderIndex(3);" [ngClass]="{'active': orderIndex == 3 || orderIndex == -3}" class="col-lbl header-field sortable"
+             href="javascript:void(0);">
+            <span class="col-lbl text-uppercase">Area</span>
+            <i [ngClass]="{'inactive': orderIndex != 3 && orderIndex != -3, 'dnm-icon-sort-up': orderIndex == -3,'dnm-icon-sort-down': orderIndex != -3 }"
+               class="dnm-icon"></i>
+          </a>
+        </div>
+        <div class="col-2">
+          <a (click)="changeOrderIndex(4);" [ngClass]="{'active': orderIndex == 4 || orderIndex == -4}" class="col-lbl header-field sortable"
+             href="javascript:void(0);">
+            <span class="col-lbl text-uppercase">Status</span>
+            <i [ngClass]="{'inactive': orderIndex != 4 && orderIndex != -4, 'dnm-icon-sort-up': orderIndex == -4,'dnm-icon-sort-down': orderIndex != -4 }"
+               class="dnm-icon"></i>
+          </a>
+        </div>
+        <div class="col-2">
+          <a (click)="changeOrderIndex(5);" [ngClass]="{'active': orderIndex == 5 || orderIndex == -5}" class="col-lbl header-field sortable"
+             href="javascript:void(0);">
+            <span class="col-lbl text-uppercase">Floor</span>
+            <i [ngClass]="{'inactive': orderIndex != 5 && orderIndex != -5, 'dnm-icon-sort-up': orderIndex == -5,'dnm-icon-sort-down': orderIndex != -5 }"
+               class="dnm-icon"></i>
+          </a>
+        </div>
+      </div>
+      <!-- table body -->
+      <div [formGroup]="form" class="table-body">
+        <div formArrayName="shops">
+          <div *ngFor="let shop of form.get('shops')['controls']; let idx=index; trackBy: trackShopBy"
+               [formGroupName]="idx"
+               [ngClass]="{'shop-expanded': shop.controls.isExpanded.value, 'shop-collapsed': !shop.controls.isExpanded.value}"
+               class="row table-row">
+            <div class="col-3">
+              <div class="row">
+                <div class="checkbox-col d-flex align-items-center">
+                  <div class="dnm-checkbox">
+                    <input (click)="onSelect()" formControlName="isSelected" type="checkbox"/>
+                    <div class="state">
+                      <label></label>
+                    </div>
+                  </div>
+                </div>
+                <div class="shop-name-col">
+                  <div [ngClass]="{'dnm-invalid-inp': shop.controls.name.invalid}" class="field-value">
+                    <input #name (change)="updateShop.emit({id: shop.controls['id'].value, path:'name', value: shop.controls.name.value})" [autoSelect] class="form-control" formControlName="name"
+                           placeholder="Type here"
+                           type="text"/>
+                  </div>
+                  <div class="field-name"></div>
+                  <div *ngIf="shop.controls.name.dirty && !shop.controls.name.valid" class="field-value">
+                    <small *ngIf="shop.hasError('required', 'name')" class="alert-danger">
+                      Name is required
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="field-value" formGroupName="tenant">
+
+                <div class="dropdown d-block fullwidth-dropdown" ngbDropdown>
+                  <button [disabled]="shop.controls['isSpare'].value" class="btn btn-secondary dropdown-toggle text-left" id="ddTenant"
+                          ngbDropdownToggle>
+                    {{ shop.controls.status.value != shopStatus.Vacant && currentTenants[idx] ? currentTenants[idx].name : 'Select tenant' }}
+                  </button>
+                  <div aria-labelledby="ddTenant" class="dropdown-menu" ngbDropdownMenu>
+                    <button (click)="onSetVacant(shop)" class="dropdown-item">Vacant</button>
+                    <button (click)="tenantChanged(tenant, shop.controls['id'].value, idx, shop)" *ngFor="let tenant of tenants"
+                            class="dropdown-item">{{tenant.name}}</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-2">
+              <div [ngClass]="{'dnm-invalid-inp': shop.controls.area.invalid}" class="field-value">
+                <number-input (change)="updateShop.emit({id: shops[idx].id, path:'area', value: shop.controls.area.value})"
+                              formControlName="area"></number-input>
+              </div>
+              <div class="field-name"></div>
+              <div *ngIf="shop.controls.area.dirty && !shop.controls.area.valid" class="field-value">
+                <small *ngIf="shop.hasError('required', 'area')" class="alert-danger">
+                  Area is required
+                </small>
+                <small *ngIf="shop.hasError('pattern', 'area')" class="alert-danger">
+                  Area not in the correct format
+                </small>
+              </div>
+            </div>
+            <div class="col-2 d-flex align-items-center">
+              <div [ngClass]="{
+                     'st-occupied': shop.controls.status.value == shopStatus.Occupied,
+                     'st-vacant': shop.controls.status.value == shopStatus.Vacant,
+                     'st-spare': shop.controls.status.value == shopStatus.Spare
+                     }" class="text-ellipsis mng-shps-stat">
+                <span class="usr-status-cnt">{{shopStatus[shop.controls.status.value]}}</span>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="d-flex align-items-center justify-content-between">
+                <div>
+                  <div class="field-value view-shops-floor">
+                    <number-input (change)="updateShop.emit({id: shops[idx].id, path:'floor', value: shop.controls.floor.value})" formControlName="floor"
+                                  input-class="shops-floor-input"></number-input>
+                  </div>
+                  <div class="field-name"></div>
+                  <div *ngIf="shop.controls.floor.dirty &&
+                              shop.controls.floor.errors &&
+                              shop.controls.floor.errors.valid" class="field-value">
+                    <small class="alert-danger">
+                      Floor not in the correct format
+                    </small>
+                  </div>
+                </div>
+                <div>
+                  <div (click)="onToggleHistory(shop)"
+                       [ngClass]="{'expand-icon': !shop.controls.isExpanded.value, 'collapse-icon': shop.controls.isExpanded.value}"
+                       class="toggle-icon"></div>
+                </div>
+                <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+                  <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle ngbTooltip="Menu"></button>
+                  <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                    <button (click)="onSplitShop(shops[idx].id)" class="dropdown-item d-flex justify-content-between"
+                            data-menu-item>
+                      Split shop
+                      <i class="dnm-icon split-icon"></i>
+                    </button>
+                    <button (click)="onToggleSpare(shops[idx].id, idx);"
+                            *ngIf="shop.controls.status.value !== shopStatus.Occupied"
+                            class="dropdown-item d-flex justify-content-between"
+                            data-menu-item>
+                      {{shop.controls['isSpare'].value ? 'Vacant' : 'Spare'}}
+                      <i class="dnm-icon spare-icon"></i>
+                    </button>
+                    <button (click)="onChangeRentDetails(shops[idx]);" *ngIf="!shop.controls['isSpare'].value"
+                            class="dropdown-item d-flex justify-content-between" data-menu-item>
+                      Occupation
+                      <i class="dnm-icon edit-icon"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="shop.controls.isExpanded.value" class="col history-wrapper">
+              <div class="container history-container">
+                <div class="row bl-gradient-title">History</div>
+                <div class="row">
+                  <div class="container history-tbl none-padding">
+                    <div class="row table-header none-margin-hr none-padding">
+                      <div class="col-4">
+                        <span class="col-lbl text-uppercase">Tenant Name</span>
+                      </div>
+                      <div class="col-4">
+                        <span class="col-lbl text-uppercase">Status</span>
+                      </div>
+                      <div class="col-4">
+                        <span class="col-lbl text-uppercase">Current tenant end date / New tenant entry</span>
+                      </div>
+                    </div>
+                    <div class="table-body">
+                      <div *ngFor="let history of shops[idx].tenantShopHistory" class="row table-row">
+                        <div [ngClass]="{'history-itm-absent': !history.tenant}" class="col-4">
+                          {{history.tenant ? history.tenant.name : 'Absent' }}
+                        </div>
+                        <div class="col-4">
+                          {{history.tenant ? 'Occupied' : 'Vacant'}}
+                        </div>
+                        <div class="col-4">
+                          {{history.date | dateMediumFormat}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- table footer -->
+      <div class="table-footer">
+        <div class="row none-margin-hr">
+          <div class="col-12 none-padding text-right footer-buttons">
+            <button (click)="onCancel()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+            <button (click)="onSave()" *ngIf="canEdit" class="dnm-btn dnm-btn-primary text-uppercase" type="button" [disabled]="buildingPeriodIsFinalized$ | async">
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

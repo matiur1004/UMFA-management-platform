@@ -1,0 +1,22 @@
+<div class="social-list">
+  <div class="modal-header">
+    <h5 class="modal-title">External Links ({{model.length}}):</h5>
+    <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <i class="icon-relative close-popup-icon" aria-hidden="true"></i>
+    </button> -->
+  </div>
+  <div class="modal-body none-padding">
+    <div class="social-list-block">
+      <div *ngFor="let link of model; let idx = index;" class="social-list-item d-flex align-items-center">
+        <div class="social-logo-block col-6">
+          <span [ngClass]="{'d-social-zoom': link.label == 'Zoom', 'd-social-whatsapp': link.label == 'Whatsapp', 'd-social-web-address': link.label == 'Web address', 'd-social-twitter': link.label == 'Twitter', 'd-social-skype': link.label == 'Skype', 'd-social-other': link.label == 'Other', 'd-social-linkedin': link.label == 'Linkedin', 'd-social-hangouts': link.label == 'Hangouts', 'd-social-google-plus': link.label == 'G+', 'd-social-dropbox': link.label == 'Dropbox', 'd-social-fb': link.label == 'Facebook', 'd-social-google-drive': link.label == 'Google Drive'}"
+                class="social-logo"></span>
+          <span class="social-name">{{link.label}}</span>
+        </div>
+        <div class="social-link col-6 none-padding">
+          <a class="social-href" href="{{link.value | httpProtocol}}" target="_blank">{{link.value}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

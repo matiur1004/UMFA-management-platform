@@ -1,0 +1,61 @@
+<div class="category-item text-uppercase text-form-field text-category">Line #{{ lineItemNumber }}
+  <div class="delete-item none-padding">
+    <div (click)="onDelete(lineItem.controls.id.value, lineItem.controls.chargingType.value)"
+         class="cross-custom">
+      <span class="cross-icon"></span>
+      <span class="cross-text">Delete line item</span>
+    </div>
+  </div>
+</div>
+<div class="input-row line-div">
+  <div class="text-uppercase field-name text-form-field">Line name</div>
+  <div class="field-value">
+    <text-input [ngrxFormControlState]="lineItem.controls.name"
+                class="none-padding field-value"
+                maxlength="150"
+                placeholder="Line name"></text-input>
+    <small *ngIf="lineItem.isSubmitted && lineItem.controls.name.errors.required" class="alert-danger">
+      A line item name is required
+    </small>
+  </div>
+</div>
+<div class="input-row line-div">
+  <div class="text-uppercase field-name text-form-field">Charging type</div>
+  <div class="field-value">
+    <ng-select (change)="onChangeChargingType($event, lineItem.controls.id.value, lineItem.controls.chargingType.value)"
+               [bindLabel]="'label'"
+               [bindValue]="'value'"
+               [clearable]="false"
+               [closeOnSelect]="true"
+               [dropdownPosition]="'top'"
+               [hideSelected]="true"
+               [items]="chargingTypes"
+               [multiple]="false"
+               [ngrxFormControlState]="lineItem.controls.chargingType"
+               [ngrxUpdateOn]="'never'"
+               [placeholder]="'Select Charging Type'"
+               [searchable]="false"
+               class="dnm-ng-select select-dropdown"></ng-select>
+  </div>
+</div>
+<div class="input-row line-div">
+  <div class="text-uppercase field-name text-form-field">Choose a register</div>
+  <div class="field-value">
+    <ng-select [bindLabel]="'name'"
+               [bindValue]="'id'"
+               [clearable]="false"
+               [closeOnSelect]="true"
+               [dropdownPosition]="'top'"
+               [hideSelected]="true"
+               [items]="registers"
+               [multiple]="false"
+               [ngrxFormControlState]="lineItem.controls.registerId"
+               [placeholder]="'Select Charging Type'"
+               [searchable]="false"
+               class="dnm-ng-select select-dropdown"></ng-select>
+    <small *ngIf="lineItem.isSubmitted && lineItem.controls.registerId.errors.required" class="alert-danger">
+      Choose register
+    </small>
+  </div>
+</div>
+

@@ -1,0 +1,136 @@
+@import 'variables.less';
+
+.history-container {
+  margin: 30px 0 100px 0;
+}
+
+.history-container .search {
+  margin-bottom: 30px;
+}
+
+.history-container .group-search-input {
+  background-color: @color-background-white;
+}
+
+.history-container .history-tbl {
+  padding: 0;
+}
+
+.filter-drpdwn-lbl {
+  font-family: Gotham Medium;
+  font-size: 15px;
+  line-height: 15px;
+  color: @color-text-tertiary;
+  margin-right: 20px;
+}
+
+.filter-dropdown.dropdown.small .dropdown-toggle {
+  min-width: 160px;
+}
+
+.history-container .history-records {
+  font-family: Gotham Light;
+  font-size: 16px;
+  line-height: 16px;
+  color: @color-text-tertiary;
+  margin-bottom: 20px;
+}
+
+.history-container .tbl-hdr-row {
+  padding: 20px 30px;
+}
+
+.history-container .frst-hdr-col,
+.history-container .frst-body-col {
+  width: 315px;
+  min-width: 315px;
+}
+
+.history-container .tbl-header-item,
+.history-container .tbl-body-item {
+  width: calc(100% - 315px);
+  min-width: calc(100% - 315px);
+  max-width: calc(100% - 315px);
+}
+
+.history-container .history-tbl .item-content {
+  min-height: 145px;
+  padding-left: 29px;
+  padding-right: 29px;
+}
+
+.history-container .col-lbl {
+  font-family: Gotham Medium;
+  font-size: 12px;
+  line-height: 12px;
+  color: @color-description;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.history-container .col-header,
+.history-container .col-header:hover {
+  text-decoration: none;
+}
+
+.history-container .tbl-body-subitem .frst-body-col {
+  width: 245px;
+  min-width: 245px;
+}
+
+.history-container .tbl-body-subitem .tbl-body-item {
+  width: calc(100% - 245px);
+  min-width: calc(100% - 245px);
+  max-width: calc(100% - 245px);
+}
+
+.history-container .version-name-lbl {
+  font-family: Gotham Medium;
+  font-size: 16px;
+  line-height: 18px;
+  color: @color-text-primary;
+}
+
+.history-container .tbl-body-subitem .version-name-lbl,
+.history-container .hstr-tbl-lbl,
+.history-container .body-item-list {
+  font-family: Gotham Book;
+  font-size: 14px;
+  line-height: 24px;
+  color: @color-text-tertiary;
+}
+
+.history-container .hstr-time-lbl {
+  color: @color-description;
+  margin-left: 5px;
+}
+
+.history-container .list-item-val {
+  position: relative;
+  left: -5px;
+  word-break: break-word;
+}
+
+.history-container ul.body-item-list {
+  -webkit-padding-start: unset;
+  -moz-padding-start: unset;
+  padding-left: 15px;
+}
+
+.history-container ul.body-item-list li {
+  list-style-type: disc;
+  padding-top: 0;
+}
+
+.history-container ul.body-item-list li::before {
+  border-left: unset;
+  width: unset;
+}
+
+.history-container ul.body-item-list li::after {
+  border-top: unset;
+}
+
+.history-container .expand-btn:hover {
+  cursor: pointer;
+}

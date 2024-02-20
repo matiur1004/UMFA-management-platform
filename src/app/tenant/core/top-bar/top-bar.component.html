@@ -1,0 +1,38 @@
+<nav class="navbar fixed-top navbar-expand-md bg-blue-gradient dnm-navbar">
+  <a [@layoutToggle]="isCollapsed" [routerLink]='["/"]' class="navbar-brand d-flex">
+    <img *ngIf="!isCollapsed" alt="Logo" class="company-logo" height="44" src="/assets/images/logos/branch-logo.png"
+         width="138">
+    <img *ngIf="isCollapsed" alt="Logo" class="company-logo" height="44" src="/assets/images/logos/branch-logo-sm.png"
+         width="45">
+  </a>
+  <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+          data-target="#navbarSupportedContent"
+          data-toggle="collapse" type="button">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+    <div class="profile-menu d-flex align-items-center">
+      <logo-container [url]="logoUrl" logo-class="profile-photo">
+        <div class="profile-photo-abbreviation">
+          <span>{{fullName | shortName}}</span>
+        </div>
+      </logo-container>
+      <div class="profile-dropdown darkness" ngbDropdown placement="bottom">
+        <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown"
+           href="javascript:void(0);" id="navbarDropdown"
+           ngbDropdownToggle role="button">
+          <span class="user-name">{{fullName}}</span>
+        </a>
+        <div aria-labelledby="navbarDropdown" class="dropdown-menu" ngbDropdownMenu>
+          <a [routerLink]="['/tenant/settings']" class="dropdown-item d-flex justify-content-between">
+            My Settings<i class="dnm-icon dnm-ua-settings"></i>
+          </a>
+          <a [routerLink]="['/logout']" class="dropdown-item d-flex justify-content-between">
+            Sign out<i class="dnm-icon dnm-ua-logout"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

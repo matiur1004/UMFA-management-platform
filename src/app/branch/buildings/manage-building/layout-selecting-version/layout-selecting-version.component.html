@@ -1,0 +1,20 @@
+<div class="position-relative selecting-version-panel">
+  <div *ngIf="(versionsList$ | async).length" class="selecting-version-control">
+    <ng-select [items]="versions$ | async" bindLabel="comment" bindValue="id" (change)="onVersionSelected($event)" [(ngModel)]="selectedVersionId" [clearable]="false"
+               [disabled]="disableChangeVersion$ | async" [searchable]="false" groupBy="buildingPeriodName" [closeOnSelect]="true"
+               [selectableGroup]="false" class="dnm-dropdown-select">
+      <ng-template ng-label-tmp let-item="item">
+        {{item.startDate | dateMediumFormat}} - {{item.comment}}
+      </ng-template>
+      <ng-template ng-option-tmp let-item="item" let-index="index">
+        {{item.startDate | dateMediumFormat}} - {{item.comment}}
+      </ng-template>
+      <ng-template ng-optgroup-tmp let-item="item">
+        {{item.buildingPeriodName}}
+      </ng-template>
+    </ng-select>
+  </div>
+</div>
+<div>
+  <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,15 @@
+<svg data-name="Слой 1" id="Слой_1" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>.cls-1 {
+      fill: #e94639;
+    }
+
+    .cls-2 {
+      fill: #fff;
+    }</style>
+  </defs>
+  <title>Монтажная область 79 копия</title>
+  <circle class="cls-1" cx="10" cy="10" r="10"/>
+  <rect class="cls-2" height="10" transform="translate(-4.19 9.88) rotate(-45)" width="2" x="8.83" y="5"/>
+  <rect class="cls-2" height="10" transform="translate(9.72 24.02) rotate(-135)" width="2" x="8.83" y="5"/>
+</svg>

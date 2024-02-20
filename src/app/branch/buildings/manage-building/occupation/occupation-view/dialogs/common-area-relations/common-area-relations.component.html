@@ -1,0 +1,30 @@
+<div class="modal-header">
+  <div class="container-fluid text-center">
+    <i class="icon-relative delete-logo"></i>
+  </div>
+  <button (click)="onCancel()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+    <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="container-fluid text-center">
+    <div class="popup-title">Relations detected</div>
+    <div class="description">
+      Object is used in
+      <div class="relations-container row">
+        <div class="col-3"></div>
+        <div *ngFor="let item of relatedObjectNames | keyvalue" class="relations-group col-3">
+          <div class="group-header">{{item.key}}:</div>
+          <div class="items-group">
+            <div *ngFor="let value of item.value" class="group-item">{{value}}</div>
+          </div>
+        </div>
+      </div>
+      Please unassign it before removing.
+    </div>
+    <div class="button-container">
+      <button (click)="onCancel()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+      <button (click)="onConfirm()" class="dnm-btn dnm-btn-delete text-uppercase" type="button">Remove all</button>
+    </div>
+  </div>
+</div>

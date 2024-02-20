@@ -1,0 +1,55 @@
+<div *ngIf="node" class="alloc-tariffs-wrp">
+  <div class="nav-row d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center">
+
+      <button (onConfirmerAction)="onApplyNewTariff($event)" *ngIf="viewIdx === 0" [buildingId]="buildingId" [excludeTariffs]="nodeTariffs$ | async | fiterTariffsBySubNode : null"
+              [hideCostReceiver]="(nodeForm$ | async).value.costProviderActive" [nodeIds]="[node.id]"
+              [supplyType]="node.supplyType" [versionId]="version.id"
+              [disabled]="buildingPeriodIsFinalized"
+              [ngClass]="{'disabled': buildingPeriodIsFinalized}"
+              class="blue-text-btn"
+              select-tariffs-bind-dialog>
+        <i class="add-icon"></i>Apply new tariff
+      </button>
+
+    </div>
+    <div *ngIf="node.nodeType === 1" class="d-flex">
+      <div class="d-flex align-items-center drpdwn-wrp">
+        <span class="text-uppercase drpdwn-fltr-lbl">Calculation method:</span>
+        <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+          <button class="btn btn-secondary fltr-drpdwn-btn dropdown-toggle" ngbDropdownToggle type="button">
+            {{viewsArrTemp[viewIdx]}}
+          </button>
+          <div class="dropdown-menu fltr-drpdwn-menu" ngbDropdownMenu>
+            <button (click)="changeView(0)" class="dropdown-item" type="button">Per nodes totals</button>
+            <button (click)="changeView(1)" class="dropdown-item" type="button">Per meter tariffs</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="viewIdx === 0">
+    <tariffs-per-nodes (cancel)="onCancel()" (delete)="onDeleteTariff($event)"
+                       (save)="onSavePerNodeTariffs($event)" (updateCategory)="onUpdateCategory($event)"
+                       (updateLineItemIsActive)="onUpdateLineItemIsActive($event)"
+                       (updateLineItemIsBilling)="onUpdateLineItemIsBilling($event)" (updateTariffIsBilling)="onUpdateTariffIsBilling($event)"
+                       [branchId]="branchId"
+                       [buildingId]="buildingId"
+                       [recommendedTariffs]="(recommendedTariffs$ | async)[node.id]" [tariffs]="nodeTariffs$ | async"
+                       [versionId]="version.id"
+                       [buildingPeriodIsFinalized]="buildingPeriodIsFinalized"
+                       >
+    </tariffs-per-nodes>
+  </div>
+  <div *ngIf="viewIdx === 1">
+    <tariffs-per-meters (save)="onSavePerMetersTariffs($event)" (updatedTariffsList)="onUpdatedTariffsList($event)" [allocatedNodes]="node.nodes"
+                        [attributes]="attributes$ | async"
+                        [branchId]="branchId" [buildingId]="buildingId"
+                        [costProviderActive]="(nodeForm$ | async).value.costProviderActive" [nodeTariffs]="nodeTariffs$ | async"
+                        [recommendedTariffs]="(nodesRecommendedTariffs$ | async)" [suppliers]="suppliers$ | async"
+                        [supplyType]="node.supplyType"
+                        [tariffs]="tariffs$ | async"
+                        [versionId]="version.id"
+                        [buildingPeriodIsFinalized]="buildingPeriodIsFinalized"></tariffs-per-meters>
+  </div>
+</div>

@@ -1,0 +1,74 @@
+<svg data-name="Capa 1" id="Capa_1" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <style>.cls-1 {
+      fill: url(#linear-gradient);
+    }
+
+    .cls-2 {
+      fill: url(#linear-gradient-2);
+    }
+
+    .cls-3 {
+      fill: url(#linear-gradient-3);
+    }
+
+    .cls-4 {
+      fill: url(#linear-gradient-4);
+    }
+
+    .cls-5 {
+      fill: url(#linear-gradient-5);
+    }
+
+    .cls-6 {
+      fill: url(#linear-gradient-6);
+    }
+
+    .cls-7 {
+      fill: url(#linear-gradient-7);
+    }
+
+    .cls-8 {
+      fill: url(#linear-gradient-8);
+    }
+
+    .cls-9 {
+      fill: url(#linear-gradient-9);
+    }
+
+    .cls-10 {
+      fill: url(#linear-gradient-10);
+    }</style>
+    <linearGradient gradientUnits="userSpaceOnUse" id="linear-gradient" x2="20" y1="10" y2="10">
+      <stop offset="0" stop-color="#2a7ba7"/>
+      <stop offset="1" stop-color="#2a327c"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="9.45" x2="10.59" xlink:href="#linear-gradient" y1="7.41" y2="7.41"/>
+    <linearGradient id="linear-gradient-3" x1="4.79" x2="7.32" xlink:href="#linear-gradient" y1="5.48" y2="5.48"/>
+    <linearGradient id="linear-gradient-4" x1="2.62" x2="6.48" xlink:href="#linear-gradient" y1="10" y2="10"/>
+    <linearGradient id="linear-gradient-5" x1="3.2" x2="5.91" xlink:href="#linear-gradient" y1="7.36" y2="7.36"/>
+    <linearGradient id="linear-gradient-6" x1="6.88" x2="8.77" xlink:href="#linear-gradient" y1="4.04" y2="4.04"/>
+    <linearGradient id="linear-gradient-7" x1="12.68" x2="15.22" xlink:href="#linear-gradient" y1="5.63" y2="5.63"/>
+    <linearGradient id="linear-gradient-8" x1="13.52" x2="17.38" xlink:href="#linear-gradient" y1="10.14" y2="10.14"/>
+    <linearGradient id="linear-gradient-9" x1="14.09" x2="16.8" xlink:href="#linear-gradient" y1="7.5" y2="7.5"/>
+    <linearGradient id="linear-gradient-10" x1="11.23" x2="13.13" xlink:href="#linear-gradient" y1="4.18" y2="4.18"/>
+  </defs>
+  <title>1</title>
+  <path class="cls-1"
+        d="M20,10A10,10,0,1,0,10,20,10,10,0,0,0,20,10ZM10,18.61A8.61,8.61,0,1,1,18.61,10,8.62,8.62,0,0,1,10,18.61Z"/>
+  <path class="cls-2" d="M10,2a.56.56,0,0,0-.57.57v9.6a.57.57,0,1,0,1.14,0V2.61A.56.56,0,0,0,10,2Z"/>
+  <path class="cls-3" d="M5.76,4.38A.57.57,0,0,0,5,5.19l1.4,1.39a.57.57,0,1,0,.8-.81Z"/>
+  <path class="cls-4" d="M5.91,9.43H3.2a.57.57,0,1,0,0,1.14H5.91a.57.57,0,0,0,0-1.14Z"/>
+  <path class="cls-5"
+        d="M3.6,7.65l1.57.5a.47.47,0,0,0,.17,0,.57.57,0,0,0,.17-1.12l-1.57-.5a.58.58,0,0,0-.72.37A.57.57,0,0,0,3.6,7.65Z"/>
+  <path class="cls-6" d="M8,3a.58.58,0,0,0-.77-.26.57.57,0,0,0-.25.77L7.69,5a.57.57,0,1,0,1-.51Z"/>
+  <path class="cls-7"
+        d="M15.05,5.33a.57.57,0,0,0-.81-.81l-1.39,1.4a.56.56,0,0,0,0,.81.55.55,0,0,0,.4.16.59.59,0,0,0,.41-.16Z"/>
+  <path class="cls-8"
+        d="M16.8,9.57H14.09a.57.57,0,0,0-.57.57.56.56,0,0,0,.57.57H16.8a.57.57,0,0,0,.58-.57A.58.58,0,0,0,16.8,9.57Z"/>
+  <path class="cls-9"
+        d="M14.12,7.92a.55.55,0,0,0,.54.4.57.57,0,0,0,.18,0l1.57-.5a.57.57,0,0,0,.37-.71.57.57,0,0,0-.72-.37l-1.57.5A.56.56,0,0,0,14.12,7.92Z"/>
+  <path class="cls-10"
+        d="M12.81,2.92a.58.58,0,0,0-.77.25l-.75,1.5a.58.58,0,0,0,.51.83.6.6,0,0,0,.52-.32l.75-1.5A.57.57,0,0,0,12.81,2.92Z"/>
+</svg>

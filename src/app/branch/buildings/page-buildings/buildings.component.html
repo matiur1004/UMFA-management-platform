@@ -1,0 +1,225 @@
+<div class="container-fluid top-container">
+  <div class="row content">
+    <div class="col-12 col-xl-2 none-padding">
+      <div class="client-header-title">
+        <h1 class="page-title text-uppercase">Buildings</h1>
+      </div>
+    </div>
+    <div class="col-12 col-xl-10 none-padding text-right row d-flex align-items-center">
+      <div class="col">
+        <div class="dropdown filter-dropdown d-inline-block" ngbDropdown>
+          <button class="btn btn-secondary dropdown-toggle text-left d-flex justify-content-between" id="ddCategories"
+                  ngbDropdownToggle>
+            {{ category ? category.name : 'All categories' }}
+          </button>
+          <div aria-labelledby="ddCategories" class="dropdown-menu" ngbDropdownMenu>
+            <button (click)="categorySelected(category)" *ngFor="let category of categories"
+                    class="dropdown-item">{{category.name}}</button>
+            <button (click)="categorySelected(null)" class="dropdown-item">All categories</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-4 col-sm-6">
+        <simple-search-form (onSearch)="search($event)" placeholder="Building Search"></simple-search-form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="buildings-container">
+  <div class="dnm-tabset">
+    <ul ngbNav #nav="ngbNav" (navChange)="onTabChange($event.nextId)" class="nav-tabs" [(activeId)]="active">
+      <li [ngbNavItem]="1" id="tab-0">
+        <a ngbNavLink>
+          <span class="d-flex text-uppercase">
+            <i class="tab-icon dnm-icon dnm-icon-buildings"></i>Building View
+          </span>
+        </a>
+        <ng-template ngbNavContent>
+          <!-- labels -->
+          <div class="d-flex justify-content-between">
+            <span class="results-label dnm-text-light">{{getItemsDetails()}}</span>
+            <div>
+              <span class="text-uppercase count-label">Buildings Per Page:</span>
+              <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+                <button class="btn btn-secondary dropdown-toggle bld-per-page-btn text-left" id="ddCountPerPage"
+                        ngbDropdownToggle>
+                  {{ itemsPerPage ? itemsPerPage : 'ALL' }}
+                </button>
+                <div aria-labelledby="ddCountPerPage" class="dropdown-menu" ngbDropdownMenu>
+                  <button (click)="setItemsPerPage(item)" *ngFor="let item of itemsPerPageList"
+                          class="dropdown-item">{{item}}</button>
+                  <button (click)="setItemsPerPage(null)" class="dropdown-item">All</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- buildings grid header -->
+          <div class="container-fluid building-list-wrp pt-4">
+            <div class="building-list-header text-uppercase d-xs-none row">
+              <div class="col-md-4 col-first">
+                <a (click)="changeOrderIndex(1);" [ngClass]="{'active': orderIndex == 1 || orderIndex == -1}"
+                   class="header-field d-flex align-items-center"
+                   href="javascript:void(0);">
+                  <span class="text-ellipsis" title="Building name">Building name</span>
+                  <i [ngClass]="{'inactive': orderIndex != 1 && orderIndex != -1, 'dnm-icon-sort-up': orderIndex == -1,'dnm-icon-sort-down': orderIndex != -1 }"
+                     class="dnm-icon"></i>
+                </a>
+              </div>
+              <div class="col-md-2">
+                <a (click)="changeOrderIndex(2);" [ngClass]="{'active': orderIndex == 2 || orderIndex == -2}"
+                   class="header-field d-flex align-items-center"
+                   href="javascript:void(0);">
+                  <span class="text-ellipsis" title="Suburb, Town">Suburb, Town</span>
+                  <i [ngClass]="{'inactive': orderIndex != 2 && orderIndex != -2, 'dnm-icon-sort-up': orderIndex == -2,'dnm-icon-sort-down': orderIndex != -2 }"
+                     class="dnm-icon"></i>
+                </a>
+              </div>
+              <div class="col-md-2">
+                <a (click)="changeOrderIndex(3);" [ngClass]="{'active': orderIndex == 3 || orderIndex == -3}"
+                   class="header-field d-flex align-items-center"
+                   href="javascript:void(0);">
+                  <span class="text-ellipsis" title="Category">Category</span>
+                  <i [ngClass]="{'inactive': orderIndex != 3 && orderIndex != -3, 'dnm-icon-sort-up': orderIndex == -3,'dnm-icon-sort-down': orderIndex != -3 }"
+                     class="dnm-icon"></i>
+                </a>
+              </div>
+              <div class="col-md-1">
+                <a (click)="changeOrderIndex(5);" [ngClass]="{'active': orderIndex == 5 || orderIndex == -5}"
+                   class="header-field d-flex align-items-center"
+                   href="javascript:void(0);">
+                  <span class="text-ellipsis" title="Total GLA">Total GLA</span>
+                  <i [ngClass]="{'inactive': orderIndex != 5 && orderIndex != -5, 'dnm-icon-sort-up': orderIndex == -5,'dnm-icon-sort-down': orderIndex != -5 }"
+                     class="dnm-icon"></i>
+                </a>
+              </div>
+              <div class="col-md-2">
+                <a (click)="changeOrderIndex(7);" [ngClass]="{'active': orderIndex == 7 || orderIndex == -7}"
+                   class="header-field d-flex align-items-center"
+                   href="javascript:void(0);">
+                  <span class="text-ellipsis" title="Client / Portfolio">Client / Portfolio</span>
+                  <i [ngClass]="{'inactive': orderIndex != 7 && orderIndex != -7, 'dnm-icon-sort-up': orderIndex == -7,'dnm-icon-sort-down': orderIndex != -7 }"
+                     class="dnm-icon"></i>
+                </a>
+              </div>
+              <div class="col-md-1">
+              </div>
+            </div>
+            <!-- buildings grid content -->
+            <div *ngFor="let building of model.items" class="building-list dnm-text-medium">
+              <div class="building-item row">
+
+                <div (click)="onBuildingPress(building)" class="col-md-4 col-xs-12 d-flex align-items-center col-first">
+                  <div class="bld-logo-wrp">
+                    <logo-container [url]="building.logoUrl"
+                                    logo-class="logo d-flex justify-content-center full-height">
+                      <div class="logo-abbreviation d-flex align-items-center">
+                        <span>{{building.name[0].toUpperCase()}}</span>
+                      </div>
+                    </logo-container>
+                  </div>
+                  <div class="building-name dnm-text-bold text-ellipsis">{{building.name}}</div>
+                </div>
+
+                <div (click)="onBuildingPress(building)" class="col-md-2 col-xs-12">
+                  <div class="vertical-middle">
+                    <div
+                      class="building-address text-ellipsis">{{building.address.suburb ? building.address.suburb + ', ' : ''}}{{building.address.city}}</div>
+                  </div>
+                </div>
+
+                <div (click)="onBuildingPress(building)" class="col-md-2 col-xs-12 d-flex">
+                  <div class="align-self-center building-category">
+                    <div class="text-ellipsis" ngbTooltip="{{building.category}}"
+                         placement="bottom">{{building.category}}</div>
+                  </div>
+                </div>
+
+                <div (click)="onBuildingPress(building)" class="col-md-1 col-xs-12">
+                  <div class="vertical-middle">
+                    <div class="building-category text-ellipsis">{{building.totalGLA | number}} sq m</div>
+                  </div>
+                </div>
+
+                <div (click)="onBuildingPress(building)" class="col-md-2 col-xs-12">
+                  <div class="vertical-middle">
+                    <div class="building-clientname text-ellipsis">{{building.client.name}}</div>
+                    <div class="building-portfolioname text-ellipsis">{{building.clientPortfolio.name}}</div>
+                  </div>
+                </div>
+                <div class="col-md-1 col-xs-4">
+                  <div class="d-flex justify-content-center action-buttons">
+                    <i (click)="onShowOnMap(building)" class="dnm-icon dnm-icon-location inactive"></i>
+                    <div *ngIf="accessPermission.canUpdateBuildings || accessPermission.canCreateBuildings" [placement]="['bottom-right', 'top-right']"
+                         class="dropdown darkness d-inline-block" ngbDropdown>
+                      <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle></button>
+                      <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                        <button *ngIf="building.isOperationsAgreementComplete"
+                                [routerLink]="['/branch',currentBranchId,'buildings',building.id,'version', 0,'occupation']"
+                                class="dropdown-item d-flex justify-content-between">
+                          View<i class="dnm-icon view-icon"></i>
+                        </button>
+                        <button *ngIf="accessPermission.canUpdateBuildings"
+                                [routerLink]="['/branch',currentBranchId,'buildings',building.id, 'edit']"
+                                class="dropdown-item d-flex justify-content-between">
+                          Edit<i class="dnm-icon edit-icon"></i>
+                        </button>
+                        <button (click)="delete(building.id)" *ngIf="accessPermission.canCreateBuildings"
+                                class="dropdown-item d-flex justify-content-between" data-menu-item>
+                          Delete<i class="dnm-icon delete-icon"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- pager -->
+          <pager (onPageChange)="onPageChange($event)" [pageSize]="itemsPerPage" [page]="page"
+                 [total]="model.total"></pager>
+
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="2" id="tab-1">
+        <a ngbNavLink>
+          <span class="d-flex text-uppercase">
+            <i class="tab-icon dnm-icon dnm-icon-map"></i>Map View
+          </span>
+        </a>
+        <ng-template ngbNavContent>
+          <!-- maps -->
+          <div class="map-filter-dropdowns">
+            <span class="dropdown-label text-uppercase">Client/Portfolio:</span>
+            <div class="dropdown filter-dropdown small d-inline-block" ngbDropdown>
+              <button class="btn btn-secondary dropdown-toggle text-left d-flex justify-content-between"
+                      id="ddClient" ngbDropdownToggle>
+                {{selectedClientText}}
+              </button>
+              <div aria-labelledby="ddClient" class="dropdown-menu" ngbDropdownMenu>
+                <button (click)="clientChange(client)" *ngFor="let client of clients"
+                        class="dropdown-item">{{client.name}}</button>
+              </div>
+            </div>
+            <div class="dropdown filter-dropdown small d-inline-block portfolio-dropdown" ngbDropdown>
+              <button [disabled]="!client.portfolios.length"
+                      class="btn btn-secondary dropdown-toggle text-left d-flex justify-content-between" id="ddClientPortfolio"
+                      ngbDropdownToggle>
+                {{selectedClientPortfolioText}}
+              </button>
+              <div *ngIf="client" aria-labelledby="ddClientPortfolio" class="dropdown-menu" ngbDropdownMenu>
+                <button (click)="clientPortfolioChanged(portfolio)" *ngFor="let portfolio of client.portfolios"
+                        class="dropdown-item">{{portfolio.name}}</button>
+              </div>
+            </div>
+          </div>
+          <buildings-map [center]="mapCenter" [model]="buildingsOnMap" [showOnMap]="showOnMap"
+                         [zoom]="mapZoom"></buildings-map>
+        </ng-template>
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="nav"></div>
+  </div>
+</div>

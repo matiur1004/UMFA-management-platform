@@ -1,0 +1,127 @@
+<div class="container-fluid none-padding">
+  <div class="row">
+    <div class="col-12">
+      <form class="form-inline my-lg-0 main-search-input">
+        <div class="input-group">
+          <input #searchBox (keyup)="search(searchBox.value)" aria-label="Search"
+                 class="form-control group-search-input" data-search-field placeholder="Search Users" type="search"/>
+          <div class="input-group-append">
+            <i class="icon-relative search-icon vertical-middle"></i>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="row filter-container">
+    <div class="col-6 d-flex align-items-center">
+      <span
+        class="filter-res-lbl dnm-text-light">{{usersAssigned ? usersAssigned + ' users selected' : searchedUsers.length + ' users showing' }}</span>
+    </div>
+    <div class="col-6 d-flex align-items-center justify-content-end">
+      <span class="text-uppercase dd-filter-lbl">Show:</span>
+      <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+        <button class="btn btn-secondary dropdown-toggle text-left d-flex justify-content-between" id="ddUsersFilterShow"
+                ngbDropdownToggle>
+          {{showTitle}}
+        </button>
+        <div aria-labelledby="ddUsersFilterShow" class="dropdown-menu" ngbDropdownMenu>
+          <button (click)="onShowAll(true)" class="dropdown-item">All users</button>
+          <button (click)="onShowAll(false)" class="dropdown-item">Only assigned users</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid users-table">
+    <!-- header row -->
+    <div class="row table-header">
+      <div class="col-6">
+        <div class="row">
+          <div class="col-7 none-padding">
+            <div class="dnm-checkbox">
+              <input (click)="onCheckAll()" [checked]="checkAll" type="checkbox"/>
+              <div [ngClass]="{'indeterm-state': usersAssigned && usersAssigned !== allUsers.length}" class="state">
+                <label></label>
+              </div>
+            </div>
+            <span class="col-lbl text-uppercase">User Name</span>
+          </div>
+          <div class="col-5">
+            <span class="col-lbl text-uppercase">Department</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="row">
+          <div class="col-10">
+            <span class="col-lbl text-uppercase">Roles</span>
+          </div>
+          <div class="col-2"></div>
+        </div>
+      </div>
+    </div>
+    <div class="table-body" id="manageProfileUsers">
+      <!-- row -->
+      <div *ngFor="let user of searchedUsers" [ngClass]="{'d-none': !user.isAssigned && !showAll}"
+           class="row table-row">
+        <div class="col-6">
+          <div class="row">
+            <div class="col-7 d-flex align-items-center none-padding">
+              <div class="dnm-checkbox">
+                <input (change)="onUserAssigned(user)" [checked]="user.isAssigned" type="checkbox"/>
+                <div class="state">
+                  <label></label>
+                </div>
+              </div>
+              <logo-container [file]="user.logo" [url]="user.logoUrl" logo-class="round-logo-wrp d-flex">
+                <div class="logo-no-img">
+                  <span>{{user.fullName[0].toUpperCase()}}</span>
+                </div>
+              </logo-container>
+              <div class="contact-info">
+                <div class="user-name text-ellipsis">{{user.fullName}}</div>
+                <div class="user-email text-ellipsis">{{user.email}}</div>
+              </div>
+            </div>
+            <div class="col-5 d-flex align-items-center">
+              <span class="department">
+                {{user.departmentDescription}}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 d-flex align-items-center">
+          <div class="container-fluid none-padding">
+            <div class="row">
+              <div class="col">
+                <div class="dropdown filter-dropdown roles-dropdown d-inline-block small" placement="bottom-right">
+                  <ng-select
+                    (change)="onRoleChanged(user, $event)"
+                    [(ngModel)]="user.roles"
+                    [clearable]="false"
+                    [dropdownPosition]="'top'"
+                    [hideSelected]="true" [items]="allRoles" [multiple]="true" [searchable]="false"
+                    bindLabel="name" bindValue="id"
+                  ></ng-select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <small *ngIf="!user.roles.length && user.isAssigned && isSubmited" class="alert-danger">
+                  At least one user role should be selected
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 text-right footer-buttons">
+      <button (click)="dismiss()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+      <button (click)="save()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save</button>
+    </div>
+  </div>
+</div>

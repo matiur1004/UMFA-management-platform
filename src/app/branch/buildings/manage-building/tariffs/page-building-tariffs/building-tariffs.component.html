@@ -1,0 +1,71 @@
+<manage-tariffs></manage-tariffs>
+<div class="container-fluid none-padding bld-trfs-wrp">
+  <div class="row search-row none-margin-hr">
+    <div class="col none-padding">
+      <form class="form-inline main-search-input w-100 mr-0">
+        <div class="input-group">
+          <input #searchBox (keyup)="search(searchBox.value)" class="form-control group-search-input" data-search-field
+                 placeholder="Tariff Search" type="search"/>
+          <div class="input-group-append">
+            <i class="icon-relative search-icon vertical-middle"></i>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="nav-row d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center">
+      <span class="results-label dnm-text-light">{{(tariffs$ | async).length}} tariffs</span>
+      <div class="d-flex justify-content-center">
+        <a (click)="onCreate()" class="blue-text-btn" href="javascript:void(0);">
+          <i class="add-icon"></i>Add tariff
+        </a>
+      </div>
+    </div>
+    <div class="d-flex justify-content-end">
+      <div class="d-flex align-items-center">
+        <span class="text-uppercase fltr-drpdwn-lbl">Supply:</span>
+        <ng-select (change)="onSupplyTypeChanged()"
+                   [(ngModel)]="supplyTypeModel"
+                   [clearable]="false"
+                   [closeOnSelect]="true" [dropdownPosition]="'top'"
+                   [hideSelected]="true"
+                   [searchable]="false"
+                   class="dnm-dropdown-select supply-fltr-btn">
+
+          <ng-option [value]="-1">All supply types</ng-option>
+          <ng-option *ngFor="let supplyType of supplyTypesList"
+                     [value]="supplyType.value">
+            {{supplyType.label}}
+          </ng-option>
+        </ng-select>
+      </div>
+      <div class="d-flex align-items-center">
+        <span class="text-uppercase fltr-drpdwn-lbl">Consumers:</span>
+        <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+          <button class="btn btn-secondary fltr-drpdwn-btn dropdown-toggle" ngbDropdownToggle type="button">
+            {{selectedBuildingCategoryText$ | async}}
+          </button>
+          <div class="dropdown-menu fltr-drpdwn-menu" ngbDropdownMenu>
+            <button (click)="onBuildingCategoryChanged(null)" class="dropdown-item" type="button">All consumers</button>
+            <button (click)="onBuildingCategoryChanged(item.id)" *ngFor="let item of buildingCategories$ | async" class="dropdown-item"
+                    type="button">{{item.name}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row none-margin-hr">
+    <div class="col none-padding">
+      <tariffs-list (addNewTariffValue)="onAddNewTariffValue($event)"
+                    (addNewTariffVersion)="onAddNewTariffVersion($event)"
+                    (deleteTariff)="onDeleteTariffVersion($event)"
+                    (editTariff)="onEditTariff($event)"
+                    (editTariffValue)="onEditTariffValue($event)"
+                    (orderChanged)="changeOrderIndex($event)"
+                    [orderIndex]="orderIndex"
+                    [tariffs]="tariffs$ | async">
+      </tariffs-list>
+    </div>
+  </div>
+</div>

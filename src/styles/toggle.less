@@ -1,0 +1,102 @@
+.dnm-switch-btn {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  min-width: 50px;
+  max-width: 50px;
+  height: 25px;
+  margin-bottom: 0;
+
+  input[disabled] + .dnm-switch-slider {
+    cursor: not-allowed;
+  }
+}
+
+.dnm-switch-btn input {
+  display: none;
+}
+
+.dnm-switch-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.dnm-switch-slider:before {
+  position: absolute;
+  content: "";
+  height: 19px;
+  width: 19px;
+  left: 3px;
+  bottom: 3px;
+  background-color: #f4f5f8;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .dnm-switch-slider {
+  background-image: linear-gradient(to right, #2e418a, #2a3c81, #263777, #22326e, #1e2d65);
+}
+
+input + .dnm-switch-slider:after {
+  content: url("../assets/images/icons/switch-button/inactive.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 9px;
+  width: 9px;
+  right: 7px;
+  background-size: 20px;
+  position: absolute;
+}
+
+input:checked + .dnm-switch-slider:after {
+  content: url("../assets/images/icons/switch-button/active.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 13px;
+  width: 13px;
+  left: 8px;
+  background-size: 20px;
+  position: absolute;
+}
+
+input:checked + .dnm-switch-slider:before {
+  -webkit-transform: translateX(25px);
+  -ms-transform: translateX(25px);
+  transform: translateX(25px);
+}
+
+input:focus + .dnm-switch-slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+.dnm-switch-slider.round {
+  border-radius: 34px;
+}
+
+.dnm-switch-slider.round:before {
+  border-radius: 50%;
+}
+
+.dnm-switch-btn .dnm-switch-lbl {
+  margin-left: 60px;
+  font-family: Gotham Book;
+  font-size: 13px;
+  line-height: 25px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.dnm-switch-btn input ~ .dnm-switch-lbl:after {
+  content: "No";
+}
+
+.dnm-switch-btn input:checked ~ .dnm-switch-lbl:after {
+  content: "Yes";
+}

@@ -1,0 +1,16 @@
+<svg data-name="Layer 1" id="Layer_1" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>.cls-1 {
+      fill: #18233c;
+    }</style>
+  </defs>
+  <title>category</title>
+  <rect class="cls-1" height="4.14" width="1.8" x="15.27" y="12.34"/>
+  <rect class="cls-1" height="1.17" width="2.34" x="8.83" y="15.9"/>
+  <path class="cls-1" d="M10,11.17a1.17,1.17,0,0,0-1.17,1.17v2.38h2.34V12.34A1.17,1.17,0,0,0,10,11.17Z"/>
+  <rect class="cls-1" height="4.14" width="1.8" x="2.93" y="12.34"/>
+  <path class="cls-1" d="M10,3.52A1.17,1.17,0,0,0,8.83,4.69V7.07h2.34V4.69A1.17,1.17,0,0,0,10,3.52Z"/>
+  <path class="cls-1"
+        d="M15.31,4.1h-.66a4.69,4.69,0,0,0-9.3,0H4.69A4.69,4.69,0,0,0,0,8.79V20H7.66V12.34a2.34,2.34,0,0,1,4.69,0V20H20V8.79A4.69,4.69,0,0,0,15.31,4.1ZM3.24,7.64H4.41V8.81H3.24Zm2.66,10H1.76V11.17H5.9Zm6.45-9.41H7.66V4.69a2.34,2.34,0,0,1,4.69,0Zm3.24-.61h1.17V8.81H15.59Zm2.66,10H14.1V11.17h4.14Z"/>
+  <rect class="cls-1" height="1.76" width="2.34" x="8.83" y="18.24"/>
+</svg>

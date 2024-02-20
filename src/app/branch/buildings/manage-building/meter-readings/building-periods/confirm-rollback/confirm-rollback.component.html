@@ -1,0 +1,29 @@
+<div class="confirm-rollback">
+  <div class="modal-header">
+    <button (click)="onCancel()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <div *ngIf="buildingPeriod$ | async as buildingPeriod" class="modal-body">
+    <div class="row">
+      <div class="col-12 d-flex justify-content-center flex-column">
+        <i class="confirm-rollback-icon"></i>
+        <div class="confirm-rollback-title">Confirm Rollback</div>
+        <div class="confirm-rollback-msg">
+          Are you sure you want to delete {{buildingPeriod.name}}
+          and activate {{(previousBuildingPeriod$ | async).name}}?<br>
+          It cannot be undone!
+        </div>
+      </div>
+    </div>
+    <div class="row none-margin-hr">
+      <div class="col-12 none-padding footer-btns d-flex justify-content-center">
+        <button (click)="onCancel()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+        <button (click)="onConfirm(buildingPeriod.id)" class="dnm-btn dnm-btn-delete text-uppercase" type="button">
+          Rollback
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

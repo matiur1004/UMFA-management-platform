@@ -1,0 +1,6 @@
+<div class="map-container">
+  <div #gmap class="map"></div>
+</div>
+<ng-container *ngIf="selectedBuilding">
+  <popup-mapinfo #popupBlock [hidden]="true" [model]="selectedBuilding"></popup-mapinfo>
+</ng-container>

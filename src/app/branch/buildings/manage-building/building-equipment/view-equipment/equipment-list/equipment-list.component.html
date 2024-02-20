@@ -1,0 +1,186 @@
+<create-equipment *ngIf="isWizardMode$ | async"></create-equipment>
+<create-bulk-equipment *ngIf="isBulkWizardMode$ | async"></create-bulk-equipment>
+<div *ngIf="!(isWizardMode$ | async) && !(isBulkWizardMode$ | async)"
+     class="container-fluid none-padding equipment-list">
+
+  <div class="row search-row none-margin-hr">
+    <div class="col none-padding">
+      <div class="form-inline main-search-input w-100">
+        <div class="input-group">
+          <input #searchBox (keyup)="search(searchBox.value)" class="form-control group-search-input"
+                 data-search-field
+                 placeholder="Search equipment by ID number" type="search" [ngModel]="(searchKey$ | async)"/>
+          <div class="input-group-append">
+            <i class="icon-relative search-icon vertical-middle"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nav-row d-flex justify-content-start align-items-center">
+    <div class="d-flex align-items-center">
+      <a (click)="onAddMeter()" class="blue-text-btn" href="javascript:void(0)" [ngClass]="{'disabled': buildingPeriodIsFinalized}">
+        <i class="add-icon"></i>Add Equipment
+      </a>
+    </div>
+    <div class="d-flex align-items-center add-bulk-meter">
+      <a (click)="onAddBulkMeter()" class="blue-text-btn" href="javascript:void(0)" [ngClass]="{'disabled': buildingPeriodIsFinalized}">
+        <i class="add-icon"></i>Add Bulk Equipment
+      </a>
+    </div>
+  </div>
+
+  <div class="row none-margin-hr list-header">
+    <div class="col-6">
+      <div class="row none-margin-hr align-items-center">
+        <div class="col-2">
+          <a class="header-field d-flex align-items-center" href="javascript:void(0);">
+            <span class="text-ellipsis" title="Photo">Photo</span>
+          </a>
+        </div>
+        <div class="col-4">
+          <a class="header-field d-flex align-items-center" href="javascript:void(0);">
+            <span class="text-ellipsis" title="Equipment">Equipment</span>
+          </a>
+        </div>
+        <div class="col-3">
+          <a (click)="changeOrderIndex(orderType.LocationAsc)" [ngClass]="{'active': orderIndex == orderType.LocationAsc || orderIndex == orderType.LocationDesc}"
+             class="header-field d-flex align-items-center"
+             href="javascript:void(0);">
+            <span class="text-ellipsis" title="Location">Location</span>
+            <i [ngClass]="{'inactive': orderIndex != orderType.LocationAsc && orderIndex != orderType.LocationDesc, 'dnm-icon-sort-up': orderIndex == orderType.LocationDesc,'dnm-icon-sort-down': orderIndex != orderType.LocationDesc }"
+               class="dnm-icon"></i>
+          </a>
+        </div>
+        <div class="col-3">
+          <a class="header-field d-flex flex-column justify-content-center" href="javascript:void(0);">
+            <span class="text-ellipsis" title="Supply to">Supply to</span>
+            <span class="text-ellipsis" title="Location type">Location type</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 d-flex align-items-center">
+      <div class="row none-margin-hr w-100">
+        <div class="col-3 header-field d-flex align-items-center">
+          <span class="text-ellipsis" title="Description">Description</span>
+        </div>
+        <div class="col-3 header-field d-flex align-items-center">
+          <span class="text-ellipsis" title="Node">Node</span>
+        </div>
+        <div class="col-3">
+          <a class="header-field d-flex flex-column justify-content-center" href="javascript:void(0);">
+            <span class="" title="Last amr reading">Last amr</span>
+            <span class="text-ellipsis" title="Last amr reading">reading</span>
+          </a>
+        </div>
+        <div class="col-3 header-field d-flex align-items-center">
+          <span class="text-ellipsis" title="Allocated units">Allocated units</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="list-body">
+
+    <div *ngFor="let equipment of (equipmentList$ | async)"
+         class="row none-margin-hr body-row d-flex align-items-center">
+      <div class="col-6">
+        <div class="row none-margin-hr">
+          <div class="col-2">
+            <div class="item-img d-flex align-items-center justify-content-center">
+              <logo-container [url]="equipment.logoUrl" logo-class="branch-logo full-height d-flex align-items-center">
+                <div class="meter-no-img"></div>
+              </logo-container>
+            </div>
+          </div>
+          <div (click)="goToEquipmentDetail(equipment)"
+               class="col-4 clickable d-flex justify-content-start align-items-center">
+            <div [ngClass]="{'electricity-icon': equipment.supplyType == supplyType.Electricity, 'water-icon': equipment.supplyType == supplyType.Water, 'sewerage-icon': equipment.supplyType == supplyType.Sewerage, 'gas-icon': equipment.supplyType == supplyType.Gas, 'ad-hoc-icon': equipment.supplyType == supplyType.AdHoc}"
+                 class="service-icon"></div>
+            <div class="d-flex flex-column">
+                <span class="id-nunb-lbl">
+                  <span [title]="equipment.serialNumber" class="d-inline-block position-relative text-nowrap">
+                      {{equipment.serialNumber | emptyValue | slice : -4}}-{{equipment.supplyType | supplyTypeLetter}}
+                    <span *ngIf="equipment.isDummy" class="equipment-type type-dummy">Dummy</span>
+                      <span *ngIf="equipment.isFaulty" class="equipment-type type-faulty">Faulty</span>
+                  </span>
+                </span>
+              <span class="brand-model-lbl equipment-margin-top">{{ equipment.equipmentModel }}</span>
+            </div>
+          </div>
+          <div class="col-3 clickable d-flex align-items-center">
+            <a [routerLink]="['/branch', branchId, 'buildings', buildingId, 'version', version, 'equipment', 'locations', equipment.location.location.id]" class="location-lbl"
+               title="{{equipment.location.location.name + ' (' + equipment.sequenceNumber + ')'}}">{{equipment.location.location.name + ' (' + equipment.sequenceNumber + ')'}}</a>
+          </div>
+          <div class="col-3 d-flex flex-column justify-content-center">
+            <span class="location-lbl"
+                  title="{{equipment.location.supplyDetail.name}}">{{equipment.location.supplyDetail.name}}</span>
+            <span class="location-lbl"
+                  title="{{equipment.location.supplyDetail.locationType}}">{{equipment.location.supplyDetail.locationType}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="row none-margin-hr">
+          <div class="col-3">
+            <span class="description-lbl">{{equipment.location.description}}</span>
+          </div>
+          <div class="col-3 clickable d-flex align-items-center">
+            <div *ngIf="!lastNode" class="node-numb-lbl">
+              <ng-container *ngFor="let node of equipment.nodes; let lastNode = last">
+                <div>
+                  <a [routerLink]="['/branch', branchId, 'buildings', buildingId, 'version', version, 'equipment', 'nodes', node.id]"
+                     class="location-lbl">{{node.name}}</a>
+                  <span *ngIf="!lastNode">, </span>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+          <div class="col-3 d-flex align-items-center">
+            <span class="description-lbl">{{equipment.amrImportLastDate | dateFormat:false}}</span>
+          </div>
+          <div class="col-3">
+            <div class="d-flex align-items-center justify-content-between">
+              <div class="d-flex flex-column">
+                <div class="node-numb-lbl">
+                  <ng-container *ngFor="let shop of equipment.shops">
+                    <div class="equipment-area">{{shop.name}} {{shop.tenant ? ' (' + shop.tenant.name + ')' : ''}}</div>
+                  </ng-container>
+                  <ng-container *ngFor="let commonArea of equipment.commonAreas">
+                    <div class="equipment-area">{{commonArea.name}}</div>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="d-flex align-items-center">
+                <i class="location-info-icon"></i>
+                <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+                  <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle type="button"></button>
+                  <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                    <button (click)="onAddReplace(equipment.id)" class="dropdown-item d-flex justify-content-between dropdown-replace"
+                            type="button">
+                      Replace
+                      <i class="dnm-icon replace-icon"></i>
+                    </button>
+                    <button (click)="onClone(equipment.id)" class="dropdown-item d-flex justify-content-between dropdown-clone"
+                            type="button">
+                      Clone
+                      <i class="dnm-icon plus-icon"></i>
+                    </button>
+                    <button (click)="goToEquipmentDetail(equipment)" class="dropdown-item d-flex justify-content-between" data-menu-item
+                            type="button">
+                      Edit
+                      <i class="dnm-icon edit-icon"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,65 @@
+@import 'variables.less';
+
+.input-group > .form-control.group-search-input {
+  border-radius: 20px;
+}
+
+.group-search-input:focus,
+.form-control.group-search-input:focus {
+  background: transparent;
+  border: 2px solid @color-main-accent;
+  z-index: 0;
+  padding: 9px 39px 9px 17px;
+}
+
+.form-control.group-search-input,
+.group-search-input {
+  border: 1px solid @color-line;
+  border-radius: 20px;
+  font-family: Gotham Book;
+  font-size: 13px;
+  color: @color-text-tertiary;
+  padding: 10px 40px 10px 18px;
+}
+
+.theme-white {
+  .group-search-input:focus {
+    background-color: @color-background-white;
+  }
+}
+
+input[type="search"].group-search-input::-webkit-search-decoration,
+input[type="search"].group-search-input::-webkit-search-cancel-button,
+input[type="search"].group-search-input::-webkit-search-results-button,
+input[type="search"].group-search-input::-webkit-search-results-decoration {
+  display: none;
+}
+
+.group-search-input::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  color: @color-empty;
+}
+
+.group-search-input::-moz-placeholder {
+  /* Firefox 19+ */
+  color: @color-empty;
+}
+
+.group-search-input:-ms-input-placeholder {
+  /* IE 10+ */
+  color: @color-empty;
+}
+
+.group-search-input:-moz-placeholder {
+  /* Firefox 18- */
+  color: @color-empty;
+}
+
+.main-search-input .input-group-append {
+  width: 31px;
+  margin-left: -31px;
+}
+
+.form-control.group-search-input.background-white {
+  background: @color-background-white;
+}

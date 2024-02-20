@@ -1,0 +1,155 @@
+<div *ngIf="selectedMeter" class="readings-history">
+  <div class="container-fluid top-container">
+    <div class="row content">
+      <div class="header-title">
+        <h1 class="page-title text-uppercase">Readings History</h1>
+      </div>
+      <div class="d-flex align-items-center">
+        <div class="hdr-fltr-wrp d-flex align-items-center">
+          <span class="text-uppercase filter-item-lbl">Meter Serial Number:</span>
+          <ng-select #selectMeter
+                     (change)="onUpdateMeter($event)" [(ngModel)]="selectedMeter" [clearable]="false"
+                     [searchable]="false" class="dnm-single-select dnm-dropdown-select dnm-dropdown-large">
+            <ng-template ng-header-tmp>
+              <div class="dnm-single-field-filter">
+                <input (input)="selectMeter.filter($event.target.value)" class="dnm-single-input-field" type="text"/>
+              </div>
+            </ng-template>
+            <ng-template let-item="item" ng-label-tmp>
+              <div>{{item.shortName}}-{{item.supplyType | supplyTypeLetter}}</div>
+            </ng-template>
+            <ng-option *ngFor="let meter of meters"
+                       [value]="meter">{{meter.shortName}}-{{meter.supplyType | supplyTypeLetter}}</ng-option>
+          </ng-select>
+        </div>
+        <div class="hdr-fltr-wrp d-flex align-items-center">
+          <span class="text-uppercase filter-item-lbl">Register:</span>
+          <ng-select #selectRegister
+                     (change)="onUpdateRegisterTou($event)" [(ngModel)]="selectedRegister" [clearable]="false"
+                     [searchable]="false" class="dnm-single-select dnm-dropdown-select dnm-dropdown-large">
+            <ng-template ng-header-tmp>
+              <div class="dnm-single-field-filter">
+                <input (input)="selectRegister.filter($event.target.value)" class="dnm-single-input-field" type="text"/>
+              </div>
+            </ng-template>
+            <ng-template let-item="item" ng-label-tmp>
+              <div>{{item === 'all' ? 'All items' : item.id | registerUnit | async}}</div>
+            </ng-template>
+            <ng-option value="all">All items</ng-option>
+            <ng-option *ngFor="let register of registers"
+                       [value]="register">{{register.id | registerUnit | async}}</ng-option>
+          </ng-select>
+        </div>
+        <back-button></back-button>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 none-padding">
+    <meter-reading-stats (changeAverage)="onChangeAverage($event)"
+                         (changeChartView)="onChangeChartView($event)"
+                         (changeRegister)="onChangeRegister($event)"
+                         (changeTab)="onChangeTab($event)"
+                         *ngIf="(meterReading$ | async) && (meterReadingStatsChart$ | async)"
+                         [isShowRegister]="false"
+                         [meterReadingStatsChart]="meterReadingStatsChart$ | async"
+                         [meter]="meterReading$ | async"
+                         [registers]="registers">
+    </meter-reading-stats>
+  </div>
+
+  <div class="container-fluid rdngs-hstr-cont">
+    <div class="row none-margin-hr">
+      <div class="col none-padding">
+        <div class="d-flex align-items-center justify-content-between">
+          <div class="text-uppercase mr-3 meter-name">
+            <span class="mr-2">Meter:</span>
+            <span [routerLink]="['/branch', branchId, 'buildings', buildingId, 'version', 0, 'equipment',  meterId]"
+                  class="mr-2 link-black"
+            > {{selectedMeter?.shortName}}-{{selectedMeter?.supplyType | supplyTypeLetter}}</span>
+          </div>
+          <div class="d-flex align-items-center">
+            <div class="filter-item-wrp d-flex align-items-center">
+              <span class="text-uppercase filter-item-lbl">Sort By:</span>
+              <ng-select (change)="onSortByChange($event)"
+                         [clearable]="false"
+                         [hideSelected]="true"
+                         [ngModel]="sortBy$ | async"
+                         [searchable]="false"
+                         class="dnm-single-select dnm-dropdown-select dnm-dropdown-large "
+                         name="sortBy">
+                <ng-option *ngFor="let sortBy of sortByList; let i = index"
+                           [value]="sortBy">{{sortByText[sortByList[i]]}}</ng-option>
+              </ng-select>
+              <div class="filter-item-wrp d-flex align-items-center">
+                <span class="text-uppercase filter-item-lbl">Readings Per Page:</span>
+                <ng-select (change)="onPageSizeChanged($event)"
+                           [(ngModel)]="pageSize"
+                           [clearable]="false"
+                           [hideSelected]="true"
+                           [searchable]="false" class="dnm-single-select dnm-dropdown-select dnm-dropdown-large " name="pageSize">
+                  <ng-option *ngFor="let item of pageSizes" [value]="item">{{item}}</ng-option>
+                  <ng-option [value]="0">ALL</ng-option>
+                </ng-select>
+              </div>
+              <div class="filter-item-wrp d-flex align-items-center">
+                <span class="text-uppercase filter-item-lbl">From:</span>
+                <div class="datepicker-wrp nav-datepicker-wrp">
+                  <input #startDate="ngbDatepicker" (click)="startDate.toggle()" (ngModelChange)="onUpdateStartDate($event)"
+                         [ngModel]="startDate$ | async | dateForDatepicker"
+                         class="form-control nav-dtpickr-inpt"
+                         name="startDate" ngbDatepicker placeholder="dd/mm/YYYY" readonly>
+                  <i (click)="startDate.toggle()" class="calendar"></i>
+                </div>
+              </div>
+              <div class="filter-item-wrp d-flex align-items-center">
+                <span class="text-uppercase filter-item-lbl">To:</span>
+                <div class="datepicker-wrp nav-datepicker-wrp">
+                  <input #endDate="ngbDatepicker" (click)="endDate.toggle()" (ngModelChange)="onUpdateEndDate($event)"
+                         [ngModel]="endDate$ | async | dateForDatepicker"
+                         class="form-control nav-dtpickr-inpt"
+                         name="endDate" ngbDatepicker placeholder="dd/mm/YYYY" readonly>
+                  <i (click)="endDate.toggle()" class="calendar"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row none-margin-hr">
+      <div class="col none-padding">
+        <div class="d-flex">
+          <div class="rdng-items-wrp">
+            <ng-container *ngFor="let listItem of (readingsHistoryList$ | async)">
+              <div class="bl-gradient-title mt-4">Building period name - {{listItem.buildingPeriodName}}
+                ({{listItem.buildingPeriodStartDate | dateMediumFormat}}
+                - {{listItem.buildingPeriodEndDate | dateMediumFormat}})
+              </div>
+              <ng-container *ngFor="let reading of listItem.readings">
+                <history-reading-item (readingDetailsFileDownload)="downloadReadingDetailsFile($event)" (readingDetailsUpdate)="updateReadingDetails($event)"
+                                      (setBilling)="onSetBilling($event)"
+                                      (togglePin)="onTogglePin($event)"
+                                      (updateReadingsList)="initializeReadingHistoryList()"
+                                      [reading]="reading"
+                                      [readings]="listItem.readings"
+                                      [buildingPeriods]="buildingPeriods$ | async"
+                                      [reasons]="estimatedReasons$ | async"
+                ></history-reading-item>
+              </ng-container>
+            </ng-container>
+            <pager (onPageChange)="onPageChange($event)" [pageSize]="pageSize" [page]="currentPageNumber"
+                   [total]="totalReadingsAmount"></pager>
+          </div>
+          <div class="pnnd-rdngs-wrp">
+            <ng-container *ngFor="let reading of (pinnedReadingsHistory$ | async)">
+              <history-reading-item (readingDetailsFileDownload)="downloadReadingDetailsFile($event)" (readingDetailsUpdate)="updateReadingDetails($event)" (togglePin)="onTogglePin($event)"
+                                    (updateReadingsList)="initializeReadingHistoryList()"
+                                    [pinnedReading]="true"
+                                    [reading]="reading"
+                                    [buildingPeriods]="buildingPeriods$ | async"></history-reading-item>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

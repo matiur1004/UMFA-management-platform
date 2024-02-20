@@ -1,0 +1,227 @@
+<div class="container-fluid none-padding bulk-equipment-attributes">
+  <div class="none-margin-hr">
+    <div class="row nav-row d-flex align-items-center">
+      <div class="col-2 d-flex align-items-center">
+        <div class="list-item total-container d-flex align-items-center">
+          <span class="total-text">Total:</span>
+          <span class="total-value">{{total}} items</span>
+        </div>
+      </div>
+      <div class="col-auto d-flex align-items-center">
+        <!-- <span class="text-uppercase drpdwn-fltr-lbl">Supply Type</span> -->
+        <ng-select  
+                (change)="onChangeFilterType($event)"
+                [(ngModel)]="filterTypeModel"
+                [clearable]="false"
+                [hideSelected]="true"
+                [searchable]="false"
+                class="dnm-dropdown-select ng-select ng-select-single mr-4">
+          <ng-option [value]="-1">All</ng-option>
+          <ng-option *ngFor="let item of filterTypesList" [value]="item.value">{{item.label}}</ng-option>
+        </ng-select>
+        <ng-container *ngIf="filterTypeModel == filterTypes.SupplyType">
+          <ng-select (change)="onSearchBySupplyType($event)"
+                  [(ngModel)]="supplyTypeModel"
+                  [clearable]="false"
+                  [hideSelected]="true"
+                  [searchable]="false"
+                  class="dnm-dropdown-select ng-select ng-select-single">
+            <ng-option [value]="-1">All</ng-option>
+            <ng-option *ngFor="let item of supplyTypesList" [value]="item.value">{{item.label}}</ng-option>
+          </ng-select>
+        </ng-container>
+        <ng-container *ngIf="filterTypeModel == filterTypes.Location">
+          <ng-select (change)="onSearchByLocation($event)"
+                  [(ngModel)]="locationModel"
+                  [clearable]="false"
+                  [hideSelected]="true"
+                  [searchable]="false"
+                  class="dnm-dropdown-select ng-select ng-select-single">
+            <ng-option [value]="-1">All</ng-option>
+            <ng-option *ngFor="let item of locationList" [value]="item.id">{{item.name}}</ng-option>
+          </ng-select>
+        </ng-container>
+        <ng-container *ngIf="filterTypeModel == filterTypes.EquipmentGroup">
+          <ng-select (change)="onSearchByEquipmentModel($event)"
+                  [(ngModel)]="equipmentGroupModel"
+                  [clearable]="false"
+                  [hideSelected]="true"
+                  [searchable]="false"
+                  class="dnm-dropdown-select ng-select ng-select-single">
+            <ng-option [value]="-1">All</ng-option>
+            <ng-option *ngFor="let item of equipmentGroups" [value]="item.id">{{item.name}}</ng-option>
+          </ng-select>
+        </ng-container>
+        <ng-container *ngIf="filterTypeModel == filterTypes.DeviceType">
+          <ng-select (change)="onSearchByDeviceType($event)"
+                  [(ngModel)]="deviceTypeModel"
+                  [clearable]="false"
+                  [hideSelected]="true"
+                  [searchable]="false"
+                  class="dnm-dropdown-select ng-select ng-select-single">
+            <ng-option [value]="-1">All</ng-option>
+            <ng-option *ngFor="let item of deviceTypes" [value]="item.id">{{item.model}}</ng-option>
+          </ng-select>
+        </ng-container>
+  
+        <ng-container *ngIf="filterTypeModel == filterTypes.SerialNumber">
+          <div class="col-auto">
+            <simple-search-form (onSearch)="search($event)" [value]="searchTerm"
+                                placeholder="Search Equipment"></simple-search-form>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+    <ng-container *ngFor="let equipmentGroup of equipmentGroupMeters.controls; trackBy: trackByEquipmentGroupId">
+      <div *ngIf="equipmentGroup.value.meters.length"
+           class="table-attr table-container table-responsive vertical-table-scroll">
+        <table class="table table-custom table-white table-vertical-center table-outside-border-body">
+          <thead>
+          <tr>
+            <th class="pl-0 cell-selection">
+              <div class="darkness bulk-actions-nav" ngbDropdown placement="bottom-left">
+                <div class="checkbox-input dropdown-checkbox-input d-flex align-items-center" ngbDropdownToggle>
+                  <div class="dnm-checkbox list-header-checkbox">
+                    <input (click)="selectAllMeters.emit({equipmentGroupId: equipmentGroup.value.equipmentGroupId, isSelected: !selectedAllMeters[equipmentGroup.value.equipmentGroupId]})" [checked]="selectedAllMeters[equipmentGroup.value.equipmentGroupId]"
+                           class="checkbox-toggle"
+                           type="checkbox"/>
+                    <div [ngClass]="{'indeterm-state': checkedAllPartly}" class="state">
+                      <label></label>
+                    </div>
+                  </div>
+                </div>
+                <div class="checkbox-menu" ngbDropdownMenu>
+                  <div class="checkbox-menu-header">{{getSelectedItems(equipmentGroup.value)}} items selected</div>
+
+                  <ng-container *ngIf="(actions$ | async)(bulkAction) as actions">
+                    <ng-container *ngIf="actions[equipmentGroup.value.equipmentGroupId]">
+                      <button (click)="onBulkActionChanged(step, equipmentGroup.value, attr)"
+                              *ngFor="let attr of actions[equipmentGroup.value.equipmentGroupId]['filteredActions']" class="dropdown-item d-flex justify-content-between"
+                              type="button"
+                      >
+                        {{'Set ' + attr.name}}
+                      </button>
+                    </ng-container>
+                  </ng-container>
+                </div>
+              </div>
+            </th>
+            <th>
+              <span class="head-col" title="Serial Number">Serial Number</span>
+            </th>
+            <th>
+              <span class="head-col" title="Location">Location</span>
+            </th>
+            <ng-container *ngFor="let header of equipmentGroup.value.headerAttributes">
+              <th>
+                <span class="head-col" title="{{header.name}}">{{header.name}}</span>
+              </th>
+            </ng-container>
+          </tr>
+          </thead>
+          <tbody>
+          <ng-container
+            *ngFor="let meter of equipmentGroup.controls.meters.controls; let idx = index; last as isLast; trackBy: trackById">
+            <tr [ngClass]="{'selected-row' : meter.controls.isSelected.value}">
+              <td class="cell cell-selection checkbox-input">
+                <div class="dnm-checkbox selection-checkbox">
+                  <input [ngrxFormControlState]="meter.controls.isSelected" class="checkbox-toggle" type="checkbox"/>
+                  <div class="state">
+                    <label></label>
+                  </div>
+                </div>
+              </td>
+              <td class="d-flex align-items-center">
+                <div class="d-flex flex-column">
+                  <div class="d-flex align-items-center">
+                    <span [title]="meter.value.serialNumber" class="serial-number-label text-ellipsis meter-field">
+                      {{meter.value.serialNumber | emptyValue | slice:-4}}-{{meter.value.supplyType | supplyTypeLetter}}
+                    </span>
+                    <div [ngClass]="{'electricity-icon': meter.value.supplyType == supplyType.Electricity,
+                      'water-icon': meter.value.supplyType == supplyType.Water,
+                      'sewerage-icon': meter.value.supplyType == supplyType.Sewerage,
+                      'gas-icon': meter.value.supplyType == supplyType.Gas,
+                      'ad-hoc-icon': meter.value.supplyType == supplyType.AdHoc}"
+                        class="service-icon ml-2"></div>
+                  </div>
+                  <div class="text-ellipsis meter-field equipment-attributes-label mt-1">
+                    {{meter.value.deviceTypeName}}
+                  </div>
+                </div>
+                
+              </td>
+              <td>
+                <span class="equipment-attributes-label"
+                      title="{{meter.value.locationName + ' (' + meter.value.sequenceNumber + ')'}}">{{meter.value.locationName + ' (' + meter.value.sequenceNumber + ')'}}</span>
+              </td>
+              <ng-container *ngFor="let attr of equipmentGroup.value.headerAttributes; trackBy: trackById">
+                <td class="equipment-attribute-field">
+                  <ng-container *ngIf="meter.value.attributes[attr.id] as attribute">
+                    <div class="d-flex align-items-center position-relative">
+                      <div
+                        [ngClass]="{ 'dnm-invalid-inp': meter.controls.attributes.controls[attr.id].controls.value.isInvalid }">
+                        <ng-container [ngSwitch]="attribute.attribute.fieldType">
+                          <ng-container *ngSwitchCase="fieldTypes.Combo">
+                            <ng-select [(ngModel)]="attribute.value" [appendTo]="'body'"
+                                       [clearable]="false" [dropdownPosition]="'bottom'"
+                                       [hideSelected]="true"
+                                       [searchable]="false" [title]="attribute.value"
+                                       class="select-dropdown equipment-attributes-dropdown">
+                              <ng-option
+                                *ngFor="let item of meter.controls.attributes.controls[attr.id].controls.attribute.controls.comboSettings.controls"
+                                [value]="item.value.value">{{item.value.value}}</ng-option>
+                            </ng-select>
+                          </ng-container>
+                          <ng-container *ngSwitchCase="fieldTypes.Number">
+                            <div class="d-flex align-items-center">
+                              <div class="field-value unit-number-value">
+                                <number-input
+                                  [ngrxFormControlState]="meter.controls.attributes.controls[attr.id].controls.numberValue"
+                                  [title]="meter.controls.attributes.controls[attr.id].controls.numberValue.value"></number-input>
+                              </div>
+                              <span class="unit-name text-truncate" title="{{attribute.attribute.unit?.name}}">
+                                  {{attribute.attribute.unit?.name}}
+                                </span>
+                            </div>
+                          </ng-container>
+                          <ng-container *ngSwitchCase="fieldTypes.Ratio">
+                            <div class="d-flex align-items-center">
+                              <div class="field-value ratio-value">
+                                <input [ngrxFormControlState]="meter.controls.attributes.controls[attr.id].controls.value"
+                                       [placeholder]="ratioPlaceholderMask(meter.value.attributes[attr.id].attribute.name)"
+                                       [textMask]="{ mask: ratioMask, guide: false }"
+                                       [title]="meter.controls.attributes.controls[attr.id].controls.value.value"
+                                       class="form-control"
+                                       type="text">
+                              </div>
+                            </div>
+                          </ng-container>
+                        </ng-container>
+                      </div>
+                      <ng-container
+                        *ngIf="meter.controls.attributes.controls[attr.id].value.attribute.canAddPhoto && meter.controls.attributes.controls[attr.id] as attributeCtrl">
+                        <button (click)="onChangePhoto(equipmentGroup.value.equipmentGroupId, meter.value.serialNumber, attr.id, attributeCtrl.value.photo)" [ngClass]="{'dnm-btn-photo' : attributeCtrl.value.photo, 'dnm-btn-photo-add' : !attributeCtrl.value.photo }"
+                                class="dnm-btn attr-photo-btn"
+                                type="button"></button>
+                      </ng-container>
+                    </div>
+                  </ng-container>
+                </td>
+              </ng-container>
+            </tr>
+          </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+  </div>
+  <div class="row none-margin-hr">
+    <div class="col-12 none-padding footer-btns d-flex justify-content-end">
+      <button (click)="close.emit()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+      <button (click)="nextStep.emit(3)" class="dnm-btn dnm-btn-primary text-uppercase" type="button">
+        Next
+      </button>
+    </div>
+  </div>
+</div>

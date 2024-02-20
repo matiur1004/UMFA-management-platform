@@ -1,0 +1,316 @@
+<div class="container-fluid none-padding bld-services">
+
+  <!-- page header -->
+  <div class="row">
+    <div class="col-12">
+      <div class="bld-services-title">Choose a package</div>
+      <div class="bld-services-description">
+        Dunamis offers money-saving bundles of services.
+        Packages are made based on needs of most of our clients.
+        You also could use a custom package but be avare,
+        that bundle discount will not function and total price for your branch will be calculated from amount of prices
+        of separate services.
+      </div>
+    </div>
+  </div>
+
+  <!-- left side services container -->
+  <div *ngIf="!isComplete" class="services-nav">
+    <div class="row-header">
+      <span class="services-nav-title">Packages ({{ (packagesCount$ | async) }})</span>
+    </div>
+    <div class="service-nav-search">
+      <simple-search-form (onSearch)="search($event)"></simple-search-form>
+      <div class="d-flex align-items-center filter-item category-filter">
+        <div class="dropdown filter-dropdown d-inline-block small build-serv-filter" ngbDropdown
+             placement="bottom-right">
+          <button class="btn btn-secondary dropdown-toggle text-left build-serv-btn" ngbDropdownToggle>
+            {{packagesCategoryText$ | async}}
+          </button>
+          <div class="dropdown-menu buid-serv-menu" ngbDropdownMenu>
+            <button (click)="onChangePackageCategory(-1)" class="dropdown-item" type="button">All categories</button>
+            <button (click)="onChangePackageCategory(0)" class="dropdown-item" type="button">Full metering</button>
+            <button (click)="onChangePackageCategory(1)" class="dropdown-item" type="button">Partial metering</button>
+            <button (click)="onChangePackageCategory(2)" class="dropdown-item" type="button">Pre-paid metering</button>
+            <button (click)="onChangePackageCategory(3)" class="dropdown-item" type="button">Single tenant</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="services-nav-list">
+      <ng-container *ngFor="let package of packages$ | async">
+        <div (click)="changePackage(package.id)"
+             [ngClass]="{'selected-item' : (packageDetails$ | async) && (packageDetails$ | async).id == package.id}"
+             class="list-item">
+          <div class="package-name">{{package.name}}</div>
+          <div class="amount-of-services">{{package.serviceCount}} services</div>
+          <div class="service-types d-flex align-items-center">
+            <div *ngIf="package.hasElectricitySupplier" class="pcg-srvc-icon electricity-icon"></div>
+            <div *ngIf="package.hasWaterSupplier" class="pcg-srvc-icon water-icon"></div>
+            <div *ngIf="package.hasSewerageSupplier" class="pcg-srvc-icon sewerage-icon"></div>
+            <div *ngIf="package.hasGasSupplier" class="pcg-srvc-icon gas-icon"></div>
+            <div *ngIf="package.hasAdHocSupplier" class="pcg-srvc-icon adhoc-icon"></div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <div class="srvs-nav-pager">
+      <pager (onPageChange)="setPage($event)" [pageSize]="(pageSize$ | async)" [page]="(page$ | async)"
+             [total]="(pacakgesTotal$ | async)"></pager>
+    </div>
+  </div>
+
+  <!-- right side permissions container -->
+  <div *ngIf="(packageDetails$ | async)" [ngClass]="{'editable': !isComplete}" class="services-container">
+    <div class="services-title">{{(packageDetails$ | async).name}}</div>
+    <div class="bl-gradient-title section-title">Supply types</div>
+    <div class="d-flex supply-types-row">
+      <div *ngIf="(packageDetails$ | async).hasElectricitySupplierDefault"
+           class="d-flex align-items-center checkbox-input">
+        <div class="dnm-checkbox">
+          <input (change)="supplyTypeChange('hasElectricitySupplier')" [attr.disabled]="isComplete ? '' : null" [ngModel]="(packageDetails$ | async).hasElectricitySupplier"
+                 class="checkbox-toggle" type="checkbox"/>
+          <div class="state">
+            <label></label>
+          </div>
+        </div>
+        <span class="checkbox-input-lbl">Electricity</span>
+      </div>
+      <div *ngIf="(packageDetails$ | async).hasWaterSupplierDefault" class="d-flex align-items-center checkbox-input">
+        <div class="dnm-checkbox">
+          <input (change)="supplyTypeChange('hasWaterSupplier')" [attr.disabled]="isComplete ? '' : null" [ngModel]="(packageDetails$ | async).hasWaterSupplier"
+                 class="checkbox-toggle" type="checkbox"/>
+          <div class="state">
+            <label></label>
+          </div>
+        </div>
+        <span class="checkbox-input-lbl">Water</span>
+      </div>
+      <div *ngIf="(packageDetails$ | async).hasSewerageSupplierDefault"
+           class="d-flex align-items-center checkbox-input">
+        <div class="dnm-checkbox">
+          <input (change)="supplyTypeChange('hasSewerageSupplier')" [attr.disabled]="isComplete ? '' : null" [ngModel]="(packageDetails$ | async).hasSewerageSupplier"
+                 class="checkbox-toggle" type="checkbox"/>
+          <div class="state">
+            <label></label>
+          </div>
+        </div>
+        <span class="checkbox-input-lbl">Sewerage</span>
+      </div>
+      <div *ngIf="(packageDetails$ | async).hasGasSupplierDefault" class="d-flex align-items-center checkbox-input">
+        <div class="dnm-checkbox">
+          <input (change)="supplyTypeChange('hasGasSupplier')" [attr.disabled]="isComplete ? '' : null" [ngModel]="(packageDetails$ | async).hasGasSupplier"
+                 class="checkbox-toggle" type="checkbox"/>
+          <div class="state">
+            <label></label>
+          </div>
+        </div>
+        <span class="checkbox-input-lbl">Gas</span>
+      </div>
+      <div *ngIf="(packageDetails$ | async).hasAdHocSupplierDefault" class="d-flex align-items-center checkbox-input">
+        <div class="dnm-checkbox">
+          <input (change)="supplyTypeChange('hasAdHocSupplier')" [attr.disabled]="isComplete ? '' : null" [ngModel]="(packageDetails$ | async).hasAdHocSupplier"
+                 class="checkbox-toggle" type="checkbox"/>
+          <div class="state">
+            <label></label>
+          </div>
+        </div>
+        <span class="checkbox-input-lbl">AdHoc</span>
+      </div>
+    </div>
+    <div class="bl-gradient-title section-title">Choose your price</div>
+    <div class="d-flex flex-wrap packages-list">
+      <div (click)="!isComplete && updatePackageChargingMethod(chargingMethod.PerTenant)" *ngIf="(packageDetails$ | async).hasPerTenantMethod"
+           [ngClass]="{'checked-price': (packageDetails$ | async).chargingMethod == chargingMethod.PerTenant}"
+           class="serv-price-item">
+        <div class="item-body d-flex align-items-center">
+          <div class="price-lbl">
+            <div class="price-value">R {{(tenantPriceHeader$ | async).total}}</div>
+            <div class="type-of-items">for {{(tenantPriceHeader$ | async).count}} tenant(s)</div>
+            <div class="price-per-unit">
+              R {{(tenantPriceHeader$ | async).per}} / per tenant
+            </div>
+          </div>
+        </div>
+      </div>
+      <div (click)="!isComplete && updatePackageChargingMethod(chargingMethod.PerShop)" *ngIf="(packageDetails$ | async).hasPerShopMethod"
+           [ngClass]="{'checked-price': (packageDetails$ | async).chargingMethod == chargingMethod.PerShop}"
+           class="serv-price-item">
+        <div class="item-body d-flex align-items-center">
+          <div class="price-lbl">
+            <div class="price-value">R {{(shopPriceHeader$ | async).total}}</div>
+            <div class="type-of-items">for {{(shopPriceHeader$ | async).count}} shop(s)</div>
+            <div class="price-per-unit">
+              R {{(shopPriceHeader$ | async).per}} / per shop
+            </div>
+          </div>
+        </div>
+      </div>
+      <div (click)="!isComplete && updatePackageChargingMethod(chargingMethod.PerMeter)" *ngIf="(packageDetails$ | async).hasPerMeterMethod"
+           [ngClass]="{'checked-price': (packageDetails$ | async).chargingMethod == chargingMethod.PerMeter}"
+           class="serv-price-item">
+        <div class="item-body d-flex align-items-center">
+          <div class="price-lbl">
+            <div class="price-value">R {{(meterPriceHeader$ | async).total}}</div>
+            <div class="type-of-items">for {{(meterPriceHeader$ | async).count}} meter(s)</div>
+            <div class="price-per-unit">R {{(meterPriceHeader$ | async).per}} / per meter</div>
+            <div *ngIf="(meterTypesDetail$ | async).length" class="package-info" ngbDropdown>
+              <div class="package-info-btn" ngbDropdownToggle></div>
+              <div class="dropdown-menu" ngbDropdownMenu>
+                <meter-info-popup [meterTypes]="meterTypesDetail$ | async"></meter-info-popup>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div (click)="!isComplete && updatePackageChargingMethod(chargingMethod.PerSquareMeter)" *ngIf="(packageDetails$ | async).hasPerSQMeterMethod"
+           [ngClass]="{'checked-price': (packageDetails$ | async).chargingMethod == chargingMethod.PerSquareMeter}"
+           class="serv-price-item">
+        <div class="item-body d-flex align-items-center">
+          <div class="price-lbl">
+            <div class="price-value">R {{(sqMeterPriceHeader$ | async).total}}</div>
+            <div class="type-of-items">for {{(sqMeterPriceHeader$ | async).count}} sq m</div>
+            <div class="price-per-unit">
+              R {{(sqMeterPriceHeader$ | async).per}} / per sq m
+            </div>
+          </div>
+        </div>
+      </div>
+      <div (click)="!isComplete && updatePackageChargingMethod(chargingMethod.PerBuilding)" *ngIf="(packageDetails$ | async).hasPerBuildingMethod"
+           [ngClass]="{'checked-price': (packageDetails$ | async).chargingMethod == chargingMethod.PerBuilding}"
+           class="serv-price-item">
+        <div class="item-body d-flex align-items-center">
+          <div class="price-lbl">
+            <div class="price-value">R {{(buildingPrice$ | async)}}</div>
+            <div class="type-of-items">for building</div>
+          </div>
+        </div>
+      </div>
+      <div (click)="!isComplete && updatePackageChargingMethod(chargingMethod.PerCouncilAccount)" *ngIf="(packageDetails$ | async).hasPerCouncilAccountMethod"
+           [ngClass]="{'checked-price': (packageDetails$ | async).chargingMethod == chargingMethod.PerCouncilAccount}"
+           class="serv-price-item">
+        <div class="item-body d-flex align-items-center">
+          <div class="price-lbl">
+            <div class="price-value">R {{(councilAccPriceHeader$ | async).total}}</div>
+            <div class="type-of-items">for {{(councilAccPriceHeader$ | async).count}} council acc.</div>
+            <div class="price-per-unit">
+              R {{(councilAccPriceHeader$ | async).per}} / per council acc.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div (click)="!isComplete && updatePackageChargingMethod(chargingMethod.PerHour)" *ngIf="(packageDetails$ | async).hasPerHourMethod"
+           [ngClass]="{'checked-price': (packageDetails$ | async).chargingMethod == chargingMethod.PerHour}"
+           class="serv-price-item">
+        <div class="item-body d-flex align-items-center">
+          <div class="price-lbl">
+            <div class="price-value">R {{(hourPriceHeader$ | async).total}}</div>
+            <div class="type-of-items">for {{(hourPriceHeader$ | async).count}} hour(s)</div>
+            <div class="price-per-unit">
+              R {{(hourPriceHeader$ | async).per}} / per hour
+            </div>
+          </div>
+        </div>
+      </div>
+      <div (click)="!isComplete && updatePackageChargingMethod(chargingMethod.FixedPrice)" *ngIf="(packageDetails$ | async).hasFixedPriceMethod"
+           [ngClass]="{'checked-price': (packageDetails$ | async).chargingMethod == chargingMethod.FixedPrice}"
+           class="serv-price-item">
+        <div class="item-body d-flex align-items-center">
+          <div class="price-lbl">
+            <div class="price-value">R {{(fixedPrice$ | async)}}</div>
+            <div class="type-of-items">fixed price</div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="(packageDetails$ | async).hasCustomMethod" class="custom-package">
+        <div (click)="!isComplete && updatePackageChargingMethod(8)" [ngClass]="{'checked-price': (packageDetails$ | async).chargingMethod == 8}"
+             class="serv-price-item">
+          <div class="item-body d-flex align-items-center">
+            <div class="price-lbl">
+              <div class="price-value">R {{customizationTotalPrice$ | async}}</div>
+              <div class="type-of-items">custom price</div>
+            </div>
+          </div>
+          <div *ngIf="(customizationTotalPrice$ | async).length" class="package-info" ngbDropdown>
+            <div class="package-info-btn" ngbDropdownToggle></div>
+            <div [ngClass]="{'package-info-menu': isComplete == true}" class="dropdown-menu" ngbDropdownMenu>
+              <package-info-popup [services]="customizationDetail$ | async"
+                                  [total]="customizationTotalPrice$ | async"></package-info-popup>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bl-gradient-title section-title">Services List</div>
+    <div class="row none-margin-hr nav-row">
+      <div class="col-12 none-padding">
+        <div class="d-flex justify-content-between">
+          <div class="d-flex align-items-center">
+            <span class="results-lbl dnm-text-light">{{serviceCount$ | async}}</span>
+          </div>
+          <div class="d-flex align-item-center justify-content-end">
+            <div class="d-flex align-items-center filter-item">
+              <span class="text-uppercase select-lbl">Show/Hide Price</span>
+              <div class="service-switch">
+                <label class="dnm-switch-btn">
+                  <input (change)="onShowPrices()" [ngModel]="showPrice$ | async" type="checkbox">
+                  <span class="dnm-switch-slider round"></span>
+                </label>
+                <div class="service-toggle-popup">
+                  <div class="service-toggle-msg">
+                    Service is enabled
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex align-items-center filter-item">
+              <span class="text-uppercase select-lbl">Category:</span>
+              <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+                <button class="btn btn-secondary dropdown-toggle services-filter-btn text-left" ngbDropdownToggle>
+                  {{serviceFilterText$ | async}}
+                </button>
+                <div class="dropdown-menu services-filter-menu" ngbDropdownMenu>
+                  <button (click)="onUpdateCategoryFilter(-1)" class="dropdown-item">All categories</button>
+                  <button (click)="onUpdateCategoryFilter(0)" class="dropdown-item">Full metering</button>
+                  <button (click)="onUpdateCategoryFilter(1)" class="dropdown-item">Partial metering</button>
+                  <button (click)="onUpdateCategoryFilter(2)" class="dropdown-item">Pre-paid metering</button>
+                  <button (click)="onUpdateCategoryFilter(3)" class="dropdown-item">Single tenant</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <service-tree (toggleService)="onToggleService($event)" [displayActionMenu]="false" [displayChargingType]="true"
+                  [displaySwitch]="false"
+                  [services]="(services$ | async)"
+                  [shouldDisplayAdHocSupplier]="(packageDetails$ | async).hasAdHocSupplier"
+                  [shouldDisplayElectricitySupplier]="(packageDetails$ | async).hasElectricitySupplier"
+                  [shouldDisplayFixedPriceMethod]="(packageDetails$ | async).hasFixedPriceMethod"
+                  [shouldDisplayGasSupplier]="(packageDetails$ | async).hasGasSupplier"
+                  [shouldDisplayPerBuildingMethod]="(packageDetails$ | async).hasPerBuildingMethod"
+                  [shouldDisplayPerCouncilAccountMethod]="(packageDetails$ | async).hasPerCouncilAccountMethod"
+                  [shouldDisplayPerHourMethod]="(packageDetails$ | async).hasPerHourMethod"
+                  [shouldDisplayPerMeterMethod]="(packageDetails$ | async).hasPerMeterMethod"
+                  [shouldDisplayPerSQMeterMethod]="(packageDetails$ | async).hasPerSQMeterMethod"
+                  [shouldDisplayPerShopMethod]="(packageDetails$ | async).hasPerShopMethod"
+                  [shouldDisplayPerTenantMethod]="(packageDetails$ | async).hasPerTenantMethod"
+                  [shouldDisplaySewerageSupplier]="(packageDetails$ | async).hasSewerageSupplier"
+                  [shouldDisplayWaterSupplier]="(packageDetails$ | async).hasWaterSupplier"
+                  [showPrice]="showPrice$ | async"></service-tree>
+    <div class="row">
+      <div class="col-12 footer-buttons d-flex justify-content-end">
+        <button (click)="onCancel()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+        <button (click)="onCustomize()" class="dnm-btn dnm-btn-editional text-uppercase" type="button">Customize
+        </button>
+        <button (click)="onSave()" *ngIf="!isComplete" class="dnm-btn dnm-btn-primary text-uppercase" type="button">
+          Save
+        </button>
+        <button (click)="onChange()" *ngIf="isComplete" class="dnm-btn dnm-btn-primary text-uppercase" type="button">
+          Change
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

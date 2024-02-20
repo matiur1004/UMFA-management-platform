@@ -1,0 +1,143 @@
+<div class="container-fluid none-padding consumpt-report">
+  <div class="row none-margin-hr">
+    <div class="col none-padding">
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+          <span class="text-uppercase filter-drpdwn-lbl">Building Period:</span>
+          <div class="dropdown filter-dropdown d-inline-block small" ngbDropdown placement="bottom-right">
+            <button class="btn btn-secondary dropdown-toggle bld-per-drpdwn-btn text-left" ngbDropdownToggle>
+              <span *ngIf="!selectedPeriod">Periods not found</span>
+              <span *ngIf="selectedPeriod">
+                {{selectedPeriod.name}} ({{selectedPeriod.startDate | dateMediumFormat}}
+                - {{selectedPeriod.endDate | dateMediumFormat}})
+              </span>
+            </button>
+            <div class="dropdown-menu bld-per-drpdwn-menu" ngbDropdownMenu>
+              <button (click)="onPeriodChanged(period)" *ngFor="let period of periods;" class="dropdown-item">
+                {{period.name}} ({{period.startDate | dateMediumFormat}} - {{period.endDate | dateMediumFormat}})
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex align-items-center">
+          <button (click)="recalculate()" class="dnm-btn doc-oper-btn text-uppercase" type="button">Recalculate</button>
+          <button class="dnm-btn doc-oper-btn text-uppercase" type="button">
+            Print<i class="doc-oper-icon print-btn-icon"></i>
+          </button>
+          <button class="dnm-btn doc-oper-btn text-uppercase m-0" type="button" (click)="convetToPDF()">
+            Export PDF<i class="doc-oper-icon export-btn-icon"></i>
+          </button>
+          <button class="dnm-btn doc-oper-btn text-uppercase m-0">
+            Export<i class="doc-oper-icon export-btn-icon"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div [ngClass]="{ 'mr-filter-mrgn-bottom': showFilter == true }" class="consumpt-report-fltr">
+    <div class="row none-margin-hr">
+      <div class="col-4 first-col vert-blck-line">
+        <div class="filter-blck-wrp">
+          <div class="bl-gradient-title">Supply type</div>
+          <div class="d-flex flex-wrap blng-fltr-mrgn-right">
+            <div (click)="onSupplyTypeChecked(supplyTypeItem.supplyType)"
+                 *ngFor="let supplyTypeItem of supplyTypesList"
+                 [ngClass]="{'active': supplyTypeItem.checked }"
+                 class="filter-item d-flex align-items-center justify-content-center">
+              <div *ngIf="supplyTypeItem.checked" [supplyTypeClassSufix]="'-white-icon'"
+                   [supplyTypeClass]="supplyTypeItem.supplyType" class="service-icon"></div>
+              <div *ngIf="!supplyTypeItem.checked" [supplyTypeClassSufix]="'-icon'"
+                   [supplyTypeClass]="supplyTypeItem.supplyType" class="service-icon"></div>
+              <span *ngIf="supplyTypeItem.checked" class="filter-item-lbl">
+                {{supplyType[supplyTypeItem.supplyType]}}
+              </span>
+              <span *ngIf="!supplyTypeItem.checked" [supplyTypeClassSufix]="'-lbl'"
+                    [supplyTypeClass]="supplyTypeItem.supplyType"
+                    class="type-lbl">{{supplyType[supplyTypeItem.supplyType]}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-4 second-col vert-blck-line">
+        <div class="filter-blck-wrp">
+          <div class="bl-gradient-title">Tenant</div>
+          <ng-select [(ngModel)]="selectedTenantIds" [clearable]="false"
+                     [dropdownPosition]="'top'" [hideSelected]="true" [items]="filterOptions.tenants"
+                     [multiple]="true" [ngModelOptions]="{standalone: true}" [searchable]="false" bindLabel="name"
+                     bindValue="id" class="dnm-multiple-select dmb-dropdown-radius"></ng-select>
+        </div>
+      </div>
+      <div class="col-4 third-col">
+        <div class="row">
+          <div class="col-12">
+            <div class="filter-blck-wrp">
+              <div class="bl-gradient-title">Tariff</div>
+              <div class="dropdown filter-dropdown small" ngbDropdown placement="bottom-right">
+                <button class="btn btn-secondary dropdown-toggle-tariff filter-item-drpdwn-btn text-left"
+                        ngbDropdownToggle>
+                  {{selectedTariffText}}
+                </button>
+                <div class="dropdown-menu filter-item-drpdwn-menu" ngbDropdownMenu>
+                  <button (click)="onTariffChanged(null)" class="dropdown-item">All tariffs</button>
+                  <button (click)="onTariffChanged(tariff.id)" *ngFor="let tariff of filterOptions.tariffs"
+                          class="dropdown-item">
+                    {{tariff.entity.name}}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row none-margin-hr">
+      <div class="col-12 none-padding footer-buttons d-flex justify-content-end">
+        <button (click)="onResetFilter()" class="dnm-btn filter-footer-btn dnm-btn-reset text-uppercase" type="button">
+          Reset
+        </button>
+        <button (click)="onApply()" class="dnm-btn filter-footer-btn dnm-btn-primary text-uppercase" type="button">
+          Apply
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="row none-margin-hr">
+    <div class="col-12 none-padding">
+      <div class="d-flex justify-content-between">
+        <div class="d-flex align-items-center">
+          <span *ngIf="report.tenants.length > 1" class="results-lbl dnm-text-light nmbs-details">{{report.tenants.length}} tenants</span>
+          <span *ngIf="report.tenants.length == 1" class="results-lbl dnm-text-light nmbs-details">{{report.tenants.length}} tenant</span>
+        </div>
+        <div class="d-flex align-item-center">
+          <!--<div class="d-flex align-items-center header-fltr-wrp">
+            <span class="text-uppercase switch-slider-lbl">Show/Hide Details:</span>
+            <div class="service-switch">
+              <label class="dnm-switch-btn">
+                <input type="checkbox">
+                <span class="dnm-switch-slider round"></span>
+              </label>
+            </div>
+          </div>-->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="ExportReportToPdf">
+
+    <tenants-list (expandToggleTenantEvent)="onExpandToggleTenant($event)" [tenants]="report.tenants"></tenants-list>
+
+    <tenants-non-recoverable-list
+      (expandToggleNonRecoverableTenantEvent)="onExpandToggleNonRecoverableTenant($event)"
+      [vacants]="report.vacant"
+      [vacantShops]="report.vacantShops"
+      [vacantTenants]="report.vacantTenants"
+      [ownerLiability]="report.ownerLiability" 
+      [ownerTenants]="report.ownerTenants" 
+      [tenantsNotLiable]="report.tenantsNotLiable"
+      [tenantsNotLiableTenants]="report.tenantsNotLiableTenants"></tenants-non-recoverable-list>
+
+    <cost-totals [costTotals]="costTotals"></cost-totals>
+
+  </div>
+</div>

@@ -1,0 +1,22 @@
+<div class="popup-building-block">
+  <div (click)="$event.stopPropagation();" class="building-item search-item">
+    <simple-search-form (onSearch)="onSearch($event)" class="w-100 theme-white"></simple-search-form>
+  </div>
+  <div class="dnm-popup scroll-list">
+    <div (click)="onSelect(item)" *ngFor="let item of model | filterByProperty : ['name'] : query"
+         [class.selected]="item.isSelected" class="building-item">
+      <div>
+        <div class="building-item-header">
+          {{item.name}}
+        </div>
+        <div class="building-item-details">
+          {{item.address.suburb ? item.address.suburb + ', ' + item.address.city : item.address.city}}
+        </div>
+      </div>
+      <label class="building-item-radio">
+        <input [checked]="item.isSelected" name="radio" type="radio">
+        <span class="checkmark"></span>
+      </label>
+    </div>
+  </div>
+</div>

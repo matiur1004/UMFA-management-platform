@@ -1,0 +1,311 @@
+//@import 'variables.less';
+@import 'required-fields.less';
+
+.edit-tariff .section-title {
+  line-height: 1;
+}
+
+.edit-tariff ::ng-deep .line-div {
+  border-bottom: 1px solid #eeeff0;
+}
+
+.edit-tariff ::ng-deep .version-value {
+  font-size: 14px;
+  color: @color-description;
+  font-family: Gotham Book;
+  margin-left: 21px;
+}
+
+.edit-tariff ::ng-deep .input-row {
+  padding: 10px 0 10px 20px;
+  margin-bottom: 0;
+}
+
+.edit-tariff .field-name {
+  position: relative;
+}
+
+.edit-tariff .field-name-top {
+  margin-top: 3px;
+}
+
+.edit-tariff .field-dropdown {
+  width: 400px;
+}
+
+.edit-tariff .price-icon {
+  background: url('../../../../../assets/images/icons/services/info-price.svg') center no-repeat;
+  background-size: 12px;
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  position: relative;
+  top: 1px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.edit-tariff .price-icon:hover {
+  background: url('../../../../../assets/images/icons/services/info-price-hover.svg') center no-repeat;
+}
+
+.edit-tariff .input-row-title {
+  font-family: Gotham Medium;
+  font-size: 12px;
+  line-height: 12px;
+  color: @color-empty;
+  text-transform: uppercase;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.edit-tariff .price-info-popup {
+  display: none;
+  position: absolute;
+  display: none;
+  padding: 0;
+  margin: 0 0 12px 0;
+  right: -81px;
+  top: 23px;
+  z-index: 100;
+}
+
+.edit-tariff .price-icon:hover .price-info-popup {
+  display: block;
+}
+
+.edit-tariff ::ng-deep .checkbox-input {
+  padding-left: 22px;
+  padding-right: 5px;
+  margin-bottom: 15px;
+}
+
+.edit-tariff ::ng-deep .checkbox-input:first-child {
+  margin-top: 8px;
+}
+
+.edit-tariff ::ng-deep .checkbox-input .dnm-checkbox {
+  margin-right: 13px;
+}
+
+.edit-tariff ::ng-deep .checkbox-input .dnm-radio-btn {
+  margin-right: 13px;
+}
+
+.edit-tariff ::ng-deep .checkbox-input-lbl {
+  font-family: Gotham Light;
+  font-size: 14px;
+  line-height: 14px;
+  color: @color-text-tertiary;
+}
+
+.edit-tariff .text-lbl {
+  margin-left: 21px;
+}
+
+.edit-tariff ::ng-deep .dnm-switch-btn.package-status {
+  margin-left: 22px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.edit-tariff ::ng-deep .checkbox-row .checkbox-input {
+  margin: 0;
+  height: 24px;
+}
+
+.edit-tariff ::ng-deep .checkbox-row .ng-select {
+  width: 40%;
+  margin-left: auto;
+}
+
+.edit-tariff ::ng-deep .text-form-field {
+  padding-top: 0;
+}
+
+.edit-tariff .footer-buttons {
+  display: flex;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+.edit-tariff .footer-buttons button {
+  width: 200px;
+}
+
+.edit-tariff .footer-buttons button:last-child {
+  margin-left: 30px;
+}
+
+.edit-tariff ::ng-deep .category-item {
+  position: relative;
+}
+
+.edit-tariff ::ng-deep .category-item .delete-item {
+  width: 30px;
+}
+
+.edit-tariff ::ng-deep .category-item .cross-icon {
+  position: absolute;
+  right: -30px;
+  top: 50%;
+  margin-top: -6px;
+  cursor: pointer;
+}
+
+.edit-tariff ::ng-deep .category-item .cross-custom {
+  position: absolute;
+  right: -30px;
+  top: 70%;
+  margin-top: -6px;
+  cursor: pointer;
+}
+
+.edit-tariff ::ng-deep .cross-custom .cross-icon {
+  right: 120px;
+}
+
+.edit-tariff ::ng-deep .cross-custom .cross-text {
+  display: inline-block;
+  font-family: Gotham Medium;
+  font-size: 14px;
+  background: linear-gradient(to right, #cc9966, #d08752, #d47243, #d9593b, #dc3939);
+  text-transform: none;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.edit-tariff .add-icon {
+  margin-right: 8px;
+}
+
+.edit-tariff .blue-text-btn {
+  margin: 15px 0px 15px 0px;
+  display: flex;
+  align-items: center;
+}
+
+.edit-tariff .blue-text-btn:first-child {
+  margin-right: 30px;
+}
+
+.edit-tariff .button-row {
+  padding: 10px 0 10px 15px;
+}
+
+.edit-tariff ::ng-deep .text-category {
+  color: @color-empty;
+  font-size: 12px;
+  padding: 25px 0px 7px 0px;
+}
+
+.edit-tariff .custom-input {
+  font-size: 13px;
+  color: @color-text-tertiary;
+  font-family: Gotham Book;
+  width: 100%;
+  border: transparent solid 1px;
+  border-radius: 5px;
+  padding: 7px 30px 7px 20px;
+  transition: border-color .15s ease-in-out;
+  background-color: transparent;
+}
+
+.edit-tariff .custom-input:hover {
+  border: @color-stroke solid 1px;
+  cursor: pointer;
+}
+
+.edit-tariff .custom-input:active,
+.edit-tariff .custom-input:focus {
+  cursor: text;
+  border: @color-main-accent solid 2px;
+  outline: 0;
+  padding: 6px 29px 6px 19px;
+  background-color: @color-background-white;
+}
+
+/* #region input datepicker */
+
+.edit-tariff .datepicker-wrp .custom-input:hover {
+  background: url('../../../../../assets/images/icons/calendar-blue-icon.svg') no-repeat @color-background-white;
+  background-position: right 10px center;
+  background-size: 17px 17px;
+  cursor: pointer;
+}
+
+/* endregion */
+
+/* #region dropdown */
+
+.edit-tariff ::ng-deep .fullwidth-dropdown.show .dropdown-toggle,
+.edit-tariff ::ng-deep .fullwidth-dropdown.dropdown .dropdown-toggle:active,
+.edit-tariff ::ng-deep .fullwidth-dropdown.dropdown .dropdown-toggle:focus {
+  background: @color-background-white;
+  border: 2px solid @color-main-accent;
+  padding: 5px 29px 5px 19px;
+  box-shadow: none;
+}
+
+.edit-tariff ::ng-deep .fullwidth-dropdown .dropdown-toggle {
+  border: 1px solid transparent;
+  background: transparent;
+  padding-left: 20px;
+}
+
+.edit-tariff ::ng-deep .fullwidth-dropdown .dropdown-toggle:hover {
+  border: 1px solid @color-stroke;
+  background: @color-background-white;
+}
+
+.edit-tariff ::ng-deep .fullwidth-dropdown .dropdown-toggle::after {
+  background-image: none;
+}
+
+.edit-tariff ::ng-deep .fullwidth-dropdown .dropdown-toggle:hover::after,
+.edit-tariff ::ng-deep .fullwidth-dropdown .dropdown-toggle:active::after,
+.edit-tariff ::ng-deep .fullwidth-dropdown .dropdown-toggle:focus::after {
+  background-image: url('../../../../../assets/images/icons/arrow_dropdown-01.svg');
+}
+
+.edit-tariff ::ng-deep .fullwidth-dropdown .dropdown-toggle:active::after,
+.edit-tariff ::ng-deep .fullwidth-dropdown .dropdown-toggle:focus::after {
+  right: 14px;
+  top: 14px;
+}
+
+/* endregion */
+
+/* region number input */
+
+.edit-tariff ::ng-deep .numb-form-control {
+  font-family: Gotham Book;
+  font-size: 14px;
+  padding: 5px 8px 5px 19px;
+  height: 35px;
+  width: 100%;
+  cursor: pointer;
+  border: transparent solid 1px;
+  border-radius: 5px;
+  background-color: transparent;
+}
+
+.edit-tariff ::ng-deep .numb-form-control:hover {
+  background-color: @color-background-white;
+  border: 1px solid @color-stroke;
+}
+
+.edit-tariff ::ng-deep .numb-form-control:focus {
+  box-shadow: none;
+  padding: 4px 7px 4px 18px;
+  border: @color-main-accent solid 2px;
+  outline: 0;
+  background-color: @color-background-white;
+}
+
+.line-items-container,
+.categories-container {
+  margin-top: 30px;
+}
+
+/* end region */

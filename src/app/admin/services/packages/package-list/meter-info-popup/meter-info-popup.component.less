@@ -1,0 +1,138 @@
+@import 'variables.less';
+
+.package-info {
+  margin-top: 5px;
+  width: 600px;
+  border-radius: 5px;
+  background-color: @color-background-white;
+  z-index: 2;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.package-info:before,
+.package-info:after {
+  position: absolute;
+  content: '';
+  background: @color-background-white;
+  top: 0;
+  left: 520px;
+  width: 24px;
+  height: 24px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: -1;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
+.package-info:before {
+  z-index: 1;
+  box-shadow: none;
+}
+
+.package-info .modal-header {
+  padding: 25px 20px 25px 30px;
+}
+
+.package-info .modal-header .close {
+  padding: 0;
+  margin: 0;
+}
+
+.package-info .modal-title {
+  font-family: Gotham Medium;
+  font-size: 18px;
+  line-height: 18px;
+  color: @color-text-tertiary;
+}
+
+.package-info .header-row,
+.package-info .body-row {
+  padding-left: 30px;
+}
+
+.package-info .header-row {
+  padding-right: 20px;
+}
+
+.package-info .col-title {
+  font-family: Gotham Medium;
+  font-size: 12px;
+  line-height: 12px;
+  color: @color-description;
+  text-transform: uppercase;
+}
+
+.package-info .body-wrapper {
+  max-height: 350px;
+  height: 350px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.package-info .body-row {
+  height: 50px;
+  align-items: center;
+  border-bottom: 1px solid @color-line;
+}
+
+.package-info .service-name {
+  font-family: Gotham Medium;
+  font-size: 14px;
+  line-height: 16px;
+  color: @color-text-secondary;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.package-info .charging-method,
+.package-info .unit-price,
+.package-info .numb-of-units {
+  font-family: Gotham Book;
+  font-size: 13px;
+  line-height: 18px;
+  color: @color-text-tertiary;
+}
+
+.package-info .unit-price {
+  text-transform: uppercase;
+}
+
+.package-info .service-price {
+}
+
+.package-info .modal-footer {
+  height: 55px;
+}
+
+.package-info .tot-price-lbl {
+  font-family: Gotham Book;
+  font-size: 14px;
+  line-height: 16px;
+  text-transform: uppercase;
+  margin-right: 30px;
+}
+
+.package-info .tot-price-value,
+.package-info .service-price {
+  font-family: Gotham Bold;
+  text-transform: uppercase;
+}
+
+.package-info .service-price {
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.package-info .tot-price-value {
+  font-size: 18px;
+  line-height: 20px;
+}
+
+.package-info .service-price,
+.package-info .tot-price-lbl,
+.package-info .tot-price-value {
+  .gradient-dark-green();
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

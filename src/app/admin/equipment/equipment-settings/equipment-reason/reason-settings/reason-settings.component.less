@@ -1,0 +1,84 @@
+//@import 'variables.less';
+@import 'required-fields.less';
+
+.edit-reasons .modal-body {
+  padding: 10px 40px 50px;
+}
+
+.hedader-title {
+  margin-bottom: 15px;
+}
+
+.reason-form-input-container {
+  display: flex;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.reason-form-label {
+  min-width: 40%;
+  margin: 0 5px;
+  line-height: 38px;
+  font-weight: bolder;
+  color: @color-text-tertiary;
+}
+
+.reason-form-input {
+  flex-grow: 1;
+  margin: 0 5px;
+}
+
+.add-new-button {
+  margin: 15px 0 15px 15px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.add-new-button > a > i {
+  margin-right: 10px;
+}
+
+.add-new-button > a:hover {
+  text-decoration: none;
+  color: @color-main-accent;
+  opacity: 0.7;
+}
+
+.disable, .add-new-button > a.disable:hover {
+  opacity: 0.5;
+}
+
+.disable:hover {
+  cursor: not-allowed;
+}
+
+.footer-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 35px;
+
+  .dnm-btn-cancel,
+  .dnm-btn-primary {
+    width: 200px;
+  }
+
+  .dnm-btn-primary {
+    margin-left: 30px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .reason-form-input-container {
+    flex-wrap: wrap;
+    margin-bottom: 0;
+  }
+
+  .reason-form-label {
+    width: 100%;
+  }
+
+  .scale-margin {
+    margin-right: 5px;
+  }
+
+}

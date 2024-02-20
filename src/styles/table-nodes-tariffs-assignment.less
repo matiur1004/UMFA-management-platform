@@ -1,0 +1,296 @@
+@import './mixins.less';
+@import 'variables.less';
+
+.table-nodes-tariffs-assignment {
+
+  .node-item {
+    font-size: 13px;
+
+    &.sub-node-item td:first-child {
+      position: relative;
+
+      &:before {
+        content: "";
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        bottom: 0px;
+        width: 10px;
+        background-color: @color-main-accent;
+      }
+    }
+
+    .node-name {
+      color: @color-text-primary;
+      font-size: 16px;
+      .text-ellipsis();
+    }
+
+    .node-detail-data {
+      display: flex;
+    }
+
+    .node-details-label {
+      color: @color-description;
+      margin: 0px;
+      padding-right: 5px;
+      white-space: nowrap;
+    }
+
+    .node-details-value {
+      color: @color-text-tertiary;
+      white-space: nowrap;
+    }
+
+    .register-item {
+      white-space: nowrap;
+    }
+
+    .attribute-details .attribute-item {
+      display: flex;
+    }
+
+    .attribute-name {
+      color: @color-description;
+      white-space: nowrap;
+      padding-right: 7px;
+    }
+
+    .area-details,
+    .shop-details {
+      max-width: 150px;
+    }
+
+    .tooltip-shops {
+      text-align: left;
+      color: @color-background-white;
+      width: 225px;
+      max-width: 225px;
+    }
+
+    .shop-item {
+      border-bottom: 1px solid @color-line;
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+
+    .area-name,
+    .shop-name {
+      .text-ellipsis();
+      cursor: default;
+    }
+
+    .shop-tenant {
+      .text-ellipsis();
+      color: @color-description;
+      cursor: default;
+    }
+
+    .dropdown-menu {
+      margin-top: 0;
+      margin-left: -21px;
+      margin-bottom: 5px;
+      max-height: 170px;
+      overflow: auto;
+    }
+  }
+
+  &.table-vertical-center .cell-tariff,
+  &.table-vertical-center .cell-line-items,
+  &.table-vertical-center .cell-category {
+    vertical-align: top;
+  }
+
+  .select-all {
+    width: 3.2rem;
+    height: 2.3rem;
+    border: 1px solid #E8E9EA;
+    background-color: #f7f7f7;
+    border-radius: 3px;
+    padding: 5px 7px;
+
+    &:hover {
+      background-color: #fafafa;
+    }
+
+    .extend-menu {
+      height: 19px;
+      float: right;
+    }
+
+    .chbx-menu-header {
+      background-color: rgba(255, 255, 255, 0.3);
+      padding: 5px 10px;
+      font-size: 13px;
+      color: @color-empty;
+    }
+  }
+
+  .cell-selection {
+    text-align: center;
+  }
+
+  .cell-node {
+    min-width: 200px;
+  }
+
+  .cell-register {
+    min-width: 75px;
+  }
+
+  .cell-attributes {
+    min-width: 150px;
+  }
+
+  .cell-shops {
+    min-width: 150px;
+  }
+
+  .cell-tariff {
+    min-width: 200px;
+    max-width: 250px;
+
+    .tariff-details {
+      padding: 0px 8px 0px 3px;
+      display: inline-block;
+      vertical-align: text-top;
+      width: 85px;
+
+      .tariff-name {
+        display: block;
+        cursor: default;
+        .text-ellipsis();
+      }
+
+      .btn-icon {
+        vertical-align: middle;
+      }
+    }
+
+    .no-tariffs {
+      color: @color-text-tertiary;
+      padding: 31px 0px;
+    }
+
+    .btn-add-tariff {
+      display: flex;
+      align-items: center;
+      color: @color-main-accent;
+      cursor: pointer;
+      margin-top: 24px;
+    }
+  }
+
+
+  .cell-line-items {
+    min-width: 100px;
+    max-width: 170px;
+    vertical-align: top;
+
+    .line-items-wrp {
+      padding: 11px 0px;
+    }
+
+    .line-items-label {
+      display: block;
+      padding-left: 10px;
+      margin-top: -2px;
+      .text-ellipsis();
+
+    }
+  }
+
+  .cell-category {
+    min-width: 300px;
+    min-width: 350px;
+
+
+    .category-item {
+      display: flex;
+      align-items: center;
+      padding-bottom: 4px;
+
+      & > div {
+        padding: 0px 3px;
+      }
+
+      .category-swicher-activation,
+      .category-warning-icon,
+      .category-warning-info {
+        display: flex;
+        align-items: center;
+        justify-content: center
+      }
+    }
+
+    .categories-list {
+      flex: auto;
+      width: 225px;
+      min-width: 225px;
+      max-width: 225px;
+    }
+
+    .categ-note-btn {
+      background-color: transparent;
+      border: none;
+      height: 20px;
+      background-repeat: no-repeat;
+
+      &:after {
+        display: none;
+      }
+    }
+
+    .category-note-popup {
+      border: none;
+      padding: 0px;
+      margin-top: -40px;
+    }
+
+  }
+
+  .cell-menu {
+    background-color: @color-background-primary;
+  }
+
+  .table-striped tbody tr:nth-of-type(odd) td.cell-menu {
+    background-color: #FCFCFE;
+  }
+
+  .tariff-item {
+    padding: 14px 0px 8px 0px;
+    border-top: 1px solid rgba(125, 125, 125, 0.5);
+  }
+
+  .tariff-duplication-factor,
+  .line-item-wrp,
+  .category-item-wrp {
+    border-top: 1px solid rgba(125, 125, 125, 0.5);
+    padding-top: 4px;
+    min-height: 44px;
+  }
+
+  .tariff-item,
+  .line-item-wrp,
+  .tariff-duplication-factor,
+  .category-item-wrp {
+    &:first-child {
+      border: none;
+    }
+  }
+
+  @condition: 10;
+
+  .loop(@parameters: 1) when (@parameters<@condition ) {
+    .loop(@parameters + 1);
+
+    .tariff-lineitems-@{parameters} {
+      height: 44px * @parameters - 4px * (@parameters - 1);
+    }
+  }
+
+  .loop();
+
+}

@@ -1,0 +1,394 @@
+<div class="row none-margin-hr">
+    <div class="col-12 none-padding">
+      <div class="bl-gradient-title">Non Recoverable</div>
+    </div>
+</div>
+<div class="container-fluid none-padding tenants-list">
+  <div class="row list-header none-margin-hr tree-header">
+    <div class="col-6 header-field d-flex align-items-center col-frst-lv">
+      <span class="col-lbl text-uppercase">Name</span>
+    </div>
+    <div class="col-2 header-field">
+      <span class="col-lbl text-uppercase">Shared<br />Total, R</span>
+    </div>
+    <div class="col-2 header-field d-flex align-items-center">
+      <span class="col-lbl text-uppercase">Vat, R</span>
+    </div>
+    <div class="col-2 header-field">
+      <span class="col-lbl text-uppercase">Total Inc.<br />Vat, R</span>
+    </div>
+  </div>
+
+  <div class="tree-view">
+    <ul>
+      <li class="root-item">
+        <div class="item-content d-flex tenant-item">
+          <div class="col-left">
+            <div class="container-fluid none-padding">
+
+              <div class="row none-margin-hr row-total">
+                <div class="col-6 col-frst-lv">
+                  <div class="txt-lg">
+                    Owner Liability
+                  </div>
+                  <div class="txt-sm-light">
+                    <!--<span class="tnt-code">
+                      Tenant code: <span class="txt-sm-bold">{{tenant.tenantCode}}</span>
+                    </span>
+                    <span>
+                      Shop area: <span class="txt-sm-bold">{{tenant.shopArea}} sq m</span>
+                    </span>-->
+                  </div>
+                </div>
+                <ng-container *ngIf="ownerLiabilitySum">
+                  <div class="col-2 txt-sm-total d-flex align-items-center">{{ ownerLiabilitySum.total | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                  <div class="col-2 txt-sm-total d-flex align-items-center">{{ (ownerLiabilitySum.totalIncVat - ownerLiabilitySum.total) | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                  <div class="col-2 txt-sm-total d-flex align-items-center">{{ ownerLiabilitySum.totalIncVat | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                </ng-container>
+              </div>
+              <div *ngFor="let owner of ownerLiability" class="row none-margin-hr">
+                <div class="col-6 col-frst-lv">
+                  <div class="service-type d-flex align-items-center">
+                    <div [supplyTypeClassSufix]="'-icon'" [supplyTypeClass]="owner.supplyType"
+                         class="service-icon"></div>
+                    <span [supplyTypeClassSufix]="'-lbl'" [supplyTypeClass]="owner.supplyType"
+                          class="type-lbl">{{serviceType[owner.supplyType]}}</span>
+                  </div>
+                </div>
+                <div class="col-2 txt-sm">{{ owner.total | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                <div class="col-2 txt-sm">{{ (owner.totalIncVat - owner.total) | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                <div class="col-2 txt-sm">{{ owner.totalIncVat | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-right d-flex align-content-center justify-content-end">
+            <div class="d-flex align-items-center justify-content-end">
+              <div (click)="expandToggleNonRecoverable('ownerLiability')" class="toggle-btn">
+                <div [ngClass]="{'expand-icon': !ownerLiabilityExpanded, 'collapse-icon': ownerLiabilityExpanded}"
+                     class="toggle-icon expand-icon"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ul *ngIf="ownerLiabilityExpanded">
+          <ng-container *ngFor="let tenant of ownerTenants">
+            <li class="shop-item">
+              <div class="item-content d-flex tenant-item">
+                <div class="col-left">
+                  <div class="container-fluid none-padding">
+
+                    <div class="row none-margin-hr row-total">
+                      <div class="col-6 col-frst-lv">
+                        <div class="txt-lg">
+                          {{tenant.tenantName}}<span *ngIf="tenant.isNew" class="new-tnt text-uppercase">
+                            <i class="dnm-icon new-info-gr-icon"></i>New
+                          </span>
+                        </div>
+                        <div class="txt-sm-light">
+                          <span class="tnt-code">
+                            Description: <span class="txt-sm-bold">{{tenant.tenantCode}}</span>
+                          </span>
+                          <span>
+                            <!--Shop area: <span class="txt-sm-bold">{{tenant.shopArea}} sq m</span>-->
+                          </span>
+                        </div>
+                      </div>
+                      <ng-container *ngIf="tenant.sum">
+                        <div class="col-2 txt-sm-total d-flex align-items-center">{{ tenant.sum.total | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                        <div class="col-2 txt-sm-total d-flex align-items-center">{{ (tenant.sum.totalIncVat - tenant.sum.total) | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                        <div class="col-2 txt-sm-total d-flex align-items-center">{{ tenant.sum.totalIncVat | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                      </ng-container>
+                    </div>
+
+                    <div *ngFor="let cost of tenant.totals" class="row none-margin-hr">
+                      <div class="col-6 col-frst-lv">
+                        <div class="service-type d-flex align-items-center">
+                          <div [supplyTypeClassSufix]="'-icon'" [supplyTypeClass]="cost.supplyType"
+                               class="service-icon"></div>
+                          <span [supplyTypeClassSufix]="'-lbl'" [supplyTypeClass]="cost.supplyType"
+                                class="type-lbl">{{serviceType[cost.supplyType]}}</span>
+                        </div>
+                      </div>
+                      <div class="col-2 txt-sm">{{ cost.total | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                      <div class="col-2 txt-sm">{{ (cost.totalIncVat - cost.total) | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                      <div class="col-2 txt-sm">{{ cost.totalIncVat | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-right d-flex align-content-center justify-content-end">
+                  <div class="d-flex align-items-center justify-content-end">
+                    <div (click)="expandToggleTenant(tenant.tenantId, 'ownerLiability')" class="toggle-btn">
+                      <div [ngClass]="{'expand-icon': !tenant.isExpanded, 'collapse-icon': tenant.isExpanded}"
+                           class="toggle-icon"></div>
+                    </div>
+                    <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+                      <button title="ToggleExpand" class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle></button>
+                      <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                        <!-- <button class="dropdown-item d-flex justify-content-between">
+                          Tenant Statement
+                          <i class="dnm-icon edit-icon"></i>
+                        </button> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <ul *ngIf="tenant.isExpanded">
+                <tenant-detail [details]="tenant.details"></tenant-detail>
+              </ul>
+            </li>
+
+          </ng-container>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <div class="tree-view">
+    <ul>
+      <li class="root-item">
+        <div class="item-content d-flex tenant-item">
+          <div class="col-left">
+            <div class="container-fluid none-padding">
+
+              <div class="row none-margin-hr row-total">
+                <div class="col-6 col-frst-lv">
+                  <div class="txt-lg">
+                    Vacant Shops
+                  </div>
+                  <div class="txt-sm-light">
+                    <!--<span class="tnt-code">
+                      Tenant code: <span class="txt-sm-bold">{{tenant.tenantCode}}</span>
+                    </span>
+                    <span>
+                      Shop area: <span class="txt-sm-bold">{{tenant.shopArea}} sq m</span>
+                    </span>-->
+                  </div>
+                </div>
+                <ng-container *ngIf="vacantsSum">
+                  <div class="col-2 txt-sm-total d-flex align-items-center">{{ vacantsSum.total | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                  <div class="col-2 txt-sm-total d-flex align-items-center">{{ (vacantsSum.totalIncVat - vacantsSum.total) | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                  <div class="col-2 txt-sm-total d-flex align-items-center">{{ vacantsSum.totalIncVat | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                </ng-container>
+              </div>
+
+              <div *ngFor="let vacant of vacants" class="row none-margin-hr">
+                <div class="col-6 col-frst-lv">
+                  <div class="service-type d-flex align-items-center">
+                    <div [supplyTypeClassSufix]="'-icon'" [supplyTypeClass]="vacant.supplyType"
+                         class="service-icon"></div>
+                    <span [supplyTypeClassSufix]="'-lbl'" [supplyTypeClass]="vacant.supplyType"
+                          class="type-lbl">{{serviceType[vacant.supplyType]}}</span>
+                  </div>
+                </div>
+                <div class="col-2 txt-sm">{{ vacant.total | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                <div class="col-2 txt-sm">{{ (vacant.totalIncVat - vacant.total) | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                <div class="col-2 txt-sm">{{ vacant.totalIncVat | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-right d-flex align-content-center justify-content-end">
+            <div class="d-flex align-items-center justify-content-end">
+              <div (click)="expandToggleNonRecoverable('vacants')" class="toggle-btn">
+                <div [ngClass]="{'expand-icon': !vacantsExpanded, 'collapse-icon': vacantsExpanded}"
+                     class="toggle-icon expand-icon"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ul *ngIf="vacantsExpanded">
+          <ng-container *ngFor="let shop of vacantTenants">
+            <li class="shop-item">
+              <div class="item-content d-flex tenant-item">
+                <div class="col-left">
+                  <div class="container-fluid none-padding">
+
+                    <div class="row none-margin-hr row-total">
+                      <div class="col-6 col-frst-lv">
+                        <div class="txt-lg">
+                          {{shop.name}}
+                        </div>
+                        <div class="txt-sm-light">
+                          <span>
+                            Shop area: <span class="txt-sm-bold">{{shop.area}} sq m</span>
+                          </span>
+                        </div>
+                      </div>
+                      <ng-container *ngIf="shop.sum">
+                        <div class="col-2 txt-sm-total d-flex align-items-center">{{ shop.sum.total | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                        <div class="col-2 txt-sm-total d-flex align-items-center">{{ (shop.sum.totalIncVat - shop.sum.total) | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                        <div class="col-2 txt-sm-total d-flex align-items-center">{{ shop.sum.totalIncVat | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                      </ng-container>
+                    </div>
+
+                    <div *ngFor="let cost of shop.totals" class="row none-margin-hr">
+                      <div class="col-6 col-frst-lv">
+                        <div class="service-type d-flex align-items-center">
+                          <div [supplyTypeClassSufix]="'-icon'" [supplyTypeClass]="cost.supplyType"
+                                class="service-icon"></div>
+                          <span [supplyTypeClassSufix]="'-lbl'" [supplyTypeClass]="cost.supplyType"
+                                class="type-lbl">{{serviceType[cost.supplyType]}}</span>
+                        </div>
+                      </div>
+                      <div class="col-2 txt-sm">{{ cost.total | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                      <div class="col-2 txt-sm">{{ (cost.totalIncVat - cost.total) | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                      <div class="col-2 txt-sm">{{ cost.totalIncVat | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-right d-flex align-content-center justify-content-end">
+                  <div class="d-flex align-items-center justify-content-end">
+                    <div (click)="expandToggleTenant(shop.shopId, 'vacantShops')" class="toggle-btn">
+                      <div [ngClass]="{'expand-icon': !shop.isExpanded, 'collapse-icon': shop.isExpanded}"
+                           class="toggle-icon"></div>
+                    </div>
+                    <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+                      <button title="ToggleExpand" class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle></button>
+                      <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                        <button class="dropdown-item d-flex justify-content-between">
+                          Shop Statement
+                          <i class="dnm-icon edit-icon"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <ul *ngIf="shop.isExpanded">
+                <tenant-detail [details]="shop.details"></tenant-detail>
+              </ul>
+            </li>
+          </ng-container>
+
+        </ul>
+      </li>
+
+    </ul>
+  </div>
+  <div class="tree-view">
+    <ul>
+      <li class="root-item">
+        <div class="item-content d-flex tenant-item">
+          <div class="col-left">
+            <div class="container-fluid none-padding">
+
+              <div class="row none-margin-hr row-total">
+                <div class="col-6 col-frst-lv">
+                  <div class="txt-lg">
+                    Tenants Not Liable
+                  </div>
+                  <div class="txt-sm-light">
+                    <!--<span class="tnt-code">
+                      Tenant code: <span class="txt-sm-bold">{{tenant.tenantCode}}</span>
+                    </span>
+                    <span>
+                      Shop area: <span class="txt-sm-bold">{{tenant.shopArea}} sq m</span>
+                    </span>-->
+                  </div>
+                </div>
+                <ng-container *ngIf="tenantNotLiableSum">
+                  <div class="col-2 txt-sm-total d-flex align-items-center">{{ tenantNotLiableSum.total | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                  <div class="col-2 txt-sm-total d-flex align-items-center">{{ (tenantNotLiableSum.totalIncVat - tenantNotLiableSum.total) | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                  <div class="col-2 txt-sm-total d-flex align-items-center">{{ tenantNotLiableSum.totalIncVat | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                </ng-container>
+              </div>
+
+              <div *ngFor="let item of tenantsNotLiable" class="row none-margin-hr">
+                <div class="col-6 col-frst-lv">
+                  <div class="service-type d-flex align-items-center">
+                    <div [supplyTypeClassSufix]="'-icon'" [supplyTypeClass]="item.supplyType"
+                         class="service-icon"></div>
+                    <span [supplyTypeClassSufix]="'-lbl'" [supplyTypeClass]="item.supplyType"
+                          class="type-lbl">{{serviceType[item.supplyType]}}</span>
+                  </div>
+                </div>
+                <div class="col-2 txt-sm">{{ item.total | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                <div class="col-2 txt-sm">{{ (item.totalIncVat - item.total) | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                <div class="col-2 txt-sm">{{ item.totalIncVat | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-right d-flex align-content-center justify-content-end">
+            <div class="d-flex align-items-center justify-content-end">
+              <div (click)="expandToggleNonRecoverable('tenantsNotLiable')" class="toggle-btn">
+                <div [ngClass]="{'expand-icon': !tenantsNotLiableExpanded, 'collapse-icon': tenantsNotLiableExpanded}"
+                     class="toggle-icon expand-icon"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ul *ngIf="tenantsNotLiableExpanded">
+          <ng-container *ngFor="let tenant of tenantsNotLiableTenants">
+            <li class="shop-item">
+              <div class="item-content d-flex tenant-item">
+                <div class="col-left">
+                  <div class="container-fluid none-padding">
+
+                    <div class="row none-margin-hr row-total">
+                      <div class="col-6 col-frst-lv">
+                        <div class="txt-lg">
+                          {{tenant.tenantName}}<span *ngIf="tenant.isNew" class="new-tnt text-uppercase">
+                            <i class="dnm-icon new-info-gr-icon"></i>New
+                          </span>
+                        </div>
+                        <div class="txt-sm-light">
+                          <span class="tnt-code">
+                            Tenant code: <span class="txt-sm-bold">{{tenant.tenantCode}}</span>
+                          </span>
+                          <span>
+                            Shop area: <span class="txt-sm-bold">{{tenant.shopArea}} sq m</span>
+                          </span>
+                        </div>
+                      </div>
+                      <ng-container *ngIf="tenant.sum">
+                        <div class="col-2 txt-sm-total d-flex align-items-center">{{ tenant.sum.total | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                        <div class="col-2 txt-sm-total d-flex align-items-center">{{ (tenant.sum.totalIncVat - tenant.sum.total) | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                        <div class="col-2 txt-sm-total d-flex align-items-center">{{ tenant.sum.totalIncVat | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                      </ng-container>
+                    </div>
+
+                    <div *ngFor="let cost of tenant.totals" class="row none-margin-hr">
+                      <div class="col-6 col-frst-lv">
+                        <div class="service-type d-flex align-items-center">
+                          <div [supplyTypeClassSufix]="'-icon'" [supplyTypeClass]="cost.supplyType"
+                               class="service-icon"></div>
+                          <span [supplyTypeClassSufix]="'-lbl'" [supplyTypeClass]="cost.supplyType"
+                                class="type-lbl">{{serviceType[cost.supplyType]}}</span>
+                        </div>
+                      </div>
+                      <div class="col-2 txt-sm">{{ cost.total | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                      <div class="col-2 txt-sm">{{ (cost.totalIncVat - cost.total) | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                      <div class="col-2 txt-sm">{{ cost.totalIncVat | dynCurrency:'ZAR':'symbol-narrow':'1.2-2' }}</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-right d-flex align-content-center justify-content-end">
+                  <div class="d-flex align-items-center justify-content-end">
+                    <div (click)="expandToggleTenant(tenant.tenantId, 'tenantsNotLiable')" class="toggle-btn">
+                      <div [ngClass]="{'expand-icon': !tenant.isExpanded, 'collapse-icon': tenant.isExpanded}"
+                           class="toggle-icon"></div>
+                    </div>
+                    <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+                      <button title="ToggleExpand" class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle></button>
+                      <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                        <button class="dropdown-item d-flex justify-content-between">
+                          Tenant Statement
+                          <i class="dnm-icon edit-icon"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <ul *ngIf="tenant.isExpanded">
+                <tenant-detail [details]="tenant.details"></tenant-detail>
+              </ul>
+            </li>
+
+          </ng-container>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>

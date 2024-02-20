@@ -1,0 +1,280 @@
+@import 'variables.less';
+
+/* #region users navigation settings  */
+.results-label {
+  font-size: 16px;
+  color: @color-text-tertiary;
+  margin-right: 20px;
+}
+
+.count-label {
+  font-size: 14px;
+  color: @color-text-tertiary;
+  margin-right: 12px;
+}
+
+.add-user-btn {
+  font-size: 14px;
+  line-height: 26px;
+}
+
+.add-user-btn .add-icon {
+  margin-right: 10px;
+}
+
+.users-data-nav {
+  display: flex;
+  align-items: center;
+}
+
+.user-profile-dropdown {
+  margin-right: 40px;
+}
+
+/* #endregion */
+
+
+/* #region users grid header */
+.users-list-wrp {
+  margin-bottom: 40px;
+}
+
+.users-list-header {
+  margin-bottom: 30px;
+}
+
+.users-list-header .header-field {
+  font-size: 12px;
+  white-space: nowrap;
+  color: @color-empty;
+  text-decoration: none;
+}
+
+.users-list-header .header-field .dnm-icon {
+  margin-left: 7px;
+}
+
+.users-list-header .header-field:hover {
+  color: @color-text-tertiary;
+}
+
+.users-list-header .header-field:hover .dnm-icon-sort-down {
+  background-image: url("../../../../assets/images/icons/arrow_sort_selected-01.svg");
+}
+
+.users-list-header .header-field:hover .dnm-icon-sort-up {
+  background-image: url("../../../../assets/images/icons/arrow_sort_selected-01.svg");
+}
+
+.users-list:hover {
+  cursor: pointer;
+}
+
+.users-list .usr-status {
+  border-radius: 18px;
+  color: @color-background-white;
+  font-size: 13px;
+  height: 25px;
+  min-width: 80px;
+  display: flex;
+  align-items: center;
+}
+
+.users-list .usr-status.st-active {
+  .gradient-dark-green();
+}
+
+.users-list .usr-status.st-pending {
+  .gradient-yellow()
+}
+
+.users-list .usr-status .usr-status-cnt {
+  margin: auto;
+}
+
+.users-item {
+  border-bottom: 1px solid #f0f1f1;
+  border-left: 1px solid #f0f1f1;
+  border-right: 1px solid #f0f1f1;
+  background: @color-background-white;
+  position: relative;
+  color: @color-text-tertiary;
+  font-size: 14px;
+  padding: 19px 0 17px 0;
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.users-item:first-child {
+  border-top: 1px solid #f0f1f1;
+}
+
+.user-img-block {
+  border-radius: 18px;
+  width: 36px;
+  height: 36px;
+  margin-right: 20px;
+}
+
+.user-img-block .user-no-img {
+  .gradient-header();
+  border-radius: 18px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: @color-main-accent;
+  font-family: 'Gotham Medium';
+  font-size: 14px;
+  line-height: 36px;
+}
+
+.user-name {
+  font-family: 'Gotham Medium';
+  font-size: 18px;
+  color: @color-text-secondary;
+}
+
+.user-name .user-name-description {
+  font-family: 'Gotham Light';
+  font-size: 13px;
+  line-height: 16px;
+  color: @color-description;
+}
+
+.profiles-list {
+  width: calc(100% - 18px);
+}
+
+.tooltip-container {
+  width: 18px;
+}
+
+.user-profiles-roles-block {
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+
+.user-profiles-roles-item {
+  font-size: 13px;
+  font-family: 'Gotham Book';
+  line-height: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  padding-right: 10px;
+  text-overflow: ellipsis;
+}
+
+.user-profiles-roles-item .user-profiles-roles-label {
+  color: @color-description;
+  margin-right: 5px;
+}
+
+.user-profiles-roles-item .user-profiles-roles-text {
+  color: @color-text-tertiary;
+}
+
+.user-profiles-roles-icon {
+  position: relative;
+  height: 18px;
+  width: 18px;
+  background: url('../../../../assets/images/icons/info-icon.svg') no-repeat center;
+}
+
+.user-profiles-roles-popup {
+  display: none;
+  z-index: 10000;
+  position: absolute;
+  left: -181px;
+  top: 10px;
+  box-sizing: content-box;
+  margin-bottom: 20px;
+}
+
+.user-profiles-roles-icon:hover {
+  background: url('../../../../assets/images/icons/info-active-icon.svg') no-repeat center;
+  cursor: pointer;
+}
+
+.user-profiles-roles-icon:hover .user-profiles-roles-popup {
+  display: block;
+}
+
+.users-department,
+.users-email,
+.users-department {
+  font-size: 13px;
+  font-family: 'Gotham Book';
+  line-height: 20px;
+  color: @color-text-tertiary;
+}
+
+.user-external-links {
+  width: 100%;
+}
+
+.d-social-btn {
+  background: none;
+  border: none;
+  margin-right: 10px;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.d-social-btn::after {
+  content: none;
+}
+
+.d-social-btn:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+.d-social-icon {
+  width: 24px;
+  height: 24px;
+  border: none;
+  display: inline-block;
+  line-height: 1;
+}
+
+.d-social-icon.numb-of-socials {
+  .gradient-header();
+  border-radius: 12px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 11px;
+  line-height: 24px;
+  color: @color-background-white;
+  font-family: 'Gotham Book';
+}
+
+.social-list-dropdown.dropdown-menu,
+.external-link-dropdown.dropdown-menu {
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
+.social-list-dropdown.dropdown-menu {
+  margin-top: 12px;
+  margin-bottom: 12px;
+  left: -461px !important;
+}
+
+.paging-container {
+  margin-bottom: 60px;
+}
+
+.paging-btn {
+  height: 40px;
+  width: 40px;
+  line-height: 40px;
+}
+
+/* #endregion */

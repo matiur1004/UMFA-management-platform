@@ -1,0 +1,36 @@
+<div class="container-fluid hollidays-section">
+  <div class="row">
+    <div class="col-8 none-padding">
+      <div class="bl-gradient-title section-title">Public holidays</div>
+      <div class="editable-section">
+        <div class="public-holidays-title d-flex">
+          <div class="title-item text-uppercase">Date</div>
+          <div class="title-item text-uppercase">Day</div>
+          <div class="title-item text-uppercase">Actual day of week</div>
+          <div class="title-item text-uppercase">TOU day treated as</div>
+        </div>
+        <div *ngFor="let item of holidays; let idx = index" class="d-flex hollidays-container">
+          <div class="holidays-item date-container">
+            <div class="field-value datepicker-wrp">
+              <input #d="ngbDatepicker" (click)="d.toggle()" (ngModelChange)="onSelectDate($event)" [ngModel]="item.date" class="custom-input"
+                     name="dp" ngbDatepicker placeholder="dd mmmm">
+            </div>
+          </div>
+          <div class="holidays-item field-value">
+            <text-input [(ngModel)]="item.day" [disabled]="true" input-class="disable-input" name="{{item.desc + idx}}"
+                        placeholder="Type here"></text-input>
+          </div>
+          <div class="holidays-item field-value">
+            <text-input [(ngModel)]="item.actualDay" [disabled]="true" input-class="disable-input"
+                        name="{{item.day + idx}}"
+                        placeholder="Type here"></text-input>
+          </div>
+          <div class="holidays-item field-value">
+            <ng-select [clearable]="false" [closeOnSelect]="false" [dropdownPosition]="top" [hideSelected]="true" [items]="treatedDays"
+                       [searchable]="false" bindLabel="name" bindValue="name"></ng-select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

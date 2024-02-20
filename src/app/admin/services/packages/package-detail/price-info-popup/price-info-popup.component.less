@@ -1,0 +1,43 @@
+@import 'variables.less';
+
+.price-info-popup {
+  border-radius: 4px;
+  width: 180px;
+  background: #242e45;
+  padding: 10px 15px;
+}
+
+.price-info-popup::before {
+  position: absolute;
+  content: '';
+  display: block;
+  border-color: transparent;
+  border-width: 6px;
+  border-style: solid;
+  border-bottom-color: @color-text-primary;
+  opacity: 0.95;
+  width: 6px;
+  top: -12px;
+  left: 87px;
+}
+
+.price-info-popup .price-header,
+.price-info-popup .price-value,
+.price-info-popup .price-description {
+  font-size: 13px;
+  line-height: 22px;
+  text-transform: none;
+  text-align: center;
+}
+
+.price-info-popup .price-header,
+.price-info-popup .price-description {
+  font-family: Gotham Book;
+  color: @color-empty;
+  text-transform: none;
+}
+
+.price-info-popup .price-value {
+  font-family: Gotham Medium;
+  color: @color-background-white;
+}

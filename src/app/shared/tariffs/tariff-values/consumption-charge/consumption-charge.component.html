@@ -1,0 +1,25 @@
+<div class="consumption-charge-container">
+  <div class="consumption-charge-item-titles d-flex">
+
+    <div class="category-title">
+      <div class="title-item text-uppercase">Category</div>
+      <div *ngFor="let category of categories" class="consumption-charge-category">
+        <div class="charges-table-content-item">
+          <div class="text-uppercase field-name text-truncate">{{ getCategoryName(category.id) }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tou-description-titles flex-grow-1 flex-nowrap d-flex">
+      <div *ngFor="let time of timeOfUsesArr;" class="consumption-charge-table-title d-flex">
+        <charges-table [categories]="categories"
+                       [ranges]="ranges"
+                       [seasonIndex]="seasonIndex"
+                       [subtitle]="touNameArray[time]"
+                       [timeOfUse]="time"
+                       [values]="values"
+                       [viewMode]="viewMode"></charges-table>
+      </div>
+    </div>
+  </div>
+</div>

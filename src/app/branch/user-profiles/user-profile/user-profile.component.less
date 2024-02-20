@@ -1,0 +1,294 @@
+@import 'variables.less';
+
+.user-profile-header {
+  margin-bottom: 30px;
+}
+
+.user-profile-header .results-label {
+  color: @color-text-tertiary;
+  font-size: 16px;
+  font-family: Gotham Light;
+}
+
+.user-profile-data-nav {
+  display: flex;
+  align-items: center;
+}
+
+.user-profile-data-nav .dd-filter-label {
+  font-size: 14px;
+  color: @color-text-tertiary;
+  margin-right: 12px;
+}
+
+.user-profile {
+  border: 1px solid @color-line;
+  background: @color-background-white;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.user-profile .info-block .title {
+  color: @color-text-primary;
+  font-size: 25px;
+}
+
+.user-profile .info-block .title + .sub-title {
+  font-size: 15px;
+  color: @color-description;
+}
+
+.user-profile .info-block {
+  height: 130px;
+  border-bottom: 1px solid @color-line;
+  padding: 35px 25px 30px;
+}
+
+.user-profile .statistics-block {
+  height: 90px;
+  background: @color-background-secondary;
+  border-bottom: 1px solid @color-line;
+  overflow: hidden;
+}
+
+.user-profile .users-block {
+  height: 118px;
+  border-bottom: 1px solid @color-line;
+  padding: 25px 35px;
+  white-space: nowrap;
+}
+
+.user-profile .users-block .caption {
+  font-size: 14px;
+  color: @color-description;
+  display: block;
+  margin-bottom: 14px;
+}
+
+.user-profile-img {
+  background: none;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  margin-right: 10px;
+  padding: 0;
+  border: none;
+}
+
+.user-profile-img:after {
+  content: none;
+}
+
+.user-profile-img:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.user-profile-img .user-no-img {
+  .gradient-header();
+  border-radius: 20px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  line-height: 40px;
+}
+
+.user-profile-img .user-no-img {
+  color: @color-main-accent;
+  font-family: 'Gotham Medium';
+}
+
+.user-profile-img .numb-of-users {
+  color: @color-background-white;
+  font-family: 'Gotham Book';
+}
+
+.users-roles-dropdown.dropdown-menu,
+.user-roles-dropdown.dropdown-menu {
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: none;
+  z-index: 900;
+}
+
+.users-roles-dropdown.dropdown-menu {
+  left: -272px !important;
+  top: 60px !important;
+}
+
+.user-roles-dropdown.dropdown-menu {
+  left: -61px !important;
+  top: 40px !important;
+}
+
+.user-profile .controls-block {
+  height: 50px;
+}
+
+.user-profile .controls-block button {
+  border: none;
+  background-color: transparent;
+  font-size: 13px;
+  color: @color-text-tertiary;
+  cursor: pointer;
+  outline: none;
+}
+
+.user-profile .controls-block .separate-line {
+  border-right: 1px solid @color-line;
+}
+
+.user-profile .controls-block button:hover,
+.user-profile .controls-block button:focus,
+.user-profile .controls-block button:active {
+  background: @color-background-tertiary;
+}
+
+.statistics-block .statistics-item {
+  font-size: 24px;
+  color: @color-text-tertiary;
+  flex: 1;
+  border-left: 1px solid #e8e9ea;
+}
+
+.statistics-block .statistics-item:first-child {
+  border-color: transparent;
+}
+
+.statistics-block .statistics-item span {
+  display: block;
+  font-size: 15px;
+  color: @color-description;
+}
+
+.paging-btn {
+  height: 40px;
+  width: 40px;
+  line-height: 40px;
+}
+
+/* #region user popup */
+::ng-deep .popover {
+  background: transparent;
+  border: none;
+  background-color: transparent;
+  border-radius: 4px;
+  margin-top: 10px;
+  margin-left: -4px;
+  width: 240px;
+}
+
+::ng-deep .popover .arrow::before {
+  border-bottom-color: transparent;
+}
+
+::ng-deep .popover .arrow::after {
+  border-bottom-color: @color-background-dark;
+}
+
+::ng-deep .popover-body {
+  padding: 0;
+}
+
+.popup-user-block {
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.popup-user-block .user-block-header {
+  padding: 15px 20px;
+  opacity: 0.95;
+  background: @color-background-dark;
+  border-bottom: 1px dashed #646c7e;
+}
+
+.user-block-header .user-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: @color-background-primary;
+  font-size: 15px;
+}
+
+.user-block-content {
+  background: @color-background-dark;
+  border-bottom: 1px dashed #646c7e;
+  height: 68px;
+  overflow: hidden;
+  font-size: 13px;
+  color: @color-background-primary;
+  padding: 15px 20px 20px;
+}
+
+.user-block-content .label {
+  color: @color-empty;
+  display: inline;
+}
+
+.popup-user-block .user-btn-block {
+  display: flex;
+  justify-content: space-between;
+  opacity: 0.95;
+  background: @color-background-dark;
+  padding: 0;
+  overflow: hidden;
+}
+
+.popup-user-block .user-btn-block button {
+  display: inline-block;
+  background-color: transparent;
+  border: none;
+  color: @color-empty;
+  padding: 9px 10px 11px;
+  outline: none;
+  cursor: pointer;
+}
+
+.popup-user-block .separate-line {
+  border-right: 1px dashed #646c7e;
+}
+
+/* .popup-user-block .btn-user-view .icon-view {
+  background-image: url("assets/images/icons/view_icon_hover-01.svg");
+  min-height: 9px;
+  min-width: 9px;
+}
+
+.popup-user-block .btn-user-view:hover .icon-view {
+  background-image: url("assets/images/icons/view_icon_hover-01.svg");
+  min-height: 9px;
+  min-width: 9px;
+} */
+
+/* .popup-user-block .user-btn-block:hover {
+    cursor: pointer;
+    background: @color-text-primary;
+  }
+
+.user-btn-block .btn-user-label {
+  margin-right: 10px;
+}
+
+.user-btn-block .btn-user-label,
+.user-btn-block .btn-user-icon {
+  color: @color-empty;
+  font-size: 13px;
+}
+
+.user-btn-block:hover .btn-user-label,
+.user-btn-block:hover .btn-user-icon {
+  color: @color-accent;
+}
+
+.popup-user-block .user-btn-block:last-child {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}*/
+
+/* #endregion */
+
+

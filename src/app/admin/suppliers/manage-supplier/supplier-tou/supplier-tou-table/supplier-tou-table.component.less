@@ -1,0 +1,80 @@
+@import 'variables.less';
+
+.splr-tou-tbl-wrp {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.splr-tou-tbl-wrp .horizontal-line {
+  border-bottom: 1px solid @color-line;
+}
+
+.splr-tou-tbl-wrp .vertical-line {
+  border-right: 1px solid @color-line;
+}
+
+.splr-tou-tbl-wrp .col-padding {
+  padding-left: 20px;
+  padding-right: 0;
+}
+
+.splr-tou-tbl-wrp .col-header {
+  font-family: Gotham Medium;
+  font-size: 14px;
+  line-height: 14px;
+  color: @color-text-primary;
+}
+
+.splr-tou-tbl-wrp .tbl-inpt-row {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.splr-tou-tbl-wrp .tbl-inpt-row .field-name {
+  width: 120px;
+  max-width: 120px;
+  min-width: 120px;
+  padding-left: 20px;
+  padding-top: 9px;
+  font-family: Gotham Medium;
+  font-size: 14px;
+  line-height: 1;
+  color: @color-text-tertiary;
+}
+
+.splr-tou-tbl-wrp .tbl-inpt-row .field-value {
+  width: calc(100% - 120px);
+  max-width: calc(100% - 120px);
+  min-width: calc(100% - 120px);
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+.splr-tou-tbl-wrp .time-icon {
+  content: '';
+  background-image: url('../../../../../../assets/images/icons/suppliers/time-picker.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px 20px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 40px;
+  height: 35px;
+  z-index: 1001;
+  display: none;
+}
+
+/* #region ng-deep styles */
+
+::ng-deep .splr-tou-tbl-wrp .ng-select .ng-select-container:hover::after,
+::ng-deep .splr-tou-tbl-wrp .ng-select.ng-select-opened .ng-select-container::after {
+  display: none;
+}
+
+::ng-deep .splr-tou-tbl-wrp .ng-select:hover + .time-icon,
+::ng-deep .splr-tou-tbl-wrp .ng-select.ng-select-opened + .time-icon {
+  display: block;
+}
+
+/* #endregion */

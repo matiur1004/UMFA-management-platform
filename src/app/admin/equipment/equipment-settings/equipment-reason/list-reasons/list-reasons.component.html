@@ -1,0 +1,77 @@
+<div class="manage-reasons" data-manage-reasons>
+  <div class="row title-row none-margin-hr">
+    <div class="col none-padding">
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="bl-gradient-title">Manage reasons for estimated readings</div>
+        <a (click)="onAddNew()" class="blue-text-btn d-flex align-items-center" data-add-new href="javascript:void(0);">
+          <i class="add-icon"></i>
+          <span>Add New</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="row search-row none-margin-hr">
+    <div class="col none-padding">
+      <form class="form-inline main-search-input w-100">
+        <div class="input-group">
+          <input #searchBox (keyup)="search(searchBox.value)" class="form-control group-search-input" data-search-field
+                 placeholder="Brands Search" type="search"/>
+          <div class="input-group-append">
+            <i class="icon-relative search-icon vertical-middle"></i>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="row stat-row none-margin-hr">
+    <div class="col none-padding">
+      <span class="stat-lbl">{{model.length}} reasons</span>
+    </div>
+  </div>
+
+  <div class="row list-header">
+    <div class="col">
+      <a (click)="changeOrderIndex(1);" [ngClass]="{'active': orderIndex == 1 || orderIndex == -1}"
+         class="header-field d-flex align-items-center" href="javascript:void(0);">
+        <span class="text-ellipsis" title="Reason Name">Reason Name</span>
+        <i [ngClass]="{'inactive': orderIndex != 1 && orderIndex != -1, 'dnm-icon-sort-up': orderIndex == -1,'dnm-icon-sort-down': orderIndex != -1 }"
+           class="dnm-icon"></i>
+      </a>
+    </div>
+  </div>
+  <div class="list-body">
+    <div *ngFor="let item of model" class="row body-row" data-row>
+      <div class="col d-flex align-items-center">
+        <span class="register-name-lbl text-ellipsis" title="{{item.reason}}">{{item.reason}}</span>
+        <span *ngIf="item.isSystem" class="label-system-attribute">System</span>
+      </div>
+      <div class="col-auto d-flex align-items-center justify-content-between">
+        <div [container]="'body'" [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block"
+             ngbDropdown>
+          <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle></button>
+          <div class="darkness dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+            <button (click)="onClone(item)" class="dropdown-item d-flex justify-content-between" data-menu-item>
+              Clone
+              <i class="dnm-icon plus-icon"></i>
+            </button>
+            <button (click)="onEdit(item)" *ngIf="item.isSystem" class="dropdown-item d-flex justify-content-between"
+                    data-menu-item>
+              View
+              <i class="dnm-icon view-icon"></i>
+            </button>
+            <button (click)="onEdit(item)" *ngIf="!item.isSystem" class="dropdown-item d-flex justify-content-between"
+                    data-menu-item>
+              Edit
+              <i class="dnm-icon edit-icon"></i>
+            </button>
+            <button (click)="onDelete(item)" *ngIf="!item.isSystem" class="dropdown-item d-flex justify-content-between"
+                    data-menu-item>
+              Delete
+              <i class="dnm-icon delete-icon"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

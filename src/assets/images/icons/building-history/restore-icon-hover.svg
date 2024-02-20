@@ -1,0 +1,11 @@
+<svg data-name="Capa 1" id="Capa_1" viewBox="0 0 13 13" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>.cls-1 {
+      fill: #6dcff6;
+    }</style>
+  </defs>
+  <title>restore</title>
+  <path class="cls-1"
+        d="M7.43.93A5.57,5.57,0,0,0,1.86,6.5H0L2.48,9,5,6.5H3.1A4.33,4.33,0,1,1,4.92,10L4,10.91a5.49,5.49,0,0,0,3.39,1.16A5.57,5.57,0,0,0,7.43.93Z"/>
+  <path class="cls-1" d="M8.67,6.5A1.24,1.24,0,1,0,7.43,7.74,1.25,1.25,0,0,0,8.67,6.5Z"/>
+</svg>

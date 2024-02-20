@@ -1,0 +1,11 @@
+<div *ngIf="pageSize && total >= pageSize"
+     class="pagination-container d-flex align-items-center justify-content-around">
+  <ngb-pagination (pageChange)="setPage(page)"
+                  [(page)]="page"
+                  [collectionSize]="total"
+                  [maxSize]="5"
+                  [pageSize]="pageSize"
+                  [rotate]="true">
+  </ngb-pagination>
+</div>
+

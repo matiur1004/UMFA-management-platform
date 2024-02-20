@@ -1,0 +1,59 @@
+<div class="popup-container">
+  <div class="modal-header">
+    <button (click)="close()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <div class="popup-body">
+    <div class="container-fluid text-center">
+      <i class="icon-relative dnm-warning-red"></i>
+      <div *ngIf="isNewTariffVersionsMode" class="popup-title">The allocated tariffs have updates.</div>
+      <div *ngIf="!isNewTariffVersionsMode" class="popup-title">Conflict with related nodes</div>
+      <div class="description">
+        <ng-container *ngIf="isNewTariffVersionsMode">
+          <ng-container *ngIf="!isInfoOnlyMode">
+            <ng-container>After successfully applying the report will be recalculated.<br/></ng-container>
+            <ng-container *ngIf="mode === buildingTariffsPopupMode.NewTariffVersionsWithChoice">Do you want to apply
+              these updates to the related nodes?
+            </ng-container>
+            <ng-container *ngIf="mode === buildingTariffsPopupMode.NewTariffVersionsWithoutChoice">The updated tariffs
+              will be applied to the related nodes.
+            </ng-container>
+          </ng-container>
+          <ng-container *ngIf="isInfoOnlyMode">
+            <ng-container>The updated tariffs are available for the related nodes.</ng-container>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="!isNewTariffVersionsMode">
+          <ng-container>The updated tariffs provide conflicts with the related nodes.<br/></ng-container>
+          <ng-container>Please, resolve these conflicts and recalculate the report.</ng-container>
+          <div class="node-sets-container">
+            <div *ngFor="let nodeSet of nodeSetsWithConflicts">
+              {{nodeSet.name}}
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer d-flex justify-content-center">
+    <ng-container *ngIf="isNewTariffVersionsMode">
+      <ng-container *ngIf="!isInfoOnlyMode">
+        <button (click)="keepOldNodeTariffVersions()" *ngIf="mode === buildingTariffsPopupMode.NewTariffVersionsWithChoice"
+                class="dnm-btn dnm-btn-cancel text-uppercase"
+                type="button">Cancel
+        </button>
+        <button (click)="applyNewNodeTariffVersions()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">
+          Apply
+        </button>
+      </ng-container>
+      <ng-container *ngIf="isInfoOnlyMode">
+        <button (click)="close()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Ok</button>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngIf="!isNewTariffVersionsMode">
+      <button (click)="close()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+      <button (click)="resolveConflicts()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Resolve</button>
+    </ng-container>
+  </div>
+</div>

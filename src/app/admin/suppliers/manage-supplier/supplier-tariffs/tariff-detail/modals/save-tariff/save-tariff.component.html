@@ -1,0 +1,51 @@
+<div class="save-tariff-mdl-wrp">
+  <div class="modal-header">
+    <div class="container-fluid text-center">
+      <i class="icon-relative save-tariff-icon"></i>
+    </div>
+    <button (click)="dismiss()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container-fluid text-center">
+      <div class="popup-title">How do you want to save tariff?</div>
+      <div class="radio-input-wrp d-flex justify-content-center">
+        <div class="d-flex align-items-center">
+          <div class="d-flex align-items-center">
+            <div class="dnm-radio-btn">
+              <input name="saveTariffRadio" type="radio">
+              <div class="state">
+                <label></label>
+              </div>
+            </div>
+            <span class="radio-input-lbl">Update current</span>
+          </div>
+          <div class="d-flex align-items-center">
+            <div class="dnm-radio-btn">
+              <input name="saveTariffRadio" type="radio">
+              <div class="state">
+                <label></label>
+              </div>
+            </div>
+            <span class="radio-input-lbl">Save as new version</span>
+          </div>
+          <div class="d-flex align-items-center">
+            <div class="dnm-radio-btn">
+              <input name="saveTariffRadio" type="radio">
+              <div class="state">
+                <label></label>
+              </div>
+            </div>
+            <span class="radio-input-lbl">Save as new tariff</span>
+          </div>
+        </div>
+      </div>
+      <div class="button-container">
+        <button (click)="dismiss()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+        <button (click)="save()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save</button>
+      </div>
+    </div>
+  </div>
+
+</div>

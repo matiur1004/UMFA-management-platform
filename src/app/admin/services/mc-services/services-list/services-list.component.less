@@ -1,0 +1,127 @@
+@import 'variables.less';
+
+.services-list {
+  padding: 0;
+}
+
+.services-list .nav-row {
+  margin-bottom: 30px;
+}
+
+.services-list .filter-item {
+  margin-right: 30px;
+}
+
+.services-list .filter-item:last-child {
+  margin-right: 0;
+}
+
+.services-list .results-lbl {
+  margin-right: 20px;
+  font-size: 16px;
+  color: @color-text-tertiary;
+}
+
+.services-list .select-lbl {
+  font-family: Gotham Medium;
+  font-size: 15px;
+  color: @color-text-tertiary;
+  margin-right: 20px;
+}
+
+.services-list .services-filter-btn,
+.services-list .services-filter-menu {
+  width: 200px;
+}
+
+.services-list .block-pointer {
+  cursor: pointer;
+}
+
+.services-list .serv-stat-lbl {
+  color: @color-description;
+}
+
+.services-list .service-description {
+  font-family: Gotham Book;
+  font-size: 14px;
+  line-height: 14px;
+  color: @color-description;
+  margin-bottom: 20px;
+}
+
+.services-list .service-using-lbl {
+  font-family: Gotham Book;
+  font-size: 12px;
+  color: @color-text-tertiary;
+  margin-bottom: 20px;
+}
+
+.services-list .service-using-val {
+  color: @color-main-accent;
+}
+
+.services-list .service-toggle-popup {
+  display: none;
+  position: absolute;
+  display: none;
+  padding: 0;
+  margin: 0 0 12px 0;
+  left: -69px;
+  top: -40px;
+}
+
+.services-list .dnm-btn.dnm-btn-menu {
+  margin-right: -7px;
+}
+
+.services-list .row-nav {
+  position: absolute;
+  top: calc(50% - 13px);
+  width: 100%;
+}
+
+.services-list .serv-nav-item {
+  margin-right: 13px;
+}
+
+.services-list .service-switch {
+  position: relative;
+  height: 25px;
+}
+
+.services-list .service-switch:hover .service-toggle-popup {
+  display: block;
+}
+
+.services-list .service-toggle-msg {
+  border-radius: 4px;
+  overflow: hidden;
+  width: 180px;
+  height: 30px;
+  color: @color-empty;
+  font-family: Gotham Book;
+  font-size: 13px;
+  background: #242e45;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.services-list .service-toggle-msg::after {
+  position: absolute;
+  content: '';
+  display: block;
+  border-color: transparent;
+  border-width: 6px;
+  border-style: solid;
+  border-top-color: @color-text-primary;
+  opacity: 0.95;
+  width: 6px;
+  bottom: -12px;
+  left: 87px;
+}
+
+.services-list .toggle-icon {
+  margin-left: 7px;
+}

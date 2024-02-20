@@ -1,0 +1,25 @@
+<div class="file-item-wrp">
+  <div class="file-data d-flex">
+    <div class="file-img file-type-icon {{fileType}}"></div>
+
+    <div (click)="openFile()" *ngIf="file.status.isCompleted" class="file-info">
+      <div class="file-name">{{file.fileName}}</div>
+      <div class="file-size">{{file.fileSize}}</div>
+    </div>
+
+    <div *ngIf="!file.status.isCompleted" class="file-info">
+      <div class="d-flex justify-content-between">
+        <div class="file-name">{{file.fileName}}</div>
+        <div class="file-size">{{file.fileSize}}</div>
+      </div>
+      <div class="upld-progress-bg">
+        <span [style.width]="file.status.progressDone + '%'" class="upld-progress"></span>
+      </div>
+    </div>
+
+  </div>
+  <button (click)="$event.stopPropagation(); onDelete($event);" class="dnm-btn-icon">
+    <i class="icon cross-icon"></i>
+  </button>
+</div>
+

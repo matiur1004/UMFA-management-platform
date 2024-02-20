@@ -1,0 +1,72 @@
+@import 'variables.less';
+
+/* #region user popup */
+.shops-list-popup {
+  border-radius: 4px;
+  width: 240px;
+  position: relative;
+  margin-top: 10px;
+}
+
+.shops-list-popup::before {
+  position: absolute;
+  content: '';
+  display: block;
+  border-color: transparent;
+  border-width: 10px;
+  border-style: solid;
+  border-bottom-color: @color-text-primary;
+  opacity: 0.95;
+  width: 10px;
+  top: -20px;
+  right: 30px;
+}
+
+.shops-list-popup .popup-header {
+  position: relative;
+  padding: 15px 15px 20px 20px;
+  opacity: 0.95;
+  background: @color-text-primary;
+  border-bottom: 1px dashed #646c7e;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.shops-list-popup .dnm-icon {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+}
+
+.shops-list-popup .shops-numb-lbl,
+.shops-list-popup .shops-numb-val {
+  font-size: 14px;
+  line-height: 14px;
+  color: @color-background-primary;
+}
+
+.shops-list-popup .shops-numb-lbl {
+  font-family: Gotham Light;
+  margin-right: 5px;
+}
+
+.shops-list-popup .shops-numb-val {
+  font-family: Gotham Medium;
+}
+
+.shops-list-popup .popup-content {
+  background: @color-text-primary;
+  font-size: 13px;
+  color: @color-background-primary;
+  padding: 15px 20px 20px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.shops-list-popup .shops-list {
+  margin-bottom: 0;
+  padding-inline-start: 15px;
+}
+
+
+/* #endregion */

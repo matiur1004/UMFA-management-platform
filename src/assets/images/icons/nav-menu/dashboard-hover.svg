@@ -1,0 +1,22 @@
+<svg data-name="Layer 1" id="Layer_1" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>.cls-1 {
+      fill: #2aace2;
+    }</style>
+  </defs>
+  <title>left menu</title>
+  <path class="cls-1" d="M9,0H0V9H9ZM7.5,7.5h-6v-6h6Z"/>
+  <path class="cls-1" d="M11,0V4h9V0Zm7.5,2.5h-6v-1h6Z"/>
+  <path class="cls-1" d="M11,9h9V5H11Zm1.5-2.5h6v1h-6Z"/>
+  <rect class="cls-1" height="1.5" width="3.38" x="16.63" y="10"/>
+  <rect class="cls-1" height="1.5" width="1.5" x="18.5" y="12.5"/>
+  <rect class="cls-1" height="1.5" width="1.5" x="15.5" y="16.5"/>
+  <rect class="cls-1" height="1.5" width="1.5" x="3" y="16.5"/>
+  <rect class="cls-1" height="1.5" width="1.5" x="13.5" y="13.5"/>
+  <rect class="cls-1" height="1.5" width="1.5" x="9.29" y="12.5"/>
+  <rect class="cls-1" height="1.5" width="3.38" x="0.04" y="10"/>
+  <rect class="cls-1" height="1.5" width="1.5" y="12.5"/>
+  <rect class="cls-1" height="1.5" width="1.5" x="5" y="13.5"/>
+  <path class="cls-1"
+        d="M10,10A10,10,0,0,0,0,20H20A10,10,0,0,0,10,10Zm2,8.5A2,2,0,0,0,10,17l-.28,0L8.08,15.35,7,16.41l1.41,1.41a2,2,0,0,0-.32.68H1.63a8.5,8.5,0,0,1,16.73,0Z"/>
+</svg>

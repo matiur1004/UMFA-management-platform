@@ -1,0 +1,95 @@
+<div class="connection-container">
+  <div class="row search-block none-margin-hr">
+    <div class="col-4 none-padding">
+      <div class="col-search">
+        <form class="form-inline main-search-input w-100">
+          <div class="input-group">
+            <input #searchCommonAreas (keyup)="updateShopSearchTerm.emit(searchCommonAreas.value)" class="form-control group-search-input" data-search-field
+                   placeholder="Shop Search" type="search"/>
+            <div class="input-group-append">
+              <i class="icon-relative search-icon vertical-middle"></i>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-4 none-padding">
+      <div class="col-search">
+        <form class="form-inline main-search-input w-100">
+          <div class="input-group">
+            <input #searchShops (keyup)="updateCommonAreaSearchTerm.emit(searchShops.value)" class="form-control group-search-input"
+                   data-search-field placeholder="Common Area Search" type="search"/>
+            <div class="input-group-append">
+              <i class="icon-relative search-icon vertical-middle"></i>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-4 none-padding">
+      <div class="d-flex align-items-center justify-content-end">
+        <span class="filter-lbl">Show:</span>
+        <ng-select (change)="onFilterBy($event)"
+                   [clearable]="false" [items]="filterByItems" [ngModel]="filterByIdx"
+                   [searchable]="false" bindLabel="label"
+                   bindValue="value" class="dnm-single-select dnm-dropdown-select" title="{{filterByLbl}}">
+          <ng-template let-item="item" ng-option-tmp>
+            <span title="{{item.label}}">{{item.label}}</span>
+          </ng-template>
+        </ng-select>
+      </div>
+    </div>
+  </div>
+
+  <div class="cmn-ar-shp-tbl">
+    <div #tableColsHeader class="table-header d-flex">
+      <div #tableFirstColHeader class="tbl-col">
+        <span class="tbl-col-first d-flex align-items-center">Select/unselect all</span>
+      </div>
+      <div *ngFor="let commonArea of commonAreas" class="tbl-col">
+        <div class="col-lbl text-center text-ellipsis">{{commonArea.name}}</div>
+        <div class="header-checkbox d-flex align-items-center justify-content-center">
+          <div class="dnm-checkbox">
+            <input (click)="onCheckAllCommonAreaShops(commonArea, $event)" [checked]="commonArea.isSelected"
+                   type="checkbox"/>
+            <div [ngClass]="{'indeterm-state': commonArea.isSelectedPartly}" class="state">
+              <label></label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div (scroll)="onScroll($event)" class="table-body">
+      <div *ngFor="let shop of shops; let row = index; " class="table-row d-flex align-items-center none-margin-hr">
+        <div #tableRowsHeader class="tbl-col">
+          <div class="d-flex align-items-center">
+            <div class="dnm-checkbox">
+              <input (click)="onCheckAllShopCommonAreas(shop, $event)" [checked]="shop.isSelected" type="checkbox"/>
+              <div [ngClass]="{'indeterm-state': shop.isSelectedPartly}" class="state">
+                <label></label>
+              </div>
+            </div>
+            <span class="shop-name text-ellipsis">{{shop.name}}</span>
+          </div>
+        </div>
+        <div *ngFor="let commonArea of commonAreas; let column = index; " class="tbl-col">
+          <div class="d-flex align-items-center">
+            <div class="dnm-checkbox">
+              <input (click)="onSelected(commonAreasShopsData[commonArea.id][shop.id]) " [checked]="commonAreasShopsData[commonArea.id][shop.id].isSelected"
+                     type="checkbox"/>
+              <div class="state">
+                <label></label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row cmn-ar-shp-footer">
+  <div class="col-12 text-right footer-buttons">
+    <button (click)="previous.emit(-1)" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+    <button (click)="onNext()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Next</button>
+  </div>
+</div>

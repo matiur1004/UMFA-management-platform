@@ -1,0 +1,89 @@
+@import 'variables.less';
+
+.react-energy-wrp {
+  margin-top: 40px;
+}
+
+.react-energy-wrp .item-hdr-nav {
+  margin-bottom: 10px;
+}
+
+.react-energy-wrp .ren-calc-name {
+  font-family: Gotham Medium;
+  font-size: 12px;
+  color: @color-empty;
+}
+
+.react-energy-wrp .del-step-btn {
+  cursor: pointer;
+  line-height: 1;
+}
+
+.react-energy-wrp .del-step-btn .btn-lbl {
+  margin-left: 10px;
+  font-family: Gotham Book;
+  font-size: 14px;
+  background: linear-gradient(to right, #e4877a, #dc3939);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.react-energy-wrp .line-div {
+  border-bottom: 1px solid #eeeff0;
+}
+
+.react-energy-wrp .input-row {
+  margin: 0;
+  min-height: 50px;
+  padding: 7px 0 7px 20px;
+}
+
+.react-energy-wrp .text-form-field {
+  padding-top: 0;
+}
+
+.react-energy-wrp .numb-input-lbl {
+  font-family: Gotham Light;
+  font-size: 14px;
+  line-height: 14px;
+  color: @color-text-tertiary;
+  white-space: nowrap;
+  padding-right: 30px;
+  padding-left: 10px;
+}
+
+/* #region ng-deep styles */
+
+::ng-deep .react-energy-wrp .numb-form-control {
+  width: 100px !important;
+}
+
+::ng-deep .react-energy-wrp .custom-select {
+  display: none;
+}
+
+::ng-deep .react-energy-wrp .datepicker-wrp .dropdown-menu {
+  width: 100%;
+}
+
+::ng-deep .react-energy-wrp .ng-select .ng-select-container {
+  border: none;
+  background-color: transparent;
+}
+
+::ng-deep .react-energy-wrp .ng-select .ng-select-container::after {
+  visibility: hidden;
+}
+
+::ng-deep .react-energy-wrp .ng-select .ng-select-container:hover {
+  border: @color-stroke solid 1px;
+  background-color: @color-background-white;
+  cursor: pointer;
+  padding: 0 34px 0 4px;
+}
+
+::ng-deep .react-energy-wrp .ng-select .ng-select-container:hover.ng-select-container::after {
+  visibility: visible;
+}
+
+/* #endregion */

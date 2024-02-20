@@ -1,0 +1,67 @@
+<div class="building-cat-list">
+  <div class="modal-header">
+    <h5 class="modal-title">Select the category icon:</h5>
+    <button (click)="onClose();" aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <div class="modal-body none-padding">
+    <div class="icons-list-block">
+      <div class="icons-list-row">
+        <div class="icon-item d-flex align-items-center justify-content-center">
+          <div (click)="onSelected('commercial');" class="b-categ-icon b-categ-pin-commercial"></div>
+        </div>
+        <div class="icon-item d-flex align-items-center justify-content-center">
+          <div (click)="onSelected('residential');" class="b-categ-icon b-categ-pin-residential"></div>
+        </div>
+        <div class="icon-item d-flex align-items-center justify-content-center">
+          <div (click)="onSelected('retail');" class="b-categ-icon b-categ-pin-retail"></div>
+        </div>
+        <div class="icon-item d-flex align-items-center justify-content-center">
+          <div (click)="onSelected('industrial');" class="b-categ-icon b-categ-pin-industrial"></div>
+        </div>
+        <div class="icon-item d-flex align-items-center justify-content-center">
+          <div (click)="onSelected('auto');" class="b-categ-icon b-categ-pin-auto"></div>
+        </div>
+      </div>
+      <div class="icons-list-row">
+        <div class="icon-item d-flex align-items-center justify-content-center">
+          <div (click)="onSelected('building');" class="b-categ-icon b-categ-pin-building"></div>
+        </div>
+        <div class="icon-item d-flex align-items-center justify-content-center">
+          <div (click)="onSelected('medical');" class="b-categ-icon b-categ-pin-medical"></div>
+        </div>
+        <div class="icon-item d-flex align-items-center justify-content-center">
+          <div (click)="onSelected('museum_university_library');" class="b-categ-icon b-categ-pin-mus-ulib"></div>
+        </div>
+        <div class="icon-item d-flex align-items-center justify-content-center">
+          <div (click)="onSelected('power');" class="b-categ-icon b-categ-pin-power"></div>
+        </div>
+        <div class="icon-item d-flex align-items-center justify-content-center">
+          <div (click)="onSelected('water');" class="b-categ-icon b-categ-pin-water"></div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="colors-list-block">
+      <div class="colors-list-title">Select color of a map pin:</div>
+      <div class="colors-list-row">
+        <div class="categ-icon-color icon-color-0"></div>
+        <div class="categ-icon-color icon-color-1"></div>
+        <div class="categ-icon-color icon-color-2">
+          <span class="check-mark-icon d-check-mark-white"></span>
+        </div>
+        <div class="categ-icon-color icon-color-3"></div>
+        <div class="categ-icon-color icon-color-4"></div>
+        <div class="categ-icon-color icon-color-5"></div>
+        <div class="categ-icon-color icon-color-6"></div>
+        <div class="categ-icon-color icon-color-7"></div>
+        <div class="categ-icon-color icon-color-8"></div>
+        <div class="categ-icon-color icon-color-9"></div>
+      </div>
+    </div> -->
+    <!-- <div class="footer-nav-buttons">
+      <button type="button" class="dnm-btn dnm-btn-cancel text-uppercase">Cancel</button>
+      <button type="button" class="dnm-btn dnm-btn-primary text-uppercase">Save</button>
+    </div> -->
+  </div>
+</div>

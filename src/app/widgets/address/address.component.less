@@ -1,0 +1,56 @@
+//@import 'variables.less';
+@import 'required-fields.less';
+
+.address-form {
+  overflow: hidden;
+
+  .address-container {
+    border-bottom: 1px solid #eeeff0;
+
+    .text-form-field {
+      padding-top: 0;
+    }
+
+    .address-field-name {
+      font-family: Gotham Book;
+      color: @color-description;
+      font-size: 12px;
+      line-height: 14px;
+    }
+
+    input.form-control {
+      color: @color-text-tertiary;
+      cursor: text;
+      background-color: @color-background-white;
+    }
+
+    input.form-control:hover,
+    input.form-control:focus,
+    input.form-control:active {
+      outline: 0;
+      background-color: @color-background-white;
+      box-shadow: none;
+    }
+
+    input.form-control:hover {
+      background: url("../../../assets/images/icons/blue-edit.png") no-repeat @color-background-white;
+      background-position: right 10px center;
+      cursor: pointer;
+    }
+
+    .dnm-invalid-inp input.form-control:hover {
+      background-image: none;
+    }
+
+    .dnm-invalid-inp input:not(:active):not(:focus) {
+      border: 1px solid @color-warning;
+    }
+
+    .icon.check-mark-icon {
+      width: 12px;
+      height: 12px;
+      min-width: 12px;
+      min-height: 12px;
+    }
+  }
+}

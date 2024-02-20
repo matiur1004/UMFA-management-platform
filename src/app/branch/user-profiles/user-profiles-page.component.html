@@ -1,0 +1,74 @@
+<div class="container-fluid top-container">
+  <div class="row content">
+    <div class="col-12 col-lg-5 none-padding">
+      <div class="client-header-title">
+        <h1 class="page-title text-uppercase">User profiles</h1>
+      </div>
+    </div>
+    <div class="col-12 col-lg-7 none-padding text-right">
+      <form class="form-inline my-lg-0 main-search-input">
+        <div class="input-group">
+          <input #searchBox (keyup)="search(searchBox.value)" aria-label="Search" class="form-control group-search-input"
+                 data-search-field placeholder="Search" type="search"
+          />
+          <div class="input-group-append">
+            <i class="icon-relative search-icon vertical-middle"></i>
+          </div>
+        </div>
+      </form>
+      <button (click)="onCreate()" *ngIf="accessPermission.canManageUserProfiles"
+              class="dnm-btn dnm-btn-primary text-uppercase add-entity-btn minimum-button-width" type="button">
+        <span>Add Profile</span>
+        <i class="icon-relative add-profile-icon "></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid none-padding">
+  <div class="dnm-tabset">
+   <ul ngbNav #nav="ngbNav" (navChange)="onTabChange()" class="nav-tabs" [(activeId)]="active">
+      <li [ngbNavItem]="'tab-0'" *ngIf="accessPermission.canManageUserProfiles" >
+        <a ngbNavLink>
+          <span class="d-flex text-uppercase">
+            <i class="tab-icon dnm-icon-userprofiles"></i>User profiles
+          </span>
+        </a>
+        <ng-template ngbNavContent>
+          <user-profile [searchTermsSubject]="searchTermsSubject"></user-profile>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="'tab-1'" *ngIf="accessPermission.canManageUserProfiles" >
+        <a ngbNavLink>
+          <span class="d-flex text-uppercase">
+            <i class="tab-icon dnm-icon-users"></i>Users
+          </span>
+        </a>
+        <ng-template ngbNavContent>
+          <user-profile-users [searchTermsSubject]="searchTermsSubject"></user-profile-users>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="'tab-2'" *ngIf="accessPermission.canManageUserProfiles" >
+        <a ngbNavLink>
+          <span class="d-flex text-uppercase">
+            <i class="tab-icon contacts-icon"></i>Contacts
+          </span>
+        </a>
+        <ng-template ngbNavContent>
+          <user-profile-contacts [searchTermsSubject]="searchTermsSubject"></user-profile-contacts>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="'tab-3'" *ngIf="accessPermission.canManageRoles" >
+        <a ngbNavLink>
+          <span class="d-flex text-uppercase">
+            <i class="tab-icon dnm-icon-roles"></i>Roles
+          </span>
+        </a>
+        <ng-template ngbNavContent>
+          <user-profile-roles [searchTermsSubject]="searchTermsSubject"></user-profile-roles>
+        </ng-template>
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="nav"></div>
+  </div>
+</div>

@@ -1,0 +1,107 @@
+@import 'variables.less';
+
+.reading-item {
+  border-left: 1px solid @color-line;
+  border-top: 1px solid @color-line;
+  border-right: 1px solid @color-line;
+}
+
+.reading-item .mtr-rdngs-row {
+  background-color: @color-background-white;
+}
+
+.reading-item .rdng-srtbl-col {
+  border-right: 1px solid @color-line;
+}
+
+.reading-item .item-row {
+  border-bottom: 1px solid @color-line;
+  padding: 10px 15px;
+}
+
+.reading-item .item-row:last-child {
+  border-bottom: none;
+}
+
+.reading-item .id-numb-lbl {
+  font-family: Gotham Medium;
+  font-size: 16px;
+  line-height: 16px;
+  color: @color-text-primary;
+}
+
+.reading-item .location-lbl,
+.reading-item .seq-no-lbl,
+.reading-item .register-lbl,
+.reading-item .prev-readings-lbl,
+.reading-item .avg-usage-lbl,
+.reading-item .estimated-readings-lbl,
+.reading-item .usage-lbl {
+  font-family: Gotham Book;
+  font-size: 13px;
+  line-height: 13px;
+  color: @color-text-tertiary;
+}
+
+.reading-item .closest-rdngs-lbl {
+  margin-right: 5px;
+}
+
+.reading-item .actual-reading-inpt {
+  width: 88px;
+  min-width: 88px;
+  margin-right: 40px;
+  height: 30px;
+  font-size: 13px;
+}
+
+.reading-item .actual-rdng-btn {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-color: transparent;
+  border: none;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.reading-item .actual-rdng-btn:after {
+  display: none;
+}
+
+.reading-item .dropdown {
+  line-height: 1;
+}
+
+.reading-item .note-popup-dropdown.dropdown-menu {
+  top: calc(-50%) !important;
+  right: 50px !important;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: none;
+  z-index: 1600;
+}
+
+.reading-item .note-popup-dropdown.dropdown-menu {
+  width: 310px;
+}
+
+.reading-item .rdng-file-inpt-wrp {
+  position: relative;
+  line-height: 1;
+}
+
+.reading-item .rdng-file-inpt {
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
+  opacity: 0;
+  position: absolute;
+  z-index: 1;
+  cursor: pointer;
+  left: 0;
+  top: 0;
+}

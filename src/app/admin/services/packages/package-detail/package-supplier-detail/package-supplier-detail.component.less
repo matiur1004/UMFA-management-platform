@@ -1,0 +1,133 @@
+@import 'variables.less';
+
+.supply-types-table {
+  margin-bottom: 30px;
+}
+
+.supply-types-table .table-row {
+  border-bottom: 1px solid #e7e8e9;
+}
+
+.supply-types-table .table-row:last-child {
+  border-bottom: none;
+}
+
+.supply-types-table .table-cell {
+  border-right: 1px solid #e7e8e9;
+  padding: 10px 20px;
+}
+
+.supply-types-table .table-cell:last-child {
+  border-right: none;
+}
+
+.supply-types-table .table-cell text-input {
+  width: 100%;
+}
+
+.supply-types-table .col-lbl,
+.supply-types-table .subcol-lbl {
+  font-family: Gotham Medium;
+  font-size: 12px;
+  line-height: 1;
+  color: @color-empty;
+  text-transform: uppercase;
+  display: block;
+}
+
+.supply-types-table .col-lbl {
+  padding-left: 20px;
+}
+
+.supply-types-table .subcol-lbl {
+  margin-left: -20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.supply-types-table .row-title {
+  font-family: Gotham Medium;
+  font-size: 14px;
+  line-height: 34px;
+  text-transform: uppercase;
+  color: @color-text-tertiary;
+}
+
+.supply-types-table .cell-lbl {
+  font-family: Gotham Book;
+  font-size: 14px;
+  line-height: 34px;
+  color: @color-text-tertiary;
+  padding-left: 20px;
+}
+
+.supply-types-table .numb-form-control {
+  font-family: Gotham Book;
+  font-size: 14px;
+  padding: 5px 20px 5px 19px;
+  height: 33px;
+  cursor: pointer;
+  background-color: transparent;
+  border: transparent solid 1px;
+}
+
+.supply-types-table .numb-form-control:hover {
+  background-color: @color-background-white;
+  border: @color-stroke solid 1px;
+}
+
+.supply-types-table .numb-form-control:focus {
+  box-shadow: none;
+  padding: 4px 19px 4px 18px;
+  border: @color-main-accent solid 2px;
+  outline: 0;
+}
+
+.supply-types-table .null-supply-price {
+  color: @color-description;
+}
+
+.supply-types-table .changed-supply-price {
+  font-family: Gotham Bold;
+}
+
+::ng-deep .supply-types-table .field-value input {
+  font-family: Gotham Book;
+  font-size: 14px;
+  padding: 5px 20px 5px 19px;
+}
+
+::ng-deep .supply-types-table .field-value input:focus {
+  font-family: Gotham Book;
+  font-size: 14px;
+  padding: 4px 20px 4px 18px;
+}
+
+::ng-deep .supply-types-table .field-value.null-supply-price input {
+  color: @color-description;
+}
+
+::ng-deep .supply-types-table .field-value.changed-supply-price input {
+  font-family: Gotham Bold;
+}
+
+.apply-btn {
+  font-family: Gotham Medium;
+  font-size: 12px;
+  line-height: 14px;
+  color: @color-background-white;
+  display: inline-block;
+  cursor: pointer;
+  padding: 5px 15px;
+  border-radius: 13px;
+  width: 175px;
+  background-image: linear-gradient(to right, #8490a7, #7a87a0, #717f99, #677693, #5e6e8c);
+  -webkit-box-shadow: 0 2px 10px 0 rgba(126, 125, 171, .8);
+  -moz-box-shadow: 0 2px 10px 0 rgba(126, 125, 171, .8);
+  box-shadow: 0 2px 10px 0 rgba(126, 125, 171, .8);
+  margin-left: 20px;
+}
+
+.apply-btn:hover {
+  box-shadow: none;
+}

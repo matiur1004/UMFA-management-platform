@@ -1,0 +1,46 @@
+@import 'mixins.less';
+
+.register-item {
+  min-height: 35px;
+  position: relative;
+  line-height: 35px;
+  margin-bottom: 10px;
+}
+
+.additional-shops span {
+  cursor: pointer;
+}
+
+::ng-deep .tariff-label {
+  display: inline-flex;
+  line-height: 1px;
+  margin: 5px 0;
+
+  .category-warning-icon {
+    align-self: flex-end;
+    position: relative;
+    top: 4px;
+
+    .margin-left-icon {
+      margin-left: 10px;
+    }
+  }
+
+  .category-warning-info {
+    padding: 0px 10px;
+    align-self: flex-end;
+    position: relative;
+    top: 4px;
+
+    .categ-note-btn {
+      background-color: transparent;
+      border: none;
+      height: 20px;
+      background-repeat: no-repeat;
+
+      &:after {
+        display: none;
+      }
+    }
+  }
+}

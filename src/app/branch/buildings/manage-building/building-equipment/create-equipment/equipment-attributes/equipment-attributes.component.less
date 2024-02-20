@@ -1,0 +1,288 @@
+//@import 'variables.less';
+@import 'required-fields.less';
+
+.equipment-attributes {
+  margin-bottom: 60px;
+}
+
+.equipment-attributes .left-col-wrapper {
+  padding-right: 35px;
+}
+
+.equipment-attributes .right-col-wrapper {
+  padding-left: 35px;
+}
+
+.equipment-attributes .bl-gradient-title {
+  margin-bottom: 30px;
+}
+
+.equipment-attributes .equip-attr-title {
+  margin-top: 35px;
+}
+
+.equipment-attributes .main-equipment-img {
+  width: 350px;
+  min-width: 350px;
+  height: 350px;
+  min-height: 350px;
+  background-color: @color-background-white;
+  border: 1px solid @color-empty;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 30px;
+}
+
+::ng-deep .equipment-attributes .main-equipment-img .logo-img {
+  max-height: 330px;
+  max-width: 330px;
+}
+
+.equipment-attributes .gallery-block {
+  width: 350px;
+  min-width: 350px;
+}
+
+.equipment-attributes .gallery-item {
+  width: 90px;
+  min-width: 90px;
+  margin-right: 40px;
+}
+
+.equipment-attributes .item-img,
+.equipment-attributes .upld-img {
+  width: 90px;
+  min-width: 90px;
+  height: 90px;
+  min-height: 90px;
+  border: 1px solid @color-empty;
+  border-radius: 5px;
+  background-color: @color-background-white;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+.equipment-attributes .item-img > img {
+  width: 88px;
+  height: 88px;
+  border-radius: 5px;
+}
+
+.equipment-attributes .item-lbl {
+  font-family: Gotham Book;
+  font-size: 12px;
+  line-height: 14px;
+  color: @color-text-tertiary;
+}
+
+.equipment-attributes .upld-logo {
+  width: 50px;
+  height: 50px;
+  background-size: 50px;
+  margin-bottom: 5px;
+}
+
+.equipment-attributes .upld-img-lbl {
+  font-family: Gotham Medium;
+  font-size: 10px;
+  line-height: 12px;
+  color: @color-stroke;
+}
+
+.equipment-attributes .header-field {
+  text-transform: uppercase;
+}
+
+.equipment-attributes .list-body {
+  margin-bottom: 30px;
+}
+
+.equipment-attributes .body-row {
+  margin-bottom: 15px;
+}
+
+.equipment-attributes .list-header,
+.equipment-attributes .data-row {
+  width: calc(100% - 40px);
+}
+
+.equipment-attributes .equip-inpt-wrp {
+  position: relative;
+  line-height: 1;
+}
+
+.equipment-attributes .equip-file-inpt {
+  width: 23px;
+  height: 23px;
+  overflow: hidden;
+  opacity: 0;
+  position: absolute;
+  z-index: 1;
+  cursor: pointer;
+  left: 0;
+  top: 0;
+}
+
+.equipment-attributes .view-equip-img,
+.equipment-attributes .add-equip-img {
+  width: 23px;
+  height: 23px;
+  display: inline-block;
+  cursor: pointer;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.equipment-attributes .view-equip-img {
+  background-image: url('../../../../../../../assets/images/icons/equipment/photo.svg');
+
+}
+
+.equipment-attributes .view-equip-img:hover,
+.equipment-attributes .equip-file-inpt:hover ~ .view-equip-img {
+  background-image: url('../../../../../../../assets/images/icons/equipment/photo-hover.svg');
+}
+
+.equipment-attributes .add-equip-img {
+  background-image: url('../../../../../../../assets/images/icons/equipment/photo-add.svg');
+}
+
+.equipment-attributes .add-equip-img:hover,
+.equipment-attributes .equip-file-inpt:hover ~ .add-equip-img {
+  background-image: url('../../../../../../../assets/images/icons/equipment/photo-add-hover.svg');
+}
+
+.equipment-attributes .date {
+  background-color: @color-background-white;
+  min-width: 110px;
+  padding-left: 10px;
+  padding-right: 8px;
+}
+
+.equipment-attributes .footer-btns {
+  margin-top: 35px;
+}
+
+.equipment-attributes .dnm-btn-cancel,
+.equipment-attributes .dnm-btn-red {
+  margin-right: 30px;
+}
+
+.equipment-attributes .attr-photo-btn {
+  background-color: @color-background-white;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 20px;
+  border: 1px solid @color-empty;
+  width: 35px;
+  height: 35px;
+  display: inline-block;
+}
+
+.equipment-attributes .dnm-btn-cancel,
+.equipment-attributes .dnm-btn-red {
+  margin-right: 30px;
+}
+
+.equipment-attributes .dnm-btn-cancel,
+.equipment-attributes .dnm-btn-red,
+.equipment-attributes .dnm-btn-primary {
+  width: 200px;
+  min-width: 200px;
+}
+
+.equipment-attributes .item-container {
+  margin-bottom: 15px;
+}
+
+.equipment-attributes .reg-tou-f-col {
+  padding-left: 30px;
+}
+
+.input-row.has-photo .field-value {
+  width: calc(100% - 300px);
+  margin-right: 10px;
+}
+
+.unit-name {
+  width: 50px;
+}
+
+.combo-value {
+  border-color: @color-empty;
+}
+
+.register-dtls-name {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.register-dtls-name > .text-form-field {
+  padding-top: 0;
+}
+
+.text-form-field.equipment-attributes-field-name {
+  padding-top: 0;
+}
+
+::ng-deep .equipment-attributes input.date ~ ngb-datepicker.dropdown-menu {
+  width: 234px;
+}
+
+.equipment-attributes .input-unit-wrapper .input-sufix {
+  line-height: 19px;
+  border: 1px solid @color-stroke;
+  padding: 7px 30px 7px 7px;
+  border-color: @color-stroke;
+  border-radius: 0 .25rem .25rem 0;
+  border-left: none;
+  background-color: @color-background-white;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.equipment-attributes .input-unit-wrapper .form-control:focus + .input-sufix {
+  border: 2px solid @color-main-accent;
+  padding: 6px 29px 6px 6px;
+  border-left: none;
+}
+
+.obis-code {
+  width: 150px;
+}
+
+/*.equipment-attributes .input-unit-wrapper .form-control.has-sufix {
+  border-right: none;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}*/
+
+.equipment-parents-select {
+  .ng-placeholder {
+    white-space: nowrap;
+    background-color: @color-background-tertiary;
+    padding: 0px 10px;
+    margin: 5px;
+    border-radius: 10px;
+    border: 1px solid @color-stroke;
+    color: @color-text-tertiary;
+    font-size: 13px;
+    line-height: 18px;
+    height: 20px;
+    position: relative !important;
+  }
+
+  .ng-has-value .ng-placeholder {
+    display: none
+  }
+}
+
+.register-icon {
+  height: 25px;
+  margin: 5px;
+  image-resolution: initial;
+  border-radius: 3px 5px;
+}
+

@@ -1,0 +1,531 @@
+/* You can add global styles to this file, and also import other style files */
+@import './styles/variables.less';
+@import './styles/reset.less';
+@import './styles/mixins.less';
+
+@import './styles/form.less';
+@import './styles/logo.less';
+@import './styles/list-header.less';
+
+/* #region no items accounts container */
+
+.no-items-container {
+  padding-top: 150px;
+}
+
+.no-items-container .icon {
+  width: 50px;
+  height: 50px;
+}
+
+.no-items-container .description {
+  font: 24px/30px Gotham Light;
+  color: @color-empty;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+/* #endregion */
+
+@import './styles/progress-spinner.less';
+@import './styles/custom-scrollbar.less';
+@import './styles/toastr.less';
+
+@import './styles/table.less';
+@import './styles/badge.less';
+/* #region override bootstrap styles */
+
+/* #region common styles */
+
+.form-control {
+  font-family: 'Gotham Book', Arial, sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  padding: 7px 30px 7px 20px;
+  color: @color-text-tertiary;
+  border: 1px solid @color-empty;
+  height: 35px;
+}
+
+.form-control:focus {
+  padding: 6px 29px 6px 19px;
+  border: 2px solid @color-main-accent;
+  box-shadow: none;
+}
+
+.form-inline {
+  display: inline-block;
+}
+
+.overflow-x-hidden {
+  overflow-x: hidden;
+}
+
+.numb-form-control {
+  font-family: Gotham Book;
+  font-size: 14px;
+  padding: 5px 8px 5px 19px;
+  height: 35px;
+  cursor: pointer;
+  background-color: @color-background-white;
+  border: 1px solid @color-stroke;
+}
+
+.numb-form-control--clear {
+  border-color: transparent;
+}
+
+.numb-form-control--clear:hover {
+  border-color: @color-stroke;
+}
+
+.numb-form-control:focus {
+  box-shadow: none;
+  padding: 4px 7px 4px 18px;
+  border: @color-main-accent solid 2px;
+  outline: 0;
+}
+
+/* #endregion */
+
+@import './styles/modal.less';
+@import './styles/navtabs.less';
+@import './styles/fonts.less';
+@import './styles/icons.less';
+@import './styles/service-types.less';
+@import './styles/page-content.less';
+@import './styles/pagination.less';
+
+/* #region custom range slider */
+
+.ng5-slider {
+  .ng5-slider-full-bar {
+    .ng5-slider-bar {
+      background: @color-stroke;
+      height: 3px;
+    }
+  }
+
+  .ng5-slider-selection-bar {
+    .ng5-slider-selection {
+      .gradient-slider-selection()
+    }
+  }
+
+  .ng5-slider-pointer.ng5-slider-span {
+    height: 20px;
+    width: 20px;
+    top: -8px;
+    border: 1px solid rgba(50, 68, 134, 0.25);
+    background: #FFFFFF;
+    outline: none;
+
+    &::after {
+      content: none;
+    }
+  }
+}
+
+.ng5-slider.exclusion {
+  .ng5-slider-full-bar {
+    .ng5-slider-bar {
+      .gradient-slider-selection()
+    }
+  }
+
+  .ng5-slider-selection-bar {
+    .ng5-slider-selection {
+      background: @color-stroke;
+    }
+  }
+}
+
+/* #endregion */
+
+@import './styles/placeholder.less';
+@import './styles/search-input.less';
+@import './styles/buttons.less';
+
+/* #region page content */
+
+html, body {
+  scroll-behavior: smooth;
+  position: relative;
+  background-color: @color-background-primary !important;
+  font-family: Gotham Book, Arial, sans-serif;
+}
+
+.link {
+  color: @color-main-accent;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.link-black {
+  color: @color-text-primary;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.page-title {
+  font-family: Gotham Medium;
+  font-size: 22px;
+  margin: 0;
+}
+
+.none-margin-hr {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.none-margin-vr {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.text-link-lg {
+  font-family: Gotham Medium;
+  font-size: 13px;
+  color: @color-main-accent;
+  border-bottom: 2px solid #d4ecfb;
+}
+
+.text-link-lg:hover {
+  color: @color-text-primary;
+  text-decoration: none;
+  border-bottom: 2px solid #d6d7d9;
+}
+
+.btn-form-section + .btn-form-section.float-right {
+  margin-right: 15px;
+}
+
+.btn-form-section .icon {
+  margin-right: 8px;
+  vertical-align: -1px;
+}
+
+.dnm-popup-wrp {
+  padding: 0;
+  margin-top: 8px;
+
+  .dropdown-item {
+    padding: 0;
+  }
+}
+
+.clickable:hover {
+  cursor: pointer;
+}
+
+/* #endregion */
+@import './styles/dropdowns.less';
+
+/* #region table premium */
+.table-premium {
+  font-family: Gotham Book;
+  font-size: 13px;
+  color: @color-text-tertiary;
+  margin-bottom: 0;
+}
+
+.table-premium thead th {
+  border-bottom: 0;
+  padding: 10px;
+}
+
+.table-premium td, .table-premium th {
+  border-top: 0;
+}
+
+.table-premium .table-header {
+  font-size: 11px;
+  color: @color-description;
+  border: 0;
+}
+
+.table-premium tbody tr {
+  border-bottom: 1px solid #eeeff0;
+}
+
+.table-premium thead th,
+.table-premium tbody td {
+  vertical-align: middle;
+}
+
+.table-premium tbody th,
+.table-premium tbody td {
+  padding: 20px 10px;
+}
+
+.table-premium tbody tr td:last-child {
+  padding-right: 0;
+}
+
+/* #endregion */
+
+@import './styles/icons2.less';
+@import './styles/icons3.less';
+@import './styles/autocomplete.less';
+@import './styles/toggle.less';
+@import './styles/map-info-window.less';
+@import './styles/checkboxes.less';
+@import './styles/radio-btn.less';
+@import './styles/datepicker.less';
+@import './styles/tooltip.less';
+@import './styles/tree-view.less';
+@import './styles/tabs-steps-wizard.less';
+
+/* #region shops liability status */
+
+.vacant-shop {
+  background-color: @color-background-secondary;
+}
+
+.inactive-shop {
+  background-color: @color-background-secondary;
+}
+
+.status-lbl {
+  display: block;
+  height: 25px;
+  border-radius: 13px;
+  text-align: center;
+  font-family: Gotham Book;
+  line-height: 25px;
+  color: @color-background-white;
+}
+
+.active-shop .status-lbl {
+  .gradient-blue()
+}
+
+.vacant-shop .status-lbl {
+  .gradient-yellow()
+}
+
+.inactive-shop .status-lbl {
+  .gradient-red()
+}
+
+/* #endregion */
+
+/* #region horizontal list */
+
+ul.dnm-horizontal-list {
+  list-style: none;
+}
+
+ul.dnm-horizontal-list li {
+  display: inline-block;
+}
+
+/* #endregion */
+
+@import './styles/drag-drop.less';
+@import './styles/media.less';
+
+.select-category-icon {
+  background-image: url('assets/images/icons/select-category.svg');
+}
+
+.service-check label {
+  font-family: 'Gotham Book';
+  font-size: 14px;
+  color: @color-text-tertiary;
+  padding-left: 5px;
+}
+
+a.disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.register-settings-modal > .modal-dialog {
+  max-width: 1000px;
+}
+
+.register-settings-modal > .modal-dialog > .modal-content {
+  overflow: auto;
+}
+
+.tou-item > .ng-dropdown-panel {
+  width: auto;
+}
+
+.select > .register-form-input > .select-input > .ng-has-value > .ng-value-container > .ng-value,
+.select > .register-form-input > .select-input.ng-select-filtered > .ng-has-value > .ng-value-container > .ng-value {
+  height: 20px;
+  line-height: 20px;
+  visibility: visible;
+}
+
+.select > .register-form-input > .ng-select > .ng-select-container > .ng-value-container > .ng-input {
+  position: static;
+  width: auto;
+  line-height: 28px;
+}
+
+
+@media screen and (max-width: 992px) {
+  .register-settings-modal > .modal-dialog {
+    max-width: 90%;
+  }
+}
+
+
+/* More item */
+.more-item {
+  color: @color-main-accent;
+  cursor: pointer;
+}
+
+.more-item:hover {
+  color: @color-text-primary;
+}
+
+.more-item .icon {
+  margin-right: 5px;
+}
+
+/* Icons */
+.icon {
+  display: inline-block;
+  background-size: contain;
+}
+
+.icon-info-primary {
+  background: url('./assets/images/icons/suppliers/info-primary.svg') no-repeat;
+}
+
+.icon-info-accent {
+  background: url('./assets/images/icons/suppliers/info-accent.svg') no-repeat;
+}
+
+.icon-info--xs {
+  width: 12px;
+  height: 12px;
+}
+
+.empty-placeholder {
+  color: @color-description;
+}
+
+.select-dropdown .ng-value {
+  background-color: transparent;
+  border: 0;
+  padding: 0;
+  margin: 4px 0;
+  border-radius: 100%;
+  line-height: 22px;
+  height: auto;
+}
+
+.select-dropdown {
+  .ng-option {
+    margin: 0;
+    text-transform: initial;
+  }
+
+  &.ng-select:not(.ng-select-disabled) {
+    .ng-select-container {
+      background-color: @color-background-white;
+      border: 1px solid @color-empty;
+    }
+
+    .ng-option.ng-option-selected {
+      display: none;
+    }
+  }
+
+  .ng-placeholder {
+    line-height: 26px;
+    color: @color-text-tertiary;
+    font-size: 13px;
+    margin-left: 11px;
+  }
+
+  .ng-value-label {
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+}
+
+@import './styles/and-or--toggle.less';
+
+.btn-auth {
+  .gradient-active-tab-icon();
+  color: @color-background-white;
+  font-size: 14px;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 20px;
+  border: none;
+  box-shadow: 1px 2px 4px rgba(50, 68, 134, .5);
+  margin-top: 10px;
+  padding: 9px 12px;
+  width: 100%;
+}
+
+.btn-auth:hover:not(:disabled) {
+  box-shadow: none;
+  opacity: 0.9;
+  color: @color-background-white;
+  text-decoration: none;
+}
+
+.btn-auth:hover:disabled {
+  color: @color-background-white;
+}
+
+.btn-auth:active {
+  .gradient-active-tab-icon() !important;
+  text-decoration: none;
+}
+
+.form-label {
+  color: @color-empty;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.min-height-0 {
+  min-height: 0;
+}
+
+@import './styles/table-nodes-tariffs-assignment.less';
+@import './styles/auth.less';
+
+.back-button-container {
+  position: absolute;
+  top: -10px;
+  right: 260px;
+}
+
+.next-prev-button-container {
+  position: absolute;
+  top: -10px;
+  right: 400px;
+}
+
+//Charts
+
+.rdng-list-btn {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-color: transparent;
+  border: none;
+  margin-right: 10px;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+}
+
+.rdng-list-btn:after {
+  display: none;
+}

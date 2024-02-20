@@ -1,0 +1,108 @@
+<div class="edit-bld-period">
+  <div class="modal-header">
+    <h5 [ngSwitch]="(mode$ | async)" class="modal-title">
+      <ng-container *ngSwitchCase="EditDialogModeEnum.Finalize">Before closing current building period a new one should
+        be created
+      </ng-container>
+      <ng-container *ngSwitchDefault>Edit building period</ng-container>
+    </h5>
+    <button (click)="onCancel()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [ngrxFormState]="formState$ | async">
+      <div class="row">
+        <div class="col-12">
+          <div class="input-row">
+            <div [ngSwitch]="(mode$ | async)" class="text-uppercase field-name text-form-field">
+              <ng-container *ngSwitchCase="EditDialogModeEnum.Finalize">New Building Period Name</ng-container>
+              <ng-container *ngSwitchDefault>Building Period Name</ng-container>
+            </div>
+            <div class="field-value">
+              <div [ngClass]="{'dnm-invalid-inp': (formState$ | async).controls.name.isInvalid}">
+                <ng-select [clearable]="false"
+                           [hideSelected]="true" [ngrxFormControlState]="(formState$ | async).controls.name" [searchable]="false"
+                           class="dnm-multiple-select select-dropdown">
+                  <ng-option *ngFor="let name of allowedPeriodNames$ | async" [value]="name">{{name}}</ng-option>
+                </ng-select>
+              </div>
+              <small *ngIf="(formState$ | async).errors?._name?.required" class="alert-danger">
+                Name is required
+              </small>
+            </div>
+          </div>
+          <div class="input-row">
+            <div [ngSwitch]="(mode$ | async)" class="text-uppercase field-name text-form-field">
+              <ng-container *ngSwitchCase="EditDialogModeEnum.Finalize">New Building Period Start Date</ng-container>
+              <ng-container *ngSwitchDefault>Start Date</ng-container>
+            </div>
+            <div class="field-value datepicker-wrp">
+              <input #startDatePicker="ngbDatepicker" (click)="startDatePicker.toggle()" [maxDate]="ngbDateNgrxValueConverter.convertStateToViewValue((formState$ | async).controls.endDate.value)"
+                     [ngrxFormControlState]="(formState$ | async).controls.startDate"
+                     [ngrxValueConverter]="ngbDateNgrxValueConverter"
+                     class="form-control"
+                     name="startDate" ngbDatepicker placeholder="dd/mm/YYYY" readonly>
+              <i (click)="!startDatePicker.disabled && startDatePicker.toggle()" class="calendar"></i>
+            </div>
+          </div>
+          <div class="input-row">
+            <div [ngSwitch]="(mode$ | async)" class="text-uppercase field-name text-form-field">
+              <ng-container *ngSwitchCase="EditDialogModeEnum.Finalize">New Building Period End Date</ng-container>
+              <ng-container *ngSwitchDefault>End Date</ng-container>
+            </div>
+            <div class="field-value datepicker-wrp">
+              <input #endDatePicker="ngbDatepicker" (click)="endDatePicker.toggle()" [minDate]="ngbDateNgrxValueConverter.convertStateToViewValue((formState$ | async).controls.startDate.value)"
+                     [ngrxFormControlState]="(formState$ | async).controls.endDate"
+                     [ngrxValueConverter]="ngbDateNgrxValueConverter"
+                     class="form-control"
+                     name="endDate" ngbDatepicker placeholder="dd/mm/YYYY" readonly>
+              <i (click)="endDatePicker.toggle()" class="calendar"></i>
+            </div>
+          </div>
+          <div class="input-row">
+            <div [ngSwitch]="(mode$ | async)" class="text-uppercase field-name text-form-field">
+              <ng-container *ngSwitchCase="EditDialogModeEnum.Finalize">Link New Building Period to the previous year's
+                period
+              </ng-container>
+              <ng-container *ngSwitchDefault>Linked Periods</ng-container>
+            </div>
+            <div class="field-value">
+              <div [hidden]="editLinkedPeriods">
+                <span class="text-ellipsis linked-period-lbl">{{(linkedPeriodsNames$ | async)?.join(', ')}}</span>
+                <span (click)="editLinkedPeriods = true;" class="icon-btn">
+                  <i class="dnm-icon edit-icon"></i>
+                </span>
+              </div>
+              <ng-select [clearable]="false" [dropdownPosition]="'top'" [hidden]="!editLinkedPeriods"
+                         [hideSelected]="true" [items]="buildingPeriods$ | async" [multiple]="true"
+                         [ngrxFormControlState]="(formState$ | async).controls.linkedBuildingPeriodIds"
+                         [searchable]="false" bindLabel="name" bindValue="id" class="dnm-multiple-select"></ng-select>
+            </div>
+          </div>
+          <div class="input-row">
+            <div [ngSwitch]="(mode$ | async)" class="text-uppercase field-name text-form-field">
+              <ng-container *ngSwitchCase="EditDialogModeEnum.Finalize">New Building Period Client Statement Name
+              </ng-container>
+              <ng-container *ngSwitchDefault>Client Statement Name</ng-container>
+            </div>
+            <div class="field-value">
+              <ng-select [clearable]="false"
+                         [hideSelected]="true" [ngrxFormControlState]="(formState$ | async).controls.clientStatementName" [searchable]="false"
+                         class="dnm-multiple-select select-dropdown">
+                <ng-option *ngFor="let name of allowedPeriodNames$ | async" [value]="name">{{name}}</ng-option>
+              </ng-select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row none-margin-hr">
+        <div class="col-12 none-padding footer-btns d-flex justify-content-end">
+          <button (click)="onCancel()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+          <button (click)="onSave()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+</div>

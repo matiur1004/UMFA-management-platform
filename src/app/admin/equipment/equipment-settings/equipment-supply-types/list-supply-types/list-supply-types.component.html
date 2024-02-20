@@ -1,0 +1,128 @@
+<div class="manage-supply-types" data-manage-supply-types>
+  <div class="row title-row none-margin-hr">
+    <div class="col none-padding">
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="bl-gradient-title">Manage supply and location types</div>
+        <a (click)="onAddNew()" class="blue-text-btn d-flex align-items-center" data-add-new href="javascript:void(0);">
+          <i class="add-icon"></i>
+          <span>Add New</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="row search-row none-margin-hr">
+    <div class="col none-padding">
+      <form class="form-inline main-search-input w-100">
+        <div class="input-group">
+          <input #searchBox (keyup)="search(searchBox.value)" class="form-control group-search-input" data-search-field
+                 placeholder="Supply to Search" type="search"/>
+          <div class="input-group-append">
+            <i class="icon-relative search-icon vertical-middle"></i>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="row stat-row none-margin-hr">
+    <div class="col none-padding d-flex align-items-center justify-content-between">
+      <span class="stat-lbl">{{model.length}} items</span>
+      <div [placement]="['bottom-right', 'top-right']" class="dropdown filter-dropdown d-inline-block small"
+           ngbDropdown>
+        <button class="btn btn-secondary dropdown-toggle services-filter-btn text-left" ngbDropdownToggle>
+          {{supplyTypeFilterText}}
+        </button>
+        <div class="dropdown-menu services-filter-menu" ngbDropdownMenu>
+          <button (click)="onSupplyTypeFilterChange()" class="dropdown-item">All supply types</button>
+          <button (click)="onSupplyTypeFilterChange(type)" *ngFor="let type of supplyTypesList"
+                  class="dropdown-item">{{supplyType[type]}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row list-header">
+    <div class="col-3">
+      <a (click)="changeOrderIndex(1);" [ngClass]="{'active': orderIndex == 1 || orderIndex == -1}"
+         class="header-field d-flex align-items-center" href="javascript:void(0);">
+        <span class="text-ellipsis" title="Supply To">Supply To</span>
+        <i [ngClass]="{'inactive': orderIndex != 1 && orderIndex != -1, 'dnm-icon-sort-up': orderIndex == -1,'dnm-icon-sort-down': orderIndex != -1 }"
+           class="dnm-icon"></i>
+      </a>
+    </div>
+    <div class="col-8">
+      <div class="row">
+        <div class="col-4 none-padding">
+          <a [ngClass]="{'active': orderIndex == 2 || orderIndex == -2}" class="header-field d-flex align-items-center"
+             href="javascript:void(0);">
+            <span class="text-ellipsis" title="Supply type">Supply type</span>
+          </a>
+        </div>
+        <div class="col-4 header-field d-flex align-items-center none-padding">
+          <span class="text-ellipsis cursor-pointer" title="Location type">Location type</span>
+        </div>
+        <div class="col-4 header-field d-flex align-items-center none-padding">
+          <span class="text-ellipsis cursor-pointer" title="Building category">Building category</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-1 header-field d-flex align-items-center">
+      <span class="text-ellipsis"></span>
+    </div>
+  </div>
+  <div class="list-body">
+    <div *ngFor="let item of model" class="row body-row" data-row>
+      <div class="col-3 d-flex align-items-center">
+        <span class="supply-to-lbl text-ellipsis" title="{{item.name}}">{{item.name}}</span>
+      </div>
+      <div class="col-8">
+        <div class="container-fluid none-padding">
+          <div *ngFor="let supplyTypeItem of item.supplyTypes" class="row sp-type-row">
+            <div class="col-4 d-flex align-items-center">
+              <div class="service-type d-flex align-items-center">
+                <div [ngClass]="{'electricity-icon': supplyTypeItem.supplyType == supplyType.Electricity, 'water-icon': supplyTypeItem.supplyType == supplyType.Water, 'sewerage-icon': supplyTypeItem.supplyType == supplyType.Sewerage, 'gas-icon': supplyTypeItem.supplyType == supplyType.Gas, 'ad-hoc-icon': supplyTypeItem.supplyType == supplyType.AdHoc}"
+                     class="service-icon"></div>
+                <span [ngClass]="{'electricity-lbl': supplyTypeItem.supplyType == supplyType.Electricity, 'water-lbl': supplyTypeItem.supplyType == supplyType.Water, 'sewerage-lbl': supplyTypeItem.supplyType == supplyType.Sewerage, 'gas-lbl': supplyTypeItem.supplyType == supplyType.Gas, 'ad-hoc-lbl': supplyTypeItem.supplyType == supplyType.AdHoc}"
+                      class="type-lbl">
+                  {{supplyType[supplyTypeItem.supplyType]}}
+                </span>
+              </div>
+            </div>
+            <div class="col-8">
+              <div class="container-fluid none-padding">
+                <div *ngFor="let location of supplyTypeItem.supplyToLocations" class="row sp-location-row">
+                  <div class="col-6 d-flex align-items-center">
+                    <span class="location-type-lbl">{{location.name}}</span>
+                  </div>
+                  <div class="col-6 d-flex align-items-center justify-content-between">
+                    <span class="bld-categ-lbl">{{location.categoriesText}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-1 d-flex align-items-center">
+        <div [container]="'body'" [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block"
+             ngbDropdown>
+          <button class="dnm-btn dnm-btn-menu" data-menu-button ngbDropdownToggle></button>
+          <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+            <button (click)="onClone(item)" class="dropdown-item d-flex justify-content-between" data-menu-item>
+              Clone
+              <i class="dnm-icon plus-icon"></i>
+            </button>
+            <button (click)="onEdit(item)" class="dropdown-item d-flex justify-content-between" data-menu-item>
+              Edit
+              <i class="dnm-icon edit-icon"></i>
+            </button>
+            <button (click)="onDelete(item)" class="dropdown-item d-flex justify-content-between" data-menu-item>
+              Delete
+              <i class="dnm-icon delete-icon"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

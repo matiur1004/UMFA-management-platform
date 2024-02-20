@@ -1,0 +1,20 @@
+<div class="container-fluid top-container">
+  <div class="row content">
+    <div class="col-12 col-xl-2 none-padding">
+      <div class="client-header-title">
+        <h1 class="page-title text-uppercase">Suppliers</h1>
+      </div>
+    </div>
+    <div class="col-12 col-xl-auto pr-0">
+      <button (click)="onAddSupplier()"
+              class="dnm-btn dnm-btn-primary text-uppercase add-entity-btn minimum-button-width"
+              type="button">
+        <span>Add Supplier</span>
+        <i class="add-suppliers-icon icon-relative"></i>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="branch-suppliers">
+  <allocated-suppliers></allocated-suppliers>
+</div>

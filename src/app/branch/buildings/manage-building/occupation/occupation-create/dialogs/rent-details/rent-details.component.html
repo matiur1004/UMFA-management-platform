@@ -1,0 +1,91 @@
+<div class="modal-header">
+  <h5 class="modal-title">Occupy / Vacate shop</h5>
+  <button (click)="dismiss()" aria-label="Close" class="close" data-dismiss="modal" type="button">
+    <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+  </button>
+</div>
+<div class="modal-body dt-rent-md-bd">
+  <div [formGroup]="form" class="container-fluid dt-rent-cont">
+    <div class="input-row">
+      <div class="text-uppercase field-name text-form-field">
+        Current Tenant
+      </div>
+      <div class="field-value" formGroupName="currentTenant">
+        <div class="dropdown d-block fullwidth-dropdown" ngbDropdown>
+          <button class="btn btn-secondary dropdown-toggle text-left" disabled id="ddTenant" ngbDropdownToggle>
+            {{
+            form.get('currentTenant')['controls'].name.value ? form.get('currentTenant')['controls'].name.value :
+              'Select tenant'
+            }}
+          </button>
+          <div aria-labelledby="ddTenant" class="dropdown-menu" ngbDropdownMenu>
+            <button (click)="onSetVacant(form.controls.currentTenant)" class="dropdown-item">Vacant</button>
+            <button (click)="tenantChanged(form.controls.currentTenant, tenant)" *ngFor="let tenant of tenants"
+                    class="dropdown-item">{{tenant.name}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="input-row">
+      <div class="text-uppercase field-name text-form-field">
+        Vacant
+      </div>
+      <div class="field-value">
+        <div class="d-flex align-items-center">
+          <label class="dnm-switch-btn">
+            <input (change)="onVacantChange($event)" [checked]="status == shopStatus.Vacant" type="checkbox">
+            <span class="dnm-switch-slider round"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="input-row">
+      <div class="text-uppercase field-name text-form-field">
+        New Tenant
+      </div>
+      <div class="field-value" formGroupName="newTenant">
+        <div class="row">
+          <div class="col-12 tenants-dropdown">
+            <ng-template #rt let-r="result" let-t="term">
+              <div class="tenant-name">{{r.name}}</div>
+              <div class="tenant-status">{{r.shops.length == 0 ? 'No shops' : r.shops.length + ' shop(s)'}}</div>
+            </ng-template>
+            <input #instance="ngbTypeahead" (change)="onChangeTenantName($event.target.value)" (click)="click$.next($event.target.value)" (focus)="focus$.next($event.target.value)"
+                   (selectItem)="onTenantSelected($event.item)"
+                   [disabled]="status == shopStatus.Vacant" [inputFormatter]="inputFormatter" [ngbTypeahead]="search"
+                   [resultFormatter]="resultFormatter" [resultTemplate]="rt"
+                   class="form-control req-frm-fld"
+                   id="existing-users-list" placeholder="Enter the name of the tenant" type="text">
+            <div *ngIf="errorMessage">
+              <small class="alert-danger">{{errorMessage}}</small>
+            </div>
+            <div>
+              <a (click)="addTenant()"
+                 [ngClass]="{ 'disabled' : status == shopStatus.Vacant }"
+                 class="dt-rent-add-tenant blue-text-btn add-shop-btn" href="javascript:void(0);">
+                <i class="add-icon"></i> Add New Tenant
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="input-row">
+      <div class="text-uppercase field-name text-form-field">
+        Current Tenant End Date / New Tenant Entry
+      </div>
+      <div class="field-value datepicker-wrp">
+        <input #d="ngbDatepicker" (click)="d.toggle()" class="form-control" formControlName="currentTenantEndDate"
+               name="dp" ngbDatepicker
+               placeholder="dd/mm/YYYY" readonly>
+        <i (click)="d.toggle()" class="calendar"></i>
+      </div>
+    </div>
+    <div class="row dt-rent-footer">
+      <div class="col-12 text-right footer-buttons">
+        <button (click)="dismiss()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+        <button (click)="save()" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

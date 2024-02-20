@@ -1,0 +1,55 @@
+<div class="container-fluid set-of-nodes">
+  <div class="row none-margin-hr">
+    <div class="col-12 none-padding">
+      <div class="d-flex justify-content-between">
+        <span class="set-nodes-header">{{model && model.name}}</span>
+        <div class="back-button-container">
+          <back-button></back-button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-container *ngIf="model">
+    <set-form (cancel)="onCancel()" (formSubmit)="onNodeSetUpdated($event)" [action]="'Save'" [buildingId]="buildingId"
+              [model]="model">
+    </set-form>
+  </ng-container>
+
+  <stistic-data-panel [nodes]="nodes"></stistic-data-panel>
+  <search-form (onSearch)="onSearch($event)" [areas]="areas" [attributes]="attributes" [suppliers]="suppliers"
+               [tariffs]="tariffs"></search-form>
+
+  <div class="row none-margin-hr mt-4">
+    <div class="col-auto none-padding">
+      <span class="filter-res-lbl dnm-text-light">{{nodes | arrayLength}} nodes</span>
+    </div>
+    <div class="col">
+      <button (onConfirmerAction)="onNewNodesSelected($event)" [buildingId]="buildingId" [select-nodes-bind-dialog]="model && model.nodeIds"
+              [supplyType]="model && model.supplyType" [versionId]="selectedVersion.id"
+              class="blue-text-btn">
+        <i class="add-icon"></i>
+        Add Node
+      </button>
+    </div>
+    <div class="col-auto row billing-filter">
+      <label class="filter-label col-auto none-padding">Filter by</label>
+      <div class="col none-padding">
+        <ng-select [(ngModel)]="billingFilter"
+                   [clearable]="false" [closeOnSelect]="true" [dropdownPosition]="'top'" [hideSelected]="true"
+                   [searchable]="false"
+                   class="select-dropdown ng-filter-selector" id="billing_type_filter" name="billing_type_filter">
+          <ng-option value="">All</ng-option>
+          <ng-option value="billing">Billing</ng-option>
+          <ng-option value="read-only">Read Only</ng-option>
+        </ng-select>
+      </div>
+    </div>
+  </div>
+  <div class="billing-filter-{{billingFilter}}">
+    <table-nodes-edit (onDelete)="onDeleteNode($event)" [areas]="areas"
+                      [attributes]="attributes"
+                      [buildingId]="buildingId" [filter]="filter" [nodes]="nodes" [recommendedTariffs]="recommendedTariffs" [shops]="shops"
+                      [suppliers]="suppliers" [supplyType]="model && model.supplyType"
+                      [tariffs]="tariffs" [versionId]="selectedVersion.version"></table-nodes-edit>
+  </div>
+</div>

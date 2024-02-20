@@ -1,0 +1,14 @@
+<svg data-name="Layer 1" id="Layer_1" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>.cls-1 {
+      fill: url(#linear-gradient);
+    }</style>
+    <linearGradient gradientUnits="userSpaceOnUse" id="linear-gradient" x2="12" y1="6" y2="6">
+      <stop offset="0" stop-color="#e4877a"/>
+      <stop offset="1" stop-color="#dd3839"/>
+    </linearGradient>
+  </defs>
+  <title>Untitled-1</title>
+  <polygon class="cls-1"
+           points="12 1.2 10.8 0 6 4.8 1.2 0 0 1.2 4.8 6 0 10.8 1.2 12 6 7.2 10.8 12 12 10.8 7.2 6 12 1.2"/>
+</svg>

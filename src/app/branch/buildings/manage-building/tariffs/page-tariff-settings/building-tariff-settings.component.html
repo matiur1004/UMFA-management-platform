@@ -1,0 +1,15 @@
+<manage-tariffs></manage-tariffs>
+<!-- Categories -->
+<category-items [formState]="categoriesFormState$ | async"></category-items>
+<!-- /Categories -->
+
+<!-- Steps -->
+<step-items [formState]="stepsFormState$ | async"></step-items>
+<!-- /Steps -->
+<div class="row none-margin-hr ctgr-row">
+  <div class="col-12 text-right footer-buttons">
+    <!-- <button type="button" class="dnm-btn dnm-btn-cancel text-uppercase" (click)="onCancel()">Cancel</button> -->
+    <button (click)="onSave()" class="dnm-btn dnm-btn-primary text-uppercase button-footer-width" type="button">Save
+    </button>
+  </div>
+</div>

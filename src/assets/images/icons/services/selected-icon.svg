@@ -1,0 +1,18 @@
+<svg data-name="Слой 1" id="Слой_1" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>.cls-1 {
+      fill: url(#linear-gradient);
+    }
+
+    .cls-2 {
+      fill: #fff;
+    }</style>
+    <linearGradient gradientUnits="userSpaceOnUse" id="linear-gradient" x2="30" y1="15" y2="15">
+      <stop offset="0" stop-color="#28abe3"/>
+      <stop offset="1" stop-color="#3a519f"/>
+    </linearGradient>
+  </defs>
+  <title>selected</title>
+  <circle class="cls-1" cx="15" cy="15" r="15"/>
+  <path class="cls-2" d="M13,17.87,8.93,13.82h-2v2L13,21.91,23.09,11.8v-2h-2Z"/>
+</svg>

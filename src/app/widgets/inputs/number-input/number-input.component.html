@@ -1,0 +1,17 @@
+<div class="number-input-wrp d-flex align-items-stretch flex-nowrap">
+  <input #dnmNumberInput
+         (blur)="onTouched($event.target.value)"
+         (change)="onChange($event.target.value)"
+         (input)="onInput($event.target.value)"
+         [autoSelect]
+         [ngClass]="classes"
+         [readonly]="isReadonly"
+         placeholder="{{placeholder}}" type="number"/>
+  <div *ngIf="suffixLabel" class="input-suffix-lbl">{{suffixLabel}}</div>
+  <div *ngIf="!isReadonly" class="input-btns-wrp">
+    <div (click)="onIncreaseVal()" class="btn-plus"></div>
+    <div (click)="onDecreaseVal()" class="btn-minus"></div>
+  </div>
+</div>
+
+

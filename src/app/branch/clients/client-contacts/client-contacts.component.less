@@ -1,0 +1,207 @@
+@import 'variables.less';
+
+/* without contacts */
+
+.create-new-contact {
+  padding-top: 150px;
+}
+
+.create-new-contact a {
+  outline: none;
+}
+
+.create-new-contact .new-contact-icon {
+  display: flex;
+  justify-content: center;
+  height: 50px;
+}
+
+.create-new-contact .create-new-contact-msg {
+  font: 24px/30px Gotham Light;
+  color: @color-empty;
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+  margin-bottom: 20px;
+}
+
+.create-new-contact a {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+}
+
+.create-new-contact .add-icon {
+  margin-right: 10px;
+}
+
+.add-icon {
+  position: relative;
+  margin-right: 10px;
+}
+
+.create-new-contact .add-icon {
+  top: 0;
+}
+
+.total-contacts {
+  margin-right: 15px;
+}
+
+/* contacts table */
+
+.client-contacts-block .bl-gradient-title {
+  margin: 40px 0;
+}
+
+.contacts-table-nav {
+  margin-bottom: 30px;
+}
+
+.contacts-per-page {
+  display: flex;
+  align-items: center;
+}
+
+.contacts-per-page span {
+  margin-right: 10px;
+  font-family: 'Gotham Medium';
+  font-size: 14px;
+  color: @color-text-tertiary;
+}
+
+.text-label-light {
+  font-family: 'Gotham Light';
+  font-size: 16px;
+}
+
+.contacts-table-header-row {
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.contacts-table-header-row .table-col-header {
+  font-family: 'Gotham Book';
+  font-size: 12px;
+  font-weight: 400;
+  color: @color-description;
+  text-transform: uppercase;
+}
+
+.contacts-table-body-row {
+  display: flex;
+  align-items: center;
+  background: @color-background-white;
+  height: 85px;
+  border-bottom: 1px solid #ecedef;
+  border-left: 1px solid #ecedef;
+  border-right: 1px solid #ecedef;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.contacts-table-body-row:hover {
+  cursor: pointer;
+}
+
+.contacts-table-body-row:first-child {
+  border-top: 1px solid #ecedef;
+}
+
+.contacts-table-body-row .table-col-cell {
+  font-family: 'Gotham Book';
+  font-size: 14px;
+  color: @color-text-tertiary;
+}
+
+.table-col-cell {
+  display: flex;
+  align-items: center;
+}
+
+.contact-user-img-block .contact-user-img {
+  border-radius: 18px;
+  width: 36px;
+  height: 36px;
+}
+
+.contact-user-img-block .contact-user-no-img {
+  .gradient-header();
+  border-radius: 18px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: @color-main-accent;
+  font-family: 'Gotham Medium';
+  font-size: 14px;
+  line-height: 36px;
+}
+
+.table-col-cell .contact-name {
+  font-family: 'Gotham Medium';
+  font-size: 18px;
+  color: @color-text-secondary;
+}
+
+.table-col-cell .contact-name .contact-name-description {
+  font-family: 'Gotham Light';
+  font-size: 13px;
+  line-height: 16px;
+  color: @color-description;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 32px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* external links */
+
+.user-external-links {
+  width: 100%;
+}
+
+.d-social-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  padding: 0;
+  border: none;
+}
+
+.d-social-icon:after {
+  content: none;
+}
+
+.d-social-icon:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+.external-link-dropdown.dropdown-menu {
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
+/* pager */
+
+.contacts-table-pager {
+  margin-top: 40px;
+  margin-bottom: 60px;
+}
+
+.paging-btn {
+  height: 40px;
+  width: 40px;
+  line-height: 40px;
+}

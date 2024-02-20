@@ -1,0 +1,24 @@
+<div class="map-filter-dropdowns">
+  <span class="dropdown-label text-uppercase">Client/Portfolio:</span>
+  <div class="dropdown filter-dropdown small d-inline-block" ngbDropdown>
+    <button class="btn btn-secondary dropdown-toggle text-left d-flex justify-content-between" id="ddClient"
+            ngbDropdownToggle>
+      {{selectedClientText}}
+    </button>
+    <div aria-labelledby="ddClient" class="dropdown-menu" ngbDropdownMenu>
+      <button (click)="clientChange(client)" *ngFor="let client of clients"
+              class="dropdown-item">{{client.name}}</button>
+    </div>
+  </div>
+  <div class="dropdown filter-dropdown small d-inline-block portfolio-dropdown" ngbDropdown>
+    <button [disabled]="!client || !client.portfolios.length" class="btn btn-secondary dropdown-toggle text-left d-flex justify-content-between"
+            id="ddClientPortfolio" ngbDropdownToggle>
+      {{selectedClientPortfolioText}}
+    </button>
+    <div *ngIf="client" aria-labelledby="ddClientPortfolio" class="dropdown-menu" ngbDropdownMenu>
+      <button (click)="clientPortfolioChanged(portfolio)" *ngFor="let portfolio of client.portfolios"
+              class="dropdown-item">{{portfolio.name}}</button>
+    </div>
+  </div>
+</div>
+<buildings-map [center]="mapCenter" [model]="buildings" [showOnMap]="showOnMap" [zoom]="mapZoom"></buildings-map>

@@ -1,0 +1,93 @@
+<div class="container-fluid node-tariff none-padding">
+  <div class="row none-margin-hr">
+    <div class="col-12 none-padding">
+      <div class="row none-margin-hr list-header">
+        <div class="col-2 header-field d-flex align-items-center">
+          <span class="text-uppercase" title="Node">Node</span>
+        </div>
+        <div class="col-2 header-field d-flex align-items-center">
+          <span class="text-uppercase" title="Amperage">Amperage</span>
+        </div>
+        <div class="col-2 header-field d-flex align-items-center">
+          <span class="text-uppercase" title="Tariff">Tariff</span>
+        </div>
+        <div class="col-2 header-field d-flex align-items-center">
+          <span class="text-uppercase" title="Tariff">Number of units</span>
+        </div>
+        <div class="col-2 header-field d-flex align-items-center">
+          <span class="text-uppercase" title="Line item">Line item</span>
+        </div>
+        <div class="col-2 header-field d-flex align-items-center">
+          <span class="text-uppercase" title="Category">Category</span>
+        </div>
+      </div>
+      <div class="list-body">
+        <div *ngFor="let node of nodes; trackBy: trackById" class="row item-row">
+          <div class="col-2 d-flex justify-content-center flex-column">
+            <span class="node-lbl text-ellipsis" title="{{node.name}}">{{node.name}}</span>
+            <span class="node-type-lbl text-ellipsis"
+                  title="{{nodeType[node.nodeType]}}">{{nodeType[node.nodeType]}}</span>
+          </div>
+          <div class="col-2 d-flex align-items-center">
+            <span class="amperage-lbl">{{node.totalAmperage}}A</span>
+          </div>
+          <div class="col-2 d-flex align-items-center">
+            <div class="field-value none-padding w-100">
+              <ng-select (change)="updateTariff.emit({tariffVersionId: $event, nodeId: node.id})" [clearable]="false" [closeOnSelect]="true"
+                         [dropdownPosition]="'top'"
+                         [hideSelected]="true"
+                         [ngModel]="node.tariff?.id"
+                         [searchable]="false" bindLabel="name" bindValue="id" class="select-dropdown select-node-tariff"
+                         placeholder="Select tariff" title="{{node.tariff?.name}} {{node.tariff?.majorVersion}}-{{node.tariff?.versionDate | date: 'dd/MM/yyyy'}}">
+                <ng-option *ngFor="let tariff of tariffs[node.supplyType]"
+                           [value]="tariff.id">{{tariff.name}} {{tariff.majorVersion}}
+                  -{{tariff.versionData | date: 'dd/MM/yyyy'}}</ng-option>
+              </ng-select>
+            </div>
+          </div>
+          <div class="col-2 d-flex align-items-center">
+            <ng-container *ngIf="node.tariff">
+              <number-input [(ngModel)]="node.tariff.duplicationFactor" [integerValue]="true"></number-input>
+            </ng-container>
+          </div>
+          <div class="col-2 d-flex justify-content-between flex-column">
+            <ng-container *ngIf="node.tariff">
+              <div *ngFor="let lineItem of node.tariff.lineItems" class="d-flex line-item-container">
+                <label class="dnm-switch-btn">
+                  <input (click)="toggleLineItemIsActive.emit({nodeId: node.id, lineItemId: lineItem.id})" [checked]="lineItem.isActive"
+                         type="checkbox">
+                  <span class="dnm-switch-slider round"></span>
+                </label>
+                <span class="line-item-lbl">{{lineItem.name}}</span>
+              </div>
+            </ng-container>
+          </div>
+          <div class="col-2 d-flex flex-column">
+            <ng-container *ngIf="node.tariff">
+              <div *ngFor="let lineItem of node.tariff.lineItems" class="dropdown d-block fullwidth-dropdown"
+                   ngbDropdown>
+                <button [disabled]="!lineItem.categoryId" [id]="'ddCategory' + node.id"
+                        class="btn btn-secondary dropdown-toggle text-left dropdown-text-owerflow" ngbDropdownToggle type="button">
+                  {{lineItem.categoryName || 'No category'}}
+                </button>
+                <div [attr.aria-labelledby]="'ddCategory' + node.id" class="dropdown-menu" ngbDropdownMenu>
+                  <button (click)="updateLineItemCategory.emit({nodeId: node.id, lineItemId: lineItem.id, categoryId: category.id, categoryName: category.name})" *ngFor="let category of lineItem.categories" class="dropdown-item"
+                          type="button">
+                    {{category.name}}
+                  </button>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="row none-margin-hr">
+    <div class="col-12 none-padding footer-buttons d-flex justify-content-end">
+      <button (click)="close.emit()" class="dnm-btn dnm-btn-cancel text-uppercase" type="button">Cancel</button>
+      <button (click)="nextStep.emit(3)" class="dnm-btn dnm-btn-primary text-uppercase" type="button">Save</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,243 @@
+@import 'variables.less';
+
+::ng-deep .tariff-values .ng-select .ng-select-container {
+  border: none;
+  background-color: transparent;
+}
+
+::ng-deep .tariff-values .ng-select .ng-select-container::after {
+  visibility: hidden;
+}
+
+::ng-deep .tariff-values .ng-select .ng-select-container:hover {
+  border: @color-stroke solid 1px;
+  background-color: @color-background-white;
+  cursor: pointer;
+  padding: 0 34px 0 4px;
+}
+
+::ng-deep .tariff-values .ng-select .ng-select-container:hover .ng-value {
+  background-color: @color-background-white
+}
+
+::ng-deep .tariff-values .ng-select .ng-select-container:hover.ng-select-container::after {
+  visibility: visible;
+}
+
+::ng-deep .tariff-values .ng-value {
+  background-color: @color-background-primary;
+  border: none;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+::ng-deep .tariff-values .ng-input {
+  height: 35px;
+}
+
+/* Custom input */
+::ng-deep .custom-input {
+  font-size: 14px;
+  font-weight: 700;
+  color: @color-text-tertiary;
+  font-family: Gotham Book;
+  width: 100%;
+  border: transparent solid 1px;
+  border-radius: 5px;
+  padding: 7px 30px 7px 20px;
+  transition: border-color .15s ease-in-out;
+  background-color: transparent;
+}
+
+::ng-deep .custom-input:hover {
+  border: @color-stroke solid 1px;
+  cursor: pointer;
+}
+
+::ng-deep .custom-input:active,
+::ng-deep .custom-input:focus {
+  cursor: text;
+  border: @color-main-accent solid 2px;
+  outline: 0;
+  padding: 6px 29px 6px 19px;
+  background-color: @color-background-white;
+}
+
+::ng-deep .field-value.error input {
+  border: @color-warning solid 1px;
+}
+
+/* Datepicker */
+::ng-deep .datepicker-wrp .custom-input:hover {
+  background: url('../../../../../assets/images/icons/calendar-blue-icon.svg') no-repeat @color-background-white;
+  background-position: right 10px center;
+  background-size: 17px 17px;
+  cursor: pointer;
+}
+
+::ng-deep .datepicker-wrp .calendar.no-hover {
+  pointer-events: none;
+  background-image: url('../../../../../assets/images/icons/suppliers/calendar-mc-admin.svg');
+}
+
+::ng-deep .date-container {
+  padding: 0;
+}
+
+::ng-deep .date-container .date-picker {
+  position: relative;
+}
+
+::ng-deep .datepicker-wrp {
+  width: calc(100% - 250px) !important;
+}
+
+::ng-deep .section-title {
+  line-height: 1;
+  padding-top: 40px;
+}
+
+.line-div {
+  border-bottom: 1px solid #eeeff0;
+  padding: 10px 0 10px 20px;
+  margin-bottom: 0;
+}
+
+.text-form-field {
+  padding-top: 0;
+}
+
+/* Tariff values */
+.tariff-values .field-value.datepicker-wrp .form-control {
+  font-size: 13px;
+  color: @color-text-tertiary;
+  font-family: Gotham Book;
+  border: transparent solid 1px;
+  border-radius: 5px;
+  padding: 7px 30px 7px 20px;
+  transition: border-color .15s ease-in-out;
+  background-color: transparent;
+}
+
+.tariff-values .field-value.datepicker-wrp .form-control + .calendar {
+  visibility: hidden;
+}
+
+.tariff-values .field-value.datepicker-wrp .form-control:hover {
+  border: @color-stroke solid 1px;
+  background-color: @color-background-white;
+  cursor: pointer;
+}
+
+.tariff-values .field-value.datepicker-wrp .form-control:focus {
+  border: @color-main-accent solid 2px;
+  outline: none;
+  box-shadow: none;
+}
+
+.tariff-values .field-value.datepicker-wrp .form-control + .calendar {
+  background-image: url('../../../../../assets/images/icons/suppliers/calendar-mc-admin.svg');
+}
+
+.tariff-values .field-value.datepicker-wrp .form-control:hover + .calendar,
+.tariff-values .field-value.datepicker-wrp .form-control:focus + .calendar {
+  visibility: visible;
+  background-image: url('../../../../../assets/images/icons/suppliers/calendar-mc-admin.svg');
+}
+
+.tariff-values .field-name.sub-fld-name {
+  font-family: Gotham Book;
+  font-size: 12px;
+  line-height: 21px;
+  color: @color-description;
+}
+
+.tariff-values .editable-section .row {
+  border-bottom: 1px solid #eeeff0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-left: 10px;
+  margin-right: 5px;
+}
+
+.tariff-values .editable-section .row .col .row {
+  margin-left: 0;
+}
+
+.tariff-values .editable-section .date-container {
+  padding-left: 0;
+}
+
+
+.tariff-values .editable-section .field-name-annual {
+  padding-right: 10px;
+}
+
+.tariff-values .list-body {
+  border: 1px solid @color-line;
+  background-color: @color-background-white;
+}
+
+.tariff-values .list-body {
+  border: 1px solid @color-line;
+  background-color: @color-background-white;
+}
+
+.tariff-values .body-row {
+  padding: 20px 0;
+  min-height: 70px;
+}
+
+.tariff-values .body-row:not(:first-child) {
+  border-bottom: 1px solid @color-line;
+}
+
+.tariff-values .button-row {
+  padding: 10px 0;
+  margin: 15px 0px;
+}
+
+/* Charge section */
+.charge-title {
+  font-size: 20px;
+  color: @color-text-primary;
+  font-family: Gotham Medium;
+  margin-top: 30px;
+}
+
+.charge-section--lg .charges-container {
+  padding: 0 50px;
+  margin: 0 -50px;
+  padding-bottom: 50px;
+  background-color: @color-background-secondary;
+}
+
+
+/* Tabs */
+.dnm-tabset .charges-container {
+  border-top: 1px solid #eeeff0;
+  border-bottom: 1px solid #eeeff0;
+  background-color: @color-background-secondary;
+}
+
+::ng-deep .dnm-tabset--compressed .tab-content {
+  padding-top: 0;
+  margin-top: -1px;
+}
+
+::ng-deep .dnm-tabset--compressed .nav-tabs .nav-link {
+  padding: 31px 0 9px 0;
+  font-style: 13px;
+}
+
+.versions-section .section-title {
+  margin-bottom: 50px;
+}
+
+.tariff-values .footer-buttons button:not(:last-child) {
+  margin-right: 15px;
+}
+
+.no-hover {
+  pointer-events: none;
+}

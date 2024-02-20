@@ -1,0 +1,51 @@
+@import 'variables.less';
+
+.manage-groups {
+  background-color: @color-background-white;
+  border: 1px solid @color-line;
+  padding: 30px;
+  height: 100%;
+}
+
+.manage-groups .title-row,
+.manage-groups .search-row,
+.manage-groups .stat-row {
+  margin-bottom: 30px;
+}
+
+.manage-groups .stat-lbl {
+  font-family: Gotham Light;
+  font-size: 16px;
+  line-height: 18px;
+  color: @color-text-tertiary;
+}
+
+.manage-groups .list-header .header-field {
+  text-transform: uppercase;
+}
+
+.manage-groups .list-body {
+  height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.manage-groups .body-row {
+  height: 50px;
+  border-bottom: 1px solid @color-line;
+}
+
+.manage-groups .body-row:last-child {
+  border-bottom: none;
+}
+
+.manage-groups .equipment-group-lbl {
+  font-family: Gotham Medium;
+  font-size: 16px;
+  line-height: 18px;
+  color: @color-text-primary;
+}
+
+.manage-groups .service-type {
+  margin-bottom: 0;
+}

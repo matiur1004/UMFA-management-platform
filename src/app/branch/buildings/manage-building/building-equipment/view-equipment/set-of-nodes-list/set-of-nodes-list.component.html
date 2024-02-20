@@ -1,0 +1,88 @@
+<div class="set-of-nodes-list">
+  <div class="set-of-nodes-header d-flex">
+    <label class="label-of-list">Bulk action - Set of nodes</label>
+    <a (click)="onAddSet()" href="javascript:void(0);" class="add-new-set blue-text-btn" [ngClass]="{'disabled': buildingPeriodIsFinalized}">
+      <i class="add-icon"></i>
+      Add new set
+    </a>
+  </div>
+
+  <div class="table-container">
+    <table class="table table-custom table-vertical-center table-header-word-break">
+      <thead>
+      <tr>
+        <th scope="col">
+            <span class="head-col" title="Set name">
+              Set name
+            </span>
+        </th>
+        <th scope="col">
+            <span class="head-col" title="Supply type">
+              Supply type
+            </span>
+        </th>
+        <th scope="col">
+            <span class="head-col" title="Description">
+              Description
+            </span>
+        </th>
+        <th scope="col">
+            <span class="head-col" title="Allocated nodes">
+              Allocated nodes
+            </span>
+        </th>
+        <th scope="col">
+            <span class="head-col" title="Allocated areas">
+              Allocated areas
+            </span>
+        </th>
+        <th scope="col">
+            <span class="head-col" title="Allocated tariffs">
+              Allocated tariffs
+            </span>
+        </th>
+        <th scope="col">&nbsp;</th>
+      </tr>
+      </thead>
+      <tbody *ngIf="model">
+      <tr *ngFor="let item of model | async">
+        <th scope="row">
+          <a [routerLink]="['/branch', branchId, 'buildings', buildingId, 'version', versionDay, 'equipment', 'nodes', 'set', item.id]" [title]="item.name"
+             class="set-name">
+            {{item.name}}
+          </a>
+        </th>
+        <td>
+          <supply-type-icon [type]="item.supplyType"></supply-type-icon>
+        </td>
+        <td>
+          <div class="set-description">
+            {{item.description}}
+          </div>
+        </td>
+        <td>{{item.countOfNodes}}</td>
+        <td>{{item.countOfAreas}}</td>
+        <td>{{item.countOfTariffs}}</td>
+        <td class="cell-fixed cell-fixed-right">
+          <div [placement]="['bottom-right', 'top-right']" class="dropdown darkness d-inline-block" ngbDropdown>
+            <button class="dnm-btn dnm-btn-menu" ngbDropdownToggle></button>
+            <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+              <a [queryParams]="{v: versionId}"
+                 [routerLink]="['/branch', branchId, 'buildings', buildingId, 'version', versionDay, 'equipment', 'nodes', 'set', item.id]"
+                 class="dropdown-item d-flex justify-content-between">
+                Edit
+                <i class="dnm-icon edit-icon"></i>
+              </a>
+              <button (onConfirmerAction)="onDelete(item.id)" class="dropdown-item d-flex justify-content-between dropdown-delete"
+                      confirm-delete-bind-dialog>
+                Delete
+                <i class="dnm-icon delete-icon"></i>
+              </button>
+            </div>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

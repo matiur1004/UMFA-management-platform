@@ -1,0 +1,189 @@
+<div *ngIf="supplier" class="container-fluid">
+  <div class="row">
+    <div class="col-8 none-padding">
+      <div class="supply-types-table">
+        <div class="row none-margin-hr">
+          <div class="col table-cell"></div>
+          <div class="col table-cell">
+            <span class="col-lbl">Recommended price</span>
+          </div>
+          <div class="col table-cell">
+            <span class="col-lbl">Actual price</span>
+          </div>
+        </div>
+        <div class="row table-row none-margin-hr">
+          <div class="col table-cell">
+            <span class="row-title">set % of Actual price</span>
+          </div>
+          <div class="col table-cell">
+            <span class="cell-lbl">-</span>
+          </div>
+          <div class="col table-cell">
+            <number-input [max]="100" [min]="0" [ngrxFormControlState]="supplier.controls.recomPrice"
+                          [placeholder]="'%'"></number-input>
+          </div>
+        </div>
+        <div *ngIf="displayOptions.shouldDisplayFixedPriceMethod" class="row table-row none-margin-hr">
+          <div class="col table-cell">
+            <span class="row-title">Fixed price</span>
+          </div>
+          <div class="col table-cell">
+            <span class="cell-lbl null-supply-price">R {{recommendedPrice.fixedPrice}}</span>
+          </div>
+          <div class="col table-cell">
+            <text-input [autoSelect]="true"
+                        [ngClass]="{'changed-supply-price': supplier.controls.fixedPriceChanged.value || highlightPrices, 'null-supply-price': supplier.controls.fixedPrice.value == 0}"
+                        [ngrxFormControlState]="supplier.controls.fixedPrice" class="none-padding field-value"
+                        maxlength="256"></text-input>
+          </div>
+        </div>
+        <div *ngIf="displayOptions.shouldDisplayPerTenantMethod || displayOptions.shouldDisplayPerShopMethod
+              ||  displayOptions.shouldDisplayPerShopMethod || displayOptions.shouldDisplayPerMeterMethod || displayOptions.shouldDisplayPerSQMeterMethod" class="row table-row none-margin-hr">
+          <div class="col table-cell">
+            <span class="row-title">Required charging Methods</span>
+          </div>
+          <div class="col table-cell">
+
+          </div>
+          <div class="col table-cell">
+          </div>
+        </div>
+        <div *ngIf="displayOptions.shouldDisplayPerTenantMethod" class="row table-row none-margin-hr">
+          <div class="col table-cell">
+            <span class="row-title">Per Tenant</span>
+          </div>
+          <div class="col table-cell">
+            <span class="cell-lbl">R {{recommendedPrice.perTenant}}</span>
+          </div>
+          <div class="col table-cell">
+            <text-input [autoSelect]="true"
+                        [ngClass]="{'changed-supply-price': supplier.controls.perTenantChanged.value || highlightPrices, 'null-supply-price': supplier.controls.perTenant.value == 0}"
+                        [ngrxFormControlState]="supplier.controls.perTenant" class="none-padding field-value"
+                        maxlength="256"></text-input>
+          </div>
+        </div>
+        <div *ngIf="displayOptions.shouldDisplayPerShopMethod" class="row table-row none-margin-hr">
+          <div class="col table-cell">
+            <span class="row-title">Per Shop</span>
+          </div>
+          <div class="col table-cell">
+            <span class="cell-lbl">R {{recommendedPrice.perShop}}</span>
+          </div>
+          <div class="col table-cell">
+            <text-input [autoSelect]="true"
+                        [ngClass]="{'changed-supply-price': supplier.controls.perShopChanged.value || highlightPrices, 'null-supply-price': supplier.controls.perShop.value == 0}"
+                        [ngrxFormControlState]="supplier.controls.perShop" class="none-padding field-value"
+                        maxlength="256"></text-input>
+          </div>
+        </div>
+        <div *ngIf="displayOptions.shouldDisplayPerMeterMethod" class="row table-row none-margin-hr">
+          <div class="col table-cell">
+            <span class="row-title">Per Meter</span>
+          </div>
+          <div class="col table-cell">
+            <span class="cell-lbl">R {{recommendedPrice.perMeter}}</span>
+          </div>
+          <div class="col table-cell">
+            <text-input [autoSelect]="true"
+                        [ngClass]="{'changed-supply-price': supplier.controls.perMeterChanged.value || highlightPrices, 'null-supply-price': supplier.controls.perMeter.value == 0}"
+                        [ngrxFormControlState]="supplier.controls.perMeter" class="none-padding field-value"
+                        maxlength="256"></text-input>
+          </div>
+        </div>
+        <ng-container *ngIf="displayOptions.shouldDisplayPerMeterMethod">
+          <ng-container *ngFor="let meterTypeControl of supplier.controls.meterTypes.controls; trackBy: trackByIndex">
+            <div *ngIf="recommendedPrice.meterTypes[meterTypeControl.value.id]" class="row table-row none-margin-hr">
+              <div class="col table-cell">
+                <span class="row-title">{{meterTypeControl.value.name}}</span>
+              </div>
+              <div class="col table-cell">
+                <span class="cell-lbl">R {{recommendedPrice.meterTypes[meterTypeControl.value.id]}}</span>
+              </div>
+              <div class="col table-cell">
+                <text-input [autoSelect]="true"
+                            [ngClass]="{'changed-supply-price': meterTypeControl.value.meterChanged || highlightPrices, 'null-supply-price': meterTypeControl.value.value == 0}"
+                            [ngrxFormControlState]="meterTypeControl.controls.value" class="none-padding field-value"
+                            maxlength="256"></text-input>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+        <div *ngIf="displayOptions.shouldDisplayPerSQMeterMethod" class="row table-row none-margin-hr">
+          <div class="col table-cell">
+            <span class="row-title">Per SQ Meter</span>
+          </div>
+          <div class="col table-cell">
+            <span class="cell-lbl">R {{recommendedPrice.perSquareMeter}}</span>
+          </div>
+          <div class="col table-cell">
+            <text-input [autoSelect]="true"
+                        [ngClass]="{'changed-supply-price': supplier.controls.perSquareMeterChanged.value || highlightPrices, 'null-supply-price': supplier.controls.perSquareMeter.value == 0}"
+                        [ngrxFormControlState]="supplier.controls.perSquareMeter" class="none-padding field-value"
+                        maxlength="256"></text-input>
+          </div>
+        </div>
+        <div *ngIf="displayOptions.shouldDisplayPerBuildingMethod || displayOptions.shouldDisplayPerCouncilAccountMethod
+              || displayOptions.shouldDisplayPerHourMethod" class="row table-row none-margin-hr">
+          <div class="col table-cell">
+            <span class="row-title">Optional charging Methods</span>
+          </div>
+          <div class="col table-cell">
+
+          </div>
+          <div class="col table-cell">
+          </div>
+        </div>
+
+
+        <div *ngIf="displayOptions.shouldDisplayPerBuildingMethod" class="row table-row none-margin-hr">
+          <div class="col table-cell">
+            <span class="row-title">Per Building</span>
+          </div>
+          <div class="col table-cell">
+            <span class="cell-lbl null-supply-price">R {{recommendedPrice.perBuilding}}</span>
+          </div>
+          <div class="col table-cell">
+            <text-input [autoSelect]="true"
+                        [ngClass]="{'changed-supply-price': supplier.controls.perBuildingChanged.value || highlightPrices, 'null-supply-price': supplier.controls.perBuilding.value == 0}"
+                        [ngrxFormControlState]="supplier.controls.perBuilding" class="none-padding field-value"
+                        maxlength="256"></text-input>
+          </div>
+        </div>
+        <div *ngIf="displayOptions.shouldDisplayPerCouncilAccountMethod" class="row table-row none-margin-hr">
+          <div class="col table-cell">
+            <span class="row-title">Per Council Account</span>
+          </div>
+          <div class="col table-cell">
+            <span class="cell-lbl null-supply-price">R {{recommendedPrice.perCouncilAccount}}</span>
+          </div>
+          <div class="col table-cell">
+            <text-input [autoSelect]="true"
+                        [ngClass]="{'changed-supply-price': supplier.controls.perCouncilAccountChanged.value || highlightPrices, 'null-supply-price': supplier.controls.perCouncilAccount.value == 0}"
+                        [ngrxFormControlState]="supplier.controls.perCouncilAccount" class="none-padding field-value"
+                        maxlength="256"></text-input>
+          </div>
+        </div>
+        <div *ngIf="displayOptions.shouldDisplayPerHourMethod" class="row table-row none-margin-hr">
+          <div class="col table-cell">
+            <span class="row-title">Per Hour</span>
+          </div>
+          <div class="col table-cell">
+            <span class="cell-lbl null-supply-price">R {{recommendedPrice.perHour}}</span>
+          </div>
+          <div class="col table-cell">
+            <text-input [autoSelect]="true"
+                        [ngClass]="{'changed-supply-price': supplier.controls.perHourChanged.value || highlightPrices, 'null-supply-price': supplier.controls.perHour.value == 0}"
+                        [ngrxFormControlState]="supplier.controls.perHour" class="none-padding field-value null-supply-price"
+                        maxlength="256"></text-input>
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-end none-margin-hr">
+        <div class="col-4 none-padding">
+          <label (click)="applyRecomPrice.emit(supplyType)" class="apply-btn text-uppercase">Apply recommended
+            price</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

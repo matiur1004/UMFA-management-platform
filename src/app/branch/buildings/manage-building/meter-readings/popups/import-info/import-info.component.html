@@ -1,0 +1,33 @@
+<div class="import-info-wrapper">
+  <div class="modal-header d-flex align-items-center justify-content-end">
+    <div (click)="dismiss()" aria-label="Close" class="close-btn-wrp" data-dismiss="modal">
+      <i aria-hidden="true" class="icon-relative close-popup-icon"></i>
+    </div>
+  </div>
+
+  <div class="modal-body">
+    <div class="header-text">
+      Import results
+    </div>
+    <div class="import-info-report">
+      <div class="import-info-msg">
+        <strong>Total readings:</strong> {{ report.totalNumberOfReadings }}
+      </div>
+      <div class="import-info-msg">
+        <strong>Imported readings:</strong> {{ report.numberOfImportedReadings }}
+      </div>
+      <div *ngIf="report.invalidReadings.length">
+        <div class="import-info-msg"><strong>Invalid readings ({{ report.invalidReadings.length }}):</strong></div>
+        <ul class="import-info-errors-list">
+          <li *ngFor="let error of report.invalidReadings">
+            {{ error }}
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="btns-wrp">
+      <button (click)="dismiss()" class="dnm-btn dnm-btn-cancel text-uppercase chng-status-btns" type="button">Close
+      </button>
+    </div>
+  </div>
+</div>
